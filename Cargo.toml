@@ -1,0 +1,82 @@
+[package]
+name = "bevy_trackball"
+version = "0.1.0"
+rust-version = "1.70.0"
+authors = ["Rouven Spreckels <rs@qu1x.dev>"]
+edition = "2021"
+description = "Coherent virtual trackball controller/camera plugin for Bevy"
+homepage = "https://qu1x.github.io/bevy_trackball"
+documentation = "https://docs.rs/bevy_trackball"
+repository = "https://github.com/qu1x/bevy_trackball"
+readme = "README.md"
+license = "MIT OR Apache-2.0"
+keywords = [
+	"virtual-trackball",
+	"exponential-map",
+	"coherent-rotation",
+	"pan-orbit",
+	"bevy-camera",
+]
+categories = [
+	"graphics",
+	"rendering",
+	"game-engines",
+	"science",
+]
+include = [
+	"src/**/*.rs",
+	"examples/**/*.rs",
+	"Cargo.toml",
+	"README.md",
+	"RELEASES.md",
+	"LICENSES/*.md",
+]
+
+[package.metadata.docs.rs]
+features = ["serialize"]
+rustdoc-args = ["--cfg", "docsrs"]
+
+[features]
+bevy_egui = ["dep:bevy_egui"]
+serialize = ["bevy/serialize", "trackball/serde"]
+
+[dependencies]
+bevy = { version = "0.11.1", default-features = false, features = ["bevy_render"] }
+bevy_egui = { version = "0.21.0", default-features = false, optional = true }
+trackball = { version = "0.11.2", features = ["glam"] }
+
+[dev-dependencies.bevy]
+version = "0.11.1"
+default-features = false
+features = [
+	"bevy_winit",
+	"bevy_core_pipeline",
+	"bevy_pbr",
+	"ktx2",
+	"zstd",
+	"tonemapping_luts",
+	"wayland",
+	"webgl2",
+]
+
+[[example]]
+name = "exponential_map"
+required-features = []
+[[example]]
+name = "gliding_clamp"
+required-features = []
+[[example]]
+name = "constellation_clamp"
+required-features = ["bevy/bevy_ui", "bevy/default_font"]
+[[example]]
+name = "egui"
+required-features = ["bevy_egui/default_fonts"]
+[[example]]
+name = "scaling_modes"
+required-features = []
+
+[profile.wasm-release]
+inherits = "release"
+opt-level = "z"
+lto = "fat"
+codegen-units = 1
