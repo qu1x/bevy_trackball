@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0">
+		<link rel="icon" href="data:,">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.8.0/build/styles/base16/default-dark.min.css"
+			integrity="sha384-vH614oDsGRtEnkgS6eWFr651WMxr+cGQ2U2rf6LLG+aAXvGL3EbbUrlwTxAxxAOx" crossorigin="anonymous">
+		<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.8.0/build/highlight.min.js"
+			integrity="sha384-g4mRvs7AO0/Ol5LxcGyz4Doe21pVhGNnC3EQw5shw+z+aXDN86HqUdwXWO+Gz2zI" crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.8.0/build/languages/rust.min.js"
+			integrity="sha384-QQ4ARayCN1N/8rQfTBHj5QxximTvixlY/Wqk/T4NJ1NoaA+RtgmQyUUububG6V5N" crossorigin="anonymous"></script>
+		<title>bevy_trackball/examples/constellation_clamp.rs</title>
+		<style>
+			html {
+				height: 100%;
+				overflow-y: scroll;
+			}
+			body {
+				margin: 0;
+				padding: 0 2%;
+				display: flex;
+				flex-direction: column;
+				min-height: 100%;
+				color: #ececec;
+				background-color: #232326;
+				font-size: 14pt;
+				font-family: Monospace;
+			}
+			body > *, main > * {
+				margin: 0 auto;
+			}
+			a {
+				text-decoration: none;
+				color: #7c90ff;
+			}
+			nav, footer {
+				text-align: center;
+				margin: 3em 0;
+			}
+			main {
+				flex: 1;
+			}
+			pre {
+				display: none;
+				width: 1280px;
+				tab-size: 4;
+			}
+			pre code {
+				border-radius: 10px;
+			}
+			canvas {
+				outline: none;
+				border-radius: 10px;
+				display: none;
+				touch-action: none;
+			}
+			canvas:focus {
+				outline: none;
+			}
+		</style>
+	</head>
+	<body>
+		<nav>
+			» <a href="https://docs.rs/bevy_trackball">docs.rs</a>
+			» <a href="https://crates.io/crate/bevy_trackball">crates.io</a>
+			» <a href="https://github.com/qu1x/bevy_trackball">github.com</a>
+			<h1>bevy_trackball/examples/constellation_clamp.rs</h1>
+			» <a href="exponential_map.html">exponential_map</a>
+			» <a href="gliding_clamp.html">gliding_clamp</a>
+			» <a href="constellation_clamp.html">constellation_clamp</a>
+			» <a href="egui.html">egui</a>
+		</nav>
+		<main>
+			<script type="module">
+				let code = document.body.querySelector('code');
+				code.innerHTML = code.innerHTML.trim();
+				hljs.highlightAll();
+				import init from './constellation_clamp.js'
+				init().catch((error) => {
+					if (!error.message.startsWith("Using exceptions for control flow, don't mind me. This isn't actually an error!")) {
+						throw error;
+					}
+				});
+				let mo = new MutationObserver(function(mutations) {
+					const canvas = document.body.querySelector('canvas');
+					if (canvas !== null) {
+						mo.disconnect();
+						canvas.addEventListener('contextmenu', (e) => {
+							e.preventDefault();
+							e.stopPropagation();
+						});
+						let pre = document.body.querySelector('pre');
+						pre.prepend(canvas);
+						canvas.style.display = 'block';
+						pre.style.display = 'block';
+					}
+				});
+				mo.observe(document.body, { childList: true });
+			</script>
+			<pre>
+				<code class="language-rust">
+//! Demonstrates rigid as well as loose constellation clamp on the ground plane.
+//!
+//!  1. There is a main viewport (maximap) and a minimap at the right bottom.
+//!  2. Both have their own trackball controller.
+//!  3. The minimap is additionally sensitive to the controller of the maximap.
+//!  5. When orbiting the maximap down by pressing `k`, it will stop as soon as the initially lower
+//!     positioned minimap camera hits the ground plane.
+//!  6. Toggling from rigid to loose constellation clamp by pressing `Space` while keeping `k`
+//!     pressed allows the maximap camera to orbit further until it hits the ground by itself.
+//!  7. Press `Return` to reset camera positions and try again.
+
+#![allow(clippy::cast_precision_loss, clippy::cast_possible_truncation)]
+
+use std::f32::consts::PI;
+
+use bevy::{
+	core_pipeline::clear_color::ClearColorConfig,
+	prelude::*,
+	render::{
+		camera::Viewport,
+		render_resource::{Extent3d, TextureDimension, TextureFormat},
+	},
+	window::WindowResized,
+};
+use bevy_trackball::prelude::*;
+
+fn main() {
+	App::new()
+		.add_plugins(DefaultPlugins.set(ImagePlugin::default_nearest()))
+		.add_plugins(TrackballPlugin)
+		.add_systems(Startup, setup)
+		.add_systems(Update, resize_minimap)
+		.add_systems(Update, toggle_rigid_loose)
+		.run();
+}
+
+/// A marker component for our shapes so we can query them separately from the ground plane
+#[derive(Component)]
+struct Shape;
+
+const X_EXTENT: f32 = 14.5;
+
+fn setup(
+	windows: Query&lt;&amp;Window&gt;,
+	mut commands: Commands,
+	mut meshes: ResMut&lt;Assets&lt;Mesh&gt;&gt;,
+	mut images: ResMut&lt;Assets&lt;Image&gt;&gt;,
+	mut materials: ResMut&lt;Assets&lt;StandardMaterial&gt;&gt;,
+) {
+	let debug_material = materials.add(StandardMaterial {
+		base_color_texture: Some(images.add(uv_debug_texture())),
+		..default()
+	});
+
+	let shapes = [
+		meshes.add(shape::Cube::default().into()),
+		meshes.add(shape::Box::default().into()),
+		meshes.add(shape::Capsule::default().into()),
+		meshes.add(shape::Torus::default().into()),
+		meshes.add(shape::Cylinder::default().into()),
+		meshes.add(shape::Icosphere::default().try_into().unwrap()),
+		meshes.add(shape::UVSphere::default().into()),
+	];
+
+	let num_shapes = shapes.len();
+
+	for (i, shape) in shapes.into_iter().enumerate() {
+		commands.spawn((
+			PbrBundle {
+				mesh: shape,
+				material: debug_material.clone(),
+				transform: Transform::from_xyz(
+					(i as f32 / (num_shapes - 1) as f32).mul_add(X_EXTENT, -X_EXTENT / 2.),
+					3.0,
+					0.0,
+				)
+				.with_rotation(Quat::from_rotation_x(-PI / 4.)),
+				..default()
+			},
+			Shape,
+		));
+	}
+
+	// ground plane
+	commands.spawn(PbrBundle {
+		mesh: meshes.add(shape::Plane::from_size(50.0).into()),
+		material: materials.add(Color::SILVER.into()),
+		..default()
+	});
+	// light
+	commands.spawn(PointLightBundle {
+		point_light: PointLight {
+			intensity: 9000.0,
+			range: 100.,
+			shadows_enabled: true,
+			..default()
+		},
+		transform: Transform::from_xyz(8.0, 16.0, 8.0),
+		..default()
+	});
+	// UI
+	commands.spawn(
+		TextBundle::from_section(
+			&quot;Rigid Constellation Clamp (Toggle: Space)&quot;,
+			TextStyle {
+				font_size: 18.0,
+				color: Color::WHITE,
+				..default()
+			},
+		)
+		.with_style(Style {
+			position_type: PositionType::Absolute,
+			bottom: Val::Px(10.0),
+			left: Val::Px(10.0),
+			..default()
+		}),
+	);
+	// cameras and boundary conditions
+	let mut bound = Bound::default();
+	bound.min_target[1] = 0.0;
+	bound.min_eye[1] = 0.3;
+	bound.min_distance = 6.0;
+	bound.max_distance = 50.0;
+	let [target, eye, up] = [Vec3::Y, Vec3::new(0.0, 9.0, 12.0), Vec3::Y];
+	let maximap = commands
+		.spawn((
+			TrackballController::default(),
+			TrackballCamera::look_at(target, eye, up).with_clamp(bound.clone()),
+			Camera3dBundle::default(),
+		))
+		.id();
+	let window = windows.single();
+	let size = window.resolution.physical_width() / 4;
+	let eye = Vec3::new(0.0, 3.0, 12.0);
+	commands.spawn((
+		TrackballController::default(),
+		TrackballCamera::look_at(target, eye, Vec3::Y)
+			.with_clamp(bound)
+			.add_controller(maximap, true),
+		Camera3dBundle {
+			camera: Camera {
+				order: 1,
+				viewport: Some(Viewport {
+					physical_position: UVec2::new(
+						window.resolution.physical_width() - size,
+						window.resolution.physical_height() - size,
+					),
+					physical_size: UVec2::new(size, size),
+					..default()
+				}),
+				..default()
+			},
+			camera_3d: Camera3d {
+				clear_color: ClearColorConfig::None,
+				..default()
+			},
+			..default()
+		},
+		MinimapCamera,
+	));
+}
+
+#[derive(Component)]
+struct MinimapCamera;
+
+#[allow(clippy::needless_pass_by_value)]
+fn resize_minimap(
+	windows: Query&lt;&amp;Window&gt;,
+	mut resize_events: EventReader&lt;WindowResized&gt;,
+	mut minimap: Query&lt;&amp;mut Camera, With&lt;MinimapCamera&gt;&gt;,
+) {
+	for resize_event in &amp;mut resize_events {
+		let window = windows.get(resize_event.window).unwrap();
+		let mut minimap = minimap.single_mut();
+		let size = window.resolution.physical_width() / 4;
+		minimap.viewport = Some(Viewport {
+			physical_position: UVec2::new(
+				window.resolution.physical_width() - size,
+				window.resolution.physical_height() - size,
+			),
+			physical_size: UVec2::new(size, size),
+			..default()
+		});
+	}
+}
+
+#[allow(clippy::needless_pass_by_value)]
+fn toggle_rigid_loose(
+	mut minimap: Query&lt;&amp;mut TrackballCamera, With&lt;MinimapCamera&gt;&gt;,
+	mut text: Query&lt;&amp;mut Text&gt;,
+	keycode: Res&lt;Input&lt;KeyCode&gt;&gt;,
+) {
+	if keycode.just_pressed(KeyCode::Space) {
+		let mut text = text.single_mut();
+		let text = &amp;mut text.sections[0].value;
+		let mut minimap = minimap.single_mut();
+		let rigid = minimap.group.values_mut().next().unwrap();
+		if *rigid {
+			*text = &quot;Loose Constellation Clamp (Toggle: Space)&quot;.to_owned();
+		} else {
+			*text = &quot;Rigid Constellation Clamp (Toggle: Space)&quot;.to_owned();
+		}
+		*rigid = !*rigid;
+	}
+}
+
+/// Creates a colorful test pattern
+fn uv_debug_texture() -&gt; Image {
+	const TEXTURE_SIZE: usize = 8;
+
+	let mut palette: [u8; 32] = [
+		255, 102, 159, 255, 255, 159, 102, 255, 236, 255, 102, 255, 121, 255, 102, 255, 102, 255,
+		198, 255, 102, 198, 255, 255, 121, 102, 255, 255, 236, 102, 255, 255,
+	];
+
+	let mut texture_data = [0; TEXTURE_SIZE * TEXTURE_SIZE * 4];
+	for y in 0..TEXTURE_SIZE {
+		let offset = TEXTURE_SIZE * y * 4;
+		texture_data[offset..(offset + TEXTURE_SIZE * 4)].copy_from_slice(&amp;palette);
+		palette.rotate_right(4);
+	}
+
+	Image::new_fill(
+		Extent3d {
+			width: TEXTURE_SIZE as u32,
+			height: TEXTURE_SIZE as u32,
+			depth_or_array_layers: 1,
+		},
+		TextureDimension::D2,
+		&amp;texture_data,
+		TextureFormat::Rgba8UnormSrgb,
+	)
+}
+				</code>
+			</pre>
+		</main>
+		<footer>
+			» <a href="https://docs.rs/bevy_trackball">docs.rs</a>
+			» <a href="https://crates.io/crate/bevy_trackball">crates.io</a>
+			» <a href="https://github.com/qu1x/bevy_trackball">github.com</a>
+		</footer>
+	</body>
+</html>
