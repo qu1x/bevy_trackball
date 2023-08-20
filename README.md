@@ -3,18 +3,18 @@
 Coherent virtual trackball controller/camera plugin for Bevy
 
 [![Build][]](https://github.com/qu1x/bevy_trackball/actions/workflows/build.yml)
-[![Documentation][]](https://docs.rs/bevy_trackball)
 [![Downloads][]](https://crates.io/crates/bevy_trackball)
 [![Version][]](https://crates.io/crates/bevy_trackball)
 [![Rust][]](https://www.rust-lang.org)
 [![License][]](https://opensource.org/licenses)
 
 [Build]: https://github.com/qu1x/bevy_trackball/actions/workflows/build.yml/badge.svg
-[Documentation]: https://docs.rs/bevy_trackball/badge.svg
 [Downloads]: https://img.shields.io/crates/d/bevy_trackball.svg
 [Version]: https://img.shields.io/crates/v/bevy_trackball.svg
 [Rust]: https://img.shields.io/badge/rust-v1.70-brightgreen.svg
 [License]: https://img.shields.io/badge/License-MIT%20OR%20Apache--2.0-blue.svg
+
+[Documentation](https://qu1x.github.io/bevy_trackball/doc/bevy_trackball)
 
 Run simple and advanced [examples] in your browser using [WebAssembly] and [WebGL].
 
