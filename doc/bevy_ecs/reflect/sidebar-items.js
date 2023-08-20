@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":["AppTypeRegistry","ReflectComponent","ReflectComponentFns","ReflectMapEntities","ReflectResource","ReflectResourceFns"]};

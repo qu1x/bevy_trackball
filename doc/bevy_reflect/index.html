@@ -1,0 +1,314 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Reflection in Rust."><title>bevy_reflect - Rust</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../static.files/rustdoc-f3501f0f5ae15dfb.css" id="mainThemeStyle"><div id="rustdoc-vars" data-root-path="../" data-static-root-path="../static.files/" data-current-crate="bevy_reflect" data-themes="" data-resource-suffix="" data-rustdoc-version="1.71.1 (eb26296b5 2023-08-03)" data-search-js="search-4926e5fc22a5646a.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-0f8c037637f9eb3e.css" data-theme-dark-css="dark-1097f8e92a01e3cf.css" data-theme-ayu-css="ayu-614652228113ac93.css" ></div><script src="../static.files/storage-62ce34ea385b278a.js"></script><script defer src="../crates.js"></script><script defer src="../static.files/main-f0540c1d82cde29b.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../static.files/light-0f8c037637f9eb3e.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../static.files/dark-1097f8e92a01e3cf.css"><link rel="stylesheet" href="../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc mod crate"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="logo-container" href="../bevy_reflect/index.html"><img class="rust-logo" src="../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><h2></h2></nav><nav class="sidebar"><a class="logo-container" href="../bevy_reflect/index.html"><img class="rust-logo" src="../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><h2 class="location"><a href="#">Crate bevy_reflect</a></h2><div class="sidebar-elems"><ul class="block"><li class="version">Version 0.11.2</li><li><a id="all-types" href="all.html">All Items</a></li></ul><section><ul class="block"><li><a href="#reexports">Re-exports</a></li><li><a href="#modules">Modules</a></li><li><a href="#macros">Macros</a></li><li><a href="#structs">Structs</a></li><li><a href="#enums">Enums</a></li><li><a href="#traits">Traits</a></li><li><a href="#functions">Functions</a></li><li><a href="#attributes">Attribute Macros</a></li><li><a href="#derives">Derive Macros</a></li></ul></section></div></nav><main><div class="width-limiter"><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="main-heading"><h1>Crate <a class="mod" href="#">bevy_reflect</a><button id="copy-path" title="Copy item path to clipboard"><img src="../static.files/clipboard-7571035ce49a181d.svg" width="19" height="18" alt="Copy item path"></button></h1><span class="out-of-band"><a class="srclink" href="../src/bevy_reflect/lib.rs.html#1-2026">source</a> · <button id="toggle-all-docs" title="collapse all docs">[<span>&#x2212;</span>]</button></span></div><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Reflection in Rust.</p>
+<p><a href="https://en.wikipedia.org/wiki/Reflective_programming">Reflection</a> is a powerful tool provided within many programming languages
+that allows for meta-programming: using information <em>about</em> the program to
+<em>affect</em> the program.
+In other words, reflection allows us to inspect the program itself, its
+syntax, and its type information at runtime.</p>
+<p>This crate adds this missing reflection functionality to Rust.
+Though it was made with the <a href="https://bevyengine.org/">Bevy</a> game engine in mind,
+it’s a general-purpose solution that can be used in any Rust project.</p>
+<p>At a very high level, this crate allows you to:</p>
+<ul>
+<li>Dynamically interact with Rust values</li>
+<li>Access type metadata at runtime</li>
+<li>Serialize and deserialize (i.e. save and load) data</li>
+</ul>
+<p>It’s important to note that because of missing features in Rust,
+there are some <a href="#limitations">limitations</a> with this crate.</p>
+<h2 id="the-reflect-trait"><a href="#the-reflect-trait">The <code>Reflect</code> Trait</a></h2>
+<p>At the core of <a href="index.html" title="mod bevy_reflect"><code>bevy_reflect</code></a> is the <a href="trait.Reflect.html" title="trait bevy_reflect::Reflect"><code>Reflect</code></a> trait.</p>
+<p>One of its primary purposes is to allow all implementors to be passed around
+as a <code>dyn Reflect</code> trait object.
+This allows any such type to be operated upon completely dynamically (at a small <a href="https://doc.rust-lang.org/book/ch17-02-trait-objects.html#trait-objects-perform-dynamic-dispatch">runtime cost</a>).</p>
+<p>Implementing the trait is easily done using the provided <a href="derive.Reflect.html" title="derive bevy_reflect::Reflect">derive macro</a>:</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(Reflect)]
+</span><span class="kw">struct </span>MyStruct {
+  foo: i32
+}</code></pre></div>
+<p>This will automatically generate the implementation of <code>Reflect</code> for any struct or enum.</p>
+<p>It will also generate other very important trait implementations used for reflection:</p>
+<ul>
+<li><a href="trait.GetTypeRegistration.html" title="trait bevy_reflect::GetTypeRegistration"><code>GetTypeRegistration</code></a></li>
+<li><a href="trait.Typed.html" title="trait bevy_reflect::Typed"><code>Typed</code></a></li>
+<li><a href="trait.Struct.html" title="trait bevy_reflect::Struct"><code>Struct</code></a>, <a href="trait.TupleStruct.html" title="trait bevy_reflect::TupleStruct"><code>TupleStruct</code></a>, or <a href="trait.Enum.html" title="trait bevy_reflect::Enum"><code>Enum</code></a> depending on the type</li>
+</ul>
+<h3 id="requirements"><a href="#requirements">Requirements</a></h3>
+<p>We can implement <code>Reflect</code> on any type that satisfies <em>both</em> of the following conditions:</p>
+<ul>
+<li>The type implements <code>Any</code>.
+This is true if and only if the type itself has a <a href="https://doc.rust-lang.org/rust-by-example/scope/lifetime/static_lifetime.html#trait-bound"><code>'static</code> lifetime</a>.</li>
+<li>All fields and sub-elements themselves implement <code>Reflect</code>
+(see the <a href="derive.Reflect.html" title="derive bevy_reflect::Reflect">derive macro documentation</a> for details on how to ignore certain fields when deriving).</li>
+</ul>
+<p>Additionally, using the derive macro on enums requires a third condition to be met:</p>
+<ul>
+<li>All fields and sub-elements must implement <a href="trait.FromReflect.html" title="trait bevy_reflect::FromReflect"><code>FromReflect</code></a>—
+another important reflection trait discussed in a later section.</li>
+</ul>
+<h2 id="the-reflect-subtraits"><a href="#the-reflect-subtraits">The <code>Reflect</code> Subtraits</a></h2>
+<p>Since <a href="trait.Reflect.html" title="trait bevy_reflect::Reflect"><code>Reflect</code></a> is meant to cover any and every type, this crate also comes with a few
+more traits to accompany <code>Reflect</code> and provide more specific interactions.
+We refer to these traits as the <em>reflection subtraits</em> since they all have <code>Reflect</code> as a supertrait.
+The current list of reflection subtraits include:</p>
+<ul>
+<li><a href="trait.Tuple.html" title="trait bevy_reflect::Tuple"><code>Tuple</code></a></li>
+<li><a href="trait.Array.html" title="trait bevy_reflect::Array"><code>Array</code></a></li>
+<li><a href="trait.List.html" title="trait bevy_reflect::List"><code>List</code></a></li>
+<li><a href="trait.Map.html" title="trait bevy_reflect::Map"><code>Map</code></a></li>
+<li><a href="trait.Struct.html" title="trait bevy_reflect::Struct"><code>Struct</code></a></li>
+<li><a href="trait.TupleStruct.html" title="trait bevy_reflect::TupleStruct"><code>TupleStruct</code></a></li>
+<li><a href="trait.Enum.html" title="trait bevy_reflect::Enum"><code>Enum</code></a></li>
+</ul>
+<p>As mentioned previously, the last three are automatically implemented by the <a href="derive.Reflect.html" title="derive bevy_reflect::Reflect">derive macro</a>.</p>
+<p>Each of these traits come with their own methods specific to their respective category.
+For example, we can access our struct’s fields by name using the <a href="trait.Struct.html#tymethod.field" title="method bevy_reflect::Struct::field"><code>Struct::field</code></a> method.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">let </span>my_struct: Box&lt;<span class="kw">dyn </span>Struct&gt; = Box::new(MyStruct {
+  foo: <span class="number">123
+</span>});
+<span class="kw">let </span>foo: <span class="kw-2">&amp;</span><span class="kw">dyn </span>Reflect = my_struct.field(<span class="string">&quot;foo&quot;</span>).unwrap();
+<span class="macro">assert_eq!</span>(<span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="number">123</span>), foo.downcast_ref::&lt;i32&gt;());</code></pre></div>
+<p>Since most data is passed around as <code>dyn Reflect</code>,
+the <code>Reflect</code> trait has methods for going to and from these subtraits.</p>
+<p><a href="trait.Reflect.html#tymethod.reflect_ref" title="method bevy_reflect::Reflect::reflect_ref"><code>Reflect::reflect_ref</code></a>, <a href="trait.Reflect.html#tymethod.reflect_mut" title="method bevy_reflect::Reflect::reflect_mut"><code>Reflect::reflect_mut</code></a>, and <a href="trait.Reflect.html#tymethod.reflect_owned" title="method bevy_reflect::Reflect::reflect_owned"><code>Reflect::reflect_owned</code></a> all return
+an enum that respectively contains immutable, mutable, and owned access to the type as a subtrait object.</p>
+<p>For example, we can get out a <code>dyn Tuple</code> from our reflected tuple type using one of these methods.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">let </span>my_tuple: Box&lt;<span class="kw">dyn </span>Reflect&gt; = Box::new((<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>));
+<span class="kw">let </span>ReflectRef::Tuple(my_tuple) = my_tuple.reflect_ref() <span class="kw">else </span>{ <span class="macro">unreachable!</span>() };
+<span class="macro">assert_eq!</span>(<span class="number">3</span>, my_tuple.field_len());</code></pre></div>
+<p>And to go back to a general-purpose <code>dyn Reflect</code>,
+we can just use the matching <a href="trait.Reflect.html#tymethod.as_reflect" title="method bevy_reflect::Reflect::as_reflect"><code>Reflect::as_reflect</code></a>, <a href="trait.Reflect.html#tymethod.as_reflect_mut" title="method bevy_reflect::Reflect::as_reflect_mut"><code>Reflect::as_reflect_mut</code></a>,
+or <a href="trait.Reflect.html#tymethod.into_reflect" title="method bevy_reflect::Reflect::into_reflect"><code>Reflect::into_reflect</code></a> methods.</p>
+<h3 id="value-types"><a href="#value-types">Value Types</a></h3>
+<p>Types that do not fall under one of the above subtraits,
+such as for primitives (e.g. <code>bool</code>, <code>usize</code>, etc.)
+and simple types (e.g. <code>String</code>, <code>Duration</code>),
+are referred to as <em>value</em> types
+since methods like <a href="trait.Reflect.html#tymethod.reflect_ref" title="method bevy_reflect::Reflect::reflect_ref"><code>Reflect::reflect_ref</code></a> return a <a href="enum.ReflectRef.html#variant.Value" title="variant bevy_reflect::ReflectRef::Value"><code>ReflectRef::Value</code></a> variant.
+While most other types contain their own <code>dyn Reflect</code> fields and data,
+these types generally cannot be broken down any further.</p>
+<h2 id="dynamic-types"><a href="#dynamic-types">Dynamic Types</a></h2>
+<p>Each subtrait comes with a corresponding <em>dynamic</em> type.</p>
+<p>The available dynamic types are:</p>
+<ul>
+<li><a href="struct.DynamicTuple.html" title="struct bevy_reflect::DynamicTuple"><code>DynamicTuple</code></a></li>
+<li><a href="struct.DynamicArray.html" title="struct bevy_reflect::DynamicArray"><code>DynamicArray</code></a></li>
+<li><a href="struct.DynamicList.html" title="struct bevy_reflect::DynamicList"><code>DynamicList</code></a></li>
+<li><a href="struct.DynamicMap.html" title="struct bevy_reflect::DynamicMap"><code>DynamicMap</code></a></li>
+<li><a href="struct.DynamicStruct.html" title="struct bevy_reflect::DynamicStruct"><code>DynamicStruct</code></a></li>
+<li><a href="struct.DynamicTupleStruct.html" title="struct bevy_reflect::DynamicTupleStruct"><code>DynamicTupleStruct</code></a></li>
+<li><a href="struct.DynamicEnum.html" title="struct bevy_reflect::DynamicEnum"><code>DynamicEnum</code></a></li>
+</ul>
+<p>These dynamic types may contain any arbitrary reflected data.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">let </span><span class="kw-2">mut </span>data = DynamicStruct::default();
+data.insert(<span class="string">&quot;foo&quot;</span>, <span class="number">123_i32</span>);
+<span class="macro">assert_eq!</span>(<span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="number">123</span>), data.field(<span class="string">&quot;foo&quot;</span>).unwrap().downcast_ref::&lt;i32&gt;())</code></pre></div>
+<p>They are most commonly used as “proxies” for other types,
+where they contain the same data as— and therefore, represent— a concrete type.
+The <a href="trait.Reflect.html#tymethod.clone_value" title="method bevy_reflect::Reflect::clone_value"><code>Reflect::clone_value</code></a> method will return a dynamic type for all non-value types,
+allowing all types to essentially be “cloned”.
+And since dynamic types themselves implement <a href="trait.Reflect.html" title="trait bevy_reflect::Reflect"><code>Reflect</code></a>,
+we may pass them around just like any other reflected type.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">let </span>original: Box&lt;<span class="kw">dyn </span>Reflect&gt; = Box::new(MyStruct {
+  foo: <span class="number">123
+</span>});
+
+<span class="comment">// `cloned` will be a `DynamicStruct` representing a `MyStruct`
+</span><span class="kw">let </span>cloned: Box&lt;<span class="kw">dyn </span>Reflect&gt; = original.clone_value();
+<span class="macro">assert!</span>(cloned.represents::&lt;MyStruct&gt;());
+<span class="macro">assert!</span>(cloned.is::&lt;DynamicStruct&gt;());</code></pre></div>
+<h3 id="patching"><a href="#patching">Patching</a></h3>
+<p>These dynamic types come in handy when needing to apply multiple changes to another type.
+This is known as “patching” and is done using the <a href="trait.Reflect.html#tymethod.apply" title="method bevy_reflect::Reflect::apply"><code>Reflect::apply</code></a> method.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">let </span><span class="kw-2">mut </span>value = <span class="prelude-val">Some</span>(<span class="number">123_i32</span>);
+<span class="kw">let </span>patch = DynamicEnum::new(<span class="string">&quot;None&quot;</span>, ());
+value.apply(<span class="kw-2">&amp;</span>patch);
+<span class="macro">assert_eq!</span>(<span class="prelude-val">None</span>, value);</code></pre></div>
+<h3 id="fromreflect"><a href="#fromreflect"><code>FromReflect</code></a></h3>
+<p>It’s important to remember that dynamic types are <em>not</em> the concrete type they may be representing.
+A common mistake is to treat them like such when trying to cast back to the original type
+or when trying to make use of a reflected trait which expects the actual type.</p>
+
+<div class="example-wrap should_panic"><a href="#" class="tooltip" title="This example panics">ⓘ</a><pre class="rust rust-example-rendered"><code><span class="kw">let </span>original: Box&lt;<span class="kw">dyn </span>Reflect&gt; = Box::new(MyStruct {
+  foo: <span class="number">123
+</span>});
+
+<span class="kw">let </span>cloned: Box&lt;<span class="kw">dyn </span>Reflect&gt; = original.clone_value();
+<span class="kw">let </span>value = cloned.take::&lt;MyStruct&gt;().unwrap(); <span class="comment">// PANIC!</span></code></pre></div>
+<p>To resolve this issue, we’ll need to convert the dynamic type to the concrete one.
+This is where <a href="trait.FromReflect.html" title="trait bevy_reflect::FromReflect"><code>FromReflect</code></a> comes in.</p>
+<p><code>FromReflect</code> is a trait that allows an instance of a type to be generated from a
+dynamic representation— even partial ones.
+And since the <a href="trait.FromReflect.html#tymethod.from_reflect" title="associated function bevy_reflect::FromReflect::from_reflect"><code>FromReflect::from_reflect</code></a> method takes the data by reference,
+this can be used to effectively clone data (to an extent).</p>
+<p>It is automatically implemented when <a href="derive.Reflect.html" title="derive bevy_reflect::Reflect">deriving <code>Reflect</code></a> on a type unless opted out of
+using <code>#[reflect(from_reflect = false)]</code> on the item.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(Reflect)]
+</span><span class="kw">struct </span>MyStruct {
+  foo: i32
+}
+<span class="kw">let </span>original: Box&lt;<span class="kw">dyn </span>Reflect&gt; = Box::new(MyStruct {
+  foo: <span class="number">123
+</span>});
+
+<span class="kw">let </span>cloned: Box&lt;<span class="kw">dyn </span>Reflect&gt; = original.clone_value();
+<span class="kw">let </span>value = &lt;MyStruct <span class="kw">as </span>FromReflect&gt;::from_reflect(<span class="kw-2">&amp;*</span>cloned).unwrap(); <span class="comment">// OK!</span></code></pre></div>
+<p>When deriving, all active fields and sub-elements must also implement <code>FromReflect</code>.</p>
+<p>Fields can be given default values for when a field is missing in the passed value or even ignored.
+Ignored fields must either implement <a href="https://doc.rust-lang.org/1.71.1/core/default/trait.Default.html" title="trait core::default::Default"><code>Default</code></a> or have a default function specified
+using <code>#[reflect(default = &quot;path::to::function&quot;)]</code>.</p>
+<p>See the <a href="derive.FromReflect.html" title="derive bevy_reflect::FromReflect">derive macro documentation</a> for details.</p>
+<p>All primitives and simple types implement <code>FromReflect</code> by relying on their <a href="https://doc.rust-lang.org/1.71.1/core/default/trait.Default.html" title="trait core::default::Default"><code>Default</code></a> implementation.</p>
+<h2 id="type-registration"><a href="#type-registration">Type Registration</a></h2>
+<p>This crate also comes with a <a href="struct.TypeRegistry.html" title="struct bevy_reflect::TypeRegistry"><code>TypeRegistry</code></a> that can be used to store and retrieve additional type metadata at runtime,
+such as helper types and trait implementations.</p>
+<p>The <a href="derive.Reflect.html" title="derive bevy_reflect::Reflect">derive macro</a> for <a href="trait.Reflect.html" title="trait bevy_reflect::Reflect"><code>Reflect</code></a> also generates an implementation of the <a href="trait.GetTypeRegistration.html" title="trait bevy_reflect::GetTypeRegistration"><code>GetTypeRegistration</code></a> trait,
+which is used by the registry to generate a <a href="struct.TypeRegistration.html" title="struct bevy_reflect::TypeRegistration"><code>TypeRegistration</code></a> struct for that type.
+We can then register additional <a href="trait.TypeData.html" title="trait bevy_reflect::TypeData">type data</a> we want associated with that type.</p>
+<p>For example, we can register <a href="std_traits/struct.ReflectDefault.html" title="struct bevy_reflect::std_traits::ReflectDefault"><code>ReflectDefault</code></a> on our type so that its <code>Default</code> implementation
+may be used dynamically.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(Reflect, Default)]
+</span><span class="kw">struct </span>MyStruct {
+  foo: i32
+}
+<span class="kw">let </span><span class="kw-2">mut </span>registry = TypeRegistry::empty();
+registry.register::&lt;MyStruct&gt;();
+registry.register_type_data::&lt;MyStruct, ReflectDefault&gt;();
+
+<span class="kw">let </span>registration = registry.get(std::any::TypeId::of::&lt;MyStruct&gt;()).unwrap();
+<span class="kw">let </span>reflect_default = registration.data::&lt;ReflectDefault&gt;().unwrap();
+
+<span class="kw">let </span>new_value: Box&lt;<span class="kw">dyn </span>Reflect&gt; = reflect_default.default();
+<span class="macro">assert!</span>(new_value.is::&lt;MyStruct&gt;());</code></pre></div>
+<p>Because this operation is so common, the derive macro actually has a shorthand for it.
+By using the <code>#[reflect(Trait)]</code> attribute, the derive macro will automatically register a matching,
+in-scope <code>ReflectTrait</code> type within the <code>GetTypeRegistration</code> implementation.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>bevy_reflect::prelude::{Reflect, ReflectDefault};
+
+<span class="attr">#[derive(Reflect, Default)]
+#[reflect(Default)]
+</span><span class="kw">struct </span>MyStruct {
+  foo: i32
+}</code></pre></div>
+<h3 id="reflecting-traits"><a href="#reflecting-traits">Reflecting Traits</a></h3>
+<p>Type data doesn’t have to be tied to a trait, but it’s often extremely useful to create trait type data.
+These allow traits to be used directly on a <code>dyn Reflect</code> while utilizing the underlying type’s implementation.</p>
+<p>For any <a href="https://doc.rust-lang.org/reference/items/traits.html#object-safety">object-safe</a> trait, we can easily generate a corresponding <code>ReflectTrait</code> type for our trait
+using the <a href="attr.reflect_trait.html" title="attr bevy_reflect::reflect_trait"><code>#[reflect_trait]</code></a> macro.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[reflect_trait] </span><span class="comment">// Generates a `ReflectMyTrait` type
+</span><span class="kw">pub trait </span>MyTrait {}
+<span class="kw">impl</span>&lt;T: Reflect&gt; MyTrait <span class="kw">for </span>T {}
+
+<span class="kw">let </span><span class="kw-2">mut </span>registry = TypeRegistry::new();
+registry.register_type_data::&lt;i32, ReflectMyTrait&gt;();</code></pre></div>
+<p>The generated type data can be used to convert a valid <code>dyn Reflect</code> into a <code>dyn MyTrait</code>.
+See the <a href="https://github.com/bevyengine/bevy/blob/latest/examples/reflection/trait_reflection.rs">trait reflection example</a>
+for more information and usage details.</p>
+<h2 id="serialization"><a href="#serialization">Serialization</a></h2>
+<p>By using reflection, we are also able to get serialization capabilities for free.
+In fact, using <a href="index.html" title="mod bevy_reflect"><code>bevy_reflect</code></a> can result in faster compile times and reduced code generation over
+directly deriving the <a href="../serde/index.html" title="mod serde"><code>serde</code></a> traits.</p>
+<p>The way it works is by moving the serialization logic into common serializers and deserializers:</p>
+<ul>
+<li><a href="serde/struct.ReflectSerializer.html" title="struct bevy_reflect::serde::ReflectSerializer"><code>ReflectSerializer</code></a></li>
+<li><a href="serde/struct.TypedReflectSerializer.html" title="struct bevy_reflect::serde::TypedReflectSerializer"><code>TypedReflectSerializer</code></a></li>
+<li><a href="serde/struct.UntypedReflectDeserializer.html" title="struct bevy_reflect::serde::UntypedReflectDeserializer"><code>UntypedReflectDeserializer</code></a></li>
+<li><a href="serde/struct.TypedReflectDeserializer.html" title="struct bevy_reflect::serde::TypedReflectDeserializer"><code>TypedReflectDeserializer</code></a></li>
+</ul>
+<p>All of these structs require a reference to the <a href="struct.TypeRegistry.html" title="struct bevy_reflect::TypeRegistry">registry</a> so that <a href="enum.TypeInfo.html" title="enum bevy_reflect::TypeInfo">type information</a> can be retrieved,
+as well as registered type data, such as <a href="struct.ReflectSerialize.html" title="struct bevy_reflect::ReflectSerialize"><code>ReflectSerialize</code></a> and <a href="struct.ReflectDeserialize.html" title="struct bevy_reflect::ReflectDeserialize"><code>ReflectDeserialize</code></a>.</p>
+<p>The general entry point are the “untyped” versions of these structs.
+These will automatically extract the type information and pass them into their respective “typed” version.</p>
+<p>The output of the <code>ReflectSerializer</code> will be a map, where the key is the <a href="trait.Reflect.html#tymethod.type_name" title="method bevy_reflect::Reflect::type_name">type name</a>
+and the value is the serialized data.
+The <code>TypedReflectSerializer</code> will simply output the serialized data.</p>
+<p>The <code>UntypedReflectDeserializer</code> can be used to deserialize this map and return a <code>Box&lt;dyn Reflect&gt;</code>,
+where the underlying type will be a dynamic type representing some concrete type (except for value types).</p>
+<p>Again, it’s important to remember that dynamic types may need to be converted to their concrete counterparts
+in order to be used in certain cases.
+This can be achieved using <a href="trait.FromReflect.html" title="trait bevy_reflect::FromReflect"><code>FromReflect</code></a>.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(Reflect, PartialEq, Debug)]
+</span><span class="kw">struct </span>MyStruct {
+  foo: i32
+}
+
+<span class="kw">let </span>original_value = MyStruct {
+  foo: <span class="number">123
+</span>};
+
+<span class="comment">// Register
+</span><span class="kw">let </span><span class="kw-2">mut </span>registry = TypeRegistry::new();
+registry.register::&lt;MyStruct&gt;();
+
+<span class="comment">// Serialize
+</span><span class="kw">let </span>reflect_serializer = ReflectSerializer::new(<span class="kw-2">&amp;</span>original_value, <span class="kw-2">&amp;</span>registry);
+<span class="kw">let </span>serialized_value: String = ron::to_string(<span class="kw-2">&amp;</span>reflect_serializer).unwrap();
+
+<span class="comment">// Deserialize
+</span><span class="kw">let </span>reflect_deserializer = UntypedReflectDeserializer::new(<span class="kw-2">&amp;</span>registry);
+<span class="kw">let </span>deserialized_value: Box&lt;<span class="kw">dyn </span>Reflect&gt; = reflect_deserializer.deserialize(
+  <span class="kw-2">&amp;mut </span>ron::Deserializer::from_str(<span class="kw-2">&amp;</span>serialized_value).unwrap()
+).unwrap();
+
+<span class="comment">// Convert
+</span><span class="kw">let </span>converted_value = &lt;MyStruct <span class="kw">as </span>FromReflect&gt;::from_reflect(<span class="kw-2">&amp;*</span>deserialized_value).unwrap();
+
+<span class="macro">assert_eq!</span>(original_value, converted_value);</code></pre></div>
+<h2 id="limitations"><a href="#limitations">Limitations</a></h2>
+<p>While this crate offers a lot in terms of adding reflection to Rust,
+it does come with some limitations that don’t make it as featureful as reflection
+in other programming languages.</p>
+<h3 id="non-static-lifetimes"><a href="#non-static-lifetimes">Non-Static Lifetimes</a></h3>
+<p>One of the most obvious limitations is the <code>'static</code> requirement.
+Rust requires fields to define a lifetime for referenced data,
+but <a href="trait.Reflect.html" title="trait bevy_reflect::Reflect"><code>Reflect</code></a> requires all types to have a <code>'static</code> lifetime.
+This makes it impossible to reflect any type with non-static borrowed data.</p>
+<h3 id="function-reflection"><a href="#function-reflection">Function Reflection</a></h3>
+<p>Another limitation is the inability to fully reflect functions and methods.
+Most languages offer some way of calling methods dynamically,
+but Rust makes this very difficult to do.
+For non-generic methods, this can be done by registering custom <a href="trait.TypeData.html" title="trait bevy_reflect::TypeData">type data</a> that
+contains function pointers.
+For generic methods, the same can be done but will typically require manual monomorphization
+(i.e. manually specifying the types the generic method can take).</p>
+<h3 id="manual-registration"><a href="#manual-registration">Manual Registration</a></h3>
+<p>Since Rust doesn’t provide built-in support for running initialization code before <code>main</code>,
+there is no way for <code>bevy_reflect</code> to automatically register types into the <a href="struct.TypeRegistry.html" title="struct bevy_reflect::TypeRegistry">type registry</a>.
+This means types must manually be registered, including their desired monomorphized
+representations if generic.</p>
+<h2 id="features"><a href="#features">Features</a></h2><h3 id="bevy"><a href="#bevy"><code>bevy</code></a></h3><div><table><thead><tr><th style="text-align: center">Default</th><th style="text-align: center">Dependencies</th></tr></thead><tbody>
+<tr><td style="text-align: center">❌</td><td style="text-align: center"><a href="https://docs.rs/bevy_math/latest/bevy_math/"><code>bevy_math</code></a>, <a href="https://docs.rs/glam/latest/glam/"><code>glam</code></a>, <a href="https://docs.rs/smallvec/latest/smallvec/"><code>smallvec</code></a></td></tr>
+</tbody></table>
+</div>
+<p>This feature makes it so that the appropriate reflection traits are implemented on all the types
+necessary for the <a href="https://bevyengine.org/">Bevy</a> game engine.
+enables the optional dependencies: <a href="https://docs.rs/bevy_math/latest/bevy_math/"><code>bevy_math</code></a>, <a href="https://docs.rs/glam/latest/glam/"><code>glam</code></a>, and <a href="https://docs.rs/smallvec/latest/smallvec/"><code>smallvec</code></a>.
+These dependencies are used by the <a href="https://bevyengine.org/">Bevy</a> game engine and must define their reflection implementations
+within this crate due to Rust’s <a href="https://doc.rust-lang.org/book/ch10-02-traits.html#implementing-a-trait-on-a-type:~:text=But%20we%20can%E2%80%99t,implementation%20to%20use.">orphan rule</a>.</p>
+<h3 id="documentation"><a href="#documentation"><code>documentation</code></a></h3><div><table><thead><tr><th style="text-align: center">Default</th><th style="text-align: center">Dependencies</th></tr></thead><tbody>
+<tr><td style="text-align: center">❌</td><td style="text-align: center"><a href="../bevy_reflect_derive/index.html" title="mod bevy_reflect_derive"><code>bevy_reflect_derive/documentation</code></a></td></tr>
+</tbody></table>
+</div>
+<p>This feature enables capturing doc comments as strings for items that <a href="derive.Reflect.html" title="derive bevy_reflect::Reflect">derive <code>Reflect</code></a>.
+Documentation information can then be accessed at runtime on the <a href="enum.TypeInfo.html" title="enum bevy_reflect::TypeInfo"><code>TypeInfo</code></a> of that item.</p>
+<p>This can be useful for generating documentation for scripting language interop or
+for displaying tooltips in an editor.</p>
+</div></details><h2 id="reexports" class="small-section-header"><a href="#reexports">Re-exports</a></h2><ul class="item-table"><li><div class="item-name" id="reexport.erased_serde"><code>pub use <a class="mod" href="../erased_serde/index.html" title="mod erased_serde">erased_serde</a>;</code></div></li></ul><h2 id="modules" class="small-section-header"><a href="#modules">Modules</a></h2><ul class="item-table"><li><div class="item-name"><a class="mod" href="prelude/index.html" title="mod bevy_reflect::prelude">prelude</a></div></li><li><div class="item-name"><a class="mod" href="serde/index.html" title="mod bevy_reflect::serde">serde</a></div></li><li><div class="item-name"><a class="mod" href="std_traits/index.html" title="mod bevy_reflect::std_traits">std_traits</a></div></li><li><div class="item-name"><a class="mod" href="utility/index.html" title="mod bevy_reflect::utility">utility</a></div><div class="desc docblock-short">Helpers for working with Bevy reflection.</div></li></ul><h2 id="macros" class="small-section-header"><a href="#macros">Macros</a></h2><ul class="item-table"><li><div class="item-name"><a class="macro" href="macro.impl_from_reflect_value.html" title="macro bevy_reflect::impl_from_reflect_value">impl_from_reflect_value</a></div><div class="desc docblock-short">A macro used to generate a <code>FromReflect</code> trait implementation for the given type.</div></li><li><div class="item-name"><a class="macro" href="macro.impl_reflect_struct.html" title="macro bevy_reflect::impl_reflect_struct">impl_reflect_struct</a></div><div class="desc docblock-short">A replacement for <code>#[derive(Reflect)]</code> to be used with foreign types which
+the definitions of cannot be altered.</div></li><li><div class="item-name"><a class="macro" href="macro.impl_reflect_value.html" title="macro bevy_reflect::impl_reflect_value">impl_reflect_value</a></div><div class="desc docblock-short">A macro used to generate reflection trait implementations for the given type.</div></li><li><div class="item-name"><a class="macro" href="macro.impl_type_path.html" title="macro bevy_reflect::impl_type_path">impl_type_path</a></div><div class="desc docblock-short">A replacement for <a href="derive.TypePath.html" title="derive bevy_reflect::TypePath">deriving <code>TypePath</code></a> for use on foreign types.</div></li><li><div class="item-name"><a class="macro" href="macro.impl_type_uuid.html" title="macro bevy_reflect::impl_type_uuid">impl_type_uuid</a></div><div class="desc docblock-short">Derives <code>TypeUuid</code> for the given type. This is used internally to implement <code>TypeUuid</code> on foreign types, such as those in the std. This macro should be used in the format of <code>&lt;[Generic Params]&gt; [Type (Path)], [Uuid (String Literal)]</code>.</div></li></ul><h2 id="structs" class="small-section-header"><a href="#structs">Structs</a></h2><ul class="item-table"><li><div class="item-name"><a class="struct" href="struct.ArrayInfo.html" title="struct bevy_reflect::ArrayInfo">ArrayInfo</a></div><div class="desc docblock-short">A container for compile-time array info.</div></li><li><div class="item-name"><a class="struct" href="struct.ArrayIter.html" title="struct bevy_reflect::ArrayIter">ArrayIter</a></div><div class="desc docblock-short">An iterator over an <a href="trait.Array.html" title="trait bevy_reflect::Array"><code>Array</code></a>.</div></li><li><div class="item-name"><a class="struct" href="struct.DynamicArray.html" title="struct bevy_reflect::DynamicArray">DynamicArray</a></div><div class="desc docblock-short">A fixed-size list of reflected values.</div></li><li><div class="item-name"><a class="struct" href="struct.DynamicEnum.html" title="struct bevy_reflect::DynamicEnum">DynamicEnum</a></div><div class="desc docblock-short">A dynamic representation of an enum.</div></li><li><div class="item-name"><a class="struct" href="struct.DynamicList.html" title="struct bevy_reflect::DynamicList">DynamicList</a></div><div class="desc docblock-short">A list of reflected values.</div></li><li><div class="item-name"><a class="struct" href="struct.DynamicMap.html" title="struct bevy_reflect::DynamicMap">DynamicMap</a></div><div class="desc docblock-short">An ordered mapping between reflected values.</div></li><li><div class="item-name"><a class="struct" href="struct.DynamicStruct.html" title="struct bevy_reflect::DynamicStruct">DynamicStruct</a></div><div class="desc docblock-short">A struct type which allows fields to be added at runtime.</div></li><li><div class="item-name"><a class="struct" href="struct.DynamicTuple.html" title="struct bevy_reflect::DynamicTuple">DynamicTuple</a></div><div class="desc docblock-short">A tuple which allows fields to be added at runtime.</div></li><li><div class="item-name"><a class="struct" href="struct.DynamicTupleStruct.html" title="struct bevy_reflect::DynamicTupleStruct">DynamicTupleStruct</a></div><div class="desc docblock-short">A tuple struct which allows fields to be added at runtime.</div></li><li><div class="item-name"><a class="struct" href="struct.EnumInfo.html" title="struct bevy_reflect::EnumInfo">EnumInfo</a></div><div class="desc docblock-short">A container for compile-time enum info, used by <a href="enum.TypeInfo.html" title="enum bevy_reflect::TypeInfo"><code>TypeInfo</code></a>.</div></li><li><div class="item-name"><a class="struct" href="struct.FieldIter.html" title="struct bevy_reflect::FieldIter">FieldIter</a></div><div class="desc docblock-short">An iterator over the field values of a struct.</div></li><li><div class="item-name"><a class="struct" href="struct.ListInfo.html" title="struct bevy_reflect::ListInfo">ListInfo</a></div><div class="desc docblock-short">A container for compile-time list info.</div></li><li><div class="item-name"><a class="struct" href="struct.ListIter.html" title="struct bevy_reflect::ListIter">ListIter</a></div><div class="desc docblock-short">An iterator over an <a href="trait.List.html" title="trait bevy_reflect::List"><code>List</code></a>.</div></li><li><div class="item-name"><a class="struct" href="struct.MapInfo.html" title="struct bevy_reflect::MapInfo">MapInfo</a></div><div class="desc docblock-short">A container for compile-time map info.</div></li><li><div class="item-name"><a class="struct" href="struct.MapIter.html" title="struct bevy_reflect::MapIter">MapIter</a></div><div class="desc docblock-short">An iterator over the key-value pairs of a <a href="trait.Map.html" title="trait bevy_reflect::Map"><code>Map</code></a>.</div></li><li><div class="item-name"><a class="struct" href="struct.NamedField.html" title="struct bevy_reflect::NamedField">NamedField</a></div><div class="desc docblock-short">The named field of a reflected struct.</div></li><li><div class="item-name"><a class="struct" href="struct.ParsedPath.html" title="struct bevy_reflect::ParsedPath">ParsedPath</a></div><div class="desc docblock-short">A pre-parsed path to an element within a type.</div></li><li><div class="item-name"><a class="struct" href="struct.ReflectDeserialize.html" title="struct bevy_reflect::ReflectDeserialize">ReflectDeserialize</a></div><div class="desc docblock-short">A struct used to deserialize reflected instances of a type.</div></li><li><div class="item-name"><a class="struct" href="struct.ReflectFromPtr.html" title="struct bevy_reflect::ReflectFromPtr">ReflectFromPtr</a></div><div class="desc docblock-short"><a href="trait.Reflect.html" title="trait bevy_reflect::Reflect"><code>Reflect</code></a> values are commonly used in situations where the actual types of values
+are not known at runtime. In such situations you might have access to a <code>*const ()</code> pointer
+that you know implements <a href="trait.Reflect.html" title="trait bevy_reflect::Reflect"><code>Reflect</code></a>, but have no way of turning it into a <code>&amp;dyn Reflect</code>.</div></li><li><div class="item-name"><a class="struct" href="struct.ReflectFromReflect.html" title="struct bevy_reflect::ReflectFromReflect">ReflectFromReflect</a></div><div class="desc docblock-short">Type data that represents the <a href="trait.FromReflect.html" title="trait bevy_reflect::FromReflect"><code>FromReflect</code></a> trait and allows it to be used dynamically.</div></li><li><div class="item-name"><a class="struct" href="struct.ReflectSerialize.html" title="struct bevy_reflect::ReflectSerialize">ReflectSerialize</a></div><div class="desc docblock-short">A struct used to serialize reflected instances of a type.</div></li><li><div class="item-name"><a class="struct" href="struct.StructInfo.html" title="struct bevy_reflect::StructInfo">StructInfo</a></div><div class="desc docblock-short">A container for compile-time named struct info.</div></li><li><div class="item-name"><a class="struct" href="struct.StructVariantInfo.html" title="struct bevy_reflect::StructVariantInfo">StructVariantInfo</a></div><div class="desc docblock-short">Type info for struct variants.</div></li><li><div class="item-name"><a class="struct" href="struct.TupleFieldIter.html" title="struct bevy_reflect::TupleFieldIter">TupleFieldIter</a></div><div class="desc docblock-short">An iterator over the field values of a tuple.</div></li><li><div class="item-name"><a class="struct" href="struct.TupleInfo.html" title="struct bevy_reflect::TupleInfo">TupleInfo</a></div><div class="desc docblock-short">A container for compile-time tuple info.</div></li><li><div class="item-name"><a class="struct" href="struct.TupleStructFieldIter.html" title="struct bevy_reflect::TupleStructFieldIter">TupleStructFieldIter</a></div><div class="desc docblock-short">An iterator over the field values of a tuple struct.</div></li><li><div class="item-name"><a class="struct" href="struct.TupleStructInfo.html" title="struct bevy_reflect::TupleStructInfo">TupleStructInfo</a></div><div class="desc docblock-short">A container for compile-time tuple struct info.</div></li><li><div class="item-name"><a class="struct" href="struct.TupleVariantInfo.html" title="struct bevy_reflect::TupleVariantInfo">TupleVariantInfo</a></div><div class="desc docblock-short">Type info for tuple variants.</div></li><li><div class="item-name"><a class="struct" href="struct.TypeRegistration.html" title="struct bevy_reflect::TypeRegistration">TypeRegistration</a></div><div class="desc docblock-short">Runtime storage for type metadata, registered into the <a href="struct.TypeRegistry.html" title="struct bevy_reflect::TypeRegistry"><code>TypeRegistry</code></a>.</div></li><li><div class="item-name"><a class="struct" href="struct.TypeRegistry.html" title="struct bevy_reflect::TypeRegistry">TypeRegistry</a></div><div class="desc docblock-short">A registry of <a href="index.html" title="mod bevy_reflect">reflected</a> types.</div></li><li><div class="item-name"><a class="struct" href="struct.TypeRegistryArc.html" title="struct bevy_reflect::TypeRegistryArc">TypeRegistryArc</a></div><div class="desc docblock-short">A synchronized wrapper around a <a href="struct.TypeRegistry.html" title="struct bevy_reflect::TypeRegistry"><code>TypeRegistry</code></a>.</div></li><li><div class="item-name"><a class="struct" href="struct.UnitVariantInfo.html" title="struct bevy_reflect::UnitVariantInfo">UnitVariantInfo</a></div><div class="desc docblock-short">Type info for unit variants.</div></li><li><div class="item-name"><a class="struct" href="struct.UnnamedField.html" title="struct bevy_reflect::UnnamedField">UnnamedField</a></div><div class="desc docblock-short">The unnamed field of a reflected tuple or tuple struct.</div></li><li><div class="item-name"><a class="struct" href="struct.Uuid.html" title="struct bevy_reflect::Uuid">Uuid</a></div><div class="desc docblock-short">A Universally Unique Identifier (UUID).</div></li><li><div class="item-name"><a class="struct" href="struct.ValueInfo.html" title="struct bevy_reflect::ValueInfo">ValueInfo</a></div><div class="desc docblock-short">A container for compile-time info related to general value types, including primitives.</div></li><li><div class="item-name"><a class="struct" href="struct.VariantFieldIter.html" title="struct bevy_reflect::VariantFieldIter">VariantFieldIter</a></div><div class="desc docblock-short">An iterator over the fields in the current enum variant.</div></li></ul><h2 id="enums" class="small-section-header"><a href="#enums">Enums</a></h2><ul class="item-table"><li><div class="item-name"><a class="enum" href="enum.DynamicVariant.html" title="enum bevy_reflect::DynamicVariant">DynamicVariant</a></div><div class="desc docblock-short">A dynamic representation of an enum variant.</div></li><li><div class="item-name"><a class="enum" href="enum.ReflectMut.html" title="enum bevy_reflect::ReflectMut">ReflectMut</a></div><div class="desc docblock-short">A mutable enumeration of “kinds” of reflected type.</div></li><li><div class="item-name"><a class="enum" href="enum.ReflectOwned.html" title="enum bevy_reflect::ReflectOwned">ReflectOwned</a></div><div class="desc docblock-short">An owned enumeration of “kinds” of reflected type.</div></li><li><div class="item-name"><a class="enum" href="enum.ReflectPathError.html" title="enum bevy_reflect::ReflectPathError">ReflectPathError</a></div><div class="desc docblock-short">An error returned from a failed path string query.</div></li><li><div class="item-name"><a class="enum" href="enum.ReflectRef.html" title="enum bevy_reflect::ReflectRef">ReflectRef</a></div><div class="desc docblock-short">An immutable enumeration of “kinds” of reflected type.</div></li><li><div class="item-name"><a class="enum" href="enum.TypeInfo.html" title="enum bevy_reflect::TypeInfo">TypeInfo</a></div><div class="desc docblock-short">Compile-time type information for various reflected types.</div></li><li><div class="item-name"><a class="enum" href="enum.VariantField.html" title="enum bevy_reflect::VariantField">VariantField</a></div></li><li><div class="item-name"><a class="enum" href="enum.VariantInfo.html" title="enum bevy_reflect::VariantInfo">VariantInfo</a></div><div class="desc docblock-short">A container for compile-time enum variant info.</div></li><li><div class="item-name"><a class="enum" href="enum.VariantType.html" title="enum bevy_reflect::VariantType">VariantType</a></div><div class="desc docblock-short">Describes the form of an enum variant.</div></li></ul><h2 id="traits" class="small-section-header"><a href="#traits">Traits</a></h2><ul class="item-table"><li><div class="item-name"><a class="trait" href="trait.Array.html" title="trait bevy_reflect::Array">Array</a></div><div class="desc docblock-short">A trait used to power <a href="https://doc.rust-lang.org/book/ch03-02-data-types.html#the-array-type">array-like</a> operations via <a href="index.html" title="mod bevy_reflect">reflection</a>.</div></li><li><div class="item-name"><a class="trait" href="trait.DynamicTypePath.html" title="trait bevy_reflect::DynamicTypePath">DynamicTypePath</a></div><div class="desc docblock-short">Dynamic dispatch for <a href="trait.TypePath.html" title="trait bevy_reflect::TypePath"><code>TypePath</code></a>.</div></li><li><div class="item-name"><a class="trait" href="trait.Enum.html" title="trait bevy_reflect::Enum">Enum</a></div><div class="desc docblock-short">A trait used to power <a href="https://doc.rust-lang.org/book/ch06-01-defining-an-enum.html">enum-like</a> operations via <a href="index.html" title="mod bevy_reflect">reflection</a>.</div></li><li><div class="item-name"><a class="trait" href="trait.FromReflect.html" title="trait bevy_reflect::FromReflect">FromReflect</a></div><div class="desc docblock-short">A trait that enables types to be dynamically constructed from reflected data.</div></li><li><div class="item-name"><a class="trait" href="trait.FromType.html" title="trait bevy_reflect::FromType">FromType</a></div><div class="desc docblock-short">Trait used to generate <a href="trait.TypeData.html" title="trait bevy_reflect::TypeData"><code>TypeData</code></a> for trait reflection.</div></li><li><div class="item-name"><a class="trait" href="trait.GetField.html" title="trait bevy_reflect::GetField">GetField</a></div><div class="desc docblock-short">A convenience trait which combines fetching and downcasting of struct
+fields.</div></li><li><div class="item-name"><a class="trait" href="trait.GetPath.html" title="trait bevy_reflect::GetPath">GetPath</a></div><div class="desc docblock-short">A trait which allows nested <a href="trait.Reflect.html" title="trait bevy_reflect::Reflect"><code>Reflect</code></a> values to be retrieved with path strings.</div></li><li><div class="item-name"><a class="trait" href="trait.GetTupleField.html" title="trait bevy_reflect::GetTupleField">GetTupleField</a></div><div class="desc docblock-short">A convenience trait which combines fetching and downcasting of tuple
+fields.</div></li><li><div class="item-name"><a class="trait" href="trait.GetTupleStructField.html" title="trait bevy_reflect::GetTupleStructField">GetTupleStructField</a></div><div class="desc docblock-short">A convenience trait which combines fetching and downcasting of tuple
+struct fields.</div></li><li><div class="item-name"><a class="trait" href="trait.GetTypeRegistration.html" title="trait bevy_reflect::GetTypeRegistration">GetTypeRegistration</a></div><div class="desc docblock-short">A trait which allows a type to generate its <a href="struct.TypeRegistration.html" title="struct bevy_reflect::TypeRegistration"><code>TypeRegistration</code></a>
+for registration into the <a href="struct.TypeRegistry.html" title="struct bevy_reflect::TypeRegistry"><code>TypeRegistry</code></a>.</div></li><li><div class="item-name"><a class="trait" href="trait.List.html" title="trait bevy_reflect::List">List</a></div><div class="desc docblock-short">A trait used to power <a href="https://doc.rust-lang.org/book/ch08-01-vectors.html">list-like</a> operations via <a href="index.html" title="mod bevy_reflect">reflection</a>.</div></li><li><div class="item-name"><a class="trait" href="trait.Map.html" title="trait bevy_reflect::Map">Map</a></div><div class="desc docblock-short">A trait used to power <a href="https://doc.rust-lang.org/book/ch08-03-hash-maps.html">map-like</a> operations via <a href="index.html" title="mod bevy_reflect">reflection</a>.</div></li><li><div class="item-name"><a class="trait" href="trait.Reflect.html" title="trait bevy_reflect::Reflect">Reflect</a></div><div class="desc docblock-short">The core trait of <a href="index.html" title="mod bevy_reflect"><code>bevy_reflect</code></a>, used for accessing and modifying data dynamically.</div></li><li><div class="item-name"><a class="trait" href="trait.Struct.html" title="trait bevy_reflect::Struct">Struct</a></div><div class="desc docblock-short">A trait used to power <a href="https://doc.rust-lang.org/book/ch05-01-defining-structs.html">struct-like</a> operations via <a href="index.html" title="mod bevy_reflect">reflection</a>.</div></li><li><div class="item-name"><a class="trait" href="trait.Tuple.html" title="trait bevy_reflect::Tuple">Tuple</a></div><div class="desc docblock-short">A trait used to power <a href="https://doc.rust-lang.org/book/ch03-02-data-types.html#the-tuple-type">tuple-like</a> operations via <a href="index.html" title="mod bevy_reflect">reflection</a>.</div></li><li><div class="item-name"><a class="trait" href="trait.TupleStruct.html" title="trait bevy_reflect::TupleStruct">TupleStruct</a></div><div class="desc docblock-short">A trait used to power <a href="https://doc.rust-lang.org/book/ch05-01-defining-structs.html#using-tuple-structs-without-named-fields-to-create-different-types">tuple struct-like</a> operations via <a href="index.html" title="mod bevy_reflect">reflection</a>.</div></li><li><div class="item-name"><a class="trait" href="trait.TypeData.html" title="trait bevy_reflect::TypeData">TypeData</a></div><div class="desc docblock-short">A trait used to type-erase type metadata.</div></li><li><div class="item-name"><a class="trait" href="trait.TypePath.html" title="trait bevy_reflect::TypePath">TypePath</a></div><div class="desc docblock-short">A static accessor to type paths and names.</div></li><li><div class="item-name"><a class="trait" href="trait.TypeUuid.html" title="trait bevy_reflect::TypeUuid">TypeUuid</a></div><div class="desc docblock-short">A trait for types with a statically associated UUID.</div></li><li><div class="item-name"><a class="trait" href="trait.TypeUuidDynamic.html" title="trait bevy_reflect::TypeUuidDynamic">TypeUuidDynamic</a></div><div class="desc docblock-short">A trait for types with an associated UUID.</div></li><li><div class="item-name"><a class="trait" href="trait.Typed.html" title="trait bevy_reflect::Typed">Typed</a></div><div class="desc docblock-short">A static accessor to compile-time type information.</div></li></ul><h2 id="functions" class="small-section-header"><a href="#functions">Functions</a></h2><ul class="item-table"><li><div class="item-name"><a class="fn" href="fn.array_apply.html" title="fn bevy_reflect::array_apply">array_apply</a></div><div class="desc docblock-short">Applies the reflected <a href="trait.Array.html" title="trait bevy_reflect::Array">array</a> data to the given <a href="trait.Array.html" title="trait bevy_reflect::Array">array</a>.</div></li><li><div class="item-name"><a class="fn" href="fn.array_debug.html" title="fn bevy_reflect::array_debug">array_debug</a></div><div class="desc docblock-short">The default debug formatter for <a href="trait.Array.html" title="trait bevy_reflect::Array"><code>Array</code></a> types.</div></li><li><div class="item-name"><a class="fn" href="fn.array_hash.html" title="fn bevy_reflect::array_hash">array_hash</a></div><div class="desc docblock-short">Returns the <code>u64</code> hash of the given <a href="trait.Array.html" title="trait bevy_reflect::Array">array</a>.</div></li><li><div class="item-name"><a class="fn" href="fn.array_partial_eq.html" title="fn bevy_reflect::array_partial_eq">array_partial_eq</a></div><div class="desc docblock-short">Compares two <a href="trait.Array.html" title="trait bevy_reflect::Array">arrays</a> (one concrete and one reflected) to see if they
+are equal.</div></li><li><div class="item-name"><a class="fn" href="fn.enum_debug.html" title="fn bevy_reflect::enum_debug">enum_debug</a></div><div class="desc docblock-short">The default debug formatter for <a href="trait.Enum.html" title="trait bevy_reflect::Enum"><code>Enum</code></a> types.</div></li><li><div class="item-name"><a class="fn" href="fn.enum_hash.html" title="fn bevy_reflect::enum_hash">enum_hash</a></div><div class="desc docblock-short">Returns the <code>u64</code> hash of the given <a href="trait.Enum.html" title="trait bevy_reflect::Enum">enum</a>.</div></li><li><div class="item-name"><a class="fn" href="fn.enum_partial_eq.html" title="fn bevy_reflect::enum_partial_eq">enum_partial_eq</a></div><div class="desc docblock-short">Compares an <a href="trait.Enum.html" title="trait bevy_reflect::Enum"><code>Enum</code></a> with a <a href="trait.Reflect.html" title="trait bevy_reflect::Reflect"><code>Reflect</code></a> value.</div></li><li><div class="item-name"><a class="fn" href="fn.list_apply.html" title="fn bevy_reflect::list_apply">list_apply</a></div><div class="desc docblock-short">Applies the elements of <code>b</code> to the corresponding elements of <code>a</code>.</div></li><li><div class="item-name"><a class="fn" href="fn.list_debug.html" title="fn bevy_reflect::list_debug">list_debug</a></div><div class="desc docblock-short">The default debug formatter for <a href="trait.List.html" title="trait bevy_reflect::List"><code>List</code></a> types.</div></li><li><div class="item-name"><a class="fn" href="fn.list_hash.html" title="fn bevy_reflect::list_hash">list_hash</a></div><div class="desc docblock-short">Returns the <code>u64</code> hash of the given <a href="trait.List.html" title="trait bevy_reflect::List">list</a>.</div></li><li><div class="item-name"><a class="fn" href="fn.list_partial_eq.html" title="fn bevy_reflect::list_partial_eq">list_partial_eq</a></div><div class="desc docblock-short">Compares a <a href="trait.List.html" title="trait bevy_reflect::List"><code>List</code></a> with a <a href="trait.Reflect.html" title="trait bevy_reflect::Reflect"><code>Reflect</code></a> value.</div></li><li><div class="item-name"><a class="fn" href="fn.map_apply.html" title="fn bevy_reflect::map_apply">map_apply</a></div><div class="desc docblock-short">Applies the elements of reflected map <code>b</code> to the corresponding elements of map <code>a</code>.</div></li><li><div class="item-name"><a class="fn" href="fn.map_debug.html" title="fn bevy_reflect::map_debug">map_debug</a></div><div class="desc docblock-short">The default debug formatter for <a href="trait.Map.html" title="trait bevy_reflect::Map"><code>Map</code></a> types.</div></li><li><div class="item-name"><a class="fn" href="fn.map_partial_eq.html" title="fn bevy_reflect::map_partial_eq">map_partial_eq</a></div><div class="desc docblock-short">Compares a <a href="trait.Map.html" title="trait bevy_reflect::Map"><code>Map</code></a> with a <a href="trait.Reflect.html" title="trait bevy_reflect::Reflect"><code>Reflect</code></a> value.</div></li><li><div class="item-name"><a class="fn" href="fn.struct_debug.html" title="fn bevy_reflect::struct_debug">struct_debug</a></div><div class="desc docblock-short">The default debug formatter for <a href="trait.Struct.html" title="trait bevy_reflect::Struct"><code>Struct</code></a> types.</div></li><li><div class="item-name"><a class="fn" href="fn.struct_partial_eq.html" title="fn bevy_reflect::struct_partial_eq">struct_partial_eq</a></div><div class="desc docblock-short">Compares a <a href="trait.Struct.html" title="trait bevy_reflect::Struct"><code>Struct</code></a> with a <a href="trait.Reflect.html" title="trait bevy_reflect::Reflect"><code>Reflect</code></a> value.</div></li><li><div class="item-name"><a class="fn" href="fn.tuple_apply.html" title="fn bevy_reflect::tuple_apply">tuple_apply</a></div><div class="desc docblock-short">Applies the elements of <code>b</code> to the corresponding elements of <code>a</code>.</div></li><li><div class="item-name"><a class="fn" href="fn.tuple_debug.html" title="fn bevy_reflect::tuple_debug">tuple_debug</a></div><div class="desc docblock-short">The default debug formatter for <a href="trait.Tuple.html" title="trait bevy_reflect::Tuple"><code>Tuple</code></a> types.</div></li><li><div class="item-name"><a class="fn" href="fn.tuple_partial_eq.html" title="fn bevy_reflect::tuple_partial_eq">tuple_partial_eq</a></div><div class="desc docblock-short">Compares a <a href="trait.Tuple.html" title="trait bevy_reflect::Tuple"><code>Tuple</code></a> with a <a href="trait.Reflect.html" title="trait bevy_reflect::Reflect"><code>Reflect</code></a> value.</div></li><li><div class="item-name"><a class="fn" href="fn.tuple_struct_debug.html" title="fn bevy_reflect::tuple_struct_debug">tuple_struct_debug</a></div><div class="desc docblock-short">The default debug formatter for <a href="trait.TupleStruct.html" title="trait bevy_reflect::TupleStruct"><code>TupleStruct</code></a> types.</div></li><li><div class="item-name"><a class="fn" href="fn.tuple_struct_partial_eq.html" title="fn bevy_reflect::tuple_struct_partial_eq">tuple_struct_partial_eq</a></div><div class="desc docblock-short">Compares a <a href="trait.TupleStruct.html" title="trait bevy_reflect::TupleStruct"><code>TupleStruct</code></a> with a <a href="trait.Reflect.html" title="trait bevy_reflect::Reflect"><code>Reflect</code></a> value.</div></li></ul><h2 id="attributes" class="small-section-header"><a href="#attributes">Attribute Macros</a></h2><ul class="item-table"><li><div class="item-name"><a class="attr" href="attr.reflect_trait.html" title="attr bevy_reflect::reflect_trait">reflect_trait</a></div><div class="desc docblock-short">A macro that automatically generates type data for traits, which their implementors can then register.</div></li></ul><h2 id="derives" class="small-section-header"><a href="#derives">Derive Macros</a></h2><ul class="item-table"><li><div class="item-name"><a class="derive" href="derive.FromReflect.html" title="derive bevy_reflect::FromReflect">FromReflect</a></div><div class="desc docblock-short">Derives the <code>FromReflect</code> trait.</div></li><li><div class="item-name"><a class="derive" href="derive.Reflect.html" title="derive bevy_reflect::Reflect">Reflect</a></div><div class="desc docblock-short">The main derive macro used by <code>bevy_reflect</code> for deriving its <code>Reflect</code> trait.</div></li><li><div class="item-name"><a class="derive" href="derive.TypePath.html" title="derive bevy_reflect::TypePath">TypePath</a></div><div class="desc docblock-short">Derives the <code>TypePath</code> trait, providing a stable alternative to [<code>std::any::type_name</code>].</div></li><li><div class="item-name"><a class="derive" href="derive.TypeUuid.html" title="derive bevy_reflect::TypeUuid">TypeUuid</a></div></li></ul></section></div></main></body></html>

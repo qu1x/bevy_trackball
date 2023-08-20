@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["Root"],"struct":["Global","GlobalReport","Hub","HubReport","Hubs","IdentityManager","IdentityManagerFactory","Registry","Storage","StorageReport"],"trait":["Access","GlobalIdentityHandlerFactory","HalApi","IdentityHandler","IdentityHandlerFactory","Resource"],"type":["Input"]};

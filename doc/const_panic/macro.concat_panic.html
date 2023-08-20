@@ -1,0 +1,234 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Panics with the concanenation of the arguments."><title>concat_panic in const_panic - Rust</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../static.files/rustdoc-f3501f0f5ae15dfb.css" id="mainThemeStyle"><div id="rustdoc-vars" data-root-path="../" data-static-root-path="../static.files/" data-current-crate="const_panic" data-themes="" data-resource-suffix="" data-rustdoc-version="1.71.1 (eb26296b5 2023-08-03)" data-search-js="search-4926e5fc22a5646a.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-0f8c037637f9eb3e.css" data-theme-dark-css="dark-1097f8e92a01e3cf.css" data-theme-ayu-css="ayu-614652228113ac93.css" ></div><script src="../static.files/storage-62ce34ea385b278a.js"></script><script defer src="sidebar-items.js"></script><script defer src="../static.files/main-f0540c1d82cde29b.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../static.files/light-0f8c037637f9eb3e.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../static.files/dark-1097f8e92a01e3cf.css"><link rel="stylesheet" href="../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc macro"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="logo-container" href="../const_panic/index.html"><img class="rust-logo" src="../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><h2></h2></nav><nav class="sidebar"><a class="logo-container" href="../const_panic/index.html"><img class="rust-logo" src="../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><div class="sidebar-elems"><h2><a href="index.html">In const_panic</a></h2></div></nav><main><div class="width-limiter"><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="main-heading"><h1>Macro <a href="index.html">const_panic</a>::<wbr><a class="macro" href="#">concat_panic</a><button id="copy-path" title="Copy item path to clipboard"><img src="../static.files/clipboard-7571035ce49a181d.svg" width="19" height="18" alt="Copy item path"></button></h1><span class="out-of-band"><a class="srclink" href="../src/const_panic/macros.rs.html#357-365">source</a> · <button id="toggle-all-docs" title="collapse all docs">[<span>&#x2212;</span>]</button></span></div><pre class="rust item-decl"><span class="macro">macro_rules! </span>concat_panic {
+    ($(<span class="macro-nonterminal">$args</span>:tt)<span class="kw-2">*</span>) =&gt; { ... };
+}</pre><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Panics with the concanenation of the arguments.</p>
+<p><a href="#examples"><strong>Examples below</strong></a></p>
+<h2 id="syntax"><a href="#syntax">Syntax</a></h2>
+<p>This macro uses this syntax:</p>
+<div class="example-wrap"><pre class="language-text"><code>concat_panic!(
+    $($fmtarg:expr;)?
+    $(
+        $( $format_override:tt: )? $arg_to_fmt:expr
+    ),*
+    $(,)?
+)
+</code></pre></div>
+<p><code>$fmtarg</code> is an optional <a href="fmt/struct.FmtArg.html" title="struct const_panic::fmt::FmtArg"><code>FmtArg</code></a> argument
+which defaults to <code>FmtArg::DEBUG</code>,
+determining how non-literal <code>$arg_to_fmt</code> arguments are formatted.</p>
+<p><a href="#formatting-overrides"><code>$format_override</code></a> overrides the <code>$fmtarg</code> argument,
+changing how that <code>$arg_to_fmt</code> argument is formatted.</p>
+<h2 id="formatting"><a href="#formatting">Formatting</a></h2>
+<p>Literals are Display formatted by default, so that you can pass string literals 
+without worrying about what the current formatting settings are.</p>
+<p>Expressions are formatted as determined by the <code>$fmtarg</code> argument.</p>
+<p>Note that literals inside parentheses (eg: <code>(100)</code>) are considered expressions
+by this macro.</p>
+<h4 id="formatting-overrides"><a href="#formatting-overrides">Formatting overrides</a></h4>
+<p>You can override how an argument is formatted by prefixing the argument expression with 
+any of the options below:</p>
+<ul>
+<li><code>debug:</code> or <code>{?}:</code>: <code>Debug</code> formats the argument.</li>
+<li><code>alt_debug:</code> or <code>{#?}:</code>: alternate-<code>Debug</code> formats the argument.</li>
+<li><code>display:</code> or <code>{}:</code>: <code>Display</code> formats the argument.</li>
+<li><code>alt_display:</code> or <code>{#}:</code>: alternate-<code>Display</code> formats the argument.</li>
+<li><code>bin:</code> or <code>{b}:</code>: <code>Debug</code> formats the argument, with binary-formatted numbers.</li>
+<li><code>alt_bin:</code> or <code>{#b}:</code>:
+alternate-<code>Debug</code> formats the argument, with binary-formatted numbers.</li>
+<li><code>hex:</code> or <code>{X}:</code>:
+<code>Debug</code> formats the argument, with hexadecimal-formatted numbers.</li>
+<li><code>alt_hex:</code> or <code>{#X}:</code>:
+alternate-<code>Debug</code> formats the argument, with hexadecimal-formatted numbers.</li>
+</ul>
+<h4 id="string-formatting"><a href="#string-formatting">String formatting</a></h4>
+<p>String expressions are debug-formatted like this:</p>
+<ul>
+<li>Prepending and appending the double quote character (<code>&quot;</code>).</li>
+<li>Escaping the <code>'\t'</code>,<code>'\n'</code>,<code>'\r'</code>,<code>'\\'</code>, <code>'\''</code>, and<code>'\&quot;'</code> characters.</li>
+<li>Escaping control characters with <code>\xYY</code>, 
+where <code>YY</code> is the hexadecimal value of the control character.</li>
+</ul>
+<h2 id="limitations"><a href="#limitations">Limitations</a></h2>
+<p>Arguments to the formatting/panicking macros must have a fully inferred concrete type, 
+because <code>const_panic</code> macros use duck typing to call methods on those arguments.</p>
+<p>One effect of that limitation is that you will have to pass suffixed 
+integer literals (eg: <code>100u8</code>) when those integers aren’t inferred to be a concrete type.</p>
+<h2 id="examples"><a href="#examples">Examples</a></h2><h4 id="odd-type"><a href="#odd-type"><code>Odd</code>-type</a></h4>
+<div class="example-wrap compile_fail"><a href="#" class="tooltip" title="This example deliberately fails to compile">ⓘ</a><pre class="rust rust-example-rendered"><code><span class="kw">use </span>const_panic::concat_panic;
+
+<span class="kw">use </span>odd::Odd;
+
+<span class="kw">const _</span>: Odd = <span class="kw">match </span>Odd::new(<span class="number">3 </span>* <span class="number">4</span>) {
+    <span class="prelude-val">Ok</span>(x) =&gt; x,
+    <span class="prelude-val">Err</span>(x) =&gt; <span class="macro">concat_panic!</span>(<span class="string">&quot;\nexpected odd number, got `&quot;</span>, x, <span class="string">&quot;`&quot;</span>),
+};
+
+<span class="kw">mod </span>odd {
+    <span class="kw">pub struct </span>Odd(u32);
+
+    <span class="kw">impl </span>Odd {
+        <span class="kw">pub const fn </span>new(n: u32) -&gt; <span class="prelude-ty">Result</span>&lt;Odd, Even&gt; {
+            <span class="kw">if </span>n % <span class="number">2 </span>== <span class="number">1 </span>{
+                <span class="prelude-val">Ok</span>(Odd(n))
+            } <span class="kw">else </span>{
+                <span class="prelude-val">Err</span>(Even(n))
+            }
+        }
+    }
+
+    <span class="attr">#[derive(const_panic::PanicFmt))]
+    </span><span class="kw">pub struct </span>Even(u32);
+}
+</code></pre></div>
+<p>produces this compile-time error:</p>
+<div class="example-wrap"><pre class="language-text"><code>error[E0080]: evaluation of constant value failed
+  --&gt; src/macros.rs:188:15
+   |
+10 |     Err(x) =&gt; concat_panic!(&quot;\nexpected odd number, got `&quot;, x, &quot;`&quot;),
+   |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the evaluated program panicked at &#39;
+expected odd number, got `12`&#39;, src/macros.rs:10:15
+   |
+   = note: this error originates in the macro `concat_panic` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+</code></pre></div><h4 id="all-the-syntax"><a href="#all-the-syntax">All the syntax</a></h4>
+<p>This example demonstrates using all of the syntax of this macro.</p>
+
+<div class="example-wrap compile_fail"><a href="#" class="tooltip" title="This example deliberately fails to compile">ⓘ</a><pre class="rust rust-example-rendered"><code><span class="kw">use </span>const_panic::{FmtArg, concat_panic, fmt};
+
+<span class="kw">const _</span>: () = <span class="macro">concat_panic!</span>{
+    <span class="comment">// the optional `$fmtarg` parameter.
+    // If this argument isn&#39;t passed, it defaults to `FmtArg::DEBUG`
+    </span>FmtArg::ALT_DEBUG;
+
+    <span class="string">&quot;\n\nshowing off literals:\n&quot;</span>,
+    <span class="number">100u8</span>,
+    <span class="string">&quot;hello&quot;</span>,
+
+    <span class="string">&quot;\n\nnon-literals with formatting determined by the $fmtarg parameter:\n&quot;</span>,
+    <span class="comment">// this is considered a non-literal, because it&#39;s inside other tokens.
+    </span>(<span class="string">&quot;a non-literal&quot;</span>),
+    [<span class="number">100u8</span>, <span class="number">200</span>],
+
+    <span class="string">&quot;\n\nexplicitly debug formatted:\n&quot;</span>,
+    debug: <span class="string">&quot;foo&quot;</span>,
+    <span class="comment">// `{?}:` is The same as `debug:`
+    </span>{<span class="question-mark">?</span>}: <span class="string">&quot;bar&quot;</span>,
+
+    <span class="string">&quot;\n\nalternate debug formatted:\n&quot;</span>,
+    alt_debug: [<span class="string">&quot;foo&quot;</span>],
+    <span class="comment">// `{#?}:` is The same as `alt_debug:`
+    </span>{#<span class="question-mark">?</span>}: <span class="string">&quot;bar&quot;</span>,
+
+    <span class="string">&quot;\n\ndisplay formatted:\n&quot;</span>,
+    display: <span class="string">&quot;baz&quot;</span>,
+    <span class="comment">// `{}:` is The same as `display:`
+    </span>{}: [<span class="string">&quot;qux&quot;</span>, <span class="string">&quot;aaa&quot;</span>],
+
+    <span class="string">&quot;\n\nalternate display formatted:&quot;</span>,
+    alt_display: [<span class="string">&quot;bbb&quot;</span>, <span class="string">&quot;ccc&quot;</span>],
+    <span class="comment">// `{#}:` is The same as `alt_display:`
+    </span>{#}: [<span class="string">&quot;bbb&quot;</span>, <span class="string">&quot;ccc&quot;</span>],
+
+    <span class="string">&quot;\n\nbinary formatted:\n&quot;</span>,
+    bin: [<span class="number">3u8</span>, <span class="number">5</span>, <span class="number">8</span>, <span class="number">13</span>],
+    <span class="comment">// `{b}:` is The same as `bin:`
+    </span>{b}: [<span class="number">3u8</span>, <span class="number">5</span>, <span class="number">8</span>, <span class="number">13</span>],
+
+    <span class="string">&quot;\n\nalternate-binary formatted:\n&quot;</span>,
+    alt_bin: [<span class="number">21u8</span>, <span class="number">34</span>, <span class="number">55</span>, <span class="number">89</span>],
+    <span class="comment">// `{#b}:` is The same as `alt_bin:`
+    </span>{#b}: [<span class="number">21u8</span>, <span class="number">34</span>, <span class="number">55</span>, <span class="number">89</span>],
+
+    <span class="string">&quot;\n\nhexadecimal formatted:\n&quot;</span>,
+    hex: [<span class="number">3u8</span>, <span class="number">5</span>, <span class="number">8</span>, <span class="number">13</span>],
+    <span class="comment">// `{X}:` is The same as `hex:`
+    </span>{X}: [<span class="number">3u8</span>, <span class="number">5</span>, <span class="number">8</span>, <span class="number">13</span>],
+
+    <span class="string">&quot;\n\nalternate-hexadecimal formatted:\n&quot;</span>,
+    alt_hex: [<span class="number">21u8</span>, <span class="number">34</span>, <span class="number">55</span>, <span class="number">89</span>],
+    <span class="comment">// `{#X}:` is The same as `alt_hex:`
+    </span>{#X}: [<span class="number">21u8</span>, <span class="number">34</span>, <span class="number">55</span>, <span class="number">89</span>],
+
+    <span class="string">&quot;\n\n&quot;</span>,
+};
+</code></pre></div>
+<p>The above code produces this compile-time error:</p>
+<div class="example-wrap"><pre class="language-text"><code>error[E0080]: evaluation of constant value failed
+  --&gt; src/macros.rs:186:15
+   |
+6  |   const _: () = concat_panic!{
+   |  _______________^
+7  | |     // the optional `$fmtarg` parameter.
+8  | |     // If this argument isn&#39;t passed, it defaults to `FmtArg::DEBUG`
+9  | |     FmtArg::ALT_DEBUG;
+...  |
+60 | |     &quot;\n\n&quot;,
+61 | | };
+   | |_^ the evaluated program panicked at &#39;
+
+showing off literals:
+100hello
+
+non-literals with formatting determined by the $fmtarg parameter:
+&quot;a non-literal&quot;[
+    100,
+    200,
+]
+
+explicitly debug formatted:
+&quot;foo&quot;&quot;bar&quot;
+
+alternate debug formatted:
+[
+    &quot;foo&quot;,
+]&quot;bar&quot;
+
+display formatted:
+baz[qux, aaa]
+
+alternate display formatted:[
+    bbb,
+    ccc,
+][
+    bbb,
+    ccc,
+]
+
+binary formatted:
+[11, 101, 1000, 1101][11, 101, 1000, 1101]
+
+alternate-binary formatted:
+[
+    0b10101,
+    0b100010,
+    0b110111,
+    0b1011001,
+][
+    0b10101,
+    0b100010,
+    0b110111,
+    0b1011001,
+]
+
+hexadecimal formatted:
+[3, 5, 8, D][3, 5, 8, D]
+
+alternate-hexadecimal formatted:
+[
+    0x15,
+    0x22,
+    0x37,
+    0x59,
+][
+    0x15,
+    0x22,
+    0x37,
+    0x59,
+]
+
+&#39;, src/macros.rs:6:15
+   |
+   = note: this error originates in the macro `concat_panic` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: aborting due to previous error
+
+</code></pre></div></div></details></section></div></main></body></html>

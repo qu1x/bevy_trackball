@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["Capability","Error","ZeroInitializeWorkgroupMemoryMode"],"fn":["write_vec"],"struct":["BindingInfo","ImageTypeFlags","Options","PipelineOptions","Writer","WriterFlags"],"type":["BindingMap"]};

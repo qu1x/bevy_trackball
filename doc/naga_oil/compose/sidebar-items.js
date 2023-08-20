@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["ShaderDefValue","ShaderLanguage","ShaderType"],"fn":["get_preprocessor_data"],"mod":["error","preprocess"],"struct":["ComposableModule","ComposableModuleDefinition","ComposableModuleDescriptor","Composer","ImportDefWithOffset","ImportDefinition","NagaModuleDescriptor","OwnedShaderDefs"]};

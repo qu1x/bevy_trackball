@@ -1,0 +1,308 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Fixed-point numbers"><title>fixed - Rust</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../static.files/rustdoc-f3501f0f5ae15dfb.css" id="mainThemeStyle"><div id="rustdoc-vars" data-root-path="../" data-static-root-path="../static.files/" data-current-crate="fixed" data-themes="" data-resource-suffix="" data-rustdoc-version="1.71.1 (eb26296b5 2023-08-03)" data-search-js="search-4926e5fc22a5646a.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-0f8c037637f9eb3e.css" data-theme-dark-css="dark-1097f8e92a01e3cf.css" data-theme-ayu-css="ayu-614652228113ac93.css" ></div><script src="../static.files/storage-62ce34ea385b278a.js"></script><script defer src="../crates.js"></script><script defer src="../static.files/main-f0540c1d82cde29b.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../static.files/light-0f8c037637f9eb3e.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../static.files/dark-1097f8e92a01e3cf.css"><link rel="stylesheet" href="../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc mod crate"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="logo-container" href="../fixed/index.html"><img src="data:image/svg+xml;base64,
+PHN2ZyB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgMzMuODY3IDMzLjg2NyIgeG1s
+bnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48Y2xpcFBhdGggaWQ9ImIiPjxjaXJjbGUgY3g9IjE2LjkzMyIg
+Y3k9IjI4MC4wNyIgcj0iMTYuOTMzIiBmaWxsPSIjMDA3MmIyIi8+PC9jbGlwUGF0aD48Y2xpcFBhdGggaWQ9ImEiPjxjaXJjbGUg
+Y3g9IjE2LjkzMyIgY3k9IjI4MC4wNyIgcj0iMTYuOTMzIiBmaWxsPSIjMDA3MmIyIi8+PC9jbGlwUGF0aD48L2RlZnM+PGcgdHJh
+bnNmb3JtPSJ0cmFuc2xhdGUoMCAtMjYzLjEzKSI+PGNpcmNsZSBjeD0iMTYuOTMzIiBjeT0iMjgwLjA3IiByPSIxNi45MzMiIGZp
+bGw9IiNmN2YxYTEiLz48ZyBmaWxsPSIjMDA3MmIyIj48cGF0aCBkPSJtMTUuMzQ2IDI4My41MWgzLjE3NXMwIDAuNzkzNzYgMC41
+MjkxNyAxLjg1MjFoLTQuMjMzM2MwLjUyOTE2LTEuMDU4MyAwLjUyOTE2LTEuODUyMSAwLjUyOTE2LTEuODUyMXoiIHN0cm9rZS13
+aWR0aD0iLjUyOTE3Ii8+PHBhdGggZD0ibTM0LjExMiAyODUuNTRjMi4yODYgMCAzLjgxLTEuMjg2OSAzLjgxLTIuOTgwMyAwLTEu
+NDIyNC0wLjgyOTczLTIuMjUyMS0xLjg2MjctMi44MTA5di0wLjA2NzdjMC43NDUwNy0wLjQ5MTA3IDEuNDA1NS0xLjMyMDggMS40
+MDU1LTIuMzUzNyAwLTEuNzc4LTEuMzAzOS0yLjk0NjQtMy4yNjgxLTIuOTQ2NC0xLjk5ODEgMC0zLjQzNzUgMS4xMzQ1LTMuNDM3
+NSAyLjk2MzMgMCAxLjEzNDUgMC42MDk2IDEuOTEzNSAxLjQzOTMgMi41NHYwLjA2NzdjLTEuMDE2IDAuNTQxODctMS44Mjg4IDEu
+MzM3Ny0xLjgyODggMi42NDE2IDAgMS43NDQxIDEuNTkxNyAyLjk0NjQgMy43NDIzIDIuOTQ2NHptMC42NzczMy02LjQ2ODVjLTEu
+MTAwNy0wLjQyMzMzLTEuODQ1Ny0wLjg0NjY3LTEuODQ1Ny0xLjcyNzIgMC0wLjgyOTczIDAuNTQxODctMS4yMzYxIDEuMjAyMy0x
+LjIzNjEgMC44MTI4IDAgMS4zMDM5IDAuNTU4OCAxLjMwMzkgMS4zODg1IDAgMC41NTg4LTAuMjM3MDcgMS4wODM3LTAuNjYwNCAx
+LjU3NDh6bS0wLjYyNjUzIDQuNzQxM2MtMC44OTc0NiAwLTEuNjU5NS0wLjU1ODgtMS42NTk1LTEuNTA3MSAwLTAuNjYwNCAwLjM1
+NTYtMS4yNyAwLjgyOTczLTEuNzEwMyAxLjM1NDcgMC41NzU3MyAyLjI2OTEgMC45MzEzMyAyLjI2OTEgMS44Nzk2IDAgMC44OTc0
+Ny0wLjYwOTYgMS4zMzc3LTEuNDM5MyAxLjMzNzd6IiBjbGlwLXBhdGg9InVybCgjYikiLz48cGF0aCBkPSJtMjEuMzQ0IDI4NS4z
+NGg3LjU2OTJ2LTIuMDk5N2gtMi40MDQ1Yy0wLjQ5MTA3IDAtMS4yMzYxIDAuMDY3Ny0xLjc5NDkgMC4xMzU0NyAxLjkxMzUtMS44
+Nzk2IDMuNjc0NS0zLjY0MDcgMy42NzQ1LTUuNTg4IDAtMi4wNDg5LTEuNDM5My0zLjQwMzYtMy41NTYtMy40MDM2LTEuNTA3MSAw
+LTIuNTIzMSAwLjU5MjY3LTMuNTU2IDEuNzYxMWwxLjMwMzkgMS4yODY5YzAuNTQxODctMC41NzU3MyAxLjEzNDUtMS4xMDA3IDEu
+OTEzNS0xLjEwMDcgMC45MzEzMyAwIDEuNTI0IDAuNTc1NzQgMS41MjQgMS42MjU2IDAgMS41MDcxLTEuOTY0MyAzLjQzNzUtNC42
+NzM2IDUuODQyeiIvPjxwYXRoIGQ9Im0xNi45MzMgMjg0LjE2YzEuNzI3MiAwIDMuMDE0MS0xLjM1NDcgMy4wMTQxLTMuMTE1NyAw
+LTEuNzk0OS0xLjI4NjktMy4xNDk2LTMuMDE0MS0zLjE0OTYtMS43MjcyIDAtMy4wMTQxIDEuMzU0Ny0zLjAxNDEgMy4xNDk2IDAg
+MS43NjExIDEuMjg2OSAzLjExNTcgMy4wMTQxIDMuMTE1N3oiLz48cGF0aCBkPSJtOC45MTU0IDI4MC4zOGMwLjgxMjggMCAxLjQw
+NTUgMC40MjMzNCAxLjQwNTUgMS41NTc5IDAgMS4yMTkyLTAuNjA5NiAxLjc0NDEtMS4zNTQ3IDEuNzQ0MXMtMS40NTYzLTAuNTQx
+ODYtMS42NzY0LTIuMjM1MmMwLjQ0MDI3LTAuNzYyIDEuMDY2OC0xLjA2NjggMS42MjU2LTEuMDY2OHptMC4xMDE2IDUuMTY0N2Mx
+Ljk0NzMgMCAzLjU3MjktMS4zNzE2IDMuNTcyOS0zLjYwNjggMC0yLjI2OTEtMS4zNTQ3LTMuMzE4OS0zLjIwMDQtMy4zMTg5LTAu
+NjYwNCAwLTEuNTkxNyAwLjQyMzMzLTIuMTUwNSAxLjEzNDUgMC4wODQ2NjctMi41MDYxIDEuMDMyOS0zLjM1MjggMi4yMTgzLTMu
+MzUyOCAwLjYyNjUzIDAgMS4zMDM5IDAuMzU1NiAxLjY3NjQgMC43NjJsMS4zMDM5LTEuNDkwMWMtMC42NzczMy0wLjY5NDI3LTEu
+NzEwMy0xLjI4NjktMy4xMzI3LTEuMjg2OS0yLjI2OTEgMC00LjM1MTkgMS44MTE5LTQuMzUxOSA1LjgyNTEgMCAzLjc3NjEgMS45
+ODEyIDUuMzM0IDQuMDY0IDUuMzM0eiIvPjxwYXRoIGQ9Im0tMC4yMTE2NyAyODUuNTRjMi4zMDI5IDAgMy44NDM5LTEuOTY0MyAz
+Ljg0MzktNS42MjE5cy0xLjU0MDktNS41MzcyLTMuODQzOS01LjUzNzJjLTIuMzAyOSAwLTMuODQzOSAxLjg3OTYtMy44NDM5IDUu
+NTM3MnMxLjU0MDkgNS42MjE5IDMuODQzOSA1LjYyMTl6bTAtMS45MzA0Yy0wLjgyOTczIDAtMS40OTAxLTAuNzYyLTEuNDkwMS0z
+LjY5MTUgMC0yLjk0NjQgMC42NjA0LTMuNjA2OCAxLjQ5MDEtMy42MDY4IDAuODQ2NjcgMCAxLjQ5MDEgMC42NjA0IDEuNDkwMSAz
+LjYwNjggMCAyLjkyOTUtMC42NDM0NyAzLjY5MTUtMS40OTAxIDMuNjkxNXoiIGNsaXAtcGF0aD0idXJsKCNhKSIvPjwvZz48L2c+
+PC9zdmc+Cg==
+" alt="logo"></a><h2></h2></nav><nav class="sidebar"><a class="logo-container" href="../fixed/index.html"><img src="data:image/svg+xml;base64,
+PHN2ZyB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgMzMuODY3IDMzLjg2NyIgeG1s
+bnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48Y2xpcFBhdGggaWQ9ImIiPjxjaXJjbGUgY3g9IjE2LjkzMyIg
+Y3k9IjI4MC4wNyIgcj0iMTYuOTMzIiBmaWxsPSIjMDA3MmIyIi8+PC9jbGlwUGF0aD48Y2xpcFBhdGggaWQ9ImEiPjxjaXJjbGUg
+Y3g9IjE2LjkzMyIgY3k9IjI4MC4wNyIgcj0iMTYuOTMzIiBmaWxsPSIjMDA3MmIyIi8+PC9jbGlwUGF0aD48L2RlZnM+PGcgdHJh
+bnNmb3JtPSJ0cmFuc2xhdGUoMCAtMjYzLjEzKSI+PGNpcmNsZSBjeD0iMTYuOTMzIiBjeT0iMjgwLjA3IiByPSIxNi45MzMiIGZp
+bGw9IiNmN2YxYTEiLz48ZyBmaWxsPSIjMDA3MmIyIj48cGF0aCBkPSJtMTUuMzQ2IDI4My41MWgzLjE3NXMwIDAuNzkzNzYgMC41
+MjkxNyAxLjg1MjFoLTQuMjMzM2MwLjUyOTE2LTEuMDU4MyAwLjUyOTE2LTEuODUyMSAwLjUyOTE2LTEuODUyMXoiIHN0cm9rZS13
+aWR0aD0iLjUyOTE3Ii8+PHBhdGggZD0ibTM0LjExMiAyODUuNTRjMi4yODYgMCAzLjgxLTEuMjg2OSAzLjgxLTIuOTgwMyAwLTEu
+NDIyNC0wLjgyOTczLTIuMjUyMS0xLjg2MjctMi44MTA5di0wLjA2NzdjMC43NDUwNy0wLjQ5MTA3IDEuNDA1NS0xLjMyMDggMS40
+MDU1LTIuMzUzNyAwLTEuNzc4LTEuMzAzOS0yLjk0NjQtMy4yNjgxLTIuOTQ2NC0xLjk5ODEgMC0zLjQzNzUgMS4xMzQ1LTMuNDM3
+NSAyLjk2MzMgMCAxLjEzNDUgMC42MDk2IDEuOTEzNSAxLjQzOTMgMi41NHYwLjA2NzdjLTEuMDE2IDAuNTQxODctMS44Mjg4IDEu
+MzM3Ny0xLjgyODggMi42NDE2IDAgMS43NDQxIDEuNTkxNyAyLjk0NjQgMy43NDIzIDIuOTQ2NHptMC42NzczMy02LjQ2ODVjLTEu
+MTAwNy0wLjQyMzMzLTEuODQ1Ny0wLjg0NjY3LTEuODQ1Ny0xLjcyNzIgMC0wLjgyOTczIDAuNTQxODctMS4yMzYxIDEuMjAyMy0x
+LjIzNjEgMC44MTI4IDAgMS4zMDM5IDAuNTU4OCAxLjMwMzkgMS4zODg1IDAgMC41NTg4LTAuMjM3MDcgMS4wODM3LTAuNjYwNCAx
+LjU3NDh6bS0wLjYyNjUzIDQuNzQxM2MtMC44OTc0NiAwLTEuNjU5NS0wLjU1ODgtMS42NTk1LTEuNTA3MSAwLTAuNjYwNCAwLjM1
+NTYtMS4yNyAwLjgyOTczLTEuNzEwMyAxLjM1NDcgMC41NzU3MyAyLjI2OTEgMC45MzEzMyAyLjI2OTEgMS44Nzk2IDAgMC44OTc0
+Ny0wLjYwOTYgMS4zMzc3LTEuNDM5MyAxLjMzNzd6IiBjbGlwLXBhdGg9InVybCgjYikiLz48cGF0aCBkPSJtMjEuMzQ0IDI4NS4z
+NGg3LjU2OTJ2LTIuMDk5N2gtMi40MDQ1Yy0wLjQ5MTA3IDAtMS4yMzYxIDAuMDY3Ny0xLjc5NDkgMC4xMzU0NyAxLjkxMzUtMS44
+Nzk2IDMuNjc0NS0zLjY0MDcgMy42NzQ1LTUuNTg4IDAtMi4wNDg5LTEuNDM5My0zLjQwMzYtMy41NTYtMy40MDM2LTEuNTA3MSAw
+LTIuNTIzMSAwLjU5MjY3LTMuNTU2IDEuNzYxMWwxLjMwMzkgMS4yODY5YzAuNTQxODctMC41NzU3MyAxLjEzNDUtMS4xMDA3IDEu
+OTEzNS0xLjEwMDcgMC45MzEzMyAwIDEuNTI0IDAuNTc1NzQgMS41MjQgMS42MjU2IDAgMS41MDcxLTEuOTY0MyAzLjQzNzUtNC42
+NzM2IDUuODQyeiIvPjxwYXRoIGQ9Im0xNi45MzMgMjg0LjE2YzEuNzI3MiAwIDMuMDE0MS0xLjM1NDcgMy4wMTQxLTMuMTE1NyAw
+LTEuNzk0OS0xLjI4NjktMy4xNDk2LTMuMDE0MS0zLjE0OTYtMS43MjcyIDAtMy4wMTQxIDEuMzU0Ny0zLjAxNDEgMy4xNDk2IDAg
+MS43NjExIDEuMjg2OSAzLjExNTcgMy4wMTQxIDMuMTE1N3oiLz48cGF0aCBkPSJtOC45MTU0IDI4MC4zOGMwLjgxMjggMCAxLjQw
+NTUgMC40MjMzNCAxLjQwNTUgMS41NTc5IDAgMS4yMTkyLTAuNjA5NiAxLjc0NDEtMS4zNTQ3IDEuNzQ0MXMtMS40NTYzLTAuNTQx
+ODYtMS42NzY0LTIuMjM1MmMwLjQ0MDI3LTAuNzYyIDEuMDY2OC0xLjA2NjggMS42MjU2LTEuMDY2OHptMC4xMDE2IDUuMTY0N2Mx
+Ljk0NzMgMCAzLjU3MjktMS4zNzE2IDMuNTcyOS0zLjYwNjggMC0yLjI2OTEtMS4zNTQ3LTMuMzE4OS0zLjIwMDQtMy4zMTg5LTAu
+NjYwNCAwLTEuNTkxNyAwLjQyMzMzLTIuMTUwNSAxLjEzNDUgMC4wODQ2NjctMi41MDYxIDEuMDMyOS0zLjM1MjggMi4yMTgzLTMu
+MzUyOCAwLjYyNjUzIDAgMS4zMDM5IDAuMzU1NiAxLjY3NjQgMC43NjJsMS4zMDM5LTEuNDkwMWMtMC42NzczMy0wLjY5NDI3LTEu
+NzEwMy0xLjI4NjktMy4xMzI3LTEuMjg2OS0yLjI2OTEgMC00LjM1MTkgMS44MTE5LTQuMzUxOSA1LjgyNTEgMCAzLjc3NjEgMS45
+ODEyIDUuMzM0IDQuMDY0IDUuMzM0eiIvPjxwYXRoIGQ9Im0tMC4yMTE2NyAyODUuNTRjMi4zMDI5IDAgMy44NDM5LTEuOTY0MyAz
+Ljg0MzktNS42MjE5cy0xLjU0MDktNS41MzcyLTMuODQzOS01LjUzNzJjLTIuMzAyOSAwLTMuODQzOSAxLjg3OTYtMy44NDM5IDUu
+NTM3MnMxLjU0MDkgNS42MjE5IDMuODQzOSA1LjYyMTl6bTAtMS45MzA0Yy0wLjgyOTczIDAtMS40OTAxLTAuNzYyLTEuNDkwMS0z
+LjY5MTUgMC0yLjk0NjQgMC42NjA0LTMuNjA2OCAxLjQ5MDEtMy42MDY4IDAuODQ2NjcgMCAxLjQ5MDEgMC42NjA0IDEuNDkwMSAz
+LjYwNjggMCAyLjkyOTUtMC42NDM0NyAzLjY5MTUtMS40OTAxIDMuNjkxNXoiIGNsaXAtcGF0aD0idXJsKCNhKSIvPjwvZz48L2c+
+PC9zdmc+Cg==
+" alt="logo"></a><h2 class="location"><a href="#">Crate fixed</a></h2><div class="sidebar-elems"><ul class="block"><li class="version">Version 1.23.1</li><li><a id="all-types" href="all.html">All Items</a></li></ul><section><ul class="block"><li><a href="#modules">Modules</a></li><li><a href="#macros">Macros</a></li><li><a href="#structs">Structs</a></li></ul></section></div></nav><main><div class="width-limiter"><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="main-heading"><h1>Crate <a class="mod" href="#">fixed</a><button id="copy-path" title="Copy item path to clipboard"><img src="../static.files/clipboard-7571035ce49a181d.svg" width="19" height="18" alt="Copy item path"></button></h1><span class="out-of-band"><a class="srclink" href="../src/fixed/lib.rs.html#16-1616">source</a> · <button id="toggle-all-docs" title="collapse all docs">[<span>&#x2212;</span>]</button></span></div><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><h2 id="fixed-point-numbers"><a href="#fixed-point-numbers">Fixed-point numbers</a></h2>
+<p>The <a href="https://crates.io/crates/fixed"><em>fixed</em> crate</a> provides fixed-point numbers.</p>
+<ul>
+<li><a href="struct.FixedI8.html" title="struct fixed::FixedI8"><code>FixedI8</code></a> and <a href="struct.FixedU8.html" title="struct fixed::FixedU8"><code>FixedU8</code></a> are eight-bit fixed-point numbers.</li>
+<li><a href="struct.FixedI16.html" title="struct fixed::FixedI16"><code>FixedI16</code></a> and <a href="struct.FixedU16.html" title="struct fixed::FixedU16"><code>FixedU16</code></a> are 16-bit fixed-point numbers.</li>
+<li><a href="struct.FixedI32.html" title="struct fixed::FixedI32"><code>FixedI32</code></a> and <a href="struct.FixedU32.html" title="struct fixed::FixedU32"><code>FixedU32</code></a> are 32-bit fixed-point numbers.</li>
+<li><a href="struct.FixedI64.html" title="struct fixed::FixedI64"><code>FixedI64</code></a> and <a href="struct.FixedU64.html" title="struct fixed::FixedU64"><code>FixedU64</code></a> are 64-bit fixed-point numbers.</li>
+<li><a href="struct.FixedI128.html" title="struct fixed::FixedI128"><code>FixedI128</code></a> and <a href="struct.FixedU128.html" title="struct fixed::FixedU128"><code>FixedU128</code></a> are 128-bit fixed-point numbers.</li>
+</ul>
+<p>An <i>n</i>-bit fixed-point number has <i>f</i> = <code>Frac</code> fractional
+bits where 0 ≤ <i>f</i> ≤ <i>n</i>, and
+<i>n</i> − <i>f</i> integer bits. For example,
+<code><a href="struct.FixedI32.html" title="struct fixed::FixedI32">FixedI32</a>&lt;<a href="types/extra/type.U24.html" title="type fixed::types::extra::U24">U24</a>&gt;</code> is a 32-bit signed fixed-point number with
+<i>n</i> = 32 total bits, <i>f</i> = 24 fractional bits, and
+<i>n</i> − <i>f</i> = 8 integer bits.
+<code><a href="struct.FixedI32.html" title="struct fixed::FixedI32">FixedI32</a>&lt;<a href="types/extra/type.U0.html" title="type fixed::types::extra::U0">U0</a>&gt;</code> behaves like <a href="https://doc.rust-lang.org/1.71.1/std/primitive.i32.html" title="primitive i32"><code>i32</code></a>, and
+<code><a href="struct.FixedU32.html" title="struct fixed::FixedU32">FixedU32</a>&lt;<a href="types/extra/type.U0.html" title="type fixed::types::extra::U0">U0</a>&gt;</code> behaves like <a href="https://doc.rust-lang.org/1.71.1/std/primitive.u32.html" title="primitive u32"><code>u32</code></a>.</p>
+<p>The difference between any two successive representable numbers is constant
+throughout the possible range for a fixed-point number:
+<i>Δ</i> = 1/2<sup><i>f</i></sup>. When <i>f</i> = 0, like
+in <code><a href="struct.FixedI32.html" title="struct fixed::FixedI32">FixedI32</a>&lt;<a href="types/extra/type.U0.html" title="type fixed::types::extra::U0">U0</a>&gt;</code>, <i>Δ</i> = 1 because representable
+numbers are integers, and the difference between two successive integers is 1.
+When <i>f</i> = <i>n</i>, <i>Δ</i> = 1/2<sup><i>n</i></sup>
+and the value lies in the range −0.5 ≤ <i>x</i> &lt; 0.5
+for signed numbers like <code><a href="struct.FixedI32.html" title="struct fixed::FixedI32">FixedI32</a>&lt;<a href="types/extra/type.U32.html" title="type fixed::types::extra::U32">U32</a>&gt;</code>, and in the range
+0 ≤ <i>x</i> &lt; 1 for unsigned numbers like
+<code><a href="struct.FixedU32.html" title="struct fixed::FixedU32">FixedU32</a>&lt;<a href="types/extra/type.U32.html" title="type fixed::types::extra::U32">U32</a>&gt;</code>.</p>
+<p>In version 1 the <a href="https://crates.io/crates/typenum"><em>typenum</em> crate</a> is used for the fractional bit count <code>Frac</code>;
+the plan is to to have a major version 2 with const generics when the Rust
+compiler’s <a href="https://github.com/rust-lang/rust/issues/76560"><code>generic_const_exprs</code> feature</a> is ready and stabilized. An <a href="https://docs.rs/fixed/2.0.0-alpha/fixed/">alpha
+version</a> is already available.</p>
+<p>The main features are</p>
+<ul>
+<li>Representation of binary fixed-point numbers up to 128 bits wide.</li>
+<li>Conversions between fixed-point numbers and numeric primitives.</li>
+<li>Comparisons between fixed-point numbers and numeric primitives.</li>
+<li>Parsing from strings in decimal, binary, octal and hexadecimal.</li>
+<li>Display as decimal, binary, octal and hexadecimal.</li>
+<li>Arithmetic and logic operations.</li>
+</ul>
+<p>This crate does <em>not</em> provide decimal fixed-point numbers. For example 0.001
+cannot be represented exactly, as it is 1/10<sup>3</sup>. It is binary fractions
+like 1/2<sup>4</sup> (0.0625) that can be represented exactly, provided there
+are enough fractional bits.</p>
+<p>This crate does <em>not</em> provide general analytic functions.</p>
+<ul>
+<li>No algebraic functions are provided, for example no <code>sqrt</code> or <code>pow</code>.</li>
+<li>No trigonometric functions are provided, for example no <code>sin</code> or <code>cos</code>.</li>
+<li>No other transcendental functions are provided, for example no <code>log</code> or
+<code>exp</code>.</li>
+</ul>
+<p>These functions are not provided because different implementations can have
+different trade-offs, for example trading some correctness for speed.
+Implementations can be provided in other crates.</p>
+<ul>
+<li>The <a href="https://crates.io/crates/fixed-sqrt"><em>fixed-sqrt</em> crate</a> provides the square root operation.</li>
+<li>The <a href="https://crates.io/crates/cordic"><em>cordic</em> crate</a> provides various functions implemented using the
+<a href="https://en.wikipedia.org/wiki/CORDIC">CORDIC</a> algorithm.</li>
+</ul>
+<p>The conversions supported cover the following cases.</p>
+<ul>
+<li>Infallible lossless conversions between fixed-point numbers and numeric
+primitives are provided using <a href="https://doc.rust-lang.org/1.71.1/core/convert/trait.From.html" title="trait core::convert::From"><code>From</code></a> and <a href="https://doc.rust-lang.org/1.71.1/core/convert/trait.Into.html" title="trait core::convert::Into"><code>Into</code></a>. These never fail
+(infallible) and do not lose any bits (lossless).</li>
+<li>Infallible lossy conversions between fixed-point numbers and numeric
+primitives are provided using the <a href="traits/trait.LossyFrom.html" title="trait fixed::traits::LossyFrom"><code>LossyFrom</code></a> and <a href="traits/trait.LossyInto.html" title="trait fixed::traits::LossyInto"><code>LossyInto</code></a> traits.
+The source can have more fractional bits than the destination.</li>
+<li>Checked lossless conversions between fixed-point numbers and numeric
+primitives are provided using the <a href="traits/trait.LosslessTryFrom.html" title="trait fixed::traits::LosslessTryFrom"><code>LosslessTryFrom</code></a> and
+<a href="traits/trait.LosslessTryInto.html" title="trait fixed::traits::LosslessTryInto"><code>LosslessTryInto</code></a> traits. The source cannot have more fractional bits than
+the destination.</li>
+<li>Checked conversions between fixed-point numbers and numeric primitives are
+provided using the <a href="traits/trait.FromFixed.html" title="trait fixed::traits::FromFixed"><code>FromFixed</code></a> and <a href="traits/trait.ToFixed.html" title="trait fixed::traits::ToFixed"><code>ToFixed</code></a> traits, or using the
+<a href="struct.FixedI32.html#method.from_num" title="associated function fixed::FixedI32::from_num"><code>from_num</code></a> and <a href="struct.FixedI32.html#method.to_num" title="method fixed::FixedI32::to_num"><code>to_num</code></a> methods and <a href="struct.FixedI32.html#method.checked_from_num" title="associated function fixed::FixedI32::checked_from_num">their checked
+versions</a>.</li>
+<li>Additionally, <a href="../az/index.html" title="mod az"><code>az</code></a> casts are implemented for conversion between
+fixed-point numbers and numeric primitives.</li>
+<li>Fixed-point numbers can be parsed from decimal strings using <a href="https://doc.rust-lang.org/1.71.1/core/str/traits/trait.FromStr.html" title="trait core::str::traits::FromStr"><code>FromStr</code></a>,
+and from binary, octal and hexadecimal strings using the
+<a href="struct.FixedI32.html#method.from_str_binary" title="associated function fixed::FixedI32::from_str_binary"><code>from_str_binary</code></a>, <a href="struct.FixedI32.html#method.from_str_octal" title="associated function fixed::FixedI32::from_str_octal"><code>from_str_octal</code></a> and <a href="struct.FixedI32.html#method.from_str_hex" title="associated function fixed::FixedI32::from_str_hex"><code>from_str_hex</code></a> methods. The
+result is rounded to the nearest, with ties rounded to even.</li>
+<li>Fixed-point numbers can be converted to strings using <a href="https://doc.rust-lang.org/1.71.1/core/fmt/trait.Display.html" title="trait core::fmt::Display"><code>Display</code></a>,
+<a href="https://doc.rust-lang.org/1.71.1/core/fmt/trait.Binary.html" title="trait core::fmt::Binary"><code>Binary</code></a>, <a href="https://doc.rust-lang.org/1.71.1/core/fmt/trait.Octal.html" title="trait core::fmt::Octal"><code>Octal</code></a>, <a href="https://doc.rust-lang.org/1.71.1/core/fmt/trait.LowerHex.html" title="trait core::fmt::LowerHex"><code>LowerHex</code></a>, <a href="https://doc.rust-lang.org/1.71.1/core/fmt/trait.UpperHex.html" title="trait core::fmt::UpperHex"><code>UpperHex</code></a>, <a href="https://doc.rust-lang.org/1.71.1/core/fmt/trait.LowerExp.html" title="trait core::fmt::LowerExp"><code>LowerExp</code></a> and
+<a href="https://doc.rust-lang.org/1.71.1/core/fmt/trait.UpperExp.html" title="trait core::fmt::UpperExp"><code>UpperExp</code></a>. The output is rounded to the nearest, with ties rounded to
+even.</li>
+<li>All fixed-point numbers are plain old data, so <a href="../bytemuck/index.html" title="mod bytemuck"><code>bytemuck</code></a> bit casting
+conversions can be used.</li>
+</ul>
+<h3 id="quick-examples"><a href="#quick-examples">Quick examples</a></h3>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>fixed::types::I20F12;
+
+<span class="comment">// 19/3 = 6 1/3
+</span><span class="kw">let </span>six_and_third = I20F12::from_num(<span class="number">19</span>) / <span class="number">3</span>;
+<span class="comment">// four decimal digits for 12 binary digits
+</span><span class="macro">assert_eq!</span>(six_and_third.to_string(), <span class="string">&quot;6.3333&quot;</span>);
+<span class="comment">// find the ceil and convert to i32
+</span><span class="macro">assert_eq!</span>(six_and_third.ceil().to_num::&lt;i32&gt;(), <span class="number">7</span>);
+<span class="comment">// we can also compare directly to integers
+</span><span class="macro">assert_eq!</span>(six_and_third.ceil(), <span class="number">7</span>);</code></pre></div>
+<p>The type <a href="types/type.I20F12.html" title="type fixed::types::I20F12"><code>I20F12</code></a> is a 32-bit fixed-point signed number with 20 integer bits
+and 12 fractional bits. It is an alias to <code><a href="struct.FixedI32.html" title="struct fixed::FixedI32">FixedI32</a>&lt;<a href="types/extra/type.U12.html" title="type fixed::types::extra::U12">U12</a>&gt;</code>. The
+unsigned counterpart would be <a href="types/type.U20F12.html" title="type fixed::types::U20F12"><code>U20F12</code></a>. Aliases are provided for all
+combinations of integer and fractional bits adding up to a total of eight, 16,
+32, 64 or 128 bits.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>fixed::types::{I4F4, I4F12};
+
+<span class="comment">// -8 ≤ I4F4 &lt; 8 with steps of 1/16 (~0.06)
+</span><span class="kw">let </span>a = I4F4::from_num(<span class="number">1</span>);
+<span class="comment">// multiplication and division by integers are possible
+</span><span class="kw">let </span>ans1 = a / <span class="number">5 </span>* <span class="number">17</span>;
+<span class="comment">// 1 / 5 × 17 = 3 2/5 (3.4), but we get 3 3/16 (~3.2)
+</span><span class="macro">assert_eq!</span>(ans1, I4F4::from_bits((<span class="number">3 </span>&lt;&lt; <span class="number">4</span>) + <span class="number">3</span>));
+<span class="macro">assert_eq!</span>(ans1.to_string(), <span class="string">&quot;3.2&quot;</span>);
+
+<span class="comment">// -8 ≤ I4F12 &lt; 8 with steps of 1/4096 (~0.0002)
+</span><span class="kw">let </span>wider_a = I4F12::from(a);
+<span class="kw">let </span>wider_ans = wider_a / <span class="number">5 </span>* <span class="number">17</span>;
+<span class="kw">let </span>ans2 = I4F4::from_num(wider_ans);
+<span class="comment">// now the answer is the much closer 3 6/16 (~3.4)
+</span><span class="macro">assert_eq!</span>(ans2, I4F4::from_bits((<span class="number">3 </span>&lt;&lt; <span class="number">4</span>) + <span class="number">6</span>));
+<span class="macro">assert_eq!</span>(ans2.to_string(), <span class="string">&quot;3.4&quot;</span>);</code></pre></div>
+<p>The second example shows some precision and conversion issues. The low precision
+of <code>a</code> means that <code>a / 5</code> is 3⁄16 instead of 1⁄5, leading to an inaccurate
+result <code>ans1</code> = 3 3⁄16 (~3.2). With a higher precision, we get <code>wider_a / 5</code>
+equal to 819⁄4096, leading to a more accurate intermediate result <code>wider_ans</code> =
+3 1635⁄4096. When we convert back to four fractional bits, we get <code>ans2</code> = 3
+6⁄16 (~3.4).</p>
+<p>Note that we can convert from <a href="types/type.I4F4.html" title="type fixed::types::I4F4"><code>I4F4</code></a> to <a href="types/type.I4F12.html" title="type fixed::types::I4F12"><code>I4F12</code></a> using <a href="https://doc.rust-lang.org/1.71.1/core/convert/trait.From.html" title="trait core::convert::From"><code>From</code></a>, as the
+target type has the same number of integer bits and a larger number of
+fractional bits. Converting from <a href="types/type.I4F12.html" title="type fixed::types::I4F12"><code>I4F12</code></a> to <a href="types/type.I4F4.html" title="type fixed::types::I4F4"><code>I4F4</code></a> cannot use <a href="https://doc.rust-lang.org/1.71.1/core/convert/trait.From.html" title="trait core::convert::From"><code>From</code></a> as we
+have less fractional bits, so we use <a href="struct.FixedI32.html#method.from_num" title="associated function fixed::FixedI32::from_num"><code>from_num</code></a> instead.</p>
+<h3 id="writing-fixed-point-constants-and-values-literally"><a href="#writing-fixed-point-constants-and-values-literally">Writing fixed-point constants and values literally</a></h3>
+<p>The <a href="struct.FixedI32.html#method.lit" title="associated function fixed::FixedI32::lit"><code>lit</code></a> method, which is available as a <code>const</code> function, can be used to
+parse literals. It supports</p>
+<ul>
+<li>underscores as separators;</li>
+<li>prefixes “<code>0b</code>”, “<code>0o</code>” and “<code>0x</code>” for binary, octal and hexadecimal
+numbers;</li>
+<li>an optional decimal exponent with separator “<code>e</code>” or “<code>E</code>” for decimal,
+binary and octal numbers, or with separator “<code>@</code>” for all supported radices
+including hexadecimal.</li>
+</ul>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>fixed::types::I16F16;
+
+<span class="comment">// 0.1275e2 is 12.75
+</span><span class="kw">const </span>TWELVE_POINT_75: I16F16 = I16F16::lit(<span class="string">&quot;0.127_5e2&quot;</span>);
+<span class="comment">// 1.8 hexadecimal is 1.5 decimal, and 18@-1 is 1.8
+</span><span class="kw">const </span>ONE_POINT_5: I16F16 = I16F16::lit(<span class="string">&quot;0x_18@-1&quot;</span>);
+<span class="comment">// 12.75 + 1.5 = 14.25
+</span><span class="kw">let </span>sum = TWELVE_POINT_75 + ONE_POINT_5;
+<span class="macro">assert_eq!</span>(sum, <span class="number">14.25</span>);</code></pre></div>
+<p>The <a href="https://crates.io/crates/fixed-macro"><em>fixed-macro</em> crate</a> is an alternative which provides a convenient macro to
+write down fixed-point constants literally in the code. It supports underscores
+as separators, binary/octal/hexadecimal integers, and an optional exponent for
+decimal numbers, but it does not support fractions or exponents for
+binary/octal/hexadecimal as they cannot be parsed by the Rust compiler.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>fixed::types::I16F16;
+<span class="kw">use </span>fixed_macro::fixed;
+<span class="kw">use </span>fixed_macro::types::I16F16;
+
+<span class="comment">// 0.1275e2 is 12.75
+</span><span class="kw">const </span>TWELVE_POINT_75: I16F16 = <span class="macro">fixed!</span>(<span class="number">0.127_5e2</span>: I16F16);
+<span class="comment">// 11 binary is 3 decimal
+</span><span class="kw">const </span>THREE: I16F16 = <span class="macro">I16F16!</span>(<span class="number">0b_11</span>);
+<span class="comment">// 12.75 + 3 = 15.75
+</span><span class="kw">let </span>sum = TWELVE_POINT_75 + THREE;
+<span class="macro">assert_eq!</span>(sum, <span class="number">15.75</span>);</code></pre></div>
+<h3 id="using-the-fixed-crate"><a href="#using-the-fixed-crate">Using the <em>fixed</em> crate</a></h3>
+<p>The <em>fixed</em> crate is available on <a href="https://crates.io/crates/fixed">crates.io</a>. To use it in your
+crate, add it as a dependency inside <a href="https://doc.rust-lang.org/cargo/guide/dependencies.html"><em>Cargo.toml</em></a>:</p>
+<div class="example-wrap"><pre class="language-toml"><code>[dependencies]
+fixed = &quot;1.23&quot;
+</code></pre></div>
+<p>The <em>fixed</em> crate requires rustc version 1.61.0 or later.</p>
+<h3 id="optional-features"><a href="#optional-features">Optional features</a></h3>
+<p>The <em>fixed</em> crate has these optional feature:</p>
+<ol>
+<li><code>arbitrary</code>, disabled by default. This provides the generation of arbitrary
+fixed-point numbers from raw, unstructured data. This feature requires the
+<a href="https://crates.io/crates/arbitrary"><em>arbitrary</em> crate</a>.</li>
+<li><code>serde</code>, disabled by default. This provides serialization support for the
+fixed-point types. This feature requires the <a href="https://crates.io/crates/serde"><em>serde</em> crate</a>.</li>
+<li><code>std</code>, disabled by default. This is for features that are not possible under
+<code>no_std</code>: currently the implementation of the <a href="std::error::Error"><code>Error</code></a> trait for
+<a href="struct.ParseFixedError.html" title="struct fixed::ParseFixedError"><code>ParseFixedError</code></a>.</li>
+<li><code>serde-str</code>, disabled by default. Fixed-point numbers are serialized as
+strings showing the value when using human-readable formats. This feature
+requires the <code>serde</code> and the <code>std</code> optional features. <strong>Warning:</strong> numbers
+serialized when this feature is enabled cannot be deserialized when this
+feature is disabled, and vice versa.</li>
+</ol>
+<p>To enable features, you can add the dependency like this to <a href="https://doc.rust-lang.org/cargo/guide/dependencies.html"><em>Cargo.toml</em></a>:</p>
+<div class="example-wrap"><pre class="language-toml"><code>[dependencies.fixed]
+version = &quot;1.23&quot;
+features = [&quot;serde&quot;]
+</code></pre></div><h3 id="experimental-optional-features"><a href="#experimental-optional-features">Experimental optional features</a></h3>
+<p>It is not considered a breaking change if the following experimental features
+are removed. The removal of experimental features would however require a minor
+version bump. Similarly, on a minor version bump, optional dependencies can be
+updated to an incompatible newer version.</p>
+<ol>
+<li><code>borsh</code>, disabled by default. This implements serialization and
+deserialization using the <a href="https://crates.io/crates/borsh"><em>borsh</em> crate</a>. (The plan is to promote this to
+an optional feature once the <a href="https://crates.io/crates/borsh"><em>borsh</em> crate</a> reaches version 1.0.0.)</li>
+<li><code>num-traits</code>, disabled by default. This implements some traits from the
+<a href="https://crates.io/crates/num-traits"><em>num-traits</em> crate</a>. (The plan is to promote this to an optional feature
+once the <a href="https://crates.io/crates/num-traits"><em>num-traits</em> crate</a> reaches version 1.0.0.)</li>
+</ol>
+<h3 id="deprecated-optional-features"><a href="#deprecated-optional-features">Deprecated optional features</a></h3>
+<p>The following optional features are deprecated and will be removed in the next
+major version of the crate.</p>
+<ol>
+<li><code>az</code>, has no effect. Previously required for the <a href="../az/index.html" title="mod az"><code>az</code></a> cast traits. Now
+these cast traits are always provided.</li>
+<li><code>f16</code>, has no effect. Previously required for conversion to/from <a href="../half/binary16/struct.f16.html" title="struct half::binary16::f16"><code>f16</code></a> and
+<a href="../half/bfloat/struct.bf16.html" title="struct half::bfloat::bf16"><code>bf16</code></a>. Now these conversions are always provided.</li>
+</ol>
+<h3 id="license"><a href="#license">License</a></h3>
+<p>This crate is free software: you can redistribute it and/or modify it under the
+terms of either</p>
+<ul>
+<li>the <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a> or</li>
+<li>the <a href="https://opensource.org/licenses/MIT">MIT License</a></li>
+</ul>
+<p>at your option.</p>
+<h4 id="contribution"><a href="#contribution">Contribution</a></h4>
+<p>Unless you explicitly state otherwise, any contribution intentionally submitted
+for inclusion in the work by you, as defined in the Apache License, Version 2.0,
+shall be dual licensed as above, without any additional terms or conditions.</p>
+</div></details><h2 id="modules" class="small-section-header"><a href="#modules">Modules</a></h2><ul class="item-table"><li><div class="item-name"><a class="mod" href="consts/index.html" title="mod fixed::consts">consts</a></div><div class="desc docblock-short">Mathematical constants.</div></li><li><div class="item-name"><a class="mod" href="f128/index.html" title="mod fixed::f128">f128</a></div><div class="desc docblock-short">Constants specific to the <a href="struct.F128.html" title="struct fixed::F128"><code>F128</code></a> quadruple-precision floating-point type.</div></li><li><div class="item-name"><a class="mod" href="prelude/index.html" title="mod fixed::prelude">prelude</a></div><div class="desc docblock-short">A prelude to import useful traits.</div></li><li><div class="item-name"><a class="mod" href="traits/index.html" title="mod fixed::traits">traits</a></div><div class="desc docblock-short">Traits for conversions and for generic use of fixed-point numbers.</div></li><li><div class="item-name"><a class="mod" href="types/index.html" title="mod fixed::types">types</a></div><div class="desc docblock-short">Type aliases for all supported fixed-point numbers.</div></li></ul><h2 id="macros" class="small-section-header"><a href="#macros">Macros</a></h2><ul class="item-table"><li><div class="item-name"><a class="macro" href="macro.const_fixed_from_int.html" title="macro fixed::const_fixed_from_int">const_fixed_from_int</a><span class="stab deprecated" title="">Deprecated</span></div><div class="desc docblock-short">Defines constant fixed-point numbers from integer expressions.</div></li></ul><h2 id="structs" class="small-section-header"><a href="#structs">Structs</a></h2><ul class="item-table"><li><div class="item-name"><a class="struct" href="struct.F128.html" title="struct fixed::F128">F128</a></div><div class="desc docblock-short">A <em>binary128</em> floating-point number (<code>f128</code>).</div></li><li><div class="item-name"><a class="struct" href="struct.F128Bits.html" title="struct fixed::F128Bits">F128Bits</a><span class="stab deprecated" title="">Deprecated</span></div><div class="desc docblock-short">The bit representation of a <em>binary128</em> floating-point number (<code>f128</code>).</div></li><li><div class="item-name"><a class="struct" href="struct.FixedI8.html" title="struct fixed::FixedI8">FixedI8</a></div><div class="desc docblock-short">An eight-bit signed number with <code>Frac</code> fractional bits.</div></li><li><div class="item-name"><a class="struct" href="struct.FixedI16.html" title="struct fixed::FixedI16">FixedI16</a></div><div class="desc docblock-short">A 16-bit signed number with <code>Frac</code> fractional bits.</div></li><li><div class="item-name"><a class="struct" href="struct.FixedI32.html" title="struct fixed::FixedI32">FixedI32</a></div><div class="desc docblock-short">A 32-bit signed number with <code>Frac</code> fractional bits.</div></li><li><div class="item-name"><a class="struct" href="struct.FixedI64.html" title="struct fixed::FixedI64">FixedI64</a></div><div class="desc docblock-short">A 64-bit signed number with <code>Frac</code> fractional bits.</div></li><li><div class="item-name"><a class="struct" href="struct.FixedI128.html" title="struct fixed::FixedI128">FixedI128</a></div><div class="desc docblock-short">A 128-bit signed number with <code>Frac</code> fractional bits.</div></li><li><div class="item-name"><a class="struct" href="struct.FixedU8.html" title="struct fixed::FixedU8">FixedU8</a></div><div class="desc docblock-short">An eight-bit unsigned number with <code>Frac</code> fractional bits.</div></li><li><div class="item-name"><a class="struct" href="struct.FixedU16.html" title="struct fixed::FixedU16">FixedU16</a></div><div class="desc docblock-short">A 16-bit unsigned number with <code>Frac</code> fractional bits.</div></li><li><div class="item-name"><a class="struct" href="struct.FixedU32.html" title="struct fixed::FixedU32">FixedU32</a></div><div class="desc docblock-short">A 32-bit unsigned number with <code>Frac</code> fractional bits.</div></li><li><div class="item-name"><a class="struct" href="struct.FixedU64.html" title="struct fixed::FixedU64">FixedU64</a></div><div class="desc docblock-short">A 64-bit unsigned number with <code>Frac</code> fractional bits.</div></li><li><div class="item-name"><a class="struct" href="struct.FixedU128.html" title="struct fixed::FixedU128">FixedU128</a></div><div class="desc docblock-short">A 128-bit unsigned number with <code>Frac</code> fractional bits.</div></li><li><div class="item-name"><a class="struct" href="struct.ParseFixedError.html" title="struct fixed::ParseFixedError">ParseFixedError</a></div><div class="desc docblock-short">An error which can be returned when parsing a fixed-point number.</div></li><li><div class="item-name"><a class="struct" href="struct.Unwrapped.html" title="struct fixed::Unwrapped">Unwrapped</a></div><div class="desc docblock-short">Provides arithmetic operations that panic on overflow even when
+debug assertions are disabled.</div></li><li><div class="item-name"><a class="struct" href="struct.Wrapping.html" title="struct fixed::Wrapping">Wrapping</a></div><div class="desc docblock-short">Provides intentionally wrapped arithmetic on fixed-point numbers.</div></li></ul></section></div></main></body></html>

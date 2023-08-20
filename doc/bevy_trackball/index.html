@@ -1,0 +1,98 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Coherent virtual trackball controller/camera plugin for Bevy"><title>bevy_trackball - Rust</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../static.files/rustdoc-f3501f0f5ae15dfb.css" id="mainThemeStyle"><div id="rustdoc-vars" data-root-path="../" data-static-root-path="../static.files/" data-current-crate="bevy_trackball" data-themes="" data-resource-suffix="" data-rustdoc-version="1.71.1 (eb26296b5 2023-08-03)" data-search-js="search-4926e5fc22a5646a.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-0f8c037637f9eb3e.css" data-theme-dark-css="dark-1097f8e92a01e3cf.css" data-theme-ayu-css="ayu-614652228113ac93.css" ></div><script src="../static.files/storage-62ce34ea385b278a.js"></script><script defer src="../crates.js"></script><script defer src="../static.files/main-f0540c1d82cde29b.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../static.files/light-0f8c037637f9eb3e.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../static.files/dark-1097f8e92a01e3cf.css"><link rel="stylesheet" href="../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc mod crate"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="logo-container" href="../bevy_trackball/index.html"><img class="rust-logo" src="../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><h2></h2></nav><nav class="sidebar"><a class="logo-container" href="../bevy_trackball/index.html"><img class="rust-logo" src="../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><h2 class="location"><a href="#">Crate bevy_trackball</a></h2><div class="sidebar-elems"><ul class="block"><li class="version">Version 0.1.1</li><li><a id="all-types" href="all.html">All Items</a></li></ul><section><ul class="block"><li><a href="#reexports">Re-exports</a></li><li><a href="#modules">Modules</a></li><li><a href="#structs">Structs</a></li><li><a href="#enums">Enums</a></li></ul></section></div></nav><main><div class="width-limiter"><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="main-heading"><h1>Crate <a class="mod" href="#">bevy_trackball</a><button id="copy-path" title="Copy item path to clipboard"><img src="../static.files/clipboard-7571035ce49a181d.svg" width="19" height="18" alt="Copy item path"></button></h1><span class="out-of-band"><a class="srclink" href="../src/bevy_trackball/lib.rs.html#1-335">source</a> · <button id="toggle-all-docs" title="collapse all docs">[<span>&#x2212;</span>]</button></span></div><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Coherent virtual trackball controller/camera plugin for Bevy</p>
+<p>Run simple and advanced <a href="https://qu1x.github.io/bevy_trackball/examples">examples</a> in your browser using <a href="https://en.wikipedia.org/wiki/WebAssembly">WebAssembly</a> and <a href="https://en.wikipedia.org/wiki/WebGL">WebGL</a>.</p>
+<h2 id="coherence-features"><a href="#coherence-features">Coherence Features</a></h2>
+<p>This is an alternative trackball technique using exponential map and parallel transport to
+preserve distances and angles for inducing coherent and intuitive trackball rotations. For
+instance, displacements on straight radial lines through the screen’s center are carried to arcs
+of the same length on great circles of the trackball (e.g., dragging the mouse along an eights
+of the trackball’s circumference rolls the camera by 360/8=45 degrees, dragging the mouse from
+the screen’s center to its further edge <em>linearly</em> rotates the camera by 1 <a href="https://en.wikipedia.org/wiki/Radian">radian</a>, where the
+trackball’s diameter is the maximum of the screen’s width and height). This is in contrast to
+state-of-the-art techniques using orthogonal projection which distorts radial distances further
+away from the screen’s center (e.g., the rotation accelerates towards the edge).</p>
+<ul>
+<li>Coherent and intuitive orbiting via the exponential map, see the underlying <a href="../trackball/index.html" title="mod trackball"><code>trackball</code></a>
+crate which follows the recipe given in the paper of Stantchev, G.. “Virtual Trackball
+Modeling and the Exponential Map.”. <a href="https://en.wikipedia.org/wiki/S2CID_(identifier)">S2CID</a> <a href="https://api.semanticscholar.org/CorpusID:44199608">44199608</a>. See the <a href="https://qu1x.github.io/bevy_trackball/examples/exponential_map.html"><code>exponential_map</code></a> example.</li>
+<li>Coherent first person view aka free look or mouse look with the world trackball centered at
+eye instead of target.</li>
+<li>Coherent scaling by translating mouse wheel device units, see <a href="enum.TrackballWheelUnit.html" title="enum bevy_trackball::TrackballWheelUnit"><code>TrackballWheelUnit</code></a>. Scales
+eye distance from current cursor position or centroid of finger positions projected onto
+focus plane.</li>
+<li>Coherent linear/angular <a href="enum.TrackballVelocity.html" title="enum bevy_trackball::TrackballVelocity"><code>TrackballVelocity</code></a> for sliding/orbiting or free look by
+time-based input (e.g., pressed key). By default, the linear velocity is deduced from the
+angular velocity (where target and eye positions define the world radius) which in turn is
+defined in units of vertical field of view per seconds and hence independent of the world
+unit scale.</li>
+</ul>
+<h2 id="additional-features"><a href="#additional-features">Additional Features</a></h2>
+<ul>
+<li>Time-free multi-touch gesture recognition for orbit, scale, slide, and focus (i.e., slide to
+cursor/finger position) operations.</li>
+<li>Smoothing of movement implemented as fps-agnostic exponential easy-out.</li>
+<li>Gimbal lock-free using quaternion instead of Euler angles.</li>
+<li>Gliding clamp (experimental): The movement of a camera can be restricted to user-defined
+boundary conditions (e.g., to not orbit below the ground plane). When the movement is not
+orthogonal to a boundary plane, it is changed such that the camera glides along the boundary
+plane. Currently, only implemented for orbit and slide operations, see the <a href="https://qu1x.github.io/bevy_trackball/examples/gliding_clamp.html"><code>gliding_clamp</code></a>
+example.</li>
+<li>Camera constellation: A camera is decoupled from its input controller and instead multiple
+cameras can be sensitive to zero or multiple selected controllers (e.g., a minimap
+controlled by the same controller of the main viewport).</li>
+<li>Constellation clamp: Cameras sensitive to the same controller are referred to as a group
+and can be configured to clamp the movement for the whole group whenever a group member
+crosses a boundary condition (e.g., rigid and loose constellation clamp), see the
+<a href="https://qu1x.github.io/bevy_trackball/examples/constellation_clamp.html"><code>constellation_clamp</code></a> example.</li>
+<li>Viewport stealing: This allows UI system (e.g., egui behind <code>bevy_egui</code> feature gate) to
+steal the viewport and hence capture the input instead, see the <a href="https://qu1x.github.io/bevy_trackball/examples/egui.html"><code>egui</code></a> example.</li>
+<li>Scale-preserving transitioning between orthographic and perspective projection mode.</li>
+<li>Converting between scaling modes (i.e., fixed vertical or horizontal field of view or fixed
+unit per pixels). This defines whether the scene scales or the corresponding vertical or
+horizontal field of view adjusts whenever the height or width of the viewport is resized,
+see the <a href="https://github.com/qu1x/bevy_trackball/blob/main/examples/scaling_modes.rs"><code>scaling_modes</code></a> example.</li>
+<li>Object inspection mode scaling clip plane distances by measuring from target instead of eye.
+This benefits the precision of the depth map. Applicable, whenever the extend of the object
+to inspect is known and hence the near clip plane can safely be placed just in front of it.</li>
+<li><code>f64</code>-ready for large worlds (e.g., solar system scale) whenever Bevy is, see issue <a href="https://github.com/bevyengine/bevy/issues/1680">#1680</a>.</li>
+</ul>
+<h2 id="input-mappings"><a href="#input-mappings">Input Mappings</a></h2>
+<p>Following mappings are the defaults which can be customized, see <a href="struct.TrackballInput.html" title="struct bevy_trackball::TrackballInput"><code>TrackballInput</code></a>.</p>
+<div><table><thead><tr><th>Mouse (Buttons)</th><th>Touch (Fingers)</th><th>Keyboard</th><th>Operation</th></tr></thead><tbody>
+<tr><td>Left Press + Drag</td><td>One + Drag</td><td><code>ijkl</code></td><td>Orbits around target.</td></tr>
+<tr><td>↳ at trackball’s border</td><td>Two + Roll</td><td><code>uo</code></td><td>Rolls about view direction.</td></tr>
+<tr><td>Middle Press + Drag</td><td>Any + Drag + Left Shift</td><td><code>↑←↓→</code></td><td>First person view.</td></tr>
+<tr><td>Right Press + Drag</td><td>Two + Drag</td><td><code>esdf</code></td><td>Slides trackball on focus plane.</td></tr>
+<tr><td> </td><td> </td><td><code>gv</code></td><td>Slides trackball in/out.</td></tr>
+<tr><td>Scroll In/Out</td><td>Two + Pinch Out/In</td><td><code>hn</code></td><td>Scales distance zooming in/out.</td></tr>
+<tr><td>Left Press + Release</td><td>Any + Release</td><td> </td><td>Slides to cursor/finger position.</td></tr>
+<tr><td> </td><td> </td><td><code>p</code></td><td>Toggle orthographic/perspective.</td></tr>
+<tr><td> </td><td> </td><td><code>Return</code></td><td>Reset camera transform.</td></tr>
+</tbody></table>
+</div><h2 id="usage"><a href="#usage">Usage</a></h2>
+<p>Add the <a href="struct.TrackballPlugin.html" title="struct bevy_trackball::TrackballPlugin"><code>TrackballPlugin</code></a> followed by spawning a <a href="struct.TrackballController.html" title="struct bevy_trackball::TrackballController"><code>TrackballController</code></a> together with a
+<a href="struct.TrackballCamera.html" title="struct bevy_trackball::TrackballCamera"><code>TrackballCamera</code></a> and a <code>Camera3dBundle</code> or see simple and advanced <a href="https://qu1x.github.io/bevy_trackball/examples">examples</a>.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>bevy::prelude::<span class="kw-2">*</span>;
+<span class="kw">use </span>bevy_trackball::prelude::<span class="kw-2">*</span>;
+
+<span class="comment">// Add the trackball plugin.
+</span><span class="kw">fn </span>main() {
+	App::new()
+		.add_plugins(DefaultPlugins)
+		.add_plugins(TrackballPlugin)
+		.add_systems(Startup, setup)
+		.run();
+}
+
+<span class="comment">// Add a trackball controller and trackball camera to a camera 3D bundle.
+</span><span class="kw">fn </span>setup(<span class="kw-2">mut </span>commands: Commands) {
+	<span class="kw">let </span>[target, eye, up] = [Vec3::ZERO, Vec3::Z * <span class="number">10.0</span>, Vec3::Y];
+	commands.spawn((
+		TrackballController::default(),
+		TrackballCamera::look_at(target, eye, up),
+		Camera3dBundle::default(),
+	));
+
+	<span class="comment">// Set up your scene...
+</span>}</code></pre></div>
+</div></details><h2 id="reexports" class="small-section-header"><a href="#reexports">Re-exports</a></h2><ul class="item-table"><li><div class="item-name" id="reexport.trackball"><code>pub use <a class="mod" href="../trackball/index.html" title="mod trackball">trackball</a>;</code></div></li></ul><h2 id="modules" class="small-section-header"><a href="#modules">Modules</a></h2><ul class="item-table"><li><div class="item-name"><a class="mod" href="prelude/index.html" title="mod bevy_trackball::prelude">prelude</a></div><div class="desc docblock-short">Prelude to get started quickly.</div></li></ul><h2 id="structs" class="small-section-header"><a href="#structs">Structs</a></h2><ul class="item-table"><li><div class="item-name"><a class="struct" href="struct.TrackballCamera.html" title="struct bevy_trackball::TrackballCamera">TrackballCamera</a></div><div class="desc docblock-short">Trackball camera component mainly defined by <a href="prelude/struct.Frame.html" title="struct bevy_trackball::prelude::Frame"><code>Frame</code></a> and <a href="prelude/struct.Scope.html" title="struct bevy_trackball::prelude::Scope"><code>Scope</code></a>.</div></li><li><div class="item-name"><a class="struct" href="struct.TrackballController.html" title="struct bevy_trackball::TrackballController">TrackballController</a></div><div class="desc docblock-short">Trackball controller component mainly defined by <a href="struct.TrackballInput.html" title="struct bevy_trackball::TrackballInput"><code>TrackballInput</code></a>.</div></li><li><div class="item-name"><a class="struct" href="struct.TrackballEvent.html" title="struct bevy_trackball::TrackballEvent">TrackballEvent</a></div><div class="desc docblock-short">Event sent from <a href="struct.TrackballController.html" title="struct bevy_trackball::TrackballController"><code>TrackballController</code></a> component to group of <a href="struct.TrackballCamera.html" title="struct bevy_trackball::TrackballCamera"><code>TrackballCamera</code></a> components.</div></li><li><div class="item-name"><a class="struct" href="struct.TrackballInput.html" title="struct bevy_trackball::TrackballInput">TrackballInput</a></div><div class="desc docblock-short">Trackball controller input mappings and settings.</div></li><li><div class="item-name"><a class="struct" href="struct.TrackballPlugin.html" title="struct bevy_trackball::TrackballPlugin">TrackballPlugin</a></div><div class="desc docblock-short">Plugin adding and configuring systems and their resources.</div></li><li><div class="item-name"><a class="struct" href="struct.TrackballViewport.html" title="struct bevy_trackball::TrackballViewport">TrackballViewport</a></div><div class="desc docblock-short">Trackball viewport currently focused and hence capturing input events.</div></li></ul><h2 id="enums" class="small-section-header"><a href="#enums">Enums</a></h2><ul class="item-table"><li><div class="item-name"><a class="enum" href="enum.TrackballSetup.html" title="enum bevy_trackball::TrackballSetup">TrackballSetup</a></div><div class="desc docblock-short">Setup of <a href="struct.TrackballCamera.html" title="struct bevy_trackball::TrackballCamera"><code>TrackballCamera</code></a> as part of <a href="struct.TrackballEvent.html" title="struct bevy_trackball::TrackballEvent"><code>TrackballEvent</code></a>.</div></li><li><div class="item-name"><a class="enum" href="enum.TrackballSystemSet.html" title="enum bevy_trackball::TrackballSystemSet">TrackballSystemSet</a></div><div class="desc docblock-short">System sets configured by <a href="struct.TrackballPlugin.html" title="struct bevy_trackball::TrackballPlugin"><code>TrackballPlugin</code></a>.</div></li><li><div class="item-name"><a class="enum" href="enum.TrackballVelocity.html" title="enum bevy_trackball::TrackballVelocity">TrackballVelocity</a></div><div class="desc docblock-short"><a href="struct.TrackballInput.html" title="struct bevy_trackball::TrackballInput"><code>TrackballInput</code></a> setting translating between linear and angular velocity.</div></li><li><div class="item-name"><a class="enum" href="enum.TrackballWheelUnit.html" title="enum bevy_trackball::TrackballWheelUnit">TrackballWheelUnit</a></div><div class="desc docblock-short"><a href="struct.TrackballInput.html" title="struct bevy_trackball::TrackballInput"><code>TrackballInput</code></a> setting translating wheel units in coherent scale denominators.</div></li></ul></section></div></main></body></html>

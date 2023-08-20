@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["error","unsafe_world_cell"],"struct":["EntityMut","EntityRef","SpawnBatchIter","World","WorldBorrow","WorldBorrowMut","WorldCell","WorldId"],"trait":["FromWorld"]};

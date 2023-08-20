@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"trait":["Fixed","FixedBits","FixedBitsCast","FixedBitsOptionalArbitrary","FixedBitsOptionalBorsh","FixedBitsOptionalNum","FixedBitsOptionalSerde","FixedEquiv","FixedOptionalFeatures","FixedSigned","FixedUnsigned","FromFixed","LosslessTryFrom","LosslessTryInto","LossyFrom","LossyInto","ToFixed"]};
