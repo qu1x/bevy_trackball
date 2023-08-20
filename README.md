@@ -16,7 +16,10 @@ Coherent virtual trackball controller/camera plugin for Bevy
 [Rust]: https://img.shields.io/badge/rust-v1.70-brightgreen.svg
 [License]: https://img.shields.io/badge/License-MIT%20OR%20Apache--2.0-blue.svg
 
-Run simple and advanced [examples] in your browser using WASM and WebGL.
+Run simple and advanced [examples] in your browser using [WebAssembly] and [WebGL].
+
+[WebAssembly]: https://en.wikipedia.org/wiki/WebAssembly
+[WebGL]: https://en.wikipedia.org/wiki/WebGL
 
 ## Coherence Features
 
@@ -41,7 +44,7 @@ away from the screen’s center (e.g., the rotation accelerates towards the edge
     eye distance from current cursor position or centroid of finger positions projected onto
     focus plane.
   * Coherent linear/angular [`TrackballVelocity`] for sliding/orbiting or free look by
-    time-based input (e.g., pressed key). By default, the linear velocity is derived from
+    time-based input (e.g., pressed key). By default, the linear velocity is deduced from the
     angular velocity (where target and eye positions define the world radius) which in turn is
     defined in units of vertical field of view per seconds and hence independent of the world
     unit scale.
