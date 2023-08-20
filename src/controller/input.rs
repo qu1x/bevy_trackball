@@ -27,7 +27,7 @@ pub struct TrackballInput {
 
 	/// Mouse button used to look around. Default is [`MouseButton::Middle`].
 	pub first_button: Option<MouseButton>,
-	/// Key used to look around with single-finger touch. Default is [`KeyCode::ControlLeft`].
+	/// Key used to look around with single-finger touch. Default is [`KeyCode::ShiftLeft`].
 	pub first_key: Option<KeyCode>,
 	/// Key used to look left. Default is [`KeyCode::Left`].
 	pub first_left_key: Option<KeyCode>,
@@ -86,7 +86,7 @@ impl Default for TrackballInput {
 
 			reset_key: Some(KeyCode::Return),
 
-			first_key: Some(KeyCode::ControlLeft),
+			first_key: Some(KeyCode::ShiftLeft),
 			first_button: Some(MouseButton::Middle),
 			first_left_key: Some(KeyCode::Left),
 			first_right_key: Some(KeyCode::Right),
