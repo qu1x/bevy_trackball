@@ -50,7 +50,7 @@ target/%.wasm: target/%_bg.wasm
 	wasm-opt -Oz --output $< $@
 	touch $@
 
-.PHONY:
+.PHONY: serve
 serve: wasm
 	@printf "     \033[1;32mServing\033[0m examples\n"; \
 	basic-http-server target
