@@ -37,7 +37,7 @@ build: | target
 			example.html > target/$$example.html; \
 	done
 
-../../target/wasm32-unknown-unknown/wasm-release/examples/%.wasm: | build
+../../target/wasm32-unknown-unknown/wasm-release/examples/%.wasm: build
 	@true
 
 target/%_bg.wasm: ../../target/wasm32-unknown-unknown/wasm-release/examples/%.wasm
