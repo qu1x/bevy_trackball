@@ -63,9 +63,10 @@ var sourcesIndex = JSON.parse('{\
 "encase":["",[["core",[],["alignment_value.rs","buffers.rs","mod.rs","rw.rs","size_value.rs","traits.rs"]],["impls",[],["glam.rs","mod.rs"]],["types",[],["array.rs","matrix.rs","mod.rs","runtime_sized_array.rs","scalar.rs","struct.rs","vector.rs","wrapper.rs"]]],["lib.rs","utils.rs"]],\
 "encase_derive":["",[],["lib.rs"]],\
 "encase_derive_impl":["",[],["lib.rs"]],\
+"equivalent":["",[],["lib.rs"]],\
 "erased_serde":["",[["features_check",[],["mod.rs"]]],["any.rs","de.rs","error.rs","lib.rs","macros.rs","map.rs","private.rs","ser.rs"]],\
 "event_listener":["",[],["lib.rs"]],\
-"fastrand":["",[],["global_rng.rs","lib.rs"]],\
+"fastrand":["",[],["lib.rs"]],\
 "fixed":["",[["types",[],["extra.rs","mod.rs"]]],["arith.rs","bytes.rs","cast.rs","cmp.rs","cmp_fixed.rs","consts.rs","convert.rs","debug_hex.rs","display.rs","f128.rs","float_helper.rs","from_str.rs","helpers.rs","impl_bytemuck.rs","int256.rs","int_helper.rs","inv_lerp.rs","lerp.rs","lib.rs","log.rs","log10.rs","macros.rs","macros_const.rs","macros_frac.rs","macros_from_to.rs","macros_no_frac.rs","macros_round.rs","prim_traits.rs","serdeize.rs","traits.rs","traits_bits.rs","unwrapped.rs","wrapping.rs"]],\
 "fixedbitset":["",[],["lib.rs","range.rs"]],\
 "futures_core":["",[["task",[["__internal",[],["atomic_waker.rs","mod.rs"]]],["mod.rs","poll.rs"]]],["future.rs","lib.rs","stream.rs"]],\
@@ -85,7 +86,7 @@ var sourcesIndex = JSON.parse('{\
 "hexasphere":["",[],["interpolation.rs","lib.rs","shapes.rs","slice.rs"]],\
 "hexf_parse":["",[],["lib.rs"]],\
 "image":["",[["imageops",[],["affine.rs","colorops.rs","mod.rs","sample.rs"]],["io",[],["free_functions.rs","mod.rs","reader.rs"]],["math",[],["mod.rs","rect.rs","utils.rs"]],["utils",[],["mod.rs"]]],["animation.rs","buffer.rs","color.rs","dynimage.rs","error.rs","flat.rs","image.rs","lib.rs","traits.rs"]],\
-"indexmap":["",[["map",[["core",[],["raw.rs"]]],["core.rs"]]],["arbitrary.rs","equivalent.rs","lib.rs","macros.rs","map.rs","mutable_keys.rs","set.rs","util.rs"]],\
+"indexmap":["",[["map",[["core",[],["raw.rs"]]],["core.rs","iter.rs","slice.rs"]],["set",[],["iter.rs","slice.rs"]]],["arbitrary.rs","lib.rs","macros.rs","map.rs","mutable_keys.rs","set.rs","util.rs"]],\
 "instant":["",[],["lib.rs","native.rs"]],\
 "khronos_egl":["",[],["lib.rs"]],\
 "lazy_static":["",[],["inline_lazy.rs","lib.rs"]],\
@@ -124,8 +125,8 @@ var sourcesIndex = JSON.parse('{\
 "ron":["",[["de",[],["id.rs","mod.rs","tag.rs","value.rs"]],["ser",[],["mod.rs","value.rs"]]],["error.rs","extensions.rs","lib.rs","options.rs","parse.rs","value.rs"]],\
 "rustc_hash":["",[],["lib.rs"]],\
 "scopeguard":["",[],["lib.rs"]],\
-"serde":["",[["de",[],["format.rs","ignored_any.rs","impls.rs","mod.rs","seed.rs","size_hint.rs","utf8.rs","value.rs"]],["private",[],["de.rs","doc.rs","mod.rs","ser.rs"]],["ser",[],["fmt.rs","impls.rs","impossible.rs","mod.rs"]]],["integer128.rs","lib.rs","macros.rs"]],\
-"serde_derive":["",[],["buffer.rs","bytecode.rs","lib.rs","lib_precompiled.rs"]],\
+"serde":["",[["de",[],["format.rs","ignored_any.rs","impls.rs","mod.rs","seed.rs","size_hint.rs","value.rs"]],["private",[],["de.rs","doc.rs","mod.rs","ser.rs"]],["ser",[],["fmt.rs","impls.rs","impossible.rs","mod.rs"]]],["integer128.rs","lib.rs","macros.rs"]],\
+"serde_derive":["",[["internals",[],["ast.rs","attr.rs","case.rs","check.rs","ctxt.rs","mod.rs","receiver.rs","respan.rs","symbol.rs"]]],["bound.rs","de.rs","dummy.rs","fragment.rs","lib.rs","pretend.rs","ser.rs","this.rs"]],\
 "sharded_slab":["",[["page",[],["mod.rs","slot.rs","stack.rs"]]],["cfg.rs","clear.rs","implementation.rs","iter.rs","lib.rs","macros.rs","pool.rs","shard.rs","sync.rs","tid.rs"]],\
 "simba":["",[["scalar",[],["complex.rs","field.rs","mod.rs","real.rs","subset.rs"]],["simd",[],["auto_simd_impl.rs","mod.rs","simd_bool.rs","simd_complex.rs","simd_option.rs","simd_partial_ord.rs","simd_real.rs","simd_signed.rs","simd_value.rs"]]],["lib.rs"]],\
 "slab":["",[],["builder.rs","lib.rs"]],\
