@@ -49,23 +49,28 @@
 			}
 			main {
 				flex: 1;
-				min-width: 1280px;
+				width: 100%;
+				max-width: 1280px;
 			}
 			pre {
-				display: none;
-				width: 1280px;
+				display: block;
 				tab-size: 4;
 			}
 			pre code {
 				border-radius: 10px;
 			}
-			canvas {
-				outline: none;
-				border-radius: 10px;
-				display: none;
-				touch-action: none;
+			.viewport {
+				aspect-ratio: 16 / 9;
 			}
-			canvas:focus {
+			.viewport canvas {
+				display: block;
+				width: 100% !important;
+				height: 100% !important;
+				touch-action: none;
+				border-radius: 10px;
+				outline: none;
+			}
+			.viewport canvas:focus {
 				outline: none;
 			}
 		</style>
@@ -82,6 +87,14 @@
 			» <a href="egui.html">egui</a>
 		</nav>
 		<main>
+			<div class="viewport">
+				<canvas id="bevy"></canvas>
+			</div>
+			<pre>
+				<code class="language-rust">
+					{SOURCE}
+				</code>
+			</pre>
 			<script type="module">
 				let code = document.body.querySelector('code');
 				code.innerHTML = code.innerHTML.trim();
@@ -92,28 +105,12 @@
 						throw error;
 					}
 				});
-				let mo = new MutationObserver(function(mutations) {
-					const canvas = document.body.querySelector('canvas');
-					if (canvas !== null) {
-						mo.disconnect();
-						canvas.addEventListener('contextmenu', (e) => {
-							e.preventDefault();
-							e.stopPropagation();
-						});
-						let main = document.body.querySelector('main');
-						main.prepend(canvas);
-						canvas.style.display = 'block';
-						let pre = document.body.querySelector('pre');
-						pre.style.display = 'block';
-					}
+				let canvas = document.body.querySelector('#bevy');
+				canvas.addEventListener('contextmenu', (e) => {
+					e.preventDefault();
+					e.stopPropagation();
 				});
-				mo.observe(document.body, { childList: true });
 			</script>
-			<pre>
-				<code class="language-rust">
-					{SOURCE}
-				</code>
-			</pre>
 		</main>
 		<footer>
 			» <a href="../doc/bevy_trackball">documentation</a>
