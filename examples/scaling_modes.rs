@@ -14,7 +14,7 @@ use bevy::{
 	render::camera::{RenderTarget, Viewport},
 	window::{PrimaryWindow, WindowRef, WindowResized},
 };
-use bevy_trackball::prelude::*;
+use bevy_trackball::prelude::{Fixed, *};
 
 fn main() {
 	App::new()
@@ -164,7 +164,7 @@ fn set_camera_viewports(
 	// We need to dynamically resize the camera's viewports whenever the window size changes,
 	// so then each camera always takes up half the screen. A `resize_event` is sent when the window
 	// is first created, allowing us to reuse this system for initial setup.
-	for resize_event in &mut resize_events {
+	for resize_event in resize_events.read() {
 		let (resize_entity, resize_window) = windows.get(resize_event.window).unwrap();
 		let resolution = &resize_window.resolution;
 		for mut left_camera in &mut left_cameras {
