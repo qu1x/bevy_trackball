@@ -45,7 +45,7 @@ pub fn mouse(
 		window.cursor.grab_mode = CursorGrabMode::None;
 		window.cursor.visible = true;
 	}
-	for delta_event in &mut delta_events {
+	for delta_event in delta_events.read() {
 		if controller.first.enabled() {
 			if let Some((pitch, yaw, yaw_axis)) =
 				controller.first.compute(&(-delta_event.delta).into(), &max)
@@ -78,7 +78,7 @@ pub fn mouse(
 		controller.slide.discard();
 		window.cursor.icon = CursorIcon::Arrow;
 	}
-	for mouse_event in &mut mouse_events {
+	for mouse_event in mouse_events.read() {
 		let pos = mouse_event.position - min;
 		if controller
 			.input
@@ -106,7 +106,7 @@ pub fn mouse(
 			}
 		}
 	}
-	for &wheel_event in &mut wheel_events {
+	for &wheel_event in wheel_events.read() {
 		let num = match wheel_event.unit {
 			MouseScrollUnit::Line => {
 				let denominator = controller.input.wheel_unit.denominator(w);

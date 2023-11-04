@@ -54,7 +54,7 @@ impl TrackballViewport {
 		Mut<'a, TrackballController>,
 	)> {
 		let touch = touch_events
-			.iter()
+			.read()
 			.filter_map(|touch| (touch.phase == TouchPhase::Started).then_some(touch.position))
 			.last();
 		let input = !wheel_events.is_empty()

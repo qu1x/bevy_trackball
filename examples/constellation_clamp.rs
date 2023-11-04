@@ -180,7 +180,7 @@ fn resize_minimap(
 	mut resize_events: EventReader<WindowResized>,
 	mut minimap: Query<&mut Camera, With<MinimapCamera>>,
 ) {
-	for resize_event in &mut resize_events {
+	for resize_event in resize_events.read() {
 		let window = windows.get(resize_event.window).unwrap();
 		let mut minimap = minimap.single_mut();
 		let size = window.resolution.physical_width() / 4;

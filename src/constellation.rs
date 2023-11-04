@@ -10,7 +10,7 @@ pub fn trackball_constellation(
 	mut trackball_events: EventReader<TrackballEvent>,
 	mut cameras: Query<(Entity, &mut TrackballCamera)>,
 ) {
-	for trackball_event in &mut trackball_events {
+	for trackball_event in trackball_events.read() {
 		let mut min_delta = trackball_event.delta;
 		let mut loops = 0;
 		loop {

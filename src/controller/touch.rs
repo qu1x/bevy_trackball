@@ -18,7 +18,7 @@ pub fn touch(
 	max: Vec2,
 ) {
 	let max = max.into();
-	for &touch_event in &mut touch_events {
+	for &touch_event in touch_events.read() {
 		let TouchInput {
 			id,
 			phase,
