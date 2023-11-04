@@ -37,16 +37,17 @@ fn setup(
 	mut meshes: ResMut<Assets<Mesh>>,
 	mut materials: ResMut<Assets<StandardMaterial>>,
 ) {
-	// plane
+	// circular base
 	commands.spawn(PbrBundle {
-		mesh: meshes.add(shape::Plane::from_size(5.0).into()),
-		material: materials.add(Color::rgb(0.3, 0.5, 0.3).into()),
+		mesh: meshes.add(shape::Circle::new(4.0).into()),
+		material: materials.add(Color::WHITE.into()),
+		transform: Transform::from_rotation(Quat::from_rotation_x(-std::f32::consts::FRAC_PI_2)),
 		..default()
 	});
 	// cube
 	commands.spawn(PbrBundle {
 		mesh: meshes.add(Mesh::from(shape::Cube { size: 1.0 })),
-		material: materials.add(Color::rgb(0.8, 0.7, 0.6).into()),
+		material: materials.add(Color::rgb_u8(124, 144, 255).into()),
 		transform: Transform::from_xyz(0.0, 0.5, 0.0),
 		..default()
 	});
@@ -63,7 +64,7 @@ fn setup(
 	// camera
 	commands.spawn((
 		TrackballController::default(),
-		TrackballCamera::look_at(Vec3::Y * 0.25, Vec3::new(-2.0, 2.5, 5.0), Vec3::Y),
+		TrackballCamera::look_at(Vec3::Y * 0.25, Vec3::new(-2.5, 4.5, 9.0), Vec3::Y),
 		Camera3dBundle::default(),
 	));
 }
