@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/n3vu0r/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ecs-0.11.2/src/schedule/executor/multi_threaded.rs`."><title>multi_threaded.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-9bb858ba049f1f21.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="bevy_ecs" data-themes="" data-resource-suffix="" data-rustdoc-version="1.72.0 (5680fa18f 2023-08-23)" data-channel="1.72.0" data-search-js="search-f6292fe389d70017.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-0f8c037637f9eb3e.css" data-theme-dark-css="dark-1097f8e92a01e3cf.css" data-theme-ayu-css="ayu-614652228113ac93.css" ><script src="../../../../static.files/storage-59fd9b8ccb335783.js"></script><script defer src="../../../../static.files/source-script-106908c7a7964ba4.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../../static.files/light-0f8c037637f9eb3e.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../../static.files/dark-1097f8e92a01e3cf.css"><link rel="stylesheet" href="../../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../../bevy_ecs/index.html"><img class="rust-logo" src="../../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ecs-0.12.0/src/schedule/executor/multi_threaded.rs`."><title>multi_threaded.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="bevy_ecs" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../../bevy_ecs/index.html"><img class="rust-logo" src="../../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -738,11 +738,6 @@
 <a href="#738" id="738">738</a>
 <a href="#739" id="739">739</a>
 <a href="#740" id="740">740</a>
-<a href="#741" id="741">741</a>
-<a href="#742" id="742">742</a>
-<a href="#743" id="743">743</a>
-<a href="#744" id="744">744</a>
-<a href="#745" id="745">745</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::{
     any::Any,
     sync::{Arc, Mutex},
@@ -752,7 +747,7 @@
 <span class="kw">use </span>bevy_utils::default;
 <span class="kw">use </span>bevy_utils::syncunsafecell::SyncUnsafeCell;
 <span class="attr">#[cfg(feature = <span class="string">&quot;trace&quot;</span>)]
-</span><span class="kw">use </span>bevy_utils::tracing::{info_span, Instrument};
+</span><span class="kw">use </span>bevy_utils::tracing::{info_span, Instrument, Span};
 <span class="kw">use </span>std::panic::AssertUnwindSafe;
 
 <span class="kw">use </span>async_channel::{Receiver, Sender};
@@ -807,6 +802,9 @@
     </span>is_send: bool,
     <span class="doccomment">/// Is `true` if the system is exclusive.
     </span>is_exclusive: bool,
+    <span class="doccomment">/// Cached tracing span for system task
+    </span><span class="attr">#[cfg(feature = <span class="string">&quot;trace&quot;</span>)]
+    </span>system_task_span: Span,
 }
 
 <span class="doccomment">/// The result of running a system that is sent across a channel.
@@ -898,6 +896,11 @@
                 dependents: schedule.system_dependents[index].clone(),
                 is_send: schedule.systems[index].is_send(),
                 is_exclusive: schedule.systems[index].is_exclusive(),
+                <span class="attr">#[cfg(feature = <span class="string">&quot;trace&quot;</span>)]
+                </span>system_task_span: <span class="macro">info_span!</span>(
+                    <span class="string">&quot;system_task&quot;</span>,
+                    name = <span class="kw-2">&amp;*</span>schedule.systems[index].name()
+                ),
             });
         }
 
@@ -932,7 +935,7 @@
             <span class="kw-2">mut </span>conditions,
         } = SyncUnsafeSchedule::new(schedule);
 
-        ComputeTaskPool::init(TaskPool::default).scope_with_executor(
+        ComputeTaskPool::get_or_init(TaskPool::default).scope_with_executor(
             <span class="bool-val">false</span>,
             thread_executor,
             |scope| {
@@ -1221,7 +1224,7 @@
     /// - `world` must have permission to access the world data
     ///   used by the specified system.
     /// - `update_archetype_component_access` must have been called with `world`
-    ///   on the system assocaited with `system_index`.
+    ///   on the system associated with `system_index`.
     </span><span class="kw">unsafe fn </span>spawn_system_task&lt;<span class="lifetime">&#39;scope</span>&gt;(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
         scope: <span class="kw-2">&amp;</span>Scope&lt;<span class="lifetime">&#39;_</span>, <span class="lifetime">&#39;scope</span>, ()&gt;,
@@ -1231,17 +1234,9 @@
     ) {
         <span class="comment">// SAFETY: this system is not running, no other reference exists
         </span><span class="kw">let </span>system = <span class="kw">unsafe </span>{ <span class="kw-2">&amp;mut *</span>systems[system_index].get() };
-
-        <span class="attr">#[cfg(feature = <span class="string">&quot;trace&quot;</span>)]
-        </span><span class="kw">let </span>task_span = <span class="macro">info_span!</span>(<span class="string">&quot;system_task&quot;</span>, name = <span class="kw-2">&amp;*</span>system.name());
-        <span class="attr">#[cfg(feature = <span class="string">&quot;trace&quot;</span>)]
-        </span><span class="kw">let </span>system_span = <span class="macro">info_span!</span>(<span class="string">&quot;system&quot;</span>, name = <span class="kw-2">&amp;*</span>system.name());
-
         <span class="kw">let </span>sender = <span class="self">self</span>.sender.clone();
         <span class="kw">let </span>panic_payload = <span class="self">self</span>.panic_payload.clone();
         <span class="kw">let </span>task = <span class="kw">async move </span>{
-            <span class="attr">#[cfg(feature = <span class="string">&quot;trace&quot;</span>)]
-            </span><span class="kw">let </span>system_guard = system_span.enter();
             <span class="kw">let </span>res = std::panic::catch_unwind(AssertUnwindSafe(|| {
                 <span class="comment">// SAFETY:
                 // - The caller ensures that we have permission to
@@ -1249,8 +1244,6 @@
                 // - `update_archetype_component_access` has been called.
                 </span><span class="kw">unsafe </span>{ system.run_unsafe((), world) };
             }));
-            <span class="attr">#[cfg(feature = <span class="string">&quot;trace&quot;</span>)]
-            </span>drop(system_guard);
             <span class="comment">// tell the executor that the system finished
             </span>sender
                 .try_send(SystemResult {
@@ -1269,7 +1262,11 @@
         };
 
         <span class="attr">#[cfg(feature = <span class="string">&quot;trace&quot;</span>)]
-        </span><span class="kw">let </span>task = task.instrument(task_span);
+        </span><span class="kw">let </span>task = task.instrument(
+            <span class="self">self</span>.system_task_metadata[system_index]
+                .system_task_span
+                .clone(),
+        );
 
         <span class="kw">let </span>system_meta = <span class="kw-2">&amp;</span><span class="self">self</span>.system_task_metadata[system_index];
         <span class="self">self</span>.active_access
@@ -1295,11 +1292,6 @@
         <span class="comment">// SAFETY: this system is not running, no other reference exists
         </span><span class="kw">let </span>system = <span class="kw">unsafe </span>{ <span class="kw-2">&amp;mut *</span>systems[system_index].get() };
 
-        <span class="attr">#[cfg(feature = <span class="string">&quot;trace&quot;</span>)]
-        </span><span class="kw">let </span>task_span = <span class="macro">info_span!</span>(<span class="string">&quot;system_task&quot;</span>, name = <span class="kw-2">&amp;*</span>system.name());
-        <span class="attr">#[cfg(feature = <span class="string">&quot;trace&quot;</span>)]
-        </span><span class="kw">let </span>system_span = <span class="macro">info_span!</span>(<span class="string">&quot;system&quot;</span>, name = <span class="kw-2">&amp;*</span>system.name());
-
         <span class="kw">let </span>sender = <span class="self">self</span>.sender.clone();
         <span class="kw">let </span>panic_payload = <span class="self">self</span>.panic_payload.clone();
         <span class="kw">if </span>is_apply_deferred(system) {
@@ -1307,11 +1299,7 @@
             </span><span class="kw">let </span>unapplied_systems = <span class="self">self</span>.unapplied_systems.clone();
             <span class="self">self</span>.unapplied_systems.clear();
             <span class="kw">let </span>task = <span class="kw">async move </span>{
-                <span class="attr">#[cfg(feature = <span class="string">&quot;trace&quot;</span>)]
-                </span><span class="kw">let </span>system_guard = system_span.enter();
                 <span class="kw">let </span>res = apply_deferred(<span class="kw-2">&amp;</span>unapplied_systems, systems, world);
-                <span class="attr">#[cfg(feature = <span class="string">&quot;trace&quot;</span>)]
-                </span>drop(system_guard);
                 <span class="comment">// tell the executor that the system finished
                 </span>sender
                     .try_send(SystemResult {
@@ -1327,17 +1315,17 @@
             };
 
             <span class="attr">#[cfg(feature = <span class="string">&quot;trace&quot;</span>)]
-            </span><span class="kw">let </span>task = task.instrument(task_span);
+            </span><span class="kw">let </span>task = task.instrument(
+                <span class="self">self</span>.system_task_metadata[system_index]
+                    .system_task_span
+                    .clone(),
+            );
             scope.spawn_on_scope(task);
         } <span class="kw">else </span>{
             <span class="kw">let </span>task = <span class="kw">async move </span>{
-                <span class="attr">#[cfg(feature = <span class="string">&quot;trace&quot;</span>)]
-                </span><span class="kw">let </span>system_guard = system_span.enter();
                 <span class="kw">let </span>res = std::panic::catch_unwind(AssertUnwindSafe(|| {
                     system.run((), world);
                 }));
-                <span class="attr">#[cfg(feature = <span class="string">&quot;trace&quot;</span>)]
-                </span>drop(system_guard);
                 <span class="comment">// tell the executor that the system finished
                 </span>sender
                     .try_send(SystemResult {
@@ -1357,7 +1345,11 @@
             };
 
             <span class="attr">#[cfg(feature = <span class="string">&quot;trace&quot;</span>)]
-            </span><span class="kw">let </span>task = task.instrument(task_span);
+            </span><span class="kw">let </span>task = task.instrument(
+                <span class="self">self</span>.system_task_metadata[system_index]
+                    .system_task_span
+                    .clone(),
+            );
             scope.spawn_on_scope(task);
         }
 
@@ -1463,8 +1455,6 @@
     </span>conditions
         .iter_mut()
         .map(|condition| {
-            <span class="attr">#[cfg(feature = <span class="string">&quot;trace&quot;</span>)]
-            </span><span class="kw">let </span>_condition_span = <span class="macro">info_span!</span>(<span class="string">&quot;condition&quot;</span>, name = <span class="kw-2">&amp;*</span>condition.name()).entered();
             <span class="comment">// SAFETY: The caller ensures that `world` has permission to
             // access any data required by the condition.
             </span><span class="kw">unsafe </span>{ condition.run_unsafe((), world) }

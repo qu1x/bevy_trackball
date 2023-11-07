@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":["a11y","app","core","diagnostic","ecs","hierarchy","input","log","math","prelude","ptr","reflect","render","scene","tasks","time","transform","utils","window"],"struct":["DefaultPlugins","MinimalPlugins"]};
+window.SIDEBAR_ITEMS = {"mod":["a11y","app","core","diagnostic","ecs","hierarchy","input","log","math","prelude","ptr","reflect","render","tasks","time","transform","utils","window"],"struct":["DefaultPlugins","MinimalPlugins"]};

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/n3vu0r/.cargo/registry/src/index.crates.io-6f17d22bba15001f/naga-0.12.3/src/back/wgsl/writer.rs`."><title>writer.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-9bb858ba049f1f21.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="naga" data-themes="" data-resource-suffix="" data-rustdoc-version="1.72.0 (5680fa18f 2023-08-23)" data-channel="1.72.0" data-search-js="search-f6292fe389d70017.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-0f8c037637f9eb3e.css" data-theme-dark-css="dark-1097f8e92a01e3cf.css" data-theme-ayu-css="ayu-614652228113ac93.css" ><script src="../../../../static.files/storage-59fd9b8ccb335783.js"></script><script defer src="../../../../static.files/source-script-106908c7a7964ba4.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../../static.files/light-0f8c037637f9eb3e.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../../static.files/dark-1097f8e92a01e3cf.css"><link rel="stylesheet" href="../../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../../naga/index.html"><img class="rust-logo" src="../../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/naga-0.13.0/src/back/wgsl/writer.rs`."><title>writer.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="naga" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../../naga/index.html"><img class="rust-logo" src="../../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1923,34 +1923,6 @@
 <a href="#1923" id="1923">1923</a>
 <a href="#1924" id="1924">1924</a>
 <a href="#1925" id="1925">1925</a>
-<a href="#1926" id="1926">1926</a>
-<a href="#1927" id="1927">1927</a>
-<a href="#1928" id="1928">1928</a>
-<a href="#1929" id="1929">1929</a>
-<a href="#1930" id="1930">1930</a>
-<a href="#1931" id="1931">1931</a>
-<a href="#1932" id="1932">1932</a>
-<a href="#1933" id="1933">1933</a>
-<a href="#1934" id="1934">1934</a>
-<a href="#1935" id="1935">1935</a>
-<a href="#1936" id="1936">1936</a>
-<a href="#1937" id="1937">1937</a>
-<a href="#1938" id="1938">1938</a>
-<a href="#1939" id="1939">1939</a>
-<a href="#1940" id="1940">1940</a>
-<a href="#1941" id="1941">1941</a>
-<a href="#1942" id="1942">1942</a>
-<a href="#1943" id="1943">1943</a>
-<a href="#1944" id="1944">1944</a>
-<a href="#1945" id="1945">1945</a>
-<a href="#1946" id="1946">1946</a>
-<a href="#1947" id="1947">1947</a>
-<a href="#1948" id="1948">1948</a>
-<a href="#1949" id="1949">1949</a>
-<a href="#1950" id="1950">1950</a>
-<a href="#1951" id="1951">1951</a>
-<a href="#1952" id="1952">1952</a>
-<a href="#1953" id="1953">1953</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">super</span>::Error;
 <span class="kw">use crate</span>::{
     back,
@@ -2006,6 +1978,7 @@
 <span class="macro">bitflags::bitflags! </span>{
     <span class="attr">#[cfg_attr(feature = <span class="string">&quot;serialize&quot;</span>, derive(serde::Serialize))]
     #[cfg_attr(feature = <span class="string">&quot;deserialize&quot;</span>, derive(serde::Deserialize))]
+    #[derive(Clone, Copy, Debug, Eq, PartialEq)]
     </span><span class="kw">pub struct </span>WriterFlags: u32 {
         <span class="doccomment">/// Always annotate the type information instead of inferring.
         </span><span class="kw">const </span>EXPLICIT_TYPES = <span class="number">0x1</span>;
@@ -2039,7 +2012,9 @@
             module,
             <span class="kw">crate</span>::keywords::wgsl::RESERVED,
             <span class="comment">// an identifier must not start with two underscore
-            </span><span class="kw-2">&amp;</span>[<span class="string">&quot;__&quot;</span>],
+            </span><span class="kw-2">&amp;</span>[],
+            <span class="kw-2">&amp;</span>[],
+            <span class="kw-2">&amp;</span>[<span class="string">&quot;__&quot;</span>],
             <span class="kw-2">&amp;mut </span><span class="self">self</span>.names,
         );
         <span class="self">self</span>.named_expressions.clear();
@@ -2068,10 +2043,17 @@
             }
         }
 
-        <span class="comment">// Write all constants
-        </span><span class="kw">for </span>(handle, constant) <span class="kw">in </span>module.constants.iter() {
-            <span class="kw">if </span>constant.name.is_some() {
-                <span class="self">self</span>.write_global_constant(module, <span class="kw-2">&amp;</span>constant.inner, handle)<span class="question-mark">?</span>;
+        <span class="comment">// Write all named constants
+        </span><span class="kw">let </span><span class="kw-2">mut </span>constants = module
+            .constants
+            .iter()
+            .filter(|<span class="kw-2">&amp;</span>(<span class="kw">_</span>, c)| c.name.is_some())
+            .peekable();
+        <span class="kw">while let </span><span class="prelude-val">Some</span>((handle, <span class="kw">_</span>)) = constants.next() {
+            <span class="self">self</span>.write_global_constant(module, handle)<span class="question-mark">?</span>;
+            <span class="comment">// Add extra newline for readability on last iteration
+            </span><span class="kw">if </span>constants.peek().is_none() {
+                <span class="macro">writeln!</span>(<span class="self">self</span>.out)<span class="question-mark">?</span>;
             }
         }
 
@@ -2127,25 +2109,6 @@
             <span class="kw">if </span>index &lt; module.entry_points.len() - <span class="number">1 </span>{
                 <span class="macro">writeln!</span>(<span class="self">self</span>.out)<span class="question-mark">?</span>;
             }
-        }
-
-        <span class="prelude-val">Ok</span>(())
-    }
-
-    <span class="doccomment">/// Helper method used to write [`ScalarValue`](crate::ScalarValue)
-    ///
-    /// # Notes
-    /// Adds no trailing or leading whitespace
-    </span><span class="kw">fn </span>write_scalar_value(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: <span class="kw">crate</span>::ScalarValue) -&gt; BackendResult {
-        <span class="kw">use </span><span class="kw">crate</span>::ScalarValue <span class="kw">as </span>Sv;
-
-        <span class="kw">match </span>value {
-            Sv::Sint(value) =&gt; <span class="macro">write!</span>(<span class="self">self</span>.out, <span class="string">&quot;{value}&quot;</span>)<span class="question-mark">?</span>,
-            Sv::Uint(value) =&gt; <span class="macro">write!</span>(<span class="self">self</span>.out, <span class="string">&quot;{value}u&quot;</span>)<span class="question-mark">?</span>,
-            <span class="comment">// Floats are written using `Debug` instead of `Display` because it always appends the
-            // decimal part even it&#39;s zero
-            </span>Sv::Float(value) =&gt; <span class="macro">write!</span>(<span class="self">self</span>.out, <span class="string">&quot;{value:?}&quot;</span>)<span class="question-mark">?</span>,
-            Sv::Bool(value) =&gt; <span class="macro">write!</span>(<span class="self">self</span>.out, <span class="string">&quot;{value}&quot;</span>)<span class="question-mark">?</span>,
         }
 
         <span class="prelude-val">Ok</span>(())
@@ -2252,7 +2215,7 @@
 
                 <span class="comment">// Write the constant
                 // `write_constant` adds no trailing or leading space/newline
-                </span><span class="self">self</span>.write_constant(module, init)<span class="question-mark">?</span>;
+                </span><span class="self">self</span>.write_const_expression(module, init)<span class="question-mark">?</span>;
             }
 
             <span class="comment">// Finish the local with `;` and add a newline (only for readability)
@@ -2456,10 +2419,9 @@
                 // array&lt;A&gt; -- Dynamic array
                 </span><span class="macro">write!</span>(<span class="self">self</span>.out, <span class="string">&quot;array&lt;&quot;</span>)<span class="question-mark">?</span>;
                 <span class="kw">match </span>size {
-                    <span class="kw">crate</span>::ArraySize::Constant(handle) =&gt; {
+                    <span class="kw">crate</span>::ArraySize::Constant(len) =&gt; {
                         <span class="self">self</span>.write_type(module, base)<span class="question-mark">?</span>;
-                        <span class="macro">write!</span>(<span class="self">self</span>.out, <span class="string">&quot;,&quot;</span>)<span class="question-mark">?</span>;
-                        <span class="self">self</span>.write_constant(module, handle)<span class="question-mark">?</span>;
+                        <span class="macro">write!</span>(<span class="self">self</span>.out, <span class="string">&quot;, {len}&quot;</span>)<span class="question-mark">?</span>;
                     }
                     <span class="kw">crate</span>::ArraySize::Dynamic =&gt; {
                         <span class="self">self</span>.write_type(module, base)<span class="question-mark">?</span>;
@@ -2471,10 +2433,9 @@
                 <span class="comment">// More info https://github.com/gpuweb/gpuweb/issues/2105
                 </span><span class="macro">write!</span>(<span class="self">self</span>.out, <span class="string">&quot;binding_array&lt;&quot;</span>)<span class="question-mark">?</span>;
                 <span class="kw">match </span>size {
-                    <span class="kw">crate</span>::ArraySize::Constant(handle) =&gt; {
+                    <span class="kw">crate</span>::ArraySize::Constant(len) =&gt; {
                         <span class="self">self</span>.write_type(module, base)<span class="question-mark">?</span>;
-                        <span class="macro">write!</span>(<span class="self">self</span>.out, <span class="string">&quot;,&quot;</span>)<span class="question-mark">?</span>;
-                        <span class="self">self</span>.write_constant(module, handle)<span class="question-mark">?</span>;
+                        <span class="macro">write!</span>(<span class="self">self</span>.out, <span class="string">&quot;, {len}&quot;</span>)<span class="question-mark">?</span>;
                     }
                     <span class="kw">crate</span>::ArraySize::Dynamic =&gt; {
                         <span class="self">self</span>.write_type(module, base)<span class="question-mark">?</span>;
@@ -2586,11 +2547,6 @@
                         // Otherwise, we could accidentally write variable name instead of full expression.
                         // Also, we use sanitized names! It defense backend from generating variable with name from reserved keywords.
                         </span><span class="prelude-val">Some</span>(<span class="self">self</span>.namer.call(name))
-                    } <span class="kw">else if </span>info.ref_count == <span class="number">0 </span>{
-                        <span class="macro">write!</span>(<span class="self">self</span>.out, <span class="string">&quot;{level}_ = &quot;</span>)<span class="question-mark">?</span>;
-                        <span class="self">self</span>.write_expr(module, handle, func_ctx)<span class="question-mark">?</span>;
-                        <span class="macro">writeln!</span>(<span class="self">self</span>.out, <span class="string">&quot;;&quot;</span>)<span class="question-mark">?</span>;
-                        <span class="kw">continue</span>;
                     } <span class="kw">else </span>{
                         <span class="kw">let </span>expr = <span class="kw-2">&amp;</span>func_ctx.expressions[handle];
                         <span class="kw">let </span>min_ref_count = expr.bake_ref_count();
@@ -2665,14 +2621,11 @@
             Statement::Store { pointer, value } =&gt; {
                 <span class="macro">write!</span>(<span class="self">self</span>.out, <span class="string">&quot;{level}&quot;</span>)<span class="question-mark">?</span>;
 
-                <span class="kw">let </span>is_atomic = <span class="kw">match </span><span class="kw-2">*</span>func_ctx.info[pointer].ty.inner_with(<span class="kw-2">&amp;</span>module.types) {
-                    <span class="kw">crate</span>::TypeInner::Pointer { base, .. } =&gt; <span class="kw">match </span>module.types[base].inner {
-                        <span class="kw">crate</span>::TypeInner::Atomic { .. } =&gt; <span class="bool-val">true</span>,
-                        <span class="kw">_ </span>=&gt; <span class="bool-val">false</span>,
-                    },
-                    <span class="kw">_ </span>=&gt; <span class="bool-val">false</span>,
-                };
-                <span class="kw">if </span>is_atomic {
+                <span class="kw">let </span>is_atomic_pointer = func_ctx
+                    .resolve_type(pointer, <span class="kw-2">&amp;</span>module.types)
+                    .is_atomic_pointer(<span class="kw-2">&amp;</span>module.types);
+
+                <span class="kw">if </span>is_atomic_pointer {
                     <span class="macro">write!</span>(<span class="self">self</span>.out, <span class="string">&quot;atomicStore(&quot;</span>)<span class="question-mark">?</span>;
                     <span class="self">self</span>.write_expr(module, pointer, func_ctx)<span class="question-mark">?</span>;
                     <span class="macro">write!</span>(<span class="self">self</span>.out, <span class="string">&quot;, &quot;</span>)<span class="question-mark">?</span>;
@@ -2704,12 +2657,10 @@
                 <span class="kw">let </span>func_name = <span class="kw-2">&amp;</span><span class="self">self</span>.names[<span class="kw-2">&amp;</span>NameKey::Function(function)];
                 <span class="macro">write!</span>(<span class="self">self</span>.out, <span class="string">&quot;{func_name}(&quot;</span>)<span class="question-mark">?</span>;
                 <span class="kw">for </span>(index, <span class="kw-2">&amp;</span>argument) <span class="kw">in </span>arguments.iter().enumerate() {
-                    <span class="self">self</span>.write_expr(module, argument, func_ctx)<span class="question-mark">?</span>;
-                    <span class="comment">// Only write a comma if isn&#39;t the last element
-                    </span><span class="kw">if </span>index != arguments.len().saturating_sub(<span class="number">1</span>) {
-                        <span class="comment">// The leading space is for readability only
-                        </span><span class="macro">write!</span>(<span class="self">self</span>.out, <span class="string">&quot;, &quot;</span>)<span class="question-mark">?</span>;
+                    <span class="kw">if </span>index != <span class="number">0 </span>{
+                        <span class="macro">write!</span>(<span class="self">self</span>.out, <span class="string">&quot;, &quot;</span>)<span class="question-mark">?</span>;
                     }
+                    <span class="self">self</span>.write_expr(module, argument, func_ctx)<span class="question-mark">?</span>;
                 }
                 <span class="macro">writeln!</span>(<span class="self">self</span>.out, <span class="string">&quot;);&quot;</span>)<span class="question-mark">?
             </span>}
@@ -2735,6 +2686,16 @@
                 <span class="self">self</span>.write_expr(module, value, func_ctx)<span class="question-mark">?</span>;
                 <span class="macro">writeln!</span>(<span class="self">self</span>.out, <span class="string">&quot;);&quot;</span>)<span class="question-mark">?
             </span>}
+            Statement::WorkGroupUniformLoad { pointer, result } =&gt; {
+                <span class="macro">write!</span>(<span class="self">self</span>.out, <span class="string">&quot;{level}&quot;</span>)<span class="question-mark">?</span>;
+                <span class="comment">// TODO: Obey named expressions here.
+                </span><span class="kw">let </span>res_name = <span class="macro">format!</span>(<span class="string">&quot;{}{}&quot;</span>, back::BAKE_PREFIX, result.index());
+                <span class="self">self</span>.start_named_expr(module, result, func_ctx, <span class="kw-2">&amp;</span>res_name)<span class="question-mark">?</span>;
+                <span class="self">self</span>.named_expressions.insert(result, res_name);
+                <span class="macro">write!</span>(<span class="self">self</span>.out, <span class="string">&quot;workgroupUniformLoad(&quot;</span>)<span class="question-mark">?</span>;
+                <span class="self">self</span>.write_expr(module, pointer, func_ctx)<span class="question-mark">?</span>;
+                <span class="macro">writeln!</span>(<span class="self">self</span>.out, <span class="string">&quot;);&quot;</span>)<span class="question-mark">?</span>;
+            }
             Statement::ImageStore {
                 image,
                 coordinate,
@@ -2934,7 +2895,7 @@
                 }
             }
             Ex::Access { base, .. } | Ex::AccessIndex { base, .. } =&gt; {
-                <span class="kw">let </span>base_ty = func_ctx.info[base].ty.inner_with(<span class="kw-2">&amp;</span>module.types);
+                <span class="kw">let </span>base_ty = func_ctx.resolve_type(base, <span class="kw-2">&amp;</span>module.types);
                 <span class="kw">match </span><span class="kw-2">*</span>base_ty {
                     <span class="kw">crate</span>::TypeInner::Pointer { .. } | <span class="kw">crate</span>::TypeInner::ValuePointer { .. } =&gt; {
                         Indirection::Reference
@@ -3024,6 +2985,74 @@
         <span class="prelude-val">Ok</span>(())
     }
 
+    <span class="kw">fn </span>write_const_expression(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        module: <span class="kw-2">&amp;</span>Module,
+        expr: Handle&lt;<span class="kw">crate</span>::Expression&gt;,
+    ) -&gt; BackendResult {
+        <span class="self">self</span>.write_possibly_const_expression(
+            module,
+            expr,
+            <span class="kw-2">&amp;</span>module.const_expressions,
+            |writer, expr| writer.write_const_expression(module, expr),
+        )
+    }
+
+    <span class="kw">fn </span>write_possibly_const_expression&lt;E&gt;(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        module: <span class="kw-2">&amp;</span>Module,
+        expr: Handle&lt;<span class="kw">crate</span>::Expression&gt;,
+        expressions: <span class="kw-2">&amp;</span><span class="kw">crate</span>::Arena&lt;<span class="kw">crate</span>::Expression&gt;,
+        write_expression: E,
+    ) -&gt; BackendResult
+    <span class="kw">where
+        </span>E: Fn(<span class="kw-2">&amp;mut </span><span class="self">Self</span>, Handle&lt;<span class="kw">crate</span>::Expression&gt;) -&gt; BackendResult,
+    {
+        <span class="kw">use </span><span class="kw">crate</span>::Expression;
+
+        <span class="kw">match </span>expressions[expr] {
+            Expression::Literal(literal) =&gt; {
+                <span class="kw">match </span>literal {
+                    <span class="comment">// Floats are written using `Debug` instead of `Display` because it always appends the
+                    // decimal part even it&#39;s zero
+                    </span><span class="kw">crate</span>::Literal::F64(<span class="kw">_</span>) =&gt; {
+                        <span class="kw">return </span><span class="prelude-val">Err</span>(Error::Custom(<span class="string">&quot;unsupported f64 literal&quot;</span>.to_string()));
+                    }
+                    <span class="kw">crate</span>::Literal::F32(value) =&gt; <span class="macro">write!</span>(<span class="self">self</span>.out, <span class="string">&quot;{:?}&quot;</span>, value)<span class="question-mark">?</span>,
+                    <span class="kw">crate</span>::Literal::U32(value) =&gt; <span class="macro">write!</span>(<span class="self">self</span>.out, <span class="string">&quot;{}u&quot;</span>, value)<span class="question-mark">?</span>,
+                    <span class="kw">crate</span>::Literal::I32(value) =&gt; <span class="macro">write!</span>(<span class="self">self</span>.out, <span class="string">&quot;{}&quot;</span>, value)<span class="question-mark">?</span>,
+                    <span class="kw">crate</span>::Literal::Bool(value) =&gt; <span class="macro">write!</span>(<span class="self">self</span>.out, <span class="string">&quot;{}&quot;</span>, value)<span class="question-mark">?</span>,
+                }
+            }
+            Expression::Constant(handle) =&gt; {
+                <span class="kw">let </span>constant = <span class="kw-2">&amp;</span>module.constants[handle];
+                <span class="kw">if </span>constant.name.is_some() {
+                    <span class="macro">write!</span>(<span class="self">self</span>.out, <span class="string">&quot;{}&quot;</span>, <span class="self">self</span>.names[<span class="kw-2">&amp;</span>NameKey::Constant(handle)])<span class="question-mark">?</span>;
+                } <span class="kw">else </span>{
+                    <span class="self">self</span>.write_const_expression(module, constant.init)<span class="question-mark">?</span>;
+                }
+            }
+            Expression::ZeroValue(ty) =&gt; {
+                <span class="self">self</span>.write_type(module, ty)<span class="question-mark">?</span>;
+                <span class="macro">write!</span>(<span class="self">self</span>.out, <span class="string">&quot;()&quot;</span>)<span class="question-mark">?</span>;
+            }
+            Expression::Compose { ty, <span class="kw-2">ref </span>components } =&gt; {
+                <span class="self">self</span>.write_type(module, ty)<span class="question-mark">?</span>;
+                <span class="macro">write!</span>(<span class="self">self</span>.out, <span class="string">&quot;(&quot;</span>)<span class="question-mark">?</span>;
+                <span class="kw">for </span>(index, component) <span class="kw">in </span>components.iter().enumerate() {
+                    <span class="kw">if </span>index != <span class="number">0 </span>{
+                        <span class="macro">write!</span>(<span class="self">self</span>.out, <span class="string">&quot;, &quot;</span>)<span class="question-mark">?</span>;
+                    }
+                    write_expression(<span class="self">self</span>, <span class="kw-2">*</span>component)<span class="question-mark">?</span>;
+                }
+                <span class="macro">write!</span>(<span class="self">self</span>.out, <span class="string">&quot;)&quot;</span>)<span class="question-mark">?
+            </span>}
+            <span class="kw">_ </span>=&gt; <span class="macro">unreachable!</span>(),
+        }
+
+        <span class="prelude-val">Ok</span>(())
+    }
+
     <span class="doccomment">/// Write the &#39;plain form&#39; of `expr`.
     ///
     /// An expression&#39;s &#39;plain form&#39; is the most general rendition of that
@@ -3056,20 +3085,17 @@
         // `postfix_expression` forms for member/component access and
         // subscripting.
         </span><span class="kw">match </span><span class="kw-2">*</span>expression {
-            Expression::Constant(constant) =&gt; <span class="self">self</span>.write_constant(module, constant)<span class="question-mark">?</span>,
-            Expression::Compose { ty, <span class="kw-2">ref </span>components } =&gt; {
-                <span class="self">self</span>.write_type(module, ty)<span class="question-mark">?</span>;
-                <span class="macro">write!</span>(<span class="self">self</span>.out, <span class="string">&quot;(&quot;</span>)<span class="question-mark">?</span>;
-                <span class="kw">for </span>(index, component) <span class="kw">in </span>components.iter().enumerate() {
-                    <span class="self">self</span>.write_expr(module, <span class="kw-2">*</span>component, func_ctx)<span class="question-mark">?</span>;
-                    <span class="comment">// Only write a comma if isn&#39;t the last element
-                    </span><span class="kw">if </span>index != components.len().saturating_sub(<span class="number">1</span>) {
-                        <span class="comment">// The leading space is for readability only
-                        </span><span class="macro">write!</span>(<span class="self">self</span>.out, <span class="string">&quot;, &quot;</span>)<span class="question-mark">?</span>;
-                    }
-                }
-                <span class="macro">write!</span>(<span class="self">self</span>.out, <span class="string">&quot;)&quot;</span>)<span class="question-mark">?
-            </span>}
+            Expression::Literal(<span class="kw">_</span>)
+            | Expression::Constant(<span class="kw">_</span>)
+            | Expression::ZeroValue(<span class="kw">_</span>)
+            | Expression::Compose { .. } =&gt; {
+                <span class="self">self</span>.write_possibly_const_expression(
+                    module,
+                    expr,
+                    func_ctx.expressions,
+                    |writer, expr| writer.write_expr(module, expr, func_ctx),
+                )<span class="question-mark">?</span>;
+            }
             Expression::FunctionArgument(pos) =&gt; {
                 <span class="kw">let </span>name_key = func_ctx.argument_key(pos);
                 <span class="kw">let </span>name = <span class="kw-2">&amp;</span><span class="self">self</span>.names[<span class="kw-2">&amp;</span>name_key];
@@ -3191,11 +3217,12 @@
 
                 <span class="kw">if let </span><span class="prelude-val">Some</span>(offset) = offset {
                     <span class="macro">write!</span>(<span class="self">self</span>.out, <span class="string">&quot;, &quot;</span>)<span class="question-mark">?</span>;
-                    <span class="self">self</span>.write_constant(module, offset)<span class="question-mark">?</span>;
+                    <span class="self">self</span>.write_const_expression(module, offset)<span class="question-mark">?</span>;
                 }
 
                 <span class="macro">write!</span>(<span class="self">self</span>.out, <span class="string">&quot;)&quot;</span>)<span class="question-mark">?</span>;
             }
+
             Expression::ImageSample {
                 image,
                 sampler,
@@ -3212,7 +3239,7 @@
                 };
 
                 <span class="macro">write!</span>(<span class="self">self</span>.out, <span class="string">&quot;textureGather{suffix_cmp}(&quot;</span>)<span class="question-mark">?</span>;
-                <span class="kw">match </span><span class="kw-2">*</span>func_ctx.info[image].ty.inner_with(<span class="kw-2">&amp;</span>module.types) {
+                <span class="kw">match </span><span class="kw-2">*</span>func_ctx.resolve_type(image, <span class="kw-2">&amp;</span>module.types) {
                     TypeInner::Image {
                         class: <span class="kw">crate</span>::ImageClass::Depth { multi: <span class="kw">_ </span>},
                         ..
@@ -3239,7 +3266,7 @@
 
                 <span class="kw">if let </span><span class="prelude-val">Some</span>(offset) = offset {
                     <span class="macro">write!</span>(<span class="self">self</span>.out, <span class="string">&quot;, &quot;</span>)<span class="question-mark">?</span>;
-                    <span class="self">self</span>.write_constant(module, offset)<span class="question-mark">?</span>;
+                    <span class="self">self</span>.write_const_expression(module, offset)<span class="question-mark">?</span>;
                 }
 
                 <span class="macro">write!</span>(<span class="self">self</span>.out, <span class="string">&quot;)&quot;</span>)<span class="question-mark">?</span>;
@@ -3262,6 +3289,7 @@
                 };
                 <span class="macro">write!</span>(<span class="self">self</span>.out, <span class="string">&quot;)&quot;</span>)<span class="question-mark">?</span>;
             }
+
             Expression::ImageLoad {
                 image,
                 coordinate,
@@ -3287,12 +3315,13 @@
                 <span class="kw">let </span>name = <span class="kw-2">&amp;</span><span class="self">self</span>.names[<span class="kw-2">&amp;</span>NameKey::GlobalVariable(handle)];
                 <span class="macro">write!</span>(<span class="self">self</span>.out, <span class="string">&quot;{name}&quot;</span>)<span class="question-mark">?</span>;
             }
+
             Expression::As {
                 expr,
                 kind,
                 convert,
             } =&gt; {
-                <span class="kw">let </span>inner = func_ctx.info[expr].ty.inner_with(<span class="kw-2">&amp;</span>module.types);
+                <span class="kw">let </span>inner = func_ctx.resolve_type(expr, <span class="kw-2">&amp;</span>module.types);
                 <span class="kw">match </span><span class="kw-2">*</span>inner {
                     TypeInner::Matrix {
                         columns,
@@ -3337,7 +3366,7 @@
                 <span class="macro">write!</span>(<span class="self">self</span>.out, <span class="string">&quot;)&quot;</span>)<span class="question-mark">?</span>;
             }
             Expression::Splat { size, value } =&gt; {
-                <span class="kw">let </span>inner = func_ctx.info[value].ty.inner_with(<span class="kw-2">&amp;</span>module.types);
+                <span class="kw">let </span>inner = func_ctx.resolve_type(value, <span class="kw-2">&amp;</span>module.types);
                 <span class="kw">let </span>(scalar_kind, scalar_width) = <span class="kw">match </span><span class="kw-2">*</span>inner {
                     <span class="kw">crate</span>::TypeInner::Scalar { kind, width } =&gt; (kind, width),
                     <span class="kw">_ </span>=&gt; {
@@ -3354,15 +3383,11 @@
                 <span class="macro">write!</span>(<span class="self">self</span>.out, <span class="string">&quot;)&quot;</span>)<span class="question-mark">?</span>;
             }
             Expression::Load { pointer } =&gt; {
-                <span class="kw">let </span>is_atomic = <span class="kw">match </span><span class="kw-2">*</span>func_ctx.info[pointer].ty.inner_with(<span class="kw-2">&amp;</span>module.types) {
-                    <span class="kw">crate</span>::TypeInner::Pointer { base, .. } =&gt; <span class="kw">match </span>module.types[base].inner {
-                        <span class="kw">crate</span>::TypeInner::Atomic { .. } =&gt; <span class="bool-val">true</span>,
-                        <span class="kw">_ </span>=&gt; <span class="bool-val">false</span>,
-                    },
-                    <span class="kw">_ </span>=&gt; <span class="bool-val">false</span>,
-                };
+                <span class="kw">let </span>is_atomic_pointer = func_ctx
+                    .resolve_type(pointer, <span class="kw-2">&amp;</span>module.types)
+                    .is_atomic_pointer(<span class="kw-2">&amp;</span>module.types);
 
-                <span class="kw">if </span>is_atomic {
+                <span class="kw">if </span>is_atomic_pointer {
                     <span class="macro">write!</span>(<span class="self">self</span>.out, <span class="string">&quot;atomicLoad(&quot;</span>)<span class="question-mark">?</span>;
                     <span class="self">self</span>.write_expr(module, pointer, func_ctx)<span class="question-mark">?</span>;
                     <span class="macro">write!</span>(<span class="self">self</span>.out, <span class="string">&quot;)&quot;</span>)<span class="question-mark">?</span>;
@@ -3383,6 +3408,7 @@
                 <span class="self">self</span>.write_expr(module, expr, func_ctx)<span class="question-mark">?</span>;
                 <span class="macro">write!</span>(<span class="self">self</span>.out, <span class="string">&quot;)&quot;</span>)<span class="question-mark">?</span>;
             }
+
             Expression::Math {
                 fun,
                 arg,
@@ -3491,6 +3517,7 @@
                     </span>}
                 }
             }
+
             Expression::Swizzle {
                 size,
                 vector,
@@ -3506,7 +3533,7 @@
                 <span class="kw">let </span>unary = <span class="kw">match </span>op {
                     <span class="kw">crate</span>::UnaryOperator::Negate =&gt; <span class="string">&quot;-&quot;</span>,
                     <span class="kw">crate</span>::UnaryOperator::Not =&gt; {
-                        <span class="kw">match </span><span class="kw-2">*</span>func_ctx.info[expr].ty.inner_with(<span class="kw-2">&amp;</span>module.types) {
+                        <span class="kw">match </span><span class="kw-2">*</span>func_ctx.resolve_type(expr, <span class="kw-2">&amp;</span>module.types) {
                             TypeInner::Scalar {
                                 kind: <span class="kw">crate</span>::ScalarKind::Bool,
                                 ..
@@ -3522,6 +3549,7 @@
 
                 <span class="macro">write!</span>(<span class="self">self</span>.out, <span class="string">&quot;)&quot;</span>)<span class="question-mark">?
             </span>}
+
             Expression::Select {
                 condition,
                 accept,
@@ -3571,7 +3599,8 @@
             <span class="comment">// Nothing to do here, since call expression already cached
             </span>Expression::CallResult(<span class="kw">_</span>)
             | Expression::AtomicResult { .. }
-            | Expression::RayQueryProceedResult =&gt; {}
+            | Expression::RayQueryProceedResult
+            | Expression::WorkGroupUniformLoadResult { .. } =&gt; {}
         }
 
         <span class="prelude-val">Ok</span>(())
@@ -3617,52 +3646,11 @@
         <span class="comment">// Write initializer
         </span><span class="kw">if let </span><span class="prelude-val">Some</span>(init) = global.init {
             <span class="macro">write!</span>(<span class="self">self</span>.out, <span class="string">&quot; = &quot;</span>)<span class="question-mark">?</span>;
-            <span class="self">self</span>.write_constant(module, init)<span class="question-mark">?</span>;
+            <span class="self">self</span>.write_const_expression(module, init)<span class="question-mark">?</span>;
         }
 
         <span class="comment">// End with semicolon
         </span><span class="macro">writeln!</span>(<span class="self">self</span>.out, <span class="string">&quot;;&quot;</span>)<span class="question-mark">?</span>;
-
-        <span class="prelude-val">Ok</span>(())
-    }
-
-    <span class="doccomment">/// Helper method used to write constants
-    ///
-    /// # Notes
-    /// Doesn&#39;t add any newlines or leading/trailing spaces
-    </span><span class="kw">fn </span>write_constant(
-        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        module: <span class="kw-2">&amp;</span>Module,
-        handle: Handle&lt;<span class="kw">crate</span>::Constant&gt;,
-    ) -&gt; BackendResult {
-        <span class="kw">let </span>constant = <span class="kw-2">&amp;</span>module.constants[handle];
-        <span class="kw">match </span>constant.inner {
-            <span class="kw">crate</span>::ConstantInner::Scalar {
-                width: <span class="kw">_</span>,
-                <span class="kw-2">ref </span>value,
-            } =&gt; {
-                <span class="kw">if </span>constant.name.is_some() {
-                    <span class="macro">write!</span>(<span class="self">self</span>.out, <span class="string">&quot;{}&quot;</span>, <span class="self">self</span>.names[<span class="kw-2">&amp;</span>NameKey::Constant(handle)])<span class="question-mark">?</span>;
-                } <span class="kw">else </span>{
-                    <span class="self">self</span>.write_scalar_value(<span class="kw-2">*</span>value)<span class="question-mark">?</span>;
-                }
-            }
-            <span class="kw">crate</span>::ConstantInner::Composite { ty, <span class="kw-2">ref </span>components } =&gt; {
-                <span class="self">self</span>.write_type(module, ty)<span class="question-mark">?</span>;
-                <span class="macro">write!</span>(<span class="self">self</span>.out, <span class="string">&quot;(&quot;</span>)<span class="question-mark">?</span>;
-
-                <span class="comment">// Write the comma separated constants
-                </span><span class="kw">for </span>(index, constant) <span class="kw">in </span>components.iter().enumerate() {
-                    <span class="self">self</span>.write_constant(module, <span class="kw-2">*</span>constant)<span class="question-mark">?</span>;
-                    <span class="comment">// Only write a comma if isn&#39;t the last element
-                    </span><span class="kw">if </span>index != components.len().saturating_sub(<span class="number">1</span>) {
-                        <span class="comment">// The leading space is for readability only
-                        </span><span class="macro">write!</span>(<span class="self">self</span>.out, <span class="string">&quot;, &quot;</span>)<span class="question-mark">?</span>;
-                    }
-                }
-                <span class="macro">write!</span>(<span class="self">self</span>.out, <span class="string">&quot;)&quot;</span>)<span class="question-mark">?
-            </span>}
-        }
 
         <span class="prelude-val">Ok</span>(())
     }
@@ -3674,61 +3662,17 @@
     </span><span class="kw">fn </span>write_global_constant(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
         module: <span class="kw-2">&amp;</span>Module,
-        inner: <span class="kw-2">&amp;</span><span class="kw">crate</span>::ConstantInner,
         handle: Handle&lt;<span class="kw">crate</span>::Constant&gt;,
     ) -&gt; BackendResult {
-        <span class="kw">match </span><span class="kw-2">*</span>inner {
-            <span class="kw">crate</span>::ConstantInner::Scalar {
-                width: <span class="kw">_</span>,
-                <span class="kw-2">ref </span>value,
-            } =&gt; {
-                <span class="kw">let </span>name = <span class="kw-2">&amp;</span><span class="self">self</span>.names[<span class="kw-2">&amp;</span>NameKey::Constant(handle)];
-                <span class="comment">// First write only constant name
-                </span><span class="macro">write!</span>(<span class="self">self</span>.out, <span class="string">&quot;const {name}: &quot;</span>)<span class="question-mark">?</span>;
-                <span class="comment">// Next write constant type and value
-                </span><span class="kw">match </span><span class="kw-2">*</span>value {
-                    <span class="kw">crate</span>::ScalarValue::Sint(value) =&gt; {
-                        <span class="macro">write!</span>(<span class="self">self</span>.out, <span class="string">&quot;i32 = {value}&quot;</span>)<span class="question-mark">?</span>;
-                    }
-                    <span class="kw">crate</span>::ScalarValue::Uint(value) =&gt; {
-                        <span class="macro">write!</span>(<span class="self">self</span>.out, <span class="string">&quot;u32 = {value}u&quot;</span>)<span class="question-mark">?</span>;
-                    }
-                    <span class="kw">crate</span>::ScalarValue::Float(value) =&gt; {
-                        <span class="comment">// Floats are written using `Debug` instead of `Display` because it always appends the
-                        // decimal part even it&#39;s zero
-                        </span><span class="macro">write!</span>(<span class="self">self</span>.out, <span class="string">&quot;f32 = {value:?}&quot;</span>)<span class="question-mark">?</span>;
-                    }
-                    <span class="kw">crate</span>::ScalarValue::Bool(value) =&gt; {
-                        <span class="macro">write!</span>(<span class="self">self</span>.out, <span class="string">&quot;bool = {value}&quot;</span>)<span class="question-mark">?</span>;
-                    }
-                };
-                <span class="comment">// End with semicolon
-                </span><span class="macro">writeln!</span>(<span class="self">self</span>.out, <span class="string">&quot;;&quot;</span>)<span class="question-mark">?</span>;
-            }
-            <span class="kw">crate</span>::ConstantInner::Composite { ty, <span class="kw-2">ref </span>components } =&gt; {
-                <span class="kw">let </span>name = <span class="kw-2">&amp;</span><span class="self">self</span>.names[<span class="kw-2">&amp;</span>NameKey::Constant(handle)];
-                <span class="comment">// First write only constant name
-                </span><span class="macro">write!</span>(<span class="self">self</span>.out, <span class="string">&quot;const {name}: &quot;</span>)<span class="question-mark">?</span>;
-                <span class="comment">// Next write constant type
-                </span><span class="self">self</span>.write_type(module, ty)<span class="question-mark">?</span>;
+        <span class="kw">let </span>name = <span class="kw-2">&amp;</span><span class="self">self</span>.names[<span class="kw-2">&amp;</span>NameKey::Constant(handle)];
+        <span class="comment">// First write only constant name
+        </span><span class="macro">write!</span>(<span class="self">self</span>.out, <span class="string">&quot;const {name}: &quot;</span>)<span class="question-mark">?</span>;
+        <span class="self">self</span>.write_type(module, module.constants[handle].ty)<span class="question-mark">?</span>;
+        <span class="macro">write!</span>(<span class="self">self</span>.out, <span class="string">&quot; = &quot;</span>)<span class="question-mark">?</span>;
+        <span class="kw">let </span>init = module.constants[handle].init;
+        <span class="self">self</span>.write_const_expression(module, init)<span class="question-mark">?</span>;
+        <span class="macro">writeln!</span>(<span class="self">self</span>.out, <span class="string">&quot;;&quot;</span>)<span class="question-mark">?</span>;
 
-                <span class="macro">write!</span>(<span class="self">self</span>.out, <span class="string">&quot; = &quot;</span>)<span class="question-mark">?</span>;
-                <span class="self">self</span>.write_type(module, ty)<span class="question-mark">?</span>;
-
-                <span class="macro">write!</span>(<span class="self">self</span>.out, <span class="string">&quot;(&quot;</span>)<span class="question-mark">?</span>;
-                <span class="kw">for </span>(index, constant) <span class="kw">in </span>components.iter().enumerate() {
-                    <span class="self">self</span>.write_constant(module, <span class="kw-2">*</span>constant)<span class="question-mark">?</span>;
-                    <span class="comment">// Only write a comma if isn&#39;t the last element
-                    </span><span class="kw">if </span>index != components.len().saturating_sub(<span class="number">1</span>) {
-                        <span class="comment">// The leading space is for readability only
-                        </span><span class="macro">write!</span>(<span class="self">self</span>.out, <span class="string">&quot;, &quot;</span>)<span class="question-mark">?</span>;
-                    }
-                }
-                <span class="macro">write!</span>(<span class="self">self</span>.out, <span class="string">&quot;);&quot;</span>)<span class="question-mark">?</span>;
-            }
-        }
-        <span class="comment">// End with extra newline for readability
-        </span><span class="macro">writeln!</span>(<span class="self">self</span>.out)<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(())
     }
 

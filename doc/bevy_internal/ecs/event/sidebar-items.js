@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"derive":["Event"],"struct":["EventId","EventReader","EventWriter","Events","ManualEventIterator","ManualEventIteratorWithId","ManualEventReader"],"trait":["Event"]};
+window.SIDEBAR_ITEMS = {"derive":["Event"],"fn":["event_update_condition","event_update_system"],"struct":["EventId","EventIterator","EventIteratorWithId","EventReader","EventWriter","Events","ManualEventReader"],"trait":["Event"],"type":["ManualEventIterator","ManualEventIteratorWithId"]};

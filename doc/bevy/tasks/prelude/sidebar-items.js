@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["AsyncComputeTaskPool","ComputeTaskPool","IoTaskPool"],"trait":["ParallelIterator","ParallelSlice","ParallelSliceMut"]};
+window.SIDEBAR_ITEMS = {"fn":["block_on"],"struct":["AsyncComputeTaskPool","ComputeTaskPool","IoTaskPool"],"trait":["ParallelIterator","ParallelSlice","ParallelSliceMut"]};

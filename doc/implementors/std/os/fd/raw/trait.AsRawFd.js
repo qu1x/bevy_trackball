@@ -1,0 +1,3 @@
+(function() {var implementors = {
+"async_fs":[["impl <a class=\"trait\" href=\"https://doc.rust-lang.org/1.73.0/std/os/fd/raw/trait.AsRawFd.html\" title=\"trait std::os::fd::raw::AsRawFd\">AsRawFd</a> for <a class=\"struct\" href=\"async_fs/struct.File.html\" title=\"struct async_fs::File\">File</a>"]]
+};if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

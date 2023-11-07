@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/n3vu0r/.cargo/registry/src/index.crates.io-6f17d22bba15001f/naga-0.12.3/src/front/wgsl/mod.rs`."><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-9bb858ba049f1f21.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="naga" data-themes="" data-resource-suffix="" data-rustdoc-version="1.72.0 (5680fa18f 2023-08-23)" data-channel="1.72.0" data-search-js="search-f6292fe389d70017.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-0f8c037637f9eb3e.css" data-theme-dark-css="dark-1097f8e92a01e3cf.css" data-theme-ayu-css="ayu-614652228113ac93.css" ><script src="../../../../static.files/storage-59fd9b8ccb335783.js"></script><script defer src="../../../../static.files/source-script-106908c7a7964ba4.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../../static.files/light-0f8c037637f9eb3e.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../../static.files/dark-1097f8e92a01e3cf.css"><link rel="stylesheet" href="../../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../../naga/index.html"><img class="rust-logo" src="../../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/naga-0.13.0/src/front/wgsl/mod.rs`."><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="naga" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../../naga/index.html"><img class="rust-logo" src="../../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -299,45 +299,6 @@
 <a href="#299" id="299">299</a>
 <a href="#300" id="300">300</a>
 <a href="#301" id="301">301</a>
-<a href="#302" id="302">302</a>
-<a href="#303" id="303">303</a>
-<a href="#304" id="304">304</a>
-<a href="#305" id="305">305</a>
-<a href="#306" id="306">306</a>
-<a href="#307" id="307">307</a>
-<a href="#308" id="308">308</a>
-<a href="#309" id="309">309</a>
-<a href="#310" id="310">310</a>
-<a href="#311" id="311">311</a>
-<a href="#312" id="312">312</a>
-<a href="#313" id="313">313</a>
-<a href="#314" id="314">314</a>
-<a href="#315" id="315">315</a>
-<a href="#316" id="316">316</a>
-<a href="#317" id="317">317</a>
-<a href="#318" id="318">318</a>
-<a href="#319" id="319">319</a>
-<a href="#320" id="320">320</a>
-<a href="#321" id="321">321</a>
-<a href="#322" id="322">322</a>
-<a href="#323" id="323">323</a>
-<a href="#324" id="324">324</a>
-<a href="#325" id="325">325</a>
-<a href="#326" id="326">326</a>
-<a href="#327" id="327">327</a>
-<a href="#328" id="328">328</a>
-<a href="#329" id="329">329</a>
-<a href="#330" id="330">330</a>
-<a href="#331" id="331">331</a>
-<a href="#332" id="332">332</a>
-<a href="#333" id="333">333</a>
-<a href="#334" id="334">334</a>
-<a href="#335" id="335">335</a>
-<a href="#336" id="336">336</a>
-<a href="#337" id="337">337</a>
-<a href="#338" id="338">338</a>
-<a href="#339" id="339">339</a>
-<a href="#340" id="340">340</a>
 </pre></div><pre class="rust"><code><span class="doccomment">/*!
 Frontend for [WGSL][wgsl] (WebGPU Shading Language).
 
@@ -350,8 +311,6 @@ Frontend for [WGSL][wgsl] (WebGPU Shading Language).
 <span class="kw">mod </span>parse;
 <span class="attr">#[cfg(test)]
 </span><span class="kw">mod </span>tests;
-
-<span class="kw">use </span><span class="kw">crate</span>::arena::{Arena, UniqueArena};
 
 <span class="kw">use </span><span class="kw">crate</span>::front::wgsl::error::Error;
 <span class="kw">use </span><span class="kw">crate</span>::front::wgsl::parse::Parser;
@@ -440,11 +399,7 @@ Frontend for [WGSL][wgsl] (WebGPU Shading Language).
     /// For example `vec3&lt;f32&gt;`.
     ///
     /// Note: The names of a `TypeInner::Struct` is not known. Therefore this method will simply return &quot;struct&quot; for them.
-    </span><span class="kw">fn </span>to_wgsl(
-        <span class="kw-2">&amp;</span><span class="self">self</span>,
-        types: <span class="kw-2">&amp;</span>UniqueArena&lt;<span class="kw">crate</span>::Type&gt;,
-        constants: <span class="kw-2">&amp;</span>Arena&lt;<span class="kw">crate</span>::Constant&gt;,
-    ) -&gt; String {
+    </span><span class="kw">fn </span>to_wgsl(<span class="kw-2">&amp;</span><span class="self">self</span>, gctx: <span class="kw">crate</span>::proc::GlobalCtx) -&gt; String {
         <span class="kw">use </span><span class="kw">crate</span>::TypeInner <span class="kw">as </span>Ti;
 
         <span class="kw">match </span><span class="kw-2">*</span><span class="self">self </span>{
@@ -468,7 +423,7 @@ Frontend for [WGSL][wgsl] (WebGPU Shading Language).
                 <span class="macro">format!</span>(<span class="string">&quot;atomic&lt;{}&gt;&quot;</span>, kind.to_wgsl(width))
             }
             Ti::Pointer { base, .. } =&gt; {
-                <span class="kw">let </span>base = <span class="kw-2">&amp;</span>types[base];
+                <span class="kw">let </span>base = <span class="kw-2">&amp;</span>gctx.types[base];
                 <span class="kw">let </span>name = base.name.as_deref().unwrap_or(<span class="string">&quot;unknown&quot;</span>);
                 <span class="macro">format!</span>(<span class="string">&quot;ptr&lt;{name}&gt;&quot;</span>)
             }
@@ -476,27 +431,10 @@ Frontend for [WGSL][wgsl] (WebGPU Shading Language).
                 <span class="macro">format!</span>(<span class="string">&quot;ptr&lt;{}&gt;&quot;</span>, kind.to_wgsl(width))
             }
             Ti::Array { base, size, .. } =&gt; {
-                <span class="kw">let </span>member_type = <span class="kw-2">&amp;</span>types[base];
+                <span class="kw">let </span>member_type = <span class="kw-2">&amp;</span>gctx.types[base];
                 <span class="kw">let </span>base = member_type.name.as_deref().unwrap_or(<span class="string">&quot;unknown&quot;</span>);
                 <span class="kw">match </span>size {
-                    <span class="kw">crate</span>::ArraySize::Constant(size) =&gt; {
-                        <span class="kw">let </span>constant = <span class="kw-2">&amp;</span>constants[size];
-                        <span class="kw">let </span>size = constant
-                            .name
-                            .clone()
-                            .unwrap_or_else(|| <span class="kw">match </span>constant.inner {
-                                <span class="kw">crate</span>::ConstantInner::Scalar {
-                                    value: <span class="kw">crate</span>::ScalarValue::Uint(size),
-                                    ..
-                                } =&gt; size.to_string(),
-                                <span class="kw">crate</span>::ConstantInner::Scalar {
-                                    value: <span class="kw">crate</span>::ScalarValue::Sint(size),
-                                    ..
-                                } =&gt; size.to_string(),
-                                <span class="kw">_ </span>=&gt; <span class="string">&quot;?&quot;</span>.to_string(),
-                            });
-                        <span class="macro">format!</span>(<span class="string">&quot;array&lt;{base}, {size}&gt;&quot;</span>)
-                    }
+                    <span class="kw">crate</span>::ArraySize::Constant(size) =&gt; <span class="macro">format!</span>(<span class="string">&quot;array&lt;{base}, {size}&gt;&quot;</span>),
                     <span class="kw">crate</span>::ArraySize::Dynamic =&gt; <span class="macro">format!</span>(<span class="string">&quot;array&lt;{base}&gt;&quot;</span>),
                 }
             }
@@ -549,13 +487,10 @@ Frontend for [WGSL][wgsl] (WebGPU Shading Language).
             Ti::AccelerationStructure =&gt; <span class="string">&quot;acceleration_structure&quot;</span>.to_string(),
             Ti::RayQuery =&gt; <span class="string">&quot;ray_query&quot;</span>.to_string(),
             Ti::BindingArray { base, size, .. } =&gt; {
-                <span class="kw">let </span>member_type = <span class="kw-2">&amp;</span>types[base];
+                <span class="kw">let </span>member_type = <span class="kw-2">&amp;</span>gctx.types[base];
                 <span class="kw">let </span>base = member_type.name.as_deref().unwrap_or(<span class="string">&quot;unknown&quot;</span>);
                 <span class="kw">match </span>size {
-                    <span class="kw">crate</span>::ArraySize::Constant(size) =&gt; {
-                        <span class="kw">let </span>size = constants[size].name.as_deref().unwrap_or(<span class="string">&quot;unknown&quot;</span>);
-                        <span class="macro">format!</span>(<span class="string">&quot;binding_array&lt;{base}, {size}&gt;&quot;</span>)
-                    }
+                    <span class="kw">crate</span>::ArraySize::Constant(size) =&gt; <span class="macro">format!</span>(<span class="string">&quot;binding_array&lt;{base}, {size}&gt;&quot;</span>),
                     <span class="kw">crate</span>::ArraySize::Dynamic =&gt; <span class="macro">format!</span>(<span class="string">&quot;binding_array&lt;{base}&gt;&quot;</span>),
                 }
             }
@@ -564,21 +499,12 @@ Frontend for [WGSL][wgsl] (WebGPU Shading Language).
 }
 
 <span class="kw">mod </span>type_inner_tests {
+
     <span class="attr">#[test]
     </span><span class="kw">fn </span>to_wgsl() {
+        <span class="kw">use </span>std::num::NonZeroU32;
+
         <span class="kw">let </span><span class="kw-2">mut </span>types = <span class="kw">crate</span>::UniqueArena::new();
-        <span class="kw">let </span><span class="kw-2">mut </span>constants = <span class="kw">crate</span>::Arena::new();
-        <span class="kw">let </span>c = constants.append(
-            <span class="kw">crate</span>::Constant {
-                name: <span class="prelude-val">Some</span>(<span class="string">&quot;C&quot;</span>.to_string()),
-                specialization: <span class="prelude-val">None</span>,
-                inner: <span class="kw">crate</span>::ConstantInner::Scalar {
-                    width: <span class="number">4</span>,
-                    value: <span class="kw">crate</span>::ScalarValue::Uint(<span class="number">32</span>),
-                },
-            },
-            Default::default(),
-        );
 
         <span class="kw">let </span>mytype1 = types.insert(
             <span class="kw">crate</span>::Type {
@@ -601,19 +527,24 @@ Frontend for [WGSL][wgsl] (WebGPU Shading Language).
             Default::default(),
         );
 
+        <span class="kw">let </span>gctx = <span class="kw">crate</span>::proc::GlobalCtx {
+            types: <span class="kw-2">&amp;</span>types,
+            constants: <span class="kw-2">&amp;</span><span class="kw">crate</span>::Arena::new(),
+            const_expressions: <span class="kw-2">&amp;</span><span class="kw">crate</span>::Arena::new(),
+        };
         <span class="kw">let </span>array = <span class="kw">crate</span>::TypeInner::Array {
             base: mytype1,
             stride: <span class="number">4</span>,
-            size: <span class="kw">crate</span>::ArraySize::Constant(c),
+            size: <span class="kw">crate</span>::ArraySize::Constant(<span class="kw">unsafe </span>{ NonZeroU32::new_unchecked(<span class="number">32</span>) }),
         };
-        <span class="macro">assert_eq!</span>(array.to_wgsl(<span class="kw-2">&amp;</span>types, <span class="kw-2">&amp;</span>constants), <span class="string">&quot;array&lt;MyType1, C&gt;&quot;</span>);
+        <span class="macro">assert_eq!</span>(array.to_wgsl(gctx), <span class="string">&quot;array&lt;MyType1, 32&gt;&quot;</span>);
 
         <span class="kw">let </span>mat = <span class="kw">crate</span>::TypeInner::Matrix {
             rows: <span class="kw">crate</span>::VectorSize::Quad,
             columns: <span class="kw">crate</span>::VectorSize::Bi,
             width: <span class="number">8</span>,
         };
-        <span class="macro">assert_eq!</span>(mat.to_wgsl(<span class="kw-2">&amp;</span>types, <span class="kw-2">&amp;</span>constants), <span class="string">&quot;mat2x4&lt;f64&gt;&quot;</span>);
+        <span class="macro">assert_eq!</span>(mat.to_wgsl(gctx), <span class="string">&quot;mat2x4&lt;f64&gt;&quot;</span>);
 
         <span class="kw">let </span>ptr = <span class="kw">crate</span>::TypeInner::Pointer {
             base: mytype2,
@@ -621,7 +552,7 @@ Frontend for [WGSL][wgsl] (WebGPU Shading Language).
                 access: <span class="kw">crate</span>::StorageAccess::default(),
             },
         };
-        <span class="macro">assert_eq!</span>(ptr.to_wgsl(<span class="kw-2">&amp;</span>types, <span class="kw-2">&amp;</span>constants), <span class="string">&quot;ptr&lt;MyType2&gt;&quot;</span>);
+        <span class="macro">assert_eq!</span>(ptr.to_wgsl(gctx), <span class="string">&quot;ptr&lt;MyType2&gt;&quot;</span>);
 
         <span class="kw">let </span>img1 = <span class="kw">crate</span>::TypeInner::Image {
             dim: <span class="kw">crate</span>::ImageDimension::D2,
@@ -631,36 +562,27 @@ Frontend for [WGSL][wgsl] (WebGPU Shading Language).
                 multi: <span class="bool-val">true</span>,
             },
         };
-        <span class="macro">assert_eq!</span>(
-            img1.to_wgsl(<span class="kw-2">&amp;</span>types, <span class="kw-2">&amp;</span>constants),
-            <span class="string">&quot;texture_multisampled_2d&lt;f32&gt;&quot;
-        </span>);
+        <span class="macro">assert_eq!</span>(img1.to_wgsl(gctx), <span class="string">&quot;texture_multisampled_2d&lt;f32&gt;&quot;</span>);
 
         <span class="kw">let </span>img2 = <span class="kw">crate</span>::TypeInner::Image {
             dim: <span class="kw">crate</span>::ImageDimension::Cube,
             arrayed: <span class="bool-val">true</span>,
             class: <span class="kw">crate</span>::ImageClass::Depth { multi: <span class="bool-val">false </span>},
         };
-        <span class="macro">assert_eq!</span>(img2.to_wgsl(<span class="kw-2">&amp;</span>types, <span class="kw-2">&amp;</span>constants), <span class="string">&quot;texture_depth_cube_array&quot;</span>);
+        <span class="macro">assert_eq!</span>(img2.to_wgsl(gctx), <span class="string">&quot;texture_depth_cube_array&quot;</span>);
 
         <span class="kw">let </span>img3 = <span class="kw">crate</span>::TypeInner::Image {
             dim: <span class="kw">crate</span>::ImageDimension::D2,
             arrayed: <span class="bool-val">false</span>,
             class: <span class="kw">crate</span>::ImageClass::Depth { multi: <span class="bool-val">true </span>},
         };
-        <span class="macro">assert_eq!</span>(
-            img3.to_wgsl(<span class="kw-2">&amp;</span>types, <span class="kw-2">&amp;</span>constants),
-            <span class="string">&quot;texture_depth_multisampled_2d&quot;
-        </span>);
+        <span class="macro">assert_eq!</span>(img3.to_wgsl(gctx), <span class="string">&quot;texture_depth_multisampled_2d&quot;</span>);
 
         <span class="kw">let </span>array = <span class="kw">crate</span>::TypeInner::BindingArray {
             base: mytype1,
-            size: <span class="kw">crate</span>::ArraySize::Constant(c),
+            size: <span class="kw">crate</span>::ArraySize::Constant(<span class="kw">unsafe </span>{ NonZeroU32::new_unchecked(<span class="number">32</span>) }),
         };
-        <span class="macro">assert_eq!</span>(
-            array.to_wgsl(<span class="kw-2">&amp;</span>types, <span class="kw-2">&amp;</span>constants),
-            <span class="string">&quot;binding_array&lt;MyType1, C&gt;&quot;
-        </span>);
+        <span class="macro">assert_eq!</span>(array.to_wgsl(gctx), <span class="string">&quot;binding_array&lt;MyType1, 32&gt;&quot;</span>);
     }
 }
 

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["TimerMode"],"struct":["FixedTime","Time","Timer"]};
+window.SIDEBAR_ITEMS = {"enum":["TimerMode"],"struct":["Fixed","Real","Time","Timer","Virtual"]};

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/n3vu0r/.cargo/registry/src/index.crates.io-6f17d22bba15001f/naga-0.12.3/src/valid/analyzer.rs`."><title>analyzer.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-9bb858ba049f1f21.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="naga" data-themes="" data-resource-suffix="" data-rustdoc-version="1.72.0 (5680fa18f 2023-08-23)" data-channel="1.72.0" data-search-js="search-f6292fe389d70017.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-0f8c037637f9eb3e.css" data-theme-dark-css="dark-1097f8e92a01e3cf.css" data-theme-ayu-css="ayu-614652228113ac93.css" ><script src="../../../static.files/storage-59fd9b8ccb335783.js"></script><script defer src="../../../static.files/source-script-106908c7a7964ba4.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../static.files/light-0f8c037637f9eb3e.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../static.files/dark-1097f8e92a01e3cf.css"><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../naga/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/naga-0.13.0/src/valid/analyzer.rs`."><title>analyzer.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="naga" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../naga/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1198,6 +1198,53 @@
 <a href="#1198" id="1198">1198</a>
 <a href="#1199" id="1199">1199</a>
 <a href="#1200" id="1200">1200</a>
+<a href="#1201" id="1201">1201</a>
+<a href="#1202" id="1202">1202</a>
+<a href="#1203" id="1203">1203</a>
+<a href="#1204" id="1204">1204</a>
+<a href="#1205" id="1205">1205</a>
+<a href="#1206" id="1206">1206</a>
+<a href="#1207" id="1207">1207</a>
+<a href="#1208" id="1208">1208</a>
+<a href="#1209" id="1209">1209</a>
+<a href="#1210" id="1210">1210</a>
+<a href="#1211" id="1211">1211</a>
+<a href="#1212" id="1212">1212</a>
+<a href="#1213" id="1213">1213</a>
+<a href="#1214" id="1214">1214</a>
+<a href="#1215" id="1215">1215</a>
+<a href="#1216" id="1216">1216</a>
+<a href="#1217" id="1217">1217</a>
+<a href="#1218" id="1218">1218</a>
+<a href="#1219" id="1219">1219</a>
+<a href="#1220" id="1220">1220</a>
+<a href="#1221" id="1221">1221</a>
+<a href="#1222" id="1222">1222</a>
+<a href="#1223" id="1223">1223</a>
+<a href="#1224" id="1224">1224</a>
+<a href="#1225" id="1225">1225</a>
+<a href="#1226" id="1226">1226</a>
+<a href="#1227" id="1227">1227</a>
+<a href="#1228" id="1228">1228</a>
+<a href="#1229" id="1229">1229</a>
+<a href="#1230" id="1230">1230</a>
+<a href="#1231" id="1231">1231</a>
+<a href="#1232" id="1232">1232</a>
+<a href="#1233" id="1233">1233</a>
+<a href="#1234" id="1234">1234</a>
+<a href="#1235" id="1235">1235</a>
+<a href="#1236" id="1236">1236</a>
+<a href="#1237" id="1237">1237</a>
+<a href="#1238" id="1238">1238</a>
+<a href="#1239" id="1239">1239</a>
+<a href="#1240" id="1240">1240</a>
+<a href="#1241" id="1241">1241</a>
+<a href="#1242" id="1242">1242</a>
+<a href="#1243" id="1243">1243</a>
+<a href="#1244" id="1244">1244</a>
+<a href="#1245" id="1245">1245</a>
+<a href="#1246" id="1246">1246</a>
+<a href="#1247" id="1247">1247</a>
 </pre></div><pre class="rust"><code><span class="doccomment">/*! Module analyzer.
 
 Figures out the following properties:
@@ -1220,6 +1267,7 @@ Figures out the following properties:
     <span class="doccomment">/// Kinds of expressions that require uniform control flow.
     </span><span class="attr">#[cfg_attr(feature = <span class="string">&quot;serialize&quot;</span>, derive(serde::Serialize))]
     #[cfg_attr(feature = <span class="string">&quot;deserialize&quot;</span>, derive(serde::Deserialize))]
+    #[derive(Clone, Copy, Debug, Eq, PartialEq)]
     </span><span class="kw">pub struct </span>UniformityRequirements: u8 {
         <span class="kw">const </span>WORK_GROUP_BARRIER = <span class="number">0x1</span>;
         <span class="kw">const </span>DERIVATIVE = <span class="number">0x2</span>;
@@ -1259,7 +1307,8 @@ Figures out the following properties:
 }
 
 <span class="macro">bitflags::bitflags! </span>{
-    <span class="kw">struct </span>ExitFlags: u8 {
+    <span class="attr">#[derive(Clone, Copy, Debug, PartialEq)]
+    </span><span class="kw">struct </span>ExitFlags: u8 {
         <span class="doccomment">/// Control flow may return from the function, which makes all the
         /// subsequent statements within the current function (only!)
         /// to be executed in a non-uniform control flow.
@@ -1317,6 +1366,7 @@ Figures out the following properties:
     <span class="doccomment">/// Indicates how a global variable is used.
     </span><span class="attr">#[cfg_attr(feature = <span class="string">&quot;serialize&quot;</span>, derive(serde::Serialize))]
     #[cfg_attr(feature = <span class="string">&quot;deserialize&quot;</span>, derive(serde::Deserialize))]
+    #[derive(Clone, Copy, Debug, Eq, PartialEq)]
     </span><span class="kw">pub struct </span>GlobalUse: u8 {
         <span class="doccomment">/// Data will be read from the variable.
         </span><span class="kw">const </span>READ = <span class="number">0x1</span>;
@@ -1692,8 +1742,7 @@ Figures out the following properties:
                 requirements: UniformityRequirements::empty(),
             },
             <span class="comment">// always uniform
-            </span>E::Constant(<span class="kw">_</span>) =&gt; Uniformity::new(),
-            E::Splat { size: <span class="kw">_</span>, value } =&gt; Uniformity {
+            </span>E::Splat { size: <span class="kw">_</span>, value } =&gt; Uniformity {
                 non_uniform_result: <span class="self">self</span>.add_ref(value),
                 requirements: UniformityRequirements::empty(),
             },
@@ -1701,6 +1750,7 @@ Figures out the following properties:
                 non_uniform_result: <span class="self">self</span>.add_ref(vector),
                 requirements: UniformityRequirements::empty(),
             },
+            E::Literal(<span class="kw">_</span>) | E::Constant(<span class="kw">_</span>) | E::ZeroValue(<span class="kw">_</span>) =&gt; Uniformity::new(),
             E::Compose { <span class="kw-2">ref </span>components, .. } =&gt; {
                 <span class="kw">let </span>non_uniform_result = components
                     .iter()
@@ -1872,12 +1922,17 @@ Figures out the following properties:
                 requirements: UniformityRequirements::empty(),
             },
             E::Math {
-                arg, arg1, arg2, ..
+                fun: <span class="kw">_</span>,
+                arg,
+                arg1,
+                arg2,
+                arg3,
             } =&gt; {
                 <span class="kw">let </span>arg1_nur = arg1.and_then(|h| <span class="self">self</span>.add_ref(h));
                 <span class="kw">let </span>arg2_nur = arg2.and_then(|h| <span class="self">self</span>.add_ref(h));
+                <span class="kw">let </span>arg3_nur = arg3.and_then(|h| <span class="self">self</span>.add_ref(h));
                 Uniformity {
-                    non_uniform_result: <span class="self">self</span>.add_ref(arg).or(arg1_nur).or(arg2_nur),
+                    non_uniform_result: <span class="self">self</span>.add_ref(arg).or(arg1_nur).or(arg2_nur).or(arg3_nur),
                     requirements: UniformityRequirements::empty(),
                 }
             }
@@ -1889,6 +1944,13 @@ Figures out the following properties:
             E::AtomicResult { .. } | E::RayQueryProceedResult =&gt; Uniformity {
                 non_uniform_result: <span class="prelude-val">Some</span>(handle),
                 requirements: UniformityRequirements::empty(),
+            },
+            E::WorkGroupUniformLoadResult { .. } =&gt; Uniformity {
+                <span class="comment">// The result of WorkGroupUniformLoad is always uniform by definition
+                </span>non_uniform_result: <span class="prelude-val">None</span>,
+                <span class="comment">// The call is what cares about uniformity, not the expression
+                // This expression is never emitted, so this requirement should never be used anyway?
+                </span>requirements: UniformityRequirements::empty(),
             },
             E::ArrayLength(expr) =&gt; Uniformity {
                 non_uniform_result: <span class="self">self</span>.add_ref_impl(expr, GlobalUse::QUERY),
@@ -1976,6 +2038,35 @@ Figures out the following properties:
                     },
                     exit: ExitFlags::empty(),
                 },
+                S::WorkGroupUniformLoad { pointer, .. } =&gt; {
+                    <span class="kw">let </span>_condition_nur = <span class="self">self</span>.add_ref(pointer);
+
+                    <span class="comment">// Don&#39;t check that this call occurs in uniform control flow until Naga implements WGSL&#39;s standard
+                    // uniformity analysis (https://github.com/gfx-rs/naga/issues/1744).
+                    // The uniformity analysis Naga uses now is less accurate than the one in the WGSL standard,
+                    // causing Naga to reject correct uses of `workgroupUniformLoad` in some interesting programs.
+
+                    /* #[cfg(feature = &quot;validate&quot;)]
+                    if self
+                        .flags
+                        .contains(super::ValidationFlags::CONTROL_FLOW_UNIFORMITY)
+                    {
+                        let condition_nur = self.add_ref(pointer);
+                        let this_disruptor =
+                            disruptor.or(condition_nur.map(UniformityDisruptor::Expression));
+                        if let Some(cause) = this_disruptor {
+                            return Err(FunctionError::NonUniformWorkgroupUniformLoad(cause)
+                                .with_span_static(*span, &quot;WorkGroupUniformLoad&quot;));
+                        }
+                    } */
+                    </span>FunctionUniformity {
+                        result: Uniformity {
+                            non_uniform_result: <span class="prelude-val">None</span>,
+                            requirements: UniformityRequirements::WORK_GROUP_BARRIER,
+                        },
+                        exit: ExitFlags::empty(),
+                    }
+                }
                 S::Block(<span class="kw-2">ref </span>b) =&gt; {
                     <span class="self">self</span>.process_block(b, other_functions, disruptor, expression_arena)<span class="question-mark">?
                 </span>}
@@ -2029,7 +2120,7 @@ Figures out the following properties:
                 S::Loop {
                     <span class="kw-2">ref </span>body,
                     <span class="kw-2">ref </span>continuing,
-                    break_if: <span class="kw">_</span>,
+                    break_if,
                 } =&gt; {
                     <span class="kw">let </span>body_uniformity =
                         <span class="self">self</span>.process_block(body, other_functions, disruptor, expression_arena)<span class="question-mark">?</span>;
@@ -2040,6 +2131,9 @@ Figures out the following properties:
                         continuing_disruptor,
                         expression_arena,
                     )<span class="question-mark">?</span>;
+                    <span class="kw">if let </span><span class="prelude-val">Some</span>(expr) = break_if {
+                        <span class="kw">let _ </span>= <span class="self">self</span>.add_ref(expr);
+                    }
                     body_uniformity | continuing_uniformity
                 }
                 S::Return { value } =&gt; FunctionUniformity {
@@ -2122,6 +2216,18 @@ Figures out the following properties:
 }
 
 <span class="kw">impl </span>ModuleInfo {
+    <span class="doccomment">/// Populates `self.const_expression_types`
+    </span><span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>process_const_expression(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        handle: Handle&lt;<span class="kw">crate</span>::Expression&gt;,
+        resolve_context: <span class="kw-2">&amp;</span>ResolveContext,
+        gctx: <span class="kw">crate</span>::proc::GlobalCtx,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;(), <span class="kw">super</span>::ConstExpressionError&gt; {
+        <span class="self">self</span>.const_expression_types[handle.index()] =
+            resolve_context.resolve(<span class="kw-2">&amp;</span>gctx.const_expressions[handle], |h| <span class="prelude-val">Ok</span>(<span class="kw-2">&amp;</span><span class="self">self</span>[h]))<span class="question-mark">?</span>;
+        <span class="prelude-val">Ok</span>(())
+    }
+
     <span class="doccomment">/// Builds the `FunctionInfo` based on the function, and validates the
     /// uniform control flow if required by the expressions of this function.
     </span><span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>process_function(
@@ -2175,18 +2281,6 @@ Figures out the following properties:
 </span><span class="kw">fn </span>uniform_control_flow() {
     <span class="kw">use crate</span>::{Expression <span class="kw">as </span>E, Statement <span class="kw">as </span>S};
 
-    <span class="kw">let </span><span class="kw-2">mut </span>constant_arena = Arena::new();
-    <span class="kw">let </span>constant = constant_arena.append(
-        <span class="kw">crate</span>::Constant {
-            name: <span class="prelude-val">None</span>,
-            specialization: <span class="prelude-val">None</span>,
-            inner: <span class="kw">crate</span>::ConstantInner::Scalar {
-                width: <span class="number">4</span>,
-                value: <span class="kw">crate</span>::ScalarValue::Uint(<span class="number">0</span>),
-            },
-        },
-        Default::default(),
-    );
     <span class="kw">let </span><span class="kw-2">mut </span>type_arena = <span class="kw">crate</span>::UniqueArena::new();
     <span class="kw">let </span>ty = type_arena.insert(
         <span class="kw">crate</span>::Type {
@@ -2223,7 +2317,7 @@ Figures out the following properties:
 
     <span class="kw">let </span><span class="kw-2">mut </span>expressions = Arena::new();
     <span class="comment">// checks the uniform control flow
-    </span><span class="kw">let </span>constant_expr = expressions.append(E::Constant(constant), Default::default());
+    </span><span class="kw">let </span>constant_expr = expressions.append(E::Literal(<span class="kw">crate</span>::Literal::U32(<span class="number">0</span>)), Default::default());
     <span class="comment">// checks the non-uniform control flow
     </span><span class="kw">let </span>derivative_expr = expressions.append(
         E::Derivative {
@@ -2263,7 +2357,7 @@ Figures out the following properties:
         sampling: <span class="kw">crate</span>::FastHashSet::default(),
     };
     <span class="kw">let </span>resolve_context = ResolveContext {
-        constants: <span class="kw-2">&amp;</span>constant_arena,
+        constants: <span class="kw-2">&amp;</span>Arena::new(),
         types: <span class="kw-2">&amp;</span>type_arena,
         special_types: <span class="kw-2">&amp;</span><span class="kw">crate</span>::SpecialTypes::default(),
         global_vars: <span class="kw-2">&amp;</span>global_var_arena,

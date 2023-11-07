@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/n3vu0r/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ecs-0.11.2/src/system/commands/mod.rs`."><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-9bb858ba049f1f21.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="bevy_ecs" data-themes="" data-resource-suffix="" data-rustdoc-version="1.72.0 (5680fa18f 2023-08-23)" data-channel="1.72.0" data-search-js="search-f6292fe389d70017.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-0f8c037637f9eb3e.css" data-theme-dark-css="dark-1097f8e92a01e3cf.css" data-theme-ayu-css="ayu-614652228113ac93.css" ><script src="../../../../static.files/storage-59fd9b8ccb335783.js"></script><script defer src="../../../../static.files/source-script-106908c7a7964ba4.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../../static.files/light-0f8c037637f9eb3e.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../../static.files/dark-1097f8e92a01e3cf.css"><link rel="stylesheet" href="../../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../../bevy_ecs/index.html"><img class="rust-logo" src="../../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ecs-0.12.0/src/system/commands/mod.rs`."><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="bevy_ecs" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../../bevy_ecs/index.html"><img class="rust-logo" src="../../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1220,6 +1220,90 @@
 <a href="#1220" id="1220">1220</a>
 <a href="#1221" id="1221">1221</a>
 <a href="#1222" id="1222">1222</a>
+<a href="#1223" id="1223">1223</a>
+<a href="#1224" id="1224">1224</a>
+<a href="#1225" id="1225">1225</a>
+<a href="#1226" id="1226">1226</a>
+<a href="#1227" id="1227">1227</a>
+<a href="#1228" id="1228">1228</a>
+<a href="#1229" id="1229">1229</a>
+<a href="#1230" id="1230">1230</a>
+<a href="#1231" id="1231">1231</a>
+<a href="#1232" id="1232">1232</a>
+<a href="#1233" id="1233">1233</a>
+<a href="#1234" id="1234">1234</a>
+<a href="#1235" id="1235">1235</a>
+<a href="#1236" id="1236">1236</a>
+<a href="#1237" id="1237">1237</a>
+<a href="#1238" id="1238">1238</a>
+<a href="#1239" id="1239">1239</a>
+<a href="#1240" id="1240">1240</a>
+<a href="#1241" id="1241">1241</a>
+<a href="#1242" id="1242">1242</a>
+<a href="#1243" id="1243">1243</a>
+<a href="#1244" id="1244">1244</a>
+<a href="#1245" id="1245">1245</a>
+<a href="#1246" id="1246">1246</a>
+<a href="#1247" id="1247">1247</a>
+<a href="#1248" id="1248">1248</a>
+<a href="#1249" id="1249">1249</a>
+<a href="#1250" id="1250">1250</a>
+<a href="#1251" id="1251">1251</a>
+<a href="#1252" id="1252">1252</a>
+<a href="#1253" id="1253">1253</a>
+<a href="#1254" id="1254">1254</a>
+<a href="#1255" id="1255">1255</a>
+<a href="#1256" id="1256">1256</a>
+<a href="#1257" id="1257">1257</a>
+<a href="#1258" id="1258">1258</a>
+<a href="#1259" id="1259">1259</a>
+<a href="#1260" id="1260">1260</a>
+<a href="#1261" id="1261">1261</a>
+<a href="#1262" id="1262">1262</a>
+<a href="#1263" id="1263">1263</a>
+<a href="#1264" id="1264">1264</a>
+<a href="#1265" id="1265">1265</a>
+<a href="#1266" id="1266">1266</a>
+<a href="#1267" id="1267">1267</a>
+<a href="#1268" id="1268">1268</a>
+<a href="#1269" id="1269">1269</a>
+<a href="#1270" id="1270">1270</a>
+<a href="#1271" id="1271">1271</a>
+<a href="#1272" id="1272">1272</a>
+<a href="#1273" id="1273">1273</a>
+<a href="#1274" id="1274">1274</a>
+<a href="#1275" id="1275">1275</a>
+<a href="#1276" id="1276">1276</a>
+<a href="#1277" id="1277">1277</a>
+<a href="#1278" id="1278">1278</a>
+<a href="#1279" id="1279">1279</a>
+<a href="#1280" id="1280">1280</a>
+<a href="#1281" id="1281">1281</a>
+<a href="#1282" id="1282">1282</a>
+<a href="#1283" id="1283">1283</a>
+<a href="#1284" id="1284">1284</a>
+<a href="#1285" id="1285">1285</a>
+<a href="#1286" id="1286">1286</a>
+<a href="#1287" id="1287">1287</a>
+<a href="#1288" id="1288">1288</a>
+<a href="#1289" id="1289">1289</a>
+<a href="#1290" id="1290">1290</a>
+<a href="#1291" id="1291">1291</a>
+<a href="#1292" id="1292">1292</a>
+<a href="#1293" id="1293">1293</a>
+<a href="#1294" id="1294">1294</a>
+<a href="#1295" id="1295">1295</a>
+<a href="#1296" id="1296">1296</a>
+<a href="#1297" id="1297">1297</a>
+<a href="#1298" id="1298">1298</a>
+<a href="#1299" id="1299">1299</a>
+<a href="#1300" id="1300">1300</a>
+<a href="#1301" id="1301">1301</a>
+<a href="#1302" id="1302">1302</a>
+<a href="#1303" id="1303">1303</a>
+<a href="#1304" id="1304">1304</a>
+<a href="#1305" id="1305">1305</a>
+<a href="#1306" id="1306">1306</a>
 </pre></div><pre class="rust"><code><span class="kw">mod </span>command_queue;
 <span class="kw">mod </span>parallel_scope;
 
@@ -1227,7 +1311,8 @@
     <span class="self">self </span><span class="kw">as </span>bevy_ecs,
     bundle::Bundle,
     entity::{Entities, Entity},
-    world::{FromWorld, World},
+    system::{RunSystem, SystemId},
+    world::{EntityWorldMut, FromWorld, World},
 };
 <span class="kw">use </span>bevy_ecs_macros::SystemParam;
 <span class="kw">use </span>bevy_utils::tracing::{error, info};
@@ -1309,9 +1394,9 @@
 ///
 /// # Implementing
 ///
-/// Each built-in command is implemented as a separate method, e.g. [`spawn`](#method.spawn).
+/// Each built-in command is implemented as a separate method, e.g. [`Commands::spawn`].
 /// In addition to the pre-defined command methods, you can add commands with any arbitrary
-/// behavior using [`Commands::add`](#method.add), which accepts any type implementing [`Command`].
+/// behavior using [`Commands::add`], which accepts any type implementing [`Command`].
 ///
 /// Since closures and other functions implement this trait automatically, this allows one-shot,
 /// anonymous custom commands.
@@ -1340,9 +1425,7 @@
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>apply(<span class="kw-2">&amp;mut </span><span class="self">self</span>, _system_meta: <span class="kw-2">&amp;</span>SystemMeta, world: <span class="kw-2">&amp;mut </span>World) {
         <span class="attr">#[cfg(feature = <span class="string">&quot;trace&quot;</span>)]
-        </span><span class="kw">let </span>_system_span =
-            <span class="macro">bevy_utils::tracing::info_span!</span>(<span class="string">&quot;system_commands&quot;</span>, name = _system_meta.name())
-                .entered();
+        </span><span class="kw">let </span>_span_guard = _system_meta.commands_span.enter();
         <span class="self">self</span>.apply(world);
     }
 }
@@ -1741,11 +1824,19 @@
         <span class="self">self</span>.queue.push(RemoveResource::&lt;R&gt;::new());
     }
 
+    <span class="doccomment">/// Runs the system corresponding to the given [`SystemId`].
+    /// Systems are ran in an exclusive and single threaded way.
+    /// Running slow systems can become a bottleneck.
+    ///
+    /// Calls [`World::run_system`](crate::system::World::run_system).
+    </span><span class="kw">pub fn </span>run_system(<span class="kw-2">&amp;mut </span><span class="self">self</span>, id: SystemId) {
+        <span class="self">self</span>.queue.push(RunSystem::new(id));
+    }
+
     <span class="doccomment">/// Pushes a generic [`Command`] to the command queue.
     ///
     /// `command` can be a built-in command, custom struct that implements [`Command`] or a closure
     /// that takes [`&amp;mut World`](World) as an argument.
-    ///
     /// # Example
     ///
     /// ```
@@ -1818,9 +1909,9 @@
 /// # let mut world = World::new();
 /// # world.init_resource::&lt;Counter&gt;();
 /// #
-/// # let mut setup_schedule = Schedule::new();
+/// # let mut setup_schedule = Schedule::default();
 /// # setup_schedule.add_systems(setup);
-/// # let mut assert_schedule = Schedule::new();
+/// # let mut assert_schedule = Schedule::default();
 /// # assert_schedule.add_systems(assert_names);
 /// #
 /// # setup_schedule.run(&amp;mut world);
@@ -1864,8 +1955,8 @@
 
 <span class="doccomment">/// A list of commands that will be run to modify an [entity](crate::entity).
 </span><span class="kw">pub struct </span>EntityCommands&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>, <span class="lifetime">&#39;a</span>&gt; {
-    entity: Entity,
-    commands: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>Commands&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>&gt;,
+    <span class="kw">pub</span>(<span class="kw">crate</span>) entity: Entity,
+    <span class="kw">pub</span>(<span class="kw">crate</span>) commands: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>Commands&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>&gt;,
 }
 
 <span class="kw">impl</span>&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>, <span class="lifetime">&#39;a</span>&gt; EntityCommands&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>, <span class="lifetime">&#39;a</span>&gt; {
@@ -1894,6 +1985,8 @@
     /// # Panics
     ///
     /// The command will panic when applied if the associated entity does not exist.
+    ///
+    /// To avoid a panic in this case, use the command [`Self::try_insert`] instead.
     ///
     /// # Example
     ///
@@ -1944,9 +2037,65 @@
         <span class="self">self
     </span>}
 
+    <span class="doccomment">/// Tries to add a [`Bundle`] of components to the entity.
+    ///
+    /// This will overwrite any previous value(s) of the same component type.
+    ///
+    /// # Note
+    ///
+    /// Unlike [`Self::insert`], this will not panic if the associated entity does not exist.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// # use bevy_ecs::prelude::*;
+    /// # #[derive(Resource)]
+    /// # struct PlayerEntity { entity: Entity }
+    /// #[derive(Component)]
+    /// struct Health(u32);
+    /// #[derive(Component)]
+    /// struct Strength(u32);
+    /// #[derive(Component)]
+    /// struct Defense(u32);
+    ///
+    /// #[derive(Bundle)]
+    /// struct CombatBundle {
+    ///     health: Health,
+    ///     strength: Strength,
+    /// }
+    ///
+    /// fn add_combat_stats_system(mut commands: Commands, player: Res&lt;PlayerEntity&gt;) {
+    ///   commands.entity(player.entity)
+    ///    // You can try_insert individual components:
+    ///     .try_insert(Defense(10))
+    ///     
+    ///    // You can also insert tuples of components:
+    ///     .try_insert(CombatBundle {
+    ///         health: Health(100),
+    ///         strength: Strength(40),
+    ///     });
+    ///    
+    ///    // Suppose this occurs in a parallel adjacent system or process
+    ///    commands.entity(player.entity)
+    ///      .despawn();
+    ///
+    ///    commands.entity(player.entity)
+    ///    // This will not panic nor will it add the component
+    ///      .try_insert(Defense(5));
+    /// }
+    /// # bevy_ecs::system::assert_is_system(add_combat_stats_system);
+    /// ```
+    </span><span class="kw">pub fn </span>try_insert(<span class="kw-2">&amp;mut </span><span class="self">self</span>, bundle: <span class="kw">impl </span>Bundle) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="self">self</span>.commands.add(TryInsert {
+            entity: <span class="self">self</span>.entity,
+            bundle,
+        });
+        <span class="self">self
+    </span>}
+
     <span class="doccomment">/// Removes a [`Bundle`] of components from the entity.
     ///
-    /// See [`EntityMut::remove`](crate::world::EntityMut::remove) for more
+    /// See [`EntityWorldMut::remove`](crate::world::EntityWorldMut::remove) for more
     /// details.
     ///
     /// # Example
@@ -2031,8 +2180,8 @@
     /// commands
     ///     .spawn_empty()
     ///     // Closures with this signature implement `EntityCommand`.
-    ///     .add(|id: Entity, world: &amp;mut World| {
-    ///         println!(&quot;Executed an EntityCommand for {id:?}&quot;);
+    ///     .add(|entity: EntityWorldMut| {
+    ///         println!(&quot;Executed an EntityCommand for {:?}&quot;, entity.id());
     ///     });
     /// # }
     /// # bevy_ecs::system::assert_is_system(my_system);
@@ -2070,10 +2219,10 @@
 
 <span class="kw">impl</span>&lt;F&gt; EntityCommand <span class="kw">for </span>F
 <span class="kw">where
-    </span>F: FnOnce(Entity, <span class="kw-2">&amp;mut </span>World) + Send + <span class="lifetime">&#39;static</span>,
+    </span>F: FnOnce(EntityWorldMut) + Send + <span class="lifetime">&#39;static</span>,
 {
     <span class="kw">fn </span>apply(<span class="self">self</span>, id: Entity, world: <span class="kw-2">&amp;mut </span>World) {
-        <span class="self">self</span>(id, world);
+        <span class="self">self</span>(world.entity_mut(id));
     }
 }
 
@@ -2177,6 +2326,25 @@
             entity.insert(<span class="self">self</span>.bundle);
         } <span class="kw">else </span>{
             <span class="macro">panic!</span>(<span class="string">&quot;error[B0003]: Could not insert a bundle (of type `{}`) for entity {:?} because it doesn&#39;t exist in this World.&quot;</span>, std::any::type_name::&lt;T&gt;(), <span class="self">self</span>.entity);
+        }
+    }
+}
+
+<span class="doccomment">/// A [`Command`] that attempts to add the components in a [`Bundle`] to an entity.
+</span><span class="kw">pub struct </span>TryInsert&lt;T&gt; {
+    <span class="doccomment">/// The entity to which the components will be added.
+    </span><span class="kw">pub </span>entity: Entity,
+    <span class="doccomment">/// The [`Bundle`] containing the components that will be added to the entity.
+    </span><span class="kw">pub </span>bundle: T,
+}
+
+<span class="kw">impl</span>&lt;T&gt; Command <span class="kw">for </span>TryInsert&lt;T&gt;
+<span class="kw">where
+    </span>T: Bundle + <span class="lifetime">&#39;static</span>,
+{
+    <span class="kw">fn </span>apply(<span class="self">self</span>, world: <span class="kw-2">&amp;mut </span>World) {
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">mut </span>entity) = world.get_entity_mut(<span class="self">self</span>.entity) {
+            entity.insert(<span class="self">self</span>.bundle);
         }
     }
 }

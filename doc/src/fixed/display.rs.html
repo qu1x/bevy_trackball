@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/n3vu0r/.cargo/registry/src/index.crates.io-6f17d22bba15001f/fixed-1.23.1/src/display.rs`."><title>display.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-9bb858ba049f1f21.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="fixed" data-themes="" data-resource-suffix="" data-rustdoc-version="1.72.0 (5680fa18f 2023-08-23)" data-channel="1.72.0" data-search-js="search-f6292fe389d70017.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-0f8c037637f9eb3e.css" data-theme-dark-css="dark-1097f8e92a01e3cf.css" data-theme-ayu-css="ayu-614652228113ac93.css" ><script src="../../static.files/storage-59fd9b8ccb335783.js"></script><script defer src="../../static.files/source-script-106908c7a7964ba4.js"></script><script defer src="../../source-files.js"></script><script defer src="../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-0f8c037637f9eb3e.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-1097f8e92a01e3cf.css"><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../fixed/index.html"><img src="data:image/svg+xml;base64,
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/fixed-1.24.0/src/display.rs`."><title>display.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="fixed" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../fixed/index.html"><img src="data:image/svg+xml;base64,
 PHN2ZyB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgMzMuODY3IDMzLjg2NyIgeG1s
 bnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48Y2xpcFBhdGggaWQ9ImIiPjxjaXJjbGUgY3g9IjE2LjkzMyIg
 Y3k9IjI4MC4wNyIgcj0iMTYuOTMzIiBmaWxsPSIjMDA3MmIyIi8+PC9jbGlwUGF0aD48Y2xpcFBhdGggaWQ9ImEiPjxjaXJjbGUg
@@ -1073,6 +1073,10 @@ PC9zdmc+Cg==
 <a href="#1036" id="1036">1036</a>
 <a href="#1037" id="1037">1037</a>
 <a href="#1038" id="1038">1038</a>
+<a href="#1039" id="1039">1039</a>
+<a href="#1040" id="1040">1040</a>
+<a href="#1041" id="1041">1041</a>
+<a href="#1042" id="1042">1042</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright © 2018–2023 Trevor Spiteri
 
 // This library is free software: you can redistribute it and/or
@@ -1235,7 +1239,7 @@ PC9zdmc+Cg==
     }
 
     <span class="kw">fn </span>encode_digits(<span class="kw-2">&amp;mut </span><span class="self">self</span>, upper: bool) {
-        <span class="kw">for </span>digit <span class="kw">in </span><span class="self">self</span>.digits[..<span class="number">1 </span>+ <span class="self">self</span>.int_digits + <span class="self">self</span>.frac_digits].iter_mut() {
+        <span class="kw">for </span>digit <span class="kw">in </span><span class="kw-2">&amp;mut </span><span class="self">self</span>.digits[..<span class="number">1 </span>+ <span class="self">self</span>.int_digits + <span class="self">self</span>.frac_digits] {
             <span class="kw">if </span><span class="kw-2">*</span>digit &lt; <span class="number">10 </span>{
                 <span class="kw-2">*</span>digit += <span class="string">b&#39;0&#39;</span>;
             } <span class="kw">else </span>{
@@ -1281,12 +1285,16 @@ PC9zdmc+Cg==
         </span>} <span class="kw">else </span>{
             <span class="number">2
         </span>};
-        <span class="kw">let </span>end_zeros = fmt.precision().map(|x| x - <span class="self">self</span>.frac_digits).unwrap_or(<span class="number">0</span>);
+        <span class="kw">let </span>end_zeros = fmt.precision().map_or(<span class="number">0</span>, |x| x - <span class="self">self</span>.frac_digits);
         <span class="kw">let </span>has_frac = <span class="self">self</span>.frac_digits &gt; <span class="number">0 </span>|| end_zeros &gt; <span class="number">0</span>;
 
         <span class="kw">let </span>digits_width = <span class="number">1 </span>+ <span class="self">self</span>.int_digits + <span class="self">self</span>.frac_digits - abs_begin;
-        <span class="kw">let </span>req_width =
-            sign.len() + prefix.len() + digits_width + has_frac <span class="kw">as </span>usize + end_zeros + <span class="self">self</span>.exp_len;
+        <span class="kw">let </span>req_width = sign.len()
+            + prefix.len()
+            + digits_width
+            + usize::from(has_frac)
+            + end_zeros
+            + <span class="self">self</span>.exp_len;
         <span class="kw">let </span>pad = fmt
             .width()
             .and_then(|w| w.checked_sub(req_width))
@@ -1410,7 +1418,7 @@ PC9zdmc+Cg==
         }
         <span class="kw">let </span>digit_bits = format.digit_bits();
         <span class="kw">let </span>compl_digit_bits = <span class="self">Self</span>::BITS - digit_bits;
-        <span class="kw">for </span>b <span class="kw">in </span>buf.frac().iter_mut() {
+        <span class="kw">for </span>b <span class="kw">in </span><span class="kw-2">&amp;mut *</span>buf.frac() {
             <span class="macro">debug_assert!</span>(frac != <span class="self">Self</span>::ZERO);
             <span class="kw-2">*</span>b = (frac &gt;&gt; compl_digit_bits).wrapping_as::&lt;u8&gt;();
             frac = frac &lt;&lt; digit_bits;
@@ -2047,8 +2055,8 @@ PC9zdmc+Cg==
             </span><span class="kw">let </span>(ifix, ufix) = (I4F4::from_bits(u <span class="kw">as </span>i8), U4F4::from_bits(u));
             <span class="kw">let </span>(iflo, uflo) = (ifix.to_num::&lt;f32&gt;(), ufix.to_num::&lt;f32&gt;());
             <span class="kw">let </span>(sifix, sufix) = (ifix.to_string(), ufix.to_string());
-            <span class="kw">let </span>pifix = sifix.find(<span class="string">&#39;.&#39;</span>).map(|p| sifix.len() - <span class="number">1 </span>- p).unwrap_or(<span class="number">0</span>);
-            <span class="kw">let </span>pufix = sufix.find(<span class="string">&#39;.&#39;</span>).map(|p| sufix.len() - <span class="number">1 </span>- p).unwrap_or(<span class="number">0</span>);
+            <span class="kw">let </span>pifix = sifix.find(<span class="string">&#39;.&#39;</span>).map_or(<span class="number">0</span>, |p| sifix.len() - <span class="number">1 </span>- p);
+            <span class="kw">let </span>pufix = sufix.find(<span class="string">&#39;.&#39;</span>).map_or(<span class="number">0</span>, |p| sufix.len() - <span class="number">1 </span>- p);
             <span class="kw">let </span>(siflo, suflo) = (<span class="macro">format!</span>(<span class="string">&quot;{iflo:.pifix$}&quot;</span>), <span class="macro">format!</span>(<span class="string">&quot;{uflo:.pufix$}&quot;</span>));
             <span class="macro">assert_eq!</span>(sifix, siflo);
             <span class="macro">assert_eq!</span>(sufix, suflo);

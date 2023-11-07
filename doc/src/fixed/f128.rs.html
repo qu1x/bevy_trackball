@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/n3vu0r/.cargo/registry/src/index.crates.io-6f17d22bba15001f/fixed-1.23.1/src/f128.rs`."><title>f128.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-9bb858ba049f1f21.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="fixed" data-themes="" data-resource-suffix="" data-rustdoc-version="1.72.0 (5680fa18f 2023-08-23)" data-channel="1.72.0" data-search-js="search-f6292fe389d70017.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-0f8c037637f9eb3e.css" data-theme-dark-css="dark-1097f8e92a01e3cf.css" data-theme-ayu-css="ayu-614652228113ac93.css" ><script src="../../static.files/storage-59fd9b8ccb335783.js"></script><script defer src="../../static.files/source-script-106908c7a7964ba4.js"></script><script defer src="../../source-files.js"></script><script defer src="../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-0f8c037637f9eb3e.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-1097f8e92a01e3cf.css"><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../fixed/index.html"><img src="data:image/svg+xml;base64,
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/fixed-1.24.0/src/f128.rs`."><title>f128.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="fixed" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../fixed/index.html"><img src="data:image/svg+xml;base64,
 PHN2ZyB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgMzMuODY3IDMzLjg2NyIgeG1s
 bnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48Y2xpcFBhdGggaWQ9ImIiPjxjaXJjbGUgY3g9IjE2LjkzMyIg
 Y3k9IjI4MC4wNyIgcj0iMTYuOTMzIiBmaWxsPSIjMDA3MmIyIi8+PC9jbGlwUGF0aD48Y2xpcFBhdGggaWQ9ImEiPjxjaXJjbGUg
@@ -1246,6 +1246,30 @@ PC9zdmc+Cg==
 <a href="#1209" id="1209">1209</a>
 <a href="#1210" id="1210">1210</a>
 <a href="#1211" id="1211">1211</a>
+<a href="#1212" id="1212">1212</a>
+<a href="#1213" id="1213">1213</a>
+<a href="#1214" id="1214">1214</a>
+<a href="#1215" id="1215">1215</a>
+<a href="#1216" id="1216">1216</a>
+<a href="#1217" id="1217">1217</a>
+<a href="#1218" id="1218">1218</a>
+<a href="#1219" id="1219">1219</a>
+<a href="#1220" id="1220">1220</a>
+<a href="#1221" id="1221">1221</a>
+<a href="#1222" id="1222">1222</a>
+<a href="#1223" id="1223">1223</a>
+<a href="#1224" id="1224">1224</a>
+<a href="#1225" id="1225">1225</a>
+<a href="#1226" id="1226">1226</a>
+<a href="#1227" id="1227">1227</a>
+<a href="#1228" id="1228">1228</a>
+<a href="#1229" id="1229">1229</a>
+<a href="#1230" id="1230">1230</a>
+<a href="#1231" id="1231">1231</a>
+<a href="#1232" id="1232">1232</a>
+<a href="#1233" id="1233">1233</a>
+<a href="#1234" id="1234">1234</a>
+<a href="#1235" id="1235">1235</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright © 2018–2023 Trevor Spiteri
 
 // This library is free software: you can redistribute it and/or
@@ -1428,6 +1452,7 @@ PC9zdmc+Cg==
     /// assert!(!F128::from_bits(infinity_bits).is_finite());
     /// ```
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub const fn </span>from_bits(bits: u128) -&gt; F128 {
         F128 { bits }
     }
@@ -1442,24 +1467,28 @@ PC9zdmc+Cg==
     /// assert_ne!(F128::ONE.to_bits(), 1u128);
     /// ```
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub const fn </span>to_bits(<span class="self">self</span>) -&gt; u128 {
         <span class="self">self</span>.bits
     }
 
     <span class="doccomment">/// Creates a number from a byte array in big-endian byte order.
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub const fn </span>from_be_bytes(bytes: [u8; <span class="number">16</span>]) -&gt; F128 {
         F128::from_bits(u128::from_be_bytes(bytes))
     }
 
     <span class="doccomment">/// Creates a number from a byte array in little-endian byte order.
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub const fn </span>from_le_bytes(bytes: [u8; <span class="number">16</span>]) -&gt; F128 {
         F128::from_bits(u128::from_le_bytes(bytes))
     }
 
     <span class="doccomment">/// Creates a number from a byte array in native-endian byte order.
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub const fn </span>from_ne_bytes(bytes: [u8; <span class="number">16</span>]) -&gt; F128 {
         F128::from_bits(u128::from_ne_bytes(bytes))
     }
@@ -1467,6 +1496,7 @@ PC9zdmc+Cg==
     <span class="doccomment">/// Returns the memory representation of the number as a byte array in
     /// big-endian byte order.
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub const fn </span>to_be_bytes(<span class="self">self</span>) -&gt; [u8; <span class="number">16</span>] {
         <span class="self">self</span>.to_bits().to_be_bytes()
     }
@@ -1474,6 +1504,7 @@ PC9zdmc+Cg==
     <span class="doccomment">/// Returns the memory representation of the number as a byte array in
     /// little-endian byte order.
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub const fn </span>to_le_bytes(<span class="self">self</span>) -&gt; [u8; <span class="number">16</span>] {
         <span class="self">self</span>.to_bits().to_le_bytes()
     }
@@ -1481,6 +1512,7 @@ PC9zdmc+Cg==
     <span class="doccomment">/// Returns the memory representation of the number as a byte array in
     /// native-endian byte order.
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub const fn </span>to_ne_bytes(<span class="self">self</span>) -&gt; [u8; <span class="number">16</span>] {
         <span class="self">self</span>.to_bits().to_ne_bytes()
     }
@@ -1499,6 +1531,7 @@ PC9zdmc+Cg==
     /// assert!(!F128::NEG_INFINITY.is_nan());
     /// ```
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub const fn </span>is_nan(<span class="self">self</span>) -&gt; bool {
         (<span class="self">self</span>.to_bits() &amp; !SIGN_MASK) &gt; EXP_MASK
     }
@@ -1517,6 +1550,7 @@ PC9zdmc+Cg==
     /// assert!(!F128::NAN.is_infinite());
     /// ```
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub const fn </span>is_infinite(<span class="self">self</span>) -&gt; bool {
         (<span class="self">self</span>.to_bits() &amp; !SIGN_MASK) == EXP_MASK
     }
@@ -1536,6 +1570,7 @@ PC9zdmc+Cg==
     /// assert!(!F128::NAN.is_finite());
     /// ```
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub const fn </span>is_finite(<span class="self">self</span>) -&gt; bool {
         (<span class="self">self</span>.to_bits() &amp; EXP_MASK) != EXP_MASK
     }
@@ -1554,6 +1589,7 @@ PC9zdmc+Cg==
     /// assert!(!F128::NAN.is_zero());
     /// ```
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub const fn </span>is_zero(<span class="self">self</span>) -&gt; bool {
         (<span class="self">self</span>.to_bits() &amp; !SIGN_MASK) == <span class="number">0
     </span>}
@@ -1571,6 +1607,7 @@ PC9zdmc+Cg==
     /// assert!(!F128::MIN_POSITIVE.is_subnormal());
     /// ```
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub const fn </span>is_subnormal(<span class="self">self</span>) -&gt; bool {
         <span class="kw">let </span>abs = <span class="self">self</span>.to_bits() &amp; !SIGN_MASK;
         <span class="number">0 </span>&lt; abs &amp;&amp; abs &lt; F128::MIN_POSITIVE.to_bits()
@@ -1593,6 +1630,7 @@ PC9zdmc+Cg==
     /// assert!(!F128::NAN.is_normal());
     /// ```
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub const fn </span>is_normal(<span class="self">self</span>) -&gt; bool {
         <span class="kw">let </span>abs = <span class="self">self</span>.to_bits() &amp; !SIGN_MASK;
         F128::MIN_POSITIVE.to_bits() &lt;= abs &amp;&amp; abs &lt;= F128::MAX.to_bits()
@@ -1616,6 +1654,7 @@ PC9zdmc+Cg==
     /// assert_eq!(F128::NAN.classify(), FpCategory::Nan);
     /// ```
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub const fn </span>classify(<span class="self">self</span>) -&gt; FpCategory {
         <span class="kw">let </span>exp = <span class="self">self</span>.to_bits() &amp; EXP_MASK;
         <span class="kw">let </span>mant = <span class="self">self</span>.to_bits() &amp; MANT_MASK;
@@ -1657,6 +1696,7 @@ PC9zdmc+Cg==
     /// assert!(F128::NAN.abs().is_nan());
     /// ```
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub const fn </span>abs(<span class="self">self</span>) -&gt; F128 {
         F128::from_bits(<span class="self">self</span>.to_bits() &amp; !SIGN_MASK)
     }
@@ -1680,6 +1720,7 @@ PC9zdmc+Cg==
     /// assert!(F128::NAN.signum().is_nan());
     /// ```
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub const fn </span>signum(<span class="self">self</span>) -&gt; F128 {
         <span class="kw">if </span><span class="self">self</span>.is_nan() {
             <span class="self">self
@@ -1707,6 +1748,7 @@ PC9zdmc+Cg==
     /// assert!(F128::NAN.copysign(F128::NEG_ONE).is_sign_negative());
     /// ```
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub const fn </span>copysign(<span class="self">self</span>, sign: F128) -&gt; F128 {
         F128::from_bits((<span class="self">self</span>.to_bits() &amp; !SIGN_MASK) | (sign.to_bits() &amp; SIGN_MASK))
     }
@@ -1728,6 +1770,7 @@ PC9zdmc+Cg==
     /// assert!(!F128::NEG_INFINITY.is_sign_positive());
     /// ```
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub const fn </span>is_sign_positive(<span class="self">self</span>) -&gt; bool {
         (<span class="self">self</span>.to_bits() &amp; SIGN_MASK) == <span class="number">0
     </span>}
@@ -1749,6 +1792,7 @@ PC9zdmc+Cg==
     /// assert!(!F128::INFINITY.is_sign_negative());
     /// ```
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub const fn </span>is_sign_negative(<span class="self">self</span>) -&gt; bool {
         (<span class="self">self</span>.to_bits() &amp; SIGN_MASK) != <span class="number">0
     </span>}
@@ -1765,6 +1809,7 @@ PC9zdmc+Cg==
     /// assert_eq!(F128::ZERO.max(F128::ONE), F128::ONE);
     /// ```
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub const fn </span>max(<span class="self">self</span>, other: F128) -&gt; F128 {
         <span class="kw">if </span><span class="self">self</span>.is_nan() || <span class="macro">matches!</span>(partial_cmp(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">&amp;</span>other), <span class="prelude-val">Some</span>(Ordering::Less)) {
             other
@@ -1785,6 +1830,7 @@ PC9zdmc+Cg==
     /// assert_eq!(F128::ZERO.min(F128::ONE), F128::ZERO);
     /// ```
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub const fn </span>min(<span class="self">self</span>, other: F128) -&gt; F128 {
         <span class="kw">if </span><span class="self">self</span>.is_nan() || <span class="macro">matches!</span>(partial_cmp(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">&amp;</span>other), <span class="prelude-val">Some</span>(Ordering::Greater)) {
             other
@@ -1815,9 +1861,10 @@ PC9zdmc+Cg==
     /// ```
     </span><span class="attr">#[inline]
     #[track_caller]
+    #[must_use]
     </span><span class="kw">pub const fn </span>clamp(<span class="kw-2">mut </span><span class="self">self</span>, min: F128, max: F128) -&gt; F128 {
         <span class="kw">match </span>partial_cmp(<span class="kw-2">&amp;</span>min, <span class="kw-2">&amp;</span>max) {
-            <span class="prelude-val">Some</span>(Ordering::Less) | <span class="prelude-val">Some</span>(Ordering::Equal) =&gt; {}
+            <span class="prelude-val">Some</span>(Ordering::Less | Ordering::Equal) =&gt; {}
             <span class="kw">_ </span>=&gt; <span class="macro">panic!</span>(<span class="string">&quot;need min &lt;= max&quot;</span>),
         }
         <span class="kw">if </span><span class="macro">matches!</span>(partial_cmp(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">&amp;</span>min), <span class="prelude-val">Some</span>(Ordering::Less)) {
@@ -1863,6 +1910,7 @@ PC9zdmc+Cg==
     /// assert_eq!(neg_zero.total_cmp(&amp;pos_zero), Ordering::Less);
     /// ```
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub const fn </span>total_cmp(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>F128) -&gt; Ordering {
         <span class="kw">let </span>a = <span class="self">self</span>.to_bits();
         <span class="kw">let </span>b = other.to_bits();

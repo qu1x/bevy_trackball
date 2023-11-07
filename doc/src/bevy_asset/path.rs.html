@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/n3vu0r/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_asset-0.11.2/src/path.rs`."><title>path.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-9bb858ba049f1f21.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="bevy_asset" data-themes="" data-resource-suffix="" data-rustdoc-version="1.72.0 (5680fa18f 2023-08-23)" data-channel="1.72.0" data-search-js="search-f6292fe389d70017.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-0f8c037637f9eb3e.css" data-theme-dark-css="dark-1097f8e92a01e3cf.css" data-theme-ayu-css="ayu-614652228113ac93.css" ><script src="../../static.files/storage-59fd9b8ccb335783.js"></script><script defer src="../../static.files/source-script-106908c7a7964ba4.js"></script><script defer src="../../source-files.js"></script><script defer src="../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-0f8c037637f9eb3e.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-1097f8e92a01e3cf.css"><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../bevy_asset/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_asset-0.12.0/src/path.rs`."><title>path.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="bevy_asset" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../bevy_asset/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -200,206 +200,1818 @@
 <a href="#200" id="200">200</a>
 <a href="#201" id="201">201</a>
 <a href="#202" id="202">202</a>
-</pre></div><pre class="rust"><code><span class="kw">use </span>bevy_reflect::{Reflect, ReflectDeserialize, ReflectSerialize};
-<span class="kw">use </span>bevy_utils::{AHasher, RandomState};
-<span class="kw">use </span>serde::{Deserialize, Serialize};
+<a href="#203" id="203">203</a>
+<a href="#204" id="204">204</a>
+<a href="#205" id="205">205</a>
+<a href="#206" id="206">206</a>
+<a href="#207" id="207">207</a>
+<a href="#208" id="208">208</a>
+<a href="#209" id="209">209</a>
+<a href="#210" id="210">210</a>
+<a href="#211" id="211">211</a>
+<a href="#212" id="212">212</a>
+<a href="#213" id="213">213</a>
+<a href="#214" id="214">214</a>
+<a href="#215" id="215">215</a>
+<a href="#216" id="216">216</a>
+<a href="#217" id="217">217</a>
+<a href="#218" id="218">218</a>
+<a href="#219" id="219">219</a>
+<a href="#220" id="220">220</a>
+<a href="#221" id="221">221</a>
+<a href="#222" id="222">222</a>
+<a href="#223" id="223">223</a>
+<a href="#224" id="224">224</a>
+<a href="#225" id="225">225</a>
+<a href="#226" id="226">226</a>
+<a href="#227" id="227">227</a>
+<a href="#228" id="228">228</a>
+<a href="#229" id="229">229</a>
+<a href="#230" id="230">230</a>
+<a href="#231" id="231">231</a>
+<a href="#232" id="232">232</a>
+<a href="#233" id="233">233</a>
+<a href="#234" id="234">234</a>
+<a href="#235" id="235">235</a>
+<a href="#236" id="236">236</a>
+<a href="#237" id="237">237</a>
+<a href="#238" id="238">238</a>
+<a href="#239" id="239">239</a>
+<a href="#240" id="240">240</a>
+<a href="#241" id="241">241</a>
+<a href="#242" id="242">242</a>
+<a href="#243" id="243">243</a>
+<a href="#244" id="244">244</a>
+<a href="#245" id="245">245</a>
+<a href="#246" id="246">246</a>
+<a href="#247" id="247">247</a>
+<a href="#248" id="248">248</a>
+<a href="#249" id="249">249</a>
+<a href="#250" id="250">250</a>
+<a href="#251" id="251">251</a>
+<a href="#252" id="252">252</a>
+<a href="#253" id="253">253</a>
+<a href="#254" id="254">254</a>
+<a href="#255" id="255">255</a>
+<a href="#256" id="256">256</a>
+<a href="#257" id="257">257</a>
+<a href="#258" id="258">258</a>
+<a href="#259" id="259">259</a>
+<a href="#260" id="260">260</a>
+<a href="#261" id="261">261</a>
+<a href="#262" id="262">262</a>
+<a href="#263" id="263">263</a>
+<a href="#264" id="264">264</a>
+<a href="#265" id="265">265</a>
+<a href="#266" id="266">266</a>
+<a href="#267" id="267">267</a>
+<a href="#268" id="268">268</a>
+<a href="#269" id="269">269</a>
+<a href="#270" id="270">270</a>
+<a href="#271" id="271">271</a>
+<a href="#272" id="272">272</a>
+<a href="#273" id="273">273</a>
+<a href="#274" id="274">274</a>
+<a href="#275" id="275">275</a>
+<a href="#276" id="276">276</a>
+<a href="#277" id="277">277</a>
+<a href="#278" id="278">278</a>
+<a href="#279" id="279">279</a>
+<a href="#280" id="280">280</a>
+<a href="#281" id="281">281</a>
+<a href="#282" id="282">282</a>
+<a href="#283" id="283">283</a>
+<a href="#284" id="284">284</a>
+<a href="#285" id="285">285</a>
+<a href="#286" id="286">286</a>
+<a href="#287" id="287">287</a>
+<a href="#288" id="288">288</a>
+<a href="#289" id="289">289</a>
+<a href="#290" id="290">290</a>
+<a href="#291" id="291">291</a>
+<a href="#292" id="292">292</a>
+<a href="#293" id="293">293</a>
+<a href="#294" id="294">294</a>
+<a href="#295" id="295">295</a>
+<a href="#296" id="296">296</a>
+<a href="#297" id="297">297</a>
+<a href="#298" id="298">298</a>
+<a href="#299" id="299">299</a>
+<a href="#300" id="300">300</a>
+<a href="#301" id="301">301</a>
+<a href="#302" id="302">302</a>
+<a href="#303" id="303">303</a>
+<a href="#304" id="304">304</a>
+<a href="#305" id="305">305</a>
+<a href="#306" id="306">306</a>
+<a href="#307" id="307">307</a>
+<a href="#308" id="308">308</a>
+<a href="#309" id="309">309</a>
+<a href="#310" id="310">310</a>
+<a href="#311" id="311">311</a>
+<a href="#312" id="312">312</a>
+<a href="#313" id="313">313</a>
+<a href="#314" id="314">314</a>
+<a href="#315" id="315">315</a>
+<a href="#316" id="316">316</a>
+<a href="#317" id="317">317</a>
+<a href="#318" id="318">318</a>
+<a href="#319" id="319">319</a>
+<a href="#320" id="320">320</a>
+<a href="#321" id="321">321</a>
+<a href="#322" id="322">322</a>
+<a href="#323" id="323">323</a>
+<a href="#324" id="324">324</a>
+<a href="#325" id="325">325</a>
+<a href="#326" id="326">326</a>
+<a href="#327" id="327">327</a>
+<a href="#328" id="328">328</a>
+<a href="#329" id="329">329</a>
+<a href="#330" id="330">330</a>
+<a href="#331" id="331">331</a>
+<a href="#332" id="332">332</a>
+<a href="#333" id="333">333</a>
+<a href="#334" id="334">334</a>
+<a href="#335" id="335">335</a>
+<a href="#336" id="336">336</a>
+<a href="#337" id="337">337</a>
+<a href="#338" id="338">338</a>
+<a href="#339" id="339">339</a>
+<a href="#340" id="340">340</a>
+<a href="#341" id="341">341</a>
+<a href="#342" id="342">342</a>
+<a href="#343" id="343">343</a>
+<a href="#344" id="344">344</a>
+<a href="#345" id="345">345</a>
+<a href="#346" id="346">346</a>
+<a href="#347" id="347">347</a>
+<a href="#348" id="348">348</a>
+<a href="#349" id="349">349</a>
+<a href="#350" id="350">350</a>
+<a href="#351" id="351">351</a>
+<a href="#352" id="352">352</a>
+<a href="#353" id="353">353</a>
+<a href="#354" id="354">354</a>
+<a href="#355" id="355">355</a>
+<a href="#356" id="356">356</a>
+<a href="#357" id="357">357</a>
+<a href="#358" id="358">358</a>
+<a href="#359" id="359">359</a>
+<a href="#360" id="360">360</a>
+<a href="#361" id="361">361</a>
+<a href="#362" id="362">362</a>
+<a href="#363" id="363">363</a>
+<a href="#364" id="364">364</a>
+<a href="#365" id="365">365</a>
+<a href="#366" id="366">366</a>
+<a href="#367" id="367">367</a>
+<a href="#368" id="368">368</a>
+<a href="#369" id="369">369</a>
+<a href="#370" id="370">370</a>
+<a href="#371" id="371">371</a>
+<a href="#372" id="372">372</a>
+<a href="#373" id="373">373</a>
+<a href="#374" id="374">374</a>
+<a href="#375" id="375">375</a>
+<a href="#376" id="376">376</a>
+<a href="#377" id="377">377</a>
+<a href="#378" id="378">378</a>
+<a href="#379" id="379">379</a>
+<a href="#380" id="380">380</a>
+<a href="#381" id="381">381</a>
+<a href="#382" id="382">382</a>
+<a href="#383" id="383">383</a>
+<a href="#384" id="384">384</a>
+<a href="#385" id="385">385</a>
+<a href="#386" id="386">386</a>
+<a href="#387" id="387">387</a>
+<a href="#388" id="388">388</a>
+<a href="#389" id="389">389</a>
+<a href="#390" id="390">390</a>
+<a href="#391" id="391">391</a>
+<a href="#392" id="392">392</a>
+<a href="#393" id="393">393</a>
+<a href="#394" id="394">394</a>
+<a href="#395" id="395">395</a>
+<a href="#396" id="396">396</a>
+<a href="#397" id="397">397</a>
+<a href="#398" id="398">398</a>
+<a href="#399" id="399">399</a>
+<a href="#400" id="400">400</a>
+<a href="#401" id="401">401</a>
+<a href="#402" id="402">402</a>
+<a href="#403" id="403">403</a>
+<a href="#404" id="404">404</a>
+<a href="#405" id="405">405</a>
+<a href="#406" id="406">406</a>
+<a href="#407" id="407">407</a>
+<a href="#408" id="408">408</a>
+<a href="#409" id="409">409</a>
+<a href="#410" id="410">410</a>
+<a href="#411" id="411">411</a>
+<a href="#412" id="412">412</a>
+<a href="#413" id="413">413</a>
+<a href="#414" id="414">414</a>
+<a href="#415" id="415">415</a>
+<a href="#416" id="416">416</a>
+<a href="#417" id="417">417</a>
+<a href="#418" id="418">418</a>
+<a href="#419" id="419">419</a>
+<a href="#420" id="420">420</a>
+<a href="#421" id="421">421</a>
+<a href="#422" id="422">422</a>
+<a href="#423" id="423">423</a>
+<a href="#424" id="424">424</a>
+<a href="#425" id="425">425</a>
+<a href="#426" id="426">426</a>
+<a href="#427" id="427">427</a>
+<a href="#428" id="428">428</a>
+<a href="#429" id="429">429</a>
+<a href="#430" id="430">430</a>
+<a href="#431" id="431">431</a>
+<a href="#432" id="432">432</a>
+<a href="#433" id="433">433</a>
+<a href="#434" id="434">434</a>
+<a href="#435" id="435">435</a>
+<a href="#436" id="436">436</a>
+<a href="#437" id="437">437</a>
+<a href="#438" id="438">438</a>
+<a href="#439" id="439">439</a>
+<a href="#440" id="440">440</a>
+<a href="#441" id="441">441</a>
+<a href="#442" id="442">442</a>
+<a href="#443" id="443">443</a>
+<a href="#444" id="444">444</a>
+<a href="#445" id="445">445</a>
+<a href="#446" id="446">446</a>
+<a href="#447" id="447">447</a>
+<a href="#448" id="448">448</a>
+<a href="#449" id="449">449</a>
+<a href="#450" id="450">450</a>
+<a href="#451" id="451">451</a>
+<a href="#452" id="452">452</a>
+<a href="#453" id="453">453</a>
+<a href="#454" id="454">454</a>
+<a href="#455" id="455">455</a>
+<a href="#456" id="456">456</a>
+<a href="#457" id="457">457</a>
+<a href="#458" id="458">458</a>
+<a href="#459" id="459">459</a>
+<a href="#460" id="460">460</a>
+<a href="#461" id="461">461</a>
+<a href="#462" id="462">462</a>
+<a href="#463" id="463">463</a>
+<a href="#464" id="464">464</a>
+<a href="#465" id="465">465</a>
+<a href="#466" id="466">466</a>
+<a href="#467" id="467">467</a>
+<a href="#468" id="468">468</a>
+<a href="#469" id="469">469</a>
+<a href="#470" id="470">470</a>
+<a href="#471" id="471">471</a>
+<a href="#472" id="472">472</a>
+<a href="#473" id="473">473</a>
+<a href="#474" id="474">474</a>
+<a href="#475" id="475">475</a>
+<a href="#476" id="476">476</a>
+<a href="#477" id="477">477</a>
+<a href="#478" id="478">478</a>
+<a href="#479" id="479">479</a>
+<a href="#480" id="480">480</a>
+<a href="#481" id="481">481</a>
+<a href="#482" id="482">482</a>
+<a href="#483" id="483">483</a>
+<a href="#484" id="484">484</a>
+<a href="#485" id="485">485</a>
+<a href="#486" id="486">486</a>
+<a href="#487" id="487">487</a>
+<a href="#488" id="488">488</a>
+<a href="#489" id="489">489</a>
+<a href="#490" id="490">490</a>
+<a href="#491" id="491">491</a>
+<a href="#492" id="492">492</a>
+<a href="#493" id="493">493</a>
+<a href="#494" id="494">494</a>
+<a href="#495" id="495">495</a>
+<a href="#496" id="496">496</a>
+<a href="#497" id="497">497</a>
+<a href="#498" id="498">498</a>
+<a href="#499" id="499">499</a>
+<a href="#500" id="500">500</a>
+<a href="#501" id="501">501</a>
+<a href="#502" id="502">502</a>
+<a href="#503" id="503">503</a>
+<a href="#504" id="504">504</a>
+<a href="#505" id="505">505</a>
+<a href="#506" id="506">506</a>
+<a href="#507" id="507">507</a>
+<a href="#508" id="508">508</a>
+<a href="#509" id="509">509</a>
+<a href="#510" id="510">510</a>
+<a href="#511" id="511">511</a>
+<a href="#512" id="512">512</a>
+<a href="#513" id="513">513</a>
+<a href="#514" id="514">514</a>
+<a href="#515" id="515">515</a>
+<a href="#516" id="516">516</a>
+<a href="#517" id="517">517</a>
+<a href="#518" id="518">518</a>
+<a href="#519" id="519">519</a>
+<a href="#520" id="520">520</a>
+<a href="#521" id="521">521</a>
+<a href="#522" id="522">522</a>
+<a href="#523" id="523">523</a>
+<a href="#524" id="524">524</a>
+<a href="#525" id="525">525</a>
+<a href="#526" id="526">526</a>
+<a href="#527" id="527">527</a>
+<a href="#528" id="528">528</a>
+<a href="#529" id="529">529</a>
+<a href="#530" id="530">530</a>
+<a href="#531" id="531">531</a>
+<a href="#532" id="532">532</a>
+<a href="#533" id="533">533</a>
+<a href="#534" id="534">534</a>
+<a href="#535" id="535">535</a>
+<a href="#536" id="536">536</a>
+<a href="#537" id="537">537</a>
+<a href="#538" id="538">538</a>
+<a href="#539" id="539">539</a>
+<a href="#540" id="540">540</a>
+<a href="#541" id="541">541</a>
+<a href="#542" id="542">542</a>
+<a href="#543" id="543">543</a>
+<a href="#544" id="544">544</a>
+<a href="#545" id="545">545</a>
+<a href="#546" id="546">546</a>
+<a href="#547" id="547">547</a>
+<a href="#548" id="548">548</a>
+<a href="#549" id="549">549</a>
+<a href="#550" id="550">550</a>
+<a href="#551" id="551">551</a>
+<a href="#552" id="552">552</a>
+<a href="#553" id="553">553</a>
+<a href="#554" id="554">554</a>
+<a href="#555" id="555">555</a>
+<a href="#556" id="556">556</a>
+<a href="#557" id="557">557</a>
+<a href="#558" id="558">558</a>
+<a href="#559" id="559">559</a>
+<a href="#560" id="560">560</a>
+<a href="#561" id="561">561</a>
+<a href="#562" id="562">562</a>
+<a href="#563" id="563">563</a>
+<a href="#564" id="564">564</a>
+<a href="#565" id="565">565</a>
+<a href="#566" id="566">566</a>
+<a href="#567" id="567">567</a>
+<a href="#568" id="568">568</a>
+<a href="#569" id="569">569</a>
+<a href="#570" id="570">570</a>
+<a href="#571" id="571">571</a>
+<a href="#572" id="572">572</a>
+<a href="#573" id="573">573</a>
+<a href="#574" id="574">574</a>
+<a href="#575" id="575">575</a>
+<a href="#576" id="576">576</a>
+<a href="#577" id="577">577</a>
+<a href="#578" id="578">578</a>
+<a href="#579" id="579">579</a>
+<a href="#580" id="580">580</a>
+<a href="#581" id="581">581</a>
+<a href="#582" id="582">582</a>
+<a href="#583" id="583">583</a>
+<a href="#584" id="584">584</a>
+<a href="#585" id="585">585</a>
+<a href="#586" id="586">586</a>
+<a href="#587" id="587">587</a>
+<a href="#588" id="588">588</a>
+<a href="#589" id="589">589</a>
+<a href="#590" id="590">590</a>
+<a href="#591" id="591">591</a>
+<a href="#592" id="592">592</a>
+<a href="#593" id="593">593</a>
+<a href="#594" id="594">594</a>
+<a href="#595" id="595">595</a>
+<a href="#596" id="596">596</a>
+<a href="#597" id="597">597</a>
+<a href="#598" id="598">598</a>
+<a href="#599" id="599">599</a>
+<a href="#600" id="600">600</a>
+<a href="#601" id="601">601</a>
+<a href="#602" id="602">602</a>
+<a href="#603" id="603">603</a>
+<a href="#604" id="604">604</a>
+<a href="#605" id="605">605</a>
+<a href="#606" id="606">606</a>
+<a href="#607" id="607">607</a>
+<a href="#608" id="608">608</a>
+<a href="#609" id="609">609</a>
+<a href="#610" id="610">610</a>
+<a href="#611" id="611">611</a>
+<a href="#612" id="612">612</a>
+<a href="#613" id="613">613</a>
+<a href="#614" id="614">614</a>
+<a href="#615" id="615">615</a>
+<a href="#616" id="616">616</a>
+<a href="#617" id="617">617</a>
+<a href="#618" id="618">618</a>
+<a href="#619" id="619">619</a>
+<a href="#620" id="620">620</a>
+<a href="#621" id="621">621</a>
+<a href="#622" id="622">622</a>
+<a href="#623" id="623">623</a>
+<a href="#624" id="624">624</a>
+<a href="#625" id="625">625</a>
+<a href="#626" id="626">626</a>
+<a href="#627" id="627">627</a>
+<a href="#628" id="628">628</a>
+<a href="#629" id="629">629</a>
+<a href="#630" id="630">630</a>
+<a href="#631" id="631">631</a>
+<a href="#632" id="632">632</a>
+<a href="#633" id="633">633</a>
+<a href="#634" id="634">634</a>
+<a href="#635" id="635">635</a>
+<a href="#636" id="636">636</a>
+<a href="#637" id="637">637</a>
+<a href="#638" id="638">638</a>
+<a href="#639" id="639">639</a>
+<a href="#640" id="640">640</a>
+<a href="#641" id="641">641</a>
+<a href="#642" id="642">642</a>
+<a href="#643" id="643">643</a>
+<a href="#644" id="644">644</a>
+<a href="#645" id="645">645</a>
+<a href="#646" id="646">646</a>
+<a href="#647" id="647">647</a>
+<a href="#648" id="648">648</a>
+<a href="#649" id="649">649</a>
+<a href="#650" id="650">650</a>
+<a href="#651" id="651">651</a>
+<a href="#652" id="652">652</a>
+<a href="#653" id="653">653</a>
+<a href="#654" id="654">654</a>
+<a href="#655" id="655">655</a>
+<a href="#656" id="656">656</a>
+<a href="#657" id="657">657</a>
+<a href="#658" id="658">658</a>
+<a href="#659" id="659">659</a>
+<a href="#660" id="660">660</a>
+<a href="#661" id="661">661</a>
+<a href="#662" id="662">662</a>
+<a href="#663" id="663">663</a>
+<a href="#664" id="664">664</a>
+<a href="#665" id="665">665</a>
+<a href="#666" id="666">666</a>
+<a href="#667" id="667">667</a>
+<a href="#668" id="668">668</a>
+<a href="#669" id="669">669</a>
+<a href="#670" id="670">670</a>
+<a href="#671" id="671">671</a>
+<a href="#672" id="672">672</a>
+<a href="#673" id="673">673</a>
+<a href="#674" id="674">674</a>
+<a href="#675" id="675">675</a>
+<a href="#676" id="676">676</a>
+<a href="#677" id="677">677</a>
+<a href="#678" id="678">678</a>
+<a href="#679" id="679">679</a>
+<a href="#680" id="680">680</a>
+<a href="#681" id="681">681</a>
+<a href="#682" id="682">682</a>
+<a href="#683" id="683">683</a>
+<a href="#684" id="684">684</a>
+<a href="#685" id="685">685</a>
+<a href="#686" id="686">686</a>
+<a href="#687" id="687">687</a>
+<a href="#688" id="688">688</a>
+<a href="#689" id="689">689</a>
+<a href="#690" id="690">690</a>
+<a href="#691" id="691">691</a>
+<a href="#692" id="692">692</a>
+<a href="#693" id="693">693</a>
+<a href="#694" id="694">694</a>
+<a href="#695" id="695">695</a>
+<a href="#696" id="696">696</a>
+<a href="#697" id="697">697</a>
+<a href="#698" id="698">698</a>
+<a href="#699" id="699">699</a>
+<a href="#700" id="700">700</a>
+<a href="#701" id="701">701</a>
+<a href="#702" id="702">702</a>
+<a href="#703" id="703">703</a>
+<a href="#704" id="704">704</a>
+<a href="#705" id="705">705</a>
+<a href="#706" id="706">706</a>
+<a href="#707" id="707">707</a>
+<a href="#708" id="708">708</a>
+<a href="#709" id="709">709</a>
+<a href="#710" id="710">710</a>
+<a href="#711" id="711">711</a>
+<a href="#712" id="712">712</a>
+<a href="#713" id="713">713</a>
+<a href="#714" id="714">714</a>
+<a href="#715" id="715">715</a>
+<a href="#716" id="716">716</a>
+<a href="#717" id="717">717</a>
+<a href="#718" id="718">718</a>
+<a href="#719" id="719">719</a>
+<a href="#720" id="720">720</a>
+<a href="#721" id="721">721</a>
+<a href="#722" id="722">722</a>
+<a href="#723" id="723">723</a>
+<a href="#724" id="724">724</a>
+<a href="#725" id="725">725</a>
+<a href="#726" id="726">726</a>
+<a href="#727" id="727">727</a>
+<a href="#728" id="728">728</a>
+<a href="#729" id="729">729</a>
+<a href="#730" id="730">730</a>
+<a href="#731" id="731">731</a>
+<a href="#732" id="732">732</a>
+<a href="#733" id="733">733</a>
+<a href="#734" id="734">734</a>
+<a href="#735" id="735">735</a>
+<a href="#736" id="736">736</a>
+<a href="#737" id="737">737</a>
+<a href="#738" id="738">738</a>
+<a href="#739" id="739">739</a>
+<a href="#740" id="740">740</a>
+<a href="#741" id="741">741</a>
+<a href="#742" id="742">742</a>
+<a href="#743" id="743">743</a>
+<a href="#744" id="744">744</a>
+<a href="#745" id="745">745</a>
+<a href="#746" id="746">746</a>
+<a href="#747" id="747">747</a>
+<a href="#748" id="748">748</a>
+<a href="#749" id="749">749</a>
+<a href="#750" id="750">750</a>
+<a href="#751" id="751">751</a>
+<a href="#752" id="752">752</a>
+<a href="#753" id="753">753</a>
+<a href="#754" id="754">754</a>
+<a href="#755" id="755">755</a>
+<a href="#756" id="756">756</a>
+<a href="#757" id="757">757</a>
+<a href="#758" id="758">758</a>
+<a href="#759" id="759">759</a>
+<a href="#760" id="760">760</a>
+<a href="#761" id="761">761</a>
+<a href="#762" id="762">762</a>
+<a href="#763" id="763">763</a>
+<a href="#764" id="764">764</a>
+<a href="#765" id="765">765</a>
+<a href="#766" id="766">766</a>
+<a href="#767" id="767">767</a>
+<a href="#768" id="768">768</a>
+<a href="#769" id="769">769</a>
+<a href="#770" id="770">770</a>
+<a href="#771" id="771">771</a>
+<a href="#772" id="772">772</a>
+<a href="#773" id="773">773</a>
+<a href="#774" id="774">774</a>
+<a href="#775" id="775">775</a>
+<a href="#776" id="776">776</a>
+<a href="#777" id="777">777</a>
+<a href="#778" id="778">778</a>
+<a href="#779" id="779">779</a>
+<a href="#780" id="780">780</a>
+<a href="#781" id="781">781</a>
+<a href="#782" id="782">782</a>
+<a href="#783" id="783">783</a>
+<a href="#784" id="784">784</a>
+<a href="#785" id="785">785</a>
+<a href="#786" id="786">786</a>
+<a href="#787" id="787">787</a>
+<a href="#788" id="788">788</a>
+<a href="#789" id="789">789</a>
+<a href="#790" id="790">790</a>
+<a href="#791" id="791">791</a>
+<a href="#792" id="792">792</a>
+<a href="#793" id="793">793</a>
+<a href="#794" id="794">794</a>
+<a href="#795" id="795">795</a>
+<a href="#796" id="796">796</a>
+<a href="#797" id="797">797</a>
+<a href="#798" id="798">798</a>
+<a href="#799" id="799">799</a>
+<a href="#800" id="800">800</a>
+<a href="#801" id="801">801</a>
+<a href="#802" id="802">802</a>
+<a href="#803" id="803">803</a>
+<a href="#804" id="804">804</a>
+<a href="#805" id="805">805</a>
+<a href="#806" id="806">806</a>
+<a href="#807" id="807">807</a>
+<a href="#808" id="808">808</a>
+<a href="#809" id="809">809</a>
+<a href="#810" id="810">810</a>
+<a href="#811" id="811">811</a>
+<a href="#812" id="812">812</a>
+<a href="#813" id="813">813</a>
+<a href="#814" id="814">814</a>
+<a href="#815" id="815">815</a>
+<a href="#816" id="816">816</a>
+<a href="#817" id="817">817</a>
+<a href="#818" id="818">818</a>
+<a href="#819" id="819">819</a>
+<a href="#820" id="820">820</a>
+<a href="#821" id="821">821</a>
+<a href="#822" id="822">822</a>
+<a href="#823" id="823">823</a>
+<a href="#824" id="824">824</a>
+<a href="#825" id="825">825</a>
+<a href="#826" id="826">826</a>
+<a href="#827" id="827">827</a>
+<a href="#828" id="828">828</a>
+<a href="#829" id="829">829</a>
+<a href="#830" id="830">830</a>
+<a href="#831" id="831">831</a>
+<a href="#832" id="832">832</a>
+<a href="#833" id="833">833</a>
+<a href="#834" id="834">834</a>
+<a href="#835" id="835">835</a>
+<a href="#836" id="836">836</a>
+<a href="#837" id="837">837</a>
+<a href="#838" id="838">838</a>
+<a href="#839" id="839">839</a>
+<a href="#840" id="840">840</a>
+<a href="#841" id="841">841</a>
+<a href="#842" id="842">842</a>
+<a href="#843" id="843">843</a>
+<a href="#844" id="844">844</a>
+<a href="#845" id="845">845</a>
+<a href="#846" id="846">846</a>
+<a href="#847" id="847">847</a>
+<a href="#848" id="848">848</a>
+<a href="#849" id="849">849</a>
+<a href="#850" id="850">850</a>
+<a href="#851" id="851">851</a>
+<a href="#852" id="852">852</a>
+<a href="#853" id="853">853</a>
+<a href="#854" id="854">854</a>
+<a href="#855" id="855">855</a>
+<a href="#856" id="856">856</a>
+<a href="#857" id="857">857</a>
+<a href="#858" id="858">858</a>
+<a href="#859" id="859">859</a>
+<a href="#860" id="860">860</a>
+<a href="#861" id="861">861</a>
+<a href="#862" id="862">862</a>
+<a href="#863" id="863">863</a>
+<a href="#864" id="864">864</a>
+<a href="#865" id="865">865</a>
+<a href="#866" id="866">866</a>
+<a href="#867" id="867">867</a>
+<a href="#868" id="868">868</a>
+<a href="#869" id="869">869</a>
+<a href="#870" id="870">870</a>
+<a href="#871" id="871">871</a>
+<a href="#872" id="872">872</a>
+<a href="#873" id="873">873</a>
+<a href="#874" id="874">874</a>
+<a href="#875" id="875">875</a>
+<a href="#876" id="876">876</a>
+<a href="#877" id="877">877</a>
+<a href="#878" id="878">878</a>
+<a href="#879" id="879">879</a>
+<a href="#880" id="880">880</a>
+<a href="#881" id="881">881</a>
+<a href="#882" id="882">882</a>
+<a href="#883" id="883">883</a>
+<a href="#884" id="884">884</a>
+<a href="#885" id="885">885</a>
+<a href="#886" id="886">886</a>
+<a href="#887" id="887">887</a>
+<a href="#888" id="888">888</a>
+<a href="#889" id="889">889</a>
+<a href="#890" id="890">890</a>
+<a href="#891" id="891">891</a>
+<a href="#892" id="892">892</a>
+<a href="#893" id="893">893</a>
+<a href="#894" id="894">894</a>
+<a href="#895" id="895">895</a>
+<a href="#896" id="896">896</a>
+<a href="#897" id="897">897</a>
+<a href="#898" id="898">898</a>
+<a href="#899" id="899">899</a>
+<a href="#900" id="900">900</a>
+<a href="#901" id="901">901</a>
+<a href="#902" id="902">902</a>
+<a href="#903" id="903">903</a>
+<a href="#904" id="904">904</a>
+<a href="#905" id="905">905</a>
+<a href="#906" id="906">906</a>
+<a href="#907" id="907">907</a>
+<a href="#908" id="908">908</a>
+<a href="#909" id="909">909</a>
+<a href="#910" id="910">910</a>
+<a href="#911" id="911">911</a>
+<a href="#912" id="912">912</a>
+<a href="#913" id="913">913</a>
+<a href="#914" id="914">914</a>
+<a href="#915" id="915">915</a>
+<a href="#916" id="916">916</a>
+<a href="#917" id="917">917</a>
+<a href="#918" id="918">918</a>
+<a href="#919" id="919">919</a>
+<a href="#920" id="920">920</a>
+<a href="#921" id="921">921</a>
+<a href="#922" id="922">922</a>
+<a href="#923" id="923">923</a>
+<a href="#924" id="924">924</a>
+<a href="#925" id="925">925</a>
+<a href="#926" id="926">926</a>
+<a href="#927" id="927">927</a>
+<a href="#928" id="928">928</a>
+<a href="#929" id="929">929</a>
+<a href="#930" id="930">930</a>
+<a href="#931" id="931">931</a>
+<a href="#932" id="932">932</a>
+<a href="#933" id="933">933</a>
+<a href="#934" id="934">934</a>
+<a href="#935" id="935">935</a>
+<a href="#936" id="936">936</a>
+<a href="#937" id="937">937</a>
+<a href="#938" id="938">938</a>
+<a href="#939" id="939">939</a>
+<a href="#940" id="940">940</a>
+<a href="#941" id="941">941</a>
+<a href="#942" id="942">942</a>
+<a href="#943" id="943">943</a>
+<a href="#944" id="944">944</a>
+<a href="#945" id="945">945</a>
+<a href="#946" id="946">946</a>
+<a href="#947" id="947">947</a>
+<a href="#948" id="948">948</a>
+<a href="#949" id="949">949</a>
+<a href="#950" id="950">950</a>
+<a href="#951" id="951">951</a>
+<a href="#952" id="952">952</a>
+<a href="#953" id="953">953</a>
+<a href="#954" id="954">954</a>
+<a href="#955" id="955">955</a>
+<a href="#956" id="956">956</a>
+<a href="#957" id="957">957</a>
+<a href="#958" id="958">958</a>
+<a href="#959" id="959">959</a>
+<a href="#960" id="960">960</a>
+<a href="#961" id="961">961</a>
+<a href="#962" id="962">962</a>
+<a href="#963" id="963">963</a>
+<a href="#964" id="964">964</a>
+<a href="#965" id="965">965</a>
+<a href="#966" id="966">966</a>
+<a href="#967" id="967">967</a>
+<a href="#968" id="968">968</a>
+<a href="#969" id="969">969</a>
+<a href="#970" id="970">970</a>
+<a href="#971" id="971">971</a>
+<a href="#972" id="972">972</a>
+<a href="#973" id="973">973</a>
+<a href="#974" id="974">974</a>
+<a href="#975" id="975">975</a>
+<a href="#976" id="976">976</a>
+<a href="#977" id="977">977</a>
+<a href="#978" id="978">978</a>
+<a href="#979" id="979">979</a>
+<a href="#980" id="980">980</a>
+<a href="#981" id="981">981</a>
+<a href="#982" id="982">982</a>
+<a href="#983" id="983">983</a>
+<a href="#984" id="984">984</a>
+<a href="#985" id="985">985</a>
+<a href="#986" id="986">986</a>
+<a href="#987" id="987">987</a>
+<a href="#988" id="988">988</a>
+<a href="#989" id="989">989</a>
+<a href="#990" id="990">990</a>
+<a href="#991" id="991">991</a>
+<a href="#992" id="992">992</a>
+<a href="#993" id="993">993</a>
+<a href="#994" id="994">994</a>
+<a href="#995" id="995">995</a>
+<a href="#996" id="996">996</a>
+<a href="#997" id="997">997</a>
+<a href="#998" id="998">998</a>
+<a href="#999" id="999">999</a>
+<a href="#1000" id="1000">1000</a>
+<a href="#1001" id="1001">1001</a>
+<a href="#1002" id="1002">1002</a>
+<a href="#1003" id="1003">1003</a>
+<a href="#1004" id="1004">1004</a>
+<a href="#1005" id="1005">1005</a>
+<a href="#1006" id="1006">1006</a>
+<a href="#1007" id="1007">1007</a>
+<a href="#1008" id="1008">1008</a>
+</pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::io::AssetSourceId;
+<span class="kw">use </span>bevy_reflect::{
+    std_traits::ReflectDefault, utility::NonGenericTypeInfoCell, FromReflect, FromType,
+    GetTypeRegistration, Reflect, ReflectDeserialize, ReflectFromPtr, ReflectFromReflect,
+    ReflectMut, ReflectOwned, ReflectRef, ReflectSerialize, TypeInfo, TypePath, TypeRegistration,
+    Typed, ValueInfo,
+};
+<span class="kw">use </span>bevy_utils::CowArc;
+<span class="kw">use </span>serde::{de::Visitor, Deserialize, Serialize};
 <span class="kw">use </span>std::{
-    borrow::Cow,
-    hash::{BuildHasher, Hash, Hasher},
+    fmt::{Debug, Display},
+    hash::{Hash, Hasher},
+    ops::Deref,
     path::{Path, PathBuf},
 };
+<span class="kw">use </span>thiserror::Error;
 
-<span class="doccomment">/// Represents a path to an asset in the file system.
-</span><span class="attr">#[derive(Debug, Eq, PartialEq, Hash, Clone, Serialize, Deserialize, Reflect)]
-#[reflect(Debug, PartialEq, Hash, Serialize, Deserialize)]
+<span class="doccomment">/// Represents a path to an asset in a &quot;virtual filesystem&quot;.
+///
+/// Asset paths consist of three main parts:
+/// * [`AssetPath::source`]: The name of the [`AssetSource`](crate::io::AssetSource) to load the asset from.
+///     This is optional. If one is not set the default source will be used (which is the `assets` folder by default).
+/// * [`AssetPath::path`]: The &quot;virtual filesystem path&quot; pointing to an asset source file.
+/// * [`AssetPath::label`]: An optional &quot;named sub asset&quot;. When assets are loaded, they are
+/// allowed to load &quot;sub assets&quot; of any type, which are identified by a named &quot;label&quot;.
+///
+/// Asset paths are generally constructed (and visualized) as strings:
+///
+/// ```no_run
+/// # use bevy_asset::{Asset, AssetServer, Handle};
+/// # use bevy_reflect::TypePath;
+/// #
+/// # #[derive(Asset, TypePath, Default)]
+/// # struct Mesh;
+/// #
+/// # #[derive(Asset, TypePath, Default)]
+/// # struct Scene;
+/// #
+/// # let asset_server: AssetServer = panic!();
+/// // This loads the `my_scene.scn` base asset from the default asset source.
+/// let scene: Handle&lt;Scene&gt; = asset_server.load(&quot;my_scene.scn&quot;);
+///
+/// // This loads the `PlayerMesh` labeled asset from the `my_scene.scn` base asset in the default asset source.
+/// let mesh: Handle&lt;Mesh&gt; = asset_server.load(&quot;my_scene.scn#PlayerMesh&quot;);
+///
+/// // This loads the `my_scene.scn` base asset from a custom &#39;remote&#39; asset source.
+/// let scene: Handle&lt;Scene&gt; = asset_server.load(&quot;remote://my_scene.scn&quot;);
+/// ```
+///
+/// [`AssetPath`] implements [`From`] for `&amp;&#39;static str`, `&amp;&#39;static Path`, and `&amp;&#39;a String`,
+/// which allows us to optimize the static cases.
+/// This means that the common case of `asset_server.load(&quot;my_scene.scn&quot;)` when it creates and
+/// clones internal owned [`AssetPaths`](AssetPath).
+/// This also means that you should use [`AssetPath::parse`] in cases where `&amp;str` is the explicit type.
+</span><span class="attr">#[derive(Eq, PartialEq, Hash, Clone, Default)]
 </span><span class="kw">pub struct </span>AssetPath&lt;<span class="lifetime">&#39;a</span>&gt; {
-    path: Cow&lt;<span class="lifetime">&#39;a</span>, Path&gt;,
-    label: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">&#39;a</span>, str&gt;&gt;,
+    source: AssetSourceId&lt;<span class="lifetime">&#39;a</span>&gt;,
+    path: CowArc&lt;<span class="lifetime">&#39;a</span>, Path&gt;,
+    label: <span class="prelude-ty">Option</span>&lt;CowArc&lt;<span class="lifetime">&#39;a</span>, str&gt;&gt;,
+}
+
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; Debug <span class="kw">for </span>AssetPath&lt;<span class="lifetime">&#39;a</span>&gt; {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; std::fmt::Result {
+        Display::fmt(<span class="self">self</span>, f)
+    }
+}
+
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; Display <span class="kw">for </span>AssetPath&lt;<span class="lifetime">&#39;a</span>&gt; {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; std::fmt::Result {
+        <span class="kw">if let </span>AssetSourceId::Name(name) = <span class="self">self</span>.source() {
+            <span class="macro">write!</span>(f, <span class="string">&quot;{name}://&quot;</span>)<span class="question-mark">?</span>;
+        }
+        <span class="macro">write!</span>(f, <span class="string">&quot;{}&quot;</span>, <span class="self">self</span>.path.display())<span class="question-mark">?</span>;
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(label) = <span class="kw-2">&amp;</span><span class="self">self</span>.label {
+            <span class="macro">write!</span>(f, <span class="string">&quot;#{label}&quot;</span>)<span class="question-mark">?</span>;
+        }
+        <span class="prelude-val">Ok</span>(())
+    }
+}
+
+<span class="attr">#[derive(Error, Debug, PartialEq, Eq)]
+</span><span class="kw">pub enum </span>ParseAssetPathError {
+    <span class="attr">#[error(<span class="string">&quot;Asset source must be followed by &#39;://&#39;&quot;</span>)]
+    </span>InvalidSourceSyntax,
+    <span class="attr">#[error(<span class="string">&quot;Asset source must be at least one character. Either specify the source before the &#39;://&#39; or remove the `://`&quot;</span>)]
+    </span>MissingSource,
+    <span class="attr">#[error(<span class="string">&quot;Asset label must be at least one character. Either specify the label after the &#39;#&#39; or remove the &#39;#&#39;&quot;</span>)]
+    </span>MissingLabel,
 }
 
 <span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; AssetPath&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="doccomment">/// Creates a new asset path using borrowed information.
+    <span class="doccomment">/// Creates a new [`AssetPath`] from a string in the asset path format:
+    /// * An asset at the root: `&quot;scene.gltf&quot;`
+    /// * An asset nested in some folders: `&quot;some/path/scene.gltf&quot;`
+    /// * An asset with a &quot;label&quot;: `&quot;some/path/scene.gltf#Mesh0&quot;`
+    /// * An asset with a custom &quot;source&quot;: `&quot;custom://some/path/scene.gltf#Mesh0&quot;`
+    ///
+    /// Prefer [`From&lt;&#39;static str&gt;`] for static strings, as this will prevent allocations
+    /// and reference counting for [`AssetPath::into_owned`].
+    ///
+    /// # Panics
+    /// Panics if the asset path is in an invalid format. Use [`AssetPath::try_parse`] for a fallible variant
+    </span><span class="kw">pub fn </span>parse(asset_path: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str) -&gt; AssetPath&lt;<span class="lifetime">&#39;a</span>&gt; {
+        <span class="self">Self</span>::try_parse(asset_path).unwrap()
+    }
+
+    <span class="doccomment">/// Creates a new [`AssetPath`] from a string in the asset path format:
+    /// * An asset at the root: `&quot;scene.gltf&quot;`
+    /// * An asset nested in some folders: `&quot;some/path/scene.gltf&quot;`
+    /// * An asset with a &quot;label&quot;: `&quot;some/path/scene.gltf#Mesh0&quot;`
+    /// * An asset with a custom &quot;source&quot;: `&quot;custom://some/path/scene.gltf#Mesh0&quot;`
+    ///
+    /// Prefer [`From&lt;&#39;static str&gt;`] for static strings, as this will prevent allocations
+    /// and reference counting for [`AssetPath::into_owned`].
+    ///
+    /// This will return a [`ParseAssetPathError`] if `asset_path` is in an invalid format.
+    </span><span class="kw">pub fn </span>try_parse(asset_path: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str) -&gt; <span class="prelude-ty">Result</span>&lt;AssetPath&lt;<span class="lifetime">&#39;a</span>&gt;, ParseAssetPathError&gt; {
+        <span class="kw">let </span>(source, path, label) = <span class="self">Self</span>::parse_internal(asset_path).unwrap();
+        <span class="prelude-val">Ok</span>(<span class="self">Self </span>{
+            source: <span class="kw">match </span>source {
+                <span class="prelude-val">Some</span>(source) =&gt; AssetSourceId::Name(CowArc::Borrowed(source)),
+                <span class="prelude-val">None </span>=&gt; AssetSourceId::Default,
+            },
+            path: CowArc::Borrowed(path),
+            label: label.map(CowArc::Borrowed),
+        })
+    }
+
+    <span class="kw">fn </span>parse_internal(
+        asset_path: <span class="kw-2">&amp;</span>str,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;(<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;, <span class="kw-2">&amp;</span>Path, <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;), ParseAssetPathError&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>chars = asset_path.char_indices();
+        <span class="kw">let </span><span class="kw-2">mut </span>source_range = <span class="prelude-val">None</span>;
+        <span class="kw">let </span><span class="kw-2">mut </span>path_range = <span class="number">0</span>..asset_path.len();
+        <span class="kw">let </span><span class="kw-2">mut </span>label_range = <span class="prelude-val">None</span>;
+        <span class="kw">while let </span><span class="prelude-val">Some</span>((index, char)) = chars.next() {
+            <span class="kw">match </span>char {
+                <span class="string">&#39;:&#39; </span>=&gt; {
+                    <span class="kw">let </span>(<span class="kw">_</span>, char) = chars
+                        .next()
+                        .ok_or(ParseAssetPathError::InvalidSourceSyntax)<span class="question-mark">?</span>;
+                    <span class="kw">if </span>char != <span class="string">&#39;/&#39; </span>{
+                        <span class="kw">return </span><span class="prelude-val">Err</span>(ParseAssetPathError::InvalidSourceSyntax);
+                    }
+                    <span class="kw">let </span>(index, char) = chars
+                        .next()
+                        .ok_or(ParseAssetPathError::InvalidSourceSyntax)<span class="question-mark">?</span>;
+                    <span class="kw">if </span>char != <span class="string">&#39;/&#39; </span>{
+                        <span class="kw">return </span><span class="prelude-val">Err</span>(ParseAssetPathError::InvalidSourceSyntax);
+                    }
+                    source_range = <span class="prelude-val">Some</span>(<span class="number">0</span>..index - <span class="number">2</span>);
+                    path_range.start = index + <span class="number">1</span>;
+                }
+                <span class="string">&#39;#&#39; </span>=&gt; {
+                    path_range.end = index;
+                    label_range = <span class="prelude-val">Some</span>(index + <span class="number">1</span>..asset_path.len());
+                    <span class="kw">break</span>;
+                }
+                <span class="kw">_ </span>=&gt; {}
+            }
+        }
+
+        <span class="kw">let </span>source = <span class="kw">match </span>source_range {
+            <span class="prelude-val">Some</span>(source_range) =&gt; {
+                <span class="kw">if </span>source_range.is_empty() {
+                    <span class="kw">return </span><span class="prelude-val">Err</span>(ParseAssetPathError::MissingSource);
+                }
+                <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>asset_path[source_range])
+            }
+            <span class="prelude-val">None </span>=&gt; <span class="prelude-val">None</span>,
+        };
+        <span class="kw">let </span>label = <span class="kw">match </span>label_range {
+            <span class="prelude-val">Some</span>(label_range) =&gt; {
+                <span class="kw">if </span>label_range.is_empty() {
+                    <span class="kw">return </span><span class="prelude-val">Err</span>(ParseAssetPathError::MissingLabel);
+                }
+                <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>asset_path[label_range])
+            }
+            <span class="prelude-val">None </span>=&gt; <span class="prelude-val">None</span>,
+        };
+
+        <span class="kw">let </span>path = Path::new(<span class="kw-2">&amp;</span>asset_path[path_range]);
+        <span class="prelude-val">Ok</span>((source, path, label))
+    }
+
+    <span class="doccomment">/// Creates a new [`AssetPath`] from a [`Path`].
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>new_ref(path: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Path, label: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str&gt;) -&gt; AssetPath&lt;<span class="lifetime">&#39;a</span>&gt; {
+    </span><span class="kw">pub fn </span>from_path(path: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Path) -&gt; AssetPath&lt;<span class="lifetime">&#39;a</span>&gt; {
         AssetPath {
-            path: Cow::Borrowed(path),
-            label: label.map(Cow::Borrowed),
+            path: CowArc::Borrowed(path),
+            source: AssetSourceId::Default,
+            label: <span class="prelude-val">None</span>,
         }
     }
 
-    <span class="doccomment">/// Creates a new asset path.
+    <span class="doccomment">/// Gets the &quot;asset source&quot;, if one was defined. If none was defined, the default source
+    /// will be used.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>new(path: PathBuf, label: <span class="prelude-ty">Option</span>&lt;String&gt;) -&gt; AssetPath&lt;<span class="lifetime">&#39;a</span>&gt; {
-        AssetPath {
-            path: Cow::Owned(path),
-            label: label.map(Cow::Owned),
-        }
+    </span><span class="kw">pub fn </span>source(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>AssetSourceId {
+        <span class="kw-2">&amp;</span><span class="self">self</span>.source
     }
 
-    <span class="doccomment">/// Constructs an identifier from this asset path.
-    </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>get_id(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; AssetPathId {
-        AssetPathId::from(<span class="self">self</span>)
-    }
-
-    <span class="doccomment">/// Gets the sub-asset label.
+    <span class="doccomment">/// Gets the &quot;sub-asset label&quot;.
     </span><span class="attr">#[inline]
     </span><span class="kw">pub fn </span>label(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt; {
-        <span class="self">self</span>.label.as_ref().map(|label| label.as_ref())
+        <span class="self">self</span>.label.as_deref()
     }
 
-    <span class="doccomment">/// Gets the path to the asset in the filesystem.
+    <span class="doccomment">/// Gets the &quot;sub-asset label&quot;.
+    </span><span class="attr">#[inline]
+    </span><span class="kw">pub fn </span>label_cow(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;CowArc&lt;<span class="lifetime">&#39;a</span>, str&gt;&gt; {
+        <span class="self">self</span>.label.clone()
+    }
+
+    <span class="doccomment">/// Gets the path to the asset in the &quot;virtual filesystem&quot;.
     </span><span class="attr">#[inline]
     </span><span class="kw">pub fn </span>path(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>Path {
-        <span class="kw-2">&amp;</span><span class="self">self</span>.path
+        <span class="self">self</span>.path.deref()
     }
 
-    <span class="doccomment">/// Converts the borrowed path data to owned.
+    <span class="doccomment">/// Gets the path to the asset in the &quot;virtual filesystem&quot; without a label (if a label is currently set).
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>to_owned(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; AssetPath&lt;<span class="lifetime">&#39;static</span>&gt; {
-        AssetPath {
-            path: Cow::Owned(<span class="self">self</span>.path.to_path_buf()),
-            label: <span class="self">self
-                </span>.label
-                .as_ref()
-                .map(|value| Cow::Owned(value.to_string())),
+    </span><span class="kw">pub fn </span>without_label(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; AssetPath&lt;<span class="lifetime">&#39;_</span>&gt; {
+        <span class="self">Self </span>{
+            source: <span class="self">self</span>.source.clone(),
+            path: <span class="self">self</span>.path.clone(),
+            label: <span class="prelude-val">None</span>,
         }
     }
-}
 
-<span class="doccomment">/// An unique identifier to an asset path.
-</span><span class="attr">#[derive(
-    Debug, Clone, Copy, Eq, PartialEq, Hash, Ord, PartialOrd, Serialize, Deserialize, Reflect,
-)]
-#[reflect_value(PartialEq, Hash, Serialize, Deserialize)]
-</span><span class="kw">pub struct </span>AssetPathId(SourcePathId, LabelId);
-
-<span class="doccomment">/// An unique identifier to the source path of an asset.
-</span><span class="attr">#[derive(
-    Debug, Clone, Copy, Eq, PartialEq, Hash, Ord, PartialOrd, Serialize, Deserialize, Reflect,
-)]
-#[reflect_value(PartialEq, Hash, Serialize, Deserialize)]
-</span><span class="kw">pub struct </span>SourcePathId(u64);
-
-<span class="doccomment">/// An unique identifier to a sub-asset label.
-</span><span class="attr">#[derive(
-    Debug, Clone, Copy, Eq, PartialEq, Hash, Ord, PartialOrd, Serialize, Deserialize, Reflect,
-)]
-#[reflect_value(PartialEq, Hash, Serialize, Deserialize)]
-</span><span class="kw">pub struct </span>LabelId(u64);
-
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; From&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Path&gt; <span class="kw">for </span>SourcePathId {
-    <span class="kw">fn </span>from(value: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Path) -&gt; <span class="self">Self </span>{
-        <span class="kw">let </span><span class="kw-2">mut </span>hasher = get_hasher();
-        value.hash(<span class="kw-2">&amp;mut </span>hasher);
-        SourcePathId(hasher.finish())
+    <span class="doccomment">/// Removes a &quot;sub-asset label&quot; from this [`AssetPath`], if one was set.
+    </span><span class="attr">#[inline]
+    </span><span class="kw">pub fn </span>remove_label(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="self">self</span>.label = <span class="prelude-val">None</span>;
     }
-}
 
-<span class="kw">impl </span>From&lt;AssetPathId&gt; <span class="kw">for </span>SourcePathId {
-    <span class="kw">fn </span>from(id: AssetPathId) -&gt; <span class="self">Self </span>{
-        id.source_path_id()
+    <span class="doccomment">/// Takes the &quot;sub-asset label&quot; from this [`AssetPath`], if one was set.
+    </span><span class="attr">#[inline]
+    </span><span class="kw">pub fn </span>take_label(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;CowArc&lt;<span class="lifetime">&#39;a</span>, str&gt;&gt; {
+        <span class="self">self</span>.label.take()
     }
-}
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; From&lt;AssetPath&lt;<span class="lifetime">&#39;a</span>&gt;&gt; <span class="kw">for </span>SourcePathId {
-    <span class="kw">fn </span>from(path: AssetPath) -&gt; <span class="self">Self </span>{
-        AssetPathId::from(path).source_path_id()
-    }
-}
-
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; From&lt;<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str&gt;&gt; <span class="kw">for </span>LabelId {
-    <span class="kw">fn </span>from(value: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str&gt;) -&gt; <span class="self">Self </span>{
-        <span class="kw">let </span><span class="kw-2">mut </span>hasher = get_hasher();
-        value.hash(<span class="kw-2">&amp;mut </span>hasher);
-        LabelId(hasher.finish())
-    }
-}
-
-<span class="kw">impl </span>AssetPathId {
-    <span class="doccomment">/// Gets the id of the source path.
-    </span><span class="kw">pub fn </span>source_path_id(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; SourcePathId {
-        <span class="self">self</span>.<span class="number">0
-    </span>}
-
-    <span class="doccomment">/// Gets the id of the sub-asset label.
-    </span><span class="kw">pub fn </span>label_id(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; LabelId {
-        <span class="self">self</span>.<span class="number">1
-    </span>}
-}
-
-<span class="doccomment">/// this hasher provides consistent results across runs
-</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>get_hasher() -&gt; AHasher {
-    RandomState::with_seeds(<span class="number">42</span>, <span class="number">23</span>, <span class="number">13</span>, <span class="number">8</span>).build_hasher()
-}
-
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, T&gt; From&lt;T&gt; <span class="kw">for </span>AssetPathId
-<span class="kw">where
-    </span>T: Into&lt;AssetPath&lt;<span class="lifetime">&#39;a</span>&gt;&gt;,
-{
-    <span class="kw">fn </span>from(value: T) -&gt; <span class="self">Self </span>{
-        <span class="kw">let </span>asset_path: AssetPath = value.into();
-        AssetPathId(
-            SourcePathId::from(asset_path.path()),
-            LabelId::from(asset_path.label()),
-        )
-    }
-}
-
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;b</span>&gt; From&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>AssetPath&lt;<span class="lifetime">&#39;b</span>&gt;&gt; <span class="kw">for </span>AssetPathId {
-    <span class="kw">fn </span>from(asset_path: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>AssetPath&lt;<span class="lifetime">&#39;b</span>&gt;) -&gt; <span class="self">Self </span>{
-        AssetPathId(
-            SourcePathId::from(asset_path.path()),
-            LabelId::from(asset_path.label()),
-        )
-    }
-}
-
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; From&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str&gt; <span class="kw">for </span>AssetPath&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="kw">fn </span>from(asset_path: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str) -&gt; <span class="self">Self </span>{
-        <span class="kw">let </span><span class="kw-2">mut </span>parts = asset_path.splitn(<span class="number">2</span>, <span class="string">&#39;#&#39;</span>);
-        <span class="kw">let </span>path = Path::new(parts.next().expect(<span class="string">&quot;Path must be set.&quot;</span>));
-        <span class="kw">let </span>label = parts.next();
+    <span class="doccomment">/// Returns this asset path with the given label. This will replace the previous
+    /// label if it exists.
+    </span><span class="attr">#[inline]
+    </span><span class="kw">pub fn </span>with_label(<span class="self">self</span>, label: <span class="kw">impl </span>Into&lt;CowArc&lt;<span class="lifetime">&#39;a</span>, str&gt;&gt;) -&gt; AssetPath&lt;<span class="lifetime">&#39;a</span>&gt; {
         AssetPath {
-            path: Cow::Borrowed(path),
-            label: label.map(Cow::Borrowed),
+            source: <span class="self">self</span>.source,
+            path: <span class="self">self</span>.path,
+            label: <span class="prelude-val">Some</span>(label.into()),
+        }
+    }
+
+    <span class="doccomment">/// Returns this asset path with the given asset source. This will replace the previous asset
+    /// source if it exists.
+    </span><span class="attr">#[inline]
+    </span><span class="kw">pub fn </span>with_source(<span class="self">self</span>, source: <span class="kw">impl </span>Into&lt;AssetSourceId&lt;<span class="lifetime">&#39;a</span>&gt;&gt;) -&gt; AssetPath&lt;<span class="lifetime">&#39;a</span>&gt; {
+        AssetPath {
+            source: source.into(),
+            path: <span class="self">self</span>.path,
+            label: <span class="self">self</span>.label,
+        }
+    }
+
+    <span class="doccomment">/// Returns an [`AssetPath`] for the parent folder of this path, if there is a parent folder in the path.
+    </span><span class="kw">pub fn </span>parent(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;AssetPath&lt;<span class="lifetime">&#39;a</span>&gt;&gt; {
+        <span class="kw">let </span>path = <span class="kw">match </span><span class="kw-2">&amp;</span><span class="self">self</span>.path {
+            CowArc::Borrowed(path) =&gt; CowArc::Borrowed(path.parent()<span class="question-mark">?</span>),
+            CowArc::Static(path) =&gt; CowArc::Static(path.parent()<span class="question-mark">?</span>),
+            CowArc::Owned(path) =&gt; path.parent()<span class="question-mark">?</span>.to_path_buf().into(),
+        };
+        <span class="prelude-val">Some</span>(AssetPath {
+            source: <span class="self">self</span>.source.clone(),
+            label: <span class="prelude-val">None</span>,
+            path,
+        })
+    }
+
+    <span class="doccomment">/// Converts this into an &quot;owned&quot; value. If internally a value is borrowed, it will be cloned into an &quot;owned [`Arc`]&quot;.
+    /// If internally a value is a static reference, the static reference will be used unchanged.
+    /// If internally a value is an &quot;owned [`Arc`]&quot;, it will remain unchanged.
+    ///
+    /// [`Arc`]: std::sync::Arc
+    </span><span class="kw">pub fn </span>into_owned(<span class="self">self</span>) -&gt; AssetPath&lt;<span class="lifetime">&#39;static</span>&gt; {
+        AssetPath {
+            source: <span class="self">self</span>.source.into_owned(),
+            path: <span class="self">self</span>.path.into_owned(),
+            label: <span class="self">self</span>.label.map(|l| l.into_owned()),
+        }
+    }
+
+    <span class="doccomment">/// Clones this into an &quot;owned&quot; value. If internally a value is borrowed, it will be cloned into an &quot;owned [`Arc`]&quot;.
+    /// If internally a value is a static reference, the static reference will be used unchanged.
+    /// If internally a value is an &quot;owned [`Arc`]&quot;, the [`Arc`] will be cloned.
+    ///
+    /// [`Arc`]: std::sync::Arc
+    </span><span class="attr">#[inline]
+    </span><span class="kw">pub fn </span>clone_owned(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; AssetPath&lt;<span class="lifetime">&#39;static</span>&gt; {
+        <span class="self">self</span>.clone().into_owned()
+    }
+
+    <span class="doccomment">/// Resolves a relative asset path via concatenation. The result will be an `AssetPath` which
+    /// is resolved relative to this &quot;base&quot; path.
+    ///
+    /// ```rust
+    /// # use bevy_asset::AssetPath;
+    /// assert_eq!(AssetPath::parse(&quot;a/b&quot;).resolve(&quot;c&quot;), Ok(AssetPath::parse(&quot;a/b/c&quot;)));
+    /// assert_eq!(AssetPath::parse(&quot;a/b&quot;).resolve(&quot;./c&quot;), Ok(AssetPath::parse(&quot;a/b/c&quot;)));
+    /// assert_eq!(AssetPath::parse(&quot;a/b&quot;).resolve(&quot;../c&quot;), Ok(AssetPath::parse(&quot;a/c&quot;)));
+    /// assert_eq!(AssetPath::parse(&quot;a/b&quot;).resolve(&quot;c.png&quot;), Ok(AssetPath::parse(&quot;a/b/c.png&quot;)));
+    /// assert_eq!(AssetPath::parse(&quot;a/b&quot;).resolve(&quot;/c&quot;), Ok(AssetPath::parse(&quot;c&quot;)));
+    /// assert_eq!(AssetPath::parse(&quot;a/b.png&quot;).resolve(&quot;#c&quot;), Ok(AssetPath::parse(&quot;a/b.png#c&quot;)));
+    /// assert_eq!(AssetPath::parse(&quot;a/b.png#c&quot;).resolve(&quot;#d&quot;), Ok(AssetPath::parse(&quot;a/b.png#d&quot;)));
+    /// ```
+    ///
+    /// There are several cases:
+    ///
+    /// If the `path` argument begins with `#`, then it is considered an asset label, in which case
+    /// the result is the base path with the label portion replaced.
+    ///
+    /// If the path argument begins with &#39;/&#39;, then it is considered a &#39;full&#39; path, in which
+    /// case the result is a new `AssetPath` consisting of the base path asset source
+    /// (if there is one) with the path and label portions of the relative path. Note that a &#39;full&#39;
+    /// asset path is still relative to the asset source root, and not necessarily an absolute
+    /// filesystem path.
+    ///
+    /// If the `path` argument begins with an asset source (ex: `http://`) then the entire base
+    /// path is replaced - the result is the source, path and label (if any) of the `path`
+    /// argument.
+    ///
+    /// Otherwise, the `path` argument is considered a relative path. The result is concatenated
+    /// using the following algorithm:
+    ///
+    /// * The base path and the `path` argument are concatenated.
+    /// * Path elements consisting of &quot;/.&quot; or &quot;&amp;lt;name&amp;gt;/..&quot; are removed.
+    ///
+    /// If there are insufficient segments in the base path to match the &quot;..&quot; segments,
+    /// then any left-over &quot;..&quot; segments are left as-is.
+    </span><span class="kw">pub fn </span>resolve(<span class="kw-2">&amp;</span><span class="self">self</span>, path: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;AssetPath&lt;<span class="lifetime">&#39;static</span>&gt;, ParseAssetPathError&gt; {
+        <span class="self">self</span>.resolve_internal(path, <span class="bool-val">false</span>)
+    }
+
+    <span class="doccomment">/// Resolves an embedded asset path via concatenation. The result will be an `AssetPath` which
+    /// is resolved relative to this path. This is similar in operation to `resolve`, except that
+    /// the the &#39;file&#39; portion of the base path (that is, any characters after the last &#39;/&#39;)
+    /// is removed before concatenation, in accordance with the behavior specified in
+    /// IETF RFC 1808 &quot;Relative URIs&quot;.
+    ///
+    /// The reason for this behavior is that embedded URIs which start with &quot;./&quot; or &quot;../&quot; are
+    /// relative to the *directory* containing the asset, not the asset file. This is consistent
+    /// with the behavior of URIs in `JavaScript`, CSS, HTML and other web file formats. The
+    /// primary use case for this method is resolving relative paths embedded within asset files,
+    /// which are relative to the asset in which they are contained.
+    ///
+    /// ```rust
+    /// # use bevy_asset::AssetPath;
+    /// assert_eq!(AssetPath::parse(&quot;a/b&quot;).resolve_embed(&quot;c&quot;), Ok(AssetPath::parse(&quot;a/c&quot;)));
+    /// assert_eq!(AssetPath::parse(&quot;a/b&quot;).resolve_embed(&quot;./c&quot;), Ok(AssetPath::parse(&quot;a/c&quot;)));
+    /// assert_eq!(AssetPath::parse(&quot;a/b&quot;).resolve_embed(&quot;../c&quot;), Ok(AssetPath::parse(&quot;c&quot;)));
+    /// assert_eq!(AssetPath::parse(&quot;a/b&quot;).resolve_embed(&quot;c.png&quot;), Ok(AssetPath::parse(&quot;a/c.png&quot;)));
+    /// assert_eq!(AssetPath::parse(&quot;a/b&quot;).resolve_embed(&quot;/c&quot;), Ok(AssetPath::parse(&quot;c&quot;)));
+    /// assert_eq!(AssetPath::parse(&quot;a/b.png&quot;).resolve_embed(&quot;#c&quot;), Ok(AssetPath::parse(&quot;a/b.png#c&quot;)));
+    /// assert_eq!(AssetPath::parse(&quot;a/b.png#c&quot;).resolve_embed(&quot;#d&quot;), Ok(AssetPath::parse(&quot;a/b.png#d&quot;)));
+    /// ```
+    </span><span class="kw">pub fn </span>resolve_embed(<span class="kw-2">&amp;</span><span class="self">self</span>, path: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;AssetPath&lt;<span class="lifetime">&#39;static</span>&gt;, ParseAssetPathError&gt; {
+        <span class="self">self</span>.resolve_internal(path, <span class="bool-val">true</span>)
+    }
+
+    <span class="kw">fn </span>resolve_internal(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        path: <span class="kw-2">&amp;</span>str,
+        replace: bool,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;AssetPath&lt;<span class="lifetime">&#39;static</span>&gt;, ParseAssetPathError&gt; {
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(label) = path.strip_prefix(<span class="string">&#39;#&#39;</span>) {
+            <span class="comment">// It&#39;s a label only
+            </span><span class="prelude-val">Ok</span>(<span class="self">self</span>.clone_owned().with_label(label.to_owned()))
+        } <span class="kw">else </span>{
+            <span class="kw">let </span>(source, rpath, rlabel) = AssetPath::parse_internal(path)<span class="question-mark">?</span>;
+            <span class="kw">let </span><span class="kw-2">mut </span>base_path = PathBuf::from(<span class="self">self</span>.path());
+            <span class="kw">if </span>replace &amp;&amp; !<span class="self">self</span>.path.to_str().unwrap().ends_with(<span class="string">&#39;/&#39;</span>) {
+                <span class="comment">// No error if base is empty (per RFC 1808).
+                </span>base_path.pop();
+            }
+
+            <span class="comment">// Strip off leading slash
+            </span><span class="kw">let </span><span class="kw-2">mut </span>is_absolute = <span class="bool-val">false</span>;
+            <span class="kw">let </span>rpath = <span class="kw">match </span>rpath.strip_prefix(<span class="string">&quot;/&quot;</span>) {
+                <span class="prelude-val">Ok</span>(p) =&gt; {
+                    is_absolute = <span class="bool-val">true</span>;
+                    p
+                }
+                <span class="kw">_ </span>=&gt; rpath,
+            };
+
+            <span class="kw">let </span><span class="kw-2">mut </span>result_path = PathBuf::new();
+            <span class="kw">if </span>!is_absolute &amp;&amp; source.is_none() {
+                <span class="kw">for </span>elt <span class="kw">in </span>base_path.iter() {
+                    <span class="kw">if </span>elt == <span class="string">&quot;.&quot; </span>{
+                        <span class="comment">// Skip
+                    </span>} <span class="kw">else if </span>elt == <span class="string">&quot;..&quot; </span>{
+                        <span class="kw">if </span>!result_path.pop() {
+                            <span class="comment">// Preserve &quot;..&quot; if insufficient matches (per RFC 1808).
+                            </span>result_path.push(elt);
+                        }
+                    } <span class="kw">else </span>{
+                        result_path.push(elt);
+                    }
+                }
+            }
+
+            <span class="kw">for </span>elt <span class="kw">in </span>rpath.iter() {
+                <span class="kw">if </span>elt == <span class="string">&quot;.&quot; </span>{
+                    <span class="comment">// Skip
+                </span>} <span class="kw">else if </span>elt == <span class="string">&quot;..&quot; </span>{
+                    <span class="kw">if </span>!result_path.pop() {
+                        <span class="comment">// Preserve &quot;..&quot; if insufficient matches (per RFC 1808).
+                        </span>result_path.push(elt);
+                    }
+                } <span class="kw">else </span>{
+                    result_path.push(elt);
+                }
+            }
+
+            <span class="prelude-val">Ok</span>(AssetPath {
+                source: <span class="kw">match </span>source {
+                    <span class="prelude-val">Some</span>(source) =&gt; AssetSourceId::Name(CowArc::Owned(source.into())),
+                    <span class="prelude-val">None </span>=&gt; <span class="self">self</span>.source.clone_owned(),
+                },
+                path: CowArc::Owned(result_path.into()),
+                label: rlabel.map(|l| CowArc::Owned(l.into())),
+            })
+        }
+    }
+
+    <span class="doccomment">/// Returns the full extension (including multiple &#39;.&#39; values).
+    /// Ex: Returns `&quot;config.ron&quot;` for `&quot;my_asset.config.ron&quot;`
+    </span><span class="kw">pub fn </span>get_full_extension(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;String&gt; {
+        <span class="kw">let </span>file_name = <span class="self">self</span>.path().file_name()<span class="question-mark">?</span>.to_str()<span class="question-mark">?</span>;
+        <span class="kw">let </span>index = file_name.find(<span class="string">&#39;.&#39;</span>)<span class="question-mark">?</span>;
+        <span class="kw">let </span>extension = file_name[index + <span class="number">1</span>..].to_lowercase();
+        <span class="prelude-val">Some</span>(extension)
+    }
+
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>iter_secondary_extensions(full_extension: <span class="kw-2">&amp;</span>str) -&gt; <span class="kw">impl </span>Iterator&lt;Item = <span class="kw-2">&amp;</span>str&gt; {
+        full_extension.chars().enumerate().filter_map(|(i, c)| {
+            <span class="kw">if </span>c == <span class="string">&#39;.&#39; </span>{
+                <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>full_extension[i + <span class="number">1</span>..])
+            } <span class="kw">else </span>{
+                <span class="prelude-val">None
+            </span>}
+        })
+    }
+}
+
+<span class="kw">impl </span>From&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str&gt; <span class="kw">for </span>AssetPath&lt;<span class="lifetime">&#39;static</span>&gt; {
+    <span class="attr">#[inline]
+    </span><span class="kw">fn </span>from(asset_path: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span>(source, path, label) = <span class="self">Self</span>::parse_internal(asset_path).unwrap();
+        AssetPath {
+            source: source.into(),
+            path: CowArc::Static(path),
+            label: label.map(CowArc::Static),
         }
     }
 }
 
 <span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; From&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>String&gt; <span class="kw">for </span>AssetPath&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="kw">fn </span>from(asset_path: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>String) -&gt; <span class="self">Self </span>{
-        asset_path.as_str().into()
+    <span class="attr">#[inline]
+    </span><span class="kw">fn </span>from(asset_path: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>String) -&gt; <span class="self">Self </span>{
+        AssetPath::parse(asset_path.as_str())
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; From&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Path&gt; <span class="kw">for </span>AssetPath&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="kw">fn </span>from(path: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Path) -&gt; <span class="self">Self </span>{
-        AssetPath {
-            path: Cow::Borrowed(path),
+<span class="kw">impl </span>From&lt;String&gt; <span class="kw">for </span>AssetPath&lt;<span class="lifetime">&#39;static</span>&gt; {
+    <span class="attr">#[inline]
+    </span><span class="kw">fn </span>from(asset_path: String) -&gt; <span class="self">Self </span>{
+        AssetPath::parse(asset_path.as_str()).into_owned()
+    }
+}
+
+<span class="kw">impl </span>From&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>Path&gt; <span class="kw">for </span>AssetPath&lt;<span class="lifetime">&#39;static</span>&gt; {
+    <span class="attr">#[inline]
+    </span><span class="kw">fn </span>from(path: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>Path) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            source: AssetSourceId::Default,
+            path: CowArc::Static(path),
             label: <span class="prelude-val">None</span>,
         }
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; From&lt;PathBuf&gt; <span class="kw">for </span>AssetPath&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="kw">fn </span>from(path: PathBuf) -&gt; <span class="self">Self </span>{
-        AssetPath {
-            path: Cow::Owned(path),
+<span class="kw">impl </span>From&lt;PathBuf&gt; <span class="kw">for </span>AssetPath&lt;<span class="lifetime">&#39;static</span>&gt; {
+    <span class="attr">#[inline]
+    </span><span class="kw">fn </span>from(path: PathBuf) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            source: AssetSourceId::Default,
+            path: path.into(),
             label: <span class="prelude-val">None</span>,
         }
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; From&lt;String&gt; <span class="kw">for </span>AssetPath&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="kw">fn </span>from(asset_path: String) -&gt; <span class="self">Self </span>{
-        <span class="kw">let </span><span class="kw-2">mut </span>parts = asset_path.splitn(<span class="number">2</span>, <span class="string">&#39;#&#39;</span>);
-        <span class="kw">let </span>path = PathBuf::from(parts.next().expect(<span class="string">&quot;Path must be set.&quot;</span>));
-        <span class="kw">let </span>label = parts.next().map(String::from);
-        AssetPath {
-            path: Cow::Owned(path),
-            label: label.map(Cow::Owned),
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;b</span>&gt; From&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>AssetPath&lt;<span class="lifetime">&#39;b</span>&gt;&gt; <span class="kw">for </span>AssetPath&lt;<span class="lifetime">&#39;b</span>&gt; {
+    <span class="kw">fn </span>from(value: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>AssetPath&lt;<span class="lifetime">&#39;b</span>&gt;) -&gt; <span class="self">Self </span>{
+        value.clone()
+    }
+}
+
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; From&lt;AssetPath&lt;<span class="lifetime">&#39;a</span>&gt;&gt; <span class="kw">for </span>PathBuf {
+    <span class="kw">fn </span>from(value: AssetPath&lt;<span class="lifetime">&#39;a</span>&gt;) -&gt; <span class="self">Self </span>{
+        value.path().to_path_buf()
+    }
+}
+
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; Serialize <span class="kw">for </span>AssetPath&lt;<span class="lifetime">&#39;a</span>&gt; {
+    <span class="kw">fn </span>serialize&lt;S&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, serializer: S) -&gt; <span class="prelude-ty">Result</span>&lt;S::Ok, S::Error&gt;
+    <span class="kw">where
+        </span>S: serde::Serializer,
+    {
+        <span class="self">self</span>.to_string().serialize(serializer)
+    }
+}
+
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;de</span>&gt; Deserialize&lt;<span class="lifetime">&#39;de</span>&gt; <span class="kw">for </span>AssetPath&lt;<span class="lifetime">&#39;static</span>&gt; {
+    <span class="kw">fn </span>deserialize&lt;D&gt;(deserializer: D) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, D::Error&gt;
+    <span class="kw">where
+        </span>D: serde::Deserializer&lt;<span class="lifetime">&#39;de</span>&gt;,
+    {
+        deserializer.deserialize_string(AssetPathVisitor)
+    }
+}
+
+<span class="kw">struct </span>AssetPathVisitor;
+
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;de</span>&gt; Visitor&lt;<span class="lifetime">&#39;de</span>&gt; <span class="kw">for </span>AssetPathVisitor {
+    <span class="kw">type </span>Value = AssetPath&lt;<span class="lifetime">&#39;static</span>&gt;;
+
+    <span class="kw">fn </span>expecting(<span class="kw-2">&amp;</span><span class="self">self</span>, formatter: <span class="kw-2">&amp;mut </span>std::fmt::Formatter) -&gt; std::fmt::Result {
+        formatter.write_str(<span class="string">&quot;string AssetPath&quot;</span>)
+    }
+
+    <span class="kw">fn </span>visit_str&lt;E&gt;(<span class="self">self</span>, v: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Value, E&gt;
+    <span class="kw">where
+        </span>E: serde::de::Error,
+    {
+        <span class="prelude-val">Ok</span>(AssetPath::parse(v).into_owned())
+    }
+
+    <span class="kw">fn </span>visit_string&lt;E&gt;(<span class="self">self</span>, v: String) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Value, E&gt;
+    <span class="kw">where
+        </span>E: serde::de::Error,
+    {
+        <span class="prelude-val">Ok</span>(AssetPath::from(v))
+    }
+}
+
+<span class="comment">// NOTE: We manually implement &quot;reflect value&quot; because deriving Reflect on `AssetPath` breaks dynamic linking
+// See https://github.com/bevyengine/bevy/issues/9747
+// NOTE: This could use `impl_reflect_value` if it supported static lifetimes.
+
+</span><span class="kw">impl </span>GetTypeRegistration <span class="kw">for </span>AssetPath&lt;<span class="lifetime">&#39;static</span>&gt; {
+    <span class="kw">fn </span>get_type_registration() -&gt; TypeRegistration {
+        <span class="kw">let </span><span class="kw-2">mut </span>registration = TypeRegistration::of::&lt;<span class="self">Self</span>&gt;();
+        registration.insert::&lt;ReflectFromPtr&gt;(FromType::&lt;<span class="self">Self</span>&gt;::from_type());
+        registration.insert::&lt;ReflectFromReflect&gt;(FromType::&lt;<span class="self">Self</span>&gt;::from_type());
+        registration.insert::&lt;ReflectSerialize&gt;(FromType::&lt;<span class="self">Self</span>&gt;::from_type());
+        registration.insert::&lt;ReflectDeserialize&gt;(FromType::&lt;<span class="self">Self</span>&gt;::from_type());
+        registration.insert::&lt;ReflectDefault&gt;(FromType::&lt;<span class="self">Self</span>&gt;::from_type());
+        registration
+    }
+}
+
+<span class="kw">impl </span>TypePath <span class="kw">for </span>AssetPath&lt;<span class="lifetime">&#39;static</span>&gt; {
+    <span class="kw">fn </span>type_path() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str {
+        <span class="string">&quot;bevy_asset::path::AssetPath&lt;&#39;static&gt;&quot;
+    </span>}
+    <span class="kw">fn </span>short_type_path() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str {
+        <span class="string">&quot;AssetPath&lt;&#39;static&gt;&quot;
+    </span>}
+    <span class="kw">fn </span>type_ident() -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str&gt; {
+        <span class="prelude-val">Some</span>(<span class="string">&quot;AssetPath&lt;&#39;static&gt;&quot;</span>)
+    }
+    <span class="kw">fn </span>crate_name() -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str&gt; {
+        Option::None
+    }
+    <span class="kw">fn </span>module_path() -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str&gt; {
+        Option::None
+    }
+}
+<span class="kw">impl </span>Typed <span class="kw">for </span>AssetPath&lt;<span class="lifetime">&#39;static</span>&gt; {
+    <span class="kw">fn </span>type_info() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>TypeInfo {
+        <span class="kw">static </span>CELL: NonGenericTypeInfoCell = NonGenericTypeInfoCell::new();
+        CELL.get_or_set(|| {
+            <span class="kw">let </span>info = ValueInfo::new::&lt;<span class="self">Self</span>&gt;();
+            TypeInfo::Value(info)
+        })
+    }
+}
+<span class="kw">impl </span>Reflect <span class="kw">for </span>AssetPath&lt;<span class="lifetime">&#39;static</span>&gt; {
+    <span class="attr">#[inline]
+    </span><span class="kw">fn </span>type_name(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>str {
+        ::core::any::type_name::&lt;<span class="self">Self</span>&gt;()
+    }
+    <span class="attr">#[inline]
+    </span><span class="kw">fn </span>get_represented_type_info(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>TypeInfo&gt; {
+        <span class="prelude-val">Some</span>(&lt;<span class="self">Self </span><span class="kw">as </span>Typed&gt;::type_info())
+    }
+    <span class="attr">#[inline]
+    </span><span class="kw">fn </span>into_any(<span class="self">self</span>: Box&lt;<span class="self">Self</span>&gt;) -&gt; Box&lt;<span class="kw">dyn </span>::core::any::Any&gt; {
+        <span class="self">self
+    </span>}
+    <span class="attr">#[inline]
+    </span><span class="kw">fn </span>as_any(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw">dyn </span>::core::any::Any {
+        <span class="self">self
+    </span>}
+    <span class="attr">#[inline]
+    </span><span class="kw">fn </span>as_any_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>::core::any::Any {
+        <span class="self">self
+    </span>}
+    <span class="attr">#[inline]
+    </span><span class="kw">fn </span>into_reflect(<span class="self">self</span>: Box&lt;<span class="self">Self</span>&gt;) -&gt; Box&lt;<span class="kw">dyn </span>Reflect&gt; {
+        <span class="self">self
+    </span>}
+    <span class="attr">#[inline]
+    </span><span class="kw">fn </span>as_reflect(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw">dyn </span>Reflect {
+        <span class="self">self
+    </span>}
+    <span class="attr">#[inline]
+    </span><span class="kw">fn </span>as_reflect_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Reflect {
+        <span class="self">self
+    </span>}
+    <span class="attr">#[inline]
+    </span><span class="kw">fn </span>clone_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Box&lt;<span class="kw">dyn </span>Reflect&gt; {
+        Box::new(<span class="self">self</span>.clone())
+    }
+    <span class="attr">#[inline]
+    </span><span class="kw">fn </span>apply(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: <span class="kw-2">&amp;</span><span class="kw">dyn </span>Reflect) {
+        <span class="kw">let </span>value = Reflect::as_any(value);
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(value) = value.downcast_ref::&lt;<span class="self">Self</span>&gt;() {
+            <span class="kw-2">*</span><span class="self">self </span>= value.clone();
+        } <span class="kw">else </span>{
+            <span class="macro">panic!</span>(<span class="string">&quot;Value is not {}.&quot;</span>, std::any::type_name::&lt;<span class="self">Self</span>&gt;());
         }
+    }
+    <span class="attr">#[inline]
+    </span><span class="kw">fn </span>set(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        value: Box&lt;<span class="kw">dyn </span>bevy_reflect::Reflect&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;(), Box&lt;<span class="kw">dyn </span>bevy_reflect::Reflect&gt;&gt; {
+        <span class="kw-2">*</span><span class="self">self </span>= &lt;<span class="kw">dyn </span>bevy_reflect::Reflect&gt;::take(value)<span class="question-mark">?</span>;
+        <span class="prelude-val">Ok</span>(())
+    }
+    <span class="kw">fn </span>reflect_ref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; ReflectRef {
+        ReflectRef::Value(<span class="self">self</span>)
+    }
+    <span class="kw">fn </span>reflect_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; ReflectMut {
+        ReflectMut::Value(<span class="self">self</span>)
+    }
+    <span class="kw">fn </span>reflect_owned(<span class="self">self</span>: Box&lt;<span class="self">Self</span>&gt;) -&gt; ReflectOwned {
+        ReflectOwned::Value(<span class="self">self</span>)
+    }
+    <span class="kw">fn </span>reflect_hash(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;u64&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>hasher = bevy_reflect::utility::reflect_hasher();
+        Hash::hash(<span class="kw-2">&amp;</span>::core::any::Any::type_id(<span class="self">self</span>), <span class="kw-2">&amp;mut </span>hasher);
+        Hash::hash(<span class="self">self</span>, <span class="kw-2">&amp;mut </span>hasher);
+        <span class="prelude-val">Some</span>(Hasher::finish(<span class="kw-2">&amp;</span>hasher))
+    }
+    <span class="kw">fn </span>reflect_partial_eq(<span class="kw-2">&amp;</span><span class="self">self</span>, value: <span class="kw-2">&amp;</span><span class="kw">dyn </span>Reflect) -&gt; <span class="prelude-ty">Option</span>&lt;bool&gt; {
+        <span class="kw">let </span>value = &lt;<span class="kw">dyn </span>Reflect&gt;::as_any(value);
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(value) = &lt;<span class="kw">dyn </span>::core::any::Any&gt;::downcast_ref::&lt;<span class="self">Self</span>&gt;(value) {
+            <span class="prelude-val">Some</span>(::core::cmp::PartialEq::eq(<span class="self">self</span>, value))
+        } <span class="kw">else </span>{
+            <span class="prelude-val">Some</span>(<span class="bool-val">false</span>)
+        }
+    }
+    <span class="kw">fn </span>debug(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>::core::fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; ::core::fmt::Result {
+        ::core::fmt::Debug::fmt(<span class="self">self</span>, f)
+    }
+}
+<span class="kw">impl </span>FromReflect <span class="kw">for </span>AssetPath&lt;<span class="lifetime">&#39;static</span>&gt; {
+    <span class="kw">fn </span>from_reflect(reflect: <span class="kw-2">&amp;</span><span class="kw">dyn </span>Reflect) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
+        <span class="prelude-val">Some</span>(Clone::clone(&lt;<span class="kw">dyn </span>::core::any::Any&gt;::downcast_ref::&lt;
+            AssetPath&lt;<span class="lifetime">&#39;static</span>&gt;,
+        &gt;(&lt;<span class="kw">dyn </span>Reflect&gt;::as_any(reflect))<span class="question-mark">?</span>))
+    }
+}
+
+<span class="attr">#[cfg(test)]
+</span><span class="kw">mod </span>tests {
+    <span class="kw">use </span><span class="kw">crate</span>::AssetPath;
+    <span class="kw">use </span>std::path::Path;
+
+    <span class="attr">#[test]
+    </span><span class="kw">fn </span>parse_asset_path() {
+        <span class="kw">let </span>result = AssetPath::parse_internal(<span class="string">&quot;a/b.test&quot;</span>);
+        <span class="macro">assert_eq!</span>(result, <span class="prelude-val">Ok</span>((<span class="prelude-val">None</span>, Path::new(<span class="string">&quot;a/b.test&quot;</span>), <span class="prelude-val">None</span>)));
+
+        <span class="kw">let </span>result = AssetPath::parse_internal(<span class="string">&quot;http://a/b.test&quot;</span>);
+        <span class="macro">assert_eq!</span>(result, <span class="prelude-val">Ok</span>((<span class="prelude-val">Some</span>(<span class="string">&quot;http&quot;</span>), Path::new(<span class="string">&quot;a/b.test&quot;</span>), <span class="prelude-val">None</span>)));
+
+        <span class="kw">let </span>result = AssetPath::parse_internal(<span class="string">&quot;http://a/b.test#Foo&quot;</span>);
+        <span class="macro">assert_eq!</span>(
+            result,
+            <span class="prelude-val">Ok</span>((<span class="prelude-val">Some</span>(<span class="string">&quot;http&quot;</span>), Path::new(<span class="string">&quot;a/b.test&quot;</span>), <span class="prelude-val">Some</span>(<span class="string">&quot;Foo&quot;</span>)))
+        );
+
+        <span class="kw">let </span>result = AssetPath::parse_internal(<span class="string">&quot;http://&quot;</span>);
+        <span class="macro">assert_eq!</span>(result, <span class="prelude-val">Ok</span>((<span class="prelude-val">Some</span>(<span class="string">&quot;http&quot;</span>), Path::new(<span class="string">&quot;&quot;</span>), <span class="prelude-val">None</span>)));
+
+        <span class="kw">let </span>result = AssetPath::parse_internal(<span class="string">&quot;://x&quot;</span>);
+        <span class="macro">assert_eq!</span>(result, <span class="prelude-val">Err</span>(<span class="kw">crate</span>::ParseAssetPathError::MissingSource));
+
+        <span class="kw">let </span>result = AssetPath::parse_internal(<span class="string">&quot;a/b.test#&quot;</span>);
+        <span class="macro">assert_eq!</span>(result, <span class="prelude-val">Err</span>(<span class="kw">crate</span>::ParseAssetPathError::MissingLabel));
+
+        <span class="kw">let </span>result = AssetPath::parse_internal(<span class="string">&quot;http:/&quot;</span>);
+        <span class="macro">assert_eq!</span>(result, <span class="prelude-val">Err</span>(<span class="kw">crate</span>::ParseAssetPathError::InvalidSourceSyntax));
+    }
+
+    <span class="attr">#[test]
+    </span><span class="kw">fn </span>test_parent() {
+        <span class="comment">// Parent consumes path segments, returns None when insufficient
+        </span><span class="kw">let </span>result = AssetPath::from(<span class="string">&quot;a/b.test&quot;</span>);
+        <span class="macro">assert_eq!</span>(result.parent(), <span class="prelude-val">Some</span>(AssetPath::from(<span class="string">&quot;a&quot;</span>)));
+        <span class="macro">assert_eq!</span>(result.parent().unwrap().parent(), <span class="prelude-val">Some</span>(AssetPath::from(<span class="string">&quot;&quot;</span>)));
+        <span class="macro">assert_eq!</span>(result.parent().unwrap().parent().unwrap().parent(), <span class="prelude-val">None</span>);
+
+        <span class="comment">// Parent cannot consume asset source
+        </span><span class="kw">let </span>result = AssetPath::from(<span class="string">&quot;http://a&quot;</span>);
+        <span class="macro">assert_eq!</span>(result.parent(), <span class="prelude-val">Some</span>(AssetPath::from(<span class="string">&quot;http://&quot;</span>)));
+        <span class="macro">assert_eq!</span>(result.parent().unwrap().parent(), <span class="prelude-val">None</span>);
+
+        <span class="comment">// Parent consumes labels
+        </span><span class="kw">let </span>result = AssetPath::from(<span class="string">&quot;http://a#Foo&quot;</span>);
+        <span class="macro">assert_eq!</span>(result.parent(), <span class="prelude-val">Some</span>(AssetPath::from(<span class="string">&quot;http://&quot;</span>)));
+    }
+
+    <span class="attr">#[test]
+    </span><span class="kw">fn </span>test_with_source() {
+        <span class="kw">let </span>result = AssetPath::from(<span class="string">&quot;http://a#Foo&quot;</span>);
+        <span class="macro">assert_eq!</span>(result.with_source(<span class="string">&quot;ftp&quot;</span>), AssetPath::from(<span class="string">&quot;ftp://a#Foo&quot;</span>));
+    }
+
+    <span class="attr">#[test]
+    </span><span class="kw">fn </span>test_without_label() {
+        <span class="kw">let </span>result = AssetPath::from(<span class="string">&quot;http://a#Foo&quot;</span>);
+        <span class="macro">assert_eq!</span>(result.without_label(), AssetPath::from(<span class="string">&quot;http://a&quot;</span>));
+    }
+
+    <span class="attr">#[test]
+    </span><span class="kw">fn </span>test_resolve_full() {
+        <span class="comment">// A &quot;full&quot; path should ignore the base path.
+        </span><span class="kw">let </span>base = AssetPath::from(<span class="string">&quot;alice/bob#carol&quot;</span>);
+        <span class="macro">assert_eq!</span>(
+            base.resolve(<span class="string">&quot;/joe/next&quot;</span>).unwrap(),
+            AssetPath::from(<span class="string">&quot;joe/next&quot;</span>)
+        );
+        <span class="macro">assert_eq!</span>(
+            base.resolve_embed(<span class="string">&quot;/joe/next&quot;</span>).unwrap(),
+            AssetPath::from(<span class="string">&quot;joe/next&quot;</span>)
+        );
+        <span class="macro">assert_eq!</span>(
+            base.resolve(<span class="string">&quot;/joe/next#dave&quot;</span>).unwrap(),
+            AssetPath::from(<span class="string">&quot;joe/next#dave&quot;</span>)
+        );
+        <span class="macro">assert_eq!</span>(
+            base.resolve_embed(<span class="string">&quot;/joe/next#dave&quot;</span>).unwrap(),
+            AssetPath::from(<span class="string">&quot;joe/next#dave&quot;</span>)
+        );
+    }
+
+    <span class="attr">#[test]
+    </span><span class="kw">fn </span>test_resolve_implicit_relative() {
+        <span class="comment">// A path with no inital directory separator should be considered relative.
+        </span><span class="kw">let </span>base = AssetPath::from(<span class="string">&quot;alice/bob#carol&quot;</span>);
+        <span class="macro">assert_eq!</span>(
+            base.resolve(<span class="string">&quot;joe/next&quot;</span>).unwrap(),
+            AssetPath::from(<span class="string">&quot;alice/bob/joe/next&quot;</span>)
+        );
+        <span class="macro">assert_eq!</span>(
+            base.resolve_embed(<span class="string">&quot;joe/next&quot;</span>).unwrap(),
+            AssetPath::from(<span class="string">&quot;alice/joe/next&quot;</span>)
+        );
+        <span class="macro">assert_eq!</span>(
+            base.resolve(<span class="string">&quot;joe/next#dave&quot;</span>).unwrap(),
+            AssetPath::from(<span class="string">&quot;alice/bob/joe/next#dave&quot;</span>)
+        );
+        <span class="macro">assert_eq!</span>(
+            base.resolve_embed(<span class="string">&quot;joe/next#dave&quot;</span>).unwrap(),
+            AssetPath::from(<span class="string">&quot;alice/joe/next#dave&quot;</span>)
+        );
+    }
+
+    <span class="attr">#[test]
+    </span><span class="kw">fn </span>test_resolve_explicit_relative() {
+        <span class="comment">// A path which begins with &quot;./&quot; or &quot;../&quot; is treated as relative
+        </span><span class="kw">let </span>base = AssetPath::from(<span class="string">&quot;alice/bob#carol&quot;</span>);
+        <span class="macro">assert_eq!</span>(
+            base.resolve(<span class="string">&quot;./martin#dave&quot;</span>).unwrap(),
+            AssetPath::from(<span class="string">&quot;alice/bob/martin#dave&quot;</span>)
+        );
+        <span class="macro">assert_eq!</span>(
+            base.resolve_embed(<span class="string">&quot;./martin#dave&quot;</span>).unwrap(),
+            AssetPath::from(<span class="string">&quot;alice/martin#dave&quot;</span>)
+        );
+        <span class="macro">assert_eq!</span>(
+            base.resolve(<span class="string">&quot;../martin#dave&quot;</span>).unwrap(),
+            AssetPath::from(<span class="string">&quot;alice/martin#dave&quot;</span>)
+        );
+        <span class="macro">assert_eq!</span>(
+            base.resolve_embed(<span class="string">&quot;../martin#dave&quot;</span>).unwrap(),
+            AssetPath::from(<span class="string">&quot;martin#dave&quot;</span>)
+        );
+    }
+
+    <span class="attr">#[test]
+    </span><span class="kw">fn </span>test_resolve_trailing_slash() {
+        <span class="comment">// A path which begins with &quot;./&quot; or &quot;../&quot; is treated as relative
+        </span><span class="kw">let </span>base = AssetPath::from(<span class="string">&quot;alice/bob/&quot;</span>);
+        <span class="macro">assert_eq!</span>(
+            base.resolve(<span class="string">&quot;./martin#dave&quot;</span>).unwrap(),
+            AssetPath::from(<span class="string">&quot;alice/bob/martin#dave&quot;</span>)
+        );
+        <span class="macro">assert_eq!</span>(
+            base.resolve_embed(<span class="string">&quot;./martin#dave&quot;</span>).unwrap(),
+            AssetPath::from(<span class="string">&quot;alice/bob/martin#dave&quot;</span>)
+        );
+        <span class="macro">assert_eq!</span>(
+            base.resolve(<span class="string">&quot;../martin#dave&quot;</span>).unwrap(),
+            AssetPath::from(<span class="string">&quot;alice/martin#dave&quot;</span>)
+        );
+        <span class="macro">assert_eq!</span>(
+            base.resolve_embed(<span class="string">&quot;../martin#dave&quot;</span>).unwrap(),
+            AssetPath::from(<span class="string">&quot;alice/martin#dave&quot;</span>)
+        );
+    }
+
+    <span class="attr">#[test]
+    </span><span class="kw">fn </span>test_resolve_canonicalize() {
+        <span class="comment">// Test that &quot;..&quot; and &quot;.&quot; are removed after concatenation.
+        </span><span class="kw">let </span>base = AssetPath::from(<span class="string">&quot;alice/bob#carol&quot;</span>);
+        <span class="macro">assert_eq!</span>(
+            base.resolve(<span class="string">&quot;./martin/stephan/..#dave&quot;</span>).unwrap(),
+            AssetPath::from(<span class="string">&quot;alice/bob/martin#dave&quot;</span>)
+        );
+        <span class="macro">assert_eq!</span>(
+            base.resolve_embed(<span class="string">&quot;./martin/stephan/..#dave&quot;</span>).unwrap(),
+            AssetPath::from(<span class="string">&quot;alice/martin#dave&quot;</span>)
+        );
+        <span class="macro">assert_eq!</span>(
+            base.resolve(<span class="string">&quot;../martin/.#dave&quot;</span>).unwrap(),
+            AssetPath::from(<span class="string">&quot;alice/martin#dave&quot;</span>)
+        );
+        <span class="macro">assert_eq!</span>(
+            base.resolve_embed(<span class="string">&quot;../martin/.#dave&quot;</span>).unwrap(),
+            AssetPath::from(<span class="string">&quot;martin#dave&quot;</span>)
+        );
+        <span class="macro">assert_eq!</span>(
+            base.resolve(<span class="string">&quot;/martin/stephan/..#dave&quot;</span>).unwrap(),
+            AssetPath::from(<span class="string">&quot;martin#dave&quot;</span>)
+        );
+        <span class="macro">assert_eq!</span>(
+            base.resolve_embed(<span class="string">&quot;/martin/stephan/..#dave&quot;</span>).unwrap(),
+            AssetPath::from(<span class="string">&quot;martin#dave&quot;</span>)
+        );
+    }
+
+    <span class="attr">#[test]
+    </span><span class="kw">fn </span>test_resolve_canonicalize_base() {
+        <span class="comment">// Test that &quot;..&quot; and &quot;.&quot; are removed after concatenation even from the base path.
+        </span><span class="kw">let </span>base = AssetPath::from(<span class="string">&quot;alice/../bob#carol&quot;</span>);
+        <span class="macro">assert_eq!</span>(
+            base.resolve(<span class="string">&quot;./martin/stephan/..#dave&quot;</span>).unwrap(),
+            AssetPath::from(<span class="string">&quot;bob/martin#dave&quot;</span>)
+        );
+        <span class="macro">assert_eq!</span>(
+            base.resolve_embed(<span class="string">&quot;./martin/stephan/..#dave&quot;</span>).unwrap(),
+            AssetPath::from(<span class="string">&quot;martin#dave&quot;</span>)
+        );
+        <span class="macro">assert_eq!</span>(
+            base.resolve(<span class="string">&quot;../martin/.#dave&quot;</span>).unwrap(),
+            AssetPath::from(<span class="string">&quot;martin#dave&quot;</span>)
+        );
+        <span class="macro">assert_eq!</span>(
+            base.resolve_embed(<span class="string">&quot;../martin/.#dave&quot;</span>).unwrap(),
+            AssetPath::from(<span class="string">&quot;../martin#dave&quot;</span>)
+        );
+        <span class="macro">assert_eq!</span>(
+            base.resolve(<span class="string">&quot;/martin/stephan/..#dave&quot;</span>).unwrap(),
+            AssetPath::from(<span class="string">&quot;martin#dave&quot;</span>)
+        );
+        <span class="macro">assert_eq!</span>(
+            base.resolve_embed(<span class="string">&quot;/martin/stephan/..#dave&quot;</span>).unwrap(),
+            AssetPath::from(<span class="string">&quot;martin#dave&quot;</span>)
+        );
+    }
+
+    <span class="attr">#[test]
+    </span><span class="kw">fn </span>test_resolve_canonicalize_with_source() {
+        <span class="comment">// Test that &quot;..&quot; and &quot;.&quot; are removed after concatenation.
+        </span><span class="kw">let </span>base = AssetPath::from(<span class="string">&quot;source://alice/bob#carol&quot;</span>);
+        <span class="macro">assert_eq!</span>(
+            base.resolve(<span class="string">&quot;./martin/stephan/..#dave&quot;</span>).unwrap(),
+            AssetPath::from(<span class="string">&quot;source://alice/bob/martin#dave&quot;</span>)
+        );
+        <span class="macro">assert_eq!</span>(
+            base.resolve_embed(<span class="string">&quot;./martin/stephan/..#dave&quot;</span>).unwrap(),
+            AssetPath::from(<span class="string">&quot;source://alice/martin#dave&quot;</span>)
+        );
+        <span class="macro">assert_eq!</span>(
+            base.resolve(<span class="string">&quot;../martin/.#dave&quot;</span>).unwrap(),
+            AssetPath::from(<span class="string">&quot;source://alice/martin#dave&quot;</span>)
+        );
+        <span class="macro">assert_eq!</span>(
+            base.resolve_embed(<span class="string">&quot;../martin/.#dave&quot;</span>).unwrap(),
+            AssetPath::from(<span class="string">&quot;source://martin#dave&quot;</span>)
+        );
+        <span class="macro">assert_eq!</span>(
+            base.resolve(<span class="string">&quot;/martin/stephan/..#dave&quot;</span>).unwrap(),
+            AssetPath::from(<span class="string">&quot;source://martin#dave&quot;</span>)
+        );
+        <span class="macro">assert_eq!</span>(
+            base.resolve_embed(<span class="string">&quot;/martin/stephan/..#dave&quot;</span>).unwrap(),
+            AssetPath::from(<span class="string">&quot;source://martin#dave&quot;</span>)
+        );
+    }
+
+    <span class="attr">#[test]
+    </span><span class="kw">fn </span>test_resolve_absolute() {
+        <span class="comment">// Paths beginning with &#39;/&#39; replace the base path
+        </span><span class="kw">let </span>base = AssetPath::from(<span class="string">&quot;alice/bob#carol&quot;</span>);
+        <span class="macro">assert_eq!</span>(
+            base.resolve(<span class="string">&quot;/martin/stephan&quot;</span>).unwrap(),
+            AssetPath::from(<span class="string">&quot;martin/stephan&quot;</span>)
+        );
+        <span class="macro">assert_eq!</span>(
+            base.resolve_embed(<span class="string">&quot;/martin/stephan&quot;</span>).unwrap(),
+            AssetPath::from(<span class="string">&quot;martin/stephan&quot;</span>)
+        );
+        <span class="macro">assert_eq!</span>(
+            base.resolve(<span class="string">&quot;/martin/stephan#dave&quot;</span>).unwrap(),
+            AssetPath::from(<span class="string">&quot;martin/stephan/#dave&quot;</span>)
+        );
+        <span class="macro">assert_eq!</span>(
+            base.resolve_embed(<span class="string">&quot;/martin/stephan#dave&quot;</span>).unwrap(),
+            AssetPath::from(<span class="string">&quot;martin/stephan/#dave&quot;</span>)
+        );
+    }
+
+    <span class="attr">#[test]
+    </span><span class="kw">fn </span>test_resolve_asset_source() {
+        <span class="comment">// Paths beginning with &#39;source://&#39; replace the base path
+        </span><span class="kw">let </span>base = AssetPath::from(<span class="string">&quot;alice/bob#carol&quot;</span>);
+        <span class="macro">assert_eq!</span>(
+            base.resolve(<span class="string">&quot;source://martin/stephan&quot;</span>).unwrap(),
+            AssetPath::from(<span class="string">&quot;source://martin/stephan&quot;</span>)
+        );
+        <span class="macro">assert_eq!</span>(
+            base.resolve_embed(<span class="string">&quot;source://martin/stephan&quot;</span>).unwrap(),
+            AssetPath::from(<span class="string">&quot;source://martin/stephan&quot;</span>)
+        );
+        <span class="macro">assert_eq!</span>(
+            base.resolve(<span class="string">&quot;source://martin/stephan#dave&quot;</span>).unwrap(),
+            AssetPath::from(<span class="string">&quot;source://martin/stephan/#dave&quot;</span>)
+        );
+        <span class="macro">assert_eq!</span>(
+            base.resolve_embed(<span class="string">&quot;source://martin/stephan#dave&quot;</span>).unwrap(),
+            AssetPath::from(<span class="string">&quot;source://martin/stephan/#dave&quot;</span>)
+        );
+    }
+
+    <span class="attr">#[test]
+    </span><span class="kw">fn </span>test_resolve_label() {
+        <span class="comment">// A relative path with only a label should replace the label portion
+        </span><span class="kw">let </span>base = AssetPath::from(<span class="string">&quot;alice/bob#carol&quot;</span>);
+        <span class="macro">assert_eq!</span>(
+            base.resolve(<span class="string">&quot;#dave&quot;</span>).unwrap(),
+            AssetPath::from(<span class="string">&quot;alice/bob#dave&quot;</span>)
+        );
+        <span class="macro">assert_eq!</span>(
+            base.resolve_embed(<span class="string">&quot;#dave&quot;</span>).unwrap(),
+            AssetPath::from(<span class="string">&quot;alice/bob#dave&quot;</span>)
+        );
+    }
+
+    <span class="attr">#[test]
+    </span><span class="kw">fn </span>test_resolve_insufficient_elements() {
+        <span class="comment">// Ensure that &quot;..&quot; segments are preserved if there are insufficient elements to remove them.
+        </span><span class="kw">let </span>base = AssetPath::from(<span class="string">&quot;alice/bob#carol&quot;</span>);
+        <span class="macro">assert_eq!</span>(
+            base.resolve(<span class="string">&quot;../../joe/next&quot;</span>).unwrap(),
+            AssetPath::from(<span class="string">&quot;joe/next&quot;</span>)
+        );
+        <span class="macro">assert_eq!</span>(
+            base.resolve_embed(<span class="string">&quot;../../joe/next&quot;</span>).unwrap(),
+            AssetPath::from(<span class="string">&quot;../joe/next&quot;</span>)
+        );
+    }
+
+    <span class="attr">#[test]
+    </span><span class="kw">fn </span>test_get_extension() {
+        <span class="kw">let </span>result = AssetPath::from(<span class="string">&quot;http://a.tar.gz#Foo&quot;</span>);
+        <span class="macro">assert_eq!</span>(result.get_full_extension(), <span class="prelude-val">Some</span>(<span class="string">&quot;tar.gz&quot;</span>.to_string()));
+
+        <span class="kw">let </span>result = AssetPath::from(<span class="string">&quot;http://a#Foo&quot;</span>);
+        <span class="macro">assert_eq!</span>(result.get_full_extension(), <span class="prelude-val">None</span>);
     }
 }
 </code></pre></div></section></main></body></html>

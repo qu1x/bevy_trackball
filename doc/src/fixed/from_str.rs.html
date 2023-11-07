@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/n3vu0r/.cargo/registry/src/index.crates.io-6f17d22bba15001f/fixed-1.23.1/src/from_str.rs`."><title>from_str.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-9bb858ba049f1f21.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="fixed" data-themes="" data-resource-suffix="" data-rustdoc-version="1.72.0 (5680fa18f 2023-08-23)" data-channel="1.72.0" data-search-js="search-f6292fe389d70017.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-0f8c037637f9eb3e.css" data-theme-dark-css="dark-1097f8e92a01e3cf.css" data-theme-ayu-css="ayu-614652228113ac93.css" ><script src="../../static.files/storage-59fd9b8ccb335783.js"></script><script defer src="../../static.files/source-script-106908c7a7964ba4.js"></script><script defer src="../../source-files.js"></script><script defer src="../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-0f8c037637f9eb3e.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-1097f8e92a01e3cf.css"><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../fixed/index.html"><img src="data:image/svg+xml;base64,
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/fixed-1.24.0/src/from_str.rs`."><title>from_str.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="fixed" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../fixed/index.html"><img src="data:image/svg+xml;base64,
 PHN2ZyB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgMzMuODY3IDMzLjg2NyIgeG1s
 bnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48Y2xpcFBhdGggaWQ9ImIiPjxjaXJjbGUgY3g9IjE2LjkzMyIg
 Y3k9IjI4MC4wNyIgcj0iMTYuOTMzIiBmaWxsPSIjMDA3MmIyIi8+PC9jbGlwUGF0aD48Y2xpcFBhdGggaWQ9ImEiPjxjaXJjbGUg
@@ -2861,16 +2861,6 @@ PC9zdmc+Cg==
 <a href="#2824" id="2824">2824</a>
 <a href="#2825" id="2825">2825</a>
 <a href="#2826" id="2826">2826</a>
-<a href="#2827" id="2827">2827</a>
-<a href="#2828" id="2828">2828</a>
-<a href="#2829" id="2829">2829</a>
-<a href="#2830" id="2830">2830</a>
-<a href="#2831" id="2831">2831</a>
-<a href="#2832" id="2832">2832</a>
-<a href="#2833" id="2833">2833</a>
-<a href="#2834" id="2834">2834</a>
-<a href="#2835" id="2835">2835</a>
-<a href="#2836" id="2836">2836</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright © 2018–2023 Trevor Spiteri
 
 // This library is free software: you can redistribute it and/or
@@ -2887,7 +2877,7 @@ PC9zdmc+Cg==
 // &lt;https://opensource.org/licenses/MIT&gt;.
 
 </span><span class="kw">use crate</span>::{
-    bytes::{Bytes, DigitsExp, DigitsUnds},
+    bytes::{DigitsExp, DigitsUnds},
     types::extra::{LeEqU128, LeEqU16, LeEqU32, LeEqU64, LeEqU8},
     FixedI128, FixedI16, FixedI32, FixedI64, FixedI8, FixedU128, FixedU16, FixedU32, FixedU64,
     FixedU8,
@@ -2967,10 +2957,7 @@ PC9zdmc+Cg==
 //       - pub const fn overflowing_from_str_radix
 </span><span class="macro">macro_rules! </span>all {
     (<span class="macro-nonterminal">$Single</span>:ident) =&gt; {
-        <span class="kw">use crate</span>::{
-            bytes::Bytes,
-            from_str::{ParseErrorKind, ParseFixedError, Sep},
-        };
+        <span class="kw">use </span><span class="kw">crate</span>::from_str::{ParseErrorKind, ParseFixedError, Sep};
 
         <span class="attr">#[inline]
         </span><span class="kw">pub const fn </span>from_str_radix(
@@ -3029,7 +3016,7 @@ PC9zdmc+Cg==
             radix: u32,
             frac_nbits: u32,
         ) -&gt; <span class="prelude-ty">Result</span>&lt;(<span class="macro-nonterminal">$Single</span>, bool), ParseFixedError&gt; {
-            <span class="kw">let </span>bytes = Bytes::new(s.as_bytes());
+            <span class="kw">let </span>bytes = s.as_bytes();
             <span class="kw">match </span>from_str(bytes, radix, Sep::Error, frac_nbits) {
                 <span class="prelude-val">Ok</span>(val) =&gt; <span class="prelude-val">Ok</span>(val),
                 <span class="prelude-val">Err</span>(kind) =&gt; <span class="prelude-val">Err</span>(ParseFixedError { kind }),
@@ -3051,7 +3038,7 @@ PC9zdmc+Cg==
             <span class="macro">all! </span>{ <span class="macro-nonterminal">$Single </span>}
 
             <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">const fn </span>from_str(
-                bytes: Bytes,
+                bytes: <span class="kw-2">&amp;</span>[u8],
                 radix: u32,
                 sep: Sep,
                 frac_nbits: u32,
@@ -3075,13 +3062,13 @@ PC9zdmc+Cg==
             }
 
             <span class="kw">pub const fn </span>lit(s: <span class="kw-2">&amp;</span>str, frac_nbits: u32) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="macro-nonterminal">$Single</span>, ParseFixedError&gt; {
-                <span class="kw">let </span><span class="kw-2">mut </span>bytes = Bytes::new(s.as_bytes());
+                <span class="kw">let </span><span class="kw-2">mut </span>bytes = s.as_bytes();
                 <span class="kw">if </span>bytes.is_empty() {
                     <span class="kw">return </span><span class="prelude-val">Err</span>(ParseFixedError {
                         kind: ParseErrorKind::NoDigits,
                     });
                 }
-                <span class="kw">let </span>neg = <span class="kw">if </span>bytes.index(<span class="number">0</span>) == <span class="string">b&#39;-&#39; </span>{
+                <span class="kw">let </span>neg = <span class="kw">if </span>bytes[<span class="number">0</span>] == <span class="string">b&#39;-&#39; </span>{
                     bytes = bytes.split_at(<span class="number">1</span>).<span class="number">1</span>;
                     <span class="bool-val">true
                 </span>} <span class="kw">else </span>{
@@ -3139,7 +3126,7 @@ PC9zdmc+Cg==
         <span class="macro">all! </span>{ <span class="macro-nonterminal">$Uns </span>}
 
         <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">const fn </span>from_str(
-            bytes: Bytes,
+            bytes: <span class="kw-2">&amp;</span>[u8],
             radix: u32,
             sep: Sep,
             frac_nbits: u32,
@@ -3158,21 +3145,21 @@ PC9zdmc+Cg==
 
         <span class="attr">#[inline]
         </span><span class="kw">pub const fn </span>lit(s: <span class="kw-2">&amp;</span>str, frac_nbits: u32) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="macro-nonterminal">$Uns</span>, ParseFixedError&gt; {
-            <span class="kw">match </span>lit_no_sign(Bytes::new(s.as_bytes()), frac_nbits) {
+            <span class="kw">match </span>lit_no_sign(s.as_bytes(), frac_nbits) {
                 <span class="prelude-val">Ok</span>(val) =&gt; <span class="prelude-val">Ok</span>(val),
                 <span class="prelude-val">Err</span>(kind) =&gt; <span class="prelude-val">Err</span>(ParseFixedError { kind }),
             }
         }
 
         <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">const fn </span>lit_no_sign(
-            <span class="kw-2">mut </span>bytes: Bytes,
+            <span class="kw-2">mut </span>bytes: <span class="kw-2">&amp;</span>[u8],
             frac_nbits: u32,
         ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="macro-nonterminal">$Uns</span>, ParseErrorKind&gt; {
             <span class="kw">if </span>bytes.is_empty() {
                 <span class="kw">return </span><span class="prelude-val">Err</span>(ParseErrorKind::NoDigits);
             }
-            <span class="kw">let </span>radix = <span class="kw">if </span>bytes.len() &gt;= <span class="number">2 </span>&amp;&amp; bytes.index(<span class="number">0</span>) == <span class="string">b&#39;0&#39; </span>{
-                <span class="kw">match </span>bytes.index(<span class="number">1</span>) {
+            <span class="kw">let </span>radix = <span class="kw">if </span>bytes.len() &gt;= <span class="number">2 </span>&amp;&amp; bytes[<span class="number">0</span>] == <span class="string">b&#39;0&#39; </span>{
+                <span class="kw">match </span>bytes[<span class="number">1</span>] {
                     <span class="string">b&#39;b&#39; </span>=&gt; <span class="number">2</span>,
                     <span class="string">b&#39;o&#39; </span>=&gt; <span class="number">8</span>,
                     <span class="string">b&#39;x&#39; </span>=&gt; <span class="number">16</span>,
@@ -3198,7 +3185,7 @@ PC9zdmc+Cg==
         }
 
         <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">const fn </span>get_int_frac(
-            bytes: Bytes,
+            bytes: <span class="kw-2">&amp;</span>[u8],
             radix: u32,
             sep: Sep,
             int_nbits: u32,
@@ -3373,9 +3360,8 @@ PC9zdmc+Cg==
             } <span class="kw">else </span>{
                 (digits, <span class="bool-val">false</span>)
             };
-            <span class="kw">let </span>(first_digit, <span class="kw-2">mut </span>rem_digits) = <span class="kw">match </span>digits.split_first() {
-                <span class="prelude-val">Some</span>(s) =&gt; s,
-                <span class="prelude-val">None </span>=&gt; <span class="macro">unreachable!</span>(),
+            <span class="kw">let </span><span class="prelude-val">Some</span>((first_digit, <span class="kw-2">mut </span>rem_digits)) = digits.split_first() <span class="kw">else </span>{
+                <span class="macro">unreachable!</span>();
             };
             <span class="kw">let </span><span class="kw-2">mut </span>acc = from_byte(first_digit - <span class="string">b&#39;0&#39;</span>);
             <span class="kw">if </span>digits.len() == max_digits {
@@ -3462,9 +3448,8 @@ PC9zdmc+Cg==
             } <span class="kw">else </span>{
                 (digits, <span class="bool-val">false</span>)
             };
-            <span class="kw">let </span>(first_digit, <span class="kw-2">mut </span>rem_digits) = <span class="kw">match </span>digits.split_first() {
-                <span class="prelude-val">Some</span>(s) =&gt; s,
-                <span class="prelude-val">None </span>=&gt; <span class="macro">unreachable!</span>(),
+            <span class="kw">let </span><span class="prelude-val">Some</span>((first_digit, <span class="kw-2">mut </span>rem_digits)) = digits.split_first() <span class="kw">else </span>{
+                <span class="macro">unreachable!</span>();
             };
             <span class="kw">let </span><span class="kw-2">mut </span>acc = from_byte(unchecked_hex_digit(first_digit));
             <span class="kw">if </span>digits.len() == max_digits {
@@ -3564,9 +3549,8 @@ PC9zdmc+Cg==
             } <span class="kw">else </span>{
                 Round::Floor
             };
-            <span class="kw">let </span>floor = <span class="kw">match </span>dec_to_bin(val, nbits, round) {
-                <span class="prelude-val">Some</span>(floor) =&gt; floor,
-                <span class="prelude-val">None </span>=&gt; <span class="kw">return </span><span class="prelude-val">None</span>,
+            <span class="kw">let </span><span class="prelude-val">Some</span>(floor) = dec_to_bin(val, nbits, round) <span class="kw">else </span>{
+                <span class="kw">return </span><span class="prelude-val">None</span>;
             };
             <span class="kw">if </span>is_short {
                 <span class="kw">return </span><span class="prelude-val">Some</span>(floor);
@@ -3613,9 +3597,8 @@ PC9zdmc+Cg==
             <span class="kw">if </span>tie &amp;&amp; !is_odd(floor) {
                 <span class="kw">return </span><span class="prelude-val">Some</span>(floor);
             }
-            <span class="kw">let </span>next_up = <span class="kw">match </span>floor.checked_add(<span class="number">1</span>) {
-                <span class="prelude-val">Some</span>(s) =&gt; s,
-                <span class="prelude-val">None </span>=&gt; <span class="kw">return </span><span class="prelude-val">None</span>,
+            <span class="kw">let </span><span class="prelude-val">Some</span>(next_up) = floor.checked_add(<span class="number">1</span>) <span class="kw">else  </span>{
+                <span class="kw">return </span><span class="prelude-val">None</span>;
             };
             <span class="kw">if </span>dump_bits != <span class="number">0 </span>&amp;&amp; next_up &gt;&gt; nbits != <span class="number">0 </span>{
                 <span class="prelude-val">None
@@ -3741,9 +3724,8 @@ PC9zdmc+Cg==
         <span class="macro">debug_assert!</span>(nbits &lt;= <span class="number">128</span>);
         <span class="kw">let </span>fives = <span class="number">5u128</span>.pow(<span class="number">54</span>);
         <span class="kw">let </span>denom = fives * <span class="number">2</span>;
-        <span class="kw">let </span>denom = <span class="kw">match </span>NonZeroU128::new(denom) {
-            <span class="prelude-val">None </span>=&gt; <span class="macro">unreachable!</span>(),
-            <span class="prelude-val">Some</span>(nz) =&gt; nz,
+        <span class="kw">let </span><span class="prelude-val">Some</span>(denom) = NonZeroU128::new(denom) <span class="kw">else </span>{
+            <span class="macro">unreachable!</span>();
         };
         <span class="comment">// we need to combine (10^27*hi + lo) &lt;&lt; (128 - 54 + 1)
         </span><span class="kw">let </span>hi_e27 = int256::wide_mul_u128(hi, <span class="number">10u128</span>.pow(<span class="number">27</span>));
@@ -3848,9 +3830,8 @@ PC9zdmc+Cg==
 
 <span class="kw">impl </span>BitExp {
     <span class="kw">const fn </span>new(bit_exp: u32, frac: DigitsExp) -&gt; <span class="prelude-ty">Option</span>&lt;BitExp&gt; {
-        <span class="kw">let </span>exp = <span class="kw">match </span>NonZeroU32::new(bit_exp) {
-            <span class="prelude-val">Some</span>(s) =&gt; s,
-            <span class="prelude-val">None </span>=&gt; <span class="kw">return </span><span class="prelude-val">None</span>,
+        <span class="kw">let </span><span class="prelude-val">Some</span>(exp) = NonZeroU32::new(bit_exp) <span class="kw">else </span>{
+            <span class="kw">return </span><span class="prelude-val">None</span>;
         };
         <span class="kw">let </span>first_frac_digit = <span class="kw">match </span>frac.split_first() {
             <span class="prelude-val">Some</span>((digit, <span class="kw">_</span>)) =&gt; digit,
@@ -3934,7 +3915,7 @@ println!(&quot;Parse error: {error}&quot;);
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const fn </span>message(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str {
+    </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const fn </span>message(<span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str {
         <span class="kw">use </span><span class="self">self</span>::ParseErrorKind::<span class="kw-2">*</span>;
         <span class="kw">match </span><span class="self">self</span>.kind {
             InvalidDigit =&gt; <span class="string">&quot;invalid digit found in string&quot;</span>,
@@ -3966,7 +3947,7 @@ println!(&quot;Parse error: {error}&quot;);
 
 <span class="comment">// Zeros at start of int and at end of frac are trimmed.
 // Leading underscores for either int or frac are never accepted, even for Sep::Skip.
-</span><span class="kw">const fn </span>parse_bounds(bytes: Bytes, radix: u32, sep: Sep) -&gt; <span class="prelude-ty">Result</span>&lt;Parse&lt;<span class="lifetime">&#39;_</span>&gt;, ParseErrorKind&gt; {
+</span><span class="kw">const fn </span>parse_bounds(bytes: <span class="kw-2">&amp;</span>[u8], radix: u32, sep: Sep) -&gt; <span class="prelude-ty">Result</span>&lt;Parse&lt;<span class="lifetime">&#39;_</span>&gt;, ParseErrorKind&gt; {
     <span class="kw">let </span><span class="kw-2">mut </span>sign: <span class="prelude-ty">Option</span>&lt;bool&gt; = <span class="prelude-val">None</span>;
     <span class="kw">let </span><span class="kw-2">mut </span>int_start: <span class="prelude-ty">Option</span>&lt;usize&gt; = <span class="prelude-val">None</span>;
     <span class="kw">let </span><span class="kw-2">mut </span>point: <span class="prelude-ty">Option</span>&lt;usize&gt; = <span class="prelude-val">None</span>;
@@ -3981,7 +3962,7 @@ println!(&quot;Parse error: {error}&quot;);
 
     <span class="kw">let </span><span class="kw-2">mut </span>next_index = <span class="number">0</span>;
     <span class="kw">let </span><span class="kw-2">mut </span>rem_bytes = bytes;
-    <span class="kw">while let </span><span class="prelude-val">Some</span>((byte, rem)) = rem_bytes.split_first() {
+    <span class="kw">while let </span><span class="prelude-val">Some</span>((<span class="kw-2">&amp;</span>byte, rem)) = rem_bytes.split_first() {
         <span class="kw">let </span>index = next_index;
         next_index += <span class="number">1</span>;
         rem_bytes = rem;
@@ -4143,9 +4124,8 @@ println!(&quot;Parse error: {error}&quot;);
     } <span class="kw">else </span>{
         <span class="number">0
     </span>};
-    <span class="kw">let </span>(int, frac) = <span class="kw">match </span>DigitsExp::new_int_frac(int, frac, exp) {
-        <span class="prelude-val">Some</span>(s) =&gt; s,
-        <span class="prelude-val">None </span>=&gt; <span class="kw">return </span><span class="prelude-val">Err</span>(ParseErrorKind::ExpOverflow),
+    <span class="kw">let </span><span class="prelude-val">Some</span>((int, frac)) = DigitsExp::new_int_frac(int, frac, exp) <span class="kw">else </span>{
+        <span class="kw">return </span><span class="prelude-val">Err</span>(ParseErrorKind::ExpOverflow);
     };
     <span class="kw">let </span>bit_exp = BitExp::new(bit_exp, frac);
     <span class="prelude-val">Ok</span>(Parse {
@@ -4193,7 +4173,7 @@ println!(&quot;Parse error: {error}&quot;);
 <span class="attr">#[cfg(test)]
 </span><span class="kw">mod </span>tests {
     <span class="kw">use crate</span>::{
-        bytes::{Bytes, DigitsExp},
+        bytes::DigitsExp,
         from_str::{<span class="self">self</span>, parse_bounds, Parse, ParseErrorKind, ParseFixedError, Round, Sep},
         types::<span class="kw-2">*</span>,
     };
@@ -4295,7 +4275,7 @@ println!(&quot;Parse error: {error}&quot;);
         <span class="kw">for </span>i <span class="kw">in </span><span class="number">0</span>..limit {
             <span class="kw">let </span>ans = from_str::u8::dec_to_bin(i, <span class="number">8</span>, Round::Nearest);
             <span class="kw">let </span>approx = two_pow * f64::from(i) / f64::from(limit);
-            <span class="kw">let </span>error = (ans.map(f64::from).unwrap_or(two_pow) - approx).abs();
+            <span class="kw">let </span>error = (ans.map_or(two_pow, f64::from) - approx).abs();
             <span class="macro">assert!</span>(
                 error &lt;= <span class="number">0.5</span>,
                 <span class="string">&quot;i {i} ans {ans:?}  approx {approx} error {error}&quot;
@@ -4310,7 +4290,7 @@ println!(&quot;Parse error: {error}&quot;);
         <span class="kw">for </span>i <span class="kw">in </span><span class="number">0</span>..limit {
             <span class="kw">let </span>ans = from_str::u16::dec_to_bin(i, <span class="number">16</span>, Round::Nearest);
             <span class="kw">let </span>approx = two_pow * f64::from(i) / f64::from(limit);
-            <span class="kw">let </span>error = (ans.map(f64::from).unwrap_or(two_pow) - approx).abs();
+            <span class="kw">let </span>error = (ans.map_or(two_pow, f64::from) - approx).abs();
             <span class="macro">assert!</span>(
                 error &lt;= <span class="number">0.5</span>,
                 <span class="string">&quot;i {i} ans {ans:?}  approx {approx} error {error}&quot;
@@ -4335,7 +4315,7 @@ println!(&quot;Parse error: {error}&quot;);
             ] {
                 <span class="kw">let </span>ans = from_str::u32::dec_to_bin(i, <span class="number">32</span>, Round::Nearest);
                 <span class="kw">let </span>approx = two_pow * i <span class="kw">as </span>f64 / limit <span class="kw">as </span>f64;
-                <span class="kw">let </span>error = (ans.map(f64::from).unwrap_or(two_pow) - approx).abs();
+                <span class="kw">let </span>error = (ans.map_or(two_pow, f64::from) - approx).abs();
                 <span class="macro">assert!</span>(
                     error &lt;= <span class="number">0.5</span>,
                     <span class="string">&quot;i {i} ans {ans:?}  approx {approx} error {error}&quot;
@@ -4361,7 +4341,7 @@ println!(&quot;Parse error: {error}&quot;);
             ] {
                 <span class="kw">let </span>ans = from_str::u64::dec_to_bin(i, <span class="number">64</span>, Round::Nearest);
                 <span class="kw">let </span>approx = two_pow * i <span class="kw">as </span>f64 / limit <span class="kw">as </span>f64;
-                <span class="kw">let </span>error = (ans.map(|x| x <span class="kw">as </span>f64).unwrap_or(two_pow) - approx).abs();
+                <span class="kw">let </span>error = (ans.map_or(two_pow, |x| x <span class="kw">as </span>f64) - approx).abs();
                 <span class="macro">assert!</span>(
                     error &lt;= <span class="number">0.5</span>,
                     <span class="string">&quot;i {i} ans {ans:?}  approx {approx} error {error}&quot;
@@ -4418,7 +4398,7 @@ println!(&quot;Parse error: {error}&quot;);
 
     <span class="attr">#[track_caller]
     </span><span class="kw">fn </span>check_parse_bounds_ok(bytes: <span class="kw-2">&amp;</span>str, radix: u32, sep: Sep, check: (bool, <span class="kw-2">&amp;</span>str, <span class="kw-2">&amp;</span>str, u32)) {
-        <span class="kw">let </span>bytes = Bytes::new(bytes.as_bytes());
+        <span class="kw">let </span>bytes = bytes.as_bytes();
         <span class="kw">let </span>Parse {
             neg,
             int,
@@ -4433,7 +4413,7 @@ println!(&quot;Parse error: {error}&quot;);
                 <span class="macro">assert_eq!</span>(bit_exp.exp.get(), check.<span class="number">3</span>);
                 <span class="macro">assert_eq!</span>(
                     bit_exp.first_frac_digit,
-                    frac.split_first().map(|x| x.<span class="number">0</span>).unwrap_or(<span class="string">b&#39;0&#39;</span>)
+                    frac.split_first().map_or(<span class="string">b&#39;0&#39;</span>, |x| x.<span class="number">0</span>)
                 );
             }
             <span class="prelude-val">None </span>=&gt; <span class="macro">assert_eq!</span>(<span class="number">0</span>, check.<span class="number">3</span>),
@@ -4442,7 +4422,7 @@ println!(&quot;Parse error: {error}&quot;);
 
     <span class="attr">#[track_caller]
     </span><span class="kw">fn </span>check_parse_bounds_err(bytes: <span class="kw-2">&amp;</span>str, radix: u32, sep: Sep, check: ParseErrorKind) {
-        <span class="kw">let </span>bytes = Bytes::new(bytes.as_bytes());
+        <span class="kw">let </span>bytes = bytes.as_bytes();
         <span class="kw">let </span>kind = parse_bounds(bytes, radix, sep).unwrap_err();
         <span class="macro">assert_eq!</span>(kind, check);
     }

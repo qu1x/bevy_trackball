@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["on_fixed_timer","on_timer"]};
+window.SIDEBAR_ITEMS = {"fn":["on_real_timer","on_timer"]};

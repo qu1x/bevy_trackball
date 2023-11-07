@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/n3vu0r/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_reflect-0.11.2/src/serde/de.rs`."><title>de.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-9bb858ba049f1f21.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="bevy_reflect" data-themes="" data-resource-suffix="" data-rustdoc-version="1.72.0 (5680fa18f 2023-08-23)" data-channel="1.72.0" data-search-js="search-f6292fe389d70017.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-0f8c037637f9eb3e.css" data-theme-dark-css="dark-1097f8e92a01e3cf.css" data-theme-ayu-css="ayu-614652228113ac93.css" ><script src="../../../static.files/storage-59fd9b8ccb335783.js"></script><script defer src="../../../static.files/source-script-106908c7a7964ba4.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../static.files/light-0f8c037637f9eb3e.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../static.files/dark-1097f8e92a01e3cf.css"><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../bevy_reflect/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_reflect-0.12.0/src/serde/de.rs`."><title>de.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="bevy_reflect" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../bevy_reflect/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1586,13 +1586,33 @@
 <a href="#1586" id="1586">1586</a>
 <a href="#1587" id="1587">1587</a>
 <a href="#1588" id="1588">1588</a>
+<a href="#1589" id="1589">1589</a>
+<a href="#1590" id="1590">1590</a>
+<a href="#1591" id="1591">1591</a>
+<a href="#1592" id="1592">1592</a>
+<a href="#1593" id="1593">1593</a>
+<a href="#1594" id="1594">1594</a>
+<a href="#1595" id="1595">1595</a>
+<a href="#1596" id="1596">1596</a>
+<a href="#1597" id="1597">1597</a>
+<a href="#1598" id="1598">1598</a>
+<a href="#1599" id="1599">1599</a>
+<a href="#1600" id="1600">1600</a>
+<a href="#1601" id="1601">1601</a>
+<a href="#1602" id="1602">1602</a>
+<a href="#1603" id="1603">1603</a>
+<a href="#1604" id="1604">1604</a>
+<a href="#1605" id="1605">1605</a>
+<a href="#1606" id="1606">1606</a>
+<a href="#1607" id="1607">1607</a>
+<a href="#1608" id="1608">1608</a>
+<a href="#1609" id="1609">1609</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::serde::SerializationData;
 <span class="kw">use crate</span>::{
     ArrayInfo, DynamicArray, DynamicEnum, DynamicList, DynamicMap, DynamicStruct, DynamicTuple,
     DynamicTupleStruct, DynamicVariant, EnumInfo, ListInfo, Map, MapInfo, NamedField, Reflect,
-    ReflectDeserialize, StructInfo, StructVariantInfo, Tuple, TupleInfo, TupleStruct,
-    TupleStructInfo, TupleVariantInfo, TypeInfo, TypeRegistration, TypeRegistry, UnnamedField,
-    VariantInfo,
+    ReflectDeserialize, StructInfo, StructVariantInfo, TupleInfo, TupleStructInfo,
+    TupleVariantInfo, TypeInfo, TypeRegistration, TypeRegistry, UnnamedField, VariantInfo,
 };
 <span class="kw">use </span>erased_serde::Deserializer;
 <span class="kw">use </span>serde::de::{
@@ -1613,13 +1633,15 @@
 }
 
 <span class="kw">trait </span>StructLikeInfo {
-    <span class="kw">fn </span>get_name(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>str;
+    <span class="kw">fn </span>get_path(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>str;
     <span class="kw">fn </span>get_field(<span class="kw-2">&amp;</span><span class="self">self</span>, name: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>NamedField&gt;;
+    <span class="kw">fn </span>field_at(<span class="kw-2">&amp;</span><span class="self">self</span>, index: usize) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>NamedField&gt;;
+    <span class="kw">fn </span>get_field_len(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize;
     <span class="kw">fn </span>iter_fields(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Iter&lt;<span class="lifetime">&#39;_</span>, NamedField&gt;;
 }
 
 <span class="kw">trait </span>TupleLikeInfo {
-    <span class="kw">fn </span>get_name(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>str;
+    <span class="kw">fn </span>get_path(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>str;
     <span class="kw">fn </span>get_field(<span class="kw-2">&amp;</span><span class="self">self</span>, index: usize) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>UnnamedField&gt;;
     <span class="kw">fn </span>get_field_len(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize;
 }
@@ -1633,12 +1655,20 @@
 }
 
 <span class="kw">impl </span>StructLikeInfo <span class="kw">for </span>StructInfo {
-    <span class="kw">fn </span>get_name(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>str {
-        <span class="self">self</span>.type_name()
+    <span class="kw">fn </span>get_path(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>str {
+        <span class="self">self</span>.type_path()
+    }
+
+    <span class="kw">fn </span>field_at(<span class="kw-2">&amp;</span><span class="self">self</span>, index: usize) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>NamedField&gt; {
+        <span class="self">self</span>.field_at(index)
     }
 
     <span class="kw">fn </span>get_field(<span class="kw-2">&amp;</span><span class="self">self</span>, name: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>NamedField&gt; {
         <span class="self">self</span>.field(name)
+    }
+
+    <span class="kw">fn </span>get_field_len(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
+        <span class="self">self</span>.field_len()
     }
 
     <span class="kw">fn </span>iter_fields(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Iter&lt;<span class="lifetime">&#39;_</span>, NamedField&gt; {
@@ -1656,20 +1686,28 @@
             de::Error::custom(<span class="macro">format_args!</span>(
                 <span class="string">&quot;no field at index {} on struct {}&quot;</span>,
                 index,
-                <span class="self">self</span>.type_name(),
+                <span class="self">self</span>.type_path(),
             ))
         })<span class="question-mark">?</span>;
-        get_registration(field.type_id(), field.type_name(), registry)
+        get_registration(field.type_id(), field.type_path(), registry)
     }
 }
 
 <span class="kw">impl </span>StructLikeInfo <span class="kw">for </span>StructVariantInfo {
-    <span class="kw">fn </span>get_name(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>str {
+    <span class="kw">fn </span>get_path(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>str {
         <span class="self">self</span>.name()
+    }
+
+    <span class="kw">fn </span>field_at(<span class="kw-2">&amp;</span><span class="self">self</span>, index: usize) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>NamedField&gt; {
+        <span class="self">self</span>.field_at(index)
     }
 
     <span class="kw">fn </span>get_field(<span class="kw-2">&amp;</span><span class="self">self</span>, name: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>NamedField&gt; {
         <span class="self">self</span>.field(name)
+    }
+
+    <span class="kw">fn </span>get_field_len(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
+        <span class="self">self</span>.field_len()
     }
 
     <span class="kw">fn </span>iter_fields(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Iter&lt;<span class="lifetime">&#39;_</span>, NamedField&gt; {
@@ -1690,13 +1728,13 @@
                 <span class="self">self</span>.name(),
             ))
         })<span class="question-mark">?</span>;
-        get_registration(field.type_id(), field.type_name(), registry)
+        get_registration(field.type_id(), field.type_path(), registry)
     }
 }
 
 <span class="kw">impl </span>TupleLikeInfo <span class="kw">for </span>TupleInfo {
-    <span class="kw">fn </span>get_name(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>str {
-        <span class="self">self</span>.type_name()
+    <span class="kw">fn </span>get_path(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>str {
+        <span class="self">self</span>.type_path()
     }
 
     <span class="kw">fn </span>get_field(<span class="kw-2">&amp;</span><span class="self">self</span>, index: usize) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>UnnamedField&gt; {
@@ -1708,8 +1746,56 @@
     }
 }
 
+<span class="kw">impl </span>Container <span class="kw">for </span>TupleInfo {
+    <span class="kw">fn </span>get_field_registration&lt;<span class="lifetime">&#39;a</span>, E: Error&gt;(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        index: usize,
+        registry: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>TypeRegistry,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>TypeRegistration, E&gt; {
+        <span class="kw">let </span>field = <span class="self">self</span>.field_at(index).ok_or_else(|| {
+            de::Error::custom(<span class="macro">format_args!</span>(
+                <span class="string">&quot;no field at index {} on tuple {}&quot;</span>,
+                index,
+                <span class="self">self</span>.type_path(),
+            ))
+        })<span class="question-mark">?</span>;
+        get_registration(field.type_id(), field.type_path(), registry)
+    }
+}
+
+<span class="kw">impl </span>TupleLikeInfo <span class="kw">for </span>TupleStructInfo {
+    <span class="kw">fn </span>get_path(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>str {
+        <span class="self">self</span>.type_path()
+    }
+
+    <span class="kw">fn </span>get_field(<span class="kw-2">&amp;</span><span class="self">self</span>, index: usize) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>UnnamedField&gt; {
+        <span class="self">self</span>.field_at(index)
+    }
+
+    <span class="kw">fn </span>get_field_len(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
+        <span class="self">self</span>.field_len()
+    }
+}
+
+<span class="kw">impl </span>Container <span class="kw">for </span>TupleStructInfo {
+    <span class="kw">fn </span>get_field_registration&lt;<span class="lifetime">&#39;a</span>, E: Error&gt;(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        index: usize,
+        registry: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>TypeRegistry,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>TypeRegistration, E&gt; {
+        <span class="kw">let </span>field = <span class="self">self</span>.field_at(index).ok_or_else(|| {
+            de::Error::custom(<span class="macro">format_args!</span>(
+                <span class="string">&quot;no field at index {} on tuple struct {}&quot;</span>,
+                index,
+                <span class="self">self</span>.type_path(),
+            ))
+        })<span class="question-mark">?</span>;
+        get_registration(field.type_id(), field.type_path(), registry)
+    }
+}
+
 <span class="kw">impl </span>TupleLikeInfo <span class="kw">for </span>TupleVariantInfo {
-    <span class="kw">fn </span>get_name(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>str {
+    <span class="kw">fn </span>get_path(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>str {
         <span class="self">self</span>.name()
     }
 
@@ -1719,6 +1805,23 @@
 
     <span class="kw">fn </span>get_field_len(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
         <span class="self">self</span>.field_len()
+    }
+}
+
+<span class="kw">impl </span>Container <span class="kw">for </span>TupleVariantInfo {
+    <span class="kw">fn </span>get_field_registration&lt;<span class="lifetime">&#39;a</span>, E: Error&gt;(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        index: usize,
+        registry: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>TypeRegistry,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>TypeRegistration, E&gt; {
+        <span class="kw">let </span>field = <span class="self">self</span>.field_at(index).ok_or_else(|| {
+            de::Error::custom(<span class="macro">format_args!</span>(
+                <span class="string">&quot;no field at index {} on tuple variant {}&quot;</span>,
+                index,
+                <span class="self">self</span>.name(),
+            ))
+        })<span class="question-mark">?</span>;
+        get_registration(field.type_id(), field.type_path(), registry)
     }
 }
 
@@ -1812,7 +1915,7 @@
 ///
 /// Because the type isn&#39;t known ahead of time, the serialized data must take the form of
 /// a map containing the following entries (in order):
-/// 1. `type`: The _full_ [type name]
+/// 1. `type`: The _full_ [type path]
 /// 2. `value`: The serialized value of the reflected type
 ///
 /// If the type is already known and the [`TypeInfo`] for it can be retrieved,
@@ -1822,7 +1925,7 @@
 /// [`DynamicStruct`]: crate::DynamicStruct
 /// [`DynamicList`]: crate::DynamicList
 /// [`FromReflect`]: crate::FromReflect
-/// [type name]: std::any::type_name
+/// [type path]: crate::TypePath::type_path
 </span><span class="kw">pub struct </span>UntypedReflectDeserializer&lt;<span class="lifetime">&#39;a</span>&gt; {
     registry: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>TypeRegistry,
 }
@@ -1849,11 +1952,11 @@
 <span class="doccomment">/// A deserializer for type registrations.
 ///
 /// This will return a [`&amp;TypeRegistration`] corresponding to the given type.
-/// This deserializer expects a string containing the _full_ [type name] of the
+/// This deserializer expects a string containing the _full_ [type path] of the
 /// type to find the `TypeRegistration` of.
 ///
 /// [`&amp;TypeRegistration`]: crate::TypeRegistration
-/// [type name]: std::any::type_name
+/// [type path]: crate::TypePath::type_path
 </span><span class="kw">pub struct </span>TypeRegistrationDeserializer&lt;<span class="lifetime">&#39;a</span>&gt; {
     registry: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>TypeRegistry,
 }
@@ -1880,12 +1983,12 @@
                 formatter.write_str(<span class="string">&quot;string containing `type` entry for the reflected value&quot;</span>)
             }
 
-            <span class="kw">fn </span>visit_str&lt;E&gt;(<span class="self">self</span>, type_name: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Value, E&gt;
+            <span class="kw">fn </span>visit_str&lt;E&gt;(<span class="self">self</span>, type_path: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Value, E&gt;
             <span class="kw">where
                 </span>E: Error,
             {
-                <span class="self">self</span>.<span class="number">0</span>.get_with_name(type_name).ok_or_else(|| {
-                    Error::custom(<span class="macro">format_args!</span>(<span class="string">&quot;No registration found for `{type_name}`&quot;</span>))
+                <span class="self">self</span>.<span class="number">0</span>.get_with_type_path(type_path).ok_or_else(|| {
+                    Error::custom(<span class="macro">format_args!</span>(<span class="string">&quot;No registration found for `{type_path}`&quot;</span>))
                 })
             }
         }
@@ -1965,7 +2068,7 @@
     <span class="kw">where
         </span>D: serde::Deserializer&lt;<span class="lifetime">&#39;de</span>&gt;,
     {
-        <span class="kw">let </span>type_name = <span class="self">self</span>.registration.type_name();
+        <span class="kw">let </span>type_path = <span class="self">self</span>.registration.type_info().type_path();
 
         <span class="comment">// Handle both Value case and types that have a custom `ReflectDeserialize`
         </span><span class="kw">if let </span><span class="prelude-val">Some</span>(deserialize_reflect) = <span class="self">self</span>.registration.data::&lt;ReflectDeserialize&gt;() {
@@ -1976,7 +2079,7 @@
         <span class="kw">match </span><span class="self">self</span>.registration.type_info() {
             TypeInfo::Struct(struct_info) =&gt; {
                 <span class="kw">let </span><span class="kw-2">mut </span>dynamic_struct = deserializer.deserialize_struct(
-                    struct_info.name(),
+                    struct_info.type_path_table().ident().unwrap(),
                     struct_info.field_names(),
                     StructVisitor {
                         struct_info,
@@ -1989,7 +2092,7 @@
             }
             TypeInfo::TupleStruct(tuple_struct_info) =&gt; {
                 <span class="kw">let </span><span class="kw-2">mut </span>dynamic_tuple_struct = deserializer.deserialize_tuple_struct(
-                    tuple_struct_info.name(),
+                    tuple_struct_info.type_path_table().ident().unwrap(),
                     tuple_struct_info.field_len(),
                     TupleStructVisitor {
                         tuple_struct_info,
@@ -2032,6 +2135,7 @@
                     tuple_info.field_len(),
                     TupleVisitor {
                         tuple_info,
+                        registration: <span class="self">self</span>.registration,
                         registry: <span class="self">self</span>.registry,
                     },
                 )<span class="question-mark">?</span>;
@@ -2039,15 +2143,17 @@
                 <span class="prelude-val">Ok</span>(Box::new(dynamic_tuple))
             }
             TypeInfo::Enum(enum_info) =&gt; {
-                <span class="kw">let </span>type_name = enum_info.type_name();
-                <span class="kw">let </span><span class="kw-2">mut </span>dynamic_enum = <span class="kw">if </span>type_name.starts_with(<span class="string">&quot;core::option::Option&quot;</span>) {
+                <span class="kw">let </span><span class="kw-2">mut </span>dynamic_enum = <span class="kw">if </span>enum_info.type_path_table().module_path()
+                    == <span class="prelude-val">Some</span>(<span class="string">&quot;core::option&quot;</span>)
+                    &amp;&amp; enum_info.type_path_table().ident() == <span class="prelude-val">Some</span>(<span class="string">&quot;Option&quot;</span>)
+                {
                     deserializer.deserialize_option(OptionVisitor {
                         enum_info,
                         registry: <span class="self">self</span>.registry,
                     })<span class="question-mark">?
                 </span>} <span class="kw">else </span>{
                     deserializer.deserialize_enum(
-                        enum_info.name(),
+                        enum_info.type_path_table().ident().unwrap(),
                         enum_info.variant_names(),
                         EnumVisitor {
                             enum_info,
@@ -2062,7 +2168,7 @@
             TypeInfo::Value(<span class="kw">_</span>) =&gt; {
                 <span class="comment">// This case should already be handled
                 </span><span class="prelude-val">Err</span>(de::Error::custom(<span class="macro">format_args!</span>(
-                    <span class="string">&quot;the TypeRegistration for {type_name} doesn&#39;t have ReflectDeserialize&quot;</span>,
+                    <span class="string">&quot;the TypeRegistration for {type_path} doesn&#39;t have ReflectDeserialize&quot;</span>,
                 )))
             }
         }
@@ -2086,43 +2192,14 @@
     <span class="kw">where
         </span>V: MapAccess&lt;<span class="lifetime">&#39;de</span>&gt;,
     {
-        visit_struct(<span class="kw-2">&amp;mut </span>map, <span class="self">self</span>.struct_info, <span class="self">self</span>.registry)
+        visit_struct(<span class="kw-2">&amp;mut </span>map, <span class="self">self</span>.struct_info, <span class="self">self</span>.registration, <span class="self">self</span>.registry)
     }
 
     <span class="kw">fn </span>visit_seq&lt;A&gt;(<span class="self">self</span>, <span class="kw-2">mut </span>seq: A) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Value, A::Error&gt;
     <span class="kw">where
         </span>A: SeqAccess&lt;<span class="lifetime">&#39;de</span>&gt;,
     {
-        <span class="kw">let </span><span class="kw-2">mut </span>index = <span class="number">0usize</span>;
-        <span class="kw">let </span><span class="kw-2">mut </span>output = DynamicStruct::default();
-
-        <span class="kw">let </span>ignored_len = <span class="self">self
-            </span>.registration
-            .data::&lt;SerializationData&gt;()
-            .map(|data| data.len())
-            .unwrap_or(<span class="number">0</span>);
-        <span class="kw">let </span>field_len = <span class="self">self</span>.struct_info.field_len().saturating_sub(ignored_len);
-
-        <span class="kw">if </span>field_len == <span class="number">0 </span>{
-            <span class="comment">// Handle unit structs and ignored fields
-            </span><span class="kw">return </span><span class="prelude-val">Ok</span>(output);
-        }
-
-        <span class="kw">while let </span><span class="prelude-val">Some</span>(value) = seq.next_element_seed(TypedReflectDeserializer {
-            registration: <span class="self">self
-                </span>.struct_info
-                .get_field_registration(index, <span class="self">self</span>.registry)<span class="question-mark">?</span>,
-            registry: <span class="self">self</span>.registry,
-        })<span class="question-mark">? </span>{
-            <span class="kw">let </span>name = <span class="self">self</span>.struct_info.field_at(index).unwrap().name();
-            output.insert_boxed(name, value);
-            index += <span class="number">1</span>;
-            <span class="kw">if </span>index &gt;= <span class="self">self</span>.struct_info.field_len() {
-                <span class="kw">break</span>;
-            }
-        }
-
-        <span class="prelude-val">Ok</span>(output)
+        visit_struct_seq(<span class="kw-2">&amp;mut </span>seq, <span class="self">self</span>.struct_info, <span class="self">self</span>.registration, <span class="self">self</span>.registry)
     }
 }
 
@@ -2143,64 +2220,19 @@
     <span class="kw">where
         </span>V: SeqAccess&lt;<span class="lifetime">&#39;de</span>&gt;,
     {
-        <span class="kw">let </span><span class="kw-2">mut </span>index = <span class="number">0usize</span>;
-        <span class="kw">let </span><span class="kw-2">mut </span>tuple_struct = DynamicTupleStruct::default();
-
-        <span class="kw">let </span>ignored_len = <span class="self">self
-            </span>.registration
-            .data::&lt;SerializationData&gt;()
-            .map(|data| data.len())
-            .unwrap_or(<span class="number">0</span>);
-        <span class="kw">let </span>field_len = <span class="self">self
-            </span>.tuple_struct_info
-            .field_len()
-            .saturating_sub(ignored_len);
-
-        <span class="kw">if </span>field_len == <span class="number">0 </span>{
-            <span class="comment">// Handle unit structs and ignored fields
-            </span><span class="kw">return </span><span class="prelude-val">Ok</span>(tuple_struct);
-        }
-
-        <span class="kw">let </span>get_field_registration = |index: usize| -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>TypeRegistration, V::Error&gt; {
-            <span class="kw">let </span>field = <span class="self">self</span>.tuple_struct_info.field_at(index).ok_or_else(|| {
-                de::Error::custom(<span class="macro">format_args!</span>(
-                    <span class="string">&quot;no field at index {} on tuple {}&quot;</span>,
-                    index,
-                    <span class="self">self</span>.tuple_struct_info.type_name(),
-                ))
-            })<span class="question-mark">?</span>;
-            get_registration(field.type_id(), field.type_name(), <span class="self">self</span>.registry)
-        };
-
-        <span class="kw">while let </span><span class="prelude-val">Some</span>(value) = seq.next_element_seed(TypedReflectDeserializer {
-            registration: get_field_registration(index)<span class="question-mark">?</span>,
-            registry: <span class="self">self</span>.registry,
-        })<span class="question-mark">? </span>{
-            tuple_struct.insert_boxed(value);
-            index += <span class="number">1</span>;
-            <span class="kw">if </span>index &gt;= <span class="self">self</span>.tuple_struct_info.field_len() {
-                <span class="kw">break</span>;
-            }
-        }
-
-        <span class="kw">let </span>ignored_len = <span class="self">self
-            </span>.registration
-            .data::&lt;SerializationData&gt;()
-            .map(|data| data.len())
-            .unwrap_or(<span class="number">0</span>);
-        <span class="kw">if </span>tuple_struct.field_len() != <span class="self">self</span>.tuple_struct_info.field_len() - ignored_len {
-            <span class="kw">return </span><span class="prelude-val">Err</span>(Error::invalid_length(
-                tuple_struct.field_len(),
-                <span class="kw-2">&amp;</span><span class="self">self</span>.tuple_struct_info.field_len().to_string().as_str(),
-            ));
-        }
-
-        <span class="prelude-val">Ok</span>(tuple_struct)
+        visit_tuple(
+            <span class="kw-2">&amp;mut </span>seq,
+            <span class="self">self</span>.tuple_struct_info,
+            <span class="self">self</span>.registration,
+            <span class="self">self</span>.registry,
+        )
+        .map(DynamicTupleStruct::from)
     }
 }
 
 <span class="kw">struct </span>TupleVisitor&lt;<span class="lifetime">&#39;a</span>&gt; {
     tuple_info: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>TupleInfo,
+    registration: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>TypeRegistration,
     registry: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>TypeRegistry,
 }
 
@@ -2215,7 +2247,7 @@
     <span class="kw">where
         </span>V: SeqAccess&lt;<span class="lifetime">&#39;de</span>&gt;,
     {
-        visit_tuple(<span class="kw-2">&amp;mut </span>seq, <span class="self">self</span>.tuple_info, <span class="self">self</span>.registry)
+        visit_tuple(<span class="kw-2">&amp;mut </span>seq, <span class="self">self</span>.tuple_info, <span class="self">self</span>.registration, <span class="self">self</span>.registry)
     }
 }
 
@@ -2238,7 +2270,7 @@
         <span class="kw">let </span><span class="kw-2">mut </span>vec = Vec::with_capacity(seq.size_hint().unwrap_or_default());
         <span class="kw">let </span>registration = get_registration(
             <span class="self">self</span>.array_info.item_type_id(),
-            <span class="self">self</span>.array_info.item_type_name(),
+            <span class="self">self</span>.array_info.item_type_path_table().path(),
             <span class="self">self</span>.registry,
         )<span class="question-mark">?</span>;
         <span class="kw">while let </span><span class="prelude-val">Some</span>(value) = seq.next_element_seed(TypedReflectDeserializer {
@@ -2278,7 +2310,7 @@
         <span class="kw">let </span><span class="kw-2">mut </span>list = DynamicList::default();
         <span class="kw">let </span>registration = get_registration(
             <span class="self">self</span>.list_info.item_type_id(),
-            <span class="self">self</span>.list_info.item_type_name(),
+            <span class="self">self</span>.list_info.item_type_path_table().path(),
             <span class="self">self</span>.registry,
         )<span class="question-mark">?</span>;
         <span class="kw">while let </span><span class="prelude-val">Some</span>(value) = seq.next_element_seed(TypedReflectDeserializer {
@@ -2310,12 +2342,12 @@
         <span class="kw">let </span><span class="kw-2">mut </span>dynamic_map = DynamicMap::default();
         <span class="kw">let </span>key_registration = get_registration(
             <span class="self">self</span>.map_info.key_type_id(),
-            <span class="self">self</span>.map_info.key_type_name(),
+            <span class="self">self</span>.map_info.key_type_path_table().path(),
             <span class="self">self</span>.registry,
         )<span class="question-mark">?</span>;
         <span class="kw">let </span>value_registration = get_registration(
             <span class="self">self</span>.map_info.value_type_id(),
-            <span class="self">self</span>.map_info.value_type_name(),
+            <span class="self">self</span>.map_info.value_type_path_table().path(),
             <span class="self">self</span>.registry,
         )<span class="question-mark">?</span>;
         <span class="kw">while let </span><span class="prelude-val">Some</span>(key) = map.next_key_seed(TypedReflectDeserializer {
@@ -2368,9 +2400,7 @@
                 )<span class="question-mark">?
                 </span>.into(),
             VariantInfo::Tuple(tuple_info) <span class="kw">if </span>tuple_info.field_len() == <span class="number">1 </span>=&gt; {
-                <span class="kw">let </span>field = tuple_info.field_at(<span class="number">0</span>).unwrap();
-                <span class="kw">let </span>registration =
-                    get_registration(field.type_id(), field.type_name(), <span class="self">self</span>.registry)<span class="question-mark">?</span>;
+                <span class="kw">let </span>registration = tuple_info.get_field_registration(<span class="number">0</span>, <span class="self">self</span>.registry)<span class="question-mark">?</span>;
                 <span class="kw">let </span>value = variant.newtype_variant_seed(TypedReflectDeserializer {
                     registration,
                     registry: <span class="self">self</span>.registry,
@@ -2438,7 +2468,7 @@
                     Error::custom(<span class="macro">format_args!</span>(
                         <span class="string">&quot;no variant found at index `{}` on enum `{}`&quot;</span>,
                         variant_index,
-                        <span class="self">self</span>.<span class="number">0</span>.name()
+                        <span class="self">self</span>.<span class="number">0</span>.type_path()
                     ))
                 })
             }
@@ -2465,43 +2495,14 @@
     <span class="kw">where
         </span>V: MapAccess&lt;<span class="lifetime">&#39;de</span>&gt;,
     {
-        visit_struct(<span class="kw-2">&amp;mut </span>map, <span class="self">self</span>.struct_info, <span class="self">self</span>.registry)
+        visit_struct(<span class="kw-2">&amp;mut </span>map, <span class="self">self</span>.struct_info, <span class="self">self</span>.registration, <span class="self">self</span>.registry)
     }
 
     <span class="kw">fn </span>visit_seq&lt;A&gt;(<span class="self">self</span>, <span class="kw-2">mut </span>seq: A) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Value, A::Error&gt;
     <span class="kw">where
         </span>A: SeqAccess&lt;<span class="lifetime">&#39;de</span>&gt;,
     {
-        <span class="kw">let </span><span class="kw-2">mut </span>index = <span class="number">0usize</span>;
-        <span class="kw">let </span><span class="kw-2">mut </span>output = DynamicStruct::default();
-
-        <span class="kw">let </span>ignored_len = <span class="self">self
-            </span>.registration
-            .data::&lt;SerializationData&gt;()
-            .map(|data| data.len())
-            .unwrap_or(<span class="number">0</span>);
-        <span class="kw">let </span>field_len = <span class="self">self</span>.struct_info.field_len().saturating_sub(ignored_len);
-
-        <span class="kw">if </span>field_len == <span class="number">0 </span>{
-            <span class="comment">// Handle all fields being ignored
-            </span><span class="kw">return </span><span class="prelude-val">Ok</span>(output);
-        }
-
-        <span class="kw">while let </span><span class="prelude-val">Some</span>(value) = seq.next_element_seed(TypedReflectDeserializer {
-            registration: <span class="self">self
-                </span>.struct_info
-                .get_field_registration(index, <span class="self">self</span>.registry)<span class="question-mark">?</span>,
-            registry: <span class="self">self</span>.registry,
-        })<span class="question-mark">? </span>{
-            <span class="kw">let </span>name = <span class="self">self</span>.struct_info.field_at(index).unwrap().name();
-            output.insert_boxed(name, value);
-            index += <span class="number">1</span>;
-            <span class="kw">if </span>index &gt;= <span class="self">self</span>.struct_info.field_len() {
-                <span class="kw">break</span>;
-            }
-        }
-
-        <span class="prelude-val">Ok</span>(output)
+        visit_struct_seq(<span class="kw-2">&amp;mut </span>seq, <span class="self">self</span>.struct_info, <span class="self">self</span>.registration, <span class="self">self</span>.registry)
     }
 }
 
@@ -2522,19 +2523,7 @@
     <span class="kw">where
         </span>V: SeqAccess&lt;<span class="lifetime">&#39;de</span>&gt;,
     {
-        <span class="kw">let </span>ignored_len = <span class="self">self
-            </span>.registration
-            .data::&lt;SerializationData&gt;()
-            .map(|data| data.len())
-            .unwrap_or(<span class="number">0</span>);
-        <span class="kw">let </span>field_len = <span class="self">self</span>.tuple_info.field_len().saturating_sub(ignored_len);
-
-        <span class="kw">if </span>field_len == <span class="number">0 </span>{
-            <span class="comment">// Handle all fields being ignored
-            </span><span class="kw">return </span><span class="prelude-val">Ok</span>(DynamicTuple::default());
-        }
-
-        visit_tuple(<span class="kw-2">&amp;mut </span>seq, <span class="self">self</span>.tuple_info, <span class="self">self</span>.registry)
+        visit_tuple(<span class="kw-2">&amp;mut </span>seq, <span class="self">self</span>.tuple_info, <span class="self">self</span>.registration, <span class="self">self</span>.registry)
     }
 }
 
@@ -2548,7 +2537,7 @@
 
     <span class="kw">fn </span>expecting(<span class="kw-2">&amp;</span><span class="self">self</span>, formatter: <span class="kw-2">&amp;mut </span>Formatter) -&gt; fmt::Result {
         formatter.write_str(<span class="string">&quot;reflected option value of type &quot;</span>)<span class="question-mark">?</span>;
-        formatter.write_str(<span class="self">self</span>.enum_info.type_name())
+        formatter.write_str(<span class="self">self</span>.enum_info.type_path())
     }
 
     <span class="kw">fn </span>visit_some&lt;D&gt;(<span class="self">self</span>, deserializer: D) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Value, D::Error&gt;
@@ -2560,7 +2549,7 @@
             VariantInfo::Tuple(tuple_info) <span class="kw">if </span>tuple_info.field_len() == <span class="number">1 </span>=&gt; {
                 <span class="kw">let </span>field = tuple_info.field_at(<span class="number">0</span>).unwrap();
                 <span class="kw">let </span>registration =
-                    get_registration(field.type_id(), field.type_name(), <span class="self">self</span>.registry)<span class="question-mark">?</span>;
+                    get_registration(field.type_id(), field.type_path(), <span class="self">self</span>.registry)<span class="question-mark">?</span>;
                 <span class="kw">let </span>de = TypedReflectDeserializer {
                     registration,
                     registry: <span class="self">self</span>.registry,
@@ -2591,6 +2580,7 @@
 <span class="kw">fn </span>visit_struct&lt;<span class="lifetime">&#39;de</span>, T, V&gt;(
     map: <span class="kw-2">&amp;mut </span>V,
     info: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>T,
+    registration: <span class="kw-2">&amp;</span>TypeRegistration,
     registry: <span class="kw-2">&amp;</span>TypeRegistry,
 ) -&gt; <span class="prelude-ty">Result</span>&lt;DynamicStruct, V::Error&gt;
 <span class="kw">where
@@ -2607,12 +2597,21 @@
                 ExpectedValues(fields.collect())
             ))
         })<span class="question-mark">?</span>;
-        <span class="kw">let </span>registration = get_registration(field.type_id(), field.type_name(), registry)<span class="question-mark">?</span>;
+        <span class="kw">let </span>registration = get_registration(field.type_id(), field.type_path(), registry)<span class="question-mark">?</span>;
         <span class="kw">let </span>value = map.next_value_seed(TypedReflectDeserializer {
             registration,
             registry,
         })<span class="question-mark">?</span>;
         dynamic_struct.insert_boxed(<span class="kw-2">&amp;</span>key, value);
+    }
+
+    <span class="kw">if let </span><span class="prelude-val">Some</span>(serialization_data) = registration.data::&lt;SerializationData&gt;() {
+        <span class="kw">for </span>(skipped_index, skipped_field) <span class="kw">in </span>serialization_data.iter_skipped() {
+            <span class="kw">let </span><span class="prelude-val">Some</span>(field) = info.field_at(<span class="kw-2">*</span>skipped_index) <span class="kw">else </span>{
+                <span class="kw">continue</span>;
+            };
+            dynamic_struct.insert_boxed(field.name(), skipped_field.generate_default());
+        }
     }
 
     <span class="prelude-val">Ok</span>(dynamic_struct)
@@ -2621,52 +2620,95 @@
 <span class="kw">fn </span>visit_tuple&lt;<span class="lifetime">&#39;de</span>, T, V&gt;(
     seq: <span class="kw-2">&amp;mut </span>V,
     info: <span class="kw-2">&amp;</span>T,
+    registration: <span class="kw-2">&amp;</span>TypeRegistration,
     registry: <span class="kw-2">&amp;</span>TypeRegistry,
 ) -&gt; <span class="prelude-ty">Result</span>&lt;DynamicTuple, V::Error&gt;
 <span class="kw">where
-    </span>T: TupleLikeInfo,
+    </span>T: TupleLikeInfo + Container,
     V: SeqAccess&lt;<span class="lifetime">&#39;de</span>&gt;,
 {
     <span class="kw">let </span><span class="kw-2">mut </span>tuple = DynamicTuple::default();
-    <span class="kw">let </span><span class="kw-2">mut </span>index = <span class="number">0usize</span>;
-
-    <span class="kw">let </span>get_field_registration = |index: usize| -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;</span>TypeRegistration, V::Error&gt; {
-        <span class="kw">let </span>field = info.get_field(index).ok_or_else(|| {
-            Error::invalid_length(index, <span class="kw-2">&amp;</span>info.get_field_len().to_string().as_str())
-        })<span class="question-mark">?</span>;
-        get_registration(field.type_id(), field.type_name(), registry)
-    };
-
-    <span class="kw">while let </span><span class="prelude-val">Some</span>(value) = seq.next_element_seed(TypedReflectDeserializer {
-        registration: get_field_registration(index)<span class="question-mark">?</span>,
-        registry,
-    })<span class="question-mark">? </span>{
-        tuple.insert_boxed(value);
-        index += <span class="number">1</span>;
-        <span class="kw">if </span>index &gt;= info.get_field_len() {
-            <span class="kw">break</span>;
-        }
-    }
 
     <span class="kw">let </span>len = info.get_field_len();
 
-    <span class="kw">if </span>tuple.field_len() != len {
-        <span class="kw">return </span><span class="prelude-val">Err</span>(Error::invalid_length(
-            tuple.field_len(),
-            <span class="kw-2">&amp;</span>len.to_string().as_str(),
-        ));
+    <span class="kw">if </span>len == <span class="number">0 </span>{
+        <span class="comment">// Handle empty tuple/tuple struct
+        </span><span class="kw">return </span><span class="prelude-val">Ok</span>(tuple);
+    }
+
+    <span class="kw">let </span>serialization_data = registration.data::&lt;SerializationData&gt;();
+
+    <span class="kw">for </span>index <span class="kw">in </span><span class="number">0</span>..len {
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(value) = serialization_data.and_then(|data| data.generate_default(index)) {
+            tuple.insert_boxed(value);
+            <span class="kw">continue</span>;
+        }
+
+        <span class="kw">let </span>value = seq
+            .next_element_seed(TypedReflectDeserializer {
+                registration: info.get_field_registration(index, registry)<span class="question-mark">?</span>,
+                registry,
+            })<span class="question-mark">?
+            </span>.ok_or_else(|| Error::invalid_length(index, <span class="kw-2">&amp;</span>len.to_string().as_str()))<span class="question-mark">?</span>;
+        tuple.insert_boxed(value);
     }
 
     <span class="prelude-val">Ok</span>(tuple)
 }
 
+<span class="kw">fn </span>visit_struct_seq&lt;<span class="lifetime">&#39;de</span>, T, V&gt;(
+    seq: <span class="kw-2">&amp;mut </span>V,
+    info: <span class="kw-2">&amp;</span>T,
+    registration: <span class="kw-2">&amp;</span>TypeRegistration,
+    registry: <span class="kw-2">&amp;</span>TypeRegistry,
+) -&gt; <span class="prelude-ty">Result</span>&lt;DynamicStruct, V::Error&gt;
+<span class="kw">where
+    </span>T: StructLikeInfo + Container,
+    V: SeqAccess&lt;<span class="lifetime">&#39;de</span>&gt;,
+{
+    <span class="kw">let </span><span class="kw-2">mut </span>dynamic_struct = DynamicStruct::default();
+
+    <span class="kw">let </span>len = info.get_field_len();
+
+    <span class="kw">if </span>len == <span class="number">0 </span>{
+        <span class="comment">// Handle unit structs
+        </span><span class="kw">return </span><span class="prelude-val">Ok</span>(dynamic_struct);
+    }
+
+    <span class="kw">let </span>serialization_data = registration.data::&lt;SerializationData&gt;();
+
+    <span class="kw">for </span>index <span class="kw">in </span><span class="number">0</span>..len {
+        <span class="kw">let </span>name = info.field_at(index).unwrap().name();
+
+        <span class="kw">if </span>serialization_data
+            .map(|data| data.is_field_skipped(index))
+            .unwrap_or_default()
+        {
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(value) = serialization_data.unwrap().generate_default(index) {
+                dynamic_struct.insert_boxed(name, value);
+            }
+            <span class="kw">continue</span>;
+        }
+
+        <span class="kw">let </span>value = seq
+            .next_element_seed(TypedReflectDeserializer {
+                registration: info.get_field_registration(index, registry)<span class="question-mark">?</span>,
+                registry,
+            })<span class="question-mark">?
+            </span>.ok_or_else(|| Error::invalid_length(index, <span class="kw-2">&amp;</span>len.to_string().as_str()))<span class="question-mark">?</span>;
+        dynamic_struct.insert_boxed(name, value);
+    }
+
+    <span class="prelude-val">Ok</span>(dynamic_struct)
+}
+
 <span class="kw">fn </span>get_registration&lt;<span class="lifetime">&#39;a</span>, E: Error&gt;(
     type_id: TypeId,
-    type_name: <span class="kw-2">&amp;</span>str,
+    type_path: <span class="kw-2">&amp;</span>str,
     registry: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>TypeRegistry,
 ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>TypeRegistration, E&gt; {
     <span class="kw">let </span>registration = registry.get(type_id).ok_or_else(|| {
-        Error::custom(<span class="macro">format_args!</span>(<span class="string">&quot;no registration found for type `{type_name}`&quot;</span>,))
+        Error::custom(<span class="macro">format_args!</span>(<span class="string">&quot;no registration found for type `{type_path}`&quot;</span>))
     })<span class="question-mark">?</span>;
     <span class="prelude-val">Ok</span>(registration)
 }
@@ -2944,7 +2986,7 @@
 
         <span class="comment">// === Normal === //
         </span><span class="kw">let </span>input = <span class="string">r#&quot;{
-            &quot;bevy_reflect::serde::de::tests::should_deserialize_option::OptionTest&quot;: (
+            &quot;bevy_reflect::serde::de::tests::OptionTest&quot;: (
                 none: None,
                 simple: Some(&quot;Hello world!&quot;),
                 complex: Some((
@@ -2966,7 +3008,7 @@
         </span><span class="kw">let </span>input = <span class="string">r#&quot;
         #![enable(implicit_some)]
         {
-            &quot;bevy_reflect::serde::de::tests::should_deserialize_option::OptionTest&quot;: (
+            &quot;bevy_reflect::serde::de::tests::OptionTest&quot;: (
                 none: None,
                 simple: &quot;Hello world!&quot;,
                 complex: (
@@ -3003,7 +3045,7 @@
 
         <span class="comment">// === Unit Variant === //
         </span><span class="kw">let </span>input = <span class="string">r#&quot;{
-    &quot;bevy_reflect::serde::de::tests::enum_should_deserialize::MyEnum&quot;: Unit,
+    &quot;bevy_reflect::serde::de::tests::MyEnum&quot;: Unit,
 }&quot;#</span>;
         <span class="kw">let </span>reflect_deserializer = UntypedReflectDeserializer::new(<span class="kw-2">&amp;</span>registry);
         <span class="kw">let </span><span class="kw-2">mut </span>deserializer = ron::de::Deserializer::from_str(input).unwrap();
@@ -3014,7 +3056,7 @@
 
         <span class="comment">// === NewType Variant === //
         </span><span class="kw">let </span>input = <span class="string">r#&quot;{
-    &quot;bevy_reflect::serde::de::tests::enum_should_deserialize::MyEnum&quot;: NewType(123),
+    &quot;bevy_reflect::serde::de::tests::MyEnum&quot;: NewType(123),
 }&quot;#</span>;
         <span class="kw">let </span>reflect_deserializer = UntypedReflectDeserializer::new(<span class="kw-2">&amp;</span>registry);
         <span class="kw">let </span><span class="kw-2">mut </span>deserializer = ron::de::Deserializer::from_str(input).unwrap();
@@ -3025,7 +3067,7 @@
 
         <span class="comment">// === Tuple Variant === //
         </span><span class="kw">let </span>input = <span class="string">r#&quot;{
-    &quot;bevy_reflect::serde::de::tests::enum_should_deserialize::MyEnum&quot;: Tuple(1.23, 3.21),
+    &quot;bevy_reflect::serde::de::tests::MyEnum&quot;: Tuple(1.23, 3.21),
 }&quot;#</span>;
         <span class="kw">let </span>reflect_deserializer = UntypedReflectDeserializer::new(<span class="kw-2">&amp;</span>registry);
         <span class="kw">let </span><span class="kw-2">mut </span>deserializer = ron::de::Deserializer::from_str(input).unwrap();
@@ -3036,7 +3078,7 @@
 
         <span class="comment">// === Struct Variant === //
         </span><span class="kw">let </span>input = <span class="string">r#&quot;{
-    &quot;bevy_reflect::serde::de::tests::enum_should_deserialize::MyEnum&quot;: Struct(
+    &quot;bevy_reflect::serde::de::tests::MyEnum&quot;: Struct(
         value: &quot;I &lt;3 Enums&quot;,
     ),
 }&quot;#</span>;

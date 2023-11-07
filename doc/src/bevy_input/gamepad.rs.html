@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/n3vu0r/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_input-0.11.2/src/gamepad.rs`."><title>gamepad.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-9bb858ba049f1f21.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="bevy_input" data-themes="" data-resource-suffix="" data-rustdoc-version="1.72.0 (5680fa18f 2023-08-23)" data-channel="1.72.0" data-search-js="search-f6292fe389d70017.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-0f8c037637f9eb3e.css" data-theme-dark-css="dark-1097f8e92a01e3cf.css" data-theme-ayu-css="ayu-614652228113ac93.css" ><script src="../../static.files/storage-59fd9b8ccb335783.js"></script><script defer src="../../static.files/source-script-106908c7a7964ba4.js"></script><script defer src="../../source-files.js"></script><script defer src="../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-0f8c037637f9eb3e.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-1097f8e92a01e3cf.css"><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../bevy_input/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_input-0.12.0/src/gamepad.rs`."><title>gamepad.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="bevy_input" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../bevy_input/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1698,7 +1698,72 @@
 <a href="#1698" id="1698">1698</a>
 <a href="#1699" id="1699">1699</a>
 <a href="#1700" id="1700">1700</a>
-</pre></div><pre class="rust"><code><span class="kw">use crate</span>::{Axis, Input};
+<a href="#1701" id="1701">1701</a>
+<a href="#1702" id="1702">1702</a>
+<a href="#1703" id="1703">1703</a>
+<a href="#1704" id="1704">1704</a>
+<a href="#1705" id="1705">1705</a>
+<a href="#1706" id="1706">1706</a>
+<a href="#1707" id="1707">1707</a>
+<a href="#1708" id="1708">1708</a>
+<a href="#1709" id="1709">1709</a>
+<a href="#1710" id="1710">1710</a>
+<a href="#1711" id="1711">1711</a>
+<a href="#1712" id="1712">1712</a>
+<a href="#1713" id="1713">1713</a>
+<a href="#1714" id="1714">1714</a>
+<a href="#1715" id="1715">1715</a>
+<a href="#1716" id="1716">1716</a>
+<a href="#1717" id="1717">1717</a>
+<a href="#1718" id="1718">1718</a>
+<a href="#1719" id="1719">1719</a>
+<a href="#1720" id="1720">1720</a>
+<a href="#1721" id="1721">1721</a>
+<a href="#1722" id="1722">1722</a>
+<a href="#1723" id="1723">1723</a>
+<a href="#1724" id="1724">1724</a>
+<a href="#1725" id="1725">1725</a>
+<a href="#1726" id="1726">1726</a>
+<a href="#1727" id="1727">1727</a>
+<a href="#1728" id="1728">1728</a>
+<a href="#1729" id="1729">1729</a>
+<a href="#1730" id="1730">1730</a>
+<a href="#1731" id="1731">1731</a>
+<a href="#1732" id="1732">1732</a>
+<a href="#1733" id="1733">1733</a>
+<a href="#1734" id="1734">1734</a>
+<a href="#1735" id="1735">1735</a>
+<a href="#1736" id="1736">1736</a>
+<a href="#1737" id="1737">1737</a>
+<a href="#1738" id="1738">1738</a>
+<a href="#1739" id="1739">1739</a>
+<a href="#1740" id="1740">1740</a>
+<a href="#1741" id="1741">1741</a>
+<a href="#1742" id="1742">1742</a>
+<a href="#1743" id="1743">1743</a>
+<a href="#1744" id="1744">1744</a>
+<a href="#1745" id="1745">1745</a>
+<a href="#1746" id="1746">1746</a>
+<a href="#1747" id="1747">1747</a>
+<a href="#1748" id="1748">1748</a>
+<a href="#1749" id="1749">1749</a>
+<a href="#1750" id="1750">1750</a>
+<a href="#1751" id="1751">1751</a>
+<a href="#1752" id="1752">1752</a>
+<a href="#1753" id="1753">1753</a>
+<a href="#1754" id="1754">1754</a>
+<a href="#1755" id="1755">1755</a>
+<a href="#1756" id="1756">1756</a>
+<a href="#1757" id="1757">1757</a>
+<a href="#1758" id="1758">1758</a>
+<a href="#1759" id="1759">1759</a>
+<a href="#1760" id="1760">1760</a>
+<a href="#1761" id="1761">1761</a>
+<a href="#1762" id="1762">1762</a>
+<a href="#1763" id="1763">1763</a>
+</pre></div><pre class="rust"><code><span class="doccomment">//! The gamepad input functionality.
+
+</span><span class="kw">use crate</span>::{Axis, ButtonState, Input};
 <span class="kw">use </span>bevy_ecs::event::{Event, EventReader, EventWriter};
 <span class="kw">use </span>bevy_ecs::{
     change_detection::DetectChangesMut,
@@ -1727,14 +1792,18 @@
     <span class="doccomment">/// Parameter `livezone_lowerbound` was not less than or equal to parameter `deadzone_lowerbound`.
     </span><span class="attr">#[error(<span class="string">&quot;invalid parameter values livezone_lowerbound {} deadzone_lowerbound {}, expected livezone_lowerbound &lt;= deadzone_lowerbound&quot;</span>, .livezone_lowerbound, .deadzone_lowerbound)]
     </span>LiveZoneLowerBoundGreaterThanDeadZoneLowerBound {
-        livezone_lowerbound: f32,
-        deadzone_lowerbound: f32,
+        <span class="doccomment">/// The value of the `livezone_lowerbound` parameter.
+        </span>livezone_lowerbound: f32,
+        <span class="doccomment">/// The value of the `deadzone_lowerbound` parameter.
+        </span>deadzone_lowerbound: f32,
     },
     <span class="doccomment">///  Parameter `deadzone_upperbound` was not less than or equal to parameter `livezone_upperbound`.
     </span><span class="attr">#[error(<span class="string">&quot;invalid parameter values livezone_upperbound {} deadzone_upperbound {}, expected deadzone_upperbound &lt;= livezone_upperbound&quot;</span>, .livezone_upperbound, .deadzone_upperbound)]
     </span>DeadZoneUpperBoundGreaterThanLiveZoneUpperBound {
-        livezone_upperbound: f32,
-        deadzone_upperbound: f32,
+        <span class="doccomment">/// The value of the `livezone_upperbound` parameter.
+        </span>livezone_upperbound: f32,
+        <span class="doccomment">/// The value of the `deadzone_upperbound` parameter.
+        </span>deadzone_upperbound: f32,
     },
     <span class="doccomment">/// The given parameter was not in range 0.0..=2.0.
     </span><span class="attr">#[error(<span class="string">&quot;invalid threshold {0}, expected 0.0 &lt;= threshold &lt;= 2.0&quot;</span>)]
@@ -1753,8 +1822,10 @@
     <span class="doccomment">/// Parameter `release_threshold` was not less than or equal to `press_threshold`.
     </span><span class="attr">#[error(<span class="string">&quot;invalid parameter values release_threshold {} press_threshold {}, expected release_threshold &lt;= press_threshold&quot;</span>, .release_threshold, .press_threshold)]
     </span>ReleaseThresholdGreaterThanPressThreshold {
-        press_threshold: f32,
-        release_threshold: f32,
+        <span class="doccomment">/// The value of the `press_threshold` parameter.
+        </span>press_threshold: f32,
+        <span class="doccomment">/// The value of the `release_threshold` parameter.
+        </span>release_threshold: f32,
     },
 }
 
@@ -1800,7 +1871,12 @@
     reflect(Serialize, Deserialize)
 )]
 </span><span class="kw">pub struct </span>GamepadInfo {
-    <span class="kw">pub </span>name: String,
+    <span class="doccomment">/// The name of the gamepad.
+    ///
+    /// This name is generally defined by the OS.
+    ///
+    /// For example on Windows the name may be &quot;HID-compliant game controller&quot;.
+    </span><span class="kw">pub </span>name: String,
 }
 
 <span class="doccomment">/// A collection of connected [`Gamepad`]s.
@@ -1830,7 +1906,8 @@
         <span class="self">self</span>.gamepads.keys().copied()
     }
 
-    <span class="kw">pub fn </span>name(<span class="kw-2">&amp;</span><span class="self">self</span>, gamepad: Gamepad) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt; {
+    <span class="doccomment">/// The name of the gamepad if this one is connected.
+    </span><span class="kw">pub fn </span>name(<span class="kw-2">&amp;</span><span class="self">self</span>, gamepad: Gamepad) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt; {
         <span class="self">self</span>.gamepads.get(<span class="kw-2">&amp;</span>gamepad).map(|g| g.name.as_str())
     }
 
@@ -1951,6 +2028,21 @@
             button_type,
         }
     }
+}
+
+<span class="doccomment">/// A gamepad button input event.
+</span><span class="attr">#[derive(Event, Debug, Clone, Copy, PartialEq, Eq, Reflect)]
+#[reflect(Debug, PartialEq)]
+#[cfg_attr(
+    feature = <span class="string">&quot;serialize&quot;</span>,
+    derive(serde::Serialize, serde::Deserialize),
+    reflect(Serialize, Deserialize)
+)]
+</span><span class="kw">pub struct </span>GamepadButtonInput {
+    <span class="doccomment">/// The gamepad button assigned to the event.
+    </span><span class="kw">pub </span>button: GamepadButton,
+    <span class="doccomment">/// The pressed state of the button.
+    </span><span class="kw">pub </span>state: ButtonState,
 }
 
 <span class="doccomment">/// A type of a [`GamepadAxis`].
@@ -2302,10 +2394,10 @@
 <span class="kw">impl </span>Default <span class="kw">for </span>AxisSettings {
     <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
         AxisSettings {
-            livezone_upperbound: <span class="number">0.95</span>,
+            livezone_upperbound: <span class="number">1.0</span>,
             deadzone_upperbound: <span class="number">0.05</span>,
             deadzone_lowerbound: -<span class="number">0.05</span>,
-            livezone_lowerbound: -<span class="number">0.95</span>,
+            livezone_lowerbound: -<span class="number">1.0</span>,
             threshold: <span class="number">0.01</span>,
         }
     }
@@ -2694,7 +2786,7 @@
     <span class="kw-2">mut </span>button_axis: ResMut&lt;Axis&lt;GamepadButton&gt;&gt;,
     <span class="kw-2">mut </span>button_input: ResMut&lt;Input&lt;GamepadButton&gt;&gt;,
 ) {
-    <span class="kw">for </span>connection_event <span class="kw">in </span>connection_events.iter() {
+    <span class="kw">for </span>connection_event <span class="kw">in </span>connection_events.read() {
         <span class="kw">let </span>gamepad = connection_event.gamepad;
 
         <span class="kw">if let </span>GamepadConnection::Connected(info) = <span class="kw-2">&amp;</span>connection_event.connection {
@@ -2725,7 +2817,8 @@
     }
 }
 
-<span class="attr">#[derive(Debug, Clone, PartialEq, Reflect)]
+<span class="doccomment">/// The connection status of a gamepad.
+</span><span class="attr">#[derive(Debug, Clone, PartialEq, Reflect)]
 #[reflect(Debug, PartialEq)]
 #[cfg_attr(
     feature = <span class="string">&quot;serialize&quot;</span>,
@@ -2733,8 +2826,10 @@
     reflect(Serialize, Deserialize)
 )]
 </span><span class="kw">pub enum </span>GamepadConnection {
-    Connected(GamepadInfo),
-    Disconnected,
+    <span class="doccomment">/// The gamepad is connected.
+    </span>Connected(GamepadInfo),
+    <span class="doccomment">/// The gamepad is disconnected.
+    </span>Disconnected,
 }
 
 <span class="doccomment">/// A Gamepad connection event. Created when a connection to a gamepad
@@ -2754,23 +2849,28 @@
 }
 
 <span class="kw">impl </span>GamepadConnectionEvent {
-    <span class="kw">pub fn </span>new(gamepad: Gamepad, connection: GamepadConnection) -&gt; <span class="self">Self </span>{
+    <span class="doccomment">/// Creates a [`GamepadConnectionEvent`].
+    </span><span class="kw">pub fn </span>new(gamepad: Gamepad, connection: GamepadConnection) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
             gamepad,
             connection,
         }
     }
 
-    <span class="kw">pub fn </span>connected(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+    <span class="doccomment">/// Is the gamepad connected?
+    </span><span class="kw">pub fn </span>connected(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
         <span class="macro">matches!</span>(<span class="self">self</span>.connection, GamepadConnection::Connected(<span class="kw">_</span>))
     }
 
-    <span class="kw">pub fn </span>disconnected(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+    <span class="doccomment">/// Is the gamepad disconnected?
+    </span><span class="kw">pub fn </span>disconnected(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
         !<span class="self">self</span>.connected()
     }
 }
 
-<span class="attr">#[derive(Event, Debug, Clone, PartialEq, Reflect)]
+<span class="doccomment">/// Gamepad event for when the &quot;value&quot; on the axis changes
+/// by an amount larger than the threshold defined in [`GamepadSettings`].
+</span><span class="attr">#[derive(Event, Debug, Clone, PartialEq, Reflect)]
 #[reflect(Debug, PartialEq)]
 #[cfg_attr(
     feature = <span class="string">&quot;serialize&quot;</span>,
@@ -2778,13 +2878,17 @@
     reflect(Serialize, Deserialize)
 )]
 </span><span class="kw">pub struct </span>GamepadAxisChangedEvent {
-    <span class="kw">pub </span>gamepad: Gamepad,
-    <span class="kw">pub </span>axis_type: GamepadAxisType,
-    <span class="kw">pub </span>value: f32,
+    <span class="doccomment">/// The gamepad on which the axis is triggered.
+    </span><span class="kw">pub </span>gamepad: Gamepad,
+    <span class="doccomment">/// The type of the triggered axis.
+    </span><span class="kw">pub </span>axis_type: GamepadAxisType,
+    <span class="doccomment">/// The value of the axis.
+    </span><span class="kw">pub </span>value: f32,
 }
 
 <span class="kw">impl </span>GamepadAxisChangedEvent {
-    <span class="kw">pub fn </span>new(gamepad: Gamepad, axis_type: GamepadAxisType, value: f32) -&gt; <span class="self">Self </span>{
+    <span class="doccomment">/// Creates a [`GamepadAxisChangedEvent`].
+    </span><span class="kw">pub fn </span>new(gamepad: Gamepad, axis_type: GamepadAxisType, value: f32) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
             gamepad,
             axis_type,
@@ -2803,13 +2907,17 @@
     reflect(Serialize, Deserialize)
 )]
 </span><span class="kw">pub struct </span>GamepadButtonChangedEvent {
-    <span class="kw">pub </span>gamepad: Gamepad,
-    <span class="kw">pub </span>button_type: GamepadButtonType,
-    <span class="kw">pub </span>value: f32,
+    <span class="doccomment">/// The gamepad on which the button is triggered.
+    </span><span class="kw">pub </span>gamepad: Gamepad,
+    <span class="doccomment">/// The type of the triggered button.
+    </span><span class="kw">pub </span>button_type: GamepadButtonType,
+    <span class="doccomment">/// The value of the button.
+    </span><span class="kw">pub </span>value: f32,
 }
 
 <span class="kw">impl </span>GamepadButtonChangedEvent {
-    <span class="kw">pub fn </span>new(gamepad: Gamepad, button_type: GamepadButtonType, value: f32) -&gt; <span class="self">Self </span>{
+    <span class="doccomment">/// Creates a [`GamepadButtonChangedEvent`].
+    </span><span class="kw">pub fn </span>new(gamepad: Gamepad, button_type: GamepadButtonType, value: f32) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
             gamepad,
             button_type,
@@ -2823,7 +2931,7 @@
     <span class="kw-2">mut </span>gamepad_axis: ResMut&lt;Axis&lt;GamepadAxis&gt;&gt;,
     <span class="kw-2">mut </span>axis_events: EventReader&lt;GamepadAxisChangedEvent&gt;,
 ) {
-    <span class="kw">for </span>axis_event <span class="kw">in </span>axis_events.iter() {
+    <span class="kw">for </span>axis_event <span class="kw">in </span>axis_events.read() {
         <span class="kw">let </span>axis = GamepadAxis::new(axis_event.gamepad, axis_event.axis_type);
         gamepad_axis.set(axis, axis_event.value);
     }
@@ -2831,25 +2939,37 @@
 
 <span class="doccomment">/// Uses [`GamepadButtonChangedEvent`]s to update the relevant [`Input`] and [`Axis`] values.
 </span><span class="kw">pub fn </span>gamepad_button_event_system(
-    <span class="kw-2">mut </span>button_events: EventReader&lt;GamepadButtonChangedEvent&gt;,
+    <span class="kw-2">mut </span>button_changed_events: EventReader&lt;GamepadButtonChangedEvent&gt;,
     <span class="kw-2">mut </span>button_input: ResMut&lt;Input&lt;GamepadButton&gt;&gt;,
-    <span class="kw-2">mut </span>button_axis: ResMut&lt;Axis&lt;GamepadButton&gt;&gt;,
+    <span class="kw-2">mut </span>button_input_events: EventWriter&lt;GamepadButtonInput&gt;,
     settings: Res&lt;GamepadSettings&gt;,
 ) {
-    <span class="kw">for </span>button_event <span class="kw">in </span>button_events.iter() {
+    <span class="kw">for </span>button_event <span class="kw">in </span>button_changed_events.read() {
         <span class="kw">let </span>button = GamepadButton::new(button_event.gamepad, button_event.button_type);
         <span class="kw">let </span>value = button_event.value;
         <span class="kw">let </span>button_property = settings.get_button_settings(button);
 
         <span class="kw">if </span>button_property.is_released(value) {
-            <span class="comment">// We don&#39;t have to check if the button was previously pressed
+            <span class="comment">// Check if button was previously pressed
+            </span><span class="kw">if </span>button_input.pressed(button) {
+                button_input_events.send(GamepadButtonInput {
+                    button,
+                    state: ButtonState::Released,
+                });
+            }
+            <span class="comment">// We don&#39;t have to check if the button was previously pressed here
             // because that check is performed within Input&lt;T&gt;::release()
             </span>button_input.release(button);
         } <span class="kw">else if </span>button_property.is_pressed(value) {
+            <span class="comment">// Check if button was previously not pressed
+            </span><span class="kw">if </span>!button_input.pressed(button) {
+                button_input_events.send(GamepadButtonInput {
+                    button,
+                    state: ButtonState::Pressed,
+                });
+            }
             button_input.press(button);
         };
-
-        button_axis.set(button, value);
     }
 }
 
@@ -2866,9 +2986,12 @@
     reflect(Serialize, Deserialize)
 )]
 </span><span class="kw">pub enum </span>GamepadEvent {
-    Connection(GamepadConnectionEvent),
-    Button(GamepadButtonChangedEvent),
-    Axis(GamepadAxisChangedEvent),
+    <span class="doccomment">/// A gamepad has been connected or disconnected.
+    </span>Connection(GamepadConnectionEvent),
+    <span class="doccomment">/// A button of the gamepad has been triggered.
+    </span>Button(GamepadButtonChangedEvent),
+    <span class="doccomment">/// An axis of the gamepad has been triggered.
+    </span>Axis(GamepadAxisChangedEvent),
 }
 
 <span class="kw">impl </span>From&lt;GamepadConnectionEvent&gt; <span class="kw">for </span>GamepadEvent {
@@ -2898,7 +3021,7 @@
     <span class="kw-2">mut </span>button_input: ResMut&lt;Input&lt;GamepadButton&gt;&gt;,
 ) {
     button_input.bypass_change_detection().clear();
-    <span class="kw">for </span>gamepad_event <span class="kw">in </span>gamepad_events.iter() {
+    <span class="kw">for </span>gamepad_event <span class="kw">in </span>gamepad_events.read() {
         <span class="kw">match </span>gamepad_event {
             GamepadEvent::Connection(connection_event) =&gt; {
                 connection_events.send(connection_event.clone());
@@ -2945,16 +3068,16 @@
 <span class="doccomment">/// The intensity at which a gamepad&#39;s force-feedback motors may rumble.
 </span><span class="attr">#[derive(Clone, Copy, Debug, PartialEq)]
 </span><span class="kw">pub struct </span>GamepadRumbleIntensity {
-    <span class="doccomment">/// The rumble intensity of the strong gamepad motor
+    <span class="doccomment">/// The rumble intensity of the strong gamepad motor.
     ///
-    /// Ranges from 0.0 to 1.0
+    /// Ranges from `0.0` to `1.0`.
     ///
     /// By convention, this is usually a low-frequency motor on the left-hand
     /// side of the gamepad, though it may vary across platforms and hardware.
     </span><span class="kw">pub </span>strong_motor: f32,
-    <span class="doccomment">/// The rumble intensity of the weak gamepad motor
+    <span class="doccomment">/// The rumble intensity of the weak gamepad motor.
     ///
-    /// Ranges from 0.0 to 1.0
+    /// Ranges from `0.0` to `1.0`.
     ///
     /// By convention, this is usually a high-frequency motor on the right-hand
     /// side of the gamepad, though it may vary across platforms and hardware.
@@ -2962,27 +3085,27 @@
 }
 
 <span class="kw">impl </span>GamepadRumbleIntensity {
-    <span class="doccomment">/// Rumble both gamepad motors at maximum intensity
+    <span class="doccomment">/// Rumble both gamepad motors at maximum intensity.
     </span><span class="kw">pub const </span>MAX: <span class="self">Self </span>= GamepadRumbleIntensity {
         strong_motor: <span class="number">1.0</span>,
         weak_motor: <span class="number">1.0</span>,
     };
 
-    <span class="doccomment">/// Rumble the weak motor at maximum intensity
+    <span class="doccomment">/// Rumble the weak motor at maximum intensity.
     </span><span class="kw">pub const </span>WEAK_MAX: <span class="self">Self </span>= GamepadRumbleIntensity {
         strong_motor: <span class="number">0.0</span>,
         weak_motor: <span class="number">1.0</span>,
     };
 
-    <span class="doccomment">/// Rumble the strong motor at maximum intensity
+    <span class="doccomment">/// Rumble the strong motor at maximum intensity.
     </span><span class="kw">pub const </span>STRONG_MAX: <span class="self">Self </span>= GamepadRumbleIntensity {
         strong_motor: <span class="number">1.0</span>,
         weak_motor: <span class="number">0.0</span>,
     };
 
-    <span class="doccomment">/// Creates a new rumble intensity with weak motor intensity set to the given value
+    <span class="doccomment">/// Creates a new rumble intensity with weak motor intensity set to the given value.
     ///
-    /// Clamped within the 0 to 1 range
+    /// Clamped within the `0.0` to `1.0` range.
     </span><span class="kw">pub const fn </span>weak_motor(intensity: f32) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
             weak_motor: intensity,
@@ -2990,9 +3113,9 @@
         }
     }
 
-    <span class="doccomment">/// Creates a new rumble intensity with strong motor intensity set to the given value
+    <span class="doccomment">/// Creates a new rumble intensity with strong motor intensity set to the given value.
     ///
-    /// Clamped within the 0 to 1 range
+    /// Clamped within the `0.0` to `1.0` range.
     </span><span class="kw">pub const fn </span>strong_motor(intensity: f32) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
             strong_motor: intensity,
@@ -3001,7 +3124,7 @@
     }
 }
 
-<span class="doccomment">/// An event that controls force-feedback rumbling of a [`Gamepad`]
+<span class="doccomment">/// An event that controls force-feedback rumbling of a [`Gamepad`].
 ///
 /// # Notes
 ///
@@ -3043,19 +3166,22 @@
     ///
     /// To replace an existing rumble, send a [`GamepadRumbleRequest::Stop`] event first.
     </span>Add {
-        <span class="doccomment">/// How long the gamepad should rumble
+        <span class="doccomment">/// How long the gamepad should rumble.
         </span>duration: Duration,
-        <span class="doccomment">/// How intense the rumble should be
+        <span class="doccomment">/// How intense the rumble should be.
         </span>intensity: GamepadRumbleIntensity,
-        <span class="doccomment">/// The gamepad to rumble
+        <span class="doccomment">/// The gamepad to rumble.
         </span>gamepad: Gamepad,
     },
-    <span class="doccomment">/// Stop all running rumbles on the given [`Gamepad`]
-    </span>Stop { gamepad: Gamepad },
+    <span class="doccomment">/// Stop all running rumbles on the given [`Gamepad`].
+    </span>Stop {
+        <span class="doccomment">/// The gamepad to stop rumble.
+        </span>gamepad: Gamepad,
+    },
 }
 
 <span class="kw">impl </span>GamepadRumbleRequest {
-    <span class="doccomment">/// Get the [`Gamepad`] associated with this request
+    <span class="doccomment">/// Get the [`Gamepad`] associated with this request.
     </span><span class="kw">pub fn </span>gamepad(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Gamepad {
         <span class="kw">match </span><span class="self">self </span>{
             <span class="self">Self</span>::Add { gamepad, .. } | <span class="self">Self</span>::Stop { gamepad } =&gt; <span class="kw-2">*</span>gamepad,
@@ -3166,7 +3292,7 @@
         ];
 
         <span class="kw">for </span>(new_value, expected) <span class="kw">in </span>cases {
-            <span class="kw">let </span>settings = AxisSettings::default();
+            <span class="kw">let </span>settings = AxisSettings::new(-<span class="number">0.95</span>, -<span class="number">0.05</span>, <span class="number">0.05</span>, <span class="number">0.95</span>, <span class="number">0.01</span>).unwrap();
             test_axis_settings_filter(settings, new_value, <span class="prelude-val">None</span>, expected);
         }
     }
@@ -3193,7 +3319,7 @@
         ];
 
         <span class="kw">for </span>(new_value, old_value, expected) <span class="kw">in </span>cases {
-            <span class="kw">let </span>settings = AxisSettings::default();
+            <span class="kw">let </span>settings = AxisSettings::new(-<span class="number">0.95</span>, -<span class="number">0.05</span>, <span class="number">0.05</span>, <span class="number">0.95</span>, <span class="number">0.01</span>).unwrap();
             test_axis_settings_filter(settings, new_value, old_value, expected);
         }
     }

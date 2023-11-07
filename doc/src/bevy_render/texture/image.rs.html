@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/n3vu0r/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_render-0.11.2/src/texture/image.rs`."><title>image.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-9bb858ba049f1f21.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="bevy_render" data-themes="" data-resource-suffix="" data-rustdoc-version="1.72.0 (5680fa18f 2023-08-23)" data-channel="1.72.0" data-search-js="search-f6292fe389d70017.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-0f8c037637f9eb3e.css" data-theme-dark-css="dark-1097f8e92a01e3cf.css" data-theme-ayu-css="ayu-614652228113ac93.css" ><script src="../../../static.files/storage-59fd9b8ccb335783.js"></script><script defer src="../../../static.files/source-script-106908c7a7964ba4.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../static.files/light-0f8c037637f9eb3e.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../static.files/dark-1097f8e92a01e3cf.css"><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../bevy_render/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_render-0.12.0/src/texture/image.rs`."><title>image.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="bevy_render" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../bevy_render/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -641,6 +641,305 @@
 <a href="#641" id="641">641</a>
 <a href="#642" id="642">642</a>
 <a href="#643" id="643">643</a>
+<a href="#644" id="644">644</a>
+<a href="#645" id="645">645</a>
+<a href="#646" id="646">646</a>
+<a href="#647" id="647">647</a>
+<a href="#648" id="648">648</a>
+<a href="#649" id="649">649</a>
+<a href="#650" id="650">650</a>
+<a href="#651" id="651">651</a>
+<a href="#652" id="652">652</a>
+<a href="#653" id="653">653</a>
+<a href="#654" id="654">654</a>
+<a href="#655" id="655">655</a>
+<a href="#656" id="656">656</a>
+<a href="#657" id="657">657</a>
+<a href="#658" id="658">658</a>
+<a href="#659" id="659">659</a>
+<a href="#660" id="660">660</a>
+<a href="#661" id="661">661</a>
+<a href="#662" id="662">662</a>
+<a href="#663" id="663">663</a>
+<a href="#664" id="664">664</a>
+<a href="#665" id="665">665</a>
+<a href="#666" id="666">666</a>
+<a href="#667" id="667">667</a>
+<a href="#668" id="668">668</a>
+<a href="#669" id="669">669</a>
+<a href="#670" id="670">670</a>
+<a href="#671" id="671">671</a>
+<a href="#672" id="672">672</a>
+<a href="#673" id="673">673</a>
+<a href="#674" id="674">674</a>
+<a href="#675" id="675">675</a>
+<a href="#676" id="676">676</a>
+<a href="#677" id="677">677</a>
+<a href="#678" id="678">678</a>
+<a href="#679" id="679">679</a>
+<a href="#680" id="680">680</a>
+<a href="#681" id="681">681</a>
+<a href="#682" id="682">682</a>
+<a href="#683" id="683">683</a>
+<a href="#684" id="684">684</a>
+<a href="#685" id="685">685</a>
+<a href="#686" id="686">686</a>
+<a href="#687" id="687">687</a>
+<a href="#688" id="688">688</a>
+<a href="#689" id="689">689</a>
+<a href="#690" id="690">690</a>
+<a href="#691" id="691">691</a>
+<a href="#692" id="692">692</a>
+<a href="#693" id="693">693</a>
+<a href="#694" id="694">694</a>
+<a href="#695" id="695">695</a>
+<a href="#696" id="696">696</a>
+<a href="#697" id="697">697</a>
+<a href="#698" id="698">698</a>
+<a href="#699" id="699">699</a>
+<a href="#700" id="700">700</a>
+<a href="#701" id="701">701</a>
+<a href="#702" id="702">702</a>
+<a href="#703" id="703">703</a>
+<a href="#704" id="704">704</a>
+<a href="#705" id="705">705</a>
+<a href="#706" id="706">706</a>
+<a href="#707" id="707">707</a>
+<a href="#708" id="708">708</a>
+<a href="#709" id="709">709</a>
+<a href="#710" id="710">710</a>
+<a href="#711" id="711">711</a>
+<a href="#712" id="712">712</a>
+<a href="#713" id="713">713</a>
+<a href="#714" id="714">714</a>
+<a href="#715" id="715">715</a>
+<a href="#716" id="716">716</a>
+<a href="#717" id="717">717</a>
+<a href="#718" id="718">718</a>
+<a href="#719" id="719">719</a>
+<a href="#720" id="720">720</a>
+<a href="#721" id="721">721</a>
+<a href="#722" id="722">722</a>
+<a href="#723" id="723">723</a>
+<a href="#724" id="724">724</a>
+<a href="#725" id="725">725</a>
+<a href="#726" id="726">726</a>
+<a href="#727" id="727">727</a>
+<a href="#728" id="728">728</a>
+<a href="#729" id="729">729</a>
+<a href="#730" id="730">730</a>
+<a href="#731" id="731">731</a>
+<a href="#732" id="732">732</a>
+<a href="#733" id="733">733</a>
+<a href="#734" id="734">734</a>
+<a href="#735" id="735">735</a>
+<a href="#736" id="736">736</a>
+<a href="#737" id="737">737</a>
+<a href="#738" id="738">738</a>
+<a href="#739" id="739">739</a>
+<a href="#740" id="740">740</a>
+<a href="#741" id="741">741</a>
+<a href="#742" id="742">742</a>
+<a href="#743" id="743">743</a>
+<a href="#744" id="744">744</a>
+<a href="#745" id="745">745</a>
+<a href="#746" id="746">746</a>
+<a href="#747" id="747">747</a>
+<a href="#748" id="748">748</a>
+<a href="#749" id="749">749</a>
+<a href="#750" id="750">750</a>
+<a href="#751" id="751">751</a>
+<a href="#752" id="752">752</a>
+<a href="#753" id="753">753</a>
+<a href="#754" id="754">754</a>
+<a href="#755" id="755">755</a>
+<a href="#756" id="756">756</a>
+<a href="#757" id="757">757</a>
+<a href="#758" id="758">758</a>
+<a href="#759" id="759">759</a>
+<a href="#760" id="760">760</a>
+<a href="#761" id="761">761</a>
+<a href="#762" id="762">762</a>
+<a href="#763" id="763">763</a>
+<a href="#764" id="764">764</a>
+<a href="#765" id="765">765</a>
+<a href="#766" id="766">766</a>
+<a href="#767" id="767">767</a>
+<a href="#768" id="768">768</a>
+<a href="#769" id="769">769</a>
+<a href="#770" id="770">770</a>
+<a href="#771" id="771">771</a>
+<a href="#772" id="772">772</a>
+<a href="#773" id="773">773</a>
+<a href="#774" id="774">774</a>
+<a href="#775" id="775">775</a>
+<a href="#776" id="776">776</a>
+<a href="#777" id="777">777</a>
+<a href="#778" id="778">778</a>
+<a href="#779" id="779">779</a>
+<a href="#780" id="780">780</a>
+<a href="#781" id="781">781</a>
+<a href="#782" id="782">782</a>
+<a href="#783" id="783">783</a>
+<a href="#784" id="784">784</a>
+<a href="#785" id="785">785</a>
+<a href="#786" id="786">786</a>
+<a href="#787" id="787">787</a>
+<a href="#788" id="788">788</a>
+<a href="#789" id="789">789</a>
+<a href="#790" id="790">790</a>
+<a href="#791" id="791">791</a>
+<a href="#792" id="792">792</a>
+<a href="#793" id="793">793</a>
+<a href="#794" id="794">794</a>
+<a href="#795" id="795">795</a>
+<a href="#796" id="796">796</a>
+<a href="#797" id="797">797</a>
+<a href="#798" id="798">798</a>
+<a href="#799" id="799">799</a>
+<a href="#800" id="800">800</a>
+<a href="#801" id="801">801</a>
+<a href="#802" id="802">802</a>
+<a href="#803" id="803">803</a>
+<a href="#804" id="804">804</a>
+<a href="#805" id="805">805</a>
+<a href="#806" id="806">806</a>
+<a href="#807" id="807">807</a>
+<a href="#808" id="808">808</a>
+<a href="#809" id="809">809</a>
+<a href="#810" id="810">810</a>
+<a href="#811" id="811">811</a>
+<a href="#812" id="812">812</a>
+<a href="#813" id="813">813</a>
+<a href="#814" id="814">814</a>
+<a href="#815" id="815">815</a>
+<a href="#816" id="816">816</a>
+<a href="#817" id="817">817</a>
+<a href="#818" id="818">818</a>
+<a href="#819" id="819">819</a>
+<a href="#820" id="820">820</a>
+<a href="#821" id="821">821</a>
+<a href="#822" id="822">822</a>
+<a href="#823" id="823">823</a>
+<a href="#824" id="824">824</a>
+<a href="#825" id="825">825</a>
+<a href="#826" id="826">826</a>
+<a href="#827" id="827">827</a>
+<a href="#828" id="828">828</a>
+<a href="#829" id="829">829</a>
+<a href="#830" id="830">830</a>
+<a href="#831" id="831">831</a>
+<a href="#832" id="832">832</a>
+<a href="#833" id="833">833</a>
+<a href="#834" id="834">834</a>
+<a href="#835" id="835">835</a>
+<a href="#836" id="836">836</a>
+<a href="#837" id="837">837</a>
+<a href="#838" id="838">838</a>
+<a href="#839" id="839">839</a>
+<a href="#840" id="840">840</a>
+<a href="#841" id="841">841</a>
+<a href="#842" id="842">842</a>
+<a href="#843" id="843">843</a>
+<a href="#844" id="844">844</a>
+<a href="#845" id="845">845</a>
+<a href="#846" id="846">846</a>
+<a href="#847" id="847">847</a>
+<a href="#848" id="848">848</a>
+<a href="#849" id="849">849</a>
+<a href="#850" id="850">850</a>
+<a href="#851" id="851">851</a>
+<a href="#852" id="852">852</a>
+<a href="#853" id="853">853</a>
+<a href="#854" id="854">854</a>
+<a href="#855" id="855">855</a>
+<a href="#856" id="856">856</a>
+<a href="#857" id="857">857</a>
+<a href="#858" id="858">858</a>
+<a href="#859" id="859">859</a>
+<a href="#860" id="860">860</a>
+<a href="#861" id="861">861</a>
+<a href="#862" id="862">862</a>
+<a href="#863" id="863">863</a>
+<a href="#864" id="864">864</a>
+<a href="#865" id="865">865</a>
+<a href="#866" id="866">866</a>
+<a href="#867" id="867">867</a>
+<a href="#868" id="868">868</a>
+<a href="#869" id="869">869</a>
+<a href="#870" id="870">870</a>
+<a href="#871" id="871">871</a>
+<a href="#872" id="872">872</a>
+<a href="#873" id="873">873</a>
+<a href="#874" id="874">874</a>
+<a href="#875" id="875">875</a>
+<a href="#876" id="876">876</a>
+<a href="#877" id="877">877</a>
+<a href="#878" id="878">878</a>
+<a href="#879" id="879">879</a>
+<a href="#880" id="880">880</a>
+<a href="#881" id="881">881</a>
+<a href="#882" id="882">882</a>
+<a href="#883" id="883">883</a>
+<a href="#884" id="884">884</a>
+<a href="#885" id="885">885</a>
+<a href="#886" id="886">886</a>
+<a href="#887" id="887">887</a>
+<a href="#888" id="888">888</a>
+<a href="#889" id="889">889</a>
+<a href="#890" id="890">890</a>
+<a href="#891" id="891">891</a>
+<a href="#892" id="892">892</a>
+<a href="#893" id="893">893</a>
+<a href="#894" id="894">894</a>
+<a href="#895" id="895">895</a>
+<a href="#896" id="896">896</a>
+<a href="#897" id="897">897</a>
+<a href="#898" id="898">898</a>
+<a href="#899" id="899">899</a>
+<a href="#900" id="900">900</a>
+<a href="#901" id="901">901</a>
+<a href="#902" id="902">902</a>
+<a href="#903" id="903">903</a>
+<a href="#904" id="904">904</a>
+<a href="#905" id="905">905</a>
+<a href="#906" id="906">906</a>
+<a href="#907" id="907">907</a>
+<a href="#908" id="908">908</a>
+<a href="#909" id="909">909</a>
+<a href="#910" id="910">910</a>
+<a href="#911" id="911">911</a>
+<a href="#912" id="912">912</a>
+<a href="#913" id="913">913</a>
+<a href="#914" id="914">914</a>
+<a href="#915" id="915">915</a>
+<a href="#916" id="916">916</a>
+<a href="#917" id="917">917</a>
+<a href="#918" id="918">918</a>
+<a href="#919" id="919">919</a>
+<a href="#920" id="920">920</a>
+<a href="#921" id="921">921</a>
+<a href="#922" id="922">922</a>
+<a href="#923" id="923">923</a>
+<a href="#924" id="924">924</a>
+<a href="#925" id="925">925</a>
+<a href="#926" id="926">926</a>
+<a href="#927" id="927">927</a>
+<a href="#928" id="928">928</a>
+<a href="#929" id="929">929</a>
+<a href="#930" id="930">930</a>
+<a href="#931" id="931">931</a>
+<a href="#932" id="932">932</a>
+<a href="#933" id="933">933</a>
+<a href="#934" id="934">934</a>
+<a href="#935" id="935">935</a>
+<a href="#936" id="936">936</a>
+<a href="#937" id="937">937</a>
+<a href="#938" id="938">938</a>
+<a href="#939" id="939">939</a>
+<a href="#940" id="940">940</a>
+<a href="#941" id="941">941</a>
+<a href="#942" id="942">942</a>
 </pre></div><pre class="rust"><code><span class="attr">#[cfg(feature = <span class="string">&quot;basis-universal&quot;</span>)]
 </span><span class="kw">use </span><span class="kw">super</span>::basis::<span class="kw-2">*</span>;
 <span class="attr">#[cfg(feature = <span class="string">&quot;dds&quot;</span>)]
@@ -654,22 +953,20 @@
     renderer::{RenderDevice, RenderQueue},
     texture::BevyDefault,
 };
-<span class="kw">use </span>bevy_asset::HandleUntyped;
+<span class="kw">use </span>bevy_asset::Asset;
 <span class="kw">use </span>bevy_derive::{Deref, DerefMut};
 <span class="kw">use </span>bevy_ecs::system::{lifetimeless::SRes, Resource, SystemParamItem};
-<span class="kw">use </span>bevy_math::Vec2;
-<span class="kw">use </span>bevy_reflect::{Reflect, TypeUuid};
-
+<span class="kw">use </span>bevy_math::{UVec2, Vec2};
+<span class="kw">use </span>bevy_reflect::Reflect;
+<span class="kw">use </span>serde::{Deserialize, Serialize};
 <span class="kw">use </span>std::hash::Hash;
 <span class="kw">use </span>thiserror::Error;
 <span class="kw">use </span>wgpu::{Extent3d, TextureDimension, TextureFormat, TextureViewDescriptor};
 
 <span class="kw">pub const </span>TEXTURE_ASSET_INDEX: u64 = <span class="number">0</span>;
 <span class="kw">pub const </span>SAMPLER_ASSET_INDEX: u64 = <span class="number">1</span>;
-<span class="kw">pub const </span>DEFAULT_IMAGE_HANDLE: HandleUntyped =
-    HandleUntyped::weak_from_u64(Image::TYPE_UUID, <span class="number">13148262314052771789</span>);
 
-<span class="attr">#[derive(Debug)]
+<span class="attr">#[derive(Debug, Serialize, Deserialize, Copy, Clone)]
 </span><span class="kw">pub enum </span>ImageFormat {
     Avif,
     Basis,
@@ -746,63 +1043,40 @@
     }
 }
 
-<span class="attr">#[derive(Reflect, Debug, Clone, TypeUuid)]
-#[uuid = <span class="string">&quot;6ea26da6-6cf8-4ea2-9986-1d7bf6c17d6f&quot;</span>]
+<span class="attr">#[derive(Asset, Reflect, Debug, Clone)]
 #[reflect_value]
 </span><span class="kw">pub struct </span>Image {
     <span class="kw">pub </span>data: Vec&lt;u8&gt;,
     <span class="comment">// TODO: this nesting makes accessing Image metadata verbose. Either flatten out descriptor or add accessors
     </span><span class="kw">pub </span>texture_descriptor: wgpu::TextureDescriptor&lt;<span class="lifetime">&#39;static</span>&gt;,
     <span class="doccomment">/// The [`ImageSampler`] to use during rendering.
-    </span><span class="kw">pub </span>sampler_descriptor: ImageSampler,
+    </span><span class="kw">pub </span>sampler: ImageSampler,
     <span class="kw">pub </span>texture_view_descriptor: <span class="prelude-ty">Option</span>&lt;wgpu::TextureViewDescriptor&lt;<span class="lifetime">&#39;static</span>&gt;&gt;,
 }
 
 <span class="doccomment">/// Used in [`Image`], this determines what image sampler to use when rendering. The default setting,
 /// [`ImageSampler::Default`], will read the sampler from the [`ImagePlugin`](super::ImagePlugin) at setup.
 /// Setting this to [`ImageSampler::Descriptor`] will override the global default descriptor for this [`Image`].
-</span><span class="attr">#[derive(Debug, Default, Clone)]
+</span><span class="attr">#[derive(Debug, Default, Clone, Serialize, Deserialize)]
 </span><span class="kw">pub enum </span>ImageSampler {
     <span class="doccomment">/// Default image sampler, derived from the [`ImagePlugin`](super::ImagePlugin) setup.
     </span><span class="attr">#[default]
     </span>Default,
     <span class="doccomment">/// Custom sampler for this image which will override global default.
-    </span>Descriptor(wgpu::SamplerDescriptor&lt;<span class="lifetime">&#39;static</span>&gt;),
+    </span>Descriptor(ImageSamplerDescriptor),
 }
 
 <span class="kw">impl </span>ImageSampler {
-    <span class="doccomment">/// Returns an image sampler with [`Linear`](crate::render_resource::FilterMode::Linear) min and mag filters
+    <span class="doccomment">/// Returns an image sampler with [`ImageFilterMode::Linear`] min and mag filters
     </span><span class="attr">#[inline]
     </span><span class="kw">pub fn </span>linear() -&gt; ImageSampler {
-        ImageSampler::Descriptor(<span class="self">Self</span>::linear_descriptor())
+        ImageSampler::Descriptor(ImageSamplerDescriptor::linear())
     }
 
-    <span class="doccomment">/// Returns an image sampler with [`Nearest`](crate::render_resource::FilterMode::Nearest) min and mag filters
+    <span class="doccomment">/// Returns an image sampler with [`ImageFilterMode::Nearest`] min and mag filters
     </span><span class="attr">#[inline]
     </span><span class="kw">pub fn </span>nearest() -&gt; ImageSampler {
-        ImageSampler::Descriptor(<span class="self">Self</span>::nearest_descriptor())
-    }
-
-    <span class="doccomment">/// Returns a sampler descriptor with [`Linear`](crate::render_resource::FilterMode::Linear) min and mag filters
-    </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>linear_descriptor() -&gt; wgpu::SamplerDescriptor&lt;<span class="lifetime">&#39;static</span>&gt; {
-        wgpu::SamplerDescriptor {
-            mag_filter: wgpu::FilterMode::Linear,
-            min_filter: wgpu::FilterMode::Linear,
-            mipmap_filter: wgpu::FilterMode::Linear,
-            ..Default::default()
-        }
-    }
-
-    <span class="doccomment">/// Returns a sampler descriptor with [`Nearest`](crate::render_resource::FilterMode::Nearest) min and mag filters
-    </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>nearest_descriptor() -&gt; wgpu::SamplerDescriptor&lt;<span class="lifetime">&#39;static</span>&gt; {
-        wgpu::SamplerDescriptor {
-            mag_filter: wgpu::FilterMode::Nearest,
-            min_filter: wgpu::FilterMode::Nearest,
-            mipmap_filter: wgpu::FilterMode::Nearest,
-            ..Default::default()
-        }
+        ImageSampler::Descriptor(ImageSamplerDescriptor::nearest())
     }
 }
 
@@ -813,6 +1087,301 @@
 /// image sampler.
 </span><span class="attr">#[derive(Resource, Debug, Clone, Deref, DerefMut)]
 </span><span class="kw">pub struct </span>DefaultImageSampler(<span class="kw">pub</span>(<span class="kw">crate</span>) Sampler);
+
+<span class="doccomment">/// How edges should be handled in texture addressing.
+///
+/// This type mirrors [`wgpu::AddressMode`].
+</span><span class="attr">#[derive(Clone, Copy, Debug, Default, Serialize, Deserialize)]
+</span><span class="kw">pub enum </span>ImageAddressMode {
+    <span class="doccomment">/// Clamp the value to the edge of the texture.
+    ///
+    /// -0.25 -&gt; 0.0
+    /// 1.25  -&gt; 1.0
+    </span><span class="attr">#[default]
+    </span>ClampToEdge,
+    <span class="doccomment">/// Repeat the texture in a tiling fashion.
+    ///
+    /// -0.25 -&gt; 0.75
+    /// 1.25 -&gt; 0.25
+    </span>Repeat,
+    <span class="doccomment">/// Repeat the texture, mirroring it every repeat.
+    ///
+    /// -0.25 -&gt; 0.25
+    /// 1.25 -&gt; 0.75
+    </span>MirrorRepeat,
+    <span class="doccomment">/// Clamp the value to the border of the texture
+    /// Requires the wgpu feature [`wgpu::Features::ADDRESS_MODE_CLAMP_TO_BORDER`].
+    ///
+    /// -0.25 -&gt; border
+    /// 1.25 -&gt; border
+    </span>ClampToBorder,
+}
+
+<span class="doccomment">/// Texel mixing mode when sampling between texels.
+///
+/// This type mirrors [`wgpu::FilterMode`].
+</span><span class="attr">#[derive(Clone, Copy, Debug, Default, Serialize, Deserialize)]
+</span><span class="kw">pub enum </span>ImageFilterMode {
+    <span class="doccomment">/// Nearest neighbor sampling.
+    ///
+    /// This creates a pixelated effect when used as a mag filter.
+    </span><span class="attr">#[default]
+    </span>Nearest,
+    <span class="doccomment">/// Linear Interpolation.
+    ///
+    /// This makes textures smooth but blurry when used as a mag filter.
+    </span>Linear,
+}
+
+<span class="doccomment">/// Comparison function used for depth and stencil operations.
+///
+/// This type mirrors [`wgpu::CompareFunction`].
+</span><span class="attr">#[derive(Clone, Copy, Debug, Serialize, Deserialize)]
+</span><span class="kw">pub enum </span>ImageCompareFunction {
+    <span class="doccomment">/// Function never passes
+    </span>Never,
+    <span class="doccomment">/// Function passes if new value less than existing value
+    </span>Less,
+    <span class="doccomment">/// Function passes if new value is equal to existing value. When using
+    /// this compare function, make sure to mark your Vertex Shader&#39;s `@builtin(position)`
+    /// output as `@invariant` to prevent artifacting.
+    </span>Equal,
+    <span class="doccomment">/// Function passes if new value is less than or equal to existing value
+    </span>LessEqual,
+    <span class="doccomment">/// Function passes if new value is greater than existing value
+    </span>Greater,
+    <span class="doccomment">/// Function passes if new value is not equal to existing value. When using
+    /// this compare function, make sure to mark your Vertex Shader&#39;s `@builtin(position)`
+    /// output as `@invariant` to prevent artifacting.
+    </span>NotEqual,
+    <span class="doccomment">/// Function passes if new value is greater than or equal to existing value
+    </span>GreaterEqual,
+    <span class="doccomment">/// Function always passes
+    </span>Always,
+}
+
+<span class="doccomment">/// Color variation to use when the sampler addressing mode is [`ImageAddressMode::ClampToBorder`].
+///
+/// This type mirrors [`wgpu::SamplerBorderColor`].
+</span><span class="attr">#[derive(Clone, Copy, Debug, Serialize, Deserialize)]
+</span><span class="kw">pub enum </span>ImageSamplerBorderColor {
+    <span class="doccomment">/// RGBA color `[0, 0, 0, 0]`.
+    </span>TransparentBlack,
+    <span class="doccomment">/// RGBA color `[0, 0, 0, 1]`.
+    </span>OpaqueBlack,
+    <span class="doccomment">/// RGBA color `[1, 1, 1, 1]`.
+    </span>OpaqueWhite,
+    <span class="doccomment">/// On the Metal wgpu backend, this is equivalent to [`Self::TransparentBlack`] for
+    /// textures that have an alpha component, and equivalent to [`Self::OpaqueBlack`]
+    /// for textures that do not have an alpha component. On other backends,
+    /// this is equivalent to [`Self::TransparentBlack`]. Requires
+    /// [`wgpu::Features::ADDRESS_MODE_CLAMP_TO_ZERO`]. Not supported on the web.
+    </span>Zero,
+}
+
+<span class="doccomment">/// Indicates to an [`ImageLoader`](super::ImageLoader) how an [`Image`] should be sampled.
+/// As this type is part of the [`ImageLoaderSettings`](super::ImageLoaderSettings),
+/// it will be serialized to an image asset `.meta` file which might require a migration in case of
+/// a breaking change.
+///
+/// This types mirrors [`wgpu::SamplerDescriptor`], but that might change in future versions.
+</span><span class="attr">#[derive(Clone, Debug, Serialize, Deserialize)]
+</span><span class="kw">pub struct </span>ImageSamplerDescriptor {
+    <span class="kw">pub </span>label: <span class="prelude-ty">Option</span>&lt;String&gt;,
+    <span class="doccomment">/// How to deal with out of bounds accesses in the u (i.e. x) direction.
+    </span><span class="kw">pub </span>address_mode_u: ImageAddressMode,
+    <span class="doccomment">/// How to deal with out of bounds accesses in the v (i.e. y) direction.
+    </span><span class="kw">pub </span>address_mode_v: ImageAddressMode,
+    <span class="doccomment">/// How to deal with out of bounds accesses in the w (i.e. z) direction.
+    </span><span class="kw">pub </span>address_mode_w: ImageAddressMode,
+    <span class="doccomment">/// How to filter the texture when it needs to be magnified (made larger).
+    </span><span class="kw">pub </span>mag_filter: ImageFilterMode,
+    <span class="doccomment">/// How to filter the texture when it needs to be minified (made smaller).
+    </span><span class="kw">pub </span>min_filter: ImageFilterMode,
+    <span class="doccomment">/// How to filter between mip map levels
+    </span><span class="kw">pub </span>mipmap_filter: ImageFilterMode,
+    <span class="doccomment">/// Minimum level of detail (i.e. mip level) to use.
+    </span><span class="kw">pub </span>lod_min_clamp: f32,
+    <span class="doccomment">/// Maximum level of detail (i.e. mip level) to use.
+    </span><span class="kw">pub </span>lod_max_clamp: f32,
+    <span class="doccomment">/// If this is enabled, this is a comparison sampler using the given comparison function.
+    </span><span class="kw">pub </span>compare: <span class="prelude-ty">Option</span>&lt;ImageCompareFunction&gt;,
+    <span class="doccomment">/// Must be at least 1. If this is not 1, all filter modes must be linear.
+    </span><span class="kw">pub </span>anisotropy_clamp: u16,
+    <span class="doccomment">/// Border color to use when `address_mode`` is [`ImageAddressMode::ClampToBorder`].
+    </span><span class="kw">pub </span>border_color: <span class="prelude-ty">Option</span>&lt;ImageSamplerBorderColor&gt;,
+}
+
+<span class="kw">impl </span>Default <span class="kw">for </span>ImageSamplerDescriptor {
+    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            address_mode_u: Default::default(),
+            address_mode_v: Default::default(),
+            address_mode_w: Default::default(),
+            mag_filter: Default::default(),
+            min_filter: Default::default(),
+            mipmap_filter: Default::default(),
+            lod_min_clamp: <span class="number">0.0</span>,
+            lod_max_clamp: <span class="number">32.0</span>,
+            compare: <span class="prelude-val">None</span>,
+            anisotropy_clamp: <span class="number">1</span>,
+            border_color: <span class="prelude-val">None</span>,
+            label: <span class="prelude-val">None</span>,
+        }
+    }
+}
+
+<span class="kw">impl </span>ImageSamplerDescriptor {
+    <span class="doccomment">/// Returns a sampler descriptor with [`Linear`](crate::render_resource::FilterMode::Linear) min and mag filters
+    </span><span class="attr">#[inline]
+    </span><span class="kw">pub fn </span>linear() -&gt; ImageSamplerDescriptor {
+        ImageSamplerDescriptor {
+            mag_filter: ImageFilterMode::Linear,
+            min_filter: ImageFilterMode::Linear,
+            mipmap_filter: ImageFilterMode::Linear,
+            ..Default::default()
+        }
+    }
+
+    <span class="doccomment">/// Returns a sampler descriptor with [`Nearest`](crate::render_resource::FilterMode::Nearest) min and mag filters
+    </span><span class="attr">#[inline]
+    </span><span class="kw">pub fn </span>nearest() -&gt; ImageSamplerDescriptor {
+        ImageSamplerDescriptor {
+            mag_filter: ImageFilterMode::Nearest,
+            min_filter: ImageFilterMode::Nearest,
+            mipmap_filter: ImageFilterMode::Nearest,
+            ..Default::default()
+        }
+    }
+
+    <span class="kw">pub fn </span>as_wgpu(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; wgpu::SamplerDescriptor {
+        wgpu::SamplerDescriptor {
+            label: <span class="self">self</span>.label.as_deref(),
+            address_mode_u: <span class="self">self</span>.address_mode_u.into(),
+            address_mode_v: <span class="self">self</span>.address_mode_v.into(),
+            address_mode_w: <span class="self">self</span>.address_mode_w.into(),
+            mag_filter: <span class="self">self</span>.mag_filter.into(),
+            min_filter: <span class="self">self</span>.min_filter.into(),
+            mipmap_filter: <span class="self">self</span>.mipmap_filter.into(),
+            lod_min_clamp: <span class="self">self</span>.lod_min_clamp,
+            lod_max_clamp: <span class="self">self</span>.lod_max_clamp,
+            compare: <span class="self">self</span>.compare.map(Into::into),
+            anisotropy_clamp: <span class="self">self</span>.anisotropy_clamp,
+            border_color: <span class="self">self</span>.border_color.map(Into::into),
+        }
+    }
+}
+
+<span class="kw">impl </span>From&lt;ImageAddressMode&gt; <span class="kw">for </span>wgpu::AddressMode {
+    <span class="kw">fn </span>from(value: ImageAddressMode) -&gt; <span class="self">Self </span>{
+        <span class="kw">match </span>value {
+            ImageAddressMode::ClampToEdge =&gt; wgpu::AddressMode::ClampToEdge,
+            ImageAddressMode::Repeat =&gt; wgpu::AddressMode::Repeat,
+            ImageAddressMode::MirrorRepeat =&gt; wgpu::AddressMode::MirrorRepeat,
+            ImageAddressMode::ClampToBorder =&gt; wgpu::AddressMode::ClampToBorder,
+        }
+    }
+}
+
+<span class="kw">impl </span>From&lt;ImageFilterMode&gt; <span class="kw">for </span>wgpu::FilterMode {
+    <span class="kw">fn </span>from(value: ImageFilterMode) -&gt; <span class="self">Self </span>{
+        <span class="kw">match </span>value {
+            ImageFilterMode::Nearest =&gt; wgpu::FilterMode::Nearest,
+            ImageFilterMode::Linear =&gt; wgpu::FilterMode::Linear,
+        }
+    }
+}
+
+<span class="kw">impl </span>From&lt;ImageCompareFunction&gt; <span class="kw">for </span>wgpu::CompareFunction {
+    <span class="kw">fn </span>from(value: ImageCompareFunction) -&gt; <span class="self">Self </span>{
+        <span class="kw">match </span>value {
+            ImageCompareFunction::Never =&gt; wgpu::CompareFunction::Never,
+            ImageCompareFunction::Less =&gt; wgpu::CompareFunction::Less,
+            ImageCompareFunction::Equal =&gt; wgpu::CompareFunction::Equal,
+            ImageCompareFunction::LessEqual =&gt; wgpu::CompareFunction::LessEqual,
+            ImageCompareFunction::Greater =&gt; wgpu::CompareFunction::Greater,
+            ImageCompareFunction::NotEqual =&gt; wgpu::CompareFunction::NotEqual,
+            ImageCompareFunction::GreaterEqual =&gt; wgpu::CompareFunction::GreaterEqual,
+            ImageCompareFunction::Always =&gt; wgpu::CompareFunction::Always,
+        }
+    }
+}
+
+<span class="kw">impl </span>From&lt;ImageSamplerBorderColor&gt; <span class="kw">for </span>wgpu::SamplerBorderColor {
+    <span class="kw">fn </span>from(value: ImageSamplerBorderColor) -&gt; <span class="self">Self </span>{
+        <span class="kw">match </span>value {
+            ImageSamplerBorderColor::TransparentBlack =&gt; wgpu::SamplerBorderColor::TransparentBlack,
+            ImageSamplerBorderColor::OpaqueBlack =&gt; wgpu::SamplerBorderColor::OpaqueBlack,
+            ImageSamplerBorderColor::OpaqueWhite =&gt; wgpu::SamplerBorderColor::OpaqueWhite,
+            ImageSamplerBorderColor::Zero =&gt; wgpu::SamplerBorderColor::Zero,
+        }
+    }
+}
+
+<span class="kw">impl </span>From&lt;wgpu::AddressMode&gt; <span class="kw">for </span>ImageAddressMode {
+    <span class="kw">fn </span>from(value: wgpu::AddressMode) -&gt; <span class="self">Self </span>{
+        <span class="kw">match </span>value {
+            wgpu::AddressMode::ClampToEdge =&gt; ImageAddressMode::ClampToEdge,
+            wgpu::AddressMode::Repeat =&gt; ImageAddressMode::Repeat,
+            wgpu::AddressMode::MirrorRepeat =&gt; ImageAddressMode::MirrorRepeat,
+            wgpu::AddressMode::ClampToBorder =&gt; ImageAddressMode::ClampToBorder,
+        }
+    }
+}
+
+<span class="kw">impl </span>From&lt;wgpu::FilterMode&gt; <span class="kw">for </span>ImageFilterMode {
+    <span class="kw">fn </span>from(value: wgpu::FilterMode) -&gt; <span class="self">Self </span>{
+        <span class="kw">match </span>value {
+            wgpu::FilterMode::Nearest =&gt; ImageFilterMode::Nearest,
+            wgpu::FilterMode::Linear =&gt; ImageFilterMode::Linear,
+        }
+    }
+}
+
+<span class="kw">impl </span>From&lt;wgpu::CompareFunction&gt; <span class="kw">for </span>ImageCompareFunction {
+    <span class="kw">fn </span>from(value: wgpu::CompareFunction) -&gt; <span class="self">Self </span>{
+        <span class="kw">match </span>value {
+            wgpu::CompareFunction::Never =&gt; ImageCompareFunction::Never,
+            wgpu::CompareFunction::Less =&gt; ImageCompareFunction::Less,
+            wgpu::CompareFunction::Equal =&gt; ImageCompareFunction::Equal,
+            wgpu::CompareFunction::LessEqual =&gt; ImageCompareFunction::LessEqual,
+            wgpu::CompareFunction::Greater =&gt; ImageCompareFunction::Greater,
+            wgpu::CompareFunction::NotEqual =&gt; ImageCompareFunction::NotEqual,
+            wgpu::CompareFunction::GreaterEqual =&gt; ImageCompareFunction::GreaterEqual,
+            wgpu::CompareFunction::Always =&gt; ImageCompareFunction::Always,
+        }
+    }
+}
+
+<span class="kw">impl </span>From&lt;wgpu::SamplerBorderColor&gt; <span class="kw">for </span>ImageSamplerBorderColor {
+    <span class="kw">fn </span>from(value: wgpu::SamplerBorderColor) -&gt; <span class="self">Self </span>{
+        <span class="kw">match </span>value {
+            wgpu::SamplerBorderColor::TransparentBlack =&gt; ImageSamplerBorderColor::TransparentBlack,
+            wgpu::SamplerBorderColor::OpaqueBlack =&gt; ImageSamplerBorderColor::OpaqueBlack,
+            wgpu::SamplerBorderColor::OpaqueWhite =&gt; ImageSamplerBorderColor::OpaqueWhite,
+            wgpu::SamplerBorderColor::Zero =&gt; ImageSamplerBorderColor::Zero,
+        }
+    }
+}
+
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; From&lt;wgpu::SamplerDescriptor&lt;<span class="lifetime">&#39;a</span>&gt;&gt; <span class="kw">for </span>ImageSamplerDescriptor {
+    <span class="kw">fn </span>from(value: wgpu::SamplerDescriptor) -&gt; <span class="self">Self </span>{
+        ImageSamplerDescriptor {
+            label: value.label.map(|l| l.to_string()),
+            address_mode_u: value.address_mode_u.into(),
+            address_mode_v: value.address_mode_v.into(),
+            address_mode_w: value.address_mode_w.into(),
+            mag_filter: value.mag_filter.into(),
+            min_filter: value.min_filter.into(),
+            mipmap_filter: value.mipmap_filter.into(),
+            lod_min_clamp: value.lod_min_clamp,
+            lod_max_clamp: value.lod_max_clamp,
+            compare: value.compare.map(Into::into),
+            anisotropy_clamp: value.anisotropy_clamp,
+            border_color: value.border_color.map(Into::into),
+        }
+    }
+}
 
 <span class="kw">impl </span>Default <span class="kw">for </span>Image {
     <span class="doccomment">/// default is a 1x1x1 all &#39;1.0&#39; texture
@@ -835,7 +1404,7 @@
                 usage: wgpu::TextureUsages::TEXTURE_BINDING | wgpu::TextureUsages::COPY_DST,
                 view_formats: <span class="kw-2">&amp;</span>[],
             },
-            sampler_descriptor: ImageSampler::Default,
+            sampler: ImageSampler::Default,
             texture_view_descriptor: <span class="prelude-val">None</span>,
         }
     }
@@ -900,17 +1469,34 @@
         value
     }
 
+    <span class="doccomment">/// Returns the width of a 2D image.
+    </span><span class="attr">#[inline]
+    </span><span class="kw">pub fn </span>width(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; u32 {
+        <span class="self">self</span>.texture_descriptor.size.width
+    }
+
+    <span class="doccomment">/// Returns the height of a 2D image.
+    </span><span class="attr">#[inline]
+    </span><span class="kw">pub fn </span>height(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; u32 {
+        <span class="self">self</span>.texture_descriptor.size.height
+    }
+
     <span class="doccomment">/// Returns the aspect ratio (height/width) of a 2D image.
-    </span><span class="kw">pub fn </span>aspect_2d(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; f32 {
-        <span class="self">self</span>.texture_descriptor.size.height <span class="kw">as </span>f32 / <span class="self">self</span>.texture_descriptor.size.width <span class="kw">as </span>f32
+    </span><span class="attr">#[inline]
+    </span><span class="kw">pub fn </span>aspect_ratio(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; f32 {
+        <span class="self">self</span>.height() <span class="kw">as </span>f32 / <span class="self">self</span>.width() <span class="kw">as </span>f32
+    }
+
+    <span class="doccomment">/// Returns the size of a 2D image as f32.
+    </span><span class="attr">#[inline]
+    </span><span class="kw">pub fn </span>size_f32(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec2 {
+        Vec2::new(<span class="self">self</span>.width() <span class="kw">as </span>f32, <span class="self">self</span>.height() <span class="kw">as </span>f32)
     }
 
     <span class="doccomment">/// Returns the size of a 2D image.
-    </span><span class="kw">pub fn </span>size(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec2 {
-        Vec2::new(
-            <span class="self">self</span>.texture_descriptor.size.width <span class="kw">as </span>f32,
-            <span class="self">self</span>.texture_descriptor.size.height <span class="kw">as </span>f32,
-        )
+    </span><span class="attr">#[inline]
+    </span><span class="kw">pub fn </span>size(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; UVec2 {
+        UVec2::new(<span class="self">self</span>.width(), <span class="self">self</span>.height())
     }
 
     <span class="doccomment">/// Resizes the image to the new size, by removing information or appending 0 to the `data`.
@@ -950,11 +1536,11 @@
         <span class="comment">// Must be a stacked image, and the height must be divisible by layers.
         </span><span class="macro">assert!</span>(<span class="self">self</span>.texture_descriptor.dimension == TextureDimension::D2);
         <span class="macro">assert!</span>(<span class="self">self</span>.texture_descriptor.size.depth_or_array_layers == <span class="number">1</span>);
-        <span class="macro">assert_eq!</span>(<span class="self">self</span>.texture_descriptor.size.height % layers, <span class="number">0</span>);
+        <span class="macro">assert_eq!</span>(<span class="self">self</span>.height() % layers, <span class="number">0</span>);
 
         <span class="self">self</span>.reinterpret_size(Extent3d {
-            width: <span class="self">self</span>.texture_descriptor.size.width,
-            height: <span class="self">self</span>.texture_descriptor.size.height / layers,
+            width: <span class="self">self</span>.width(),
+            height: <span class="self">self</span>.height() / layers,
             depth_or_array_layers: layers,
         });
     }
@@ -994,6 +1580,7 @@
         image_type: ImageType,
         <span class="attr">#[allow(unused_variables)] </span>supported_compressed_formats: CompressedImageFormats,
         is_srgb: bool,
+        image_sampler: ImageSampler,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Image, TextureError&gt; {
         <span class="kw">let </span>format = image_type.to_image_format()<span class="question-mark">?</span>;
 
@@ -1003,17 +1590,17 @@
         // needs to be added, so the image data needs to be converted in those
         // cases.
 
-        </span><span class="kw">match </span>format {
+        </span><span class="kw">let </span><span class="kw-2">mut </span>image = <span class="kw">match </span>format {
             <span class="attr">#[cfg(feature = <span class="string">&quot;basis-universal&quot;</span>)]
             </span>ImageFormat::Basis =&gt; {
-                basis_buffer_to_image(buffer, supported_compressed_formats, is_srgb)
-            }
+                basis_buffer_to_image(buffer, supported_compressed_formats, is_srgb)<span class="question-mark">?
+            </span>}
             <span class="attr">#[cfg(feature = <span class="string">&quot;dds&quot;</span>)]
-            </span>ImageFormat::Dds =&gt; dds_buffer_to_image(buffer, supported_compressed_formats, is_srgb),
+            </span>ImageFormat::Dds =&gt; dds_buffer_to_image(buffer, supported_compressed_formats, is_srgb)<span class="question-mark">?</span>,
             <span class="attr">#[cfg(feature = <span class="string">&quot;ktx2&quot;</span>)]
             </span>ImageFormat::Ktx2 =&gt; {
-                ktx2_buffer_to_image(buffer, supported_compressed_formats, is_srgb)
-            }
+                ktx2_buffer_to_image(buffer, supported_compressed_formats, is_srgb)<span class="question-mark">?
+            </span>}
             <span class="kw">_ </span>=&gt; {
                 <span class="kw">let </span>image_crate_format = format
                     .as_image_crate_format()
@@ -1022,9 +1609,11 @@
                 reader.set_format(image_crate_format);
                 reader.no_limits();
                 <span class="kw">let </span>dyn_img = reader.decode()<span class="question-mark">?</span>;
-                <span class="prelude-val">Ok</span>(<span class="self">Self</span>::from_dynamic(dyn_img, is_srgb))
+                <span class="self">Self</span>::from_dynamic(dyn_img, is_srgb)
             }
-        }
+        };
+        image.sampler = image_sampler;
+        <span class="prelude-val">Ok</span>(image)
     }
 
     <span class="doccomment">/// Whether the texture format is compressed or uncompressed
@@ -1084,14 +1673,20 @@
     </span>TranscodeError(String),
     <span class="attr">#[error(<span class="string">&quot;format requires transcoding: {0:?}&quot;</span>)]
     </span>FormatRequiresTranscodingError(TranscodeFormat),
+    <span class="doccomment">/// Only cubemaps with six faces are supported.
+    </span><span class="attr">#[error(<span class="string">&quot;only cubemaps with six faces are supported&quot;</span>)]
+    </span>IncompleteCubemap,
 }
 
 <span class="doccomment">/// The type of a raw image buffer.
+</span><span class="attr">#[derive(Debug)]
 </span><span class="kw">pub enum </span>ImageType&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// The mime type of an image, for example `&quot;image/png&quot;`.
     </span>MimeType(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str),
     <span class="doccomment">/// The extension of an image file, for example `&quot;png&quot;`.
     </span>Extension(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str),
+    <span class="doccomment">/// The direct format of the image
+    </span>Format(ImageFormat),
 }
 
 <span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; ImageType&lt;<span class="lifetime">&#39;a</span>&gt; {
@@ -1101,6 +1696,7 @@
                 .ok_or_else(|| TextureError::InvalidImageMimeType(mime_type.to_string())),
             ImageType::Extension(extension) =&gt; ImageFormat::from_extension(extension)
                 .ok_or_else(|| TextureError::InvalidImageExtension(extension.to_string())),
+            ImageType::Format(format) =&gt; <span class="prelude-val">Ok</span>(<span class="kw-2">*</span>format),
         }
     }
 }
@@ -1181,9 +1777,11 @@
             image.texture_descriptor.size.width <span class="kw">as </span>f32,
             image.texture_descriptor.size.height <span class="kw">as </span>f32,
         );
-        <span class="kw">let </span>sampler = <span class="kw">match </span>image.sampler_descriptor {
+        <span class="kw">let </span>sampler = <span class="kw">match </span>image.sampler {
             ImageSampler::Default =&gt; (<span class="kw-2">***</span>default_sampler).clone(),
-            ImageSampler::Descriptor(descriptor) =&gt; render_device.create_sampler(<span class="kw-2">&amp;</span>descriptor),
+            ImageSampler::Descriptor(descriptor) =&gt; {
+                render_device.create_sampler(<span class="kw-2">&amp;</span>descriptor.as_wgpu())
+            }
         };
 
         <span class="prelude-val">Ok</span>(GpuImage {
@@ -1275,13 +1873,13 @@
         );
         <span class="macro">assert_eq!</span>(
             Vec2::new(size.width <span class="kw">as </span>f32, size.height <span class="kw">as </span>f32),
-            image.size()
+            image.size_f32()
         );
     }
     <span class="attr">#[test]
     </span><span class="kw">fn </span>image_default_size() {
         <span class="kw">let </span>image = Image::default();
-        <span class="macro">assert_eq!</span>(Vec2::ONE, image.size());
+        <span class="macro">assert_eq!</span>(Vec2::ONE, image.size_f32());
     }
 }
 </code></pre></div></section></main></body></html>

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["Dx12Compiler","PowerPreference","WgpuSettingsPriority"],"fn":["settings_priority_from_env"],"struct":["Backends","WgpuFeatures","WgpuLimits","WgpuSettings"]};
+window.SIDEBAR_ITEMS = {"enum":["Dx12Compiler","PowerPreference","RenderCreation","WgpuSettingsPriority"],"fn":["settings_priority_from_env"],"struct":["Backends","WgpuFeatures","WgpuLimits","WgpuSettings"]};

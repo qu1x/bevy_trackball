@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/n3vu0r/.cargo/registry/src/index.crates.io-6f17d22bba15001f/naga-0.12.3/src/back/spv/writer.rs`."><title>writer.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-9bb858ba049f1f21.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="naga" data-themes="" data-resource-suffix="" data-rustdoc-version="1.72.0 (5680fa18f 2023-08-23)" data-channel="1.72.0" data-search-js="search-f6292fe389d70017.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-0f8c037637f9eb3e.css" data-theme-dark-css="dark-1097f8e92a01e3cf.css" data-theme-ayu-css="ayu-614652228113ac93.css" ><script src="../../../../static.files/storage-59fd9b8ccb335783.js"></script><script defer src="../../../../static.files/source-script-106908c7a7964ba4.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../../static.files/light-0f8c037637f9eb3e.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../../static.files/dark-1097f8e92a01e3cf.css"><link rel="stylesheet" href="../../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../../naga/index.html"><img class="rust-logo" src="../../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/naga-0.13.0/src/back/spv/writer.rs`."><title>writer.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="naga" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../../naga/index.html"><img class="rust-logo" src="../../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1978,16 +1978,13 @@
 <a href="#1978" id="1978">1978</a>
 <a href="#1979" id="1979">1979</a>
 <a href="#1980" id="1980">1980</a>
-<a href="#1981" id="1981">1981</a>
-<a href="#1982" id="1982">1982</a>
-<a href="#1983" id="1983">1983</a>
-<a href="#1984" id="1984">1984</a>
 </pre></div><pre class="rust"><code><span class="kw">use super</span>::{
+    block::DebugInfoInner,
     helpers::{contains_builtin, global_needs_wrapper, map_storage_class},
-    make_local, Block, BlockContext, CachedConstant, CachedExpressions, EntryPointContext, Error,
-    Function, FunctionArgument, GlobalVariable, IdGenerator, Instruction, LocalType, LocalVariable,
-    LogicalLayout, LookupFunctionType, LookupType, LoopContext, Options, PhysicalLayout,
-    PipelineOptions, ResultMember, Writer, WriterFlags, BITS_PER_BYTE,
+    make_local, Block, BlockContext, CachedConstant, CachedExpressions, DebugInfo,
+    EntryPointContext, Error, Function, FunctionArgument, GlobalVariable, IdGenerator, Instruction,
+    LocalType, LocalVariable, LogicalLayout, LookupFunctionType, LookupType, LoopContext, Options,
+    PhysicalLayout, PipelineOptions, ResultMember, Writer, WriterFlags, BITS_PER_BYTE,
 };
 <span class="kw">use crate</span>::{
     arena::{Handle, UniqueArena},
@@ -2031,7 +2028,7 @@
         }
         <span class="kw">let </span>raw_version = ((major <span class="kw">as </span>u32) &lt;&lt; <span class="number">16</span>) | ((minor <span class="kw">as </span>u32) &lt;&lt; <span class="number">8</span>);
 
-        <span class="kw">let </span><span class="kw-2">mut </span>capabilities_used = <span class="kw">crate</span>::FastHashSet::default();
+        <span class="kw">let </span><span class="kw-2">mut </span>capabilities_used = <span class="kw">crate</span>::FastIndexSet::default();
         capabilities_used.insert(spirv::Capability::Shader);
 
         <span class="kw">let </span><span class="kw-2">mut </span>id_gen = IdGenerator::default();
@@ -2044,7 +2041,7 @@
             id_gen,
             capabilities_available: options.capabilities.clone(),
             capabilities_used,
-            extensions_used: <span class="kw">crate</span>::FastHashSet::default(),
+            extensions_used: <span class="kw">crate</span>::FastIndexSet::default(),
             debugs: <span class="macro">vec!</span>[],
             annotations: <span class="macro">vec!</span>[],
             flags: options.flags,
@@ -2313,6 +2310,7 @@
         info: <span class="kw-2">&amp;</span>FunctionInfo,
         ir_module: <span class="kw-2">&amp;</span><span class="kw">crate</span>::Module,
         <span class="kw-2">mut </span>interface: <span class="prelude-ty">Option</span>&lt;FunctionInterface&gt;,
+        debug_info: <span class="kw-2">&amp;</span><span class="prelude-ty">Option</span>&lt;DebugInfoInner&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Word, Error&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>function = Function::default();
 
@@ -2524,8 +2522,7 @@
                         );
                         iface.varying_ids.push(varying_id);
 
-                        <span class="kw">let </span>default_value_id =
-                            <span class="self">self</span>.get_constant_scalar(<span class="kw">crate</span>::ScalarValue::Float(<span class="number">1.0</span>), <span class="number">4</span>);
+                        <span class="kw">let </span>default_value_id = <span class="self">self</span>.get_constant_scalar(<span class="kw">crate</span>::Literal::F32(<span class="number">1.0</span>));
                         prelude
                             .body
                             .push(Instruction::store(varying_id, default_value_id, <span class="prelude-val">None</span>));
@@ -2678,6 +2675,7 @@
             <span class="kw-2">&amp;</span>ir_function.body,
             <span class="kw">super</span>::block::BlockExit::Return,
             LoopContext::default(),
+            debug_info.as_ref(),
         )<span class="question-mark">?</span>;
 
         <span class="comment">// Consume the `BlockContext`, ending its borrows and letting the
@@ -2711,6 +2709,7 @@
         entry_point: <span class="kw-2">&amp;</span><span class="kw">crate</span>::EntryPoint,
         info: <span class="kw-2">&amp;</span>FunctionInfo,
         ir_module: <span class="kw-2">&amp;</span><span class="kw">crate</span>::Module,
+        debug_info: <span class="kw-2">&amp;</span><span class="prelude-ty">Option</span>&lt;DebugInfoInner&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Instruction, Error&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>interface_ids = Vec::new();
         <span class="kw">let </span>function_id = <span class="self">self</span>.write_function(
@@ -2721,6 +2720,7 @@
                 varying_ids: <span class="kw-2">&amp;mut </span>interface_ids,
                 stage: entry_point.stage,
             }),
+            debug_info,
         )<span class="question-mark">?</span>;
 
         <span class="kw">let </span>exec_model = <span class="kw">match </span>entry_point.stage {
@@ -2921,7 +2921,7 @@
             }
             LocalType::BindingArray { base, size } =&gt; {
                 <span class="kw">let </span>inner_ty = <span class="self">self</span>.get_type_id(LookupType::Handle(base));
-                <span class="kw">let </span>scalar_id = <span class="self">self</span>.get_constant_scalar(<span class="kw">crate</span>::ScalarValue::Uint(size), <span class="number">4</span>);
+                <span class="kw">let </span>scalar_id = <span class="self">self</span>.get_constant_scalar(<span class="kw">crate</span>::Literal::U32(size));
                 Instruction::type_array(id, inner_ty, scalar_id)
             }
             LocalType::PointerToBindingArray { base, size, space } =&gt; {
@@ -2975,8 +2975,8 @@
 
                     <span class="kw">let </span>type_id = <span class="self">self</span>.get_type_id(LookupType::Handle(base));
                     <span class="kw">match </span>size {
-                        <span class="kw">crate</span>::ArraySize::Constant(const_handle) =&gt; {
-                            <span class="kw">let </span>length_id = <span class="self">self</span>.constant_ids[const_handle.index()];
+                        <span class="kw">crate</span>::ArraySize::Constant(length) =&gt; {
+                            <span class="kw">let </span>length_id = <span class="self">self</span>.get_index_constant(length.get());
                             Instruction::type_array(id, type_id, length_id)
                         }
                         <span class="kw">crate</span>::ArraySize::Dynamic =&gt; Instruction::type_runtime_array(id, type_id),
@@ -2985,8 +2985,8 @@
                 <span class="kw">crate</span>::TypeInner::BindingArray { base, size } =&gt; {
                     <span class="kw">let </span>type_id = <span class="self">self</span>.get_type_id(LookupType::Handle(base));
                     <span class="kw">match </span>size {
-                        <span class="kw">crate</span>::ArraySize::Constant(const_handle) =&gt; {
-                            <span class="kw">let </span>length_id = <span class="self">self</span>.constant_ids[const_handle.index()];
+                        <span class="kw">crate</span>::ArraySize::Constant(length) =&gt; {
+                            <span class="kw">let </span>length_id = <span class="self">self</span>.get_index_constant(length.get());
                             Instruction::type_array(id, type_id, length_id)
                         }
                         <span class="kw">crate</span>::ArraySize::Dynamic =&gt; Instruction::type_runtime_array(id, type_id),
@@ -3092,20 +3092,29 @@
     }
 
     <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>get_index_constant(<span class="kw-2">&amp;mut </span><span class="self">self</span>, index: Word) -&gt; Word {
-        <span class="self">self</span>.get_constant_scalar(<span class="kw">crate</span>::ScalarValue::Uint(index <span class="kw">as _</span>), <span class="number">4</span>)
+        <span class="self">self</span>.get_constant_scalar(<span class="kw">crate</span>::Literal::U32(index))
     }
 
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>get_constant_scalar(
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>get_constant_scalar_with(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        value: <span class="kw">crate</span>::ScalarValue,
+        value: u8,
+        kind: <span class="kw">crate</span>::ScalarKind,
         width: <span class="kw">crate</span>::Bytes,
-    ) -&gt; Word {
-        <span class="kw">let </span>scalar = CachedConstant::Scalar { value, width };
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;Word, Error&gt; {
+        <span class="prelude-val">Ok</span>(
+            <span class="self">self</span>.get_constant_scalar(<span class="kw">crate</span>::Literal::new(value, kind, width).ok_or(
+                Error::Validation(<span class="string">&quot;Unexpected kind and/or width for Literal&quot;</span>),
+            )<span class="question-mark">?</span>),
+        )
+    }
+
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>get_constant_scalar(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: <span class="kw">crate</span>::Literal) -&gt; Word {
+        <span class="kw">let </span>scalar = CachedConstant::Literal(value);
         <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>id) = <span class="self">self</span>.cached_constants.get(<span class="kw-2">&amp;</span>scalar) {
             <span class="kw">return </span>id;
         }
         <span class="kw">let </span>id = <span class="self">self</span>.id_gen.next();
-        <span class="self">self</span>.write_constant_scalar(id, <span class="kw-2">&amp;</span>value, width, <span class="prelude-val">None</span>);
+        <span class="self">self</span>.write_constant_scalar(id, <span class="kw-2">&amp;</span>value, <span class="prelude-val">None</span>);
         <span class="self">self</span>.cached_constants.insert(scalar, id);
         id
     }
@@ -3113,8 +3122,7 @@
     <span class="kw">fn </span>write_constant_scalar(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
         id: Word,
-        value: <span class="kw-2">&amp;</span><span class="kw">crate</span>::ScalarValue,
-        width: <span class="kw">crate</span>::Bytes,
+        value: <span class="kw-2">&amp;</span><span class="kw">crate</span>::Literal,
         debug_name: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>String&gt;,
     ) {
         <span class="kw">if </span><span class="self">self</span>.flags.contains(WriterFlags::DEBUG) {
@@ -3125,56 +3133,19 @@
         <span class="kw">let </span>type_id = <span class="self">self</span>.get_type_id(LookupType::Local(LocalType::Value {
             vector_size: <span class="prelude-val">None</span>,
             kind: value.scalar_kind(),
-            width,
+            width: value.width(),
             pointer_space: <span class="prelude-val">None</span>,
         }));
-        <span class="kw">let </span>(solo, pair);
         <span class="kw">let </span>instruction = <span class="kw">match </span><span class="kw-2">*</span>value {
-            <span class="kw">crate</span>::ScalarValue::Sint(val) =&gt; {
-                <span class="kw">let </span>words = <span class="kw">match </span>width {
-                    <span class="number">4 </span>=&gt; {
-                        solo = [val <span class="kw">as </span>u32];
-                        <span class="kw-2">&amp;</span>solo[..]
-                    }
-                    <span class="number">8 </span>=&gt; {
-                        pair = [val <span class="kw">as </span>u32, (val &gt;&gt; <span class="number">32</span>) <span class="kw">as </span>u32];
-                        <span class="kw-2">&amp;</span>pair
-                    }
-                    <span class="kw">_ </span>=&gt; <span class="macro">unreachable!</span>(),
-                };
-                Instruction::constant(type_id, id, words)
+            <span class="kw">crate</span>::Literal::F64(value) =&gt; {
+                <span class="kw">let </span>bits = value.to_bits();
+                Instruction::constant_64bit(type_id, id, bits <span class="kw">as </span>u32, (bits &gt;&gt; <span class="number">32</span>) <span class="kw">as </span>u32)
             }
-            <span class="kw">crate</span>::ScalarValue::Uint(val) =&gt; {
-                <span class="kw">let </span>words = <span class="kw">match </span>width {
-                    <span class="number">4 </span>=&gt; {
-                        solo = [val <span class="kw">as </span>u32];
-                        <span class="kw-2">&amp;</span>solo[..]
-                    }
-                    <span class="number">8 </span>=&gt; {
-                        pair = [val <span class="kw">as </span>u32, (val &gt;&gt; <span class="number">32</span>) <span class="kw">as </span>u32];
-                        <span class="kw-2">&amp;</span>pair
-                    }
-                    <span class="kw">_ </span>=&gt; <span class="macro">unreachable!</span>(),
-                };
-                Instruction::constant(type_id, id, words)
-            }
-            <span class="kw">crate</span>::ScalarValue::Float(val) =&gt; {
-                <span class="kw">let </span>words = <span class="kw">match </span>width {
-                    <span class="number">4 </span>=&gt; {
-                        solo = [(val <span class="kw">as </span>f32).to_bits()];
-                        <span class="kw-2">&amp;</span>solo[..]
-                    }
-                    <span class="number">8 </span>=&gt; {
-                        <span class="kw">let </span>bits = f64::to_bits(val);
-                        pair = [bits <span class="kw">as </span>u32, (bits &gt;&gt; <span class="number">32</span>) <span class="kw">as </span>u32];
-                        <span class="kw-2">&amp;</span>pair
-                    }
-                    <span class="kw">_ </span>=&gt; <span class="macro">unreachable!</span>(),
-                };
-                Instruction::constant(type_id, id, words)
-            }
-            <span class="kw">crate</span>::ScalarValue::Bool(<span class="bool-val">true</span>) =&gt; Instruction::constant_true(type_id, id),
-            <span class="kw">crate</span>::ScalarValue::Bool(<span class="bool-val">false</span>) =&gt; Instruction::constant_false(type_id, id),
+            <span class="kw">crate</span>::Literal::F32(value) =&gt; Instruction::constant_32bit(type_id, id, value.to_bits()),
+            <span class="kw">crate</span>::Literal::U32(value) =&gt; Instruction::constant_32bit(type_id, id, value),
+            <span class="kw">crate</span>::Literal::I32(value) =&gt; Instruction::constant_32bit(type_id, id, value <span class="kw">as </span>u32),
+            <span class="kw">crate</span>::Literal::Bool(<span class="bool-val">true</span>) =&gt; Instruction::constant_true(type_id, id),
+            <span class="kw">crate</span>::Literal::Bool(<span class="bool-val">false</span>) =&gt; Instruction::constant_false(type_id, id),
         };
 
         instruction.to_words(<span class="kw-2">&amp;mut </span><span class="self">self</span>.logical_layout.declarations);
@@ -3220,6 +3191,36 @@
         Instruction::constant_null(type_id, null_id)
             .to_words(<span class="kw-2">&amp;mut </span><span class="self">self</span>.logical_layout.declarations);
         null_id
+    }
+
+    <span class="kw">fn </span>write_constant_expr(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        handle: Handle&lt;<span class="kw">crate</span>::Expression&gt;,
+        ir_module: <span class="kw-2">&amp;</span><span class="kw">crate</span>::Module,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;Word, Error&gt; {
+        <span class="kw">let </span>id = <span class="kw">match </span>ir_module.const_expressions[handle] {
+            <span class="kw">crate</span>::Expression::Literal(literal) =&gt; <span class="self">self</span>.get_constant_scalar(literal),
+            <span class="kw">crate</span>::Expression::Constant(constant) =&gt; {
+                <span class="kw">let </span>constant = <span class="kw-2">&amp;</span>ir_module.constants[constant];
+                <span class="self">self</span>.constant_ids[constant.init.index()]
+            }
+            <span class="kw">crate</span>::Expression::ZeroValue(ty) =&gt; {
+                <span class="kw">let </span>type_id = <span class="self">self</span>.get_type_id(LookupType::Handle(ty));
+                <span class="self">self</span>.write_constant_null(type_id)
+            }
+            <span class="kw">crate</span>::Expression::Compose { ty, <span class="kw-2">ref </span>components } =&gt; {
+                <span class="kw">let </span>component_ids: Vec&lt;<span class="kw">_</span>&gt; = components
+                    .iter()
+                    .map(|component| <span class="self">self</span>.constant_ids[component.index()])
+                    .collect();
+                <span class="self">self</span>.get_constant_composite(LookupType::Handle(ty), component_ids.as_slice())
+            }
+            <span class="kw">_ </span>=&gt; <span class="macro">unreachable!</span>(),
+        };
+
+        <span class="self">self</span>.constant_ids[handle.index()] = id;
+
+        <span class="prelude-val">Ok</span>(id)
     }
 
     <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>write_barrier(<span class="kw-2">&amp;mut </span><span class="self">self</span>, flags: <span class="kw">crate</span>::Barrier, block: <span class="kw-2">&amp;mut </span>Block) {
@@ -3582,7 +3583,7 @@
                     substitute_inner_type_lookup =
                         <span class="prelude-val">Some</span>(LookupType::Local(LocalType::PointerToBindingArray {
                             base,
-                            size: remapped_binding_array_size <span class="kw">as </span>u64,
+                            size: remapped_binding_array_size,
                             space: global_variable.space,
                         }))
                 }
@@ -3738,6 +3739,7 @@
         ir_module: <span class="kw-2">&amp;</span><span class="kw">crate</span>::Module,
         mod_info: <span class="kw-2">&amp;</span>ModuleInfo,
         ep_index: <span class="prelude-ty">Option</span>&lt;usize&gt;,
+        debug_info: <span class="kw-2">&amp;</span><span class="prelude-ty">Option</span>&lt;DebugInfo&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt; {
         <span class="kw">fn </span>has_view_index_check(
             ir_module: <span class="kw-2">&amp;</span><span class="kw">crate</span>::Module,
@@ -3785,61 +3787,49 @@
         Instruction::ext_inst_import(<span class="self">self</span>.gl450_ext_inst_id, <span class="string">&quot;GLSL.std.450&quot;</span>)
             .to_words(<span class="kw-2">&amp;mut </span><span class="self">self</span>.logical_layout.ext_inst_imports);
 
+        <span class="kw">let </span><span class="kw-2">mut </span>debug_info_inner = <span class="prelude-val">None</span>;
         <span class="kw">if </span><span class="self">self</span>.flags.contains(WriterFlags::DEBUG) {
-            <span class="self">self</span>.debugs
-                .push(Instruction::source(spirv::SourceLanguage::GLSL, <span class="number">450</span>));
-        }
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(debug_info) = debug_info.as_ref() {
+                <span class="kw">let </span>source_file_id = <span class="self">self</span>.id_gen.next();
+                <span class="self">self</span>.debugs
+                    .push(Instruction::string(debug_info.file_name, source_file_id));
 
-        <span class="self">self</span>.constant_ids.resize(ir_module.constants.len(), <span class="number">0</span>);
-        <span class="comment">// first, output all the scalar constants
-        </span><span class="kw">for </span>(handle, constant) <span class="kw">in </span>ir_module.constants.iter() {
-            <span class="kw">match </span>constant.inner {
-                <span class="kw">crate</span>::ConstantInner::Composite { .. } =&gt; <span class="kw">continue</span>,
-                <span class="kw">crate</span>::ConstantInner::Scalar { width, <span class="kw-2">ref </span>value } =&gt; {
-                    <span class="self">self</span>.constant_ids[handle.index()] = <span class="kw">match </span>constant.name {
-                        <span class="prelude-val">Some</span>(<span class="kw-2">ref </span>name) =&gt; {
-                            <span class="kw">let </span>id = <span class="self">self</span>.id_gen.next();
-                            <span class="self">self</span>.write_constant_scalar(id, value, width, <span class="prelude-val">Some</span>(name));
-                            id
-                        }
-                        <span class="prelude-val">None </span>=&gt; <span class="self">self</span>.get_constant_scalar(<span class="kw-2">*</span>value, width),
-                    };
-                }
+                debug_info_inner = <span class="prelude-val">Some</span>(DebugInfoInner {
+                    source_code: debug_info.source_code,
+                    source_file_id,
+                });
+                <span class="self">self</span>.debugs.push(Instruction::source(
+                    spirv::SourceLanguage::Unknown,
+                    <span class="number">0</span>,
+                    <span class="kw-2">&amp;</span>debug_info_inner,
+                ));
             }
         }
 
-        <span class="comment">// then all types, some of them may rely on constants and struct type set
+        <span class="comment">// write all types
         </span><span class="kw">for </span>(handle, <span class="kw">_</span>) <span class="kw">in </span>ir_module.types.iter() {
             <span class="self">self</span>.write_type_declaration_arena(<span class="kw-2">&amp;</span>ir_module.types, handle)<span class="question-mark">?</span>;
         }
 
-        <span class="comment">// then all the composite constants, they rely on types
-        </span><span class="kw">for </span>(handle, constant) <span class="kw">in </span>ir_module.constants.iter() {
-            <span class="kw">match </span>constant.inner {
-                <span class="kw">crate</span>::ConstantInner::Scalar { .. } =&gt; <span class="kw">continue</span>,
-                <span class="kw">crate</span>::ConstantInner::Composite { ty, <span class="kw-2">ref </span>components } =&gt; {
-                    <span class="kw">let </span>ty = LookupType::Handle(ty);
+        <span class="comment">// write all const-expressions as constants
+        </span><span class="self">self</span>.constant_ids
+            .resize(ir_module.const_expressions.len(), <span class="number">0</span>);
+        <span class="kw">for </span>(handle, <span class="kw">_</span>) <span class="kw">in </span>ir_module.const_expressions.iter() {
+            <span class="self">self</span>.write_constant_expr(handle, ir_module)<span class="question-mark">?</span>;
+        }
+        <span class="macro">debug_assert!</span>(<span class="self">self</span>.constant_ids.iter().all(|<span class="kw-2">&amp;</span>id| id != <span class="number">0</span>));
 
-                    <span class="kw">let </span><span class="kw-2">mut </span>constituent_ids = Vec::with_capacity(components.len());
-                    <span class="kw">for </span>constituent <span class="kw">in </span>components.iter() {
-                        <span class="kw">let </span>constituent_id = <span class="self">self</span>.constant_ids[constituent.index()];
-                        constituent_ids.push(constituent_id);
-                    }
-
-                    <span class="self">self</span>.constant_ids[handle.index()] = <span class="kw">match </span>constant.name {
-                        <span class="prelude-val">Some</span>(<span class="kw-2">ref </span>name) =&gt; {
-                            <span class="kw">let </span>id = <span class="self">self</span>.id_gen.next();
-                            <span class="self">self</span>.write_constant_composite(id, ty, <span class="kw-2">&amp;</span>constituent_ids, <span class="prelude-val">Some</span>(name));
-                            id
-                        }
-                        <span class="prelude-val">None </span>=&gt; <span class="self">self</span>.get_constant_composite(ty, <span class="kw-2">&amp;</span>constituent_ids),
-                    };
+        <span class="comment">// write the name of constants on their respective const-expression initializer
+        </span><span class="kw">if </span><span class="self">self</span>.flags.contains(WriterFlags::DEBUG) {
+            <span class="kw">for </span>(<span class="kw">_</span>, constant) <span class="kw">in </span>ir_module.constants.iter() {
+                <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">ref </span>name) = constant.name {
+                    <span class="kw">let </span>id = <span class="self">self</span>.constant_ids[constant.init.index()];
+                    <span class="self">self</span>.debugs.push(Instruction::name(id, name));
                 }
             }
         }
-        <span class="macro">debug_assert_eq!</span>(<span class="self">self</span>.constant_ids.iter().position(|<span class="kw-2">&amp;</span>id| id == <span class="number">0</span>), <span class="prelude-val">None</span>);
 
-        <span class="comment">// now write all globals
+        <span class="comment">// write all global variables
         </span><span class="kw">for </span>(handle, var) <span class="kw">in </span>ir_module.global_variables.iter() {
             <span class="comment">// If a single entry point was specified, only write `OpVariable` instructions
             // for the globals it actually uses. Emit dummies for the others,
@@ -3856,7 +3846,7 @@
             <span class="self">self</span>.global_variables.push(gvar);
         }
 
-        <span class="comment">// all functions
+        <span class="comment">// write all functions
         </span><span class="kw">for </span>(handle, ir_function) <span class="kw">in </span>ir_module.functions.iter() {
             <span class="kw">let </span>info = <span class="kw-2">&amp;</span>mod_info[handle];
             <span class="kw">if let </span><span class="prelude-val">Some</span>(index) = ep_index {
@@ -3869,17 +3859,18 @@
                     <span class="kw">continue</span>;
                 }
             }
-            <span class="kw">let </span>id = <span class="self">self</span>.write_function(ir_function, info, ir_module, <span class="prelude-val">None</span>)<span class="question-mark">?</span>;
+            <span class="kw">let </span>id = <span class="self">self</span>.write_function(ir_function, info, ir_module, <span class="prelude-val">None</span>, <span class="kw-2">&amp;</span>debug_info_inner)<span class="question-mark">?</span>;
             <span class="self">self</span>.lookup_function.insert(handle, id);
         }
 
-        <span class="comment">// and entry points
+        <span class="comment">// write all or one entry points
         </span><span class="kw">for </span>(index, ir_ep) <span class="kw">in </span>ir_module.entry_points.iter().enumerate() {
             <span class="kw">if </span>ep_index.is_some() &amp;&amp; ep_index != <span class="prelude-val">Some</span>(index) {
                 <span class="kw">continue</span>;
             }
             <span class="kw">let </span>info = mod_info.get_entry_point(index);
-            <span class="kw">let </span>ep_instruction = <span class="self">self</span>.write_entry_point(ir_ep, info, ir_module)<span class="question-mark">?</span>;
+            <span class="kw">let </span>ep_instruction =
+                <span class="self">self</span>.write_entry_point(ir_ep, info, ir_module, <span class="kw-2">&amp;</span>debug_info_inner)<span class="question-mark">?</span>;
             ep_instruction.to_words(<span class="kw-2">&amp;mut </span><span class="self">self</span>.logical_layout.entry_points);
         }
 
@@ -3921,6 +3912,7 @@
         ir_module: <span class="kw-2">&amp;</span><span class="kw">crate</span>::Module,
         info: <span class="kw-2">&amp;</span>ModuleInfo,
         pipeline_options: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>PipelineOptions&gt;,
+        debug_info: <span class="kw-2">&amp;</span><span class="prelude-ty">Option</span>&lt;DebugInfo&gt;,
         words: <span class="kw-2">&amp;mut </span>Vec&lt;Word&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt; {
         <span class="self">self</span>.reset();
@@ -3938,7 +3930,7 @@
             <span class="prelude-val">None </span>=&gt; <span class="prelude-val">None</span>,
         };
 
-        <span class="self">self</span>.write_logical_layout(ir_module, info, ep_index)<span class="question-mark">?</span>;
+        <span class="self">self</span>.write_logical_layout(ir_module, info, ep_index, debug_info)<span class="question-mark">?</span>;
         <span class="self">self</span>.write_physical_layout();
 
         <span class="self">self</span>.physical_layout.in_words(words);
@@ -3947,7 +3939,7 @@
     }
 
     <span class="doccomment">/// Return the set of capabilities the last module written used.
-    </span><span class="kw">pub const fn </span>get_capabilities_used(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw">crate</span>::FastHashSet&lt;spirv::Capability&gt; {
+    </span><span class="kw">pub const fn </span>get_capabilities_used(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw">crate</span>::FastIndexSet&lt;spirv::Capability&gt; {
         <span class="kw-2">&amp;</span><span class="self">self</span>.capabilities_used
     }
 

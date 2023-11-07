@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/n3vu0r/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ecs-0.11.2/src/query/state.rs`."><title>state.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-9bb858ba049f1f21.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="bevy_ecs" data-themes="" data-resource-suffix="" data-rustdoc-version="1.72.0 (5680fa18f 2023-08-23)" data-channel="1.72.0" data-search-js="search-f6292fe389d70017.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-0f8c037637f9eb3e.css" data-theme-dark-css="dark-1097f8e92a01e3cf.css" data-theme-ayu-css="ayu-614652228113ac93.css" ><script src="../../../static.files/storage-59fd9b8ccb335783.js"></script><script defer src="../../../static.files/source-script-106908c7a7964ba4.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../static.files/light-0f8c037637f9eb3e.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../static.files/dark-1097f8e92a01e3cf.css"><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../bevy_ecs/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ecs-0.12.0/src/query/state.rs`."><title>state.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="bevy_ecs" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../bevy_ecs/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1443,11 +1443,99 @@
 <a href="#1443" id="1443">1443</a>
 <a href="#1444" id="1444">1444</a>
 <a href="#1445" id="1445">1445</a>
+<a href="#1446" id="1446">1446</a>
+<a href="#1447" id="1447">1447</a>
+<a href="#1448" id="1448">1448</a>
+<a href="#1449" id="1449">1449</a>
+<a href="#1450" id="1450">1450</a>
+<a href="#1451" id="1451">1451</a>
+<a href="#1452" id="1452">1452</a>
+<a href="#1453" id="1453">1453</a>
+<a href="#1454" id="1454">1454</a>
+<a href="#1455" id="1455">1455</a>
+<a href="#1456" id="1456">1456</a>
+<a href="#1457" id="1457">1457</a>
+<a href="#1458" id="1458">1458</a>
+<a href="#1459" id="1459">1459</a>
+<a href="#1460" id="1460">1460</a>
+<a href="#1461" id="1461">1461</a>
+<a href="#1462" id="1462">1462</a>
+<a href="#1463" id="1463">1463</a>
+<a href="#1464" id="1464">1464</a>
+<a href="#1465" id="1465">1465</a>
+<a href="#1466" id="1466">1466</a>
+<a href="#1467" id="1467">1467</a>
+<a href="#1468" id="1468">1468</a>
+<a href="#1469" id="1469">1469</a>
+<a href="#1470" id="1470">1470</a>
+<a href="#1471" id="1471">1471</a>
+<a href="#1472" id="1472">1472</a>
+<a href="#1473" id="1473">1473</a>
+<a href="#1474" id="1474">1474</a>
+<a href="#1475" id="1475">1475</a>
+<a href="#1476" id="1476">1476</a>
+<a href="#1477" id="1477">1477</a>
+<a href="#1478" id="1478">1478</a>
+<a href="#1479" id="1479">1479</a>
+<a href="#1480" id="1480">1480</a>
+<a href="#1481" id="1481">1481</a>
+<a href="#1482" id="1482">1482</a>
+<a href="#1483" id="1483">1483</a>
+<a href="#1484" id="1484">1484</a>
+<a href="#1485" id="1485">1485</a>
+<a href="#1486" id="1486">1486</a>
+<a href="#1487" id="1487">1487</a>
+<a href="#1488" id="1488">1488</a>
+<a href="#1489" id="1489">1489</a>
+<a href="#1490" id="1490">1490</a>
+<a href="#1491" id="1491">1491</a>
+<a href="#1492" id="1492">1492</a>
+<a href="#1493" id="1493">1493</a>
+<a href="#1494" id="1494">1494</a>
+<a href="#1495" id="1495">1495</a>
+<a href="#1496" id="1496">1496</a>
+<a href="#1497" id="1497">1497</a>
+<a href="#1498" id="1498">1498</a>
+<a href="#1499" id="1499">1499</a>
+<a href="#1500" id="1500">1500</a>
+<a href="#1501" id="1501">1501</a>
+<a href="#1502" id="1502">1502</a>
+<a href="#1503" id="1503">1503</a>
+<a href="#1504" id="1504">1504</a>
+<a href="#1505" id="1505">1505</a>
+<a href="#1506" id="1506">1506</a>
+<a href="#1507" id="1507">1507</a>
+<a href="#1508" id="1508">1508</a>
+<a href="#1509" id="1509">1509</a>
+<a href="#1510" id="1510">1510</a>
+<a href="#1511" id="1511">1511</a>
+<a href="#1512" id="1512">1512</a>
+<a href="#1513" id="1513">1513</a>
+<a href="#1514" id="1514">1514</a>
+<a href="#1515" id="1515">1515</a>
+<a href="#1516" id="1516">1516</a>
+<a href="#1517" id="1517">1517</a>
+<a href="#1518" id="1518">1518</a>
+<a href="#1519" id="1519">1519</a>
+<a href="#1520" id="1520">1520</a>
+<a href="#1521" id="1521">1521</a>
+<a href="#1522" id="1522">1522</a>
+<a href="#1523" id="1523">1523</a>
+<a href="#1524" id="1524">1524</a>
+<a href="#1525" id="1525">1525</a>
+<a href="#1526" id="1526">1526</a>
+<a href="#1527" id="1527">1527</a>
+<a href="#1528" id="1528">1528</a>
+<a href="#1529" id="1529">1529</a>
+<a href="#1530" id="1530">1530</a>
+<a href="#1531" id="1531">1531</a>
+<a href="#1532" id="1532">1532</a>
 </pre></div><pre class="rust"><code><span class="kw">use crate</span>::{
     archetype::{Archetype, ArchetypeComponentId, ArchetypeGeneration, ArchetypeId},
+    change_detection::Mut,
     component::{ComponentId, Tick},
     entity::Entity,
-    prelude::FromWorld,
+    prelude::{Component, FromWorld},
     query::{
         Access, BatchingStrategy, DebugCheckedUnwrap, FilteredAccess, QueryCombinationIter,
         QueryIter, QueryParIter, WorldQuery,
@@ -1456,11 +1544,14 @@
     world::{unsafe_world_cell::UnsafeWorldCell, World, WorldId},
 };
 <span class="attr">#[cfg(feature = <span class="string">&quot;trace&quot;</span>)]
-</span><span class="kw">use </span>bevy_utils::tracing::Instrument;
+</span><span class="kw">use </span>bevy_utils::tracing::Span;
 <span class="kw">use </span>fixedbitset::FixedBitSet;
-<span class="kw">use </span>std::{borrow::Borrow, fmt, mem::MaybeUninit};
+<span class="kw">use </span>std::{any::TypeId, borrow::Borrow, fmt, mem::MaybeUninit};
 
-<span class="kw">use super</span>::{NopWorldQuery, QueryManyIter, ROQueryItem, ReadOnlyWorldQuery};
+<span class="kw">use super</span>::{
+    NopWorldQuery, QueryComponentError, QueryEntityError, QueryManyIter, QuerySingleError,
+    ROQueryItem, ReadOnlyWorldQuery,
+};
 
 <span class="doccomment">/// Provides scoped access to a [`World`] state according to a given [`WorldQuery`] and query filter.
 </span><span class="attr">#[repr(C)]
@@ -1480,16 +1571,17 @@
     </span><span class="kw">pub</span>(<span class="kw">crate</span>) matched_archetype_ids: Vec&lt;ArchetypeId&gt;,
     <span class="kw">pub</span>(<span class="kw">crate</span>) fetch_state: Q::State,
     <span class="kw">pub</span>(<span class="kw">crate</span>) filter_state: F::State,
+    <span class="attr">#[cfg(feature = <span class="string">&quot;trace&quot;</span>)]
+    </span>par_iter_span: Span,
 }
 
 <span class="kw">impl</span>&lt;Q: WorldQuery, F: ReadOnlyWorldQuery&gt; std::fmt::Debug <span class="kw">for </span>QueryState&lt;Q, F&gt; {
     <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
-        <span class="macro">write!</span>(
-            f,
-            <span class="string">&quot;QueryState&lt;Q, F&gt; matched_table_ids: {} matched_archetype_ids: {}&quot;</span>,
-            <span class="self">self</span>.matched_table_ids.len(),
-            <span class="self">self</span>.matched_archetype_ids.len()
-        )
+        f.debug_struct(<span class="string">&quot;QueryState&quot;</span>)
+            .field(<span class="string">&quot;world_id&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.world_id)
+            .field(<span class="string">&quot;matched_table_count&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.matched_table_ids.len())
+            .field(<span class="string">&quot;matched_archetype_count&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.matched_archetype_ids.len())
+            .finish_non_exhaustive()
     }
 }
 
@@ -1567,18 +1659,56 @@
             matched_tables: Default::default(),
             matched_archetypes: Default::default(),
             archetype_component_access: Default::default(),
+            <span class="attr">#[cfg(feature = <span class="string">&quot;trace&quot;</span>)]
+            </span>par_iter_span: <span class="macro">bevy_utils::tracing::info_span!</span>(
+                <span class="string">&quot;par_for_each&quot;</span>,
+                query = std::any::type_name::&lt;Q&gt;(),
+                filter = std::any::type_name::&lt;F&gt;(),
+            ),
         };
         state.update_archetypes(world);
         state
     }
 
     <span class="doccomment">/// Checks if the query is empty for the given [`World`], where the last change and current tick are given.
+    ///
+    /// # Panics
+    ///
+    /// If `world` does not match the one used to call `QueryState::new` for this instance.
     </span><span class="attr">#[inline]
     </span><span class="kw">pub fn </span>is_empty(<span class="kw-2">&amp;</span><span class="self">self</span>, world: <span class="kw-2">&amp;</span>World, last_run: Tick, this_run: Tick) -&gt; bool {
-        <span class="comment">// SAFETY: NopFetch does not access any members while &amp;self ensures no one has exclusive access
+        <span class="self">self</span>.validate_world(world.id());
+        <span class="comment">// SAFETY:
+        // - We have read-only access to the entire world.
+        // - The world has been validated.
+        </span><span class="kw">unsafe </span>{
+            <span class="self">self</span>.is_empty_unsafe_world_cell(
+                world.as_unsafe_world_cell_readonly(),
+                last_run,
+                this_run,
+            )
+        }
+    }
+
+    <span class="doccomment">/// Checks if the query is empty for the given [`UnsafeWorldCell`].
+    ///
+    /// # Safety
+    ///
+    /// - `world` must have permission to read any components required by this instance&#39;s `F` [`WorldQuery`].
+    /// - `world` must match the one used to create this [`QueryState`].
+    </span><span class="attr">#[inline]
+    </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">unsafe fn </span>is_empty_unsafe_world_cell(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        world: UnsafeWorldCell,
+        last_run: Tick,
+        this_run: Tick,
+    ) -&gt; bool {
+        <span class="comment">// SAFETY:
+        // - The caller ensures that `world` has permission to access any data used by the filter.
+        // - The caller ensures that the world matches.
         </span><span class="kw">unsafe </span>{
             <span class="self">self</span>.as_nop()
-                .iter_unchecked_manual(world.as_unsafe_world_cell_readonly(), last_run, this_run)
+                .iter_unchecked_manual(world, last_run, this_run)
                 .next()
                 .is_none()
         }
@@ -1618,12 +1748,11 @@
     </span><span class="kw">pub fn </span>update_archetypes_unsafe_world_cell(<span class="kw-2">&amp;mut </span><span class="self">self</span>, world: UnsafeWorldCell) {
         <span class="self">self</span>.validate_world(world.id());
         <span class="kw">let </span>archetypes = world.archetypes();
-        <span class="kw">let </span>new_generation = archetypes.generation();
-        <span class="kw">let </span>old_generation = std::mem::replace(<span class="kw-2">&amp;mut </span><span class="self">self</span>.archetype_generation, new_generation);
-        <span class="kw">let </span>archetype_index_range = old_generation.value()..new_generation.value();
+        <span class="kw">let </span>old_generation =
+            std::mem::replace(<span class="kw-2">&amp;mut </span><span class="self">self</span>.archetype_generation, archetypes.generation());
 
-        <span class="kw">for </span>archetype_index <span class="kw">in </span>archetype_index_range {
-            <span class="self">self</span>.new_archetype(<span class="kw-2">&amp;</span>archetypes[ArchetypeId::new(archetype_index)]);
+        <span class="kw">for </span>archetype <span class="kw">in </span><span class="kw-2">&amp;</span>archetypes[old_generation..] {
+            <span class="self">self</span>.new_archetype(archetype);
         }
     }
 
@@ -1634,12 +1763,18 @@
     /// Many unsafe query methods require the world to match for soundness. This function is the easiest
     /// way of ensuring that it matches.
     </span><span class="attr">#[inline]
+    #[track_caller]
     </span><span class="kw">pub fn </span>validate_world(<span class="kw-2">&amp;</span><span class="self">self</span>, world_id: WorldId) {
-        <span class="macro">assert!</span>(
-            world_id == <span class="self">self</span>.world_id,
-            <span class="string">&quot;Attempted to use {} with a mismatched World. QueryStates can only be used with the World they were created from.&quot;</span>,
-                std::any::type_name::&lt;<span class="self">Self</span>&gt;(),
-        );
+        <span class="attr">#[inline(never)]
+        #[track_caller]
+        #[cold]
+        </span><span class="kw">fn </span>panic_mismatched(this: WorldId, other: WorldId) -&gt; ! {
+            <span class="macro">panic!</span>(<span class="string">&quot;Encountered a mismatched World. This QueryState was created from {this:?}, but a method was called using {other:?}.&quot;</span>);
+        }
+
+        <span class="kw">if </span><span class="self">self</span>.world_id != world_id {
+            panic_mismatched(<span class="self">self</span>.world_id, world_id);
+        }
     }
 
     <span class="doccomment">/// Update the current [`QueryState`] with information from the provided [`Archetype`]
@@ -1734,10 +1869,12 @@
     ) -&gt; <span class="prelude-ty">Result</span>&lt;[ROQueryItem&lt;<span class="lifetime">&#39;w</span>, Q&gt;; N], QueryEntityError&gt; {
         <span class="self">self</span>.update_archetypes(world);
 
-        <span class="comment">// SAFETY: update_archetypes validates the `World` matches
+        <span class="comment">// SAFETY:
+        // - We have read-only access to the entire world.
+        // - `update_archetypes` validates that the `World` matches.
         </span><span class="kw">unsafe </span>{
             <span class="self">self</span>.get_many_read_only_manual(
-                world,
+                world.as_unsafe_world_cell_readonly(),
                 entities,
                 world.last_change_tick(),
                 world.read_change_tick(),
@@ -1920,16 +2057,122 @@
         }
     }
 
+    <span class="doccomment">/// Returns a shared reference to the component `T` of the given [`Entity`].
+    ///
+    /// In case of a nonexisting entity or mismatched component, a [`QueryEntityError`] is returned instead.
+    </span><span class="attr">#[inline]
+    </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>get_component&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>, <span class="lifetime">&#39;r</span>, T: Component&gt;(
+        <span class="kw-2">&amp;</span><span class="lifetime">&#39;s </span><span class="self">self</span>,
+        world: UnsafeWorldCell&lt;<span class="lifetime">&#39;w</span>&gt;,
+        entity: Entity,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;r </span>T, QueryComponentError&gt;
+    <span class="kw">where
+        </span><span class="lifetime">&#39;w</span>: <span class="lifetime">&#39;r</span>,
+    {
+        <span class="kw">let </span>entity_ref = world
+            .get_entity(entity)
+            .ok_or(QueryComponentError::NoSuchEntity)<span class="question-mark">?</span>;
+        <span class="kw">let </span>component_id = world
+            .components()
+            .get_id(TypeId::of::&lt;T&gt;())
+            .ok_or(QueryComponentError::MissingComponent)<span class="question-mark">?</span>;
+        <span class="kw">let </span>archetype_component = entity_ref
+            .archetype()
+            .get_archetype_component_id(component_id)
+            .ok_or(QueryComponentError::MissingComponent)<span class="question-mark">?</span>;
+        <span class="kw">if </span><span class="self">self
+            </span>.archetype_component_access
+            .has_read(archetype_component)
+        {
+            <span class="comment">// SAFETY: `world` must have access to the component `T` for this entity,
+            // since it was registered in `self`&#39;s archetype component access set.
+            </span><span class="kw">unsafe </span>{ entity_ref.get::&lt;T&gt;() }.ok_or(QueryComponentError::MissingComponent)
+        } <span class="kw">else </span>{
+            <span class="prelude-val">Err</span>(QueryComponentError::MissingReadAccess)
+        }
+    }
+
+    <span class="doccomment">/// Returns a shared reference to the component `T` of the given [`Entity`].
+    ///
+    /// # Panics
+    ///
+    /// If given a nonexisting entity or mismatched component, this will panic.
+    </span><span class="attr">#[inline]
+    </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>component&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>, <span class="lifetime">&#39;r</span>, T: Component&gt;(
+        <span class="kw-2">&amp;</span><span class="lifetime">&#39;s </span><span class="self">self</span>,
+        world: UnsafeWorldCell&lt;<span class="lifetime">&#39;w</span>&gt;,
+        entity: Entity,
+    ) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;r </span>T
+    <span class="kw">where
+        </span><span class="lifetime">&#39;w</span>: <span class="lifetime">&#39;r</span>,
+    {
+        <span class="kw">match </span><span class="self">self</span>.get_component(world, entity) {
+            <span class="prelude-val">Ok</span>(component) =&gt; component,
+            <span class="prelude-val">Err</span>(error) =&gt; {
+                <span class="macro">panic!</span>(
+                    <span class="string">&quot;Cannot get component `{:?}` from {entity:?}: {error}&quot;</span>,
+                    TypeId::of::&lt;T&gt;()
+                )
+            }
+        }
+    }
+
+    <span class="doccomment">/// Returns a mutable reference to the component `T` of the given entity.
+    ///
+    /// In case of a nonexisting entity or mismatched component, a [`QueryComponentError`] is returned instead.
+    ///
+    /// # Safety
+    ///
+    /// This function makes it possible to violate Rust&#39;s aliasing guarantees.
+    /// You must make sure this call does not result in multiple mutable references to the same component.
+    </span><span class="attr">#[inline]
+    </span><span class="kw">pub unsafe fn </span>get_component_unchecked_mut&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>, <span class="lifetime">&#39;r</span>, T: Component&gt;(
+        <span class="kw-2">&amp;</span><span class="lifetime">&#39;s </span><span class="self">self</span>,
+        world: UnsafeWorldCell&lt;<span class="lifetime">&#39;w</span>&gt;,
+        entity: Entity,
+        last_run: Tick,
+        this_run: Tick,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;Mut&lt;<span class="lifetime">&#39;r</span>, T&gt;, QueryComponentError&gt;
+    <span class="kw">where
+        </span><span class="lifetime">&#39;w</span>: <span class="lifetime">&#39;r</span>,
+    {
+        <span class="kw">let </span>entity_ref = world
+            .get_entity(entity)
+            .ok_or(QueryComponentError::NoSuchEntity)<span class="question-mark">?</span>;
+        <span class="kw">let </span>component_id = world
+            .components()
+            .get_id(TypeId::of::&lt;T&gt;())
+            .ok_or(QueryComponentError::MissingComponent)<span class="question-mark">?</span>;
+        <span class="kw">let </span>archetype_component = entity_ref
+            .archetype()
+            .get_archetype_component_id(component_id)
+            .ok_or(QueryComponentError::MissingComponent)<span class="question-mark">?</span>;
+        <span class="kw">if </span><span class="self">self
+            </span>.archetype_component_access
+            .has_write(archetype_component)
+        {
+            <span class="comment">// SAFETY: It is the responsibility of the caller to ensure it is sound to get a
+            // mutable reference to this entity&#39;s component `T`.
+            </span><span class="kw">let </span>result = <span class="kw">unsafe </span>{ entity_ref.get_mut_using_ticks::&lt;T&gt;(last_run, this_run) };
+
+            result.ok_or(QueryComponentError::MissingComponent)
+        } <span class="kw">else </span>{
+            <span class="prelude-val">Err</span>(QueryComponentError::MissingWriteAccess)
+        }
+    }
+
     <span class="doccomment">/// Gets the read-only query results for the given [`World`] and array of [`Entity`], where the last change and
     /// the current change tick are given.
     ///
     /// # Safety
     ///
-    /// This must be called on the same `World` that the `Query` was generated from:
+    /// * `world` must have permission to read all of the components returned from this call.
+    /// No mutable references may coexist with any of the returned references.
+    /// * This must be called on the same `World` that the `Query` was generated from:
     /// use `QueryState::validate_world` to verify this.
     </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">unsafe fn </span>get_many_read_only_manual&lt;<span class="lifetime">&#39;w</span>, <span class="kw">const </span>N: usize&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        world: <span class="kw-2">&amp;</span><span class="lifetime">&#39;w </span>World,
+        world: UnsafeWorldCell&lt;<span class="lifetime">&#39;w</span>&gt;,
         entities: [Entity; N],
         last_run: Tick,
         this_run: Tick,
@@ -1939,12 +2182,9 @@
         <span class="kw">for </span>(value, entity) <span class="kw">in </span>std::iter::zip(<span class="kw-2">&amp;mut </span>values, entities) {
             <span class="comment">// SAFETY: fetch is read-only
             // and world must be validated
-            </span><span class="kw">let </span>item = <span class="self">self</span>.as_readonly().get_unchecked_manual(
-                world.as_unsafe_world_cell_readonly(),
-                entity,
-                last_run,
-                this_run,
-            )<span class="question-mark">?</span>;
+            </span><span class="kw">let </span>item = <span class="self">self
+                </span>.as_readonly()
+                .get_unchecked_manual(world, entity, last_run, this_run)<span class="question-mark">?</span>;
             <span class="kw-2">*</span>value = MaybeUninit::new(item);
         }
 
@@ -2505,7 +2745,9 @@
                     <span class="kw">while </span>offset &lt; table.entity_count() {
                         <span class="kw">let </span>func = func.clone();
                         <span class="kw">let </span>len = batch_size.min(table.entity_count() - offset);
-                        <span class="kw">let </span>task = <span class="kw">async move </span>{
+                        scope.spawn(<span class="kw">async move </span>{
+                            <span class="attr">#[cfg(feature = <span class="string">&quot;trace&quot;</span>)]
+                            </span><span class="kw">let </span>_span = <span class="self">self</span>.par_iter_span.enter();
                             <span class="kw">let </span><span class="kw-2">mut </span>fetch =
                                 Q::init_fetch(world, <span class="kw-2">&amp;</span><span class="self">self</span>.fetch_state, last_run, this_run);
                             <span class="kw">let </span><span class="kw-2">mut </span>filter =
@@ -2523,17 +2765,7 @@
                                 }
                                 func(Q::fetch(<span class="kw-2">&amp;mut </span>fetch, <span class="kw-2">*</span>entity, row));
                             }
-                        };
-                        <span class="attr">#[cfg(feature = <span class="string">&quot;trace&quot;</span>)]
-                        </span><span class="kw">let </span>span = <span class="macro">bevy_utils::tracing::info_span!</span>(
-                            <span class="string">&quot;par_for_each&quot;</span>,
-                            query = std::any::type_name::&lt;Q&gt;(),
-                            filter = std::any::type_name::&lt;F&gt;(),
-                            count = len,
-                        );
-                        <span class="attr">#[cfg(feature = <span class="string">&quot;trace&quot;</span>)]
-                        </span><span class="kw">let </span>task = task.instrument(span);
-                        scope.spawn(task);
+                        });
                         offset += batch_size;
                     }
                 }
@@ -2549,7 +2781,9 @@
                     <span class="kw">while </span>offset &lt; archetype.len() {
                         <span class="kw">let </span>func = func.clone();
                         <span class="kw">let </span>len = batch_size.min(archetype.len() - offset);
-                        <span class="kw">let </span>task = <span class="kw">async move </span>{
+                        scope.spawn(<span class="kw">async move </span>{
+                            <span class="attr">#[cfg(feature = <span class="string">&quot;trace&quot;</span>)]
+                            </span><span class="kw">let </span>_span = <span class="self">self</span>.par_iter_span.enter();
                             <span class="kw">let </span><span class="kw-2">mut </span>fetch =
                                 Q::init_fetch(world, <span class="kw-2">&amp;</span><span class="self">self</span>.fetch_state, last_run, this_run);
                             <span class="kw">let </span><span class="kw-2">mut </span>filter =
@@ -2577,19 +2811,8 @@
                                     archetype_entity.table_row(),
                                 ));
                             }
-                        };
+                        });
 
-                        <span class="attr">#[cfg(feature = <span class="string">&quot;trace&quot;</span>)]
-                        </span><span class="kw">let </span>span = <span class="macro">bevy_utils::tracing::info_span!</span>(
-                            <span class="string">&quot;par_for_each&quot;</span>,
-                            query = std::any::type_name::&lt;Q&gt;(),
-                            filter = std::any::type_name::&lt;F&gt;(),
-                            count = len,
-                        );
-                        <span class="attr">#[cfg(feature = <span class="string">&quot;trace&quot;</span>)]
-                        </span><span class="kw">let </span>task = task.instrument(span);
-
-                        scope.spawn(task);
                         offset += batch_size;
                     }
                 }
@@ -2610,7 +2833,10 @@
     </span><span class="attr">#[track_caller]
     #[inline]
     </span><span class="kw">pub fn </span>single&lt;<span class="lifetime">&#39;w</span>&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, world: <span class="kw-2">&amp;</span><span class="lifetime">&#39;w </span>World) -&gt; ROQueryItem&lt;<span class="lifetime">&#39;w</span>, Q&gt; {
-        <span class="self">self</span>.get_single(world).unwrap()
+        <span class="kw">match </span><span class="self">self</span>.get_single(world) {
+            <span class="prelude-val">Ok</span>(items) =&gt; items,
+            <span class="prelude-val">Err</span>(error) =&gt; <span class="macro">panic!</span>(<span class="string">&quot;Cannot get single mutable query result: {error}&quot;</span>),
+        }
     }
 
     <span class="doccomment">/// Returns a single immutable query result when there is exactly one entity matching
@@ -2649,7 +2875,10 @@
     #[inline]
     </span><span class="kw">pub fn </span>single_mut&lt;<span class="lifetime">&#39;w</span>&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, world: <span class="kw-2">&amp;</span><span class="lifetime">&#39;w </span><span class="kw-2">mut </span>World) -&gt; Q::Item&lt;<span class="lifetime">&#39;w</span>&gt; {
         <span class="comment">// SAFETY: query has unique world access
-        </span><span class="self">self</span>.get_single_mut(world).unwrap()
+        </span><span class="kw">match </span><span class="self">self</span>.get_single_mut(world) {
+            <span class="prelude-val">Ok</span>(items) =&gt; items,
+            <span class="prelude-val">Err</span>(error) =&gt; <span class="macro">panic!</span>(<span class="string">&quot;Cannot get single query result: {error}&quot;</span>),
+        }
     }
 
     <span class="doccomment">/// Returns a single mutable query result when there is exactly one entity matching
@@ -2721,38 +2950,6 @@
             (<span class="prelude-val">Some</span>(<span class="kw">_</span>), <span class="kw">_</span>) =&gt; <span class="prelude-val">Err</span>(QuerySingleError::MultipleEntities(std::any::type_name::&lt;
                 <span class="self">Self</span>,
             &gt;())),
-        }
-    }
-}
-
-<span class="doccomment">/// An error that occurs when retrieving a specific [`Entity`]&#39;s query result from [`Query`](crate::system::Query) or [`QueryState`].
-</span><span class="comment">// TODO: return the type_name as part of this error
-</span><span class="attr">#[derive(Debug, PartialEq, Eq, Clone, Copy)]
-</span><span class="kw">pub enum </span>QueryEntityError {
-    <span class="doccomment">/// The given [`Entity`]&#39;s components do not match the query.
-    ///
-    /// Either it does not have a requested component, or it has a component which the query filters out.
-    </span>QueryDoesNotMatch(Entity),
-    <span class="doccomment">/// The given [`Entity`] does not exist.
-    </span>NoSuchEntity(Entity),
-    <span class="doccomment">/// The [`Entity`] was requested mutably more than once.
-    ///
-    /// See [`QueryState::get_many_mut`] for an example.
-    </span>AliasedMutability(Entity),
-}
-
-<span class="kw">impl </span>std::error::Error <span class="kw">for </span>QueryEntityError {}
-
-<span class="kw">impl </span>fmt::Display <span class="kw">for </span>QueryEntityError {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
-        <span class="kw">match </span><span class="self">self </span>{
-            QueryEntityError::QueryDoesNotMatch(<span class="kw">_</span>) =&gt; {
-                <span class="macro">write!</span>(f, <span class="string">&quot;The given entity&#39;s components do not match the query.&quot;</span>)
-            }
-            QueryEntityError::NoSuchEntity(<span class="kw">_</span>) =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;The requested entity does not exist.&quot;</span>),
-            QueryEntityError::AliasedMutability(<span class="kw">_</span>) =&gt; {
-                <span class="macro">write!</span>(f, <span class="string">&quot;The entity was requested mutably more than once.&quot;</span>)
-            }
         }
     }
 }
@@ -2863,29 +3060,6 @@
 
         <span class="kw">let </span><span class="kw-2">mut </span>query_state = world_1.query::&lt;Entity&gt;();
         <span class="kw">let </span>_panics = query_state.get_many_mut(<span class="kw-2">&amp;mut </span>world_2, []);
-    }
-}
-
-<span class="doccomment">/// An error that occurs when evaluating a [`Query`](crate::system::Query) or [`QueryState`] as a single expected result via
-/// [`get_single`](crate::system::Query::get_single) or [`get_single_mut`](crate::system::Query::get_single_mut).
-</span><span class="attr">#[derive(Debug)]
-</span><span class="kw">pub enum </span>QuerySingleError {
-    <span class="doccomment">/// No entity fits the query.
-    </span>NoEntities(<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str),
-    <span class="doccomment">/// Multiple entities fit the query.
-    </span>MultipleEntities(<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str),
-}
-
-<span class="kw">impl </span>std::error::Error <span class="kw">for </span>QuerySingleError {}
-
-<span class="kw">impl </span>std::fmt::Display <span class="kw">for </span>QuerySingleError {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter) -&gt; std::fmt::Result {
-        <span class="kw">match </span><span class="self">self </span>{
-            QuerySingleError::NoEntities(query) =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;No entities fit the query {query}&quot;</span>),
-            QuerySingleError::MultipleEntities(query) =&gt; {
-                <span class="macro">write!</span>(f, <span class="string">&quot;Multiple entities fit the query {query}!&quot;</span>)
-            }
-        }
     }
 }
 </code></pre></div></section></main></body></html>

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"attr":["reflect_trait"],"derive":["FromReflect","Reflect"],"struct":["ReflectDefault","ReflectDeserialize","ReflectFromReflect","ReflectSerialize"],"trait":["FromReflect","GetField","GetTupleStructField","Reflect","Struct","TupleStruct"]};
+window.SIDEBAR_ITEMS = {"attr":["reflect_trait"],"derive":["FromReflect","Reflect","TypePath"],"struct":["ReflectDefault","ReflectDeserialize","ReflectFromReflect","ReflectSerialize"],"trait":["FromReflect","GetField","GetPath","GetTupleStructField","Reflect","ReflectPath","Struct","TupleStruct","TypePath"]};

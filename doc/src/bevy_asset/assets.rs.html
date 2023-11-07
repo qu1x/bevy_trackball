@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/n3vu0r/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_asset-0.11.2/src/assets.rs`."><title>assets.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-9bb858ba049f1f21.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="bevy_asset" data-themes="" data-resource-suffix="" data-rustdoc-version="1.72.0 (5680fa18f 2023-08-23)" data-channel="1.72.0" data-search-js="search-f6292fe389d70017.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-0f8c037637f9eb3e.css" data-theme-dark-css="dark-1097f8e92a01e3cf.css" data-theme-ayu-css="ayu-614652228113ac93.css" ><script src="../../static.files/storage-59fd9b8ccb335783.js"></script><script defer src="../../static.files/source-script-106908c7a7964ba4.js"></script><script defer src="../../source-files.js"></script><script defer src="../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-0f8c037637f9eb3e.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-1097f8e92a01e3cf.css"><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../bevy_asset/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_asset-0.12.0/src/assets.rs`."><title>assets.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="bevy_asset" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../bevy_asset/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -540,628 +540,546 @@
 <a href="#540" id="540">540</a>
 <a href="#541" id="541">541</a>
 <a href="#542" id="542">542</a>
-<a href="#543" id="543">543</a>
-<a href="#544" id="544">544</a>
-<a href="#545" id="545">545</a>
-<a href="#546" id="546">546</a>
-<a href="#547" id="547">547</a>
-<a href="#548" id="548">548</a>
-<a href="#549" id="549">549</a>
-<a href="#550" id="550">550</a>
-<a href="#551" id="551">551</a>
-<a href="#552" id="552">552</a>
-<a href="#553" id="553">553</a>
-<a href="#554" id="554">554</a>
-<a href="#555" id="555">555</a>
-<a href="#556" id="556">556</a>
-<a href="#557" id="557">557</a>
-<a href="#558" id="558">558</a>
-<a href="#559" id="559">559</a>
-<a href="#560" id="560">560</a>
-<a href="#561" id="561">561</a>
-<a href="#562" id="562">562</a>
-<a href="#563" id="563">563</a>
-<a href="#564" id="564">564</a>
-<a href="#565" id="565">565</a>
-<a href="#566" id="566">566</a>
-<a href="#567" id="567">567</a>
-<a href="#568" id="568">568</a>
-<a href="#569" id="569">569</a>
-<a href="#570" id="570">570</a>
-<a href="#571" id="571">571</a>
-<a href="#572" id="572">572</a>
-<a href="#573" id="573">573</a>
-<a href="#574" id="574">574</a>
-<a href="#575" id="575">575</a>
-<a href="#576" id="576">576</a>
-<a href="#577" id="577">577</a>
-<a href="#578" id="578">578</a>
-<a href="#579" id="579">579</a>
-<a href="#580" id="580">580</a>
-<a href="#581" id="581">581</a>
-<a href="#582" id="582">582</a>
-<a href="#583" id="583">583</a>
-</pre></div><pre class="rust"><code><span class="kw">use crate</span>::{
-    update_asset_storage_system, Asset, AssetEvents, AssetLoader, AssetServer, Handle, HandleId,
-    LoadAssets, RefChange, ReflectAsset, ReflectHandle,
+</pre></div><pre class="rust"><code><span class="kw">use crate as </span>bevy_asset;
+<span class="kw">use crate</span>::{Asset, AssetEvent, AssetHandleProvider, AssetId, AssetServer, Handle, UntypedHandle};
+<span class="kw">use </span>bevy_ecs::{
+    prelude::EventWriter,
+    system::{Res, ResMut, Resource},
 };
-<span class="kw">use </span>bevy_app::App;
-<span class="kw">use </span>bevy_ecs::prelude::<span class="kw-2">*</span>;
-<span class="kw">use </span>bevy_ecs::reflect::AppTypeRegistry;
-<span class="kw">use </span>bevy_reflect::{FromReflect, GetTypeRegistration, Reflect};
+<span class="kw">use </span>bevy_reflect::{Reflect, TypePath, Uuid};
 <span class="kw">use </span>bevy_utils::HashMap;
-<span class="kw">use </span>crossbeam_channel::Sender;
-<span class="kw">use </span>std::fmt::Debug;
+<span class="kw">use </span>crossbeam_channel::{Receiver, Sender};
+<span class="kw">use </span>serde::{Deserialize, Serialize};
+<span class="kw">use </span>std::{
+    any::TypeId,
+    iter::Enumerate,
+    marker::PhantomData,
+    sync::{atomic::AtomicU32, Arc},
+};
+<span class="kw">use </span>thiserror::Error;
 
-<span class="doccomment">/// Events that involve assets of type `T`.
-///
-/// Events sent via the [`Assets`] struct will always be sent with a _Weak_ handle, because the
-/// asset may not exist by the time the event is handled.
-</span><span class="attr">#[derive(Event)]
-</span><span class="kw">pub enum </span>AssetEvent&lt;T: Asset&gt; {
-    <span class="attr">#[allow(missing_docs)]
-    </span>Created { handle: Handle&lt;T&gt; },
-    <span class="attr">#[allow(missing_docs)]
-    </span>Modified { handle: Handle&lt;T&gt; },
-    <span class="attr">#[allow(missing_docs)]
-    </span>Removed { handle: Handle&lt;T&gt; },
+<span class="doccomment">/// A generational runtime-only identifier for a specific [`Asset`] stored in [`Assets`]. This is optimized for efficient runtime
+/// usage and is not suitable for identifying assets across app runs.
+</span><span class="attr">#[derive(
+    Debug, Copy, Clone, Eq, PartialEq, Hash, Ord, PartialOrd, Reflect, Serialize, Deserialize,
+)]
+</span><span class="kw">pub struct </span>AssetIndex {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) generation: u32,
+    <span class="kw">pub</span>(<span class="kw">crate</span>) index: u32,
 }
 
-<span class="kw">impl</span>&lt;T: Asset&gt; Debug <span class="kw">for </span>AssetEvent&lt;T&gt; {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; std::fmt::Result {
-        <span class="kw">match </span><span class="self">self </span>{
-            AssetEvent::Created { handle } =&gt; f
-                .debug_struct(<span class="kw-2">&amp;</span><span class="macro">format!</span>(
-                    <span class="string">&quot;AssetEvent&lt;{}&gt;::Created&quot;</span>,
-                    std::any::type_name::&lt;T&gt;()
-                ))
-                .field(<span class="string">&quot;handle&quot;</span>, <span class="kw-2">&amp;</span>handle.id())
-                .finish(),
-            AssetEvent::Modified { handle } =&gt; f
-                .debug_struct(<span class="kw-2">&amp;</span><span class="macro">format!</span>(
-                    <span class="string">&quot;AssetEvent&lt;{}&gt;::Modified&quot;</span>,
-                    std::any::type_name::&lt;T&gt;()
-                ))
-                .field(<span class="string">&quot;handle&quot;</span>, <span class="kw-2">&amp;</span>handle.id())
-                .finish(),
-            AssetEvent::Removed { handle } =&gt; f
-                .debug_struct(<span class="kw-2">&amp;</span><span class="macro">format!</span>(
-                    <span class="string">&quot;AssetEvent&lt;{}&gt;::Removed&quot;</span>,
-                    std::any::type_name::&lt;T&gt;()
-                ))
-                .field(<span class="string">&quot;handle&quot;</span>, <span class="kw-2">&amp;</span>handle.id())
-                .finish(),
+<span class="doccomment">/// Allocates generational [`AssetIndex`] values and facilitates their reuse.
+</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct </span>AssetIndexAllocator {
+    <span class="doccomment">/// A monotonically increasing index.
+    </span>next_index: AtomicU32,
+    recycled_queue_sender: Sender&lt;AssetIndex&gt;,
+    <span class="doccomment">/// This receives every recycled AssetIndex. It serves as a buffer/queue to store indices ready for reuse.
+    </span>recycled_queue_receiver: Receiver&lt;AssetIndex&gt;,
+    recycled_sender: Sender&lt;AssetIndex&gt;,
+    recycled_receiver: Receiver&lt;AssetIndex&gt;,
+}
+
+<span class="kw">impl </span>Default <span class="kw">for </span>AssetIndexAllocator {
+    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span>(recycled_queue_sender, recycled_queue_receiver) = crossbeam_channel::unbounded();
+        <span class="kw">let </span>(recycled_sender, recycled_receiver) = crossbeam_channel::unbounded();
+        <span class="self">Self </span>{
+            recycled_queue_sender,
+            recycled_queue_receiver,
+            recycled_sender,
+            recycled_receiver,
+            next_index: Default::default(),
         }
     }
 }
 
-<span class="doccomment">/// Stores Assets of a given type and tracks changes to them.
-///
-/// Each asset is mapped by a unique [`HandleId`], allowing any [`Handle`] with the same
-/// [`HandleId`] to access it. These assets remain loaded for as long as a Strong handle to that
-/// asset exists.
-///
-/// To store a reference to an asset without forcing it to stay loaded, you can use a Weak handle.
-/// To make a Weak handle a Strong one, use [`Assets::get_handle`] or pass the `Assets` collection
-/// into the handle&#39;s [`make_strong`](Handle::make_strong) method.
-///
-/// Remember, if there are no Strong handles for an asset (i.e. they have all been dropped), the
-/// asset will unload. Make sure you always have a Strong handle when you want to keep an asset
-/// loaded!
-</span><span class="attr">#[derive(Debug, Resource)]
-</span><span class="kw">pub struct </span>Assets&lt;T: Asset&gt; {
-    assets: HashMap&lt;HandleId, T&gt;,
-    events: Events&lt;AssetEvent&lt;T&gt;&gt;,
-    <span class="kw">pub</span>(<span class="kw">crate</span>) ref_change_sender: Sender&lt;RefChange&gt;,
-}
-
-<span class="kw">impl</span>&lt;T: Asset&gt; Assets&lt;T&gt; {
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>new(ref_change_sender: Sender&lt;RefChange&gt;) -&gt; <span class="self">Self </span>{
-        Assets {
-            assets: HashMap::default(),
-            events: Events::default(),
-            ref_change_sender,
-        }
-    }
-
-    <span class="doccomment">/// Adds an asset to the collection, returning a Strong handle to that asset.
-    ///
-    /// # Events
-    ///
-    /// * [`AssetEvent::Created`]
-    </span><span class="kw">pub fn </span>add(<span class="kw-2">&amp;mut </span><span class="self">self</span>, asset: T) -&gt; Handle&lt;T&gt; {
-        <span class="kw">let </span>id = HandleId::random::&lt;T&gt;();
-        <span class="self">self</span>.assets.insert(id, asset);
-        <span class="self">self</span>.events.send(AssetEvent::Created {
-            handle: Handle::weak(id),
-        });
-        <span class="self">self</span>.get_handle(id)
-    }
-
-    <span class="doccomment">/// Add/modify the asset pointed to by the given handle.
-    ///
-    /// Unless there exists another Strong handle for this asset, it&#39;s advised to use the returned
-    /// Strong handle. Not doing so may result in the unexpected release of the asset.
-    ///
-    /// See [`set_untracked`](Assets::set_untracked) for more info.
-    </span><span class="attr">#[must_use = <span class="string">&quot;not using the returned strong handle may result in the unexpected release of the asset&quot;</span>]
-    </span><span class="kw">pub fn </span>set&lt;H: Into&lt;HandleId&gt;&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, handle: H, asset: T) -&gt; Handle&lt;T&gt; {
-        <span class="kw">let </span>id: HandleId = handle.into();
-        <span class="self">self</span>.set_untracked(id, asset);
-        <span class="self">self</span>.get_handle(id)
-    }
-
-    <span class="doccomment">/// Add/modify the asset pointed to by the given handle.
-    ///
-    /// If an asset already exists with the given [`HandleId`], it will be modified. Otherwise the
-    /// new asset will be inserted.
-    ///
-    /// # Events
-    ///
-    /// * [`AssetEvent::Created`]: Sent if the asset did not yet exist with the given handle.
-    /// * [`AssetEvent::Modified`]: Sent if the asset with given handle already existed.
-    </span><span class="kw">pub fn </span>set_untracked&lt;H: Into&lt;HandleId&gt;&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, handle: H, asset: T) {
-        <span class="kw">let </span>id: HandleId = handle.into();
-        <span class="kw">if </span><span class="self">self</span>.assets.insert(id, asset).is_some() {
-            <span class="self">self</span>.events.send(AssetEvent::Modified {
-                handle: Handle::weak(id),
-            });
+<span class="kw">impl </span>AssetIndexAllocator {
+    <span class="doccomment">/// Reserves a new [`AssetIndex`], either by reusing a recycled index (with an incremented generation), or by creating a new index
+    /// by incrementing the index counter for a given asset type `A`.
+    </span><span class="kw">pub fn </span>reserve(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; AssetIndex {
+        <span class="kw">if let </span><span class="prelude-val">Ok</span>(<span class="kw-2">mut </span>recycled) = <span class="self">self</span>.recycled_queue_receiver.try_recv() {
+            recycled.generation += <span class="number">1</span>;
+            <span class="self">self</span>.recycled_sender.send(recycled).unwrap();
+            recycled
         } <span class="kw">else </span>{
-            <span class="self">self</span>.events.send(AssetEvent::Created {
-                handle: Handle::weak(id),
-            });
+            AssetIndex {
+                index: <span class="self">self
+                    </span>.next_index
+                    .fetch_add(<span class="number">1</span>, std::sync::atomic::Ordering::Relaxed),
+                generation: <span class="number">0</span>,
+            }
         }
     }
 
-    <span class="doccomment">/// Gets the asset for the given handle.
-    ///
-    /// This is the main method for accessing asset data from an [Assets] collection. If you need
-    /// mutable access to the asset, use [`get_mut`](Assets::get_mut).
-    </span><span class="kw">pub fn </span>get(<span class="kw-2">&amp;</span><span class="self">self</span>, handle: <span class="kw-2">&amp;</span>Handle&lt;T&gt;) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>T&gt; {
-        <span class="self">self</span>.assets.get::&lt;HandleId&gt;(<span class="kw-2">&amp;</span>handle.into())
+    <span class="doccomment">/// Queues the given `index` for reuse. This should only be done if the `index` is no longer being used.
+    </span><span class="kw">pub fn </span>recycle(<span class="kw-2">&amp;</span><span class="self">self</span>, index: AssetIndex) {
+        <span class="self">self</span>.recycled_queue_sender.send(index).unwrap();
+    }
+}
+
+<span class="doccomment">/// A &quot;loaded asset&quot; containing the untyped handle for an asset stored in a given [`AssetPath`].
+///
+/// [`AssetPath`]: crate::AssetPath
+</span><span class="attr">#[derive(Asset, TypePath)]
+</span><span class="kw">pub struct </span>LoadedUntypedAsset {
+    <span class="attr">#[dependency]
+    </span><span class="kw">pub </span>handle: UntypedHandle,
+}
+
+<span class="comment">// PERF: do we actually need this to be an enum? Can we just use an &quot;invalid&quot; generation instead
+</span><span class="attr">#[derive(Default)]
+</span><span class="kw">enum </span>Entry&lt;A: Asset&gt; {
+    <span class="attr">#[default]
+    </span><span class="prelude-val">None</span>,
+    <span class="prelude-val">Some </span>{
+        value: <span class="prelude-ty">Option</span>&lt;A&gt;,
+        generation: u32,
+    },
+}
+
+<span class="doccomment">/// Stores [`Asset`] values in a Vec-like storage identified by [`AssetIndex`].
+</span><span class="kw">struct </span>DenseAssetStorage&lt;A: Asset&gt; {
+    storage: Vec&lt;Entry&lt;A&gt;&gt;,
+    len: u32,
+    allocator: Arc&lt;AssetIndexAllocator&gt;,
+}
+
+<span class="kw">impl</span>&lt;A: Asset&gt; Default <span class="kw">for </span>DenseAssetStorage&lt;A&gt; {
+    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            len: <span class="number">0</span>,
+            storage: Default::default(),
+            allocator: Default::default(),
+        }
+    }
+}
+
+<span class="kw">impl</span>&lt;A: Asset&gt; DenseAssetStorage&lt;A&gt; {
+    <span class="comment">// Returns the number of assets stored.
+    </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>len(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
+        <span class="self">self</span>.len <span class="kw">as </span>usize
     }
 
-    <span class="doccomment">/// Checks if an asset exists for the given handle
-    </span><span class="kw">pub fn </span>contains(<span class="kw-2">&amp;</span><span class="self">self</span>, handle: <span class="kw-2">&amp;</span>Handle&lt;T&gt;) -&gt; bool {
-        <span class="self">self</span>.assets.contains_key::&lt;HandleId&gt;(<span class="kw-2">&amp;</span>handle.into())
-    }
+    <span class="comment">// Returns `true` if there are no assets stored.
+    </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>is_empty(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="self">self</span>.len == <span class="number">0
+    </span>}
 
-    <span class="doccomment">/// Get mutable access to the asset for the given handle.
-    ///
-    /// This is the main method for mutably accessing asset data from an [Assets] collection. If you
-    /// do not need mutable access to the asset, you may also use [get](Assets::get).
-    </span><span class="kw">pub fn </span>get_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>, handle: <span class="kw-2">&amp;</span>Handle&lt;T&gt;) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;mut </span>T&gt; {
-        <span class="kw">let </span>id: HandleId = handle.into();
-        <span class="self">self</span>.events.send(AssetEvent::Modified {
-            handle: Handle::weak(id),
-        });
-        <span class="self">self</span>.assets.get_mut(<span class="kw-2">&amp;</span>id)
-    }
-
-    <span class="doccomment">/// Gets a _Strong_ handle pointing to the same asset as the given one.
-    </span><span class="kw">pub fn </span>get_handle&lt;H: Into&lt;HandleId&gt;&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, handle: H) -&gt; Handle&lt;T&gt; {
-        Handle::strong(handle.into(), <span class="self">self</span>.ref_change_sender.clone())
-    }
-
-    <span class="doccomment">/// Gets mutable access to an asset for the given handle, inserting a new value if none exists.
-    ///
-    /// # Events
-    ///
-    /// * [`AssetEvent::Created`]: Sent if the asset did not yet exist with the given handle.
-    </span><span class="kw">pub fn </span>get_or_insert_with&lt;H: Into&lt;HandleId&gt;&gt;(
+    <span class="doccomment">/// Insert the value at the given index. Returns true if a value already exists (and was replaced)
+    </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>insert(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        handle: H,
-        insert_fn: <span class="kw">impl </span>FnOnce() -&gt; T,
-    ) -&gt; <span class="kw-2">&amp;mut </span>T {
-        <span class="kw">let </span><span class="kw-2">mut </span>event = <span class="prelude-val">None</span>;
-        <span class="kw">let </span>id: HandleId = handle.into();
-        <span class="kw">let </span>borrowed = <span class="self">self</span>.assets.entry(id).or_insert_with(|| {
-            event = <span class="prelude-val">Some</span>(AssetEvent::Created {
-                handle: Handle::weak(id),
-            });
-            insert_fn()
-        });
-
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(event) = event {
-            <span class="self">self</span>.events.send(event);
-        }
-        borrowed
-    }
-
-    <span class="doccomment">/// Gets an iterator over all assets in the collection.
-    </span><span class="kw">pub fn </span>iter(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw">impl </span>Iterator&lt;Item = (HandleId, <span class="kw-2">&amp;</span>T)&gt; {
-        <span class="self">self</span>.assets.iter().map(|(k, v)| (<span class="kw-2">*</span>k, v))
-    }
-
-    <span class="doccomment">/// Gets a mutable iterator over all assets in the collection.
-    </span><span class="kw">pub fn </span>iter_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw">impl </span>Iterator&lt;Item = (HandleId, <span class="kw-2">&amp;mut </span>T)&gt; {
-        <span class="self">self</span>.assets.iter_mut().map(|(k, v)| {
-            <span class="self">self</span>.events.send(AssetEvent::Modified {
-                handle: Handle::weak(<span class="kw-2">*</span>k),
-            });
-            (<span class="kw-2">*</span>k, v)
-        })
-    }
-
-    <span class="doccomment">/// Gets an iterator over all [`HandleId`]&#39;s in the collection.
-    </span><span class="kw">pub fn </span>ids(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw">impl </span>Iterator&lt;Item = HandleId&gt; + <span class="lifetime">&#39;_ </span>{
-        <span class="self">self</span>.assets.keys().cloned()
-    }
-
-    <span class="doccomment">/// Removes an asset for the given handle.
-    ///
-    /// The asset is returned if it existed in the collection, otherwise `None`.
-    ///
-    /// # Events
-    ///
-    /// * [`AssetEvent::Removed`]
-    </span><span class="kw">pub fn </span>remove&lt;H: Into&lt;HandleId&gt;&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, handle: H) -&gt; <span class="prelude-ty">Option</span>&lt;T&gt; {
-        <span class="kw">let </span>id: HandleId = handle.into();
-        <span class="kw">let </span>asset = <span class="self">self</span>.assets.remove(<span class="kw-2">&amp;</span>id);
-        <span class="kw">if </span>asset.is_some() {
-            <span class="self">self</span>.events.send(AssetEvent::Removed {
-                handle: Handle::weak(id),
-            });
-        }
-        asset
-    }
-
-    <span class="doccomment">/// Clears the inner asset map, removing all key-value pairs.
-    ///
-    /// Keeps the allocated memory for reuse.
-    </span><span class="kw">pub fn </span>clear(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
-        <span class="self">self</span>.assets.clear();
-    }
-
-    <span class="doccomment">/// Reserves capacity for at least additional more elements to be inserted into the assets.
-    ///
-    /// The collection may reserve more space to avoid frequent reallocations.
-    </span><span class="kw">pub fn </span>reserve(<span class="kw-2">&amp;mut </span><span class="self">self</span>, additional: usize) {
-        <span class="self">self</span>.assets.reserve(additional);
-    }
-
-    <span class="doccomment">/// Shrinks the capacity of the asset map as much as possible.
-    ///
-    /// It will drop down as much as possible while maintaining the internal rules and possibly
-    /// leaving some space in accordance with the resize policy.
-    </span><span class="kw">pub fn </span>shrink_to_fit(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
-        <span class="self">self</span>.assets.shrink_to_fit();
-    }
-
-    <span class="doccomment">/// A system that creates [`AssetEvent`]s at the end of the frame based on changes in the
-    /// asset storage.
-    </span><span class="kw">pub fn </span>asset_event_system(
-        <span class="kw-2">mut </span>events: EventWriter&lt;AssetEvent&lt;T&gt;&gt;,
-        <span class="kw-2">mut </span>assets: ResMut&lt;Assets&lt;T&gt;&gt;,
-    ) {
-        <span class="comment">// Check if the events are empty before calling `drain`.
-        // As `drain` triggers change detection.
-        </span><span class="kw">if </span>!assets.events.is_empty() {
-            events.send_batch(assets.events.drain());
+        index: AssetIndex,
+        asset: A,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;bool, InvalidGenerationError&gt; {
+        <span class="self">self</span>.flush();
+        <span class="kw">let </span>entry = <span class="kw-2">&amp;mut </span><span class="self">self</span>.storage[index.index <span class="kw">as </span>usize];
+        <span class="kw">if let </span>Entry::Some { value, generation } = entry {
+            <span class="kw">if </span><span class="kw-2">*</span>generation == index.generation {
+                <span class="kw">let </span>exists = value.is_some();
+                <span class="kw">if </span>!exists {
+                    <span class="self">self</span>.len += <span class="number">1</span>;
+                }
+                <span class="kw-2">*</span>value = <span class="prelude-val">Some</span>(asset);
+                <span class="prelude-val">Ok</span>(exists)
+            } <span class="kw">else </span>{
+                <span class="prelude-val">Err</span>(InvalidGenerationError {
+                    index,
+                    current_generation: <span class="kw-2">*</span>generation,
+                })
+            }
+        } <span class="kw">else </span>{
+            <span class="macro">unreachable!</span>(<span class="string">&quot;entries should always be valid after a flush&quot;</span>);
         }
     }
 
-    <span class="doccomment">/// Gets the number of assets in the collection.
-    </span><span class="kw">pub fn </span>len(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
-        <span class="self">self</span>.assets.len()
-    }
-
-    <span class="doccomment">/// Returns `true` if there are no stored assets.
-    </span><span class="kw">pub fn </span>is_empty(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="self">self</span>.assets.is_empty()
-    }
-}
-
-<span class="doccomment">/// [`App`] extension methods for adding new asset types.
-</span><span class="kw">pub trait </span>AddAsset {
-    <span class="doccomment">/// Registers `T` as a supported asset in the application.
-    ///
-    /// Adding the same type again after it has been added does nothing.
-    </span><span class="kw">fn </span>add_asset&lt;T&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self
-    </span><span class="kw">where
-        </span>T: Asset;
-
-    <span class="doccomment">/// Registers the asset type `T` using [`App::register_type`],
-    /// and adds [`ReflectAsset`] type data to `T` and [`ReflectHandle`] type data to [`Handle&lt;T&gt;`] in the type registry.
-    ///
-    /// This enables reflection code to access assets. For detailed information, see the docs on [`ReflectAsset`] and [`ReflectHandle`].
-    </span><span class="kw">fn </span>register_asset_reflect&lt;T&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self
-    </span><span class="kw">where
-        </span>T: Asset + Reflect + FromReflect + GetTypeRegistration;
-
-    <span class="doccomment">/// Registers `T` as a supported internal asset in the application.
-    ///
-    /// Internal assets (e.g. shaders) are bundled directly into the app and can&#39;t be hot reloaded
-    /// using the conventional API. See `DebugAssetServerPlugin`.
-    ///
-    /// Adding the same type again after it has been added does nothing.
-    </span><span class="kw">fn </span>add_debug_asset&lt;T: Clone&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self
-    </span><span class="kw">where
-        </span>T: Asset;
-
-    <span class="doccomment">/// Adds an asset loader `T` using default values.
-    ///
-    /// The default values may come from the [`World`] or from `T::default()`.
-    </span><span class="kw">fn </span>init_asset_loader&lt;T&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self
-    </span><span class="kw">where
-        </span>T: AssetLoader + FromWorld;
-
-    <span class="doccomment">/// Adds an asset loader `T` for internal assets using default values.
-    ///
-    /// Internal assets (e.g. shaders) are bundled directly into the app and can&#39;t be hot reloaded
-    /// using the conventional API. See `DebugAssetServerPlugin`.
-    ///
-    /// The default values may come from the [`World`] or from `T::default()`.
-    </span><span class="kw">fn </span>init_debug_asset_loader&lt;T&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self
-    </span><span class="kw">where
-        </span>T: AssetLoader + FromWorld;
-
-    <span class="doccomment">/// Adds the provided asset loader to the application.
-    </span><span class="kw">fn </span>add_asset_loader&lt;T&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, loader: T) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self
-    </span><span class="kw">where
-        </span>T: AssetLoader;
-
-    <span class="doccomment">/// Preregisters a loader for the given extensions, that will block asset loads until a real loader
-    /// is registered.
-    </span><span class="kw">fn </span>preregister_asset_loader(<span class="kw-2">&amp;mut </span><span class="self">self</span>, extensions: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span>str]) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self</span>;
-}
-
-<span class="kw">impl </span>AddAsset <span class="kw">for </span>App {
-    <span class="kw">fn </span>add_asset&lt;T&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self
-    </span><span class="kw">where
-        </span>T: Asset,
-    {
-        <span class="kw">if </span><span class="self">self</span>.world.contains_resource::&lt;Assets&lt;T&gt;&gt;() {
-            <span class="kw">return </span><span class="self">self</span>;
-        }
-        <span class="kw">let </span>assets = {
-            <span class="kw">let </span>asset_server = <span class="self">self</span>.world.resource::&lt;AssetServer&gt;();
-            asset_server.register_asset_type::&lt;T&gt;()
+    <span class="doccomment">/// Removes the asset stored at the given `index` and returns it as [`Some`] (if the asset exists).
+    </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>remove(<span class="kw-2">&amp;mut </span><span class="self">self</span>, index: AssetIndex) -&gt; <span class="prelude-ty">Option</span>&lt;A&gt; {
+        <span class="self">self</span>.flush();
+        <span class="kw">let </span>value = <span class="kw">match </span><span class="kw-2">&amp;mut </span><span class="self">self</span>.storage[index.index <span class="kw">as </span>usize] {
+            Entry::None =&gt; <span class="kw">return </span><span class="prelude-val">None</span>,
+            Entry::Some { value, generation } =&gt; {
+                <span class="kw">if </span><span class="kw-2">*</span>generation == index.generation {
+                    value.take().map(|value| {
+                        <span class="self">self</span>.len -= <span class="number">1</span>;
+                        value
+                    })
+                } <span class="kw">else </span>{
+                    <span class="kw">return </span><span class="prelude-val">None</span>;
+                }
+            }
         };
-
-        <span class="self">self</span>.insert_resource(assets)
-            .add_systems(LoadAssets, update_asset_storage_system::&lt;T&gt;)
-            .add_systems(AssetEvents, Assets::&lt;T&gt;::asset_event_system)
-            .register_type::&lt;Handle&lt;T&gt;&gt;()
-            .add_event::&lt;AssetEvent&lt;T&gt;&gt;()
+        <span class="self">self</span>.storage[index.index <span class="kw">as </span>usize] = Entry::None;
+        <span class="self">self</span>.allocator.recycle(index);
+        value
     }
 
-    <span class="kw">fn </span>register_asset_reflect&lt;T&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self
-    </span><span class="kw">where
-        </span>T: Asset + Reflect + FromReflect + GetTypeRegistration,
-    {
-        <span class="kw">let </span>type_registry = <span class="self">self</span>.world.resource::&lt;AppTypeRegistry&gt;();
-        {
-            <span class="kw">let </span><span class="kw-2">mut </span>type_registry = type_registry.write();
-
-            type_registry.register::&lt;T&gt;();
-            type_registry.register::&lt;Handle&lt;T&gt;&gt;();
-            type_registry.register_type_data::&lt;T, ReflectAsset&gt;();
-            type_registry.register_type_data::&lt;Handle&lt;T&gt;, ReflectHandle&gt;();
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>get(<span class="kw-2">&amp;</span><span class="self">self</span>, index: AssetIndex) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>A&gt; {
+        <span class="kw">let </span>entry = <span class="self">self</span>.storage.get(index.index <span class="kw">as </span>usize)<span class="question-mark">?</span>;
+        <span class="kw">match </span>entry {
+            Entry::None =&gt; <span class="prelude-val">None</span>,
+            Entry::Some { value, generation } =&gt; {
+                <span class="kw">if </span><span class="kw-2">*</span>generation == index.generation {
+                    value.as_ref()
+                } <span class="kw">else </span>{
+                    <span class="prelude-val">None
+                </span>}
+            }
         }
-
-        <span class="self">self
-    </span>}
-
-    <span class="kw">fn </span>add_debug_asset&lt;T: Clone&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self
-    </span><span class="kw">where
-        </span>T: Asset,
-    {
-        <span class="attr">#[cfg(feature = <span class="string">&quot;debug_asset_server&quot;</span>)]
-        </span>{
-            <span class="self">self</span>.add_systems(
-                bevy_app::Update,
-                <span class="kw">crate</span>::debug_asset_server::sync_debug_assets::&lt;T&gt;,
-            );
-            <span class="kw">let </span><span class="kw-2">mut </span>app = <span class="self">self
-                </span>.world
-                .non_send_resource_mut::&lt;<span class="kw">crate</span>::debug_asset_server::DebugAssetApp&gt;();
-            app.add_asset::&lt;T&gt;()
-                .init_resource::&lt;<span class="kw">crate</span>::debug_asset_server::HandleMap&lt;T&gt;&gt;();
-        }
-        <span class="self">self
-    </span>}
-
-    <span class="kw">fn </span>init_asset_loader&lt;T&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self
-    </span><span class="kw">where
-        </span>T: AssetLoader + FromWorld,
-    {
-        <span class="kw">let </span>result = T::from_world(<span class="kw-2">&amp;mut </span><span class="self">self</span>.world);
-        <span class="self">self</span>.add_asset_loader(result)
     }
 
-    <span class="kw">fn </span>init_debug_asset_loader&lt;T&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self
-    </span><span class="kw">where
-        </span>T: AssetLoader + FromWorld,
-    {
-        <span class="attr">#[cfg(feature = <span class="string">&quot;debug_asset_server&quot;</span>)]
-        </span>{
-            <span class="kw">let </span><span class="kw-2">mut </span>app = <span class="self">self
-                </span>.world
-                .non_send_resource_mut::&lt;<span class="kw">crate</span>::debug_asset_server::DebugAssetApp&gt;();
-            app.init_asset_loader::&lt;T&gt;();
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>get_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>, index: AssetIndex) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;mut </span>A&gt; {
+        <span class="kw">let </span>entry = <span class="self">self</span>.storage.get_mut(index.index <span class="kw">as </span>usize)<span class="question-mark">?</span>;
+        <span class="kw">match </span>entry {
+            Entry::None =&gt; <span class="prelude-val">None</span>,
+            Entry::Some { value, generation } =&gt; {
+                <span class="kw">if </span><span class="kw-2">*</span>generation == index.generation {
+                    value.as_mut()
+                } <span class="kw">else </span>{
+                    <span class="prelude-val">None
+                </span>}
+            }
         }
-        <span class="self">self
-    </span>}
+    }
 
-    <span class="kw">fn </span>add_asset_loader&lt;T&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, loader: T) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self
-    </span><span class="kw">where
-        </span>T: AssetLoader,
-    {
-        <span class="self">self</span>.world.resource_mut::&lt;AssetServer&gt;().add_loader(loader);
-        <span class="self">self
-    </span>}
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>flush(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="comment">// NOTE: this assumes the allocator index is monotonically increasing.
+        </span><span class="kw">let </span>new_len = <span class="self">self
+            </span>.allocator
+            .next_index
+            .load(std::sync::atomic::Ordering::Relaxed);
+        <span class="self">self</span>.storage.resize_with(new_len <span class="kw">as </span>usize, || Entry::Some {
+            value: <span class="prelude-val">None</span>,
+            generation: <span class="number">0</span>,
+        });
+        <span class="kw">while let </span><span class="prelude-val">Ok</span>(recycled) = <span class="self">self</span>.allocator.recycled_receiver.try_recv() {
+            <span class="kw">let </span>entry = <span class="kw-2">&amp;mut </span><span class="self">self</span>.storage[recycled.index <span class="kw">as </span>usize];
+            <span class="kw-2">*</span>entry = Entry::Some {
+                value: <span class="prelude-val">None</span>,
+                generation: recycled.generation,
+            };
+        }
+    }
 
-    <span class="kw">fn </span>preregister_asset_loader(<span class="kw-2">&amp;mut </span><span class="self">self</span>, extensions: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span>str]) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
-        <span class="self">self</span>.world
-            .resource_mut::&lt;AssetServer&gt;()
-            .preregister_loader(extensions);
-        <span class="self">self
-    </span>}
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>get_index_allocator(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Arc&lt;AssetIndexAllocator&gt; {
+        <span class="self">self</span>.allocator.clone()
+    }
+
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>ids(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw">impl </span>Iterator&lt;Item = AssetId&lt;A&gt;&gt; + <span class="lifetime">&#39;_ </span>{
+        <span class="self">self</span>.storage
+            .iter()
+            .enumerate()
+            .filter_map(|(i, v)| <span class="kw">match </span>v {
+                Entry::None =&gt; <span class="prelude-val">None</span>,
+                Entry::Some { value, generation } =&gt; {
+                    <span class="kw">if </span>value.is_some() {
+                        <span class="prelude-val">Some</span>(AssetId::from(AssetIndex {
+                            index: i <span class="kw">as </span>u32,
+                            generation: <span class="kw-2">*</span>generation,
+                        }))
+                    } <span class="kw">else </span>{
+                        <span class="prelude-val">None
+                    </span>}
+                }
+            })
+    }
 }
 
-<span class="doccomment">/// Loads an internal asset from a project source file.
-/// the file and its path are passed to the loader function, together with any additional parameters.
-/// the resulting asset is stored in the app&#39;s asset server.
+<span class="doccomment">/// Stores [`Asset`] values identified by their [`AssetId`].
 ///
-/// Internal assets (e.g. shaders) are bundled directly into the app and can&#39;t be hot reloaded
-/// using the conventional API. See [`DebugAssetServerPlugin`](crate::debug_asset_server::DebugAssetServerPlugin).
-</span><span class="attr">#[cfg(feature = <span class="string">&quot;debug_asset_server&quot;</span>)]
-#[macro_export]
-</span><span class="macro">macro_rules! </span>load_internal_asset {
-    (<span class="macro-nonterminal">$app</span>: ident, <span class="macro-nonterminal">$handle</span>: ident, <span class="macro-nonterminal">$path_str</span>: expr, <span class="macro-nonterminal">$loader</span>: expr) =&gt; {{
-        {
-            <span class="kw">let </span><span class="kw-2">mut </span>debug_app = <span class="macro-nonterminal">$app
-                </span>.world
-                .non_send_resource_mut::&lt;<span class="macro-nonterminal">$crate::debug_asset_server::DebugAssetApp</span>&gt;();
-            <span class="macro-nonterminal">$crate::debug_asset_server::register_handle_with_loader</span>::&lt;<span class="kw">_</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str&gt;(
-                <span class="macro-nonterminal">$loader</span>,
-                <span class="kw-2">&amp;mut </span>debug_app,
-                <span class="macro-nonterminal">$handle</span>,
-                <span class="macro">file!</span>(),
-                <span class="macro-nonterminal">$path_str</span>,
-            );
+/// Assets identified by [`AssetId::Index`] will be stored in a &quot;dense&quot; vec-like storage. This is more efficient, but it means that
+/// the assets can only be identified at runtime. This is the default behavior.
+///
+/// Assets identified by [`AssetId::Uuid`] will be stored in a hashmap. This is less efficient, but it means that the assets can be referenced
+/// at compile time.
+///
+/// This tracks (and queues) [`AssetEvent`] events whenever changes to the collection occur.
+</span><span class="attr">#[derive(Resource)]
+</span><span class="kw">pub struct </span>Assets&lt;A: Asset&gt; {
+    dense_storage: DenseAssetStorage&lt;A&gt;,
+    hash_map: HashMap&lt;Uuid, A&gt;,
+    handle_provider: AssetHandleProvider,
+    queued_events: Vec&lt;AssetEvent&lt;A&gt;&gt;,
+}
+
+<span class="kw">impl</span>&lt;A: Asset&gt; Default <span class="kw">for </span>Assets&lt;A&gt; {
+    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span>dense_storage = DenseAssetStorage::default();
+        <span class="kw">let </span>handle_provider =
+            AssetHandleProvider::new(TypeId::of::&lt;A&gt;(), dense_storage.get_index_allocator());
+        <span class="self">Self </span>{
+            dense_storage,
+            handle_provider,
+            hash_map: Default::default(),
+            queued_events: Default::default(),
         }
-        <span class="kw">let </span><span class="kw-2">mut </span>assets = <span class="macro-nonterminal">$app</span>.world.resource_mut::&lt;<span class="macro-nonterminal">$crate::Assets</span>&lt;<span class="kw">_</span>&gt;&gt;();
-        assets.set_untracked(
-            <span class="macro-nonterminal">$handle</span>,
-            (<span class="macro-nonterminal">$loader</span>)(
-                <span class="macro">include_str!</span>(<span class="macro-nonterminal">$path_str</span>),
-                std::path::Path::new(<span class="macro">file!</span>())
-                .parent()
-                .unwrap()
-                .join(<span class="macro-nonterminal">$path_str</span>)
-                .to_string_lossy(),
+    }
+}
+
+<span class="kw">impl</span>&lt;A: Asset&gt; Assets&lt;A&gt; {
+    <span class="doccomment">/// Retrieves an [`AssetHandleProvider`] capable of reserving new [`Handle`] values for assets that will be stored in this
+    /// collection.
+    </span><span class="kw">pub fn </span>get_handle_provider(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; AssetHandleProvider {
+        <span class="self">self</span>.handle_provider.clone()
+    }
+
+    <span class="doccomment">/// Inserts the given `asset`, identified by the given `id`. If an asset already exists for `id`, it will be replaced.
+    </span><span class="kw">pub fn </span>insert(<span class="kw-2">&amp;mut </span><span class="self">self</span>, id: <span class="kw">impl </span>Into&lt;AssetId&lt;A&gt;&gt;, asset: A) {
+        <span class="kw">let </span>id: AssetId&lt;A&gt; = id.into();
+        <span class="kw">match </span>id {
+            AssetId::Index { index, .. } =&gt; {
+                <span class="self">self</span>.insert_with_index(index, asset).unwrap();
+            }
+            AssetId::Uuid { uuid } =&gt; {
+                <span class="self">self</span>.insert_with_uuid(uuid, asset);
+            }
+        }
+    }
+
+    <span class="doccomment">/// Retrieves an [`Asset`] stored for the given `id` if it exists. If it does not exist, it will be inserted using `insert_fn`.
+    </span><span class="comment">// PERF: Optimize this or remove it
+    </span><span class="kw">pub fn </span>get_or_insert_with(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        id: <span class="kw">impl </span>Into&lt;AssetId&lt;A&gt;&gt;,
+        insert_fn: <span class="kw">impl </span>FnOnce() -&gt; A,
+    ) -&gt; <span class="kw-2">&amp;mut </span>A {
+        <span class="kw">let </span>id: AssetId&lt;A&gt; = id.into();
+        <span class="kw">if </span><span class="self">self</span>.get(id).is_none() {
+            <span class="self">self</span>.insert(id, (insert_fn)());
+        }
+        <span class="self">self</span>.get_mut(id).unwrap()
+    }
+
+    <span class="doccomment">/// Returns `true` if the `id` exists in this collection. Otherwise it returns `false`.
+    </span><span class="comment">// PERF: Optimize this or remove it
+    </span><span class="kw">pub fn </span>contains(<span class="kw-2">&amp;</span><span class="self">self</span>, id: <span class="kw">impl </span>Into&lt;AssetId&lt;A&gt;&gt;) -&gt; bool {
+        <span class="self">self</span>.get(id).is_some()
+    }
+
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>insert_with_uuid(<span class="kw-2">&amp;mut </span><span class="self">self</span>, uuid: Uuid, asset: A) -&gt; <span class="prelude-ty">Option</span>&lt;A&gt; {
+        <span class="kw">let </span>result = <span class="self">self</span>.hash_map.insert(uuid, asset);
+        <span class="kw">if </span>result.is_some() {
+            <span class="self">self</span>.queued_events
+                .push(AssetEvent::Modified { id: uuid.into() });
+        } <span class="kw">else </span>{
+            <span class="self">self</span>.queued_events
+                .push(AssetEvent::Added { id: uuid.into() });
+        }
+        result
+    }
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>insert_with_index(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        index: AssetIndex,
+        asset: A,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;bool, InvalidGenerationError&gt; {
+        <span class="kw">let </span>replaced = <span class="self">self</span>.dense_storage.insert(index, asset)<span class="question-mark">?</span>;
+        <span class="kw">if </span>replaced {
+            <span class="self">self</span>.queued_events
+                .push(AssetEvent::Modified { id: index.into() });
+        } <span class="kw">else </span>{
+            <span class="self">self</span>.queued_events
+                .push(AssetEvent::Added { id: index.into() });
+        }
+        <span class="prelude-val">Ok</span>(replaced)
+    }
+
+    <span class="doccomment">/// Adds the given `asset` and allocates a new strong [`Handle`] for it.
+    </span><span class="attr">#[inline]
+    </span><span class="kw">pub fn </span>add(<span class="kw-2">&amp;mut </span><span class="self">self</span>, asset: A) -&gt; Handle&lt;A&gt; {
+        <span class="kw">let </span>index = <span class="self">self</span>.dense_storage.allocator.reserve();
+        <span class="self">self</span>.insert_with_index(index, asset).unwrap();
+        Handle::Strong(
+            <span class="self">self</span>.handle_provider
+                .get_handle(index.into(), <span class="bool-val">false</span>, <span class="prelude-val">None</span>, <span class="prelude-val">None</span>),
+        )
+    }
+
+    <span class="doccomment">/// Retrieves a reference to the [`Asset`] with the given `id`, if its exists.
+    /// Note that this supports anything that implements `Into&lt;AssetId&lt;A&gt;&gt;`, which includes [`Handle`] and [`AssetId`].
+    </span><span class="attr">#[inline]
+    </span><span class="kw">pub fn </span>get(<span class="kw-2">&amp;</span><span class="self">self</span>, id: <span class="kw">impl </span>Into&lt;AssetId&lt;A&gt;&gt;) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>A&gt; {
+        <span class="kw">let </span>id: AssetId&lt;A&gt; = id.into();
+        <span class="kw">match </span>id {
+            AssetId::Index { index, .. } =&gt; <span class="self">self</span>.dense_storage.get(index),
+            AssetId::Uuid { uuid } =&gt; <span class="self">self</span>.hash_map.get(<span class="kw-2">&amp;</span>uuid),
+        }
+    }
+
+    <span class="doccomment">/// Retrieves a mutable reference to the [`Asset`] with the given `id`, if its exists.
+    /// Note that this supports anything that implements `Into&lt;AssetId&lt;A&gt;&gt;`, which includes [`Handle`] and [`AssetId`].
+    </span><span class="attr">#[inline]
+    </span><span class="kw">pub fn </span>get_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>, id: <span class="kw">impl </span>Into&lt;AssetId&lt;A&gt;&gt;) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;mut </span>A&gt; {
+        <span class="kw">let </span>id: AssetId&lt;A&gt; = id.into();
+        <span class="kw">let </span>result = <span class="kw">match </span>id {
+            AssetId::Index { index, .. } =&gt; <span class="self">self</span>.dense_storage.get_mut(index),
+            AssetId::Uuid { uuid } =&gt; <span class="self">self</span>.hash_map.get_mut(<span class="kw-2">&amp;</span>uuid),
+        };
+        <span class="kw">if </span>result.is_some() {
+            <span class="self">self</span>.queued_events.push(AssetEvent::Modified { id });
+        }
+        result
+    }
+
+    <span class="doccomment">/// Removes (and returns) the [`Asset`] with the given `id`, if its exists.
+    /// Note that this supports anything that implements `Into&lt;AssetId&lt;A&gt;&gt;`, which includes [`Handle`] and [`AssetId`].
+    </span><span class="kw">pub fn </span>remove(<span class="kw-2">&amp;mut </span><span class="self">self</span>, id: <span class="kw">impl </span>Into&lt;AssetId&lt;A&gt;&gt;) -&gt; <span class="prelude-ty">Option</span>&lt;A&gt; {
+        <span class="kw">let </span>id: AssetId&lt;A&gt; = id.into();
+        <span class="kw">let </span>result = <span class="self">self</span>.remove_untracked(id);
+        <span class="kw">if </span>result.is_some() {
+            <span class="self">self</span>.queued_events.push(AssetEvent::Removed { id });
+        }
+        result
+    }
+
+    <span class="doccomment">/// Removes (and returns) the [`Asset`] with the given `id`, if its exists. This skips emitting [`AssetEvent::Removed`].
+    /// Note that this supports anything that implements `Into&lt;AssetId&lt;A&gt;&gt;`, which includes [`Handle`] and [`AssetId`].
+    </span><span class="kw">pub fn </span>remove_untracked(<span class="kw-2">&amp;mut </span><span class="self">self</span>, id: <span class="kw">impl </span>Into&lt;AssetId&lt;A&gt;&gt;) -&gt; <span class="prelude-ty">Option</span>&lt;A&gt; {
+        <span class="kw">let </span>id: AssetId&lt;A&gt; = id.into();
+        <span class="kw">match </span>id {
+            AssetId::Index { index, .. } =&gt; <span class="self">self</span>.dense_storage.remove(index),
+            AssetId::Uuid { uuid } =&gt; <span class="self">self</span>.hash_map.remove(<span class="kw-2">&amp;</span>uuid),
+        }
+    }
+
+    <span class="doccomment">/// Returns `true` if there are no assets in this collection.
+    </span><span class="kw">pub fn </span>is_empty(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="self">self</span>.dense_storage.is_empty() &amp;&amp; <span class="self">self</span>.hash_map.is_empty()
+    }
+
+    <span class="doccomment">/// Returns the number of assets currently stored in the collection.
+    </span><span class="kw">pub fn </span>len(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
+        <span class="self">self</span>.dense_storage.len() + <span class="self">self</span>.hash_map.len()
+    }
+
+    <span class="doccomment">/// Returns an iterator over the [`AssetId`] of every [`Asset`] stored in this collection.
+    </span><span class="kw">pub fn </span>ids(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw">impl </span>Iterator&lt;Item = AssetId&lt;A&gt;&gt; + <span class="lifetime">&#39;_ </span>{
+        <span class="self">self</span>.dense_storage
+            .ids()
+            .chain(<span class="self">self</span>.hash_map.keys().map(|uuid| AssetId::from(<span class="kw-2">*</span>uuid)))
+    }
+
+    <span class="doccomment">/// Returns an iterator over the [`AssetId`] and [`Asset`] ref of every asset in this collection.
+    </span><span class="comment">// PERF: this could be accelerated if we implement a skip list. Consider the cost/benefits
+    </span><span class="kw">pub fn </span>iter(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw">impl </span>Iterator&lt;Item = (AssetId&lt;A&gt;, <span class="kw-2">&amp;</span>A)&gt; {
+        <span class="self">self</span>.dense_storage
+            .storage
+            .iter()
+            .enumerate()
+            .filter_map(|(i, v)| <span class="kw">match </span>v {
+                Entry::None =&gt; <span class="prelude-val">None</span>,
+                Entry::Some { value, generation } =&gt; value.as_ref().map(|v| {
+                    <span class="kw">let </span>id = AssetId::Index {
+                        index: AssetIndex {
+                            generation: <span class="kw-2">*</span>generation,
+                            index: i <span class="kw">as </span>u32,
+                        },
+                        marker: PhantomData,
+                    };
+                    (id, v)
+                }),
+            })
+            .chain(
+                <span class="self">self</span>.hash_map
+                    .iter()
+                    .map(|(i, v)| (AssetId::Uuid { uuid: <span class="kw-2">*</span>i }, v)),
             )
-        );
-    }};
-    <span class="comment">// we can&#39;t support params without variadic arguments, so internal assets with additional params can&#39;t be hot-reloaded
-    </span>(<span class="macro-nonterminal">$app</span>: ident, <span class="macro-nonterminal">$handle</span>: ident, <span class="macro-nonterminal">$path_str</span>: expr, <span class="macro-nonterminal">$loader</span>: expr $(, <span class="macro-nonterminal">$param</span>:expr)+) =&gt; {{
-        <span class="kw">let </span><span class="kw-2">mut </span>assets = <span class="macro-nonterminal">$app</span>.world.resource_mut::&lt;<span class="macro-nonterminal">$crate::Assets</span>&lt;<span class="kw">_</span>&gt;&gt;();
-        assets.set_untracked(
-            <span class="macro-nonterminal">$handle</span>,
-            (<span class="macro-nonterminal">$loader</span>)(
-                <span class="macro">include_str!</span>(<span class="macro-nonterminal">$path_str</span>),
-                std::path::Path::new(<span class="macro">file!</span>())
-                    .parent()
-                    .unwrap()
-                    .join(<span class="macro-nonterminal">$path_str</span>)
-                    .to_string_lossy(),
-                $(<span class="macro-nonterminal">$param</span>),+
-            ),
-        );
-    }};
-}
-
-<span class="doccomment">/// Loads an internal asset from a project source file.
-/// the file and its path are passed to the loader function, together with any additional parameters.
-/// the resulting asset is stored in the app&#39;s asset server.
-///
-/// Internal assets (e.g. shaders) are bundled directly into the app and can&#39;t be hot reloaded
-/// using the conventional API. See `DebugAssetServerPlugin`.
-</span><span class="attr">#[cfg(not(feature = <span class="string">&quot;debug_asset_server&quot;</span>))]
-#[macro_export]
-</span><span class="macro">macro_rules! </span>load_internal_asset {
-    (<span class="macro-nonterminal">$app</span>: ident, <span class="macro-nonterminal">$handle</span>: ident, <span class="macro-nonterminal">$path_str</span>: expr, <span class="macro-nonterminal">$loader</span>: expr $(, <span class="macro-nonterminal">$param</span>:expr)<span class="kw-2">*</span>) =&gt; {{
-        <span class="kw">let </span><span class="kw-2">mut </span>assets = <span class="macro-nonterminal">$app</span>.world.resource_mut::&lt;<span class="macro-nonterminal">$crate::Assets</span>&lt;<span class="kw">_</span>&gt;&gt;();
-        assets.set_untracked(
-            <span class="macro-nonterminal">$handle</span>,
-            (<span class="macro-nonterminal">$loader</span>)(
-                <span class="macro">include_str!</span>(<span class="macro-nonterminal">$path_str</span>),
-                std::path::Path::new(<span class="macro">file!</span>())
-                    .parent()
-                    .unwrap()
-                    .join(<span class="macro-nonterminal">$path_str</span>)
-                    .to_string_lossy(),
-                $(<span class="macro-nonterminal">$param</span>),*
-            ),
-        );
-    }};
-}
-
-<span class="doccomment">/// Loads an internal binary asset.
-///
-/// Internal binary assets (e.g. spir-v shaders) are bundled directly into the app and can&#39;t be hot reloaded
-/// using the conventional API. See `DebugAssetServerPlugin`.
-</span><span class="attr">#[cfg(feature = <span class="string">&quot;debug_asset_server&quot;</span>)]
-#[macro_export]
-</span><span class="macro">macro_rules! </span>load_internal_binary_asset {
-    (<span class="macro-nonterminal">$app</span>: ident, <span class="macro-nonterminal">$handle</span>: ident, <span class="macro-nonterminal">$path_str</span>: expr, <span class="macro-nonterminal">$loader</span>: expr) =&gt; {{
-        {
-            <span class="kw">let </span><span class="kw-2">mut </span>debug_app = <span class="macro-nonterminal">$app
-                </span>.world
-                .non_send_resource_mut::&lt;<span class="macro-nonterminal">$crate::debug_asset_server::DebugAssetApp</span>&gt;();
-            <span class="macro-nonterminal">$crate::debug_asset_server::register_handle_with_loader</span>::&lt;<span class="kw">_</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>[u8]&gt;(
-                <span class="macro-nonterminal">$loader</span>,
-                <span class="kw-2">&amp;mut </span>debug_app,
-                <span class="macro-nonterminal">$handle</span>,
-                <span class="macro">file!</span>(),
-                <span class="macro-nonterminal">$path_str</span>,
-            );
-        }
-        <span class="kw">let </span><span class="kw-2">mut </span>assets = <span class="macro-nonterminal">$app</span>.world.resource_mut::&lt;<span class="macro-nonterminal">$crate::Assets</span>&lt;<span class="kw">_</span>&gt;&gt;();
-        assets.set_untracked(
-            <span class="macro-nonterminal">$handle</span>,
-            (<span class="macro-nonterminal">$loader</span>)(
-                <span class="macro">include_bytes!</span>(<span class="macro-nonterminal">$path_str</span>).as_ref(),
-                std::path::Path::new(<span class="macro">file!</span>())
-                    .parent()
-                    .unwrap()
-                    .join(<span class="macro-nonterminal">$path_str</span>)
-                    .to_string_lossy()
-                    .into(),
-            ),
-        );
-    }};
-}
-
-<span class="doccomment">/// Loads an internal binary asset.
-///
-/// Internal binary assets (e.g. spir-v shaders) are bundled directly into the app and can&#39;t be hot reloaded
-/// using the conventional API. See `DebugAssetServerPlugin`.
-</span><span class="attr">#[cfg(not(feature = <span class="string">&quot;debug_asset_server&quot;</span>))]
-#[macro_export]
-</span><span class="macro">macro_rules! </span>load_internal_binary_asset {
-    (<span class="macro-nonterminal">$app</span>: ident, <span class="macro-nonterminal">$handle</span>: ident, <span class="macro-nonterminal">$path_str</span>: expr, <span class="macro-nonterminal">$loader</span>: expr) =&gt; {{
-        <span class="kw">let </span><span class="kw-2">mut </span>assets = <span class="macro-nonterminal">$app</span>.world.resource_mut::&lt;<span class="macro-nonterminal">$crate::Assets</span>&lt;<span class="kw">_</span>&gt;&gt;();
-        assets.set_untracked(
-            <span class="macro-nonterminal">$handle</span>,
-            (<span class="macro-nonterminal">$loader</span>)(
-                <span class="macro">include_bytes!</span>(<span class="macro-nonterminal">$path_str</span>).as_ref(),
-                std::path::Path::new(<span class="macro">file!</span>())
-                    .parent()
-                    .unwrap()
-                    .join(<span class="macro-nonterminal">$path_str</span>)
-                    .to_string_lossy()
-                    .into(),
-            ),
-        );
-    }};
-}
-
-<span class="attr">#[cfg(test)]
-</span><span class="kw">mod </span>tests {
-    <span class="kw">use </span>bevy_app::App;
-
-    <span class="kw">use crate</span>::{AddAsset, Assets};
-
-    <span class="attr">#[test]
-    </span><span class="kw">fn </span>asset_overwriting() {
-        <span class="attr">#[derive(bevy_reflect::TypeUuid, bevy_reflect::TypePath)]
-        #[uuid = <span class="string">&quot;44115972-f31b-46e5-be5c-2b9aece6a52f&quot;</span>]
-        </span><span class="kw">struct </span>MyAsset;
-        <span class="kw">let </span><span class="kw-2">mut </span>app = App::new();
-        app.add_plugins((
-            bevy_core::TaskPoolPlugin::default(),
-            bevy_core::TypeRegistrationPlugin::default(),
-            <span class="kw">crate</span>::AssetPlugin::default(),
-        ));
-        app.add_asset::&lt;MyAsset&gt;();
-        <span class="kw">let </span><span class="kw-2">mut </span>assets_before = app.world.resource_mut::&lt;Assets&lt;MyAsset&gt;&gt;();
-        <span class="kw">let </span>handle = assets_before.add(MyAsset);
-        app.add_asset::&lt;MyAsset&gt;(); <span class="comment">// Ensure this doesn&#39;t overwrite the Asset
-        </span><span class="kw">let </span>assets_after = app.world.resource_mut::&lt;Assets&lt;MyAsset&gt;&gt;();
-        <span class="macro">assert!</span>(assets_after.get(<span class="kw-2">&amp;</span>handle).is_some());
     }
+
+    <span class="doccomment">/// Returns an iterator over the [`AssetId`] and mutable [`Asset`] ref of every asset in this collection.
+    </span><span class="comment">// PERF: this could be accelerated if we implement a skip list. Consider the cost/benefits
+    </span><span class="kw">pub fn </span>iter_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; AssetsMutIterator&lt;<span class="lifetime">&#39;_</span>, A&gt; {
+        AssetsMutIterator {
+            dense_storage: <span class="self">self</span>.dense_storage.storage.iter_mut().enumerate(),
+            hash_map: <span class="self">self</span>.hash_map.iter_mut(),
+            queued_events: <span class="kw-2">&amp;mut </span><span class="self">self</span>.queued_events,
+        }
+    }
+
+    <span class="doccomment">/// A system that synchronizes the state of assets in this collection with the [`AssetServer`]. This manages
+    /// [`Handle`] drop events and adds queued [`AssetEvent`] values to their [`Events`] resource.
+    ///
+    /// [`Events`]: bevy_ecs::event::Events
+    </span><span class="kw">pub fn </span>track_assets(<span class="kw-2">mut </span>assets: ResMut&lt;<span class="self">Self</span>&gt;, asset_server: Res&lt;AssetServer&gt;) {
+        <span class="kw">let </span>assets = <span class="kw-2">&amp;mut *</span>assets;
+        <span class="comment">// note that we must hold this lock for the entire duration of this function to ensure
+        // that `asset_server.load` calls that occur during it block, which ensures that
+        // re-loads are kicked off appropriately. This function must be &quot;transactional&quot; relative
+        // to other asset info operations
+        </span><span class="kw">let </span><span class="kw-2">mut </span>infos = asset_server.data.infos.write();
+        <span class="kw">let </span><span class="kw-2">mut </span>not_ready = Vec::new();
+        <span class="kw">while let </span><span class="prelude-val">Ok</span>(drop_event) = assets.handle_provider.drop_receiver.try_recv() {
+            <span class="kw">let </span>id = drop_event.id;
+            <span class="kw">if </span>!assets.contains(id.typed()) {
+                not_ready.push(drop_event);
+                <span class="kw">continue</span>;
+            }
+            <span class="kw">if </span>drop_event.asset_server_managed {
+                <span class="kw">if </span>infos.process_handle_drop(id.untyped(TypeId::of::&lt;A&gt;())) {
+                    assets.remove(id.typed());
+                }
+            } <span class="kw">else </span>{
+                assets.remove(id.typed());
+            }
+        }
+        <span class="comment">// TODO: this is _extremely_ inefficient find a better fix
+        // This will also loop failed assets indefinitely. Is that ok?
+        </span><span class="kw">for </span>event <span class="kw">in </span>not_ready {
+            assets.handle_provider.drop_sender.send(event).unwrap();
+        }
+    }
+
+    <span class="doccomment">/// A system that applies accumulated asset change events to the [`Events`] resource.
+    ///
+    /// [`Events`]: bevy_ecs::event::Events
+    </span><span class="kw">pub fn </span>asset_events(<span class="kw-2">mut </span>assets: ResMut&lt;<span class="self">Self</span>&gt;, <span class="kw-2">mut </span>events: EventWriter&lt;AssetEvent&lt;A&gt;&gt;) {
+        events.send_batch(assets.queued_events.drain(..));
+    }
+}
+
+<span class="doccomment">/// A mutable iterator over [`Assets`].
+</span><span class="kw">pub struct </span>AssetsMutIterator&lt;<span class="lifetime">&#39;a</span>, A: Asset&gt; {
+    queued_events: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>Vec&lt;AssetEvent&lt;A&gt;&gt;,
+    dense_storage: Enumerate&lt;std::slice::IterMut&lt;<span class="lifetime">&#39;a</span>, Entry&lt;A&gt;&gt;&gt;,
+    hash_map: bevy_utils::hashbrown::hash_map::IterMut&lt;<span class="lifetime">&#39;a</span>, Uuid, A&gt;,
+}
+
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, A: Asset&gt; Iterator <span class="kw">for </span>AssetsMutIterator&lt;<span class="lifetime">&#39;a</span>, A&gt; {
+    <span class="kw">type </span>Item = (AssetId&lt;A&gt;, <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>A);
+
+    <span class="kw">fn </span>next(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::Item&gt; {
+        <span class="kw">for </span>(i, entry) <span class="kw">in </span><span class="kw-2">&amp;mut </span><span class="self">self</span>.dense_storage {
+            <span class="kw">match </span>entry {
+                Entry::None =&gt; {
+                    <span class="kw">continue</span>;
+                }
+                Entry::Some { value, generation } =&gt; {
+                    <span class="kw">let </span>id = AssetId::Index {
+                        index: AssetIndex {
+                            generation: <span class="kw-2">*</span>generation,
+                            index: i <span class="kw">as </span>u32,
+                        },
+                        marker: PhantomData,
+                    };
+                    <span class="self">self</span>.queued_events.push(AssetEvent::Modified { id });
+                    <span class="kw">if let </span><span class="prelude-val">Some</span>(value) = value {
+                        <span class="kw">return </span><span class="prelude-val">Some</span>((id, value));
+                    }
+                }
+            }
+        }
+        <span class="kw">if let </span><span class="prelude-val">Some</span>((key, value)) = <span class="self">self</span>.hash_map.next() {
+            <span class="kw">let </span>id = AssetId::Uuid { uuid: <span class="kw-2">*</span>key };
+            <span class="self">self</span>.queued_events.push(AssetEvent::Modified { id });
+            <span class="prelude-val">Some</span>((id, value))
+        } <span class="kw">else </span>{
+            <span class="prelude-val">None
+        </span>}
+    }
+}
+
+<span class="attr">#[derive(Error, Debug)]
+#[error(<span class="string">&quot;AssetIndex {index:?} has an invalid generation. The current generation is: &#39;{current_generation}&#39;.&quot;</span>)]
+</span><span class="kw">pub struct </span>InvalidGenerationError {
+    index: AssetIndex,
+    current_generation: u32,
 }
 </code></pre></div></section></main></body></html>

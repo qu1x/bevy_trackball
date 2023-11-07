@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/n3vu0r/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_reflect_derive-0.11.2/src/derive_data.rs`."><title>derive_data.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-9bb858ba049f1f21.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="bevy_reflect_derive" data-themes="" data-resource-suffix="" data-rustdoc-version="1.72.0 (5680fa18f 2023-08-23)" data-channel="1.72.0" data-search-js="search-f6292fe389d70017.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-0f8c037637f9eb3e.css" data-theme-dark-css="dark-1097f8e92a01e3cf.css" data-theme-ayu-css="ayu-614652228113ac93.css" ><script src="../../static.files/storage-59fd9b8ccb335783.js"></script><script defer src="../../static.files/source-script-106908c7a7964ba4.js"></script><script defer src="../../source-files.js"></script><script defer src="../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-0f8c037637f9eb3e.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-1097f8e92a01e3cf.css"><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../bevy_reflect_derive/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_reflect_derive-0.12.0/src/derive_data.rs`."><title>derive_data.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="bevy_reflect_derive" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../bevy_reflect_derive/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -888,14 +888,30 @@
 <a href="#888" id="888">888</a>
 <a href="#889" id="889">889</a>
 <a href="#890" id="890">890</a>
+<a href="#891" id="891">891</a>
+<a href="#892" id="892">892</a>
+<a href="#893" id="893">893</a>
+<a href="#894" id="894">894</a>
+<a href="#895" id="895">895</a>
+<a href="#896" id="896">896</a>
+<a href="#897" id="897">897</a>
+<a href="#898" id="898">898</a>
+<a href="#899" id="899">899</a>
+<a href="#900" id="900">900</a>
+<a href="#901" id="901">901</a>
+<a href="#902" id="902">902</a>
+<a href="#903" id="903">903</a>
+<a href="#904" id="904">904</a>
+<a href="#905" id="905">905</a>
+<a href="#906" id="906">906</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::container_attributes::{FromReflectAttrs, ReflectTraits};
 <span class="kw">use </span><span class="kw">crate</span>::field_attributes::{parse_field_attrs, ReflectFieldAttr};
 <span class="kw">use </span><span class="kw">crate</span>::type_path::parse_path_no_leading_colon;
-<span class="kw">use </span><span class="kw">crate</span>::utility::{members_to_serialization_denylist, StringExpr, WhereClauseOptions};
-<span class="kw">use </span>bit_set::BitSet;
+<span class="kw">use </span><span class="kw">crate</span>::utility::{StringExpr, WhereClauseOptions};
 <span class="kw">use </span>quote::{quote, ToTokens};
 <span class="kw">use </span>syn::token::Comma;
 
+<span class="kw">use </span><span class="kw">crate</span>::serialization::SerializationDataDef;
 <span class="kw">use crate</span>::{
     utility, REFLECT_ATTRIBUTE_NAME, REFLECT_VALUE_ATTRIBUTE_NAME, TYPE_NAME_ATTRIBUTE_NAME,
     TYPE_PATH_ATTRIBUTE_NAME,
@@ -924,14 +940,14 @@
 /// //                          traits
 /// //        |----------------------------------------|
 /// #[reflect(PartialEq, Serialize, Deserialize, Default)]
-/// //            type_name       generics
+/// //            type_path       generics
 /// //     |-------------------||----------|
 /// struct ThingThatImReflecting&lt;T1, T2, T3&gt; {/* ... */}
 /// ```
 </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct </span>ReflectMeta&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="doccomment">/// The registered traits for this type.
     </span>traits: ReflectTraits,
-    <span class="doccomment">/// The name of this type.
+    <span class="doccomment">/// The path to this type.
     </span>type_path: ReflectTypePath&lt;<span class="lifetime">&#39;a</span>&gt;,
     <span class="doccomment">/// A cached instance of the path to the `bevy_reflect` crate.
     </span>bevy_reflect_path: Path,
@@ -955,7 +971,7 @@
 /// ```
 </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct </span>ReflectStruct&lt;<span class="lifetime">&#39;a</span>&gt; {
     meta: ReflectMeta&lt;<span class="lifetime">&#39;a</span>&gt;,
-    serialization_denylist: BitSet&lt;u32&gt;,
+    serialization_data: <span class="prelude-ty">Option</span>&lt;SerializationDataDef&gt;,
     fields: Vec&lt;StructField&lt;<span class="lifetime">&#39;a</span>&gt;&gt;,
 }
 
@@ -985,7 +1001,14 @@
     <span class="doccomment">/// The reflection-based attributes on the field.
     </span><span class="kw">pub </span>attrs: ReflectFieldAttr,
     <span class="doccomment">/// The index of this field within the struct.
-    </span><span class="kw">pub </span>index: usize,
+    </span><span class="kw">pub </span>declaration_index: usize,
+    <span class="doccomment">/// The index of this field as seen by the reflection API.
+    ///
+    /// This index accounts for the removal of [ignored] fields.
+    /// It will only be `Some(index)` when the field is not ignored.
+    ///
+    /// [ignored]: crate::field_attributes::ReflectIgnoreBehavior::IgnoreAlways
+    </span><span class="kw">pub </span>reflection_index: <span class="prelude-ty">Option</span>&lt;usize&gt;,
     <span class="doccomment">/// The documentation for this field, if any
     </span><span class="attr">#[cfg(feature = <span class="string">&quot;documentation&quot;</span>)]
     </span><span class="kw">pub </span>doc: <span class="kw">crate</span>::documentation::Documentation,
@@ -1085,7 +1108,8 @@
                     <span class="kw">let </span>syn::Expr::Lit(syn::ExprLit {
                         lit: syn::Lit::Str(lit),
                         ..
-                    }) = <span class="kw-2">&amp;</span>pair.value <span class="kw">else </span>{
+                    }) = <span class="kw-2">&amp;</span>pair.value
+                    <span class="kw">else </span>{
                         <span class="kw">return </span><span class="prelude-val">Err</span>(syn::Error::new(
                             pair.span(),
                             <span class="macro">format_args!</span>(<span class="string">&quot;`#[{TYPE_PATH_ATTRIBUTE_NAME} = \&quot;...\&quot;]` must be a string literal&quot;</span>),
@@ -1101,7 +1125,8 @@
                     <span class="kw">let </span>syn::Expr::Lit(syn::ExprLit {
                         lit: syn::Lit::Str(lit),
                         ..
-                    }) = <span class="kw-2">&amp;</span>pair.value <span class="kw">else </span>{
+                    }) = <span class="kw-2">&amp;</span>pair.value
+                    <span class="kw">else </span>{
                         <span class="kw">return </span><span class="prelude-val">Err</span>(syn::Error::new(
                             pair.span(),
                             <span class="macro">format_args!</span>(<span class="string">&quot;`#[{TYPE_NAME_ATTRIBUTE_NAME} = \&quot;...\&quot;]` must be a string literal&quot;</span>),
@@ -1160,9 +1185,7 @@
                 <span class="kw">let </span>fields = <span class="self">Self</span>::collect_struct_fields(<span class="kw-2">&amp;</span>data.fields)<span class="question-mark">?</span>;
                 <span class="kw">let </span>reflect_struct = ReflectStruct {
                     meta,
-                    serialization_denylist: members_to_serialization_denylist(
-                        fields.iter().map(|v| v.attrs.ignore),
-                    ),
+                    serialization_data: SerializationDataDef::new(<span class="kw-2">&amp;</span>fields)<span class="question-mark">?</span>,
                     fields,
                 };
 
@@ -1196,19 +1219,31 @@
     }
 
     <span class="kw">fn </span>collect_struct_fields(fields: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Fields) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;StructField&lt;<span class="lifetime">&#39;a</span>&gt;&gt;, syn::Error&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>active_index = <span class="number">0</span>;
         <span class="kw">let </span>sifter: utility::ResultSifter&lt;StructField&lt;<span class="lifetime">&#39;a</span>&gt;&gt; = fields
             .iter()
             .enumerate()
-            .map(|(index, field)| -&gt; <span class="prelude-ty">Result</span>&lt;StructField, syn::Error&gt; {
-                <span class="kw">let </span>attrs = parse_field_attrs(<span class="kw-2">&amp;</span>field.attrs)<span class="question-mark">?</span>;
-                <span class="prelude-val">Ok</span>(StructField {
-                    index,
-                    attrs,
-                    data: field,
-                    <span class="attr">#[cfg(feature = <span class="string">&quot;documentation&quot;</span>)]
-                    </span>doc: <span class="kw">crate</span>::documentation::Documentation::from_attributes(<span class="kw-2">&amp;</span>field.attrs),
-                })
-            })
+            .map(
+                |(declaration_index, field)| -&gt; <span class="prelude-ty">Result</span>&lt;StructField, syn::Error&gt; {
+                    <span class="kw">let </span>attrs = parse_field_attrs(<span class="kw-2">&amp;</span>field.attrs)<span class="question-mark">?</span>;
+
+                    <span class="kw">let </span>reflection_index = <span class="kw">if </span>attrs.ignore.is_ignored() {
+                        <span class="prelude-val">None
+                    </span>} <span class="kw">else </span>{
+                        active_index += <span class="number">1</span>;
+                        <span class="prelude-val">Some</span>(active_index - <span class="number">1</span>)
+                    };
+
+                    <span class="prelude-val">Ok</span>(StructField {
+                        declaration_index,
+                        reflection_index,
+                        attrs,
+                        data: field,
+                        <span class="attr">#[cfg(feature = <span class="string">&quot;documentation&quot;</span>)]
+                        </span>doc: <span class="kw">crate</span>::documentation::Documentation::from_attributes(<span class="kw-2">&amp;</span>field.attrs),
+                    })
+                },
+            )
             .fold(
                 utility::ResultSifter::default(),
                 utility::ResultSifter::fold,
@@ -1277,7 +1312,7 @@
         <span class="self">self</span>.traits.from_reflect_attrs()
     }
 
-    <span class="doccomment">/// The name of this struct.
+    <span class="doccomment">/// The path to this type.
     </span><span class="kw">pub fn </span>type_path(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>ReflectTypePath&lt;<span class="lifetime">&#39;a</span>&gt; {
         <span class="kw-2">&amp;</span><span class="self">self</span>.type_path
     }
@@ -1308,12 +1343,9 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>.meta
     }
 
-    <span class="doccomment">/// Access the data about which fields should be ignored during serialization.
-    ///
-    /// The returned bitset is a collection of indices obtained from the [`members_to_serialization_denylist`](crate::utility::members_to_serialization_denylist) function.
-    </span><span class="attr">#[allow(dead_code)]
-    </span><span class="kw">pub fn </span>serialization_denylist(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>BitSet&lt;u32&gt; {
-        <span class="kw-2">&amp;</span><span class="self">self</span>.serialization_denylist
+    <span class="doccomment">/// Returns the [`SerializationDataDef`] for this struct.
+    </span><span class="kw">pub fn </span>serialization_data(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>SerializationDataDef&gt; {
+        <span class="self">self</span>.serialization_data.as_ref()
     }
 
     <span class="doccomment">/// Returns the `GetTypeRegistration` impl as a `TokenStream`.
@@ -1326,7 +1358,7 @@
         <span class="kw">crate</span>::registration::impl_get_type_registration(
             <span class="self">self</span>.meta(),
             where_clause_options,
-            <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.serialization_denylist),
+            <span class="self">self</span>.serialization_data(),
         )
     }
 
@@ -1457,7 +1489,7 @@
 ///     custom_path: None,
 /// };
 ///
-/// // Eqivalent to &quot;core::marker&quot;.
+/// // Equivalent to &quot;core::marker&quot;.
 /// let module_path = type_path.module_path();
 /// # Ok::&lt;(), syn::Error&gt;(())
 /// ```
@@ -1467,7 +1499,7 @@
     </span>Primitive(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Ident),
     <span class="doccomment">/// Using `::my_crate::foo::Bar` syntax.
     ///
-    /// May have a seperate custom path used for the `TypePath` implementation.
+    /// May have a separate custom path used for the `TypePath` implementation.
     </span>External {
         path: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Path,
         custom_path: <span class="prelude-ty">Option</span>&lt;Path&gt;,
@@ -1477,7 +1509,7 @@
     ///
     /// The type must be able to be reached with just its name.
     ///
-    /// May have a seperate alias path used for the `TypePath` implementation.
+    /// May have a separate alias path used for the `TypePath` implementation.
     ///
     /// Module and crate are found with [`module_path!()`](core::module_path),
     /// if there is no custom path specified.

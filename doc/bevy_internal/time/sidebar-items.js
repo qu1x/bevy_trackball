@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["TimeUpdateStrategy","TimerMode"],"fn":["create_time_channels"],"mod":["common_conditions","fixed_timestep","prelude"],"struct":["Stopwatch","Time","TimePlugin","TimeReceiver","TimeSender","TimeSystem","Timer"]};
+window.SIDEBAR_ITEMS = {"enum":["TimeUpdateStrategy","TimerMode","TrySendError"],"fn":["create_time_channels","run_fixed_update_schedule","virtual_time_system"],"mod":["common_conditions","prelude"],"struct":["Fixed","Real","Stopwatch","Time","TimePlugin","TimeReceiver","TimeSender","TimeSystem","Timer","Virtual"]};

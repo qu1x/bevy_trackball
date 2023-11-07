@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":["accesskit"],"struct":["AccessibilityNode","AccessibilityPlugin","AccessibilityRequested","ActionRequest","Focus"],"trait":["AccessKitEntityExt"]};
+window.SIDEBAR_ITEMS = {"enum":["AccessibilitySystem"],"mod":["accesskit"],"struct":["AccessibilityNode","AccessibilityPlugin","AccessibilityRequested","ActionRequest","Focus","ManageAccessibilityUpdates"]};

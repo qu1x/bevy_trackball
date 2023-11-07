@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/n3vu0r/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ecs-0.11.2/src/archetype.rs`."><title>archetype.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-9bb858ba049f1f21.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="bevy_ecs" data-themes="" data-resource-suffix="" data-rustdoc-version="1.72.0 (5680fa18f 2023-08-23)" data-channel="1.72.0" data-search-js="search-f6292fe389d70017.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-0f8c037637f9eb3e.css" data-theme-dark-css="dark-1097f8e92a01e3cf.css" data-theme-ayu-css="ayu-614652228113ac93.css" ><script src="../../static.files/storage-59fd9b8ccb335783.js"></script><script defer src="../../static.files/source-script-106908c7a7964ba4.js"></script><script defer src="../../source-files.js"></script><script defer src="../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-0f8c037637f9eb3e.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-1097f8e92a01e3cf.css"><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../bevy_ecs/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ecs-0.12.0/src/archetype.rs`."><title>archetype.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="bevy_ecs" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../bevy_ecs/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -754,6 +754,30 @@
 <a href="#754" id="754">754</a>
 <a href="#755" id="755">755</a>
 <a href="#756" id="756">756</a>
+<a href="#757" id="757">757</a>
+<a href="#758" id="758">758</a>
+<a href="#759" id="759">759</a>
+<a href="#760" id="760">760</a>
+<a href="#761" id="761">761</a>
+<a href="#762" id="762">762</a>
+<a href="#763" id="763">763</a>
+<a href="#764" id="764">764</a>
+<a href="#765" id="765">765</a>
+<a href="#766" id="766">766</a>
+<a href="#767" id="767">767</a>
+<a href="#768" id="768">768</a>
+<a href="#769" id="769">769</a>
+<a href="#770" id="770">770</a>
+<a href="#771" id="771">771</a>
+<a href="#772" id="772">772</a>
+<a href="#773" id="773">773</a>
+<a href="#774" id="774">774</a>
+<a href="#775" id="775">775</a>
+<a href="#776" id="776">776</a>
+<a href="#777" id="777">777</a>
+<a href="#778" id="778">778</a>
+<a href="#779" id="779">779</a>
+<a href="#780" id="780">780</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Types for defining [`Archetype`]s, collections of entities that have the same set of
 //! components.
 //!
@@ -783,7 +807,7 @@
 };
 <span class="kw">use </span>std::{
     hash::Hash,
-    ops::{Index, IndexMut},
+    ops::{Index, IndexMut, RangeFrom},
 };
 
 <span class="doccomment">/// An opaque location within a [`Archetype`].
@@ -826,7 +850,7 @@
 ///
 /// [`World`]: crate::world::World
 /// [`EMPTY`]: crate::archetype::ArchetypeId::EMPTY
-</span><span class="attr">#[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
+</span><span class="attr">#[derive(Debug, Copy, Clone, Eq, PartialEq, Hash, PartialOrd, Ord)]
 </span><span class="comment">// SAFETY: Must be repr(transparent) due to the safety requirements on EntityLocation
 </span><span class="attr">#[repr(transparent)]
 </span><span class="kw">pub struct </span>ArchetypeId(u32);
@@ -839,13 +863,26 @@
     /// This must always have an all-1s bit pattern to ensure soundness in fast entity id space allocation.
     </span><span class="kw">pub const </span>INVALID: ArchetypeId = ArchetypeId(u32::MAX);
 
-    <span class="attr">#[inline]
-    </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const fn </span>new(index: usize) -&gt; <span class="self">Self </span>{
+    <span class="doccomment">/// Create an `ArchetypeId` from a plain value.
+    ///
+    /// This is useful if you need to store the `ArchetypeId` as a plain value,
+    /// for example in a specialized data structure such as a bitset.
+    ///
+    /// While it doesn&#39;t break any safety invariants, you should ensure the
+    /// values comes from a pre-existing [`ArchetypeId::index`] in this world
+    /// to avoid panics and other unexpected behaviors.
+    </span><span class="attr">#[inline]
+    </span><span class="kw">pub const fn </span>new(index: usize) -&gt; <span class="self">Self </span>{
         ArchetypeId(index <span class="kw">as </span>u32)
     }
 
-    <span class="attr">#[inline]
-    </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>index(<span class="self">self</span>) -&gt; usize {
+    <span class="doccomment">/// The plain value of this `ArchetypeId`.
+    ///
+    /// In bevy, this is mostly used to store archetype ids in [`FixedBitSet`]s.
+    ///
+    /// [`FixedBitSet`]: fixedbitset::FixedBitSet
+    </span><span class="attr">#[inline]
+    </span><span class="kw">pub fn </span>index(<span class="self">self</span>) -&gt; usize {
         <span class="self">self</span>.<span class="number">0 </span><span class="kw">as </span>usize
     }
 }
@@ -914,12 +951,12 @@
 
 <span class="kw">impl </span>Edges {
     <span class="doccomment">/// Checks the cache for the target archetype when adding a bundle to the
-    /// source archetype. For more information, see [`EntityMut::insert`].
+    /// source archetype. For more information, see [`EntityWorldMut::insert`].
     ///
     /// If this returns `None`, it means there has not been a transition from
     /// the source archetype via the provided bundle.
     ///
-    /// [`EntityMut::insert`]: crate::world::EntityMut::insert
+    /// [`EntityWorldMut::insert`]: crate::world::EntityWorldMut::insert
     </span><span class="attr">#[inline]
     </span><span class="kw">pub fn </span>get_add_bundle(<span class="kw-2">&amp;</span><span class="self">self</span>, bundle_id: BundleId) -&gt; <span class="prelude-ty">Option</span>&lt;ArchetypeId&gt; {
         <span class="self">self</span>.get_add_bundle_internal(bundle_id)
@@ -933,9 +970,9 @@
     }
 
     <span class="doccomment">/// Caches the target archetype when adding a bundle to the source archetype.
-    /// For more information, see [`EntityMut::insert`].
+    /// For more information, see [`EntityWorldMut::insert`].
     ///
-    /// [`EntityMut::insert`]: crate::world::EntityMut::insert
+    /// [`EntityWorldMut::insert`]: crate::world::EntityWorldMut::insert
     </span><span class="attr">#[inline]
     </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>insert_add_bundle(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
@@ -953,7 +990,7 @@
     }
 
     <span class="doccomment">/// Checks the cache for the target archetype when removing a bundle to the
-    /// source archetype. For more information, see [`EntityMut::remove`].
+    /// source archetype. For more information, see [`EntityWorldMut::remove`].
     ///
     /// If this returns `None`, it means there has not been a transition from
     /// the source archetype via the provided bundle.
@@ -961,16 +998,16 @@
     /// If this returns `Some(None)`, it means that the bundle cannot be removed
     /// from the source archetype.
     ///
-    /// [`EntityMut::remove`]: crate::world::EntityMut::remove
+    /// [`EntityWorldMut::remove`]: crate::world::EntityWorldMut::remove
     </span><span class="attr">#[inline]
     </span><span class="kw">pub fn </span>get_remove_bundle(<span class="kw-2">&amp;</span><span class="self">self</span>, bundle_id: BundleId) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="prelude-ty">Option</span>&lt;ArchetypeId&gt;&gt; {
         <span class="self">self</span>.remove_bundle.get(bundle_id).cloned()
     }
 
     <span class="doccomment">/// Caches the target archetype when removing a bundle to the source archetype.
-    /// For more information, see [`EntityMut::remove`].
+    /// For more information, see [`EntityWorldMut::remove`].
     ///
-    /// [`EntityMut::remove`]: crate::world::EntityMut::remove
+    /// [`EntityWorldMut::remove`]: crate::world::EntityWorldMut::remove
     </span><span class="attr">#[inline]
     </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>insert_remove_bundle(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
@@ -981,21 +1018,21 @@
     }
 
     <span class="doccomment">/// Checks the cache for the target archetype when removing a bundle to the
-    /// source archetype. For more information, see [`EntityMut::remove`].
+    /// source archetype. For more information, see [`EntityWorldMut::remove`].
     ///
     /// If this returns `None`, it means there has not been a transition from
     /// the source archetype via the provided bundle.
     ///
-    /// [`EntityMut::remove`]: crate::world::EntityMut::remove
+    /// [`EntityWorldMut::remove`]: crate::world::EntityWorldMut::remove
     </span><span class="attr">#[inline]
     </span><span class="kw">pub fn </span>get_take_bundle(<span class="kw-2">&amp;</span><span class="self">self</span>, bundle_id: BundleId) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="prelude-ty">Option</span>&lt;ArchetypeId&gt;&gt; {
         <span class="self">self</span>.take_bundle.get(bundle_id).cloned()
     }
 
     <span class="doccomment">/// Caches the target archetype when removing a bundle to the source archetype.
-    /// For more information, see [`EntityMut::take`].
+    /// For more information, see [`EntityWorldMut::take`].
     ///
-    /// [`EntityMut::take`]: crate::world::EntityMut::take
+    /// [`EntityWorldMut::take`]: crate::world::EntityWorldMut::take
     </span><span class="attr">#[inline]
     </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>insert_take_bundle(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
@@ -1281,24 +1318,23 @@
     }
 }
 
-<span class="doccomment">/// An opaque generational id that changes every time the set of [`Archetypes`] changes.
-</span><span class="attr">#[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd)]
-</span><span class="kw">pub struct </span>ArchetypeGeneration(usize);
+<span class="doccomment">/// The next [`ArchetypeId`] in an [`Archetypes`] collection.
+///
+/// This is used in archetype update methods to limit archetype updates to the
+/// ones added since the last time the method ran.
+</span><span class="attr">#[derive(Debug, Copy, Clone)]
+</span><span class="kw">pub struct </span>ArchetypeGeneration(ArchetypeId);
 
 <span class="kw">impl </span>ArchetypeGeneration {
-    <span class="attr">#[inline]
-    </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const fn </span>initial() -&gt; <span class="self">Self </span>{
-        ArchetypeGeneration(<span class="number">0</span>)
+    <span class="doccomment">/// The first archetype.
+    </span><span class="attr">#[inline]
+    </span><span class="kw">pub const fn </span>initial() -&gt; <span class="self">Self </span>{
+        ArchetypeGeneration(ArchetypeId::EMPTY)
     }
-
-    <span class="attr">#[inline]
-    </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>value(<span class="self">self</span>) -&gt; usize {
-        <span class="self">self</span>.<span class="number">0
-    </span>}
 }
 
 <span class="attr">#[derive(Hash, PartialEq, Eq)]
-</span><span class="kw">struct </span>ArchetypeIdentity {
+</span><span class="kw">struct </span>ArchetypeComponents {
     table_components: Box&lt;[ComponentId]&gt;,
     sparse_set_components: Box&lt;[ComponentId]&gt;,
 }
@@ -1359,25 +1395,29 @@
 </span><span class="kw">pub struct </span>Archetypes {
     <span class="kw">pub</span>(<span class="kw">crate</span>) archetypes: Vec&lt;Archetype&gt;,
     <span class="kw">pub</span>(<span class="kw">crate</span>) archetype_component_count: usize,
-    archetype_ids: bevy_utils::HashMap&lt;ArchetypeIdentity, ArchetypeId&gt;,
+    by_components: bevy_utils::HashMap&lt;ArchetypeComponents, ArchetypeId&gt;,
 }
 
 <span class="kw">impl </span>Archetypes {
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>new() -&gt; <span class="self">Self </span>{
         <span class="kw">let </span><span class="kw-2">mut </span>archetypes = Archetypes {
             archetypes: Vec::new(),
-            archetype_ids: Default::default(),
+            by_components: Default::default(),
             archetype_component_count: <span class="number">0</span>,
         };
         archetypes.get_id_or_insert(TableId::empty(), Vec::new(), Vec::new());
         archetypes
     }
 
-    <span class="doccomment">/// Returns the current archetype generation. This is an ID indicating the current set of archetypes
-    /// that are registered with the world.
+    <span class="doccomment">/// Returns the &quot;generation&quot;, a handle to the current highest archetype ID.
+    ///
+    /// This can be used with the `Index` [`Archetypes`] implementation to
+    /// iterate over newly introduced [`Archetype`]s since the last time this
+    /// function was called.
     </span><span class="attr">#[inline]
     </span><span class="kw">pub fn </span>generation(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; ArchetypeGeneration {
-        ArchetypeGeneration(<span class="self">self</span>.archetypes.len())
+        <span class="kw">let </span>id = ArchetypeId::new(<span class="self">self</span>.archetypes.len());
+        ArchetypeGeneration(id)
     }
 
     <span class="doccomment">/// Fetches the total number of [`Archetype`]s within the world.
@@ -1448,7 +1488,7 @@
         table_components: Vec&lt;ComponentId&gt;,
         sparse_set_components: Vec&lt;ComponentId&gt;,
     ) -&gt; ArchetypeId {
-        <span class="kw">let </span>archetype_identity = ArchetypeIdentity {
+        <span class="kw">let </span>archetype_identity = ArchetypeComponents {
             sparse_set_components: sparse_set_components.clone().into_boxed_slice(),
             table_components: table_components.clone().into_boxed_slice(),
         };
@@ -1456,7 +1496,7 @@
         <span class="kw">let </span>archetypes = <span class="kw-2">&amp;mut </span><span class="self">self</span>.archetypes;
         <span class="kw">let </span>archetype_component_count = <span class="kw-2">&amp;mut </span><span class="self">self</span>.archetype_component_count;
         <span class="kw-2">*</span><span class="self">self
-            </span>.archetype_ids
+            </span>.by_components
             .entry(archetype_identity)
             .or_insert_with(<span class="kw">move </span>|| {
                 <span class="kw">let </span>id = ArchetypeId::new(archetypes.len());
@@ -1495,6 +1535,14 @@
     }
 }
 
+<span class="kw">impl </span>Index&lt;RangeFrom&lt;ArchetypeGeneration&gt;&gt; <span class="kw">for </span>Archetypes {
+    <span class="kw">type </span>Output = [Archetype];
+
+    <span class="attr">#[inline]
+    </span><span class="kw">fn </span>index(<span class="kw-2">&amp;</span><span class="self">self</span>, index: RangeFrom&lt;ArchetypeGeneration&gt;) -&gt; <span class="kw-2">&amp;</span><span class="self">Self</span>::Output {
+        <span class="kw-2">&amp;</span><span class="self">self</span>.archetypes[index.start.<span class="number">0</span>.index()..]
+    }
+}
 <span class="kw">impl </span>Index&lt;ArchetypeId&gt; <span class="kw">for </span>Archetypes {
     <span class="kw">type </span>Output = Archetype;
 

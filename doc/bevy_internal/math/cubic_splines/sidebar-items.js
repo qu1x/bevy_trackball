@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["BSpline","Bezier","CardinalSpline","CubicCurve","CubicSegment","Hermite"],"trait":["CubicGenerator","Point"]};
+window.SIDEBAR_ITEMS = {"struct":["CubicBSpline","CubicBezier","CubicCardinalSpline","CubicCurve","CubicHermite","CubicSegment"],"trait":["CubicGenerator","Point"]};

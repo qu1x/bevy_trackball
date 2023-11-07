@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/n3vu0r/.cargo/registry/src/index.crates.io-6f17d22bba15001f/naga-0.12.3/src/back/spv/block.rs`."><title>block.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-9bb858ba049f1f21.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="naga" data-themes="" data-resource-suffix="" data-rustdoc-version="1.72.0 (5680fa18f 2023-08-23)" data-channel="1.72.0" data-search-js="search-f6292fe389d70017.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-0f8c037637f9eb3e.css" data-theme-dark-css="dark-1097f8e92a01e3cf.css" data-theme-ayu-css="ayu-614652228113ac93.css" ><script src="../../../../static.files/storage-59fd9b8ccb335783.js"></script><script defer src="../../../../static.files/source-script-106908c7a7964ba4.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../../static.files/light-0f8c037637f9eb3e.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../../static.files/dark-1097f8e92a01e3cf.css"><link rel="stylesheet" href="../../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../../naga/index.html"><img class="rust-logo" src="../../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/naga-0.13.0/src/back/spv/block.rs`."><title>block.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="naga" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../../naga/index.html"><img class="rust-logo" src="../../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -2256,6 +2256,89 @@
 <a href="#2256" id="2256">2256</a>
 <a href="#2257" id="2257">2257</a>
 <a href="#2258" id="2258">2258</a>
+<a href="#2259" id="2259">2259</a>
+<a href="#2260" id="2260">2260</a>
+<a href="#2261" id="2261">2261</a>
+<a href="#2262" id="2262">2262</a>
+<a href="#2263" id="2263">2263</a>
+<a href="#2264" id="2264">2264</a>
+<a href="#2265" id="2265">2265</a>
+<a href="#2266" id="2266">2266</a>
+<a href="#2267" id="2267">2267</a>
+<a href="#2268" id="2268">2268</a>
+<a href="#2269" id="2269">2269</a>
+<a href="#2270" id="2270">2270</a>
+<a href="#2271" id="2271">2271</a>
+<a href="#2272" id="2272">2272</a>
+<a href="#2273" id="2273">2273</a>
+<a href="#2274" id="2274">2274</a>
+<a href="#2275" id="2275">2275</a>
+<a href="#2276" id="2276">2276</a>
+<a href="#2277" id="2277">2277</a>
+<a href="#2278" id="2278">2278</a>
+<a href="#2279" id="2279">2279</a>
+<a href="#2280" id="2280">2280</a>
+<a href="#2281" id="2281">2281</a>
+<a href="#2282" id="2282">2282</a>
+<a href="#2283" id="2283">2283</a>
+<a href="#2284" id="2284">2284</a>
+<a href="#2285" id="2285">2285</a>
+<a href="#2286" id="2286">2286</a>
+<a href="#2287" id="2287">2287</a>
+<a href="#2288" id="2288">2288</a>
+<a href="#2289" id="2289">2289</a>
+<a href="#2290" id="2290">2290</a>
+<a href="#2291" id="2291">2291</a>
+<a href="#2292" id="2292">2292</a>
+<a href="#2293" id="2293">2293</a>
+<a href="#2294" id="2294">2294</a>
+<a href="#2295" id="2295">2295</a>
+<a href="#2296" id="2296">2296</a>
+<a href="#2297" id="2297">2297</a>
+<a href="#2298" id="2298">2298</a>
+<a href="#2299" id="2299">2299</a>
+<a href="#2300" id="2300">2300</a>
+<a href="#2301" id="2301">2301</a>
+<a href="#2302" id="2302">2302</a>
+<a href="#2303" id="2303">2303</a>
+<a href="#2304" id="2304">2304</a>
+<a href="#2305" id="2305">2305</a>
+<a href="#2306" id="2306">2306</a>
+<a href="#2307" id="2307">2307</a>
+<a href="#2308" id="2308">2308</a>
+<a href="#2309" id="2309">2309</a>
+<a href="#2310" id="2310">2310</a>
+<a href="#2311" id="2311">2311</a>
+<a href="#2312" id="2312">2312</a>
+<a href="#2313" id="2313">2313</a>
+<a href="#2314" id="2314">2314</a>
+<a href="#2315" id="2315">2315</a>
+<a href="#2316" id="2316">2316</a>
+<a href="#2317" id="2317">2317</a>
+<a href="#2318" id="2318">2318</a>
+<a href="#2319" id="2319">2319</a>
+<a href="#2320" id="2320">2320</a>
+<a href="#2321" id="2321">2321</a>
+<a href="#2322" id="2322">2322</a>
+<a href="#2323" id="2323">2323</a>
+<a href="#2324" id="2324">2324</a>
+<a href="#2325" id="2325">2325</a>
+<a href="#2326" id="2326">2326</a>
+<a href="#2327" id="2327">2327</a>
+<a href="#2328" id="2328">2328</a>
+<a href="#2329" id="2329">2329</a>
+<a href="#2330" id="2330">2330</a>
+<a href="#2331" id="2331">2331</a>
+<a href="#2332" id="2332">2332</a>
+<a href="#2333" id="2333">2333</a>
+<a href="#2334" id="2334">2334</a>
+<a href="#2335" id="2335">2335</a>
+<a href="#2336" id="2336">2336</a>
+<a href="#2337" id="2337">2337</a>
+<a href="#2338" id="2338">2338</a>
+<a href="#2339" id="2339">2339</a>
+<a href="#2340" id="2340">2340</a>
+<a href="#2341" id="2341">2341</a>
 </pre></div><pre class="rust"><code><span class="doccomment">/*!
 Implementations for `BlockContext` methods.
 */
@@ -2265,7 +2348,7 @@ Implementations for `BlockContext` methods.
     Dimension, Error, Instruction, LocalType, LookupType, LoopContext, ResultMember, Writer,
     WriterFlags,
 };
-<span class="kw">use crate</span>::{arena::Handle, proc::TypeResolution};
+<span class="kw">use crate</span>::{arena::Handle, proc::TypeResolution, Statement};
 <span class="kw">use </span>spirv::Word;
 
 <span class="kw">fn </span>get_dimension(type_inner: <span class="kw-2">&amp;</span><span class="kw">crate</span>::TypeInner) -&gt; Dimension {
@@ -2316,6 +2399,12 @@ Implementations for `BlockContext` methods.
         <span class="doccomment">/// The loop header block id
         </span>preamble_id: Word,
     },
+}
+
+<span class="attr">#[derive(Debug)]
+</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct </span>DebugInfoInner&lt;<span class="lifetime">&#39;a</span>&gt; {
+    <span class="kw">pub </span>source_code: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str,
+    <span class="kw">pub </span>source_file_id: Word,
 }
 
 <span class="kw">impl </span>Writer {
@@ -2376,8 +2465,8 @@ Implementations for `BlockContext` methods.
             width: <span class="number">4</span>,
             pointer_space: <span class="prelude-val">None</span>,
         }));
-        <span class="kw">let </span>value0_id = <span class="self">self</span>.get_constant_scalar(<span class="kw">crate</span>::ScalarValue::Float(<span class="number">0.0</span>), <span class="number">4</span>);
-        <span class="kw">let </span>value1_id = <span class="self">self</span>.get_constant_scalar(<span class="kw">crate</span>::ScalarValue::Float(<span class="number">1.0</span>), <span class="number">4</span>);
+        <span class="kw">let </span>zero_scalar_id = <span class="self">self</span>.get_constant_scalar(<span class="kw">crate</span>::Literal::F32(<span class="number">0.0</span>));
+        <span class="kw">let </span>one_scalar_id = <span class="self">self</span>.get_constant_scalar(<span class="kw">crate</span>::Literal::F32(<span class="number">1.0</span>));
 
         <span class="kw">let </span>original_id = <span class="self">self</span>.id_gen.next();
         body.push(Instruction::load(
@@ -2393,7 +2482,7 @@ Implementations for `BlockContext` methods.
             spirv::GLOp::FClamp,
             float_type_id,
             clamp_id,
-            <span class="kw-2">&amp;</span>[original_id, value0_id, value1_id],
+            <span class="kw-2">&amp;</span>[original_id, zero_scalar_id, one_scalar_id],
         ));
 
         body.push(Instruction::store(frag_depth_id, clamp_id, <span class="prelude-val">None</span>));
@@ -2478,8 +2567,40 @@ Implementations for `BlockContext` methods.
         expr_handle: Handle&lt;<span class="kw">crate</span>::Expression&gt;,
         block: <span class="kw-2">&amp;mut </span>Block,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt; {
+        <span class="kw">let </span>is_named_expression = <span class="self">self
+            </span>.ir_function
+            .named_expressions
+            .contains_key(<span class="kw-2">&amp;</span>expr_handle);
+
+        <span class="kw">if </span><span class="self">self</span>.fun_info[expr_handle].ref_count == <span class="number">0 </span>&amp;&amp; !is_named_expression {
+            <span class="kw">return </span><span class="prelude-val">Ok</span>(());
+        }
+
         <span class="kw">let </span>result_type_id = <span class="self">self</span>.get_expression_type_id(<span class="kw-2">&amp;</span><span class="self">self</span>.fun_info[expr_handle].ty);
         <span class="kw">let </span>id = <span class="kw">match </span><span class="self">self</span>.ir_function.expressions[expr_handle] {
+            <span class="kw">crate</span>::Expression::Literal(literal) =&gt; <span class="self">self</span>.writer.get_constant_scalar(literal),
+            <span class="kw">crate</span>::Expression::Constant(handle) =&gt; {
+                <span class="kw">let </span>init = <span class="self">self</span>.ir_module.constants[handle].init;
+                <span class="self">self</span>.writer.constant_ids[init.index()]
+            }
+            <span class="kw">crate</span>::Expression::ZeroValue(<span class="kw">_</span>) =&gt; <span class="self">self</span>.writer.write_constant_null(result_type_id),
+            <span class="kw">crate</span>::Expression::Compose {
+                ty: <span class="kw">_</span>,
+                <span class="kw-2">ref </span>components,
+            } =&gt; {
+                <span class="self">self</span>.temp_list.clear();
+                <span class="kw">for </span><span class="kw-2">&amp;</span>component <span class="kw">in </span>components {
+                    <span class="self">self</span>.temp_list.push(<span class="self">self</span>.cached[component]);
+                }
+
+                <span class="kw">let </span>id = <span class="self">self</span>.gen_id();
+                block.body.push(Instruction::composite_construct(
+                    result_type_id,
+                    id,
+                    <span class="kw-2">&amp;</span><span class="self">self</span>.temp_list,
+                ));
+                id
+            }
             <span class="kw">crate</span>::Expression::Access { base, index: <span class="kw">_ </span>} <span class="kw">if </span><span class="self">self</span>.is_intermediate(base) =&gt; {
                 <span class="comment">// See `is_intermediate`; we&#39;ll handle this later in
                 // `write_expression_pointer`.
@@ -2615,7 +2736,6 @@ Implementations for `BlockContext` methods.
             <span class="kw">crate</span>::Expression::GlobalVariable(handle) =&gt; {
                 <span class="self">self</span>.writer.global_variables[handle.index()].access_id
             }
-            <span class="kw">crate</span>::Expression::Constant(handle) =&gt; <span class="self">self</span>.writer.constant_ids[handle.index()],
             <span class="kw">crate</span>::Expression::Splat { size, value } =&gt; {
                 <span class="kw">let </span>value_id = <span class="self">self</span>.cached[value];
                 <span class="kw">let </span>components = [value_id; <span class="number">4</span>];
@@ -2643,23 +2763,6 @@ Implementations for `BlockContext` methods.
                     id,
                     vector_id,
                     vector_id,
-                    <span class="kw-2">&amp;</span><span class="self">self</span>.temp_list,
-                ));
-                id
-            }
-            <span class="kw">crate</span>::Expression::Compose {
-                ty: <span class="kw">_</span>,
-                <span class="kw-2">ref </span>components,
-            } =&gt; {
-                <span class="self">self</span>.temp_list.clear();
-                <span class="kw">for </span><span class="kw-2">&amp;</span>component <span class="kw">in </span>components {
-                    <span class="self">self</span>.temp_list.push(<span class="self">self</span>.cached[component]);
-                }
-
-                <span class="kw">let </span>id = <span class="self">self</span>.gen_id();
-                block.body.push(Instruction::composite_construct(
-                    result_type_id,
-                    id,
                     <span class="kw-2">&amp;</span><span class="self">self</span>.temp_list,
                 ));
                 id
@@ -2962,18 +3065,14 @@ Implementations for `BlockContext` methods.
                             <span class="kw">crate</span>::TypeInner::Scalar { width, .. } =&gt; (<span class="prelude-val">None</span>, width),
                             <span class="kw-2">ref </span>other =&gt; <span class="macro">unimplemented!</span>(<span class="string">&quot;Unexpected saturate({:?})&quot;</span>, other),
                         };
-
-                        <span class="kw">let </span><span class="kw-2">mut </span>arg1_id = <span class="self">self
-                            </span>.writer
-                            .get_constant_scalar(<span class="kw">crate</span>::ScalarValue::Float(<span class="number">0.0</span>), width);
-                        <span class="kw">let </span><span class="kw-2">mut </span>arg2_id = <span class="self">self
-                            </span>.writer
-                            .get_constant_scalar(<span class="kw">crate</span>::ScalarValue::Float(<span class="number">1.0</span>), width);
+                        <span class="kw">let </span>kind = <span class="kw">crate</span>::ScalarKind::Float;
+                        <span class="kw">let </span><span class="kw-2">mut </span>arg1_id = <span class="self">self</span>.writer.get_constant_scalar_with(<span class="number">0</span>, kind, width)<span class="question-mark">?</span>;
+                        <span class="kw">let </span><span class="kw-2">mut </span>arg2_id = <span class="self">self</span>.writer.get_constant_scalar_with(<span class="number">1</span>, kind, width)<span class="question-mark">?</span>;
 
                         <span class="kw">if let </span><span class="prelude-val">Some</span>(size) = maybe_size {
                             <span class="kw">let </span>ty = LocalType::Value {
                                 vector_size: <span class="prelude-val">Some</span>(size),
-                                kind: <span class="kw">crate</span>::ScalarKind::Float,
+                                kind,
                                 width,
                                 pointer_space: <span class="prelude-val">None</span>,
                             }
@@ -3135,12 +3234,13 @@ Implementations for `BlockContext` methods.
                         arg0_id,
                     )),
                     Mf::CountTrailingZeros =&gt; {
-                        <span class="kw">let </span>uint = <span class="kw">crate</span>::ScalarValue::Uint(<span class="number">32</span>);
+                        <span class="kw">let </span>kind = <span class="kw">crate</span>::ScalarKind::Uint;
+
                         <span class="kw">let </span>uint_id = <span class="kw">match </span><span class="kw-2">*</span>arg_ty {
                             <span class="kw">crate</span>::TypeInner::Vector { size, width, .. } =&gt; {
                                 <span class="kw">let </span>ty = LocalType::Value {
                                     vector_size: <span class="prelude-val">Some</span>(size),
-                                    kind: <span class="kw">crate</span>::ScalarKind::Uint,
+                                    kind,
                                     width,
                                     pointer_space: <span class="prelude-val">None</span>,
                                 }
@@ -3149,14 +3249,14 @@ Implementations for `BlockContext` methods.
                                 <span class="self">self</span>.temp_list.clear();
                                 <span class="self">self</span>.temp_list.resize(
                                     size <span class="kw">as _</span>,
-                                    <span class="self">self</span>.writer.get_constant_scalar(uint, width),
+                                    <span class="self">self</span>.writer.get_constant_scalar_with(<span class="number">32</span>, kind, width)<span class="question-mark">?</span>,
                                 );
 
                                 <span class="self">self</span>.writer.get_constant_composite(ty, <span class="kw-2">&amp;</span><span class="self">self</span>.temp_list)
                             }
                             <span class="kw">crate</span>::TypeInner::Scalar { width, .. } =&gt; {
-                                <span class="self">self</span>.writer.get_constant_scalar(uint, width)
-                            }
+                                <span class="self">self</span>.writer.get_constant_scalar_with(<span class="number">32</span>, kind, width)<span class="question-mark">?
+                            </span>}
                             <span class="kw">_ </span>=&gt; <span class="macro">unreachable!</span>(),
                         };
 
@@ -3178,21 +3278,23 @@ Implementations for `BlockContext` methods.
                         ))
                     }
                     Mf::CountLeadingZeros =&gt; {
-                        <span class="kw">let </span>int = <span class="kw">crate</span>::ScalarValue::Sint(<span class="number">31</span>);
+                        <span class="kw">let </span>kind = <span class="kw">crate</span>::ScalarKind::Sint;
 
                         <span class="kw">let </span>(int_type_id, int_id) = <span class="kw">match </span><span class="kw-2">*</span>arg_ty {
                             <span class="kw">crate</span>::TypeInner::Vector { size, width, .. } =&gt; {
                                 <span class="kw">let </span>ty = LocalType::Value {
                                     vector_size: <span class="prelude-val">Some</span>(size),
-                                    kind: <span class="kw">crate</span>::ScalarKind::Sint,
+                                    kind,
                                     width,
                                     pointer_space: <span class="prelude-val">None</span>,
                                 }
                                 .into();
 
                                 <span class="self">self</span>.temp_list.clear();
-                                <span class="self">self</span>.temp_list
-                                    .resize(size <span class="kw">as _</span>, <span class="self">self</span>.writer.get_constant_scalar(int, width));
+                                <span class="self">self</span>.temp_list.resize(
+                                    size <span class="kw">as _</span>,
+                                    <span class="self">self</span>.writer.get_constant_scalar_with(<span class="number">31</span>, kind, width)<span class="question-mark">?</span>,
+                                );
 
                                 (
                                     <span class="self">self</span>.get_type_id(ty),
@@ -3202,11 +3304,11 @@ Implementations for `BlockContext` methods.
                             <span class="kw">crate</span>::TypeInner::Scalar { width, .. } =&gt; (
                                 <span class="self">self</span>.get_type_id(LookupType::Local(LocalType::Value {
                                     vector_size: <span class="prelude-val">None</span>,
-                                    kind: <span class="kw">crate</span>::ScalarKind::Sint,
+                                    kind,
                                     width,
                                     pointer_space: <span class="prelude-val">None</span>,
                                 })),
-                                <span class="self">self</span>.writer.get_constant_scalar(int, width),
+                                <span class="self">self</span>.writer.get_constant_scalar_with(<span class="number">31</span>, kind, width)<span class="question-mark">?</span>,
                             ),
                             <span class="kw">_ </span>=&gt; <span class="macro">unreachable!</span>(),
                         };
@@ -3346,6 +3448,7 @@ Implementations for `BlockContext` methods.
             <span class="kw">crate</span>::Expression::FunctionArgument(index) =&gt; <span class="self">self</span>.function.parameter_id(index),
             <span class="kw">crate</span>::Expression::CallResult(<span class="kw">_</span>)
             | <span class="kw">crate</span>::Expression::AtomicResult { .. }
+            | <span class="kw">crate</span>::Expression::WorkGroupUniformLoadResult { .. }
             | <span class="kw">crate</span>::Expression::RayQueryProceedResult =&gt; <span class="self">self</span>.cached[expr_handle],
             <span class="kw">crate</span>::Expression::As {
                 expr,
@@ -3391,15 +3494,14 @@ Implementations for `BlockContext` methods.
                         (<span class="kw">_</span>, <span class="kw">_</span>, <span class="prelude-val">None</span>) =&gt; Cast::Unary(spirv::Op::Bitcast),
                         <span class="comment">// casting to a bool - generate `OpXxxNotEqual`
                         </span>(<span class="kw">_</span>, Sk::Bool, <span class="prelude-val">Some</span>(<span class="kw">_</span>)) =&gt; {
-                            <span class="kw">let </span>(op, value) = <span class="kw">match </span>src_kind {
-                                Sk::Sint =&gt; (spirv::Op::INotEqual, <span class="kw">crate</span>::ScalarValue::Sint(<span class="number">0</span>)),
-                                Sk::Uint =&gt; (spirv::Op::INotEqual, <span class="kw">crate</span>::ScalarValue::Uint(<span class="number">0</span>)),
-                                Sk::Float =&gt; {
-                                    (spirv::Op::FUnordNotEqual, <span class="kw">crate</span>::ScalarValue::Float(<span class="number">0.0</span>))
-                                }
+                            <span class="kw">let </span>op = <span class="kw">match </span>src_kind {
+                                Sk::Sint | Sk::Uint =&gt; spirv::Op::INotEqual,
+                                Sk::Float =&gt; spirv::Op::FUnordNotEqual,
                                 Sk::Bool =&gt; <span class="macro">unreachable!</span>(),
                             };
-                            <span class="kw">let </span>zero_scalar_id = <span class="self">self</span>.writer.get_constant_scalar(value, src_width);
+                            <span class="kw">let </span>zero_scalar_id = <span class="self">self
+                                </span>.writer
+                                .get_constant_scalar_with(<span class="number">0</span>, src_kind, src_width)<span class="question-mark">?</span>;
                             <span class="kw">let </span>zero_id = <span class="kw">match </span>src_size {
                                 <span class="prelude-val">Some</span>(size) =&gt; {
                                     <span class="kw">let </span>ty = LocalType::Value {
@@ -3422,21 +3524,10 @@ Implementations for `BlockContext` methods.
                         }
                         <span class="comment">// casting from a bool - generate `OpSelect`
                         </span>(Sk::Bool, <span class="kw">_</span>, <span class="prelude-val">Some</span>(dst_width)) =&gt; {
-                            <span class="kw">let </span>(val0, val1) = <span class="kw">match </span>kind {
-                                Sk::Sint =&gt; {
-                                    (<span class="kw">crate</span>::ScalarValue::Sint(<span class="number">0</span>), <span class="kw">crate</span>::ScalarValue::Sint(<span class="number">1</span>))
-                                }
-                                Sk::Uint =&gt; {
-                                    (<span class="kw">crate</span>::ScalarValue::Uint(<span class="number">0</span>), <span class="kw">crate</span>::ScalarValue::Uint(<span class="number">1</span>))
-                                }
-                                Sk::Float =&gt; (
-                                    <span class="kw">crate</span>::ScalarValue::Float(<span class="number">0.0</span>),
-                                    <span class="kw">crate</span>::ScalarValue::Float(<span class="number">1.0</span>),
-                                ),
-                                Sk::Bool =&gt; <span class="macro">unreachable!</span>(),
-                            };
-                            <span class="kw">let </span>scalar0_id = <span class="self">self</span>.writer.get_constant_scalar(val0, dst_width);
-                            <span class="kw">let </span>scalar1_id = <span class="self">self</span>.writer.get_constant_scalar(val1, dst_width);
+                            <span class="kw">let </span>zero_scalar_id =
+                                <span class="self">self</span>.writer.get_constant_scalar_with(<span class="number">0</span>, kind, dst_width)<span class="question-mark">?</span>;
+                            <span class="kw">let </span>one_scalar_id =
+                                <span class="self">self</span>.writer.get_constant_scalar_with(<span class="number">1</span>, kind, dst_width)<span class="question-mark">?</span>;
                             <span class="kw">let </span>(accept_id, reject_id) = <span class="kw">match </span>src_size {
                                 <span class="prelude-val">Some</span>(size) =&gt; {
                                     <span class="kw">let </span>ty = LocalType::Value {
@@ -3448,19 +3539,19 @@ Implementations for `BlockContext` methods.
                                     .into();
 
                                     <span class="self">self</span>.temp_list.clear();
-                                    <span class="self">self</span>.temp_list.resize(size <span class="kw">as _</span>, scalar0_id);
+                                    <span class="self">self</span>.temp_list.resize(size <span class="kw">as _</span>, zero_scalar_id);
 
                                     <span class="kw">let </span>vec0_id =
                                         <span class="self">self</span>.writer.get_constant_composite(ty, <span class="kw-2">&amp;</span><span class="self">self</span>.temp_list);
 
-                                    <span class="self">self</span>.temp_list.fill(scalar1_id);
+                                    <span class="self">self</span>.temp_list.fill(one_scalar_id);
 
                                     <span class="kw">let </span>vec1_id =
                                         <span class="self">self</span>.writer.get_constant_composite(ty, <span class="kw-2">&amp;</span><span class="self">self</span>.temp_list);
 
                                     (vec1_id, vec0_id)
                                 }
-                                <span class="prelude-val">None </span>=&gt; (scalar1_id, scalar0_id),
+                                <span class="prelude-val">None </span>=&gt; (one_scalar_id, zero_scalar_id),
                             };
 
                             Cast::Ternary(spirv::Op::Select, accept_id, reject_id)
@@ -3717,8 +3808,8 @@ Implementations for `BlockContext` methods.
                         BoundsCheckResult::KnownInBounds(known_index) =&gt; {
                             <span class="comment">// Even if the index is known, `OpAccessIndex`
                             // requires expression operands, not literals.
-                            </span><span class="kw">let </span>scalar = <span class="kw">crate</span>::ScalarValue::Uint(known_index <span class="kw">as </span>u64);
-                            <span class="self">self</span>.writer.get_constant_scalar(scalar, <span class="number">4</span>)
+                            </span><span class="kw">let </span>scalar = <span class="kw">crate</span>::Literal::U32(known_index);
+                            <span class="self">self</span>.writer.get_constant_scalar(scalar)
                         }
                         BoundsCheckResult::Computed(computed_index_id) =&gt; computed_index_id,
                         BoundsCheckResult::Conditional(comparison_id) =&gt; {
@@ -3958,13 +4049,32 @@ Implementations for `BlockContext` methods.
     <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>write_block(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
         label_id: Word,
-        statements: <span class="kw-2">&amp;</span>[<span class="kw">crate</span>::Statement],
+        naga_block: <span class="kw-2">&amp;</span><span class="kw">crate</span>::Block,
         exit: BlockExit,
         loop_context: LoopContext,
+        debug_info: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>DebugInfoInner&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>block = Block::new(label_id);
-
-        <span class="kw">for </span>statement <span class="kw">in </span>statements {
+        <span class="kw">for </span>(statement, span) <span class="kw">in </span>naga_block.span_iter() {
+            <span class="kw">if let </span>(<span class="prelude-val">Some</span>(debug_info), <span class="bool-val">false</span>) = (
+                debug_info,
+                <span class="macro">matches!</span>(
+                    statement,
+                    <span class="kw-2">&amp;</span>(Statement::Block(..)
+                        | Statement::Break
+                        | Statement::Continue
+                        | Statement::Kill
+                        | Statement::Return { .. }
+                        | Statement::Loop { .. })
+                ),
+            ) {
+                <span class="kw">let </span>loc: <span class="kw">crate</span>::SourceLocation = span.location(debug_info.source_code);
+                block.body.push(Instruction::line(
+                    debug_info.source_file_id,
+                    loc.line_number,
+                    loc.line_position,
+                ));
+            };
             <span class="kw">match </span><span class="kw-2">*</span>statement {
                 <span class="kw">crate</span>::Statement::Emit(<span class="kw-2">ref </span>range) =&gt; {
                     <span class="kw">for </span>handle <span class="kw">in </span>range.clone() {
@@ -3981,6 +4091,7 @@ Implementations for `BlockContext` methods.
                         block_statements,
                         BlockExit::Branch { target: merge_id },
                         loop_context,
+                        debug_info,
                     )<span class="question-mark">?</span>;
 
                     block = Block::new(merge_id);
@@ -4024,6 +4135,7 @@ Implementations for `BlockContext` methods.
                             accept,
                             BlockExit::Branch { target: merge_id },
                             loop_context,
+                            debug_info,
                         )<span class="question-mark">?</span>;
                     }
                     <span class="kw">if let </span><span class="prelude-val">Some</span>(block_id) = reject_id {
@@ -4032,6 +4144,7 @@ Implementations for `BlockContext` methods.
                             reject,
                             BlockExit::Branch { target: merge_id },
                             loop_context,
+                            debug_info,
                         )<span class="question-mark">?</span>;
                     }
 
@@ -4111,6 +4224,7 @@ Implementations for `BlockContext` methods.
                                 target: case_finish_id,
                             },
                             inner_context,
+                            debug_info,
                         )<span class="question-mark">?</span>;
                     }
 
@@ -4132,6 +4246,16 @@ Implementations for `BlockContext` methods.
                     <span class="comment">// SPIR-V requires the continuing to the `OpLoopMerge`,
                     // so we have to start a new block with it.
                     </span>block = Block::new(preamble_id);
+                    <span class="comment">// HACK the loop statement is begin with branch instruction,
+                    // so we need to put `OpLine` debug info before merge instruction
+                    </span><span class="kw">if let </span><span class="prelude-val">Some</span>(debug_info) = debug_info {
+                        <span class="kw">let </span>loc: <span class="kw">crate</span>::SourceLocation = span.location(debug_info.source_code);
+                        block.body.push(Instruction::line(
+                            debug_info.source_file_id,
+                            loc.line_number,
+                            loc.line_position,
+                        ))
+                    }
                     block.body.push(Instruction::loop_merge(
                         merge_id,
                         continuing_id,
@@ -4149,6 +4273,7 @@ Implementations for `BlockContext` methods.
                             continuing_id: <span class="prelude-val">Some</span>(continuing_id),
                             break_id: <span class="prelude-val">Some</span>(merge_id),
                         },
+                        debug_info,
                     )<span class="question-mark">?</span>;
 
                     <span class="kw">let </span>exit = <span class="kw">match </span>break_if {
@@ -4169,6 +4294,7 @@ Implementations for `BlockContext` methods.
                             continuing_id: <span class="prelude-val">None</span>,
                             break_id: <span class="prelude-val">Some</span>(merge_id),
                         },
+                        debug_info,
                     )<span class="question-mark">?</span>;
 
                     block = Block::new(merge_id);
@@ -4477,6 +4603,46 @@ Implementations for `BlockContext` methods.
                     };
 
                     block.body.push(instruction);
+                }
+                <span class="kw">crate</span>::Statement::WorkGroupUniformLoad { pointer, result } =&gt; {
+                    <span class="self">self</span>.writer
+                        .write_barrier(<span class="kw">crate</span>::Barrier::WORK_GROUP, <span class="kw-2">&amp;mut </span>block);
+                    <span class="kw">let </span>result_type_id = <span class="self">self</span>.get_expression_type_id(<span class="kw-2">&amp;</span><span class="self">self</span>.fun_info[result].ty);
+                    <span class="comment">// Embed the body of
+                    </span><span class="kw">match </span><span class="self">self</span>.write_expression_pointer(pointer, <span class="kw-2">&amp;mut </span>block, <span class="prelude-val">None</span>)<span class="question-mark">? </span>{
+                        ExpressionPointer::Ready { pointer_id } =&gt; {
+                            <span class="kw">let </span>id = <span class="self">self</span>.gen_id();
+                            block.body.push(Instruction::load(
+                                result_type_id,
+                                id,
+                                pointer_id,
+                                <span class="prelude-val">None</span>,
+                            ));
+                            <span class="self">self</span>.cached[result] = id;
+                        }
+                        ExpressionPointer::Conditional { condition, access } =&gt; {
+                            <span class="self">self</span>.cached[result] = <span class="self">self</span>.write_conditional_indexed_load(
+                                result_type_id,
+                                condition,
+                                <span class="kw-2">&amp;mut </span>block,
+                                <span class="kw">move </span>|id_gen, block| {
+                                    <span class="comment">// The in-bounds path. Perform the access and the load.
+                                    </span><span class="kw">let </span>pointer_id = access.result_id.unwrap();
+                                    <span class="kw">let </span>value_id = id_gen.next();
+                                    block.body.push(access);
+                                    block.body.push(Instruction::load(
+                                        result_type_id,
+                                        value_id,
+                                        pointer_id,
+                                        <span class="prelude-val">None</span>,
+                                    ));
+                                    value_id
+                                },
+                            )
+                        }
+                    }
+                    <span class="self">self</span>.writer
+                        .write_barrier(<span class="kw">crate</span>::Barrier::WORK_GROUP, <span class="kw-2">&amp;mut </span>block);
                 }
                 <span class="kw">crate</span>::Statement::RayQuery { query, <span class="kw-2">ref </span>fun } =&gt; {
                     <span class="self">self</span>.write_ray_query_function(query, fun, <span class="kw-2">&amp;mut </span>block);

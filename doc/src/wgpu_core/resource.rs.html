@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/n3vu0r/.cargo/registry/src/index.crates.io-6f17d22bba15001f/wgpu-core-0.16.1/src/resource.rs`."><title>resource.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-9bb858ba049f1f21.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="wgpu_core" data-themes="" data-resource-suffix="" data-rustdoc-version="1.72.0 (5680fa18f 2023-08-23)" data-channel="1.72.0" data-search-js="search-f6292fe389d70017.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-0f8c037637f9eb3e.css" data-theme-dark-css="dark-1097f8e92a01e3cf.css" data-theme-ayu-css="ayu-614652228113ac93.css" ><script src="../../static.files/storage-59fd9b8ccb335783.js"></script><script defer src="../../static.files/source-script-106908c7a7964ba4.js"></script><script defer src="../../source-files.js"></script><script defer src="../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-0f8c037637f9eb3e.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-1097f8e92a01e3cf.css"><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../wgpu_core/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/wgpu-core-0.17.1/src/resource.rs`."><title>resource.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="wgpu_core" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../wgpu_core/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -804,10 +804,61 @@
 <a href="#804" id="804">804</a>
 <a href="#805" id="805">805</a>
 <a href="#806" id="806">806</a>
+<a href="#807" id="807">807</a>
+<a href="#808" id="808">808</a>
+<a href="#809" id="809">809</a>
+<a href="#810" id="810">810</a>
+<a href="#811" id="811">811</a>
+<a href="#812" id="812">812</a>
+<a href="#813" id="813">813</a>
+<a href="#814" id="814">814</a>
+<a href="#815" id="815">815</a>
+<a href="#816" id="816">816</a>
+<a href="#817" id="817">817</a>
+<a href="#818" id="818">818</a>
+<a href="#819" id="819">819</a>
+<a href="#820" id="820">820</a>
+<a href="#821" id="821">821</a>
+<a href="#822" id="822">822</a>
+<a href="#823" id="823">823</a>
+<a href="#824" id="824">824</a>
+<a href="#825" id="825">825</a>
+<a href="#826" id="826">826</a>
+<a href="#827" id="827">827</a>
+<a href="#828" id="828">828</a>
+<a href="#829" id="829">829</a>
+<a href="#830" id="830">830</a>
+<a href="#831" id="831">831</a>
+<a href="#832" id="832">832</a>
+<a href="#833" id="833">833</a>
+<a href="#834" id="834">834</a>
+<a href="#835" id="835">835</a>
+<a href="#836" id="836">836</a>
+<a href="#837" id="837">837</a>
+<a href="#838" id="838">838</a>
+<a href="#839" id="839">839</a>
+<a href="#840" id="840">840</a>
+<a href="#841" id="841">841</a>
+<a href="#842" id="842">842</a>
+<a href="#843" id="843">843</a>
+<a href="#844" id="844">844</a>
+<a href="#845" id="845">845</a>
+<a href="#846" id="846">846</a>
+<a href="#847" id="847">847</a>
+<a href="#848" id="848">848</a>
+<a href="#849" id="849">849</a>
+<a href="#850" id="850">850</a>
+<a href="#851" id="851">851</a>
+<a href="#852" id="852">852</a>
+<a href="#853" id="853">853</a>
+<a href="#854" id="854">854</a>
 </pre></div><pre class="rust"><code><span class="kw">use crate</span>::{
     device::{DeviceError, HostMap, MissingDownlevelFlags, MissingFeatures},
-    hub::{Global, GlobalIdentityHandlerFactory, HalApi, Resource, Token},
+    global::Global,
+    hal_api::HalApi,
+    hub::Token,
     id::{AdapterId, DeviceId, SurfaceId, TextureId, Valid},
+    identity::GlobalIdentityHandlerFactory,
     init_tracker::{BufferInitTracker, TextureInitTracker},
     track::TextureSelector,
     validation::MissingBufferUsageError,
@@ -818,6 +869,17 @@
 <span class="kw">use </span>thiserror::Error;
 
 <span class="kw">use </span>std::{borrow::Borrow, ops::Range, ptr::NonNull};
+
+<span class="kw">pub trait </span>Resource {
+    <span class="kw">const </span>TYPE: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str;
+    <span class="kw">fn </span>life_guard(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>LifeGuard;
+    <span class="kw">fn </span>label(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>str {
+        <span class="attr">#[cfg(debug_assertions)]
+        </span><span class="kw">return </span><span class="kw-2">&amp;</span><span class="self">self</span>.life_guard().label;
+        <span class="attr">#[cfg(not(debug_assertions))]
+        </span><span class="kw">return </span><span class="string">&quot;&quot;</span>;
+    }
+}
 
 <span class="doccomment">/// The status code provided to the buffer mapping callback.
 ///
@@ -871,8 +933,22 @@
     </span>Idle,
 }
 
-<span class="kw">unsafe impl</span>&lt;A: hal::Api&gt; Send <span class="kw">for </span>BufferMapState&lt;A&gt; {}
-<span class="kw">unsafe impl</span>&lt;A: hal::Api&gt; Sync <span class="kw">for </span>BufferMapState&lt;A&gt; {}
+<span class="attr">#[cfg(any(
+    not(target_arch = <span class="string">&quot;wasm32&quot;</span>),
+    all(
+        feature = <span class="string">&quot;fragile-send-sync-non-atomic-wasm&quot;</span>,
+        not(target_feature = <span class="string">&quot;atomics&quot;</span>)
+    )
+))]
+</span><span class="kw">unsafe impl</span>&lt;A: hal::Api&gt; Send <span class="kw">for </span>BufferMapState&lt;A&gt; {}
+<span class="attr">#[cfg(any(
+    not(target_arch = <span class="string">&quot;wasm32&quot;</span>),
+    all(
+        feature = <span class="string">&quot;fragile-send-sync-non-atomic-wasm&quot;</span>,
+        not(target_feature = <span class="string">&quot;atomics&quot;</span>)
+    )
+))]
+</span><span class="kw">unsafe impl</span>&lt;A: hal::Api&gt; Sync <span class="kw">for </span>BufferMapState&lt;A&gt; {}
 
 <span class="attr">#[repr(C)]
 </span><span class="kw">pub struct </span>BufferMapCallbackC {
@@ -880,7 +956,14 @@
     <span class="kw">pub </span>user_data: <span class="kw-2">*mut </span>u8,
 }
 
-<span class="kw">unsafe impl </span>Send <span class="kw">for </span>BufferMapCallbackC {}
+<span class="attr">#[cfg(any(
+    not(target_arch = <span class="string">&quot;wasm32&quot;</span>),
+    all(
+        feature = <span class="string">&quot;fragile-send-sync-non-atomic-wasm&quot;</span>,
+        not(target_feature = <span class="string">&quot;atomics&quot;</span>)
+    )
+))]
+</span><span class="kw">unsafe impl </span>Send <span class="kw">for </span>BufferMapCallbackC {}
 
 <span class="kw">pub struct </span>BufferMapCallback {
     <span class="comment">// We wrap this so creating the enum in the C variant can be unsafe,
@@ -888,17 +971,30 @@
     </span>inner: <span class="prelude-ty">Option</span>&lt;BufferMapCallbackInner&gt;,
 }
 
+<span class="attr">#[cfg(any(
+    not(target_arch = <span class="string">&quot;wasm32&quot;</span>),
+    all(
+        feature = <span class="string">&quot;fragile-send-sync-non-atomic-wasm&quot;</span>,
+        not(target_feature = <span class="string">&quot;atomics&quot;</span>)
+    )
+))]
+</span><span class="kw">type </span>BufferMapCallbackCallback = Box&lt;<span class="kw">dyn </span>FnOnce(BufferAccessResult) + Send + <span class="lifetime">&#39;static</span>&gt;;
+<span class="attr">#[cfg(not(any(
+    not(target_arch = <span class="string">&quot;wasm32&quot;</span>),
+    all(
+        feature = <span class="string">&quot;fragile-send-sync-non-atomic-wasm&quot;</span>,
+        not(target_feature = <span class="string">&quot;atomics&quot;</span>)
+    )
+)))]
+</span><span class="kw">type </span>BufferMapCallbackCallback = Box&lt;<span class="kw">dyn </span>FnOnce(BufferAccessResult) + <span class="lifetime">&#39;static</span>&gt;;
+
 <span class="kw">enum </span>BufferMapCallbackInner {
-    Rust {
-        callback: Box&lt;<span class="kw">dyn </span>FnOnce(BufferAccessResult) + Send + <span class="lifetime">&#39;static</span>&gt;,
-    },
-    C {
-        inner: BufferMapCallbackC,
-    },
+    Rust { callback: BufferMapCallbackCallback },
+    C { inner: BufferMapCallbackC },
 }
 
 <span class="kw">impl </span>BufferMapCallback {
-    <span class="kw">pub fn </span>from_rust(callback: Box&lt;<span class="kw">dyn </span>FnOnce(BufferAccessResult) + Send + <span class="lifetime">&#39;static</span>&gt;) -&gt; <span class="self">Self </span>{
+    <span class="kw">pub fn </span>from_rust(callback: BufferMapCallbackCallback) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
             inner: <span class="prelude-val">Some</span>(BufferMapCallbackInner::Rust { callback }),
         }
@@ -1329,7 +1425,7 @@
     </span>InvalidSampleCount(u32, wgt::TextureFormat),
     <span class="attr">#[error(<span class="string">&quot;Multisampled textures must have RENDER_ATTACHMENT usage&quot;</span>)]
     </span>MultisampledNotRenderAttachment,
-    <span class="attr">#[error(<span class="string">&quot;Texture format {0:?} can&#39;t be used due to missing features.&quot;</span>)]
+    <span class="attr">#[error(<span class="string">&quot;Texture format {0:?} can&#39;t be used due to missing features&quot;</span>)]
     </span>MissingFeatures(wgt::TextureFormat, <span class="attr">#[source] </span>MissingFeatures),
     <span class="attr">#[error(transparent)]
     </span>MissingDownlevelFlags(<span class="attr">#[from] </span>MissingDownlevelFlags),

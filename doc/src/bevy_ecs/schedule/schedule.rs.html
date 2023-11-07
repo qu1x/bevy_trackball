@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/n3vu0r/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ecs-0.11.2/src/schedule/schedule.rs`."><title>schedule.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-9bb858ba049f1f21.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="bevy_ecs" data-themes="" data-resource-suffix="" data-rustdoc-version="1.72.0 (5680fa18f 2023-08-23)" data-channel="1.72.0" data-search-js="search-f6292fe389d70017.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-0f8c037637f9eb3e.css" data-theme-dark-css="dark-1097f8e92a01e3cf.css" data-theme-ayu-css="ayu-614652228113ac93.css" ><script src="../../../static.files/storage-59fd9b8ccb335783.js"></script><script defer src="../../../static.files/source-script-106908c7a7964ba4.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../static.files/light-0f8c037637f9eb3e.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../static.files/dark-1097f8e92a01e3cf.css"><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../bevy_ecs/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ecs-0.12.0/src/schedule/schedule.rs`."><title>schedule.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="bevy_ecs" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../bevy_ecs/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1604,14 +1604,212 @@
 <a href="#1604" id="1604">1604</a>
 <a href="#1605" id="1605">1605</a>
 <a href="#1606" id="1606">1606</a>
+<a href="#1607" id="1607">1607</a>
+<a href="#1608" id="1608">1608</a>
+<a href="#1609" id="1609">1609</a>
+<a href="#1610" id="1610">1610</a>
+<a href="#1611" id="1611">1611</a>
+<a href="#1612" id="1612">1612</a>
+<a href="#1613" id="1613">1613</a>
+<a href="#1614" id="1614">1614</a>
+<a href="#1615" id="1615">1615</a>
+<a href="#1616" id="1616">1616</a>
+<a href="#1617" id="1617">1617</a>
+<a href="#1618" id="1618">1618</a>
+<a href="#1619" id="1619">1619</a>
+<a href="#1620" id="1620">1620</a>
+<a href="#1621" id="1621">1621</a>
+<a href="#1622" id="1622">1622</a>
+<a href="#1623" id="1623">1623</a>
+<a href="#1624" id="1624">1624</a>
+<a href="#1625" id="1625">1625</a>
+<a href="#1626" id="1626">1626</a>
+<a href="#1627" id="1627">1627</a>
+<a href="#1628" id="1628">1628</a>
+<a href="#1629" id="1629">1629</a>
+<a href="#1630" id="1630">1630</a>
+<a href="#1631" id="1631">1631</a>
+<a href="#1632" id="1632">1632</a>
+<a href="#1633" id="1633">1633</a>
+<a href="#1634" id="1634">1634</a>
+<a href="#1635" id="1635">1635</a>
+<a href="#1636" id="1636">1636</a>
+<a href="#1637" id="1637">1637</a>
+<a href="#1638" id="1638">1638</a>
+<a href="#1639" id="1639">1639</a>
+<a href="#1640" id="1640">1640</a>
+<a href="#1641" id="1641">1641</a>
+<a href="#1642" id="1642">1642</a>
+<a href="#1643" id="1643">1643</a>
+<a href="#1644" id="1644">1644</a>
+<a href="#1645" id="1645">1645</a>
+<a href="#1646" id="1646">1646</a>
+<a href="#1647" id="1647">1647</a>
+<a href="#1648" id="1648">1648</a>
+<a href="#1649" id="1649">1649</a>
+<a href="#1650" id="1650">1650</a>
+<a href="#1651" id="1651">1651</a>
+<a href="#1652" id="1652">1652</a>
+<a href="#1653" id="1653">1653</a>
+<a href="#1654" id="1654">1654</a>
+<a href="#1655" id="1655">1655</a>
+<a href="#1656" id="1656">1656</a>
+<a href="#1657" id="1657">1657</a>
+<a href="#1658" id="1658">1658</a>
+<a href="#1659" id="1659">1659</a>
+<a href="#1660" id="1660">1660</a>
+<a href="#1661" id="1661">1661</a>
+<a href="#1662" id="1662">1662</a>
+<a href="#1663" id="1663">1663</a>
+<a href="#1664" id="1664">1664</a>
+<a href="#1665" id="1665">1665</a>
+<a href="#1666" id="1666">1666</a>
+<a href="#1667" id="1667">1667</a>
+<a href="#1668" id="1668">1668</a>
+<a href="#1669" id="1669">1669</a>
+<a href="#1670" id="1670">1670</a>
+<a href="#1671" id="1671">1671</a>
+<a href="#1672" id="1672">1672</a>
+<a href="#1673" id="1673">1673</a>
+<a href="#1674" id="1674">1674</a>
+<a href="#1675" id="1675">1675</a>
+<a href="#1676" id="1676">1676</a>
+<a href="#1677" id="1677">1677</a>
+<a href="#1678" id="1678">1678</a>
+<a href="#1679" id="1679">1679</a>
+<a href="#1680" id="1680">1680</a>
+<a href="#1681" id="1681">1681</a>
+<a href="#1682" id="1682">1682</a>
+<a href="#1683" id="1683">1683</a>
+<a href="#1684" id="1684">1684</a>
+<a href="#1685" id="1685">1685</a>
+<a href="#1686" id="1686">1686</a>
+<a href="#1687" id="1687">1687</a>
+<a href="#1688" id="1688">1688</a>
+<a href="#1689" id="1689">1689</a>
+<a href="#1690" id="1690">1690</a>
+<a href="#1691" id="1691">1691</a>
+<a href="#1692" id="1692">1692</a>
+<a href="#1693" id="1693">1693</a>
+<a href="#1694" id="1694">1694</a>
+<a href="#1695" id="1695">1695</a>
+<a href="#1696" id="1696">1696</a>
+<a href="#1697" id="1697">1697</a>
+<a href="#1698" id="1698">1698</a>
+<a href="#1699" id="1699">1699</a>
+<a href="#1700" id="1700">1700</a>
+<a href="#1701" id="1701">1701</a>
+<a href="#1702" id="1702">1702</a>
+<a href="#1703" id="1703">1703</a>
+<a href="#1704" id="1704">1704</a>
+<a href="#1705" id="1705">1705</a>
+<a href="#1706" id="1706">1706</a>
+<a href="#1707" id="1707">1707</a>
+<a href="#1708" id="1708">1708</a>
+<a href="#1709" id="1709">1709</a>
+<a href="#1710" id="1710">1710</a>
+<a href="#1711" id="1711">1711</a>
+<a href="#1712" id="1712">1712</a>
+<a href="#1713" id="1713">1713</a>
+<a href="#1714" id="1714">1714</a>
+<a href="#1715" id="1715">1715</a>
+<a href="#1716" id="1716">1716</a>
+<a href="#1717" id="1717">1717</a>
+<a href="#1718" id="1718">1718</a>
+<a href="#1719" id="1719">1719</a>
+<a href="#1720" id="1720">1720</a>
+<a href="#1721" id="1721">1721</a>
+<a href="#1722" id="1722">1722</a>
+<a href="#1723" id="1723">1723</a>
+<a href="#1724" id="1724">1724</a>
+<a href="#1725" id="1725">1725</a>
+<a href="#1726" id="1726">1726</a>
+<a href="#1727" id="1727">1727</a>
+<a href="#1728" id="1728">1728</a>
+<a href="#1729" id="1729">1729</a>
+<a href="#1730" id="1730">1730</a>
+<a href="#1731" id="1731">1731</a>
+<a href="#1732" id="1732">1732</a>
+<a href="#1733" id="1733">1733</a>
+<a href="#1734" id="1734">1734</a>
+<a href="#1735" id="1735">1735</a>
+<a href="#1736" id="1736">1736</a>
+<a href="#1737" id="1737">1737</a>
+<a href="#1738" id="1738">1738</a>
+<a href="#1739" id="1739">1739</a>
+<a href="#1740" id="1740">1740</a>
+<a href="#1741" id="1741">1741</a>
+<a href="#1742" id="1742">1742</a>
+<a href="#1743" id="1743">1743</a>
+<a href="#1744" id="1744">1744</a>
+<a href="#1745" id="1745">1745</a>
+<a href="#1746" id="1746">1746</a>
+<a href="#1747" id="1747">1747</a>
+<a href="#1748" id="1748">1748</a>
+<a href="#1749" id="1749">1749</a>
+<a href="#1750" id="1750">1750</a>
+<a href="#1751" id="1751">1751</a>
+<a href="#1752" id="1752">1752</a>
+<a href="#1753" id="1753">1753</a>
+<a href="#1754" id="1754">1754</a>
+<a href="#1755" id="1755">1755</a>
+<a href="#1756" id="1756">1756</a>
+<a href="#1757" id="1757">1757</a>
+<a href="#1758" id="1758">1758</a>
+<a href="#1759" id="1759">1759</a>
+<a href="#1760" id="1760">1760</a>
+<a href="#1761" id="1761">1761</a>
+<a href="#1762" id="1762">1762</a>
+<a href="#1763" id="1763">1763</a>
+<a href="#1764" id="1764">1764</a>
+<a href="#1765" id="1765">1765</a>
+<a href="#1766" id="1766">1766</a>
+<a href="#1767" id="1767">1767</a>
+<a href="#1768" id="1768">1768</a>
+<a href="#1769" id="1769">1769</a>
+<a href="#1770" id="1770">1770</a>
+<a href="#1771" id="1771">1771</a>
+<a href="#1772" id="1772">1772</a>
+<a href="#1773" id="1773">1773</a>
+<a href="#1774" id="1774">1774</a>
+<a href="#1775" id="1775">1775</a>
+<a href="#1776" id="1776">1776</a>
+<a href="#1777" id="1777">1777</a>
+<a href="#1778" id="1778">1778</a>
+<a href="#1779" id="1779">1779</a>
+<a href="#1780" id="1780">1780</a>
+<a href="#1781" id="1781">1781</a>
+<a href="#1782" id="1782">1782</a>
+<a href="#1783" id="1783">1783</a>
+<a href="#1784" id="1784">1784</a>
+<a href="#1785" id="1785">1785</a>
+<a href="#1786" id="1786">1786</a>
+<a href="#1787" id="1787">1787</a>
+<a href="#1788" id="1788">1788</a>
+<a href="#1789" id="1789">1789</a>
+<a href="#1790" id="1790">1790</a>
+<a href="#1791" id="1791">1791</a>
+<a href="#1792" id="1792">1792</a>
+<a href="#1793" id="1793">1793</a>
+<a href="#1794" id="1794">1794</a>
+<a href="#1795" id="1795">1795</a>
+<a href="#1796" id="1796">1796</a>
+<a href="#1797" id="1797">1797</a>
+<a href="#1798" id="1798">1798</a>
+<a href="#1799" id="1799">1799</a>
+<a href="#1800" id="1800">1800</a>
+<a href="#1801" id="1801">1801</a>
+<a href="#1802" id="1802">1802</a>
+<a href="#1803" id="1803">1803</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::{
+    collections::BTreeSet,
     fmt::{Debug, Write},
     result::Result,
 };
 
-<span class="kw">use </span>bevy_utils::default;
 <span class="attr">#[cfg(feature = <span class="string">&quot;trace&quot;</span>)]
 </span><span class="kw">use </span>bevy_utils::tracing::info_span;
+<span class="kw">use </span>bevy_utils::{default, tracing::info};
 <span class="kw">use </span>bevy_utils::{
     petgraph::{algo::TarjanScc, prelude::<span class="kw-2">*</span>},
     thiserror::Error,
@@ -1624,6 +1822,7 @@
 <span class="kw">use crate</span>::{
     <span class="self">self </span><span class="kw">as </span>bevy_ecs,
     component::{ComponentId, Components, Tick},
+    prelude::Component,
     schedule::<span class="kw-2">*</span>,
     system::{BoxedSystem, Resource, System},
     world::World,
@@ -1632,7 +1831,9 @@
 <span class="doccomment">/// Resource that stores [`Schedule`]s mapped to [`ScheduleLabel`]s.
 </span><span class="attr">#[derive(Default, Resource)]
 </span><span class="kw">pub struct </span>Schedules {
-    inner: HashMap&lt;BoxedScheduleLabel, Schedule&gt;,
+    inner: HashMap&lt;InternedScheduleLabel, Schedule&gt;,
+    <span class="doccomment">/// List of [`ComponentId`]s to ignore when reporting system order ambiguity conflicts
+    </span><span class="kw">pub </span>ignored_scheduling_ambiguities: BTreeSet&lt;ComponentId&gt;,
 }
 
 <span class="kw">impl </span>Schedules {
@@ -1640,6 +1841,7 @@
     </span><span class="kw">pub fn </span>new() -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
             inner: HashMap::new(),
+            ignored_scheduling_ambiguities: BTreeSet::new(),
         }
     }
 
@@ -1647,37 +1849,36 @@
     ///
     /// If the map already had an entry for `label`, `schedule` is inserted,
     /// and the old schedule is returned. Otherwise, `None` is returned.
-    </span><span class="kw">pub fn </span>insert(<span class="kw-2">&amp;mut </span><span class="self">self</span>, label: <span class="kw">impl </span>ScheduleLabel, schedule: Schedule) -&gt; <span class="prelude-ty">Option</span>&lt;Schedule&gt; {
-        <span class="kw">let </span>label = label.dyn_clone();
-        <span class="self">self</span>.inner.insert(label, schedule)
+    </span><span class="kw">pub fn </span>insert(<span class="kw-2">&amp;mut </span><span class="self">self</span>, schedule: Schedule) -&gt; <span class="prelude-ty">Option</span>&lt;Schedule&gt; {
+        <span class="self">self</span>.inner.insert(schedule.name, schedule)
     }
 
     <span class="doccomment">/// Removes the schedule corresponding to the `label` from the map, returning it if it existed.
-    </span><span class="kw">pub fn </span>remove(<span class="kw-2">&amp;mut </span><span class="self">self</span>, label: <span class="kw-2">&amp;</span><span class="kw">dyn </span>ScheduleLabel) -&gt; <span class="prelude-ty">Option</span>&lt;Schedule&gt; {
-        <span class="self">self</span>.inner.remove(label)
+    </span><span class="kw">pub fn </span>remove(<span class="kw-2">&amp;mut </span><span class="self">self</span>, label: <span class="kw">impl </span>ScheduleLabel) -&gt; <span class="prelude-ty">Option</span>&lt;Schedule&gt; {
+        <span class="self">self</span>.inner.remove(<span class="kw-2">&amp;</span>label.intern())
     }
 
     <span class="doccomment">/// Removes the (schedule, label) pair corresponding to the `label` from the map, returning it if it existed.
     </span><span class="kw">pub fn </span>remove_entry(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        label: <span class="kw-2">&amp;</span><span class="kw">dyn </span>ScheduleLabel,
-    ) -&gt; <span class="prelude-ty">Option</span>&lt;(Box&lt;<span class="kw">dyn </span>ScheduleLabel&gt;, Schedule)&gt; {
-        <span class="self">self</span>.inner.remove_entry(label)
+        label: <span class="kw">impl </span>ScheduleLabel,
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;(InternedScheduleLabel, Schedule)&gt; {
+        <span class="self">self</span>.inner.remove_entry(<span class="kw-2">&amp;</span>label.intern())
     }
 
     <span class="doccomment">/// Does a schedule with the provided label already exist?
-    </span><span class="kw">pub fn </span>contains(<span class="kw-2">&amp;</span><span class="self">self</span>, label: <span class="kw-2">&amp;</span><span class="kw">dyn </span>ScheduleLabel) -&gt; bool {
-        <span class="self">self</span>.inner.contains_key(label)
+    </span><span class="kw">pub fn </span>contains(<span class="kw-2">&amp;</span><span class="self">self</span>, label: <span class="kw">impl </span>ScheduleLabel) -&gt; bool {
+        <span class="self">self</span>.inner.contains_key(<span class="kw-2">&amp;</span>label.intern())
     }
 
     <span class="doccomment">/// Returns a reference to the schedule associated with `label`, if it exists.
-    </span><span class="kw">pub fn </span>get(<span class="kw-2">&amp;</span><span class="self">self</span>, label: <span class="kw-2">&amp;</span><span class="kw">dyn </span>ScheduleLabel) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Schedule&gt; {
-        <span class="self">self</span>.inner.get(label)
+    </span><span class="kw">pub fn </span>get(<span class="kw-2">&amp;</span><span class="self">self</span>, label: <span class="kw">impl </span>ScheduleLabel) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Schedule&gt; {
+        <span class="self">self</span>.inner.get(<span class="kw-2">&amp;</span>label.intern())
     }
 
     <span class="doccomment">/// Returns a mutable reference to the schedule associated with `label`, if it exists.
-    </span><span class="kw">pub fn </span>get_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>, label: <span class="kw-2">&amp;</span><span class="kw">dyn </span>ScheduleLabel) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;mut </span>Schedule&gt; {
-        <span class="self">self</span>.inner.get_mut(label)
+    </span><span class="kw">pub fn </span>get_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>, label: <span class="kw">impl </span>ScheduleLabel) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;mut </span>Schedule&gt; {
+        <span class="self">self</span>.inner.get_mut(<span class="kw-2">&amp;</span>label.intern())
     }
 
     <span class="doccomment">/// Returns an iterator over all schedules. Iteration order is undefined.
@@ -1701,13 +1902,52 @@
         </span><span class="kw">let </span>_all_span = <span class="macro">info_span!</span>(<span class="string">&quot;check stored schedule ticks&quot;</span>).entered();
         <span class="comment">// label used when trace feature is enabled
         </span><span class="attr">#[allow(unused_variables)]
-        </span><span class="kw">for </span>(label, schedule) <span class="kw">in </span><span class="self">self</span>.inner.iter_mut() {
+        </span><span class="kw">for </span>(label, schedule) <span class="kw">in </span><span class="kw-2">&amp;mut </span><span class="self">self</span>.inner {
             <span class="attr">#[cfg(feature = <span class="string">&quot;trace&quot;</span>)]
             </span><span class="kw">let </span>name = <span class="macro">format!</span>(<span class="string">&quot;{label:?}&quot;</span>);
             <span class="attr">#[cfg(feature = <span class="string">&quot;trace&quot;</span>)]
             </span><span class="kw">let </span>_one_span = <span class="macro">info_span!</span>(<span class="string">&quot;check schedule ticks&quot;</span>, name = <span class="kw-2">&amp;</span>name).entered();
             schedule.check_change_ticks(change_tick);
         }
+    }
+
+    <span class="doccomment">/// Applies the provided [`ScheduleBuildSettings`] to all schedules.
+    </span><span class="kw">pub fn </span>configure_schedules(<span class="kw-2">&amp;mut </span><span class="self">self</span>, schedule_build_settings: ScheduleBuildSettings) {
+        <span class="kw">for </span>(<span class="kw">_</span>, schedule) <span class="kw">in </span><span class="kw-2">&amp;mut </span><span class="self">self</span>.inner {
+            schedule.set_build_settings(schedule_build_settings.clone());
+        }
+    }
+
+    <span class="doccomment">/// Ignore system order ambiguities caused by conflicts on [`Component`]s of type `T`.
+    </span><span class="kw">pub fn </span>allow_ambiguous_component&lt;T: Component&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, world: <span class="kw-2">&amp;mut </span>World) {
+        <span class="self">self</span>.ignored_scheduling_ambiguities
+            .insert(world.init_component::&lt;T&gt;());
+    }
+
+    <span class="doccomment">/// Ignore system order ambiguities caused by conflicts on [`Resource`]s of type `T`.
+    </span><span class="kw">pub fn </span>allow_ambiguous_resource&lt;T: Resource&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, world: <span class="kw-2">&amp;mut </span>World) {
+        <span class="self">self</span>.ignored_scheduling_ambiguities
+            .insert(world.components.init_resource::&lt;T&gt;());
+    }
+
+    <span class="doccomment">/// Iterate through the [`ComponentId`]&#39;s that will be ignored.
+    </span><span class="kw">pub fn </span>iter_ignored_ambiguities(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw">impl </span>Iterator&lt;Item = <span class="kw-2">&amp;</span>ComponentId&gt; + <span class="lifetime">&#39;_ </span>{
+        <span class="self">self</span>.ignored_scheduling_ambiguities.iter()
+    }
+
+    <span class="doccomment">/// Prints the names of the components and resources with [`info`]
+    ///
+    /// May panic or retrieve incorrect names if [`Components`] is not from the same
+    /// world
+    </span><span class="kw">pub fn </span>print_ignored_ambiguities(<span class="kw-2">&amp;</span><span class="self">self</span>, components: <span class="kw-2">&amp;</span>Components) {
+        <span class="kw">let </span><span class="kw-2">mut </span>message =
+            <span class="string">&quot;System order ambiguities caused by conflicts on the following types are ignored:\n&quot;
+                </span>.to_string();
+        <span class="kw">for </span>id <span class="kw">in </span><span class="self">self</span>.iter_ignored_ambiguities() {
+            <span class="macro">writeln!</span>(message, <span class="string">&quot;{}&quot;</span>, components.get_name(<span class="kw-2">*</span>id).unwrap()).unwrap();
+        }
+
+        <span class="macro">info!</span>(<span class="string">&quot;{}&quot;</span>, message);
     }
 }
 
@@ -1757,22 +1997,31 @@
 /// }
 /// ```
 </span><span class="kw">pub struct </span>Schedule {
+    name: InternedScheduleLabel,
     graph: ScheduleGraph,
     executable: SystemSchedule,
     executor: Box&lt;<span class="kw">dyn </span>SystemExecutor&gt;,
     executor_initialized: bool,
 }
 
+<span class="attr">#[derive(ScheduleLabel, Hash, PartialEq, Eq, Debug, Clone)]
+</span><span class="kw">struct </span>DefaultSchedule;
+
 <span class="kw">impl </span>Default <span class="kw">for </span>Schedule {
-    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
-        <span class="self">Self</span>::new()
+    <span class="doccomment">/// Creates a schedule with a default label. Only use in situations where
+    /// you don&#39;t care about the [`ScheduleLabel`]. Inserting a default schedule
+    /// into the world risks overwriting another schedule. For most situations
+    /// you should use [`Schedule::new`].
+    </span><span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::new(DefaultSchedule)
     }
 }
 
 <span class="kw">impl </span>Schedule {
     <span class="doccomment">/// Constructs an empty `Schedule`.
-    </span><span class="kw">pub fn </span>new() -&gt; <span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>new(label: <span class="kw">impl </span>ScheduleLabel) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
+            name: label.intern(),
             graph: ScheduleGraph::new(),
             executable: SystemSchedule::new(),
             executor: make_executor(ExecutorKind::default()),
@@ -1780,26 +2029,21 @@
         }
     }
 
-    <span class="doccomment">/// Add a system to the schedule.
-    </span><span class="attr">#[deprecated(since = <span class="string">&quot;0.11.0&quot;</span>, note = <span class="string">&quot;please use `add_systems` instead&quot;</span>)]
-    </span><span class="kw">pub fn </span>add_system&lt;M&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, system: <span class="kw">impl </span>IntoSystemConfigs&lt;M&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
-        <span class="self">self</span>.graph.add_systems_inner(system.into_configs(), <span class="bool-val">false</span>);
-        <span class="self">self
-    </span>}
-
     <span class="doccomment">/// Add a collection of systems to the schedule.
     </span><span class="kw">pub fn </span>add_systems&lt;M&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, systems: <span class="kw">impl </span>IntoSystemConfigs&lt;M&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
-        <span class="self">self</span>.graph.add_systems_inner(systems.into_configs(), <span class="bool-val">false</span>);
+        <span class="self">self</span>.graph.process_configs(systems.into_configs(), <span class="bool-val">false</span>);
         <span class="self">self
     </span>}
 
     <span class="doccomment">/// Configures a system set in this schedule, adding it if it does not exist.
-    </span><span class="kw">pub fn </span>configure_set(<span class="kw-2">&amp;mut </span><span class="self">self</span>, set: <span class="kw">impl </span>IntoSystemSetConfig) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
-        <span class="self">self</span>.graph.configure_set(set);
-        <span class="self">self
-    </span>}
+    </span><span class="attr">#[deprecated(since = <span class="string">&quot;0.12.0&quot;</span>, note = <span class="string">&quot;Please use `configure_sets` instead.&quot;</span>)]
+    #[track_caller]
+    </span><span class="kw">pub fn </span>configure_set(<span class="kw-2">&amp;mut </span><span class="self">self</span>, set: <span class="kw">impl </span>IntoSystemSetConfigs) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="self">self</span>.configure_sets(set)
+    }
 
     <span class="doccomment">/// Configures a collection of system sets in this schedule, adding them if they does not exist.
+    </span><span class="attr">#[track_caller]
     </span><span class="kw">pub fn </span>configure_sets(<span class="kw-2">&amp;mut </span><span class="self">self</span>, sets: <span class="kw">impl </span>IntoSystemSetConfigs) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
         <span class="self">self</span>.graph.configure_sets(sets);
         <span class="self">self
@@ -1810,6 +2054,11 @@
         <span class="self">self</span>.graph.settings = settings;
         <span class="self">self
     </span>}
+
+    <span class="doccomment">/// Returns the schedule&#39;s current `ScheduleBuildSettings`.
+    </span><span class="kw">pub fn </span>get_build_settings(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; ScheduleBuildSettings {
+        <span class="self">self</span>.graph.settings.clone()
+    }
 
     <span class="doccomment">/// Returns the schedule&#39;s current execution strategy.
     </span><span class="kw">pub fn </span>get_executor_kind(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; ExecutorKind {
@@ -1827,7 +2076,7 @@
 
     <span class="doccomment">/// Set whether the schedule applies deferred system buffers on final time or not. This is a catch-all
     /// in case a system uses commands but was not explicitly ordered before an instance of
-    /// [`apply_deferred`](crate::prelude::apply_deferred). By default this
+    /// [`apply_deferred`]. By default this
     /// setting is true, but may be disabled if needed.
     </span><span class="kw">pub fn </span>set_apply_final_deferred(<span class="kw-2">&amp;mut </span><span class="self">self</span>, apply_final_deferred: bool) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
         <span class="self">self</span>.executor.set_apply_final_deferred(apply_final_deferred);
@@ -1836,8 +2085,12 @@
 
     <span class="doccomment">/// Runs all systems in this schedule on the `world`, using its current execution strategy.
     </span><span class="kw">pub fn </span>run(<span class="kw-2">&amp;mut </span><span class="self">self</span>, world: <span class="kw-2">&amp;mut </span>World) {
+        <span class="attr">#[cfg(feature = <span class="string">&quot;trace&quot;</span>)]
+        </span><span class="kw">let </span>_span = <span class="macro">bevy_utils::tracing::info_span!</span>(<span class="string">&quot;schedule&quot;</span>, name = <span class="question-mark">?</span><span class="self">self</span>.name).entered();
+
         world.check_change_ticks();
-        <span class="self">self</span>.initialize(world).unwrap_or_else(|e| <span class="macro">panic!</span>(<span class="string">&quot;{e}&quot;</span>));
+        <span class="self">self</span>.initialize(world)
+            .unwrap_or_else(|e| <span class="macro">panic!</span>(<span class="string">&quot;Error when initializing schedule {:?}: {e}&quot;</span>, <span class="self">self</span>.name));
         <span class="self">self</span>.executor.run(<span class="kw-2">&amp;mut </span><span class="self">self</span>.executable, world);
     }
 
@@ -1848,8 +2101,16 @@
     </span><span class="kw">pub fn </span>initialize(<span class="kw-2">&amp;mut </span><span class="self">self</span>, world: <span class="kw-2">&amp;mut </span>World) -&gt; <span class="prelude-ty">Result</span>&lt;(), ScheduleBuildError&gt; {
         <span class="kw">if </span><span class="self">self</span>.graph.changed {
             <span class="self">self</span>.graph.initialize(world);
-            <span class="self">self</span>.graph
-                .update_schedule(<span class="kw-2">&amp;mut </span><span class="self">self</span>.executable, world.components())<span class="question-mark">?</span>;
+            <span class="kw">let </span>ignored_ambiguities = world
+                .get_resource_or_insert_with::&lt;Schedules&gt;(Schedules::default)
+                .ignored_scheduling_ambiguities
+                .clone();
+            <span class="self">self</span>.graph.update_schedule(
+                <span class="kw-2">&amp;mut </span><span class="self">self</span>.executable,
+                world.components(),
+                <span class="kw-2">&amp;</span>ignored_ambiguities,
+                <span class="self">self</span>.name,
+            )<span class="question-mark">?</span>;
             <span class="self">self</span>.graph.changed = <span class="bool-val">false</span>;
             <span class="self">self</span>.executor_initialized = <span class="bool-val">false</span>;
         }
@@ -1883,13 +2144,13 @@
         }
 
         <span class="kw">for </span>conditions <span class="kw">in </span><span class="kw-2">&amp;mut </span><span class="self">self</span>.executable.system_conditions {
-            <span class="kw">for </span>system <span class="kw">in </span>conditions.iter_mut() {
+            <span class="kw">for </span>system <span class="kw">in </span>conditions {
                 system.check_change_tick(change_tick);
             }
         }
 
         <span class="kw">for </span>conditions <span class="kw">in </span><span class="kw-2">&amp;mut </span><span class="self">self</span>.executable.set_conditions {
-            <span class="kw">for </span>system <span class="kw">in </span>conditions.iter_mut() {
+            <span class="kw">for </span>system <span class="kw">in </span>conditions {
                 system.check_change_tick(change_tick);
             }
         }
@@ -1942,11 +2203,11 @@
 
 <span class="doccomment">/// A [`SystemSet`] with metadata, stored in a [`ScheduleGraph`].
 </span><span class="kw">struct </span>SystemSetNode {
-    inner: BoxedSystemSet,
+    inner: InternedSystemSet,
 }
 
 <span class="kw">impl </span>SystemSetNode {
-    <span class="kw">pub fn </span>new(set: BoxedSystemSet) -&gt; <span class="self">Self </span>{
+    <span class="kw">pub fn </span>new(set: InternedSystemSet) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{ inner: set }
     }
 
@@ -1991,15 +2252,14 @@
     system_conditions: Vec&lt;Vec&lt;BoxedCondition&gt;&gt;,
     system_sets: Vec&lt;SystemSetNode&gt;,
     system_set_conditions: Vec&lt;Vec&lt;BoxedCondition&gt;&gt;,
-    system_set_ids: HashMap&lt;BoxedSystemSet, NodeId&gt;,
+    system_set_ids: HashMap&lt;InternedSystemSet, NodeId&gt;,
     uninit: Vec&lt;(NodeId, usize)&gt;,
     hierarchy: Dag,
     dependency: Dag,
-    dependency_flattened: Dag,
     ambiguous_with: UnGraphMap&lt;NodeId, ()&gt;,
-    ambiguous_with_flattened: UnGraphMap&lt;NodeId, ()&gt;,
     ambiguous_with_all: HashSet&lt;NodeId&gt;,
     conflicting_systems: Vec&lt;(NodeId, NodeId, Vec&lt;ComponentId&gt;)&gt;,
+    anonymous_sets: usize,
     changed: bool,
     settings: ScheduleBuildSettings,
 }
@@ -2016,11 +2276,10 @@
             uninit: Vec::new(),
             hierarchy: Dag::new(),
             dependency: Dag::new(),
-            dependency_flattened: Dag::new(),
             ambiguous_with: UnGraphMap::new(),
-            ambiguous_with_flattened: UnGraphMap::new(),
             ambiguous_with_all: HashSet::new(),
             conflicting_systems: Vec::new(),
+            anonymous_sets: <span class="number">0</span>,
             changed: <span class="bool-val">false</span>,
             settings: default(),
         }
@@ -2112,30 +2371,36 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>.conflicting_systems
     }
 
-    <span class="doccomment">/// Adds the systems to the graph. Returns a vector of all node ids contained the nested `SystemConfigs`
-    /// if `ancestor_chained` is true. Also returns true if &quot;densely chained&quot;, meaning that all nested items
-    /// are linearly chained in the order they are defined
-    </span><span class="kw">fn </span>add_systems_inner(
+    <span class="doccomment">/// Adds the config nodes to the graph.
+    ///
+    /// `collect_nodes` controls whether the `NodeId`s of the processed config nodes are stored in the returned [`ProcessConfigsResult`].
+    /// `process_config` is the function which processes each individual config node and returns a corresponding `NodeId`.
+    ///
+    /// The fields on the returned [`ProcessConfigsResult`] are:
+    /// - `nodes`: a vector of all node ids contained in the nested `NodeConfigs`
+    /// - `densely_chained`: a boolean that is true if all nested nodes are linearly chained (with successive `after` orderings) in the order they are defined
+    </span><span class="attr">#[track_caller]
+    </span><span class="kw">fn </span>process_configs&lt;T: ProcessNodeConfig&gt;(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        configs: SystemConfigs,
-        ancestor_chained: bool,
-    ) -&gt; AddSystemsInnerResult {
+        configs: NodeConfigs&lt;T&gt;,
+        collect_nodes: bool,
+    ) -&gt; ProcessConfigsResult {
         <span class="kw">match </span>configs {
-            SystemConfigs::SystemConfig(config) =&gt; {
-                <span class="kw">let </span>node_id = <span class="self">self</span>.add_system_inner(config).unwrap();
-                <span class="kw">if </span>ancestor_chained {
-                    AddSystemsInnerResult {
+            NodeConfigs::NodeConfig(config) =&gt; {
+                <span class="kw">let </span>node_id = T::process_config(<span class="self">self</span>, config);
+                <span class="kw">if </span>collect_nodes {
+                    ProcessConfigsResult {
                         densely_chained: <span class="bool-val">true</span>,
                         nodes: <span class="macro">vec!</span>[node_id],
                     }
                 } <span class="kw">else </span>{
-                    AddSystemsInnerResult {
+                    ProcessConfigsResult {
                         densely_chained: <span class="bool-val">true</span>,
                         nodes: Vec::new(),
                     }
                 }
             }
-            SystemConfigs::Configs {
+            NodeConfigs::Configs {
                 <span class="kw-2">mut </span>configs,
                 collective_conditions,
                 chained,
@@ -2143,16 +2408,16 @@
                 <span class="kw">let </span>more_than_one_entry = configs.len() &gt; <span class="number">1</span>;
                 <span class="kw">if </span>!collective_conditions.is_empty() {
                     <span class="kw">if </span>more_than_one_entry {
-                        <span class="kw">let </span>set = AnonymousSet::new();
+                        <span class="kw">let </span>set = <span class="self">self</span>.create_anonymous_set();
                         <span class="kw">for </span>config <span class="kw">in </span><span class="kw-2">&amp;mut </span>configs {
-                            config.in_set_inner(set.dyn_clone());
+                            config.in_set_inner(set.intern());
                         }
-                        <span class="kw">let </span><span class="kw-2">mut </span>set_config = set.into_config();
+                        <span class="kw">let </span><span class="kw-2">mut </span>set_config = SystemSetConfig::new(set.intern());
                         set_config.conditions.extend(collective_conditions);
-                        <span class="self">self</span>.configure_set(set_config);
+                        <span class="self">self</span>.configure_set_inner(set_config).unwrap();
                     } <span class="kw">else </span>{
                         <span class="kw">for </span>condition <span class="kw">in </span>collective_conditions {
-                            configs[<span class="number">0</span>].run_if_inner(condition);
+                            configs[<span class="number">0</span>].run_if_dyn(condition);
                         }
                     }
                 }
@@ -2161,15 +2426,15 @@
                 <span class="kw">let </span><span class="kw-2">mut </span>densely_chained = <span class="bool-val">true</span>;
                 <span class="kw">if </span>chained {
                     <span class="kw">let </span><span class="prelude-val">Some</span>(prev) = config_iter.next() <span class="kw">else </span>{
-                        <span class="kw">return </span>AddSystemsInnerResult {
+                        <span class="kw">return </span>ProcessConfigsResult {
                             nodes: Vec::new(),
-                            densely_chained: <span class="bool-val">true
-                        </span>}
+                            densely_chained: <span class="bool-val">true</span>,
+                        };
                     };
-                    <span class="kw">let </span><span class="kw-2">mut </span>previous_result = <span class="self">self</span>.add_systems_inner(prev, <span class="bool-val">true</span>);
+                    <span class="kw">let </span><span class="kw-2">mut </span>previous_result = <span class="self">self</span>.process_configs(prev, <span class="bool-val">true</span>);
                     densely_chained = previous_result.densely_chained;
                     <span class="kw">for </span>current <span class="kw">in </span>config_iter {
-                        <span class="kw">let </span>current_result = <span class="self">self</span>.add_systems_inner(current, <span class="bool-val">true</span>);
+                        <span class="kw">let </span>current_result = <span class="self">self</span>.process_configs(current, <span class="bool-val">true</span>);
                         densely_chained = densely_chained &amp;&amp; current_result.densely_chained;
                         <span class="kw">match </span>(
                             previous_result.densely_chained,
@@ -2225,7 +2490,7 @@
                             }
                         }
 
-                        <span class="kw">if </span>ancestor_chained {
+                        <span class="kw">if </span>collect_nodes {
                             nodes_in_scope.append(<span class="kw-2">&amp;mut </span>previous_result.nodes);
                         }
 
@@ -2233,14 +2498,14 @@
                     }
 
                     <span class="comment">// ensure the last config&#39;s nodes are added
-                    </span><span class="kw">if </span>ancestor_chained {
+                    </span><span class="kw">if </span>collect_nodes {
                         nodes_in_scope.append(<span class="kw-2">&amp;mut </span>previous_result.nodes);
                     }
                 } <span class="kw">else </span>{
                     <span class="kw">for </span>config <span class="kw">in </span>config_iter {
-                        <span class="kw">let </span>result = <span class="self">self</span>.add_systems_inner(config, ancestor_chained);
+                        <span class="kw">let </span>result = <span class="self">self</span>.process_configs(config, collect_nodes);
                         densely_chained = densely_chained &amp;&amp; result.densely_chained;
-                        <span class="kw">if </span>ancestor_chained {
+                        <span class="kw">if </span>collect_nodes {
                             nodes_in_scope.extend(result.nodes);
                         }
                     }
@@ -2251,7 +2516,7 @@
                     }
                 }
 
-                AddSystemsInnerResult {
+                ProcessConfigsResult {
                     nodes: nodes_in_scope,
                     densely_chained,
                 }
@@ -2267,47 +2532,27 @@
 
         <span class="comment">// system init has to be deferred (need `&amp;mut World`)
         </span><span class="self">self</span>.uninit.push((id, <span class="number">0</span>));
-        <span class="self">self</span>.systems.push(SystemNode::new(config.system));
+        <span class="self">self</span>.systems.push(SystemNode::new(config.node));
         <span class="self">self</span>.system_conditions.push(config.conditions);
 
         <span class="prelude-val">Ok</span>(id)
     }
 
-    <span class="kw">fn </span>configure_sets(<span class="kw-2">&amp;mut </span><span class="self">self</span>, sets: <span class="kw">impl </span>IntoSystemSetConfigs) {
-        <span class="kw">let </span>SystemSetConfigs { sets, chained } = sets.into_configs();
-        <span class="kw">let </span><span class="kw-2">mut </span>set_iter = sets.into_iter();
-        <span class="kw">if </span>chained {
-            <span class="kw">let </span><span class="prelude-val">Some</span>(prev) = set_iter.next() <span class="kw">else </span>{ <span class="kw">return </span>};
-            <span class="kw">let </span><span class="kw-2">mut </span>prev_id = <span class="self">self</span>.configure_set_inner(prev).unwrap();
-            <span class="kw">for </span>next <span class="kw">in </span>set_iter {
-                <span class="kw">let </span>next_id = <span class="self">self</span>.configure_set_inner(next).unwrap();
-                <span class="self">self</span>.dependency.graph.add_edge(prev_id, next_id, ());
-                prev_id = next_id;
-            }
-        } <span class="kw">else </span>{
-            <span class="kw">for </span>set <span class="kw">in </span>set_iter {
-                <span class="self">self</span>.configure_set_inner(set).unwrap();
-            }
-        }
+    <span class="attr">#[track_caller]
+    </span><span class="kw">fn </span>configure_sets(<span class="kw-2">&amp;mut </span><span class="self">self</span>, sets: <span class="kw">impl </span>IntoSystemSetConfigs) {
+        <span class="self">self</span>.process_configs(sets.into_configs(), <span class="bool-val">false</span>);
     }
 
-    <span class="kw">fn </span>configure_set(<span class="kw-2">&amp;mut </span><span class="self">self</span>, set: <span class="kw">impl </span>IntoSystemSetConfig) {
-        <span class="self">self</span>.configure_set_inner(set).unwrap();
-    }
-
-    <span class="kw">fn </span>configure_set_inner(
-        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        set: <span class="kw">impl </span>IntoSystemSetConfig,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;NodeId, ScheduleBuildError&gt; {
+    <span class="kw">fn </span>configure_set_inner(<span class="kw-2">&amp;mut </span><span class="self">self</span>, set: SystemSetConfig) -&gt; <span class="prelude-ty">Result</span>&lt;NodeId, ScheduleBuildError&gt; {
         <span class="kw">let </span>SystemSetConfig {
-            set,
+            node: set,
             graph_info,
             <span class="kw-2">mut </span>conditions,
-        } = set.into_config();
+        } = set;
 
         <span class="kw">let </span>id = <span class="kw">match </span><span class="self">self</span>.system_set_ids.get(<span class="kw-2">&amp;</span>set) {
             <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>id) =&gt; id,
-            <span class="prelude-val">None </span>=&gt; <span class="self">self</span>.add_set(set.dyn_clone()),
+            <span class="prelude-val">None </span>=&gt; <span class="self">self</span>.add_set(set),
         };
 
         <span class="comment">// graph updates are immediate
@@ -2321,27 +2566,33 @@
         <span class="prelude-val">Ok</span>(id)
     }
 
-    <span class="kw">fn </span>add_set(<span class="kw-2">&amp;mut </span><span class="self">self</span>, set: BoxedSystemSet) -&gt; NodeId {
+    <span class="kw">fn </span>add_set(<span class="kw-2">&amp;mut </span><span class="self">self</span>, set: InternedSystemSet) -&gt; NodeId {
         <span class="kw">let </span>id = NodeId::Set(<span class="self">self</span>.system_sets.len());
-        <span class="self">self</span>.system_sets.push(SystemSetNode::new(set.dyn_clone()));
+        <span class="self">self</span>.system_sets.push(SystemSetNode::new(set));
         <span class="self">self</span>.system_set_conditions.push(Vec::new());
         <span class="self">self</span>.system_set_ids.insert(set, id);
         id
     }
 
-    <span class="kw">fn </span>check_set(<span class="kw-2">&amp;mut </span><span class="self">self</span>, id: <span class="kw-2">&amp;</span>NodeId, set: <span class="kw-2">&amp;</span><span class="kw">dyn </span>SystemSet) -&gt; <span class="prelude-ty">Result</span>&lt;(), ScheduleBuildError&gt; {
-        <span class="kw">match </span><span class="self">self</span>.system_set_ids.get(set) {
+    <span class="kw">fn </span>check_set(<span class="kw-2">&amp;mut </span><span class="self">self</span>, id: <span class="kw-2">&amp;</span>NodeId, set: InternedSystemSet) -&gt; <span class="prelude-ty">Result</span>&lt;(), ScheduleBuildError&gt; {
+        <span class="kw">match </span><span class="self">self</span>.system_set_ids.get(<span class="kw-2">&amp;</span>set) {
             <span class="prelude-val">Some</span>(set_id) =&gt; {
                 <span class="kw">if </span>id == set_id {
                     <span class="kw">return </span><span class="prelude-val">Err</span>(ScheduleBuildError::HierarchyLoop(<span class="self">self</span>.get_node_name(id)));
                 }
             }
             <span class="prelude-val">None </span>=&gt; {
-                <span class="self">self</span>.add_set(set.dyn_clone());
+                <span class="self">self</span>.add_set(set);
             }
         }
 
         <span class="prelude-val">Ok</span>(())
+    }
+
+    <span class="kw">fn </span>create_anonymous_set(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; AnonymousSet {
+        <span class="kw">let </span>id = <span class="self">self</span>.anonymous_sets;
+        <span class="self">self</span>.anonymous_sets += <span class="number">1</span>;
+        AnonymousSet::new(id)
     }
 
     <span class="kw">fn </span>check_sets(
@@ -2349,8 +2600,8 @@
         id: <span class="kw-2">&amp;</span>NodeId,
         graph_info: <span class="kw-2">&amp;</span>GraphInfo,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;(), ScheduleBuildError&gt; {
-        <span class="kw">for </span>set <span class="kw">in </span><span class="kw-2">&amp;</span>graph_info.sets {
-            <span class="self">self</span>.check_set(id, <span class="kw-2">&amp;**</span>set)<span class="question-mark">?</span>;
+        <span class="kw">for </span><span class="kw-2">&amp;</span>set <span class="kw">in </span><span class="kw-2">&amp;</span>graph_info.sets {
+            <span class="self">self</span>.check_set(id, set)<span class="question-mark">?</span>;
         }
 
         <span class="prelude-val">Ok</span>(())
@@ -2369,7 +2620,7 @@
                     }
                 }
                 <span class="prelude-val">None </span>=&gt; {
-                    <span class="self">self</span>.add_set(set.dyn_clone());
+                    <span class="self">self</span>.add_set(<span class="kw-2">*</span>set);
                 }
             }
         }
@@ -2377,7 +2628,7 @@
         <span class="kw">if let </span>Ambiguity::IgnoreWithSet(ambiguous_with) = <span class="kw-2">&amp;</span>graph_info.ambiguous_with {
             <span class="kw">for </span>set <span class="kw">in </span>ambiguous_with {
                 <span class="kw">if </span>!<span class="self">self</span>.system_set_ids.contains_key(set) {
-                    <span class="self">self</span>.add_set(set.dyn_clone());
+                    <span class="self">self</span>.add_set(<span class="kw-2">*</span>set);
                 }
             }
         }
@@ -2474,47 +2725,77 @@
     </span><span class="kw">pub fn </span>build_schedule(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
         components: <span class="kw-2">&amp;</span>Components,
+        schedule_label: InternedScheduleLabel,
+        ignored_ambiguities: <span class="kw-2">&amp;</span>BTreeSet&lt;ComponentId&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;SystemSchedule, ScheduleBuildError&gt; {
         <span class="comment">// check hierarchy for cycles
-        </span><span class="self">self</span>.hierarchy.topsort = <span class="self">self
-            </span>.topsort_graph(<span class="kw-2">&amp;</span><span class="self">self</span>.hierarchy.graph, ReportCycles::Hierarchy)
-            .map_err(|<span class="kw">_</span>| ScheduleBuildError::HierarchyCycle)<span class="question-mark">?</span>;
+        </span><span class="self">self</span>.hierarchy.topsort =
+            <span class="self">self</span>.topsort_graph(<span class="kw-2">&amp;</span><span class="self">self</span>.hierarchy.graph, ReportCycles::Hierarchy)<span class="question-mark">?</span>;
 
         <span class="kw">let </span>hier_results = check_graph(<span class="kw-2">&amp;</span><span class="self">self</span>.hierarchy.graph, <span class="kw-2">&amp;</span><span class="self">self</span>.hierarchy.topsort);
-        <span class="kw">if </span><span class="self">self</span>.settings.hierarchy_detection != LogLevel::Ignore
-            &amp;&amp; <span class="self">self</span>.contains_hierarchy_conflicts(<span class="kw-2">&amp;</span>hier_results.transitive_edges)
-        {
-            <span class="self">self</span>.report_hierarchy_conflicts(<span class="kw-2">&amp;</span>hier_results.transitive_edges);
-            <span class="kw">if </span><span class="macro">matches!</span>(<span class="self">self</span>.settings.hierarchy_detection, LogLevel::Error) {
-                <span class="kw">return </span><span class="prelude-val">Err</span>(ScheduleBuildError::HierarchyRedundancy);
-            }
-        }
+        <span class="self">self</span>.optionally_check_hierarchy_conflicts(<span class="kw-2">&amp;</span>hier_results.transitive_edges, schedule_label)<span class="question-mark">?</span>;
 
         <span class="comment">// remove redundant edges
         </span><span class="self">self</span>.hierarchy.graph = hier_results.transitive_reduction;
 
         <span class="comment">// check dependencies for cycles
-        </span><span class="self">self</span>.dependency.topsort = <span class="self">self
-            </span>.topsort_graph(<span class="kw-2">&amp;</span><span class="self">self</span>.dependency.graph, ReportCycles::Dependency)
-            .map_err(|<span class="kw">_</span>| ScheduleBuildError::DependencyCycle)<span class="question-mark">?</span>;
+        </span><span class="self">self</span>.dependency.topsort =
+            <span class="self">self</span>.topsort_graph(<span class="kw-2">&amp;</span><span class="self">self</span>.dependency.graph, ReportCycles::Dependency)<span class="question-mark">?</span>;
 
         <span class="comment">// check for systems or system sets depending on sets they belong to
         </span><span class="kw">let </span>dep_results = check_graph(<span class="kw-2">&amp;</span><span class="self">self</span>.dependency.graph, <span class="kw-2">&amp;</span><span class="self">self</span>.dependency.topsort);
-        <span class="kw">for </span><span class="kw-2">&amp;</span>(a, b) <span class="kw">in </span>dep_results.connected.iter() {
-            <span class="kw">if </span>hier_results.connected.contains(<span class="kw-2">&amp;</span>(a, b)) || hier_results.connected.contains(<span class="kw-2">&amp;</span>(b, a))
-            {
-                <span class="kw">let </span>name_a = <span class="self">self</span>.get_node_name(<span class="kw-2">&amp;</span>a);
-                <span class="kw">let </span>name_b = <span class="self">self</span>.get_node_name(<span class="kw-2">&amp;</span>b);
-                <span class="kw">return </span><span class="prelude-val">Err</span>(ScheduleBuildError::CrossDependency(name_a, name_b));
-            }
-        }
+        <span class="self">self</span>.check_for_cross_dependencies(<span class="kw-2">&amp;</span>dep_results, <span class="kw-2">&amp;</span>hier_results.connected)<span class="question-mark">?</span>;
 
         <span class="comment">// map all system sets to their systems
         // go in reverse topological order (bottom-up) for efficiency
-        </span><span class="kw">let </span><span class="kw-2">mut </span>set_systems: HashMap&lt;NodeId, Vec&lt;NodeId&gt;&gt; =
+        </span><span class="kw">let </span>(set_systems, set_system_bitsets) =
+            <span class="self">self</span>.map_sets_to_systems(<span class="kw-2">&amp;</span><span class="self">self</span>.hierarchy.topsort, <span class="kw-2">&amp;</span><span class="self">self</span>.hierarchy.graph);
+        <span class="self">self</span>.check_order_but_intersect(<span class="kw-2">&amp;</span>dep_results.connected, <span class="kw-2">&amp;</span>set_system_bitsets)<span class="question-mark">?</span>;
+
+        <span class="comment">// check that there are no edges to system-type sets that have multiple instances
+        </span><span class="self">self</span>.check_system_type_set_ambiguity(<span class="kw-2">&amp;</span>set_systems)<span class="question-mark">?</span>;
+
+        <span class="kw">let </span>dependency_flattened = <span class="self">self</span>.get_dependency_flattened(<span class="kw-2">&amp;</span>set_systems);
+
+        <span class="comment">// topsort
+        </span><span class="kw">let </span><span class="kw-2">mut </span>dependency_flattened_dag = Dag {
+            topsort: <span class="self">self</span>.topsort_graph(<span class="kw-2">&amp;</span>dependency_flattened, ReportCycles::Dependency)<span class="question-mark">?</span>,
+            graph: dependency_flattened,
+        };
+
+        <span class="kw">let </span>flat_results = check_graph(
+            <span class="kw-2">&amp;</span>dependency_flattened_dag.graph,
+            <span class="kw-2">&amp;</span>dependency_flattened_dag.topsort,
+        );
+
+        <span class="comment">// remove redundant edges
+        </span>dependency_flattened_dag.graph = flat_results.transitive_reduction;
+
+        <span class="comment">// flatten: combine `in_set` with `ambiguous_with` information
+        </span><span class="kw">let </span>ambiguous_with_flattened = <span class="self">self</span>.get_ambiguous_with_flattened(<span class="kw-2">&amp;</span>set_systems);
+
+        <span class="comment">// check for conflicts
+        </span><span class="kw">let </span>conflicting_systems = <span class="self">self</span>.get_conflicting_systems(
+            <span class="kw-2">&amp;</span>flat_results.disconnected,
+            <span class="kw-2">&amp;</span>ambiguous_with_flattened,
+            ignored_ambiguities,
+        );
+        <span class="self">self</span>.optionally_check_conflicts(<span class="kw-2">&amp;</span>conflicting_systems, components, schedule_label)<span class="question-mark">?</span>;
+        <span class="self">self</span>.conflicting_systems = conflicting_systems;
+
+        <span class="comment">// build the schedule
+        </span><span class="prelude-val">Ok</span>(<span class="self">self</span>.build_schedule_inner(dependency_flattened_dag, hier_results.reachable))
+    }
+
+    <span class="kw">fn </span>map_sets_to_systems(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        hierarchy_topsort: <span class="kw-2">&amp;</span>[NodeId],
+        hierarchy_graph: <span class="kw-2">&amp;</span>GraphMap&lt;NodeId, (), Directed&gt;,
+    ) -&gt; (HashMap&lt;NodeId, Vec&lt;NodeId&gt;&gt;, HashMap&lt;NodeId, FixedBitSet&gt;) {
+        <span class="kw">let </span><span class="kw-2">mut </span>set_systems: HashMap&lt;NodeId, Vec&lt;NodeId&gt;&gt; =
             HashMap::with_capacity(<span class="self">self</span>.system_sets.len());
         <span class="kw">let </span><span class="kw-2">mut </span>set_system_bitsets = HashMap::with_capacity(<span class="self">self</span>.system_sets.len());
-        <span class="kw">for </span><span class="kw-2">&amp;</span>id <span class="kw">in </span><span class="self">self</span>.hierarchy.topsort.iter().rev() {
+        <span class="kw">for </span><span class="kw-2">&amp;</span>id <span class="kw">in </span>hierarchy_topsort.iter().rev() {
             <span class="kw">if </span>id.is_system() {
                 <span class="kw">continue</span>;
             }
@@ -2522,11 +2803,7 @@
             <span class="kw">let </span><span class="kw-2">mut </span>systems = Vec::new();
             <span class="kw">let </span><span class="kw-2">mut </span>system_bitset = FixedBitSet::with_capacity(<span class="self">self</span>.systems.len());
 
-            <span class="kw">for </span>child <span class="kw">in </span><span class="self">self
-                </span>.hierarchy
-                .graph
-                .neighbors_directed(id, Direction::Outgoing)
-            {
+            <span class="kw">for </span>child <span class="kw">in </span>hierarchy_graph.neighbors_directed(id, Direction::Outgoing) {
                 <span class="kw">match </span>child {
                     NodeId::System(<span class="kw">_</span>) =&gt; {
                         systems.push(child);
@@ -2544,52 +2821,18 @@
             set_systems.insert(id, systems);
             set_system_bitsets.insert(id, system_bitset);
         }
+        (set_systems, set_system_bitsets)
+    }
 
-        <span class="comment">// check that there is no ordering between system sets that intersect
-        </span><span class="kw">for </span>(a, b) <span class="kw">in </span>dep_results.connected.iter() {
-            <span class="kw">if </span>!(a.is_set() &amp;&amp; b.is_set()) {
-                <span class="kw">continue</span>;
-            }
-
-            <span class="kw">let </span>a_systems = set_system_bitsets.get(a).unwrap();
-            <span class="kw">let </span>b_systems = set_system_bitsets.get(b).unwrap();
-
-            <span class="kw">if </span>!(a_systems.is_disjoint(b_systems)) {
-                <span class="kw">return </span><span class="prelude-val">Err</span>(ScheduleBuildError::SetsHaveOrderButIntersect(
-                    <span class="self">self</span>.get_node_name(a),
-                    <span class="self">self</span>.get_node_name(b),
-                ));
-            }
-        }
-
-        <span class="comment">// check that there are no edges to system-type sets that have multiple instances
-        </span><span class="kw">for </span>(<span class="kw-2">&amp;</span>id, systems) <span class="kw">in </span>set_systems.iter() {
-            <span class="kw">let </span>set = <span class="kw-2">&amp;</span><span class="self">self</span>.system_sets[id.index()];
-            <span class="kw">if </span>set.is_system_type() {
-                <span class="kw">let </span>instances = systems.len();
-                <span class="kw">let </span>ambiguous_with = <span class="self">self</span>.ambiguous_with.edges(id);
-                <span class="kw">let </span>before = <span class="self">self
-                    </span>.dependency
-                    .graph
-                    .edges_directed(id, Direction::Incoming);
-                <span class="kw">let </span>after = <span class="self">self
-                    </span>.dependency
-                    .graph
-                    .edges_directed(id, Direction::Outgoing);
-                <span class="kw">let </span>relations = before.count() + after.count() + ambiguous_with.count();
-                <span class="kw">if </span>instances &gt; <span class="number">1 </span>&amp;&amp; relations &gt; <span class="number">0 </span>{
-                    <span class="kw">return </span><span class="prelude-val">Err</span>(ScheduleBuildError::SystemTypeSetAmbiguity(
-                        <span class="self">self</span>.get_node_name(<span class="kw-2">&amp;</span>id),
-                    ));
-                }
-            }
-        }
-
+    <span class="kw">fn </span>get_dependency_flattened(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        set_systems: <span class="kw-2">&amp;</span>HashMap&lt;NodeId, Vec&lt;NodeId&gt;&gt;,
+    ) -&gt; GraphMap&lt;NodeId, (), Directed&gt; {
         <span class="comment">// flatten: combine `in_set` with `before` and `after` information
         // have to do it like this to preserve transitivity
         </span><span class="kw">let </span><span class="kw-2">mut </span>dependency_flattened = <span class="self">self</span>.dependency.graph.clone();
         <span class="kw">let </span><span class="kw-2">mut </span>temp = Vec::new();
-        <span class="kw">for </span>(<span class="kw-2">&amp;</span>set, systems) <span class="kw">in </span>set_systems.iter() {
+        <span class="kw">for </span>(<span class="kw-2">&amp;</span>set, systems) <span class="kw">in </span>set_systems {
             <span class="kw">if </span>systems.is_empty() {
                 <span class="kw">for </span>a <span class="kw">in </span>dependency_flattened.neighbors_directed(set, Direction::Incoming) {
                     <span class="kw">for </span>b <span class="kw">in </span>dependency_flattened.neighbors_directed(set, Direction::Outgoing) {
@@ -2616,22 +2859,14 @@
             }
         }
 
-        <span class="comment">// topsort
-        </span><span class="self">self</span>.dependency_flattened.topsort = <span class="self">self
-            </span>.topsort_graph(<span class="kw-2">&amp;</span>dependency_flattened, ReportCycles::Dependency)
-            .map_err(|<span class="kw">_</span>| ScheduleBuildError::DependencyCycle)<span class="question-mark">?</span>;
-        <span class="self">self</span>.dependency_flattened.graph = dependency_flattened;
+        dependency_flattened
+    }
 
-        <span class="kw">let </span>flat_results = check_graph(
-            <span class="kw-2">&amp;</span><span class="self">self</span>.dependency_flattened.graph,
-            <span class="kw-2">&amp;</span><span class="self">self</span>.dependency_flattened.topsort,
-        );
-
-        <span class="comment">// remove redundant edges
-        </span><span class="self">self</span>.dependency_flattened.graph = flat_results.transitive_reduction;
-
-        <span class="comment">// flatten: combine `in_set` with `ambiguous_with` information
-        </span><span class="kw">let </span><span class="kw-2">mut </span>ambiguous_with_flattened = UnGraphMap::new();
+    <span class="kw">fn </span>get_ambiguous_with_flattened(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        set_systems: <span class="kw-2">&amp;</span>HashMap&lt;NodeId, Vec&lt;NodeId&gt;&gt;,
+    ) -&gt; GraphMap&lt;NodeId, (), Undirected&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>ambiguous_with_flattened = UnGraphMap::new();
         <span class="kw">for </span>(lhs, rhs, <span class="kw">_</span>) <span class="kw">in </span><span class="self">self</span>.ambiguous_with.all_edges() {
             <span class="kw">match </span>(lhs, rhs) {
                 (NodeId::System(<span class="kw">_</span>), NodeId::System(<span class="kw">_</span>)) =&gt; {
@@ -2657,12 +2892,18 @@
             }
         }
 
-        <span class="self">self</span>.ambiguous_with_flattened = ambiguous_with_flattened;
+        ambiguous_with_flattened
+    }
 
-        <span class="comment">// check for conflicts
-        </span><span class="kw">let </span><span class="kw-2">mut </span>conflicting_systems = Vec::new();
-        <span class="kw">for </span><span class="kw-2">&amp;</span>(a, b) <span class="kw">in </span><span class="kw-2">&amp;</span>flat_results.disconnected {
-            <span class="kw">if </span><span class="self">self</span>.ambiguous_with_flattened.contains_edge(a, b)
+    <span class="kw">fn </span>get_conflicting_systems(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        flat_results_disconnected: <span class="kw-2">&amp;</span>Vec&lt;(NodeId, NodeId)&gt;,
+        ambiguous_with_flattened: <span class="kw-2">&amp;</span>GraphMap&lt;NodeId, (), Undirected&gt;,
+        ignored_ambiguities: <span class="kw-2">&amp;</span>BTreeSet&lt;ComponentId&gt;,
+    ) -&gt; Vec&lt;(NodeId, NodeId, Vec&lt;ComponentId&gt;)&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>conflicting_systems = Vec::new();
+        <span class="kw">for </span><span class="kw-2">&amp;</span>(a, b) <span class="kw">in </span>flat_results_disconnected {
+            <span class="kw">if </span>ambiguous_with_flattened.contains_edge(a, b)
                 || <span class="self">self</span>.ambiguous_with_all.contains(<span class="kw-2">&amp;</span>a)
                 || <span class="self">self</span>.ambiguous_with_all.contains(<span class="kw-2">&amp;</span>b)
             {
@@ -2677,24 +2918,28 @@
                 <span class="kw">let </span>access_a = system_a.component_access();
                 <span class="kw">let </span>access_b = system_b.component_access();
                 <span class="kw">if </span>!access_a.is_compatible(access_b) {
-                    <span class="kw">let </span>conflicts = access_a.get_conflicts(access_b);
-                    conflicting_systems.push((a, b, conflicts));
+                    <span class="kw">let </span>conflicts: Vec&lt;<span class="kw">_</span>&gt; = access_a
+                        .get_conflicts(access_b)
+                        .into_iter()
+                        .filter(|id| !ignored_ambiguities.contains(id))
+                        .collect();
+
+                    <span class="kw">if </span>!conflicts.is_empty() {
+                        conflicting_systems.push((a, b, conflicts));
+                    }
                 }
             }
         }
 
-        <span class="kw">if </span><span class="self">self</span>.settings.ambiguity_detection != LogLevel::Ignore
-            &amp;&amp; <span class="self">self</span>.contains_conflicts(<span class="kw-2">&amp;</span>conflicting_systems)
-        {
-            <span class="self">self</span>.report_conflicts(<span class="kw-2">&amp;</span>conflicting_systems, components);
-            <span class="kw">if </span><span class="macro">matches!</span>(<span class="self">self</span>.settings.ambiguity_detection, LogLevel::Error) {
-                <span class="kw">return </span><span class="prelude-val">Err</span>(ScheduleBuildError::Ambiguity);
-            }
-        }
-        <span class="self">self</span>.conflicting_systems = conflicting_systems;
+        conflicting_systems
+    }
 
-        <span class="comment">// build the schedule
-        </span><span class="kw">let </span>dg_system_ids = <span class="self">self</span>.dependency_flattened.topsort.clone();
+    <span class="kw">fn </span>build_schedule_inner(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        dependency_flattened_dag: Dag,
+        hier_results_reachable: FixedBitSet,
+    ) -&gt; SystemSchedule {
+        <span class="kw">let </span>dg_system_ids = dependency_flattened_dag.topsort.clone();
         <span class="kw">let </span>dg_system_idx_map = dg_system_ids
             .iter()
             .cloned()
@@ -2733,14 +2978,12 @@
         </span><span class="kw">let </span><span class="kw-2">mut </span>system_dependencies = Vec::with_capacity(sys_count);
         <span class="kw">let </span><span class="kw-2">mut </span>system_dependents = Vec::with_capacity(sys_count);
         <span class="kw">for </span><span class="kw-2">&amp;</span>sys_id <span class="kw">in </span><span class="kw-2">&amp;</span>dg_system_ids {
-            <span class="kw">let </span>num_dependencies = <span class="self">self
-                </span>.dependency_flattened
+            <span class="kw">let </span>num_dependencies = dependency_flattened_dag
                 .graph
                 .neighbors_directed(sys_id, Direction::Incoming)
                 .count();
 
-            <span class="kw">let </span>dependents = <span class="self">self
-                </span>.dependency_flattened
+            <span class="kw">let </span>dependents = dependency_flattened_dag
                 .graph
                 .neighbors_directed(sys_id, Direction::Outgoing)
                 .map(|dep_id| dg_system_idx_map[<span class="kw-2">&amp;</span>dep_id])
@@ -2758,7 +3001,7 @@
             <span class="kw">let </span>bitset = <span class="kw-2">&amp;mut </span>systems_in_sets_with_conditions[i];
             <span class="kw">for </span><span class="kw-2">&amp;</span>(col, sys_id) <span class="kw">in </span><span class="kw-2">&amp;</span>hg_systems {
                 <span class="kw">let </span>idx = dg_system_idx_map[<span class="kw-2">&amp;</span>sys_id];
-                <span class="kw">let </span>is_descendant = hier_results.reachable[index(row, col, hg_node_count)];
+                <span class="kw">let </span>is_descendant = hier_results_reachable[index(row, col, hg_node_count)];
                 bitset.set(idx, is_descendant);
             }
         }
@@ -2773,12 +3016,12 @@
                 .enumerate()
                 .take_while(|<span class="kw-2">&amp;</span>(_idx, <span class="kw-2">&amp;</span>row)| row &lt; col)
             {
-                <span class="kw">let </span>is_ancestor = hier_results.reachable[index(row, col, hg_node_count)];
+                <span class="kw">let </span>is_ancestor = hier_results_reachable[index(row, col, hg_node_count)];
                 bitset.set(idx, is_ancestor);
             }
         }
 
-        <span class="prelude-val">Ok</span>(SystemSchedule {
+        SystemSchedule {
             systems: Vec::with_capacity(sys_count),
             system_conditions: Vec::with_capacity(sys_count),
             set_conditions: Vec::with_capacity(set_with_conditions_count),
@@ -2788,13 +3031,15 @@
             system_dependents,
             sets_with_conditions_of_systems,
             systems_in_sets_with_conditions,
-        })
+        }
     }
 
     <span class="kw">fn </span>update_schedule(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
         schedule: <span class="kw-2">&amp;mut </span>SystemSchedule,
         components: <span class="kw-2">&amp;</span>Components,
+        ignored_ambiguities: <span class="kw-2">&amp;</span>BTreeSet&lt;ComponentId&gt;,
+        schedule_label: InternedScheduleLabel,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;(), ScheduleBuildError&gt; {
         <span class="kw">if </span>!<span class="self">self</span>.uninit.is_empty() {
             <span class="kw">return </span><span class="prelude-val">Err</span>(ScheduleBuildError::Uninitialized);
@@ -2819,7 +3064,7 @@
             <span class="self">self</span>.system_set_conditions[id.index()] = conditions;
         }
 
-        <span class="kw-2">*</span>schedule = <span class="self">self</span>.build_schedule(components)<span class="question-mark">?</span>;
+        <span class="kw-2">*</span>schedule = <span class="self">self</span>.build_schedule(components, schedule_label, ignored_ambiguities)<span class="question-mark">?</span>;
 
         <span class="comment">// move systems into new schedule
         </span><span class="kw">for </span><span class="kw-2">&amp;</span>id <span class="kw">in </span><span class="kw-2">&amp;</span>schedule.system_ids {
@@ -2838,12 +3083,33 @@
     }
 }
 
-<span class="doccomment">/// Values returned by `ScheduleGraph::add_systems_inner`
-</span><span class="kw">struct </span>AddSystemsInnerResult {
-    <span class="doccomment">/// All nodes contained inside this add_systems_inner call&#39;s SystemConfigs hierarchy
+<span class="doccomment">/// Values returned by [`ScheduleGraph::process_configs`]
+</span><span class="kw">struct </span>ProcessConfigsResult {
+    <span class="doccomment">/// All nodes contained inside this process_configs call&#39;s [`NodeConfigs`] hierarchy,
+    /// if `ancestor_chained` is true
     </span>nodes: Vec&lt;NodeId&gt;,
-    <span class="doccomment">/// True if and only if all nodes are &quot;densely chained&quot;
+    <span class="doccomment">/// True if and only if all nodes are &quot;densely chained&quot;, meaning that all nested nodes
+    /// are linearly chained (as if `after` system ordering had been applied between each node)
+    /// in the order they are defined
     </span>densely_chained: bool,
+}
+
+<span class="doccomment">/// Trait used by [`ScheduleGraph::process_configs`] to process a single [`NodeConfig`].
+</span><span class="kw">trait </span>ProcessNodeConfig: Sized {
+    <span class="doccomment">/// Process a single [`NodeConfig`].
+    </span><span class="kw">fn </span>process_config(schedule_graph: <span class="kw-2">&amp;mut </span>ScheduleGraph, config: NodeConfig&lt;<span class="self">Self</span>&gt;) -&gt; NodeId;
+}
+
+<span class="kw">impl </span>ProcessNodeConfig <span class="kw">for </span>BoxedSystem {
+    <span class="kw">fn </span>process_config(schedule_graph: <span class="kw-2">&amp;mut </span>ScheduleGraph, config: NodeConfig&lt;<span class="self">Self</span>&gt;) -&gt; NodeId {
+        schedule_graph.add_system_inner(config).unwrap()
+    }
+}
+
+<span class="kw">impl </span>ProcessNodeConfig <span class="kw">for </span>InternedSystemSet {
+    <span class="kw">fn </span>process_config(schedule_graph: <span class="kw-2">&amp;mut </span>ScheduleGraph, config: NodeConfig&lt;<span class="self">Self</span>&gt;) -&gt; NodeId {
+        schedule_graph.configure_set_inner(config).unwrap()
+    }
 }
 
 <span class="doccomment">/// Used to select the appropriate reporting function.
@@ -2855,10 +3121,15 @@
 <span class="comment">// methods for reporting errors
 </span><span class="kw">impl </span>ScheduleGraph {
     <span class="kw">fn </span>get_node_name(<span class="kw-2">&amp;</span><span class="self">self</span>, id: <span class="kw-2">&amp;</span>NodeId) -&gt; String {
+        <span class="self">self</span>.get_node_name_inner(id, <span class="self">self</span>.settings.report_sets)
+    }
+
+    <span class="attr">#[inline]
+    </span><span class="kw">fn </span>get_node_name_inner(<span class="kw-2">&amp;</span><span class="self">self</span>, id: <span class="kw-2">&amp;</span>NodeId, report_sets: bool) -&gt; String {
         <span class="kw">let </span><span class="kw-2">mut </span>name = <span class="kw">match </span>id {
             NodeId::System(<span class="kw">_</span>) =&gt; {
                 <span class="kw">let </span>name = <span class="self">self</span>.systems[id.index()].get().unwrap().name().to_string();
-                <span class="kw">if </span><span class="self">self</span>.settings.report_sets {
+                <span class="kw">if </span>report_sets {
                     <span class="kw">let </span>sets = <span class="self">self</span>.names_of_sets_containing_node(id);
                     <span class="kw">if </span>sets.is_empty() {
                         name
@@ -2892,7 +3163,8 @@
             <span class="self">self</span>.hierarchy
                 .graph
                 .edges_directed(<span class="kw-2">*</span>id, Direction::Outgoing)
-                .map(|(<span class="kw">_</span>, member_id, <span class="kw">_</span>)| <span class="self">self</span>.get_node_name(<span class="kw-2">&amp;</span>member_id))
+                <span class="comment">// never get the sets of the members or this will infinite recurse when the report_sets setting is on.
+                </span>.map(|(<span class="kw">_</span>, member_id, <span class="kw">_</span>)| <span class="self">self</span>.get_node_name_inner(<span class="kw-2">&amp;</span>member_id, <span class="bool-val">false</span>))
                 .reduce(|a, b| <span class="macro">format!</span>(<span class="string">&quot;{a}, {b}&quot;</span>))
                 .unwrap_or_default()
         )
@@ -2905,20 +3177,40 @@
         }
     }
 
-    <span class="kw">fn </span>contains_hierarchy_conflicts(<span class="kw-2">&amp;</span><span class="self">self</span>, transitive_edges: <span class="kw-2">&amp;</span>[(NodeId, NodeId)]) -&gt; bool {
-        <span class="kw">if </span>transitive_edges.is_empty() {
-            <span class="kw">return </span><span class="bool-val">false</span>;
+    <span class="doccomment">/// If [`ScheduleBuildSettings::hierarchy_detection`] is [`LogLevel::Ignore`] this check
+    /// is skipped.
+    </span><span class="kw">fn </span>optionally_check_hierarchy_conflicts(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        transitive_edges: <span class="kw-2">&amp;</span>[(NodeId, NodeId)],
+        schedule_label: InternedScheduleLabel,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;(), ScheduleBuildError&gt; {
+        <span class="kw">if </span><span class="self">self</span>.settings.hierarchy_detection == LogLevel::Ignore || transitive_edges.is_empty() {
+            <span class="kw">return </span><span class="prelude-val">Ok</span>(());
         }
 
-        <span class="bool-val">true
-    </span>}
+        <span class="kw">let </span>message = <span class="self">self</span>.get_hierarchy_conflicts_error_message(transitive_edges);
+        <span class="kw">match </span><span class="self">self</span>.settings.hierarchy_detection {
+            LogLevel::Ignore =&gt; <span class="macro">unreachable!</span>(),
+            LogLevel::Warn =&gt; {
+                <span class="macro">error!</span>(
+                    <span class="string">&quot;Schedule {schedule_label:?} has redundant edges:\n {}&quot;</span>,
+                    message
+                );
+                <span class="prelude-val">Ok</span>(())
+            }
+            LogLevel::Error =&gt; <span class="prelude-val">Err</span>(ScheduleBuildError::HierarchyRedundancy(message)),
+        }
+    }
 
-    <span class="kw">fn </span>report_hierarchy_conflicts(<span class="kw-2">&amp;</span><span class="self">self</span>, transitive_edges: <span class="kw-2">&amp;</span>[(NodeId, NodeId)]) {
+    <span class="kw">fn </span>get_hierarchy_conflicts_error_message(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        transitive_edges: <span class="kw-2">&amp;</span>[(NodeId, NodeId)],
+    ) -&gt; String {
         <span class="kw">let </span><span class="kw-2">mut </span>message = String::from(<span class="string">&quot;hierarchy contains redundant edge(s)&quot;</span>);
         <span class="kw">for </span>(parent, child) <span class="kw">in </span>transitive_edges {
             <span class="macro">writeln!</span>(
                 message,
-                <span class="string">&quot; -- {:?} &#39;{:?}&#39; cannot be child of set &#39;{:?}&#39;, longer path exists&quot;</span>,
+                <span class="string">&quot; -- {} `{}` cannot be child of set `{}`, longer path exists&quot;</span>,
                 <span class="self">self</span>.get_node_kind(child),
                 <span class="self">self</span>.get_node_name(child),
                 <span class="self">self</span>.get_node_name(parent),
@@ -2926,7 +3218,7 @@
             .unwrap();
         }
 
-        <span class="macro">error!</span>(<span class="string">&quot;{}&quot;</span>, message);
+        message
     }
 
     <span class="doccomment">/// Tries to topologically sort `graph`.
@@ -2942,7 +3234,7 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         graph: <span class="kw-2">&amp;</span>DiGraphMap&lt;NodeId, ()&gt;,
         report: ReportCycles,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;NodeId&gt;, Vec&lt;Vec&lt;NodeId&gt;&gt;&gt; {
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;NodeId&gt;, ScheduleBuildError&gt; {
         <span class="comment">// Tarjan&#39;s SCC algorithm returns elements in *reverse* topological order.
         </span><span class="kw">let </span><span class="kw-2">mut </span>tarjan_scc = TarjanScc::new();
         <span class="kw">let </span><span class="kw-2">mut </span>top_sorted_nodes = Vec::with_capacity(graph.node_count());
@@ -2968,39 +3260,43 @@
                 cycles.append(<span class="kw-2">&amp;mut </span>simple_cycles_in_component(graph, scc));
             }
 
-            <span class="kw">match </span>report {
-                ReportCycles::Hierarchy =&gt; <span class="self">self</span>.report_hierarchy_cycles(<span class="kw-2">&amp;</span>cycles),
-                ReportCycles::Dependency =&gt; <span class="self">self</span>.report_dependency_cycles(<span class="kw-2">&amp;</span>cycles),
-            }
+            <span class="kw">let </span>error = <span class="kw">match </span>report {
+                ReportCycles::Hierarchy =&gt; ScheduleBuildError::HierarchyCycle(
+                    <span class="self">self</span>.get_hierarchy_cycles_error_message(<span class="kw-2">&amp;</span>cycles),
+                ),
+                ReportCycles::Dependency =&gt; ScheduleBuildError::DependencyCycle(
+                    <span class="self">self</span>.get_dependency_cycles_error_message(<span class="kw-2">&amp;</span>cycles),
+                ),
+            };
 
-            <span class="prelude-val">Err</span>(sccs_with_cycles)
+            <span class="prelude-val">Err</span>(error)
         }
     }
 
     <span class="doccomment">/// Logs details of cycles in the hierarchy graph.
-    </span><span class="kw">fn </span>report_hierarchy_cycles(<span class="kw-2">&amp;</span><span class="self">self</span>, cycles: <span class="kw-2">&amp;</span>[Vec&lt;NodeId&gt;]) {
+    </span><span class="kw">fn </span>get_hierarchy_cycles_error_message(<span class="kw-2">&amp;</span><span class="self">self</span>, cycles: <span class="kw-2">&amp;</span>[Vec&lt;NodeId&gt;]) -&gt; String {
         <span class="kw">let </span><span class="kw-2">mut </span>message = <span class="macro">format!</span>(<span class="string">&quot;schedule has {} in_set cycle(s):\n&quot;</span>, cycles.len());
         <span class="kw">for </span>(i, cycle) <span class="kw">in </span>cycles.iter().enumerate() {
             <span class="kw">let </span><span class="kw-2">mut </span>names = cycle.iter().map(|id| <span class="self">self</span>.get_node_name(id));
             <span class="kw">let </span>first_name = names.next().unwrap();
             <span class="macro">writeln!</span>(
                 message,
-                <span class="string">&quot;cycle {}: set &#39;{first_name}&#39; contains itself&quot;</span>,
+                <span class="string">&quot;cycle {}: set `{first_name}` contains itself&quot;</span>,
                 i + <span class="number">1</span>,
             )
             .unwrap();
-            <span class="macro">writeln!</span>(message, <span class="string">&quot;set &#39;{first_name}&#39;&quot;</span>).unwrap();
+            <span class="macro">writeln!</span>(message, <span class="string">&quot;set `{first_name}`&quot;</span>).unwrap();
             <span class="kw">for </span>name <span class="kw">in </span>names.chain(std::iter::once(first_name)) {
-                <span class="macro">writeln!</span>(message, <span class="string">&quot; ... which contains set &#39;{name}&#39;&quot;</span>).unwrap();
+                <span class="macro">writeln!</span>(message, <span class="string">&quot; ... which contains set `{name}`&quot;</span>).unwrap();
             }
             <span class="macro">writeln!</span>(message).unwrap();
         }
 
-        <span class="macro">error!</span>(<span class="string">&quot;{}&quot;</span>, message);
+        message
     }
 
     <span class="doccomment">/// Logs details of cycles in the dependency graph.
-    </span><span class="kw">fn </span>report_dependency_cycles(<span class="kw-2">&amp;</span><span class="self">self</span>, cycles: <span class="kw-2">&amp;</span>[Vec&lt;NodeId&gt;]) {
+    </span><span class="kw">fn </span>get_dependency_cycles_error_message(<span class="kw-2">&amp;</span><span class="self">self</span>, cycles: <span class="kw-2">&amp;</span>[Vec&lt;NodeId&gt;]) -&gt; String {
         <span class="kw">let </span><span class="kw-2">mut </span>message = <span class="macro">format!</span>(<span class="string">&quot;schedule has {} before/after cycle(s):\n&quot;</span>, cycles.len());
         <span class="kw">for </span>(i, cycle) <span class="kw">in </span>cycles.iter().enumerate() {
             <span class="kw">let </span><span class="kw-2">mut </span>names = cycle
@@ -3009,63 +3305,161 @@
             <span class="kw">let </span>(first_kind, first_name) = names.next().unwrap();
             <span class="macro">writeln!</span>(
                 message,
-                <span class="string">&quot;cycle {}: {first_kind} &#39;{first_name}&#39; must run before itself&quot;</span>,
+                <span class="string">&quot;cycle {}: {first_kind} `{first_name}` must run before itself&quot;</span>,
                 i + <span class="number">1</span>,
             )
             .unwrap();
-            <span class="macro">writeln!</span>(message, <span class="string">&quot;{first_kind} &#39;{first_name}&#39;&quot;</span>).unwrap();
+            <span class="macro">writeln!</span>(message, <span class="string">&quot;{first_kind} `{first_name}`&quot;</span>).unwrap();
             <span class="kw">for </span>(kind, name) <span class="kw">in </span>names.chain(std::iter::once((first_kind, first_name))) {
-                <span class="macro">writeln!</span>(message, <span class="string">&quot; ... which must run before {kind} &#39;{name}&#39;&quot;</span>).unwrap();
+                <span class="macro">writeln!</span>(message, <span class="string">&quot; ... which must run before {kind} `{name}`&quot;</span>).unwrap();
             }
             <span class="macro">writeln!</span>(message).unwrap();
         }
 
-        <span class="macro">error!</span>(<span class="string">&quot;{}&quot;</span>, message);
+        message
     }
 
-    <span class="kw">fn </span>contains_conflicts(<span class="kw-2">&amp;</span><span class="self">self</span>, conflicts: <span class="kw-2">&amp;</span>[(NodeId, NodeId, Vec&lt;ComponentId&gt;)]) -&gt; bool {
-        <span class="kw">if </span>conflicts.is_empty() {
-            <span class="kw">return </span><span class="bool-val">false</span>;
+    <span class="kw">fn </span>check_for_cross_dependencies(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        dep_results: <span class="kw-2">&amp;</span>CheckGraphResults&lt;NodeId&gt;,
+        hier_results_connected: <span class="kw-2">&amp;</span>HashSet&lt;(NodeId, NodeId)&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;(), ScheduleBuildError&gt; {
+        <span class="kw">for </span><span class="kw-2">&amp;</span>(a, b) <span class="kw">in </span><span class="kw-2">&amp;</span>dep_results.connected {
+            <span class="kw">if </span>hier_results_connected.contains(<span class="kw-2">&amp;</span>(a, b)) || hier_results_connected.contains(<span class="kw-2">&amp;</span>(b, a))
+            {
+                <span class="kw">let </span>name_a = <span class="self">self</span>.get_node_name(<span class="kw-2">&amp;</span>a);
+                <span class="kw">let </span>name_b = <span class="self">self</span>.get_node_name(<span class="kw-2">&amp;</span>b);
+                <span class="kw">return </span><span class="prelude-val">Err</span>(ScheduleBuildError::CrossDependency(name_a, name_b));
+            }
         }
 
-        <span class="bool-val">true
-    </span>}
+        <span class="prelude-val">Ok</span>(())
+    }
 
-    <span class="kw">fn </span>report_conflicts(
+    <span class="kw">fn </span>check_order_but_intersect(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        dep_results_connected: <span class="kw-2">&amp;</span>HashSet&lt;(NodeId, NodeId)&gt;,
+        set_system_bitsets: <span class="kw-2">&amp;</span>HashMap&lt;NodeId, FixedBitSet&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;(), ScheduleBuildError&gt; {
+        <span class="comment">// check that there is no ordering between system sets that intersect
+        </span><span class="kw">for </span>(a, b) <span class="kw">in </span>dep_results_connected {
+            <span class="kw">if </span>!(a.is_set() &amp;&amp; b.is_set()) {
+                <span class="kw">continue</span>;
+            }
+
+            <span class="kw">let </span>a_systems = set_system_bitsets.get(a).unwrap();
+            <span class="kw">let </span>b_systems = set_system_bitsets.get(b).unwrap();
+
+            <span class="kw">if </span>!(a_systems.is_disjoint(b_systems)) {
+                <span class="kw">return </span><span class="prelude-val">Err</span>(ScheduleBuildError::SetsHaveOrderButIntersect(
+                    <span class="self">self</span>.get_node_name(a),
+                    <span class="self">self</span>.get_node_name(b),
+                ));
+            }
+        }
+
+        <span class="prelude-val">Ok</span>(())
+    }
+
+    <span class="kw">fn </span>check_system_type_set_ambiguity(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        set_systems: <span class="kw-2">&amp;</span>HashMap&lt;NodeId, Vec&lt;NodeId&gt;&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;(), ScheduleBuildError&gt; {
+        <span class="kw">for </span>(<span class="kw-2">&amp;</span>id, systems) <span class="kw">in </span>set_systems {
+            <span class="kw">let </span>set = <span class="kw-2">&amp;</span><span class="self">self</span>.system_sets[id.index()];
+            <span class="kw">if </span>set.is_system_type() {
+                <span class="kw">let </span>instances = systems.len();
+                <span class="kw">let </span>ambiguous_with = <span class="self">self</span>.ambiguous_with.edges(id);
+                <span class="kw">let </span>before = <span class="self">self
+                    </span>.dependency
+                    .graph
+                    .edges_directed(id, Direction::Incoming);
+                <span class="kw">let </span>after = <span class="self">self
+                    </span>.dependency
+                    .graph
+                    .edges_directed(id, Direction::Outgoing);
+                <span class="kw">let </span>relations = before.count() + after.count() + ambiguous_with.count();
+                <span class="kw">if </span>instances &gt; <span class="number">1 </span>&amp;&amp; relations &gt; <span class="number">0 </span>{
+                    <span class="kw">return </span><span class="prelude-val">Err</span>(ScheduleBuildError::SystemTypeSetAmbiguity(
+                        <span class="self">self</span>.get_node_name(<span class="kw-2">&amp;</span>id),
+                    ));
+                }
+            }
+        }
+        <span class="prelude-val">Ok</span>(())
+    }
+
+    <span class="doccomment">/// if [`ScheduleBuildSettings::ambiguity_detection`] is [`LogLevel::Ignore`], this check is skipped
+    </span><span class="kw">fn </span>optionally_check_conflicts(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        conflicts: <span class="kw-2">&amp;</span>[(NodeId, NodeId, Vec&lt;ComponentId&gt;)],
+        components: <span class="kw-2">&amp;</span>Components,
+        schedule_label: InternedScheduleLabel,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;(), ScheduleBuildError&gt; {
+        <span class="kw">if </span><span class="self">self</span>.settings.ambiguity_detection == LogLevel::Ignore || conflicts.is_empty() {
+            <span class="kw">return </span><span class="prelude-val">Ok</span>(());
+        }
+
+        <span class="kw">let </span>message = <span class="self">self</span>.get_conflicts_error_message(conflicts, components);
+        <span class="kw">match </span><span class="self">self</span>.settings.ambiguity_detection {
+            LogLevel::Ignore =&gt; <span class="prelude-val">Ok</span>(()),
+            LogLevel::Warn =&gt; {
+                <span class="macro">warn!</span>(<span class="string">&quot;Schedule {schedule_label:?} has ambiguities.\n{}&quot;</span>, message);
+                <span class="prelude-val">Ok</span>(())
+            }
+            LogLevel::Error =&gt; <span class="prelude-val">Err</span>(ScheduleBuildError::Ambiguity(message)),
+        }
+    }
+
+    <span class="kw">fn </span>get_conflicts_error_message(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         ambiguities: <span class="kw-2">&amp;</span>[(NodeId, NodeId, Vec&lt;ComponentId&gt;)],
         components: <span class="kw-2">&amp;</span>Components,
-    ) {
+    ) -&gt; String {
         <span class="kw">let </span>n_ambiguities = ambiguities.len();
 
-        <span class="kw">let </span><span class="kw-2">mut </span>string = <span class="macro">format!</span>(
+        <span class="kw">let </span><span class="kw-2">mut </span>message = <span class="macro">format!</span>(
             <span class="string">&quot;{n_ambiguities} pairs of systems with conflicting data access have indeterminate execution order. \
             Consider adding `before`, `after`, or `ambiguous_with` relationships between these:\n&quot;</span>,
         );
 
-        <span class="kw">for </span>(system_a, system_b, conflicts) <span class="kw">in </span>ambiguities {
-            <span class="kw">let </span>name_a = <span class="self">self</span>.get_node_name(system_a);
-            <span class="kw">let </span>name_b = <span class="self">self</span>.get_node_name(system_b);
+        <span class="kw">for </span>(name_a, name_b, conflicts) <span class="kw">in </span><span class="self">self</span>.conflicts_to_string(ambiguities, components) {
+            <span class="macro">writeln!</span>(message, <span class="string">&quot; -- {name_a} and {name_b}&quot;</span>).unwrap();
 
-            <span class="macro">debug_assert!</span>(system_a.is_system(), <span class="string">&quot;{name_a} is not a system.&quot;</span>);
-            <span class="macro">debug_assert!</span>(system_b.is_system(), <span class="string">&quot;{name_b} is not a system.&quot;</span>);
-
-            <span class="macro">writeln!</span>(string, <span class="string">&quot; -- {name_a} and {name_b}&quot;</span>).unwrap();
             <span class="kw">if </span>!conflicts.is_empty() {
+                <span class="macro">writeln!</span>(message, <span class="string">&quot;    conflict on: {conflicts:?}&quot;</span>).unwrap();
+            } <span class="kw">else </span>{
+                <span class="comment">// one or both systems must be exclusive
+                </span><span class="kw">let </span>world = std::any::type_name::&lt;World&gt;();
+                <span class="macro">writeln!</span>(message, <span class="string">&quot;    conflict on: {world}&quot;</span>).unwrap();
+            }
+        }
+
+        message
+    }
+
+    <span class="doccomment">/// convert conflicts to human readable format
+    </span><span class="kw">pub fn </span>conflicts_to_string&lt;<span class="lifetime">&#39;a</span>&gt;(
+        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>,
+        ambiguities: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[(NodeId, NodeId, Vec&lt;ComponentId&gt;)],
+        components: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Components,
+    ) -&gt; <span class="kw">impl </span>Iterator&lt;Item = (String, String, Vec&lt;<span class="kw-2">&amp;</span>str&gt;)&gt; + <span class="lifetime">&#39;a </span>{
+        ambiguities
+            .iter()
+            .map(<span class="kw">move </span>|(system_a, system_b, conflicts)| {
+                <span class="kw">let </span>name_a = <span class="self">self</span>.get_node_name(system_a);
+                <span class="kw">let </span>name_b = <span class="self">self</span>.get_node_name(system_b);
+
+                <span class="macro">debug_assert!</span>(system_a.is_system(), <span class="string">&quot;{name_a} is not a system.&quot;</span>);
+                <span class="macro">debug_assert!</span>(system_b.is_system(), <span class="string">&quot;{name_b} is not a system.&quot;</span>);
+
                 <span class="kw">let </span>conflict_names: Vec&lt;<span class="kw">_</span>&gt; = conflicts
                     .iter()
                     .map(|id| components.get_name(<span class="kw-2">*</span>id).unwrap())
                     .collect();
 
-                <span class="macro">writeln!</span>(string, <span class="string">&quot;    conflict on: {conflict_names:?}&quot;</span>).unwrap();
-            } <span class="kw">else </span>{
-                <span class="comment">// one or both systems must be exclusive
-                </span><span class="kw">let </span>world = std::any::type_name::&lt;World&gt;();
-                <span class="macro">writeln!</span>(string, <span class="string">&quot;    conflict on: {world}&quot;</span>).unwrap();
-            }
-        }
-
-        <span class="macro">warn!</span>(<span class="string">&quot;{}&quot;</span>, string);
+                (name_a, name_b, conflict_names)
+            })
     }
 
     <span class="kw">fn </span>traverse_sets_containing_node(<span class="kw-2">&amp;</span><span class="self">self</span>, id: NodeId, f: <span class="kw-2">&amp;mut </span><span class="kw">impl </span>FnMut(NodeId) -&gt; bool) {
@@ -3095,36 +3489,36 @@
 #[non_exhaustive]
 </span><span class="kw">pub enum </span>ScheduleBuildError {
     <span class="doccomment">/// A system set contains itself.
-    </span><span class="attr">#[error(<span class="string">&quot;`{0:?}` contains itself.&quot;</span>)]
+    </span><span class="attr">#[error(<span class="string">&quot;System set `{0}` contains itself.&quot;</span>)]
     </span>HierarchyLoop(String),
     <span class="doccomment">/// The hierarchy of system sets contains a cycle.
-    </span><span class="attr">#[error(<span class="string">&quot;System set hierarchy contains cycle(s).&quot;</span>)]
-    </span>HierarchyCycle,
+    </span><span class="attr">#[error(<span class="string">&quot;System set hierarchy contains cycle(s).\n{0}&quot;</span>)]
+    </span>HierarchyCycle(String),
     <span class="doccomment">/// The hierarchy of system sets contains redundant edges.
     ///
     /// This error is disabled by default, but can be opted-in using [`ScheduleBuildSettings`].
-    </span><span class="attr">#[error(<span class="string">&quot;System set hierarchy contains redundant edges.&quot;</span>)]
-    </span>HierarchyRedundancy,
+    </span><span class="attr">#[error(<span class="string">&quot;System set hierarchy contains redundant edges.\n{0}&quot;</span>)]
+    </span>HierarchyRedundancy(String),
     <span class="doccomment">/// A system (set) has been told to run before itself.
-    </span><span class="attr">#[error(<span class="string">&quot;`{0:?}` depends on itself.&quot;</span>)]
+    </span><span class="attr">#[error(<span class="string">&quot;System set `{0}` depends on itself.&quot;</span>)]
     </span>DependencyLoop(String),
     <span class="doccomment">/// The dependency graph contains a cycle.
-    </span><span class="attr">#[error(<span class="string">&quot;System dependencies contain cycle(s).&quot;</span>)]
-    </span>DependencyCycle,
+    </span><span class="attr">#[error(<span class="string">&quot;System dependencies contain cycle(s).\n{0}&quot;</span>)]
+    </span>DependencyCycle(String),
     <span class="doccomment">/// Tried to order a system (set) relative to a system set it belongs to.
-    </span><span class="attr">#[error(<span class="string">&quot;`{0:?}` and `{1:?}` have both `in_set` and `before`-`after` relationships (these might be transitive). This combination is unsolvable as a system cannot run before or after a set it belongs to.&quot;</span>)]
+    </span><span class="attr">#[error(<span class="string">&quot;`{0}` and `{1}` have both `in_set` and `before`-`after` relationships (these might be transitive). This combination is unsolvable as a system cannot run before or after a set it belongs to.&quot;</span>)]
     </span>CrossDependency(String, String),
     <span class="doccomment">/// Tried to order system sets that share systems.
-    </span><span class="attr">#[error(<span class="string">&quot;`{0:?}` and `{1:?}` have a `before`-`after` relationship (which may be transitive) but share systems.&quot;</span>)]
+    </span><span class="attr">#[error(<span class="string">&quot;`{0}` and `{1}` have a `before`-`after` relationship (which may be transitive) but share systems.&quot;</span>)]
     </span>SetsHaveOrderButIntersect(String, String),
     <span class="doccomment">/// Tried to order a system (set) relative to all instances of some system function.
-    </span><span class="attr">#[error(<span class="string">&quot;Tried to order against `fn {0:?}` in a schedule that has more than one `{0:?}` instance. `fn {0:?}` is a `SystemTypeSet` and cannot be used for ordering if ambiguous. Use a different set without this restriction.&quot;</span>)]
+    </span><span class="attr">#[error(<span class="string">&quot;Tried to order against `{0}` in a schedule that has more than one `{0}` instance. `{0}` is a `SystemTypeSet` and cannot be used for ordering if ambiguous. Use a different set without this restriction.&quot;</span>)]
     </span>SystemTypeSetAmbiguity(String),
     <span class="doccomment">/// Systems with conflicting access have indeterminate run order.
     ///
     /// This error is disabled by default, but can be opted-in using [`ScheduleBuildSettings`].
-    </span><span class="attr">#[error(<span class="string">&quot;Systems with conflicting access have indeterminate run order.&quot;</span>)]
-    </span>Ambiguity,
+    </span><span class="attr">#[error(<span class="string">&quot;Systems with conflicting access have indeterminate run order.\n{0}&quot;</span>)]
+    </span>Ambiguity(String),
     <span class="doccomment">/// Tried to run a schedule before all of its systems have been initialized.
     </span><span class="attr">#[error(<span class="string">&quot;Systems in schedule have not been initialized.&quot;</span>)]
     </span>Uninitialized,
@@ -3188,7 +3582,7 @@
 </span><span class="kw">mod </span>tests {
     <span class="kw">use crate</span>::{
         <span class="self">self </span><span class="kw">as </span>bevy_ecs,
-        schedule::{IntoSystemConfigs, IntoSystemSetConfig, Schedule, SystemSet},
+        schedule::{IntoSystemConfigs, IntoSystemSetConfigs, Schedule, SystemSet},
         world::World,
     };
 
@@ -3199,9 +3593,9 @@
         </span><span class="kw">struct </span>Set;
 
         <span class="kw">let </span><span class="kw-2">mut </span>world = World::new();
-        <span class="kw">let </span><span class="kw-2">mut </span>schedule = Schedule::new();
+        <span class="kw">let </span><span class="kw-2">mut </span>schedule = Schedule::default();
 
-        schedule.configure_set(Set.run_if(|| <span class="bool-val">false</span>));
+        schedule.configure_sets(Set.run_if(|| <span class="bool-val">false</span>));
         schedule.add_systems(
             (|| <span class="macro">panic!</span>(<span class="string">&quot;This system must not run&quot;</span>))
                 .ambiguous_with(|| ())

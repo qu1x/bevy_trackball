@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/n3vu0r/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_render-0.11.2/src/view/visibility/mod.rs`."><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-9bb858ba049f1f21.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="bevy_render" data-themes="" data-resource-suffix="" data-rustdoc-version="1.72.0 (5680fa18f 2023-08-23)" data-channel="1.72.0" data-search-js="search-f6292fe389d70017.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-0f8c037637f9eb3e.css" data-theme-dark-css="dark-1097f8e92a01e3cf.css" data-theme-ayu-css="ayu-614652228113ac93.css" ><script src="../../../../static.files/storage-59fd9b8ccb335783.js"></script><script defer src="../../../../static.files/source-script-106908c7a7964ba4.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../../static.files/light-0f8c037637f9eb3e.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../../static.files/dark-1097f8e92a01e3cf.css"><link rel="stylesheet" href="../../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../../bevy_render/index.html"><img class="rust-logo" src="../../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_render-0.12.0/src/view/visibility/mod.rs`."><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="bevy_render" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../../bevy_render/index.html"><img class="rust-logo" src="../../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -655,8 +655,72 @@
 <a href="#655" id="655">655</a>
 <a href="#656" id="656">656</a>
 <a href="#657" id="657">657</a>
+<a href="#658" id="658">658</a>
+<a href="#659" id="659">659</a>
+<a href="#660" id="660">660</a>
+<a href="#661" id="661">661</a>
+<a href="#662" id="662">662</a>
+<a href="#663" id="663">663</a>
+<a href="#664" id="664">664</a>
+<a href="#665" id="665">665</a>
+<a href="#666" id="666">666</a>
+<a href="#667" id="667">667</a>
+<a href="#668" id="668">668</a>
+<a href="#669" id="669">669</a>
+<a href="#670" id="670">670</a>
+<a href="#671" id="671">671</a>
+<a href="#672" id="672">672</a>
+<a href="#673" id="673">673</a>
+<a href="#674" id="674">674</a>
+<a href="#675" id="675">675</a>
+<a href="#676" id="676">676</a>
+<a href="#677" id="677">677</a>
+<a href="#678" id="678">678</a>
+<a href="#679" id="679">679</a>
+<a href="#680" id="680">680</a>
+<a href="#681" id="681">681</a>
+<a href="#682" id="682">682</a>
+<a href="#683" id="683">683</a>
+<a href="#684" id="684">684</a>
+<a href="#685" id="685">685</a>
+<a href="#686" id="686">686</a>
+<a href="#687" id="687">687</a>
+<a href="#688" id="688">688</a>
+<a href="#689" id="689">689</a>
+<a href="#690" id="690">690</a>
+<a href="#691" id="691">691</a>
+<a href="#692" id="692">692</a>
+<a href="#693" id="693">693</a>
+<a href="#694" id="694">694</a>
+<a href="#695" id="695">695</a>
+<a href="#696" id="696">696</a>
+<a href="#697" id="697">697</a>
+<a href="#698" id="698">698</a>
+<a href="#699" id="699">699</a>
+<a href="#700" id="700">700</a>
+<a href="#701" id="701">701</a>
+<a href="#702" id="702">702</a>
+<a href="#703" id="703">703</a>
+<a href="#704" id="704">704</a>
+<a href="#705" id="705">705</a>
+<a href="#706" id="706">706</a>
+<a href="#707" id="707">707</a>
+<a href="#708" id="708">708</a>
+<a href="#709" id="709">709</a>
+<a href="#710" id="710">710</a>
+<a href="#711" id="711">711</a>
+<a href="#712" id="712">712</a>
+<a href="#713" id="713">713</a>
+<a href="#714" id="714">714</a>
+<a href="#715" id="715">715</a>
+<a href="#716" id="716">716</a>
+<a href="#717" id="717">717</a>
+<a href="#718" id="718">718</a>
+<a href="#719" id="719">719</a>
+<a href="#720" id="720">720</a>
 </pre></div><pre class="rust"><code><span class="kw">mod </span>render_layers;
 
+<span class="kw">use </span>bevy_derive::Deref;
 <span class="kw">pub use </span>render_layers::<span class="kw-2">*</span>;
 
 <span class="kw">use </span>bevy_app::{Plugin, PostUpdate};
@@ -683,7 +747,7 @@
 /// are set to [`Inherited`](Self::Inherited) will also be hidden.
 ///
 /// This is done by the `visibility_propagate_system` which uses the entity hierarchy and
-/// `Visibility` to set the values of each entity&#39;s [`ComputedVisibility`] component.
+/// `Visibility` to set the values of each entity&#39;s [`InheritedVisibility`] component.
 </span><span class="attr">#[derive(Component, Clone, Copy, Reflect, Debug, PartialEq, Eq, Default)]
 #[reflect(Component, Default)]
 </span><span class="kw">pub enum </span>Visibility {
@@ -717,100 +781,97 @@
     }
 }
 
-<span class="macro">bitflags::bitflags! </span>{
-    <span class="attr">#[derive(Clone, Debug, Eq, PartialEq)]
-    </span><span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">struct </span>ComputedVisibilityFlags: u8 {
-        <span class="kw">const </span>VISIBLE_IN_VIEW = <span class="number">1 </span>&lt;&lt; <span class="number">0</span>;
-        <span class="kw">const </span>VISIBLE_IN_HIERARCHY = <span class="number">1 </span>&lt;&lt; <span class="number">1</span>;
-    }
-}
-<span class="macro">bevy_reflect::impl_reflect_value!</span>((<span class="kw">in </span>bevy_render::view) ComputedVisibilityFlags);
-
-<span class="doccomment">/// Algorithmically-computed indication of whether an entity is visible and should be extracted for rendering
-</span><span class="attr">#[derive(Component, Clone, Reflect, Debug, Eq, PartialEq)]
+<span class="doccomment">/// Whether or not an entity is visible in the hierarchy.
+/// This will not be accurate until [`VisibilityPropagate`] runs in the [`PostUpdate`] schedule.
+///
+/// If this is false, then [`ViewVisibility`] should also be false.
+///
+/// [`VisibilityPropagate`]: VisibilitySystems::VisibilityPropagate
+</span><span class="attr">#[derive(Component, Deref, Debug, Default, Clone, Copy, Reflect, PartialEq, Eq)]
 #[reflect(Component, Default)]
-</span><span class="kw">pub struct </span>ComputedVisibility {
-    flags: ComputedVisibilityFlags,
+</span><span class="kw">pub struct </span>InheritedVisibility(bool);
+
+<span class="kw">impl </span>InheritedVisibility {
+    <span class="doccomment">/// An entity that is invisible in the hierarchy.
+    </span><span class="kw">pub const </span>HIDDEN: <span class="self">Self </span>= <span class="self">Self</span>(<span class="bool-val">false</span>);
+    <span class="doccomment">/// An entity that is visible in the hierarchy.
+    </span><span class="kw">pub const </span>VISIBLE: <span class="self">Self </span>= <span class="self">Self</span>(<span class="bool-val">true</span>);
+
+    <span class="doccomment">/// Returns `true` if the entity is visible in the hierarchy.
+    /// Otherwise, returns `false`.
+    </span><span class="attr">#[inline]
+    </span><span class="kw">pub fn </span>get(<span class="self">self</span>) -&gt; bool {
+        <span class="self">self</span>.<span class="number">0
+    </span>}
 }
 
-<span class="kw">impl </span>Default <span class="kw">for </span>ComputedVisibility {
-    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
-        <span class="self">Self</span>::HIDDEN
-    }
-}
+<span class="doccomment">/// Algorithmically-computed indication or whether an entity is visible and should be extracted for rendering.
+///
+/// Each frame, this will be reset to `false` during [`VisibilityPropagate`] systems in [`PostUpdate`].
+/// Later in the frame, systems in [`CheckVisibility`] will mark any visible entities using [`ViewVisibility::set`].
+/// Because of this, values of this type will be marked as changed every frame, even when they do not change.
+///
+/// If you wish to add custom visibility system that sets this value, make sure you add it to the [`CheckVisibility`] set.
+///
+/// [`VisibilityPropagate`]: VisibilitySystems::VisibilityPropagate
+/// [`CheckVisibility`]: VisibilitySystems::CheckVisibility
+</span><span class="attr">#[derive(Component, Deref, Debug, Default, Clone, Copy, Reflect, PartialEq, Eq)]
+#[reflect(Component, Default)]
+</span><span class="kw">pub struct </span>ViewVisibility(bool);
 
-<span class="kw">impl </span>ComputedVisibility {
-    <span class="doccomment">/// A [`ComputedVisibility`], set as invisible.
-    </span><span class="kw">pub const </span>HIDDEN: <span class="self">Self </span>= ComputedVisibility {
-        flags: ComputedVisibilityFlags::empty(),
-    };
+<span class="kw">impl </span>ViewVisibility {
+    <span class="doccomment">/// An entity that cannot be seen from any views.
+    </span><span class="kw">pub const </span>HIDDEN: <span class="self">Self </span>= <span class="self">Self</span>(<span class="bool-val">false</span>);
 
-    <span class="doccomment">/// Whether this entity is visible to something this frame. This is true if and only if [`Self::is_visible_in_hierarchy`] and [`Self::is_visible_in_view`]
-    /// are true. This is the canonical method to call to determine if an entity should be drawn.
-    /// This value is updated in [`PostUpdate`] by the [`VisibilitySystems::CheckVisibility`] system set.
-    /// Reading it during [`Update`](bevy_app::Update) will yield the value from the previous frame.
+    <span class="doccomment">/// Returns `true` if the entity is visible in any view.
+    /// Otherwise, returns `false`.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>is_visible(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="self">self</span>.flags.bits() == ComputedVisibilityFlags::all().bits()
-    }
+    </span><span class="kw">pub fn </span>get(<span class="self">self</span>) -&gt; bool {
+        <span class="self">self</span>.<span class="number">0
+    </span>}
 
-    <span class="doccomment">/// Whether this entity is visible in the entity hierarchy, which is determined by the [`Visibility`] component.
-    /// This takes into account &quot;visibility inheritance&quot;. If any of this entity&#39;s ancestors (see [`Parent`]) are hidden, this entity
-    /// will be hidden as well. This value is updated in the [`VisibilitySystems::VisibilityPropagate`], which lives in the [`PostUpdate`] schedule.
-    </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>is_visible_in_hierarchy(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="self">self</span>.flags
-            .contains(ComputedVisibilityFlags::VISIBLE_IN_HIERARCHY)
-    }
-
-    <span class="doccomment">/// Whether this entity is visible in _any_ view (Cameras, Lights, etc). Each entity type (and view type) should choose how to set this
-    /// value. For cameras and drawn entities, this will take into account [`RenderLayers`].
+    <span class="doccomment">/// Sets the visibility to `true`. This should not be considered reversible for a given frame,
+    /// as this component tracks whether or not the entity visible in _any_ view.
     ///
-    /// This value is reset to `false` every frame in [`VisibilitySystems::VisibilityPropagate`] during [`PostUpdate`].
-    /// Each entity type then chooses how to set this field in the [`VisibilitySystems::CheckVisibility`] system set, in [`PostUpdate`].
-    /// Meshes might use frustum culling to decide if they are visible in a view.
-    /// Other entities might just set this to `true` every frame.
+    /// This will be automatically reset to `false` every frame in [`VisibilityPropagate`] and then set
+    /// to the proper value in [`CheckVisibility`].
+    ///
+    /// You should only manually set this if you are defining a custom visibility system,
+    /// in which case the system should be placed in the [`CheckVisibility`] set.
+    /// For normal user-defined entity visibility, see [`Visibility`].
+    ///
+    /// [`VisibilityPropagate`]: VisibilitySystems::VisibilityPropagate
+    /// [`CheckVisibility`]: VisibilitySystems::CheckVisibility
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>is_visible_in_view(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="self">self</span>.flags
-            .contains(ComputedVisibilityFlags::VISIBLE_IN_VIEW)
-    }
-
-    <span class="doccomment">/// Sets `is_visible_in_view` to `true`. This is not reversible for a given frame, as it encodes whether or not this is visible in
-    /// _any_ view. This will be automatically reset to `false` every frame in [`VisibilitySystems::VisibilityPropagate`] and then set
-    /// to the proper value in [`VisibilitySystems::CheckVisibility`]. This should _only_ be set in systems with the [`VisibilitySystems::CheckVisibility`]
-    /// label. Don&#39;t call this unless you are defining a custom visibility system. For normal user-defined entity visibility, see [`Visibility`].
-    </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>set_visible_in_view(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
-        <span class="self">self</span>.flags.insert(ComputedVisibilityFlags::VISIBLE_IN_VIEW);
-    }
-
-    <span class="attr">#[inline]
-    </span><span class="kw">fn </span>reset(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visible_in_hierarchy: bool) {
-        <span class="self">self</span>.flags = <span class="kw">if </span>visible_in_hierarchy {
-            ComputedVisibilityFlags::VISIBLE_IN_HIERARCHY
-        } <span class="kw">else </span>{
-            ComputedVisibilityFlags::empty()
-        };
+    </span><span class="kw">pub fn </span>set(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="self">self</span>.<span class="number">0 </span>= <span class="bool-val">true</span>;
     }
 }
 
-<span class="doccomment">/// A [`Bundle`] of the [`Visibility`] and [`ComputedVisibility`]
-/// [`Component`](bevy_ecs::component::Component)s, which describe the visibility of an entity.
+<span class="doccomment">/// A [`Bundle`] of the [`Visibility`], [`InheritedVisibility`], and [`ViewVisibility`]
+/// [`Component`]s, which describe the visibility of an entity.
 ///
 /// * To show or hide an entity, you should set its [`Visibility`].
-/// * To get the computed visibility of an entity, you should get its [`ComputedVisibility`].
-/// * For visibility hierarchies to work correctly, you must have both a [`Visibility`] and a [`ComputedVisibility`].
+/// * To get the inherited visibility of an entity, you should get its [`InheritedVisibility`].
+/// * For visibility hierarchies to work correctly, you must have both all of [`Visibility`], [`InheritedVisibility`], and [`ViewVisibility`].
 ///   * You may use the [`VisibilityBundle`] to guarantee this.
 </span><span class="attr">#[derive(Bundle, Debug, Default)]
 </span><span class="kw">pub struct </span>VisibilityBundle {
     <span class="doccomment">/// The visibility of the entity.
     </span><span class="kw">pub </span>visibility: Visibility,
-    <span class="doccomment">/// The computed visibility of the entity.
-    </span><span class="kw">pub </span>computed: ComputedVisibility,
+    <span class="comment">// The inherited visibility of the entity.
+    </span><span class="kw">pub </span>inherited_visibility: InheritedVisibility,
+    <span class="comment">// The computed visibility of the entity.
+    </span><span class="kw">pub </span>view_visibility: ViewVisibility,
 }
 
-<span class="doccomment">/// Use this component to opt-out of built-in frustum culling for Mesh entities
+<span class="doccomment">/// Use this component to opt-out of built-in frustum culling for entities, see
+/// [`Frustum`].
+///
+/// It can be used for example:
+/// - when a [`Mesh`] is updated but its [`Aabb`] is not, which might happen with animations,
+/// - when using some light effects, like wanting a [`Mesh`] out of the [`Frustum`]
+/// to appear in the reflection of a [`Mesh`] within.
 </span><span class="attr">#[derive(Component, Default, Reflect)]
 #[reflect(Component, Default)]
 </span><span class="kw">pub struct </span>NoFrustumCulling;
@@ -818,15 +879,12 @@
 <span class="doccomment">/// Collection of entities visible from the current view.
 ///
 /// This component contains all entities which are visible from the currently
-/// rendered view. The collection is updated automatically by the [`check_visibility()`]
-/// system, and renderers can use it to optimize rendering of a particular view, to
+/// rendered view. The collection is updated automatically by the [`VisibilitySystems::CheckVisibility`]
+/// system set, and renderers can use it to optimize rendering of a particular view, to
 /// prevent drawing items not visible from that view.
 ///
 /// This component is intended to be attached to the same entity as the [`Camera`] and
 /// the [`Frustum`] defining the view.
-///
-/// Currently this component is ignored by the sprite renderer, so sprite rendering
-/// is not optimized per view.
 </span><span class="attr">#[derive(Clone, Component, Default, Debug, Reflect)]
 #[reflect(Component)]
 </span><span class="kw">pub struct </span>VisibleEntities {
@@ -850,13 +908,21 @@
 
 <span class="attr">#[derive(Debug, Hash, PartialEq, Eq, Clone, SystemSet)]
 </span><span class="kw">pub enum </span>VisibilitySystems {
-    CalculateBounds,
-    CalculateBoundsFlush,
-    UpdateOrthographicFrusta,
-    UpdatePerspectiveFrusta,
-    UpdateProjectionFrusta,
-    VisibilityPropagate,
-    <span class="doccomment">/// Label for the [`check_visibility()`] system updating each frame the [`ComputedVisibility`]
+    <span class="doccomment">/// Label for the [`calculate_bounds`] and `calculate_bounds_2d` systems,
+    /// calculating and inserting an [`Aabb`] to relevant entities.
+    </span>CalculateBounds,
+    <span class="doccomment">/// Label for the [`apply_deferred`] call after [`VisibilitySystems::CalculateBounds`]
+    </span>CalculateBoundsFlush,
+    <span class="doccomment">/// Label for the [`update_frusta&lt;OrthographicProjection&gt;`] system.
+    </span>UpdateOrthographicFrusta,
+    <span class="doccomment">/// Label for the [`update_frusta&lt;PerspectiveProjection&gt;`] system.
+    </span>UpdatePerspectiveFrusta,
+    <span class="doccomment">/// Label for the [`update_frusta&lt;Projection&gt;`] system.
+    </span>UpdateProjectionFrusta,
+    <span class="doccomment">/// Label for the system propagating the [`InheritedVisibility`] in a
+    /// [`hierarchy`](bevy_hierarchy).
+    </span>VisibilityPropagate,
+    <span class="doccomment">/// Label for the [`check_visibility`] system updating [`ViewVisibility`]
     /// of each entity and the [`VisibleEntities`] of each view.
     </span>CheckVisibility,
 }
@@ -870,7 +936,7 @@
         app
             <span class="comment">// We add an AABB component in CalculateBounds, which must be ready on the same frame.
             </span>.add_systems(PostUpdate, apply_deferred.in_set(CalculateBoundsFlush))
-            .configure_set(PostUpdate, CalculateBoundsFlush.after(CalculateBounds))
+            .configure_sets(PostUpdate, CalculateBoundsFlush.after(CalculateBounds))
             .add_systems(
                 PostUpdate,
                 (
@@ -896,7 +962,8 @@
                         .in_set(UpdateProjectionFrusta)
                         .after(camera_system::&lt;Projection&gt;)
                         .after(TransformSystem::TransformPropagate),
-                    visibility_propagate_system.in_set(VisibilityPropagate),
+                    (visibility_propagate_system, reset_view_visibility)
+                        .in_set(VisibilityPropagate),
                     check_visibility
                         .in_set(CheckVisibility)
                         .after(CalculateBoundsFlush)
@@ -910,7 +977,11 @@
     }
 }
 
-<span class="kw">pub fn </span>calculate_bounds(
+<span class="doccomment">/// Computes and adds an [`Aabb`] component to entities with a
+/// [`Handle&lt;Mesh&gt;`](Mesh) component and without a [`NoFrustumCulling`] component.
+///
+/// This system is used in system set [`VisibilitySystems::CalculateBounds`].
+</span><span class="kw">pub fn </span>calculate_bounds(
     <span class="kw-2">mut </span>commands: Commands,
     meshes: Res&lt;Assets&lt;Mesh&gt;&gt;,
     without_aabb: Query&lt;(Entity, <span class="kw-2">&amp;</span>Handle&lt;Mesh&gt;), (Without&lt;Aabb&gt;, Without&lt;NoFrustumCulling&gt;)&gt;,
@@ -924,7 +995,12 @@
     }
 }
 
-<span class="kw">pub fn </span>update_frusta&lt;T: Component + CameraProjection + Send + Sync + <span class="lifetime">&#39;static</span>&gt;(
+<span class="doccomment">/// Updates [`Frustum`].
+///
+/// This system is used in system sets [`VisibilitySystems::UpdateProjectionFrusta`],
+/// [`VisibilitySystems::UpdatePerspectiveFrusta`], and
+/// [`VisibilitySystems::UpdateOrthographicFrusta`].
+</span><span class="kw">pub fn </span>update_frusta&lt;T: Component + CameraProjection + Send + Sync + <span class="lifetime">&#39;static</span>&gt;(
     <span class="kw-2">mut </span>views: Query&lt;
         (<span class="kw-2">&amp;</span>GlobalTransform, <span class="kw-2">&amp;</span>T, <span class="kw-2">&amp;mut </span>Frustum),
         Or&lt;(Changed&lt;GlobalTransform&gt;, Changed&lt;T&gt;)&gt;,
@@ -943,113 +1019,132 @@
 }
 
 <span class="kw">fn </span>visibility_propagate_system(
-    <span class="kw-2">mut </span>root_query: Query&lt;
-        (
-            <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Children&gt;,
-            <span class="kw-2">&amp;</span>Visibility,
-            <span class="kw-2">&amp;mut </span>ComputedVisibility,
-            Entity,
-        ),
-        Without&lt;Parent&gt;,
+    changed: Query&lt;
+        (Entity, <span class="kw-2">&amp;</span>Visibility, <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Parent&gt;, <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Children&gt;),
+        (With&lt;InheritedVisibility&gt;, Changed&lt;Visibility&gt;),
     &gt;,
-    <span class="kw-2">mut </span>visibility_query: Query&lt;(<span class="kw-2">&amp;</span>Visibility, <span class="kw-2">&amp;mut </span>ComputedVisibility, <span class="kw-2">&amp;</span>Parent)&gt;,
-    children_query: Query&lt;<span class="kw-2">&amp;</span>Children, (With&lt;Parent&gt;, With&lt;Visibility&gt;, With&lt;ComputedVisibility&gt;)&gt;,
+    <span class="kw-2">mut </span>visibility_query: Query&lt;(<span class="kw-2">&amp;</span>Visibility, <span class="kw-2">&amp;mut </span>InheritedVisibility)&gt;,
+    children_query: Query&lt;<span class="kw-2">&amp;</span>Children, (With&lt;Visibility&gt;, With&lt;InheritedVisibility&gt;)&gt;,
 ) {
-    <span class="kw">for </span>(children, visibility, <span class="kw-2">mut </span>computed_visibility, entity) <span class="kw">in </span>root_query.iter_mut() {
-        <span class="comment">// reset &quot;view&quot; visibility here ... if this entity should be drawn a future system should set this to true
-        </span>computed_visibility
-            .reset(visibility == Visibility::Inherited || visibility == Visibility::Visible);
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(children) = children {
-            <span class="kw">for </span>child <span class="kw">in </span>children.iter() {
-                <span class="kw">let _ </span>= propagate_recursive(
-                    computed_visibility.is_visible_in_hierarchy(),
-                    <span class="kw-2">&amp;mut </span>visibility_query,
-                    <span class="kw-2">&amp;</span>children_query,
-                    <span class="kw-2">*</span>child,
-                    entity,
-                );
+    <span class="kw">for </span>(entity, visibility, parent, children) <span class="kw">in </span><span class="kw-2">&amp;</span>changed {
+        <span class="kw">let </span>is_visible = <span class="kw">match </span>visibility {
+            Visibility::Visible =&gt; <span class="bool-val">true</span>,
+            Visibility::Hidden =&gt; <span class="bool-val">false</span>,
+            <span class="comment">// fall back to true if no parent is found or parent lacks components
+            </span>Visibility::Inherited =&gt; parent
+                .and_then(|p| visibility_query.get(p.get()).ok())
+                .map_or(<span class="bool-val">true</span>, |(<span class="kw">_</span>, x)| x.get()),
+        };
+        <span class="kw">let </span>(<span class="kw">_</span>, <span class="kw-2">mut </span>inherited_visibility) = visibility_query
+            .get_mut(entity)
+            .expect(<span class="string">&quot;With&lt;InheritedVisibility&gt; ensures this query will return a value&quot;</span>);
+
+        <span class="comment">// Only update the visibility if it has changed.
+        // This will also prevent the visibility from propagating multiple times in the same frame
+        // if this entity&#39;s visibility has been updated recursively by its parent.
+        </span><span class="kw">if </span>inherited_visibility.get() != is_visible {
+            inherited_visibility.<span class="number">0 </span>= is_visible;
+
+            <span class="comment">// Recursively update the visibility of each child.
+            </span><span class="kw">for </span><span class="kw-2">&amp;</span>child <span class="kw">in </span>children.into_iter().flatten() {
+                <span class="kw">let _ </span>=
+                    propagate_recursive(is_visible, child, <span class="kw-2">&amp;mut </span>visibility_query, <span class="kw-2">&amp;</span>children_query);
             }
         }
     }
 }
 
 <span class="kw">fn </span>propagate_recursive(
-    parent_visible: bool,
-    visibility_query: <span class="kw-2">&amp;mut </span>Query&lt;(<span class="kw-2">&amp;</span>Visibility, <span class="kw-2">&amp;mut </span>ComputedVisibility, <span class="kw-2">&amp;</span>Parent)&gt;,
-    children_query: <span class="kw-2">&amp;</span>Query&lt;<span class="kw-2">&amp;</span>Children, (With&lt;Parent&gt;, With&lt;Visibility&gt;, With&lt;ComputedVisibility&gt;)&gt;,
+    parent_is_visible: bool,
     entity: Entity,
-    expected_parent: Entity,
+    visibility_query: <span class="kw-2">&amp;mut </span>Query&lt;(<span class="kw-2">&amp;</span>Visibility, <span class="kw-2">&amp;mut </span>InheritedVisibility)&gt;,
+    children_query: <span class="kw-2">&amp;</span>Query&lt;<span class="kw-2">&amp;</span>Children, (With&lt;Visibility&gt;, With&lt;InheritedVisibility&gt;)&gt;,
     <span class="comment">// BLOCKED: https://github.com/rust-lang/rust/issues/31436
     // We use a result here to use the `?` operator. Ideally we&#39;d use a try block instead
 </span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), ()&gt; {
-    <span class="kw">let </span>is_visible = {
-        <span class="kw">let </span>(visibility, <span class="kw-2">mut </span>computed_visibility, child_parent) =
-            visibility_query.get_mut(entity).map_err(drop)<span class="question-mark">?</span>;
-        <span class="macro">assert_eq!</span>(
-            child_parent.get(), expected_parent,
-            <span class="string">&quot;Malformed hierarchy. This probably means that your hierarchy has been improperly maintained, or contains a cycle&quot;
-        </span>);
-        <span class="kw">let </span>visible_in_hierarchy = (parent_visible &amp;&amp; visibility == Visibility::Inherited)
-            || visibility == Visibility::Visible;
-        <span class="comment">// reset &quot;view&quot; visibility here ... if this entity should be drawn a future system should set this to true
-        </span>computed_visibility.reset(visible_in_hierarchy);
-        visible_in_hierarchy
+    <span class="comment">// Get the visibility components for the current entity.
+    // If the entity does not have the required components, just return early.
+    </span><span class="kw">let </span>(visibility, <span class="kw-2">mut </span>inherited_visibility) = visibility_query.get_mut(entity).map_err(drop)<span class="question-mark">?</span>;
+
+    <span class="kw">let </span>is_visible = <span class="kw">match </span>visibility {
+        Visibility::Visible =&gt; <span class="bool-val">true</span>,
+        Visibility::Hidden =&gt; <span class="bool-val">false</span>,
+        Visibility::Inherited =&gt; parent_is_visible,
     };
 
-    <span class="kw">for </span>child <span class="kw">in </span>children_query.get(entity).map_err(drop)<span class="question-mark">?</span>.iter() {
-        <span class="kw">let _ </span>= propagate_recursive(is_visible, visibility_query, children_query, <span class="kw-2">*</span>child, entity);
+    <span class="comment">// Only update the visibility if it has changed.
+    </span><span class="kw">if </span>inherited_visibility.get() != is_visible {
+        inherited_visibility.<span class="number">0 </span>= is_visible;
+
+        <span class="comment">// Recursively update the visibility of each child.
+        </span><span class="kw">for </span><span class="kw-2">&amp;</span>child <span class="kw">in </span>children_query.get(entity).ok().into_iter().flatten() {
+            <span class="kw">let _ </span>= propagate_recursive(is_visible, child, visibility_query, children_query);
+        }
     }
+
     <span class="prelude-val">Ok</span>(())
+}
+
+<span class="doccomment">/// Resets the view visibility of every entity.
+/// Entities that are visible will be marked as such later this frame
+/// by a [`VisibilitySystems::CheckVisibility`] system.
+</span><span class="kw">fn </span>reset_view_visibility(<span class="kw-2">mut </span>query: Query&lt;<span class="kw-2">&amp;mut </span>ViewVisibility&gt;) {
+    <span class="kw">for </span><span class="kw-2">mut </span>view_visibility <span class="kw">in </span><span class="kw-2">&amp;mut </span>query {
+        <span class="comment">// NOTE: We do not use `set_if_neq` here, as we don&#39;t care about
+        // change detection for view visibility, and adding a branch to every
+        // loop iteration would pessimize performance.
+        </span><span class="kw-2">*</span>view_visibility = ViewVisibility::HIDDEN;
+    }
 }
 
 <span class="doccomment">/// System updating the visibility of entities each frame.
 ///
 /// The system is part of the [`VisibilitySystems::CheckVisibility`] set. Each frame, it updates the
-/// [`ComputedVisibility`] of all entities, and for each view also compute the [`VisibleEntities`]
+/// [`ViewVisibility`] of all entities, and for each view also compute the [`VisibleEntities`]
 /// for that view.
 </span><span class="kw">pub fn </span>check_visibility(
     <span class="kw-2">mut </span>thread_queues: Local&lt;ThreadLocal&lt;Cell&lt;Vec&lt;Entity&gt;&gt;&gt;&gt;,
     <span class="kw-2">mut </span>view_query: Query&lt;(<span class="kw-2">&amp;mut </span>VisibleEntities, <span class="kw-2">&amp;</span>Frustum, <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>RenderLayers&gt;), With&lt;Camera&gt;&gt;,
     <span class="kw-2">mut </span>visible_aabb_query: Query&lt;(
         Entity,
-        <span class="kw-2">&amp;mut </span>ComputedVisibility,
+        <span class="kw-2">&amp;</span>InheritedVisibility,
+        <span class="kw-2">&amp;mut </span>ViewVisibility,
         <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>RenderLayers&gt;,
-        <span class="kw-2">&amp;</span>Aabb,
+        <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Aabb&gt;,
         <span class="kw-2">&amp;</span>GlobalTransform,
-        <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>NoFrustumCulling&gt;,
+        Has&lt;NoFrustumCulling&gt;,
     )&gt;,
-    <span class="kw-2">mut </span>visible_no_aabb_query: Query&lt;
-        (Entity, <span class="kw-2">&amp;mut </span>ComputedVisibility, <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>RenderLayers&gt;),
-        Without&lt;Aabb&gt;,
-    &gt;,
 ) {
     <span class="kw">for </span>(<span class="kw-2">mut </span>visible_entities, frustum, maybe_view_mask) <span class="kw">in </span><span class="kw-2">&amp;mut </span>view_query {
         <span class="kw">let </span>view_mask = maybe_view_mask.copied().unwrap_or_default();
 
         visible_entities.entities.clear();
-        visible_aabb_query.par_iter_mut().for_each_mut(
-            |(
+        visible_aabb_query.par_iter_mut().for_each(|query_item| {
+            <span class="kw">let </span>(
                 entity,
-                <span class="kw-2">mut </span>computed_visibility,
+                inherited_visibility,
+                <span class="kw-2">mut </span>view_visibility,
                 maybe_entity_mask,
-                model_aabb,
+                maybe_model_aabb,
                 transform,
-                maybe_no_frustum_culling,
-            )| {
-                <span class="comment">// skip computing visibility for entities that are configured to be hidden. is_visible_in_view has already been set to false
-                // in visibility_propagate_system
-                </span><span class="kw">if </span>!computed_visibility.is_visible_in_hierarchy() {
-                    <span class="kw">return</span>;
-                }
+                no_frustum_culling,
+            ) = query_item;
 
-                <span class="kw">let </span>entity_mask = maybe_entity_mask.copied().unwrap_or_default();
-                <span class="kw">if </span>!view_mask.intersects(<span class="kw-2">&amp;</span>entity_mask) {
-                    <span class="kw">return</span>;
-                }
+            <span class="comment">// Skip computing visibility for entities that are configured to be hidden.
+            // ViewVisibility has already been reset in `reset_view_visibility`.
+            </span><span class="kw">if </span>!inherited_visibility.get() {
+                <span class="kw">return</span>;
+            }
 
-                <span class="comment">// If we have an aabb and transform, do frustum culling
-                </span><span class="kw">if </span>maybe_no_frustum_culling.is_none() {
-                    <span class="kw">let </span>model = transform.compute_matrix();
+            <span class="kw">let </span>entity_mask = maybe_entity_mask.copied().unwrap_or_default();
+            <span class="kw">if </span>!view_mask.intersects(<span class="kw-2">&amp;</span>entity_mask) {
+                <span class="kw">return</span>;
+            }
+
+            <span class="comment">// If we have an aabb, do frustum culling
+            </span><span class="kw">if </span>!no_frustum_culling {
+                <span class="kw">if let </span><span class="prelude-val">Some</span>(model_aabb) = maybe_model_aabb {
+                    <span class="kw">let </span>model = transform.affine();
                     <span class="kw">let </span>model_sphere = Sphere {
                         center: model.transform_point3a(model_aabb.center),
                         radius: transform.radius_vec3a(model_aabb.half_extents),
@@ -1058,42 +1153,21 @@
                     </span><span class="kw">if </span>!frustum.intersects_sphere(<span class="kw-2">&amp;</span>model_sphere, <span class="bool-val">false</span>) {
                         <span class="kw">return</span>;
                     }
-                    <span class="comment">// If we have an aabb, do aabb-based frustum culling
+                    <span class="comment">// Do aabb-based frustum culling
                     </span><span class="kw">if </span>!frustum.intersects_obb(model_aabb, <span class="kw-2">&amp;</span>model, <span class="bool-val">true</span>, <span class="bool-val">false</span>) {
                         <span class="kw">return</span>;
                     }
                 }
+            }
 
-                computed_visibility.set_visible_in_view();
-                <span class="kw">let </span>cell = thread_queues.get_or_default();
-                <span class="kw">let </span><span class="kw-2">mut </span>queue = cell.take();
-                queue.push(entity);
-                cell.set(queue);
-            },
-        );
+            view_visibility.set();
+            <span class="kw">let </span>cell = thread_queues.get_or_default();
+            <span class="kw">let </span><span class="kw-2">mut </span>queue = cell.take();
+            queue.push(entity);
+            cell.set(queue);
+        });
 
-        visible_no_aabb_query.par_iter_mut().for_each_mut(
-            |(entity, <span class="kw-2">mut </span>computed_visibility, maybe_entity_mask)| {
-                <span class="comment">// skip computing visibility for entities that are configured to be hidden. is_visible_in_view has already been set to false
-                // in visibility_propagate_system
-                </span><span class="kw">if </span>!computed_visibility.is_visible_in_hierarchy() {
-                    <span class="kw">return</span>;
-                }
-
-                <span class="kw">let </span>entity_mask = maybe_entity_mask.copied().unwrap_or_default();
-                <span class="kw">if </span>!view_mask.intersects(<span class="kw-2">&amp;</span>entity_mask) {
-                    <span class="kw">return</span>;
-                }
-
-                computed_visibility.set_visible_in_view();
-                <span class="kw">let </span>cell = thread_queues.get_or_default();
-                <span class="kw">let </span><span class="kw-2">mut </span>queue = cell.take();
-                queue.push(entity);
-                cell.set(queue);
-            },
-        );
-
-        <span class="kw">for </span>cell <span class="kw">in </span>thread_queues.iter_mut() {
+        <span class="kw">for </span>cell <span class="kw">in </span><span class="kw-2">&amp;mut </span>thread_queues {
             visible_entities.entities.append(cell.get_mut());
         }
     }
@@ -1108,31 +1182,23 @@
 
     <span class="kw">use </span>bevy_hierarchy::BuildWorldChildren;
 
+    <span class="kw">fn </span>visibility_bundle(visibility: Visibility) -&gt; VisibilityBundle {
+        VisibilityBundle {
+            visibility,
+            ..Default::default()
+        }
+    }
+
     <span class="attr">#[test]
     </span><span class="kw">fn </span>visibility_propagation() {
         <span class="kw">let </span><span class="kw-2">mut </span>app = App::new();
         app.add_systems(Update, visibility_propagate_system);
 
-        <span class="kw">let </span>root1 = app
-            .world
-            .spawn((Visibility::Hidden, ComputedVisibility::default()))
-            .id();
-        <span class="kw">let </span>root1_child1 = app
-            .world
-            .spawn((Visibility::default(), ComputedVisibility::default()))
-            .id();
-        <span class="kw">let </span>root1_child2 = app
-            .world
-            .spawn((Visibility::Hidden, ComputedVisibility::default()))
-            .id();
-        <span class="kw">let </span>root1_child1_grandchild1 = app
-            .world
-            .spawn((Visibility::default(), ComputedVisibility::default()))
-            .id();
-        <span class="kw">let </span>root1_child2_grandchild1 = app
-            .world
-            .spawn((Visibility::default(), ComputedVisibility::default()))
-            .id();
+        <span class="kw">let </span>root1 = app.world.spawn(visibility_bundle(Visibility::Hidden)).id();
+        <span class="kw">let </span>root1_child1 = app.world.spawn(VisibilityBundle::default()).id();
+        <span class="kw">let </span>root1_child2 = app.world.spawn(visibility_bundle(Visibility::Hidden)).id();
+        <span class="kw">let </span>root1_child1_grandchild1 = app.world.spawn(VisibilityBundle::default()).id();
+        <span class="kw">let </span>root1_child2_grandchild1 = app.world.spawn(VisibilityBundle::default()).id();
 
         app.world
             .entity_mut(root1)
@@ -1144,26 +1210,11 @@
             .entity_mut(root1_child2)
             .push_children(<span class="kw-2">&amp;</span>[root1_child2_grandchild1]);
 
-        <span class="kw">let </span>root2 = app
-            .world
-            .spawn((Visibility::default(), ComputedVisibility::default()))
-            .id();
-        <span class="kw">let </span>root2_child1 = app
-            .world
-            .spawn((Visibility::default(), ComputedVisibility::default()))
-            .id();
-        <span class="kw">let </span>root2_child2 = app
-            .world
-            .spawn((Visibility::Hidden, ComputedVisibility::default()))
-            .id();
-        <span class="kw">let </span>root2_child1_grandchild1 = app
-            .world
-            .spawn((Visibility::default(), ComputedVisibility::default()))
-            .id();
-        <span class="kw">let </span>root2_child2_grandchild1 = app
-            .world
-            .spawn((Visibility::default(), ComputedVisibility::default()))
-            .id();
+        <span class="kw">let </span>root2 = app.world.spawn(VisibilityBundle::default()).id();
+        <span class="kw">let </span>root2_child1 = app.world.spawn(VisibilityBundle::default()).id();
+        <span class="kw">let </span>root2_child2 = app.world.spawn(visibility_bundle(Visibility::Hidden)).id();
+        <span class="kw">let </span>root2_child1_grandchild1 = app.world.spawn(VisibilityBundle::default()).id();
+        <span class="kw">let </span>root2_child2_grandchild1 = app.world.spawn(VisibilityBundle::default()).id();
 
         app.world
             .entity_mut(root2)
@@ -1180,9 +1231,9 @@
         <span class="kw">let </span>is_visible = |e: Entity| {
             app.world
                 .entity(e)
-                .get::&lt;ComputedVisibility&gt;()
+                .get::&lt;InheritedVisibility&gt;()
                 .unwrap()
-                .is_visible_in_hierarchy()
+                .get()
         };
         <span class="macro">assert!</span>(
             !is_visible(root1),
@@ -1229,38 +1280,19 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>visibility_propagation_unconditional_visible() {
+        <span class="kw">use </span>Visibility::{Hidden, Inherited, Visible};
+
         <span class="kw">let </span><span class="kw-2">mut </span>app = App::new();
         app.add_systems(Update, visibility_propagate_system);
 
-        <span class="kw">let </span>root1 = app
-            .world
-            .spawn((Visibility::Visible, ComputedVisibility::default()))
-            .id();
-        <span class="kw">let </span>root1_child1 = app
-            .world
-            .spawn((Visibility::Inherited, ComputedVisibility::default()))
-            .id();
-        <span class="kw">let </span>root1_child2 = app
-            .world
-            .spawn((Visibility::Hidden, ComputedVisibility::default()))
-            .id();
-        <span class="kw">let </span>root1_child1_grandchild1 = app
-            .world
-            .spawn((Visibility::Visible, ComputedVisibility::default()))
-            .id();
-        <span class="kw">let </span>root1_child2_grandchild1 = app
-            .world
-            .spawn((Visibility::Visible, ComputedVisibility::default()))
-            .id();
+        <span class="kw">let </span>root1 = app.world.spawn(visibility_bundle(Visible)).id();
+        <span class="kw">let </span>root1_child1 = app.world.spawn(visibility_bundle(Inherited)).id();
+        <span class="kw">let </span>root1_child2 = app.world.spawn(visibility_bundle(Hidden)).id();
+        <span class="kw">let </span>root1_child1_grandchild1 = app.world.spawn(visibility_bundle(Visible)).id();
+        <span class="kw">let </span>root1_child2_grandchild1 = app.world.spawn(visibility_bundle(Visible)).id();
 
-        <span class="kw">let </span>root2 = app
-            .world
-            .spawn((Visibility::Inherited, ComputedVisibility::default()))
-            .id();
-        <span class="kw">let </span>root3 = app
-            .world
-            .spawn((Visibility::Hidden, ComputedVisibility::default()))
-            .id();
+        <span class="kw">let </span>root2 = app.world.spawn(visibility_bundle(Inherited)).id();
+        <span class="kw">let </span>root3 = app.world.spawn(visibility_bundle(Hidden)).id();
 
         app.world
             .entity_mut(root1)
@@ -1277,9 +1309,9 @@
         <span class="kw">let </span>is_visible = |e: Entity| {
             app.world
                 .entity(e)
-                .get::&lt;ComputedVisibility&gt;()
+                .get::&lt;InheritedVisibility&gt;()
                 .unwrap()
-                .is_visible_in_hierarchy()
+                .get()
         };
         <span class="macro">assert!</span>(
             is_visible(root1),
@@ -1303,6 +1335,100 @@
         </span>);
         <span class="macro">assert!</span>(is_visible(root2), <span class="string">&quot;an inheriting root is visible&quot;</span>);
         <span class="macro">assert!</span>(!is_visible(root3), <span class="string">&quot;a hidden root is hidden&quot;</span>);
+    }
+
+    <span class="attr">#[test]
+    </span><span class="kw">fn </span>visibility_propagation_change_detection() {
+        <span class="kw">let </span><span class="kw-2">mut </span>world = World::new();
+        <span class="kw">let </span><span class="kw-2">mut </span>schedule = Schedule::default();
+        schedule.add_systems(visibility_propagate_system);
+
+        <span class="comment">// Set up an entity hierarchy.
+
+        </span><span class="kw">let </span>id1 = world.spawn(VisibilityBundle::default()).id();
+
+        <span class="kw">let </span>id2 = world.spawn(VisibilityBundle::default()).id();
+        world.entity_mut(id1).push_children(<span class="kw-2">&amp;</span>[id2]);
+
+        <span class="kw">let </span>id3 = world.spawn(visibility_bundle(Visibility::Hidden)).id();
+        world.entity_mut(id2).push_children(<span class="kw-2">&amp;</span>[id3]);
+
+        <span class="kw">let </span>id4 = world.spawn(VisibilityBundle::default()).id();
+        world.entity_mut(id3).push_children(<span class="kw-2">&amp;</span>[id4]);
+
+        <span class="comment">// Test the hierarchy.
+
+        // Make sure the hierarchy is up-to-date.
+        </span>schedule.run(<span class="kw-2">&amp;mut </span>world);
+        world.clear_trackers();
+
+        <span class="kw">let </span><span class="kw-2">mut </span>q = world.query::&lt;Ref&lt;InheritedVisibility&gt;&gt;();
+
+        <span class="macro">assert!</span>(!q.get(<span class="kw-2">&amp;</span>world, id1).unwrap().is_changed());
+        <span class="macro">assert!</span>(!q.get(<span class="kw-2">&amp;</span>world, id2).unwrap().is_changed());
+        <span class="macro">assert!</span>(!q.get(<span class="kw-2">&amp;</span>world, id3).unwrap().is_changed());
+        <span class="macro">assert!</span>(!q.get(<span class="kw-2">&amp;</span>world, id4).unwrap().is_changed());
+
+        world.clear_trackers();
+        world.entity_mut(id1).insert(Visibility::Hidden);
+        schedule.run(<span class="kw-2">&amp;mut </span>world);
+
+        <span class="macro">assert!</span>(q.get(<span class="kw-2">&amp;</span>world, id1).unwrap().is_changed());
+        <span class="macro">assert!</span>(q.get(<span class="kw-2">&amp;</span>world, id2).unwrap().is_changed());
+        <span class="macro">assert!</span>(!q.get(<span class="kw-2">&amp;</span>world, id3).unwrap().is_changed());
+        <span class="macro">assert!</span>(!q.get(<span class="kw-2">&amp;</span>world, id4).unwrap().is_changed());
+
+        world.clear_trackers();
+        schedule.run(<span class="kw-2">&amp;mut </span>world);
+
+        <span class="macro">assert!</span>(!q.get(<span class="kw-2">&amp;</span>world, id1).unwrap().is_changed());
+        <span class="macro">assert!</span>(!q.get(<span class="kw-2">&amp;</span>world, id2).unwrap().is_changed());
+        <span class="macro">assert!</span>(!q.get(<span class="kw-2">&amp;</span>world, id3).unwrap().is_changed());
+        <span class="macro">assert!</span>(!q.get(<span class="kw-2">&amp;</span>world, id4).unwrap().is_changed());
+
+        world.clear_trackers();
+        world.entity_mut(id3).insert(Visibility::Inherited);
+        schedule.run(<span class="kw-2">&amp;mut </span>world);
+
+        <span class="macro">assert!</span>(!q.get(<span class="kw-2">&amp;</span>world, id1).unwrap().is_changed());
+        <span class="macro">assert!</span>(!q.get(<span class="kw-2">&amp;</span>world, id2).unwrap().is_changed());
+        <span class="macro">assert!</span>(!q.get(<span class="kw-2">&amp;</span>world, id3).unwrap().is_changed());
+        <span class="macro">assert!</span>(!q.get(<span class="kw-2">&amp;</span>world, id4).unwrap().is_changed());
+
+        world.clear_trackers();
+        world.entity_mut(id2).insert(Visibility::Visible);
+        schedule.run(<span class="kw-2">&amp;mut </span>world);
+
+        <span class="macro">assert!</span>(!q.get(<span class="kw-2">&amp;</span>world, id1).unwrap().is_changed());
+        <span class="macro">assert!</span>(q.get(<span class="kw-2">&amp;</span>world, id2).unwrap().is_changed());
+        <span class="macro">assert!</span>(q.get(<span class="kw-2">&amp;</span>world, id3).unwrap().is_changed());
+        <span class="macro">assert!</span>(q.get(<span class="kw-2">&amp;</span>world, id4).unwrap().is_changed());
+
+        world.clear_trackers();
+        schedule.run(<span class="kw-2">&amp;mut </span>world);
+
+        <span class="macro">assert!</span>(!q.get(<span class="kw-2">&amp;</span>world, id1).unwrap().is_changed());
+        <span class="macro">assert!</span>(!q.get(<span class="kw-2">&amp;</span>world, id2).unwrap().is_changed());
+        <span class="macro">assert!</span>(!q.get(<span class="kw-2">&amp;</span>world, id3).unwrap().is_changed());
+        <span class="macro">assert!</span>(!q.get(<span class="kw-2">&amp;</span>world, id4).unwrap().is_changed());
+    }
+
+    <span class="attr">#[test]
+    </span><span class="kw">fn </span>visibility_propagation_with_invalid_parent() {
+        <span class="kw">let </span><span class="kw-2">mut </span>world = World::new();
+        <span class="kw">let </span><span class="kw-2">mut </span>schedule = Schedule::default();
+        schedule.add_systems(visibility_propagate_system);
+
+        <span class="kw">let </span>parent = world.spawn(()).id();
+        <span class="kw">let </span>child = world.spawn(VisibilityBundle::default()).id();
+        world.entity_mut(parent).push_children(<span class="kw-2">&amp;</span>[child]);
+
+        schedule.run(<span class="kw-2">&amp;mut </span>world);
+        world.clear_trackers();
+
+        <span class="kw">let </span>child_visible = world.entity(child).get::&lt;InheritedVisibility&gt;().unwrap().<span class="number">0</span>;
+        <span class="comment">// defaults to same behavior of parent not found: visible = true
+        </span><span class="macro">assert!</span>(child_visible);
     }
 
     <span class="attr">#[test]

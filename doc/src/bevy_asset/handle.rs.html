@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/n3vu0r/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_asset-0.11.2/src/handle.rs`."><title>handle.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-9bb858ba049f1f21.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="bevy_asset" data-themes="" data-resource-suffix="" data-rustdoc-version="1.72.0 (5680fa18f 2023-08-23)" data-channel="1.72.0" data-search-js="search-f6292fe389d70017.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-0f8c037637f9eb3e.css" data-theme-dark-css="dark-1097f8e92a01e3cf.css" data-theme-ayu-css="ayu-614652228113ac93.css" ><script src="../../static.files/storage-59fd9b8ccb335783.js"></script><script defer src="../../static.files/source-script-106908c7a7964ba4.js"></script><script defer src="../../source-files.js"></script><script defer src="../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-0f8c037637f9eb3e.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-1097f8e92a01e3cf.css"><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../bevy_asset/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_asset-0.12.0/src/handle.rs`."><title>handle.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="bevy_asset" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../bevy_asset/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -383,551 +383,389 @@
 <a href="#383" id="383">383</a>
 <a href="#384" id="384">384</a>
 <a href="#385" id="385">385</a>
-<a href="#386" id="386">386</a>
-<a href="#387" id="387">387</a>
-<a href="#388" id="388">388</a>
-<a href="#389" id="389">389</a>
-<a href="#390" id="390">390</a>
-<a href="#391" id="391">391</a>
-<a href="#392" id="392">392</a>
-<a href="#393" id="393">393</a>
-<a href="#394" id="394">394</a>
-<a href="#395" id="395">395</a>
-<a href="#396" id="396">396</a>
-<a href="#397" id="397">397</a>
-<a href="#398" id="398">398</a>
-<a href="#399" id="399">399</a>
-<a href="#400" id="400">400</a>
-<a href="#401" id="401">401</a>
-<a href="#402" id="402">402</a>
-<a href="#403" id="403">403</a>
-<a href="#404" id="404">404</a>
-<a href="#405" id="405">405</a>
-<a href="#406" id="406">406</a>
-<a href="#407" id="407">407</a>
-<a href="#408" id="408">408</a>
-<a href="#409" id="409">409</a>
-<a href="#410" id="410">410</a>
-<a href="#411" id="411">411</a>
-<a href="#412" id="412">412</a>
-<a href="#413" id="413">413</a>
-<a href="#414" id="414">414</a>
-<a href="#415" id="415">415</a>
-<a href="#416" id="416">416</a>
-<a href="#417" id="417">417</a>
-<a href="#418" id="418">418</a>
-<a href="#419" id="419">419</a>
-<a href="#420" id="420">420</a>
-<a href="#421" id="421">421</a>
-<a href="#422" id="422">422</a>
-<a href="#423" id="423">423</a>
-<a href="#424" id="424">424</a>
-<a href="#425" id="425">425</a>
-<a href="#426" id="426">426</a>
-<a href="#427" id="427">427</a>
-<a href="#428" id="428">428</a>
-<a href="#429" id="429">429</a>
-<a href="#430" id="430">430</a>
-<a href="#431" id="431">431</a>
-<a href="#432" id="432">432</a>
-<a href="#433" id="433">433</a>
-<a href="#434" id="434">434</a>
-<a href="#435" id="435">435</a>
-<a href="#436" id="436">436</a>
-<a href="#437" id="437">437</a>
-<a href="#438" id="438">438</a>
-<a href="#439" id="439">439</a>
-<a href="#440" id="440">440</a>
-<a href="#441" id="441">441</a>
-<a href="#442" id="442">442</a>
-<a href="#443" id="443">443</a>
-<a href="#444" id="444">444</a>
-<a href="#445" id="445">445</a>
-<a href="#446" id="446">446</a>
-<a href="#447" id="447">447</a>
-<a href="#448" id="448">448</a>
-<a href="#449" id="449">449</a>
-<a href="#450" id="450">450</a>
-<a href="#451" id="451">451</a>
-<a href="#452" id="452">452</a>
-<a href="#453" id="453">453</a>
-<a href="#454" id="454">454</a>
-<a href="#455" id="455">455</a>
-<a href="#456" id="456">456</a>
-<a href="#457" id="457">457</a>
-<a href="#458" id="458">458</a>
-<a href="#459" id="459">459</a>
-<a href="#460" id="460">460</a>
-<a href="#461" id="461">461</a>
-<a href="#462" id="462">462</a>
-<a href="#463" id="463">463</a>
-<a href="#464" id="464">464</a>
-<a href="#465" id="465">465</a>
-<a href="#466" id="466">466</a>
-</pre></div><pre class="rust"><code><span class="kw">use </span>std::{
-    cmp::Ordering,
-    fmt::Debug,
-    hash::{Hash, Hasher},
-    marker::PhantomData,
+</pre></div><pre class="rust"><code><span class="kw">use crate</span>::{
+    meta::MetaTransform, Asset, AssetId, AssetIndexAllocator, AssetPath, InternalAssetId,
+    UntypedAssetId,
 };
-
-<span class="kw">use crate</span>::{
-    path::{AssetPath, AssetPathId},
-    Asset, Assets,
-};
-<span class="kw">use </span>bevy_ecs::{component::Component, reflect::ReflectComponent};
-<span class="kw">use </span>bevy_reflect::{std_traits::ReflectDefault, Reflect, ReflectDeserialize, ReflectSerialize};
-<span class="kw">use </span>bevy_utils::Uuid;
+<span class="kw">use </span>bevy_ecs::prelude::<span class="kw-2">*</span>;
+<span class="kw">use </span>bevy_reflect::{Reflect, TypePath, Uuid};
+<span class="kw">use </span>bevy_utils::get_short_name;
 <span class="kw">use </span>crossbeam_channel::{Receiver, Sender};
-<span class="kw">use </span>serde::{Deserialize, Serialize};
+<span class="kw">use </span>std::{
+    any::TypeId,
+    hash::{Hash, Hasher},
+    sync::Arc,
+};
 
-<span class="doccomment">/// A unique, stable asset id.
-</span><span class="attr">#[derive(
-    Debug, Clone, Copy, Eq, PartialEq, Hash, Ord, PartialOrd, Serialize, Deserialize, Reflect,
-)]
-#[reflect_value(Serialize, Deserialize, PartialEq, Hash)]
-</span><span class="kw">pub enum </span>HandleId {
-    <span class="doccomment">/// A handle id of a loaded asset.
-    </span>Id(Uuid, u64),
-
-    <span class="doccomment">/// A handle id of a pending asset.
-    </span>AssetPathId(AssetPathId),
+<span class="doccomment">/// Provides [`Handle`] and [`UntypedHandle`] _for a specific asset type_.
+/// This should _only_ be used for one specific asset type.
+</span><span class="attr">#[derive(Clone)]
+</span><span class="kw">pub struct </span>AssetHandleProvider {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) allocator: Arc&lt;AssetIndexAllocator&gt;,
+    <span class="kw">pub</span>(<span class="kw">crate</span>) drop_sender: Sender&lt;DropEvent&gt;,
+    <span class="kw">pub</span>(<span class="kw">crate</span>) drop_receiver: Receiver&lt;DropEvent&gt;,
+    <span class="kw">pub</span>(<span class="kw">crate</span>) type_id: TypeId,
 }
 
-<span class="kw">impl </span>From&lt;AssetPathId&gt; <span class="kw">for </span>HandleId {
-    <span class="kw">fn </span>from(value: AssetPathId) -&gt; <span class="self">Self </span>{
-        HandleId::AssetPathId(value)
-    }
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct </span>DropEvent {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) id: InternalAssetId,
+    <span class="kw">pub</span>(<span class="kw">crate</span>) asset_server_managed: bool,
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; From&lt;AssetPath&lt;<span class="lifetime">&#39;a</span>&gt;&gt; <span class="kw">for </span>HandleId {
-    <span class="kw">fn </span>from(value: AssetPath&lt;<span class="lifetime">&#39;a</span>&gt;) -&gt; <span class="self">Self </span>{
-        HandleId::AssetPathId(AssetPathId::from(value))
-    }
-}
-
-<span class="kw">impl </span>HandleId {
-    <span class="doccomment">/// Creates a random id for an asset of type `T`.
-    </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>random&lt;T: Asset&gt;() -&gt; <span class="self">Self </span>{
-        HandleId::Id(T::TYPE_UUID, fastrand::u64(..))
-    }
-
-    <span class="doccomment">/// Creates the default id for an asset of type `T`.
-    </span><span class="attr">#[inline]
-    #[allow(clippy::should_implement_trait)] </span><span class="comment">// `Default` is not implemented for `HandleId`, the default value depends on the asset type
-    </span><span class="kw">pub fn </span>default&lt;T: Asset&gt;() -&gt; <span class="self">Self </span>{
-        HandleId::Id(T::TYPE_UUID, <span class="number">0</span>)
-    }
-
-    <span class="doccomment">/// Creates an arbitrary asset id without an explicit type bound.
-    </span><span class="attr">#[inline]
-    </span><span class="kw">pub const fn </span>new(type_uuid: Uuid, id: u64) -&gt; <span class="self">Self </span>{
-        HandleId::Id(type_uuid, id)
-    }
-}
-
-<span class="doccomment">/// A handle into a specific [`Asset`] of type `T`.
-///
-/// Handles contain a unique id that corresponds to a specific asset in the [`Assets`] collection.
-///
-/// # Accessing the Asset
-///
-/// A handle is _not_ the asset itself, but should be seen as a pointer to the asset. Modifying a
-/// handle&#39;s `id` only modifies which asset is being pointed to. To get the actual asset, try using
-/// [`Assets::get`] or [`Assets::get_mut`].
-///
-/// # Strong and Weak
-///
-/// A handle can be either &quot;Strong&quot; or &quot;Weak&quot;. Simply put: Strong handles keep the asset loaded,
-/// while Weak handles do not affect the loaded status of assets. This is due to a type of
-/// _reference counting_. When the number of Strong handles that exist for any given asset reach
-/// zero, the asset is dropped and becomes unloaded. In some cases, you might want a reference to an
-/// asset but don&#39;t want to take the responsibility of keeping it loaded that comes with a Strong handle.
-/// This is where a Weak handle can be very useful.
-///
-/// For example, imagine you have a `Sprite` component and a `Collider` component. The `Collider` uses
-/// the `Sprite`&#39;s image size to check for collisions. It does so by keeping a Weak copy of the
-/// `Sprite`&#39;s Strong handle to the image asset.
-///
-/// If the `Sprite` is removed, its Strong handle to the image is dropped with it. And since it was the
-/// only Strong handle for that asset, the asset is unloaded. Our `Collider` component still has a Weak
-/// handle to the unloaded asset, but it will not be able to retrieve the image data, resulting in
-/// collisions no longer being detected for that entity.
-///
-</span><span class="attr">#[derive(Component, Reflect)]
-#[reflect(Component, Default)]
-</span><span class="kw">pub struct </span>Handle&lt;T&gt;
-<span class="kw">where
-    </span>T: Asset,
-{
-    id: HandleId,
-    <span class="attr">#[reflect(ignore)]
-    </span>handle_type: HandleType,
-    <span class="attr">#[reflect(ignore)]
-    </span><span class="comment">// NOTE: PhantomData&lt;fn() -&gt; T&gt; gives this safe Send/Sync impls
-    </span>marker: PhantomData&lt;<span class="kw">fn</span>() -&gt; T&gt;,
-}
-
-<span class="attr">#[derive(Default)]
-</span><span class="kw">enum </span>HandleType {
-    <span class="attr">#[default]
-    </span>Weak,
-    Strong(Sender&lt;RefChange&gt;),
-}
-
-<span class="kw">impl </span>Debug <span class="kw">for </span>HandleType {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; std::fmt::Result {
-        <span class="kw">match </span><span class="self">self </span>{
-            HandleType::Weak =&gt; f.write_str(<span class="string">&quot;Weak&quot;</span>),
-            HandleType::Strong(<span class="kw">_</span>) =&gt; f.write_str(<span class="string">&quot;Strong&quot;</span>),
-        }
-    }
-}
-
-<span class="kw">impl</span>&lt;T: Asset&gt; Handle&lt;T&gt; {
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>strong(id: HandleId, ref_change_sender: Sender&lt;RefChange&gt;) -&gt; <span class="self">Self </span>{
-        ref_change_sender.send(RefChange::Increment(id)).unwrap();
+<span class="kw">impl </span>AssetHandleProvider {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>new(type_id: TypeId, allocator: Arc&lt;AssetIndexAllocator&gt;) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span>(drop_sender, drop_receiver) = crossbeam_channel::unbounded();
         <span class="self">Self </span>{
-            id,
-            handle_type: HandleType::Strong(ref_change_sender),
-            marker: PhantomData,
+            type_id,
+            allocator,
+            drop_sender,
+            drop_receiver,
         }
     }
 
-    <span class="doccomment">/// Creates a weak handle into an Asset identified by `id`.
-    </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>weak(id: HandleId) -&gt; <span class="self">Self </span>{
-        <span class="self">Self </span>{
-            id,
-            handle_type: HandleType::Weak,
-            marker: PhantomData,
-        }
+    <span class="doccomment">/// Reserves a new strong [`UntypedHandle`] (with a new [`UntypedAssetId`]). The stored [`Asset`] [`TypeId`] in the
+    /// [`UntypedHandle`] will match the [`Asset`] [`TypeId`] assigned to this [`AssetHandleProvider`].
+    </span><span class="kw">pub fn </span>reserve_handle(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; UntypedHandle {
+        <span class="kw">let </span>index = <span class="self">self</span>.allocator.reserve();
+        UntypedHandle::Strong(<span class="self">self</span>.get_handle(InternalAssetId::Index(index), <span class="bool-val">false</span>, <span class="prelude-val">None</span>, <span class="prelude-val">None</span>))
     }
 
-    <span class="doccomment">/// The ID of the asset as contained within its respective [`Assets`] collection.
-    </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>id(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; HandleId {
-        <span class="self">self</span>.id
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>get_handle(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        id: InternalAssetId,
+        asset_server_managed: bool,
+        path: <span class="prelude-ty">Option</span>&lt;AssetPath&lt;<span class="lifetime">&#39;static</span>&gt;&gt;,
+        meta_transform: <span class="prelude-ty">Option</span>&lt;MetaTransform&gt;,
+    ) -&gt; Arc&lt;StrongHandle&gt; {
+        Arc::new(StrongHandle {
+            id: id.untyped(<span class="self">self</span>.type_id),
+            drop_sender: <span class="self">self</span>.drop_sender.clone(),
+            meta_transform,
+            path,
+            asset_server_managed,
+        })
     }
 
-    <span class="doccomment">/// Recasts this handle as a weak handle of an Asset `U`.
-    </span><span class="kw">pub fn </span>cast_weak&lt;U: Asset&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Handle&lt;U&gt; {
-        <span class="kw">let </span>id = <span class="kw">if let </span>HandleId::Id(<span class="kw">_</span>, id) = <span class="self">self</span>.id {
-            HandleId::Id(U::TYPE_UUID, id)
-        } <span class="kw">else </span>{
-            <span class="self">self</span>.id
-        };
-
-        Handle {
-            id,
-            handle_type: HandleType::Weak,
-            marker: PhantomData,
-        }
-    }
-
-    <span class="doccomment">/// Returns `true` if this is a weak handle.
-    </span><span class="kw">pub fn </span>is_weak(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="macro">matches!</span>(<span class="self">self</span>.handle_type, HandleType::Weak)
-    }
-
-    <span class="doccomment">/// Returns `true` if this is a strong handle.
-    </span><span class="kw">pub fn </span>is_strong(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="macro">matches!</span>(<span class="self">self</span>.handle_type, HandleType::Strong(<span class="kw">_</span>))
-    }
-
-    <span class="doccomment">/// Makes this handle Strong if it wasn&#39;t already.
-    ///
-    /// This method requires the corresponding [`Assets`](crate::Assets) collection.
-    </span><span class="kw">pub fn </span>make_strong(<span class="kw-2">&amp;mut </span><span class="self">self</span>, assets: <span class="kw-2">&amp;</span>Assets&lt;T&gt;) {
-        <span class="kw">if </span><span class="self">self</span>.is_strong() {
-            <span class="kw">return</span>;
-        }
-        <span class="kw">let </span>sender = assets.ref_change_sender.clone();
-        sender.send(RefChange::Increment(<span class="self">self</span>.id)).unwrap();
-        <span class="self">self</span>.handle_type = HandleType::Strong(sender);
-    }
-
-    <span class="doccomment">/// Creates a weak copy of this handle.
-    </span><span class="attr">#[inline]
-    #[must_use]
-    </span><span class="kw">pub fn </span>clone_weak(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
-        <span class="self">Self</span>::weak(<span class="self">self</span>.id)
-    }
-
-    <span class="doccomment">/// Creates an untyped copy of this handle.
-    </span><span class="kw">pub fn </span>clone_untyped(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; HandleUntyped {
-        <span class="kw">match </span><span class="kw-2">&amp;</span><span class="self">self</span>.handle_type {
-            HandleType::Strong(sender) =&gt; HandleUntyped::strong(<span class="self">self</span>.id, sender.clone()),
-            HandleType::Weak =&gt; HandleUntyped::weak(<span class="self">self</span>.id),
-        }
-    }
-
-    <span class="doccomment">/// Creates a weak, untyped copy of this handle.
-    </span><span class="kw">pub fn </span>clone_weak_untyped(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; HandleUntyped {
-        HandleUntyped::weak(<span class="self">self</span>.id)
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>reserve_handle_internal(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        asset_server_managed: bool,
+        path: <span class="prelude-ty">Option</span>&lt;AssetPath&lt;<span class="lifetime">&#39;static</span>&gt;&gt;,
+        meta_transform: <span class="prelude-ty">Option</span>&lt;MetaTransform&gt;,
+    ) -&gt; Arc&lt;StrongHandle&gt; {
+        <span class="kw">let </span>index = <span class="self">self</span>.allocator.reserve();
+        <span class="self">self</span>.get_handle(
+            InternalAssetId::Index(index),
+            asset_server_managed,
+            path,
+            meta_transform,
+        )
     }
 }
 
-<span class="kw">impl</span>&lt;T: Asset&gt; Drop <span class="kw">for </span>Handle&lt;T&gt; {
+<span class="doccomment">/// The internal &quot;strong&quot; [`Asset`] handle storage for [`Handle::Strong`] and [`UntypedHandle::Strong`]. When this is dropped,
+/// the [`Asset`] will be freed. It also stores some asset metadata for easy access from handles.
+</span><span class="attr">#[derive(TypePath)]
+</span><span class="kw">pub struct </span>StrongHandle {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) id: UntypedAssetId,
+    <span class="kw">pub</span>(<span class="kw">crate</span>) asset_server_managed: bool,
+    <span class="kw">pub</span>(<span class="kw">crate</span>) path: <span class="prelude-ty">Option</span>&lt;AssetPath&lt;<span class="lifetime">&#39;static</span>&gt;&gt;,
+    <span class="doccomment">/// Modifies asset meta. This is stored on the handle because it is:
+    /// 1. configuration tied to the lifetime of a specific asset load
+    /// 2. configuration that must be repeatable when the asset is hot-reloaded
+    </span><span class="kw">pub</span>(<span class="kw">crate</span>) meta_transform: <span class="prelude-ty">Option</span>&lt;MetaTransform&gt;,
+    <span class="kw">pub</span>(<span class="kw">crate</span>) drop_sender: Sender&lt;DropEvent&gt;,
+}
+
+<span class="kw">impl </span>Drop <span class="kw">for </span>StrongHandle {
     <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
-        <span class="kw">match </span><span class="self">self</span>.handle_type {
-            HandleType::Strong(<span class="kw-2">ref </span>sender) =&gt; {
-                <span class="comment">// ignore send errors because this means the channel is shut down / the game has
-                // stopped
-                </span><span class="kw">let _ </span>= sender.send(RefChange::Decrement(<span class="self">self</span>.id));
-            }
-            HandleType::Weak =&gt; {}
-        }
+        <span class="kw">let _ </span>= <span class="self">self</span>.drop_sender.send(DropEvent {
+            id: <span class="self">self</span>.id.internal(),
+            asset_server_managed: <span class="self">self</span>.asset_server_managed,
+        });
     }
 }
 
-<span class="kw">impl</span>&lt;T: Asset&gt; From&lt;Handle&lt;T&gt;&gt; <span class="kw">for </span>HandleId {
-    <span class="kw">fn </span>from(value: Handle&lt;T&gt;) -&gt; <span class="self">Self </span>{
-        value.id
+<span class="kw">impl </span>std::fmt::Debug <span class="kw">for </span>StrongHandle {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; std::fmt::Result {
+        f.debug_struct(<span class="string">&quot;StrongHandle&quot;</span>)
+            .field(<span class="string">&quot;id&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.id)
+            .field(<span class="string">&quot;asset_server_managed&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.asset_server_managed)
+            .field(<span class="string">&quot;path&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.path)
+            .field(<span class="string">&quot;drop_sender&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.drop_sender)
+            .finish()
     }
 }
 
-<span class="kw">impl </span>From&lt;HandleUntyped&gt; <span class="kw">for </span>HandleId {
-    <span class="kw">fn </span>from(value: HandleUntyped) -&gt; <span class="self">Self </span>{
-        value.id
-    }
-}
-
-<span class="kw">impl </span>From&lt;<span class="kw-2">&amp;</span>str&gt; <span class="kw">for </span>HandleId {
-    <span class="kw">fn </span>from(value: <span class="kw-2">&amp;</span>str) -&gt; <span class="self">Self </span>{
-        AssetPathId::from(value).into()
-    }
-}
-
-<span class="kw">impl </span>From&lt;<span class="kw-2">&amp;</span>String&gt; <span class="kw">for </span>HandleId {
-    <span class="kw">fn </span>from(value: <span class="kw-2">&amp;</span>String) -&gt; <span class="self">Self </span>{
-        AssetPathId::from(value).into()
-    }
-}
-
-<span class="kw">impl </span>From&lt;String&gt; <span class="kw">for </span>HandleId {
-    <span class="kw">fn </span>from(value: String) -&gt; <span class="self">Self </span>{
-        AssetPathId::from(<span class="kw-2">&amp;</span>value).into()
-    }
-}
-
-<span class="kw">impl</span>&lt;T: Asset&gt; From&lt;<span class="kw-2">&amp;</span>Handle&lt;T&gt;&gt; <span class="kw">for </span>HandleId {
-    <span class="kw">fn </span>from(value: <span class="kw-2">&amp;</span>Handle&lt;T&gt;) -&gt; <span class="self">Self </span>{
-        value.id
-    }
-}
-
-<span class="kw">impl</span>&lt;T: Asset&gt; Hash <span class="kw">for </span>Handle&lt;T&gt; {
-    <span class="kw">fn </span>hash&lt;H: Hasher&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, state: <span class="kw-2">&amp;mut </span>H) {
-        Hash::hash(<span class="kw-2">&amp;</span><span class="self">self</span>.id, state);
-    }
-}
-
-<span class="kw">impl</span>&lt;T: Asset&gt; PartialEq <span class="kw">for </span>Handle&lt;T&gt; {
-    <span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; bool {
-        <span class="self">self</span>.id == other.id
-    }
-}
-
-<span class="kw">impl</span>&lt;T: Asset&gt; Eq <span class="kw">for </span>Handle&lt;T&gt; {}
-
-<span class="kw">impl</span>&lt;T: Asset&gt; PartialOrd <span class="kw">for </span>Handle&lt;T&gt; {
-    <span class="kw">fn </span>partial_cmp(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;Ordering&gt; {
-        <span class="prelude-val">Some</span>(<span class="self">self</span>.cmp(other))
-    }
-}
-
-<span class="kw">impl</span>&lt;T: Asset&gt; Ord <span class="kw">for </span>Handle&lt;T&gt; {
-    <span class="kw">fn </span>cmp(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; Ordering {
-        <span class="self">self</span>.id.cmp(<span class="kw-2">&amp;</span>other.id)
-    }
-}
-
-<span class="kw">impl</span>&lt;T: Asset&gt; Default <span class="kw">for </span>Handle&lt;T&gt; {
-    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
-        Handle::weak(HandleId::default::&lt;T&gt;())
-    }
-}
-
-<span class="kw">impl</span>&lt;T: Asset&gt; Debug <span class="kw">for </span>Handle&lt;T&gt; {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; std::result::Result&lt;(), std::fmt::Error&gt; {
-        <span class="kw">let </span>name = std::any::type_name::&lt;T&gt;().split(<span class="string">&quot;::&quot;</span>).last().unwrap();
-        <span class="macro">write!</span>(f, <span class="string">&quot;{:?}Handle&lt;{name}&gt;({:?})&quot;</span>, <span class="self">self</span>.handle_type, <span class="self">self</span>.id)
-    }
+<span class="doccomment">/// A strong or weak handle to a specific [`Asset`]. If a [`Handle`] is [`Handle::Strong`], the [`Asset`] will be kept
+/// alive until the [`Handle`] is dropped. If a [`Handle`] is [`Handle::Weak`], it does not necessarily reference a live [`Asset`],
+/// nor will it keep assets alive.
+///
+/// [`Handle`] can be cloned. If a [`Handle::Strong`] is cloned, the referenced [`Asset`] will not be freed until _all_ instances
+/// of the [`Handle`] are dropped.
+///
+/// [`Handle::Strong`] also provides access to useful [`Asset`] metadata, such as the [`AssetPath`] (if it exists).
+</span><span class="attr">#[derive(Component, Reflect)]
+#[reflect(Component)]
+</span><span class="kw">pub enum </span>Handle&lt;A: Asset&gt; {
+    <span class="doccomment">/// A &quot;strong&quot; reference to a live (or loading) [`Asset`]. If a [`Handle`] is [`Handle::Strong`], the [`Asset`] will be kept
+    /// alive until the [`Handle`] is dropped. Strong handles also provide access to additional asset metadata.  
+    </span>Strong(Arc&lt;StrongHandle&gt;),
+    <span class="doccomment">/// A &quot;weak&quot; reference to an [`Asset`]. If a [`Handle`] is [`Handle::Weak`], it does not necessarily reference a live [`Asset`],
+    /// nor will it keep assets alive.
+    </span>Weak(AssetId&lt;A&gt;),
 }
 
 <span class="kw">impl</span>&lt;T: Asset&gt; Clone <span class="kw">for </span>Handle&lt;T&gt; {
     <span class="kw">fn </span>clone(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
-        <span class="kw">match </span><span class="self">self</span>.handle_type {
-            HandleType::Strong(<span class="kw-2">ref </span>sender) =&gt; Handle::strong(<span class="self">self</span>.id, sender.clone()),
-            HandleType::Weak =&gt; Handle::weak(<span class="self">self</span>.id),
+        <span class="kw">match </span><span class="self">self </span>{
+            Handle::Strong(handle) =&gt; Handle::Strong(handle.clone()),
+            Handle::Weak(id) =&gt; Handle::Weak(<span class="kw-2">*</span>id),
         }
     }
 }
 
-<span class="doccomment">/// A non-generic version of [`Handle`].
-///
-/// This allows handles to be mingled in a cross asset context. For example, storing `Handle&lt;A&gt;` and
-/// `Handle&lt;B&gt;` in the same `HashSet&lt;HandleUntyped&gt;`.
-///
-/// To convert back to a typed handle, use the [typed](HandleUntyped::typed) method.
-</span><span class="attr">#[derive(Debug)]
-</span><span class="kw">pub struct </span>HandleUntyped {
-    id: HandleId,
-    handle_type: HandleType,
-}
-
-<span class="kw">impl </span>HandleUntyped {
-    <span class="doccomment">/// Creates a weak untyped handle with an arbitrary id.
-    </span><span class="kw">pub const fn </span>weak_from_u64(uuid: Uuid, id: u64) -&gt; <span class="self">Self </span>{
-        <span class="self">Self </span>{
-            id: HandleId::new(uuid, id),
-            handle_type: HandleType::Weak,
-        }
+<span class="kw">impl</span>&lt;A: Asset&gt; Handle&lt;A&gt; {
+    <span class="doccomment">/// Create a new [`Handle::Weak`] with the given [`u128`] encoding of a [`Uuid`].
+    </span><span class="kw">pub const fn </span>weak_from_u128(value: u128) -&gt; <span class="self">Self </span>{
+        Handle::Weak(AssetId::Uuid {
+            uuid: Uuid::from_u128(value),
+        })
     }
 
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>strong(id: HandleId, ref_change_sender: Sender&lt;RefChange&gt;) -&gt; <span class="self">Self </span>{
-        ref_change_sender.send(RefChange::Increment(id)).unwrap();
-        <span class="self">Self </span>{
-            id,
-            handle_type: HandleType::Strong(ref_change_sender),
-        }
-    }
-
-    <span class="doccomment">/// Create a weak, untyped handle into an Asset identified by `id`.
-    </span><span class="kw">pub fn </span>weak(id: HandleId) -&gt; <span class="self">Self </span>{
-        <span class="self">Self </span>{
-            id,
-            handle_type: HandleType::Weak,
-        }
-    }
-
-    <span class="doccomment">/// The ID of the asset.
+    <span class="doccomment">/// Returns the [`AssetId`] of this [`Asset`].
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>id(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; HandleId {
-        <span class="self">self</span>.id
+    </span><span class="kw">pub fn </span>id(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; AssetId&lt;A&gt; {
+        <span class="kw">match </span><span class="self">self </span>{
+            Handle::Strong(handle) =&gt; handle.id.typed_unchecked(),
+            Handle::Weak(id) =&gt; <span class="kw-2">*</span>id,
+        }
     }
 
-    <span class="doccomment">/// Creates a weak copy of this handle.
-    </span><span class="attr">#[must_use]
-    </span><span class="kw">pub fn </span>clone_weak(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
-        <span class="self">Self</span>::weak(<span class="self">self</span>.id)
+    <span class="doccomment">/// Returns the path if this is (1) a strong handle and (2) the asset has a path
+    </span><span class="attr">#[inline]
+    </span><span class="kw">pub fn </span>path(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>AssetPath&lt;<span class="lifetime">&#39;static</span>&gt;&gt; {
+        <span class="kw">match </span><span class="self">self </span>{
+            Handle::Strong(handle) =&gt; handle.path.as_ref(),
+            Handle::Weak(<span class="kw">_</span>) =&gt; <span class="prelude-val">None</span>,
+        }
     }
 
     <span class="doccomment">/// Returns `true` if this is a weak handle.
+    </span><span class="attr">#[inline]
     </span><span class="kw">pub fn </span>is_weak(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="macro">matches!</span>(<span class="self">self</span>.handle_type, HandleType::Weak)
+        <span class="macro">matches!</span>(<span class="self">self</span>, Handle::Weak(<span class="kw">_</span>))
     }
 
     <span class="doccomment">/// Returns `true` if this is a strong handle.
+    </span><span class="attr">#[inline]
     </span><span class="kw">pub fn </span>is_strong(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="macro">matches!</span>(<span class="self">self</span>.handle_type, HandleType::Strong(<span class="kw">_</span>))
+        <span class="macro">matches!</span>(<span class="self">self</span>, Handle::Strong(<span class="kw">_</span>))
     }
 
-    <span class="doccomment">/// Create a weak typed [`Handle`] from this handle.
-    ///
-    /// If this handle is strong and dropped, there is no guarantee that the asset
-    /// will still be available (if only the returned handle is kept)
-    </span><span class="kw">pub fn </span>typed_weak&lt;T: Asset&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Handle&lt;T&gt; {
-        <span class="self">self</span>.clone_weak().typed()
-    }
-
-    <span class="doccomment">/// Converts this handle into a typed [`Handle`] of an [`Asset`] `T`.
-    ///
-    /// The new handle will maintain the Strong or Weak status of the current handle.
-    ///
-    /// # Panics
-    ///
-    /// Will panic if type `T` doesn&#39;t match this handle&#39;s actual asset type.
-    </span><span class="kw">pub fn </span>typed&lt;T: Asset&gt;(<span class="kw-2">mut </span><span class="self">self</span>) -&gt; Handle&lt;T&gt; {
-        <span class="kw">if let </span>HandleId::Id(type_uuid, <span class="kw">_</span>) = <span class="self">self</span>.id {
-            <span class="macro">assert!</span>(
-                T::TYPE_UUID == type_uuid,
-                <span class="string">&quot;Attempted to convert handle to invalid type.&quot;
-            </span>);
+    <span class="doccomment">/// Creates a [`Handle::Weak`] clone of this [`Handle`], which will not keep the referenced [`Asset`] alive.
+    </span><span class="attr">#[inline]
+    </span><span class="kw">pub fn </span>clone_weak(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
+        <span class="kw">match </span><span class="self">self </span>{
+            Handle::Strong(handle) =&gt; Handle::Weak(handle.id.typed_unchecked::&lt;A&gt;()),
+            Handle::Weak(id) =&gt; Handle::Weak(<span class="kw-2">*</span>id),
         }
-        <span class="kw">let </span>handle_type = <span class="kw">match </span><span class="kw-2">&amp;</span><span class="self">self</span>.handle_type {
-            HandleType::Strong(sender) =&gt; HandleType::Strong(sender.clone()),
-            HandleType::Weak =&gt; HandleType::Weak,
-        };
-        <span class="comment">// ensure we don&#39;t send the RefChange event when &quot;self&quot; is dropped
-        </span><span class="self">self</span>.handle_type = HandleType::Weak;
-        Handle {
-            handle_type,
-            id: <span class="self">self</span>.id,
-            marker: PhantomData::default(),
+    }
+
+    <span class="doccomment">/// Converts this [`Handle`] to an &quot;untyped&quot; / &quot;generic-less&quot; [`UntypedHandle`], which stores the [`Asset`] type information
+    /// _inside_ [`UntypedHandle`]. This will return [`UntypedHandle::Strong`] for [`Handle::Strong`] and [`UntypedHandle::Weak`] for
+    /// [`Handle::Weak`].  
+    </span><span class="attr">#[inline]
+    </span><span class="kw">pub fn </span>untyped(<span class="self">self</span>) -&gt; UntypedHandle {
+        <span class="kw">match </span><span class="self">self </span>{
+            Handle::Strong(handle) =&gt; UntypedHandle::Strong(handle),
+            Handle::Weak(id) =&gt; UntypedHandle::Weak(id.untyped()),
         }
     }
 }
 
-<span class="kw">impl </span>Drop <span class="kw">for </span>HandleUntyped {
-    <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
-        <span class="kw">match </span><span class="self">self</span>.handle_type {
-            HandleType::Strong(<span class="kw-2">ref </span>sender) =&gt; {
-                <span class="comment">// ignore send errors because this means the channel is shut down / the game has
-                // stopped
-                </span><span class="kw">let _ </span>= sender.send(RefChange::Decrement(<span class="self">self</span>.id));
-            }
-            HandleType::Weak =&gt; {}
-        }
-    }
-}
-
-<span class="kw">impl</span>&lt;A: Asset&gt; From&lt;Handle&lt;A&gt;&gt; <span class="kw">for </span>HandleUntyped {
-    <span class="kw">fn </span>from(<span class="kw-2">mut </span>handle: Handle&lt;A&gt;) -&gt; <span class="self">Self </span>{
-        <span class="kw">let </span>handle_type = std::mem::replace(<span class="kw-2">&amp;mut </span>handle.handle_type, HandleType::Weak);
-        HandleUntyped {
-            id: handle.id,
-            handle_type,
-        }
-    }
-}
-
-<span class="kw">impl </span>From&lt;<span class="kw-2">&amp;</span>HandleUntyped&gt; <span class="kw">for </span>HandleId {
-    <span class="kw">fn </span>from(value: <span class="kw-2">&amp;</span>HandleUntyped) -&gt; <span class="self">Self </span>{
-        value.id
-    }
-}
-
-<span class="kw">impl </span>Hash <span class="kw">for </span>HandleUntyped {
-    <span class="kw">fn </span>hash&lt;H: Hasher&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, state: <span class="kw-2">&amp;mut </span>H) {
-        Hash::hash(<span class="kw-2">&amp;</span><span class="self">self</span>.id, state);
-    }
-}
-
-<span class="kw">impl </span>PartialEq <span class="kw">for </span>HandleUntyped {
-    <span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; bool {
-        <span class="self">self</span>.id == other.id
-    }
-}
-
-<span class="kw">impl </span>Eq <span class="kw">for </span>HandleUntyped {}
-
-<span class="kw">impl </span>Clone <span class="kw">for </span>HandleUntyped {
-    <span class="kw">fn </span>clone(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
-        <span class="kw">match </span><span class="self">self</span>.handle_type {
-            HandleType::Strong(<span class="kw-2">ref </span>sender) =&gt; HandleUntyped::strong(<span class="self">self</span>.id, sender.clone()),
-            HandleType::Weak =&gt; HandleUntyped::weak(<span class="self">self</span>.id),
-        }
-    }
-}
-
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">enum </span>RefChange {
-    Increment(HandleId),
-    Decrement(HandleId),
-}
-
-<span class="attr">#[derive(Clone)]
-</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct </span>RefChangeChannel {
-    <span class="kw">pub </span>sender: Sender&lt;RefChange&gt;,
-    <span class="kw">pub </span>receiver: Receiver&lt;RefChange&gt;,
-}
-
-<span class="kw">impl </span>Default <span class="kw">for </span>RefChangeChannel {
+<span class="kw">impl</span>&lt;A: Asset&gt; Default <span class="kw">for </span>Handle&lt;A&gt; {
     <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
-        <span class="kw">let </span>(sender, receiver) = crossbeam_channel::unbounded();
-        RefChangeChannel { sender, receiver }
+        Handle::Weak(AssetId::default())
+    }
+}
+
+<span class="kw">impl</span>&lt;A: Asset&gt; std::fmt::Debug <span class="kw">for </span>Handle&lt;A&gt; {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; std::fmt::Result {
+        <span class="kw">let </span>name = get_short_name(std::any::type_name::&lt;A&gt;());
+        <span class="kw">match </span><span class="self">self </span>{
+            Handle::Strong(handle) =&gt; {
+                <span class="macro">write!</span>(
+                    f,
+                    <span class="string">&quot;StrongHandle&lt;{name}&gt;{{ id: {:?}, path: {:?} }}&quot;</span>,
+                    handle.id.internal(),
+                    handle.path
+                )
+            }
+            Handle::Weak(id) =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;WeakHandle&lt;{name}&gt;({:?})&quot;</span>, id.internal()),
+        }
+    }
+}
+
+<span class="kw">impl</span>&lt;A: Asset&gt; Hash <span class="kw">for </span>Handle&lt;A&gt; {
+    <span class="attr">#[inline]
+    </span><span class="kw">fn </span>hash&lt;H: Hasher&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, state: <span class="kw-2">&amp;mut </span>H) {
+        Hash::hash(<span class="kw-2">&amp;</span><span class="self">self</span>.id(), state);
+    }
+}
+
+<span class="kw">impl</span>&lt;A: Asset&gt; PartialOrd <span class="kw">for </span>Handle&lt;A&gt; {
+    <span class="kw">fn </span>partial_cmp(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;std::cmp::Ordering&gt; {
+        <span class="prelude-val">Some</span>(<span class="self">self</span>.id().cmp(<span class="kw-2">&amp;</span>other.id()))
+    }
+}
+
+<span class="kw">impl</span>&lt;A: Asset&gt; Ord <span class="kw">for </span>Handle&lt;A&gt; {
+    <span class="kw">fn </span>cmp(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; std::cmp::Ordering {
+        <span class="self">self</span>.id().cmp(<span class="kw-2">&amp;</span>other.id())
+    }
+}
+
+<span class="kw">impl</span>&lt;A: Asset&gt; PartialEq <span class="kw">for </span>Handle&lt;A&gt; {
+    <span class="attr">#[inline]
+    </span><span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; bool {
+        <span class="self">self</span>.id() == other.id()
+    }
+}
+
+<span class="kw">impl</span>&lt;A: Asset&gt; Eq <span class="kw">for </span>Handle&lt;A&gt; {}
+
+<span class="doccomment">/// An untyped variant of [`Handle`], which internally stores the [`Asset`] type information at runtime
+/// as a [`TypeId`] instead of encoding it in the compile-time type. This allows handles across [`Asset`] types
+/// to be stored together and compared.
+///
+/// See [`Handle`] for more information.
+</span><span class="attr">#[derive(Clone)]
+</span><span class="kw">pub enum </span>UntypedHandle {
+    Strong(Arc&lt;StrongHandle&gt;),
+    Weak(UntypedAssetId),
+}
+
+<span class="kw">impl </span>UntypedHandle {
+    <span class="doccomment">/// Returns the [`UntypedAssetId`] for the referenced asset.
+    </span><span class="attr">#[inline]
+    </span><span class="kw">pub fn </span>id(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; UntypedAssetId {
+        <span class="kw">match </span><span class="self">self </span>{
+            UntypedHandle::Strong(handle) =&gt; handle.id,
+            UntypedHandle::Weak(id) =&gt; <span class="kw-2">*</span>id,
+        }
+    }
+
+    <span class="doccomment">/// Returns the path if this is (1) a strong handle and (2) the asset has a path
+    </span><span class="attr">#[inline]
+    </span><span class="kw">pub fn </span>path(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>AssetPath&lt;<span class="lifetime">&#39;static</span>&gt;&gt; {
+        <span class="kw">match </span><span class="self">self </span>{
+            UntypedHandle::Strong(handle) =&gt; handle.path.as_ref(),
+            UntypedHandle::Weak(<span class="kw">_</span>) =&gt; <span class="prelude-val">None</span>,
+        }
+    }
+
+    <span class="doccomment">/// Creates an [`UntypedHandle::Weak`] clone of this [`UntypedHandle`], which will not keep the referenced [`Asset`] alive.
+    </span><span class="attr">#[inline]
+    </span><span class="kw">pub fn </span>clone_weak(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; UntypedHandle {
+        <span class="kw">match </span><span class="self">self </span>{
+            UntypedHandle::Strong(handle) =&gt; UntypedHandle::Weak(handle.id),
+            UntypedHandle::Weak(id) =&gt; UntypedHandle::Weak(<span class="kw-2">*</span>id),
+        }
+    }
+
+    <span class="doccomment">/// Returns the [`TypeId`] of the referenced [`Asset`].
+    </span><span class="attr">#[inline]
+    </span><span class="kw">pub fn </span>type_id(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; TypeId {
+        <span class="kw">match </span><span class="self">self </span>{
+            UntypedHandle::Strong(handle) =&gt; handle.id.type_id(),
+            UntypedHandle::Weak(id) =&gt; id.type_id(),
+        }
+    }
+
+    <span class="doccomment">/// Converts to a typed Handle. This _will not check if the target Handle type matches_.
+    </span><span class="attr">#[inline]
+    </span><span class="kw">pub fn </span>typed_unchecked&lt;A: Asset&gt;(<span class="self">self</span>) -&gt; Handle&lt;A&gt; {
+        <span class="kw">match </span><span class="self">self </span>{
+            UntypedHandle::Strong(handle) =&gt; Handle::Strong(handle),
+            UntypedHandle::Weak(id) =&gt; Handle::Weak(id.typed_unchecked::&lt;A&gt;()),
+        }
+    }
+
+    <span class="doccomment">/// Converts to a typed Handle. This will check the type when compiled with debug asserts, but it
+    ///  _will not check if the target Handle type matches in release builds_. Use this as an optimization
+    /// when you want some degree of validation at dev-time, but you are also very certain that the type
+    /// actually matches.
+    </span><span class="attr">#[inline]
+    </span><span class="kw">pub fn </span>typed_debug_checked&lt;A: Asset&gt;(<span class="self">self</span>) -&gt; Handle&lt;A&gt; {
+        <span class="macro">debug_assert_eq!</span>(
+            <span class="self">self</span>.type_id(),
+            TypeId::of::&lt;A&gt;(),
+            <span class="string">&quot;The target Handle&lt;A&gt;&#39;s TypeId does not match the TypeId of this UntypedHandle&quot;
+        </span>);
+        <span class="kw">match </span><span class="self">self </span>{
+            UntypedHandle::Strong(handle) =&gt; Handle::Strong(handle),
+            UntypedHandle::Weak(id) =&gt; Handle::Weak(id.typed_unchecked::&lt;A&gt;()),
+        }
+    }
+
+    <span class="doccomment">/// Converts to a typed Handle. This will panic if the internal [`TypeId`] does not match the given asset type `A`
+    </span><span class="attr">#[inline]
+    </span><span class="kw">pub fn </span>typed&lt;A: Asset&gt;(<span class="self">self</span>) -&gt; Handle&lt;A&gt; {
+        <span class="macro">assert_eq!</span>(
+            <span class="self">self</span>.type_id(),
+            TypeId::of::&lt;A&gt;(),
+            <span class="string">&quot;The target Handle&lt;A&gt;&#39;s TypeId does not match the TypeId of this UntypedHandle&quot;
+        </span>);
+        <span class="self">self</span>.typed_unchecked()
+    }
+
+    <span class="doccomment">/// The &quot;meta transform&quot; for the strong handle. This will only be [`Some`] if the handle is strong and there is a meta transform
+    /// associated with it.
+    </span><span class="attr">#[inline]
+    </span><span class="kw">pub fn </span>meta_transform(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>MetaTransform&gt; {
+        <span class="kw">match </span><span class="self">self </span>{
+            UntypedHandle::Strong(handle) =&gt; handle.meta_transform.as_ref(),
+            UntypedHandle::Weak(<span class="kw">_</span>) =&gt; <span class="prelude-val">None</span>,
+        }
+    }
+}
+
+<span class="kw">impl </span>PartialEq <span class="kw">for </span>UntypedHandle {
+    <span class="attr">#[inline]
+    </span><span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; bool {
+        <span class="self">self</span>.id() == other.id() &amp;&amp; <span class="self">self</span>.type_id() == other.type_id()
+    }
+}
+
+<span class="kw">impl </span>Eq <span class="kw">for </span>UntypedHandle {}
+
+<span class="kw">impl </span>Hash <span class="kw">for </span>UntypedHandle {
+    <span class="attr">#[inline]
+    </span><span class="kw">fn </span>hash&lt;H: Hasher&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, state: <span class="kw-2">&amp;mut </span>H) {
+        <span class="self">self</span>.id().hash(state);
+        <span class="self">self</span>.type_id().hash(state);
+    }
+}
+
+<span class="kw">impl </span>std::fmt::Debug <span class="kw">for </span>UntypedHandle {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; std::fmt::Result {
+        <span class="kw">match </span><span class="self">self </span>{
+            UntypedHandle::Strong(handle) =&gt; {
+                <span class="macro">write!</span>(
+                    f,
+                    <span class="string">&quot;StrongHandle{{ type_id: {:?}, id: {:?}, path: {:?} }}&quot;</span>,
+                    handle.id.type_id(),
+                    handle.id.internal(),
+                    handle.path
+                )
+            }
+            UntypedHandle::Weak(id) =&gt; <span class="macro">write!</span>(
+                f,
+                <span class="string">&quot;WeakHandle{{ type_id: {:?}, id: {:?} }}&quot;</span>,
+                id.type_id(),
+                id.internal()
+            ),
+        }
     }
 }
 </code></pre></div></section></main></body></html>
