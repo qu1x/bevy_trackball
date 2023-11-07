@@ -1,3 +1,7 @@
+# Version 0.2.0 (2023-11-07)
+
+  * Update Bevy to `0.12`.
+
 # Version 0.1.1 (2023-08-20)
 
   * Fix default of `TrackballInput::first_key` matching documentation.
