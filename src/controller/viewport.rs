@@ -18,18 +18,51 @@ pub struct TrackballViewport {
 }
 
 impl TrackballViewport {
-	/// Whether the viewport has been stolen.
+	/// Condition whether the viewport has been stolen, evaluated by [`IntoSystemConfigs::run_if`].
 	#[allow(clippy::needless_pass_by_value)]
 	#[must_use]
 	pub fn stolen(viewport: Res<Self>) -> bool {
 		viewport.stolen != 0
 	}
 	/// Steals the viewport or gives it back.
+	///
+	/// # Examples
+	///
+	/// Steals the viewport for `Some(frames)` and lets it count `frames` down with `None`:
+	///
+	/// ```ignore
+	/// fn system(/* ... */) {
+	/// 	viewport.set_stolen(just_stolen.then_some(3));
+	/// }
+	///
+	/// // frame 0: just_stolen = true  -> set_stolen(Some(3)) -> frames = 3 -> stolen = true
+	/// // frame 1: just_stolen = false -> set_stolen(None)    -> frames = 2 -> stolen = true
+	/// // frame 2: just_stolen = false -> set_stolen(None)    -> frames = 1 -> stolen = true
+	/// // frame 3: just_stolen = false -> set_stolen(None)    -> frames = 0 -> stolen = false
+	/// ```
+	///
+	/// Steals the viewport with `Some(1)` and gives it back with `Some(0)`:
+	///
+	/// ```ignore
+	/// fn system(/* ... */) {
+	/// 	if just_stolen {
+	/// 		viewport.set_stolen(Some(1));
+	/// 	}
+	/// 	if just_give_back {
+	/// 		viewport.set_stolen(Some(0));
+	/// 	}
+	/// }
+	///
+	/// // frame  0: just_stolen = true    -> set_stolen(Some(1)) -> frames = 1 -> stolen = true
+	/// // frame  1: just_stolen = false   ->                     -> frames = 1 -> stolen = true
+	/// // frame 25: just_stolen = false   ->                     -> frames = 1 -> stolen = true
+	/// // frame 50: just_give_back = true -> set_stolen(Some(0)) -> frames = 0 -> stolen = false
+	/// ```
 	#[allow(clippy::needless_pass_by_value)]
-	pub fn set_stolen(&mut self, stolen: bool) {
-		if stolen {
+	pub fn set_stolen(&mut self, stolen: Option<usize>) {
+		if let Some(frames) = stolen {
 			self.entity = None;
-			self.stolen = 2;
+			self.stolen = frames;
 		} else if self.stolen != 0 {
 			self.stolen -= 1;
 		}

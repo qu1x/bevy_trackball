@@ -333,7 +333,7 @@ impl Plugin for TrackballPlugin {
 						context.wants_pointer_input() || context.wants_keyboard_input()
 					})
 					.unwrap_or_default();
-				viewport.set_stolen(stolen);
+				viewport.set_stolen(stolen.then_some(2));
 			}
 
 			app.add_systems(
