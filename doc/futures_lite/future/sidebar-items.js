@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["block_on","or","pending","poll_fn","poll_once","race","ready","try_zip","yield_now","zip"],"struct":["CatchUnwind","Or","Pending","PollFn","PollOnce","Race","Ready","TryZip","YieldNow","Zip"],"trait":["FutureExt"],"type":["Boxed","BoxedLocal"]};
+window.SIDEBAR_ITEMS = {"fn":["or","poll_fn","poll_once","try_zip","yield_now","zip"],"struct":["Or","PollFn","PollOnce","TryZip","YieldNow","Zip"],"trait":["FutureExt"]};

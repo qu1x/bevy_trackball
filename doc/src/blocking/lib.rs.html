@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/blocking-1.4.1/src/lib.rs`."><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="blocking" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/smol-rs/smol/master/assets/images/logo_fullsize_transparent.png"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../blocking/index.html"><img src="https://raw.githubusercontent.com/smol-rs/smol/master/assets/images/logo_fullsize_transparent.png" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/blocking-1.5.1/src/lib.rs`."><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="blocking" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/smol-rs/smol/master/assets/images/logo_fullsize_transparent.png"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../blocking/index.html"><img src="https://raw.githubusercontent.com/smol-rs/smol/master/assets/images/logo_fullsize_transparent.png" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -969,6 +969,27 @@
 <a href="#969" id="969">969</a>
 <a href="#970" id="970">970</a>
 <a href="#971" id="971">971</a>
+<a href="#972" id="972">972</a>
+<a href="#973" id="973">973</a>
+<a href="#974" id="974">974</a>
+<a href="#975" id="975">975</a>
+<a href="#976" id="976">976</a>
+<a href="#977" id="977">977</a>
+<a href="#978" id="978">978</a>
+<a href="#979" id="979">979</a>
+<a href="#980" id="980">980</a>
+<a href="#981" id="981">981</a>
+<a href="#982" id="982">982</a>
+<a href="#983" id="983">983</a>
+<a href="#984" id="984">984</a>
+<a href="#985" id="985">985</a>
+<a href="#986" id="986">986</a>
+<a href="#987" id="987">987</a>
+<a href="#988" id="988">988</a>
+<a href="#989" id="989">989</a>
+<a href="#990" id="990">990</a>
+<a href="#991" id="991">991</a>
+<a href="#992" id="992">992</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! A thread pool for isolating blocking I/O in async programs.
 //!
 //! Sometimes there&#39;s no way to avoid blocking I/O. Consider files or stdin, which have weak async
@@ -1057,7 +1078,6 @@
 
 </span><span class="kw">use </span>std::any::Any;
 <span class="kw">use </span>std::collections::VecDeque;
-<span class="kw">use </span>std::env;
 <span class="kw">use </span>std::fmt;
 <span class="kw">use </span>std::io::{<span class="self">self</span>, Read, Seek, SeekFrom, Write};
 <span class="kw">use </span>std::num::NonZeroUsize;
@@ -1069,8 +1089,10 @@
 <span class="kw">use </span>std::thread;
 <span class="kw">use </span>std::time::Duration;
 
+<span class="attr">#[cfg(not(target_family = <span class="string">&quot;wasm&quot;</span>))]
+</span><span class="kw">use </span>std::env;
+
 <span class="kw">use </span>async_channel::{bounded, Receiver};
-<span class="kw">use </span>async_lock::OnceCell;
 <span class="kw">use </span>async_task::Runnable;
 <span class="kw">use </span>futures_io::{AsyncRead, AsyncSeek, AsyncWrite};
 <span class="kw">use </span>futures_lite::{future, prelude::<span class="kw-2">*</span>, ready};
@@ -1080,15 +1102,19 @@
 </span><span class="kw">pub use </span>async_task::Task;
 
 <span class="doccomment">/// Default value for max threads that Executor can grow to
+</span><span class="attr">#[cfg(not(target_family = <span class="string">&quot;wasm&quot;</span>))]
 </span><span class="kw">const </span>DEFAULT_MAX_THREADS: usize = <span class="number">500</span>;
 
 <span class="doccomment">/// Minimum value for max threads config
+</span><span class="attr">#[cfg(not(target_family = <span class="string">&quot;wasm&quot;</span>))]
 </span><span class="kw">const </span>MIN_MAX_THREADS: usize = <span class="number">1</span>;
 
 <span class="doccomment">/// Maximum value for max threads config
+</span><span class="attr">#[cfg(not(target_family = <span class="string">&quot;wasm&quot;</span>))]
 </span><span class="kw">const </span>MAX_MAX_THREADS: usize = <span class="number">10000</span>;
 
 <span class="doccomment">/// Env variable that allows to override default value for max threads.
+</span><span class="attr">#[cfg(not(target_family = <span class="string">&quot;wasm&quot;</span>))]
 </span><span class="kw">const </span>MAX_THREADS_ENV: <span class="kw-2">&amp;</span>str = <span class="string">&quot;BLOCKING_MAX_THREADS&quot;</span>;
 
 <span class="doccomment">/// The blocking executor.
@@ -1120,7 +1146,8 @@
 }
 
 <span class="kw">impl </span>Executor {
-    <span class="kw">fn </span>max_threads() -&gt; usize {
+    <span class="attr">#[cfg(not(target_family = <span class="string">&quot;wasm&quot;</span>))]
+    </span><span class="kw">fn </span>max_threads() -&gt; usize {
         <span class="kw">match </span>env::var(MAX_THREADS_ENV) {
             <span class="prelude-val">Ok</span>(v) =&gt; v
                 .parse::&lt;usize&gt;()
@@ -1130,15 +1157,16 @@
         }
     }
 
-    <span class="doccomment">/// Spawns a future onto this executor.
-    ///
-    /// Returns a [`Task`] handle for the spawned task.
-    </span><span class="kw">fn </span>spawn&lt;T: Send + <span class="lifetime">&#39;static</span>&gt;(future: <span class="kw">impl </span>Future&lt;Output = T&gt; + Send + <span class="lifetime">&#39;static</span>) -&gt; Task&lt;T&gt; {
-        <span class="kw">static </span>EXECUTOR: OnceCell&lt;Executor&gt; = OnceCell::new();
+    <span class="doccomment">/// Get a reference to the global executor.
+    </span><span class="attr">#[inline]
+    </span><span class="kw">fn </span>get() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span><span class="self">Self </span>{
+        <span class="attr">#[cfg(not(target_family = <span class="string">&quot;wasm&quot;</span>))]
+        </span>{
+            <span class="kw">use </span>async_lock::OnceCell;
 
-        <span class="kw">let </span>(runnable, task) = async_task::spawn(future, |r| {
-            <span class="comment">// Initialize the executor if we haven&#39;t already.
-            </span><span class="kw">let </span>executor = EXECUTOR.get_or_init_blocking(|| {
+            <span class="kw">static </span>EXECUTOR: OnceCell&lt;Executor&gt; = OnceCell::new();
+
+            <span class="kw">return </span>EXECUTOR.get_or_init_blocking(|| {
                 <span class="kw">let </span>thread_limit = <span class="self">Self</span>::max_threads();
                 Executor {
                     inner: Mutex::new(Inner {
@@ -1150,6 +1178,19 @@
                     cvar: Condvar::new(),
                 }
             });
+        }
+
+        <span class="attr">#[cfg(target_family = <span class="string">&quot;wasm&quot;</span>)]
+        </span><span class="macro">panic!</span>(<span class="string">&quot;cannot spawn a blocking task on WASM&quot;</span>)
+    }
+
+    <span class="doccomment">/// Spawns a future onto this executor.
+    ///
+    /// Returns a [`Task`] handle for the spawned task.
+    </span><span class="kw">fn </span>spawn&lt;T: Send + <span class="lifetime">&#39;static</span>&gt;(future: <span class="kw">impl </span>Future&lt;Output = T&gt; + Send + <span class="lifetime">&#39;static</span>) -&gt; Task&lt;T&gt; {
+        <span class="kw">let </span>(runnable, task) = async_task::spawn(future, |r| {
+            <span class="comment">// Initialize the executor if we haven&#39;t already.
+            </span><span class="kw">let </span>executor = <span class="self">Self</span>::get();
 
             <span class="comment">// Schedule the task on our executor.
             </span>executor.schedule(r)
@@ -1639,7 +1680,7 @@
 
     <span class="doccomment">/// The inner value is an [`Iterator`] currently iterating in a task.
     ///
-    /// The `dyn Any` value here is a `mpsc::Receiver&lt;&lt;T as Iterator&gt;::Item&gt;`.
+    /// The `dyn Any` value here is a `Pin&lt;Box&lt;Receiver&lt;&lt;T as Iterator&gt;::Item&gt;&gt;&gt;`.
     </span>Streaming(<span class="prelude-ty">Option</span>&lt;Box&lt;<span class="kw">dyn </span>Any + Send + Sync&gt;&gt;, Task&lt;Box&lt;T&gt;&gt;),
 
     <span class="doccomment">/// The inner value is a [`Read`] currently reading in a task.
@@ -1692,15 +1733,15 @@
                     });
 
                     <span class="comment">// Move into the busy state and poll again.
-                    </span><span class="self">self</span>.state = State::Streaming(<span class="prelude-val">Some</span>(Box::new(receiver)), task);
+                    </span><span class="self">self</span>.state = State::Streaming(<span class="prelude-val">Some</span>(Box::new(Box::pin(receiver))), task);
                 }
 
                 <span class="comment">// If streaming, receive an item.
                 </span>State::Streaming(<span class="prelude-val">Some</span>(any), task) =&gt; {
-                    <span class="kw">let </span>receiver = any.downcast_mut::&lt;Receiver&lt;T::Item&gt;&gt;().unwrap();
+                    <span class="kw">let </span>receiver = any.downcast_mut::&lt;Pin&lt;Box&lt;Receiver&lt;T::Item&gt;&gt;&gt;&gt;().unwrap();
 
                     <span class="comment">// Poll the channel.
-                    </span><span class="kw">let </span>opt = <span class="macro">ready!</span>(Pin::new(receiver).poll_next(cx));
+                    </span><span class="kw">let </span>opt = <span class="macro">ready!</span>(receiver.as_mut().poll_next(cx));
 
                     <span class="comment">// If the channel is closed, retrieve the iterator back from the blocking task.
                     // This is not really a required step, but it&#39;s cleaner to drop the iterator on
@@ -1914,9 +1955,10 @@
     }
 }
 
-<span class="attr">#[cfg(test)]
+<span class="attr">#[cfg(all(test, not(target_family = <span class="string">&quot;wasm&quot;</span>)))]
 </span><span class="kw">mod </span>tests {
     <span class="kw">use super</span>::<span class="kw-2">*</span>;
+
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_max_threads() {
         <span class="comment">// properly set env var

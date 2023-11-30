@@ -71,13 +71,14 @@ var srcIndex = JSON.parse('{\
 "encase_derive_impl":["",[],["lib.rs"]],\
 "equivalent":["",[],["lib.rs"]],\
 "erased_serde":["",[["features_check",[],["mod.rs"]]],["any.rs","de.rs","error.rs","lib.rs","macros.rs","map.rs","private.rs","ser.rs"]],\
-"event_listener":["",[],["lib.rs"]],\
+"event_listener":["",[],["lib.rs","notify.rs","std.rs"]],\
+"event_listener_strategy":["",[],["lib.rs"]],\
 "fastrand":["",[],["global_rng.rs","lib.rs"]],\
 "fixed":["",[["types",[],["extra.rs","mod.rs"]]],["arith.rs","bytes.rs","cast.rs","cmp.rs","cmp_fixed.rs","consts.rs","convert.rs","debug_hex.rs","display.rs","f128.rs","float_helper.rs","from_str.rs","helpers.rs","impl_bytemuck.rs","int256.rs","int_helper.rs","inv_lerp.rs","lerp.rs","lib.rs","log.rs","log10.rs","macros.rs","macros_const.rs","macros_frac.rs","macros_from_to.rs","macros_no_frac.rs","macros_round.rs","prim_traits.rs","saturating.rs","serdeize.rs","traits.rs","traits_bits.rs","unwrapped.rs","wrapping.rs"]],\
 "fixedbitset":["",[],["lib.rs","range.rs"]],\
 "futures_core":["",[["task",[["__internal",[],["atomic_waker.rs","mod.rs"]]],["mod.rs","poll.rs"]]],["future.rs","lib.rs","stream.rs"]],\
 "futures_io":["",[],["lib.rs"]],\
-"futures_lite":["",[],["future.rs","io.rs","lib.rs","prelude.rs","stream.rs"]],\
+"futures_lite":["",[],["future.rs","lib.rs","prelude.rs","stream.rs"]],\
 "getrandom":["",[],["error.rs","lib.rs","linux_android.rs","use_file.rs","util.rs","util_libc.rs"]],\
 "glam":["",[["bool",[["sse2",[],["bvec3a.rs","bvec4a.rs"]]],["bvec2.rs","bvec3.rs","bvec4.rs","sse2.rs"]],["f32",[["sse2",[],["mat2.rs","mat3a.rs","mat4.rs","quat.rs","vec3a.rs","vec4.rs"]]],["affine2.rs","affine3a.rs","mat3.rs","math.rs","sse2.rs","vec2.rs","vec3.rs"]],["f64",[],["daffine2.rs","daffine3.rs","dmat2.rs","dmat3.rs","dmat4.rs","dquat.rs","dvec2.rs","dvec3.rs","dvec4.rs","math.rs"]],["features",[],["impl_bytemuck.rs","impl_serde.rs"]],["i32",[],["ivec2.rs","ivec3.rs","ivec4.rs"]],["i64",[],["i64vec2.rs","i64vec3.rs","i64vec4.rs"]],["swizzles",[["sse2",[],["vec3a_impl.rs","vec4_impl.rs"]]],["dvec2_impl.rs","dvec3_impl.rs","dvec4_impl.rs","i64vec2_impl.rs","i64vec3_impl.rs","i64vec4_impl.rs","ivec2_impl.rs","ivec3_impl.rs","ivec4_impl.rs","sse2.rs","u64vec2_impl.rs","u64vec3_impl.rs","u64vec4_impl.rs","uvec2_impl.rs","uvec3_impl.rs","uvec4_impl.rs","vec2_impl.rs","vec3_impl.rs","vec_traits.rs"]],["u32",[],["uvec2.rs","uvec3.rs","uvec4.rs"]],["u64",[],["u64vec2.rs","u64vec3.rs","u64vec4.rs"]]],["align16.rs","bool.rs","deref.rs","euler.rs","f32.rs","f64.rs","features.rs","i32.rs","i64.rs","lib.rs","macros.rs","sse2.rs","swizzles.rs","u32.rs","u64.rs"]],\
 "glow":["",[],["gl46.rs","lib.rs","native.rs","version.rs"]],\
@@ -155,7 +156,7 @@ var srcIndex = JSON.parse('{\
 "tracing":["",[],["dispatcher.rs","field.rs","instrument.rs","level_filters.rs","lib.rs","macros.rs","span.rs","stdlib.rs","subscriber.rs"]],\
 "tracing_attributes":["",[],["attr.rs","expand.rs","lib.rs"]],\
 "tracing_core":["",[],["callsite.rs","dispatcher.rs","event.rs","field.rs","lazy.rs","lib.rs","metadata.rs","parent.rs","span.rs","stdlib.rs","subscriber.rs"]],\
-"tracing_log":["",[],["lib.rs","log_tracer.rs","trace_logger.rs"]],\
+"tracing_log":["",[],["lib.rs","log_tracer.rs"]],\
 "tracing_subscriber":["",[["field",[],["debug.rs","delimited.rs","display.rs","mod.rs"]],["filter",[["env",[],["builder.rs","directive.rs","field.rs","mod.rs"]],["layer_filters",[],["combinator.rs","mod.rs"]]],["directive.rs","filter_fn.rs","level.rs","mod.rs","targets.rs"]],["fmt",[["format",[],["mod.rs","pretty.rs"]],["time",[],["datetime.rs","mod.rs"]]],["fmt_layer.rs","mod.rs","writer.rs"]],["layer",[],["context.rs","layered.rs","mod.rs"]],["registry",[],["extensions.rs","mod.rs","sharded.rs","stack.rs"]]],["lib.rs","macros.rs","prelude.rs","reload.rs","sync.rs","util.rs"]],\
 "trackball":["",[],["bound.rs","clamp.rs","delta.rs","first.rs","fixed.rs","frame.rs","image.rs","lib.rs","orbit.rs","plane.rs","scale.rs","scope.rs","slide.rs","touch.rs"]],\
 "typenum":["",[],["array.rs","bit.rs","int.rs","lib.rs","marker_traits.rs","operator_aliases.rs","private.rs","type_operators.rs","uint.rs"]],\
@@ -163,7 +164,6 @@ var srcIndex = JSON.parse('{\
 "unicode_width":["",[],["lib.rs","tables.rs"]],\
 "unicode_xid":["",[],["lib.rs","tables.rs"]],\
 "uuid":["",[["external",[],["serde_support.rs"]]],["builder.rs","error.rs","external.rs","fmt.rs","lib.rs","macros.rs","parser.rs","rng.rs","timestamp.rs","v4.rs"]],\
-"waker_fn":["",[],["lib.rs"]],\
 "wgpu":["",[["backend",[],["direct.rs","mod.rs"]],["util",[],["belt.rs","device.rs","encoder.rs","indirect.rs","init.rs","mod.rs"]]],["context.rs","lib.rs","macros.rs"]],\
 "wgpu_core":["",[["command",[],["bind.rs","bundle.rs","clear.rs","compute.rs","draw.rs","memory_init.rs","mod.rs","query.rs","render.rs","transfer.rs"]],["device",[],["global.rs","life.rs","mod.rs","queue.rs","resource.rs"]],["init_tracker",[],["buffer.rs","mod.rs","texture.rs"]],["track",[],["buffer.rs","metadata.rs","mod.rs","range.rs","stateless.rs","texture.rs"]]],["binding_model.rs","conv.rs","error.rs","global.rs","hal_api.rs","hub.rs","id.rs","identity.rs","instance.rs","lib.rs","pipeline.rs","present.rs","registry.rs","resource.rs","storage.rs","validation.rs"]],\
 "wgpu_hal":["",[["auxil",[],["mod.rs","renderdoc.rs"]],["gles",[],["adapter.rs","command.rs","conv.rs","device.rs","egl.rs","mod.rs","queue.rs"]],["vulkan",[],["adapter.rs","command.rs","conv.rs","device.rs","instance.rs","mod.rs"]]],["empty.rs","lib.rs"]],\
