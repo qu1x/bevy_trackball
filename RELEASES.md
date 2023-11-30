@@ -1,3 +1,8 @@
+# Version 0.3.0 (2023-11-30)
+
+  * Refactor viewport stealing allowing to specify number of frames.
+  * Let `m` toggle between `map_esdf` and `map_wasd`.
+
 # Version 0.2.0 (2023-11-07)
 
   * Update Bevy to `0.12`.
