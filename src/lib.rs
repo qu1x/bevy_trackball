@@ -5,6 +5,14 @@
 //! [WebAssembly]: https://en.wikipedia.org/wiki/WebAssembly
 //! [WebGL]: https://en.wikipedia.org/wiki/WebGL
 //!
+//! # Camera Modes
+//!
+//! Supports multiple camera modes:
+//!
+//!   * Trackball mode rotates camera around target.
+//!   * First-Person mode rotates target around camera.
+//!   * Spectator mode translates target and camera.
+//!
 //! # Coherence Features
 //!
 //! This is an alternative trackball technique using exponential map and parallel transport to
@@ -22,7 +30,7 @@
 //!   * Coherent and intuitive orbiting via the exponential map, see the underlying [`trackball`]
 //!     crate which follows the recipe given in the paper of Stantchev, G.. “Virtual Trackball
 //!     Modeling and the Exponential Map.”. [S2CID] [44199608]. See the [`exponential_map`] example.
-//!   * Coherent first person view aka free look or mouse look with the world trackball centered at
+//!   * Coherent first-person mode aka free look or mouse look with the world trackball centered at
 //!     eye instead of target.
 //!   * Coherent scaling by translating mouse wheel device units, see [`TrackballWheelUnit`]. Scales
 //!     eye distance from current cursor position or centroid of finger positions projected onto
@@ -76,13 +84,17 @@
 //! ----------------------- | ----------------------- | -------- | ---------------------------------
 //! Left Press + Drag       | One + Drag              | `ijkl`   | Orbits around target.
 //! ↳ at trackball's border | Two + Roll              | `uo`     | Rolls about view direction.
-//! Middle Press + Drag     | Any + Drag + Left Shift | `↑←↓→`   | First person view.
+//! Middle Press + Drag     | Any + Drag + Left Shift | `↑←↓→`   | First-person mode.
 //! Right Press + Drag      | Two + Drag              | `esdf`   | Slides trackball on focus plane.
 //! &nbsp;                  | &nbsp;                  | `gv`     | Slides trackball in/out.
 //! Scroll In/Out           | Two + Pinch Out/In      | `hn`     | Scales distance zooming in/out.
 //! Left Press + Release    | Any + Release           | &nbsp;   | Slides to cursor/finger position.
+//! &nbsp;                  | &nbsp;                  | `m`      | Toggle `esdf`/`wasd` mapping.
 //! &nbsp;                  | &nbsp;                  | `p`      | Toggle orthographic/perspective.
 //! &nbsp;                  | &nbsp;                  | `Return` | Reset camera transform.
+//!
+//! Alternatively, [`TrackballInput::map_wasd`] maps `wasd`/`Space`/`ControlLeft` to slide
+//! operations where `wd` slides in/out and `Space`/`ControlLeft` slides up/down (jump/crouch).
 //!
 //! # Usage
 //!

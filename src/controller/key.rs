@@ -4,6 +4,7 @@ use trackball::nalgebra::{Point3, Unit, UnitQuaternion};
 use crate::{TrackballCamera, TrackballController, TrackballEvent};
 
 #[allow(clippy::too_many_arguments)]
+#[allow(clippy::too_many_lines)]
 pub fn key(
 	group: Entity,
 	trackball_events: &mut EventWriter<TrackballEvent>,
@@ -28,6 +29,13 @@ pub fn key(
 	}
 	if just_pressed(controller.input.ortho_key) {
 		trackball_events.send(TrackballEvent::ortho(group, None));
+	}
+	if just_pressed(controller.input.gamer_key) {
+		if controller.input.slide_far_key == Some(KeyCode::W) {
+			controller.input.map_esdf();
+		} else {
+			controller.input.map_wasd();
+		}
 	}
 	for (key, vec) in [
 		(controller.input.slide_far_key, Vec3::NEG_Z),

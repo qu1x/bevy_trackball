@@ -37,6 +37,23 @@ pub struct TrackballController {
 	first_count: usize,
 }
 
+impl TrackballController {
+	/// Trackball controller using [`TrackballInput::map_esdf`].
+	#[must_use]
+	pub fn map_esdf() -> Self {
+		let mut controller = Self::default();
+		controller.input.map_esdf();
+		controller
+	}
+	/// Trackball controller using [`TrackballInput::map_wasd`].
+	#[must_use]
+	pub fn map_wasd() -> Self {
+		let mut controller = Self::default();
+		controller.input.map_wasd();
+		controller
+	}
+}
+
 #[allow(clippy::needless_pass_by_value)]
 #[allow(clippy::too_many_arguments)]
 pub fn trackball_controller(

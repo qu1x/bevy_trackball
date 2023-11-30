@@ -19,6 +19,8 @@ pub struct TrackballInput {
 	/// the focus operation in favor of the orbit operation.
 	pub focus: bool,
 
+	/// Key used to toggle `esdf`/`wasd` mapping. Default is [`KeyCode::M`].
+	pub gamer_key: Option<KeyCode>,
 	/// Key used to toggle projection mode. Default is [`KeyCode::P`].
 	pub ortho_key: Option<KeyCode>,
 
@@ -74,6 +76,51 @@ pub struct TrackballInput {
 	pub scale_out_key: Option<KeyCode>,
 }
 
+impl TrackballInput {
+	/// Maps `esdf`/`gv` to slide operations.
+	///
+	/// Key | Operation
+	/// --- | ---------------------------
+	/// `e` | Slides up.
+	/// `s` | Slides left.
+	/// `d` | Slides down.
+	/// `f` | Slides right.
+	/// `g` | Slides far (in/forward).
+	/// `v` | Slides near (out/backward).
+	///
+	/// This mapping is symmetric to the `ijkl`/`hn` orbit mapping but less intuitive to gamers
+	/// compared with [`Self::map_wasd`].
+	pub fn map_esdf(&mut self) {
+		self.slide_up_key = Some(KeyCode::E);
+		self.slide_down_key = Some(KeyCode::D);
+		self.slide_left_key = Some(KeyCode::S);
+		self.slide_right_key = Some(KeyCode::F);
+		self.slide_far_key = Some(KeyCode::G);
+		self.slide_near_key = Some(KeyCode::V);
+	}
+	/// Maps `wasd`/`Space`/`ControlLeft` to slide operations.
+	///
+	/// Key           | Operation
+	/// ------------- | ---------------------------
+	/// `w`           | Slides far (in/forward).
+	/// `a`           | Slides left.
+	/// `s`           | Slides near (out/backward).
+	/// `d`           | Slides right.
+	/// `Space`       | Slides up (jump).
+	/// `ControlLeft` | Slides down (crouch).
+	///
+	/// This mapping isn't symmetric to the `ijkl`/`hn` orbit mapping but more intuitive to gamers
+	/// compared with [`Self::map_esdf`].
+	pub fn map_wasd(&mut self) {
+		self.slide_up_key = Some(KeyCode::Space);
+		self.slide_down_key = Some(KeyCode::ControlLeft);
+		self.slide_left_key = Some(KeyCode::A);
+		self.slide_right_key = Some(KeyCode::D);
+		self.slide_far_key = Some(KeyCode::W);
+		self.slide_near_key = Some(KeyCode::S);
+	}
+}
+
 impl Default for TrackballInput {
 	fn default() -> Self {
 		Self {
@@ -81,6 +128,8 @@ impl Default for TrackballInput {
 			wheel_unit: TrackballWheelUnit::default(),
 
 			focus: true,
+
+			gamer_key: Some(KeyCode::M),
 
 			ortho_key: Some(KeyCode::P),
 
