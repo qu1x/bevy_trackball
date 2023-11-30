@@ -124,7 +124,7 @@ operations where `wd` slides in/out and `Space`/`ControlLeft` slides up/down (ju
 ## Usage
 
 Add the [`TrackballPlugin`] followed by spawning a [`TrackballController`] together with a
-[`TrackballCamera`] and a [`Camera3dBundle`] or see simple and advanced [examples].
+[`TrackballCamera`] and a `Camera3dBundle` or see simple and advanced [examples].
 
 ```rust
 use bevy::prelude::*;
@@ -155,7 +155,6 @@ fn setup(mut commands: Commands) {
 [`TrackballPlugin`]: https://qu1x.github.io/bevy_trackball/doc/bevy_trackball/struct.TrackballPlugin.html
 [`TrackballController`]: https://qu1x.github.io/bevy_trackball/doc/bevy_trackball/struct.TrackballController.html
 [`TrackballCamera`]: https://qu1x.github.io/bevy_trackball/doc/bevy_trackball/struct.TrackballCamera.html
-[`Camera3dBundle`]: https://qu1x.github.io/bevy_trackball/doc/bevy/core_pipeline/core_3d/struct.Camera3dBundle.html
 
 [examples]: https://qu1x.github.io/bevy_trackball/examples
 [`exponential_map`]: https://qu1x.github.io/bevy_trackball/examples/exponential_map.html
