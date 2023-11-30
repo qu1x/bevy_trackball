@@ -124,7 +124,7 @@ operations where `wd` slides in/out and `Space`/`ControlLeft` slides up/down (ju
 ## Usage
 
 Add the [`TrackballPlugin`] followed by spawning a [`TrackballController`] together with a
-[`TrackballCamera`] and a `Camera3dBundle` or see simple and advanced [examples].
+[`TrackballCamera`] and a [`Camera3dBundle`] or see simple and advanced [examples].
 
 ```rust
 use bevy::prelude::*;
