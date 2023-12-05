@@ -119,7 +119,7 @@ Left Press + Release    | Any + Release           | &nbsp;   | Slides to cursor/
 &nbsp;                  | &nbsp;                  | `Return` | Reset camera transform.
 
 Alternatively, [`TrackballInput::map_wasd`] maps `wasd`/`Space`/`ControlLeft` to slide
-operations where `wd` slides in/out and `Space`/`ControlLeft` slides up/down (jump/crouch).
+operations where `ws` slides in/out and `Space`/`ControlLeft` slides up/down (jump/crouch).
 
 [`TrackballInput`]: https://qu1x.github.io/bevy_trackball/doc/bevy_trackball/struct.TrackballInput.html
 [`TrackballInput::map_wasd`]: https://qu1x.github.io/bevy_trackball/doc/bevy_trackball/struct.TrackballInput.html#method.map_wasd

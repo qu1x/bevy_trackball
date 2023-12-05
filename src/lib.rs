@@ -97,7 +97,7 @@
 //! &nbsp;                  | &nbsp;                  | `Return` | Reset camera transform.
 //!
 //! Alternatively, [`TrackballInput::map_wasd`] maps `wasd`/`Space`/`ControlLeft` to slide
-//! operations where `wd` slides in/out and `Space`/`ControlLeft` slides up/down (jump/crouch).
+//! operations where `ws` slides in/out and `Space`/`ControlLeft` slides up/down (jump/crouch).
 //!
 //! # Usage
 //!
