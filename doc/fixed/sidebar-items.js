@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"macro":["const_fixed_from_int"],"mod":["consts","f128","prelude","traits","types"],"struct":["F128","F128Bits","FixedI128","FixedI16","FixedI32","FixedI64","FixedI8","FixedU128","FixedU16","FixedU32","FixedU64","FixedU8","ParseFixedError","Saturating","Unwrapped","Wrapping"]};

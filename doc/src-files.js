@@ -14,13 +14,14 @@ var srcIndex = JSON.parse('{\
 "async_lock":["",[["rwlock",[],["futures.rs","raw.rs"]]],["barrier.rs","lib.rs","mutex.rs","once_cell.rs","rwlock.rs","semaphore.rs"]],\
 "async_task":["",[],["header.rs","lib.rs","raw.rs","runnable.rs","state.rs","task.rs","utils.rs"]],\
 "atomic_waker":["",[],["lib.rs"]],\
+"az":["",[],["float.rs","int.rs","lib.rs"]],\
 "base64":["",[["engine",[["general_purpose",[],["decode.rs","decode_suffix.rs","mod.rs"]]],["mod.rs"]],["read",[],["decoder.rs","mod.rs"]],["write",[],["encoder.rs","encoder_string_writer.rs","mod.rs"]]],["alphabet.rs","chunked_encoder.rs","decode.rs","display.rs","encode.rs","lib.rs","prelude.rs"]],\
 "bevy":["",[],["lib.rs"]],\
 "bevy_a11y":["",[],["lib.rs"]],\
 "bevy_app":["",[],["app.rs","lib.rs","main_schedule.rs","plugin.rs","plugin_group.rs","schedule_runner.rs"]],\
 "bevy_asset":["",[["io",[["embedded",[],["mod.rs"]],["file",[],["mod.rs","sync_file_asset.rs"]]],["gated.rs","memory.rs","mod.rs","processor_gated.rs","source.rs"]],["processor",[],["log.rs","mod.rs","process.rs"]],["server",[],["info.rs","mod.rs"]]],["assets.rs","event.rs","folder.rs","handle.rs","id.rs","lib.rs","loader.rs","meta.rs","path.rs","reflect.rs","saver.rs"]],\
 "bevy_asset_macros":["",[],["lib.rs"]],\
-"bevy_core":["",[],["lib.rs","name.rs","task_pool_options.rs"]],\
+"bevy_core":["",[],["lib.rs","name.rs","serde.rs","task_pool_options.rs"]],\
 "bevy_derive":["",[],["app_plugin.rs","bevy_main.rs","derefs.rs","enum_variant_meta.rs","lib.rs"]],\
 "bevy_diagnostic":["",[],["diagnostic.rs","entity_count_diagnostics_plugin.rs","frame_time_diagnostics_plugin.rs","lib.rs","log_diagnostics_plugin.rs","system_information_diagnostics_plugin.rs"]],\
 "bevy_ecs":["",[["entity",[],["map_entities.rs","mod.rs"]],["query",[],["access.rs","error.rs","fetch.rs","filter.rs","iter.rs","mod.rs","par_iter.rs","state.rs"]],["reflect",[],["bundle.rs","component.rs","entity_commands.rs","map_entities.rs","mod.rs","resource.rs"]],["schedule",[["executor",[],["mod.rs","multi_threaded.rs","simple.rs","single_threaded.rs"]]],["condition.rs","config.rs","graph_utils.rs","mod.rs","schedule.rs","set.rs","state.rs"]],["storage",[],["blob_vec.rs","mod.rs","resource.rs","sparse_set.rs","table.rs"]],["system",[["commands",[],["command_queue.rs","mod.rs","parallel_scope.rs"]]],["adapter_system.rs","combinator.rs","exclusive_function_system.rs","exclusive_system_param.rs","function_system.rs","mod.rs","query.rs","system.rs","system_param.rs","system_registry.rs"]],["world",[],["entity_ref.rs","error.rs","identifier.rs","mod.rs","spawn_batch.rs","unsafe_world_cell.rs","world_cell.rs"]]],["archetype.rs","bundle.rs","change_detection.rs","component.rs","event.rs","lib.rs","removal_detection.rs"]],\
@@ -73,6 +74,7 @@ var srcIndex = JSON.parse('{\
 "event_listener":["",[],["lib.rs","notify.rs","std.rs"]],\
 "event_listener_strategy":["",[],["lib.rs"]],\
 "fastrand":["",[],["global_rng.rs","lib.rs"]],\
+"fixed":["",[["types",[],["extra.rs","mod.rs"]]],["arith.rs","bytes.rs","cast.rs","cmp.rs","cmp_fixed.rs","consts.rs","convert.rs","debug_hex.rs","display.rs","f128.rs","float_helper.rs","from_str.rs","helpers.rs","impl_bytemuck.rs","int256.rs","int_helper.rs","inv_lerp.rs","lerp.rs","lib.rs","log.rs","log10.rs","macros.rs","macros_const.rs","macros_frac.rs","macros_from_to.rs","macros_no_frac.rs","macros_round.rs","prim_traits.rs","saturating.rs","serdeize.rs","traits.rs","traits_bits.rs","unwrapped.rs","wrapping.rs"]],\
 "fixedbitset":["",[],["lib.rs","range.rs"]],\
 "futures_core":["",[["task",[["__internal",[],["atomic_waker.rs","mod.rs"]]],["mod.rs","poll.rs"]]],["future.rs","lib.rs","stream.rs"]],\
 "futures_io":["",[],["lib.rs"]],\
@@ -84,6 +86,7 @@ var srcIndex = JSON.parse('{\
 "gpu_alloc_types":["",[],["device.rs","lib.rs","types.rs"]],\
 "gpu_descriptor":["",[],["allocator.rs","lib.rs"]],\
 "gpu_descriptor_types":["",[],["device.rs","lib.rs","types.rs"]],\
+"half":["",[["bfloat",[],["convert.rs"]],["binary16",[["arch",[],["x86.rs"]]],["arch.rs"]]],["bfloat.rs","binary16.rs","leading_zeros.rs","lib.rs","slice.rs"]],\
 "hash32":["",[],["fnv.rs","lib.rs","murmur3.rs"]],\
 "hashbrown":["",[["external_trait_impls",[],["mod.rs","serde.rs"]],["raw",[],["alloc.rs","bitmask.rs","mod.rs","sse2.rs"]]],["lib.rs","macros.rs","map.rs","scopeguard.rs","set.rs","table.rs"]],\
 "heapless":["",[],["binary_heap.rs","deque.rs","histbuf.rs","indexmap.rs","indexset.rs","lib.rs","linear_map.rs","sealed.rs","sorted_linked_list.rs","spsc.rs","string.rs","vec.rs"]],\
