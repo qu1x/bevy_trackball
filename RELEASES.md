@@ -1,7 +1,11 @@
-# Version 0.3.0 (2023-11-30)
+# Version 0.3.0 (2023-12-05)
 
+  * Fix mouse and especially touch input by clearing event readers when viewport
+    is given back. This issue got noticeable with Bevy `0.12.1`, see [#10877].
   * Refactor viewport stealing allowing to specify number of frames.
-  * Let `m` toggle between `map_esdf` and `map_wasd`.
+  * Let `m` key toggle between `map_esdf` and `map_wasd` for slide operations.
+
+[#10877]: https://github.com/bevyengine/bevy/issues/10877
 
 # Version 0.2.0 (2023-11-07)
 
