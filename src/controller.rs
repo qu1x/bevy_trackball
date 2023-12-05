@@ -61,16 +61,22 @@ pub fn trackball_controller(
 	time: Res<Time>,
 	key_input: Res<Input<KeyCode>>,
 	mouse_input: Res<Input<MouseButton>>,
-	touch_events: EventReader<TouchInput>,
+	mut touch_events: EventReader<TouchInput>,
 	mut touch_events_clone: EventReader<TouchInput>,
-	delta_events: EventReader<MouseMotion>,
-	mouse_events: EventReader<CursorMoved>,
-	wheel_events: EventReader<MouseWheel>,
+	mut delta_events: EventReader<MouseMotion>,
+	mut mouse_events: EventReader<CursorMoved>,
+	mut wheel_events: EventReader<MouseWheel>,
 	mut primary_windows: Query<&mut Window, With<PrimaryWindow>>,
 	mut secondary_windows: Query<&mut Window, Without<PrimaryWindow>>,
 	mut cameras: Query<(Entity, &Camera, &TrackballCamera, &mut TrackballController)>,
 	mut trackball_events: EventWriter<TrackballEvent>,
 ) {
+	if viewport.was_stolen() {
+		touch_events.clear();
+		delta_events.clear();
+		mouse_events.clear();
+		wheel_events.clear();
+	}
 	let Some((is_changed, mut window, group, camera, trackball, mut controller)) =
 		TrackballViewport::select(
 			&mut viewport,

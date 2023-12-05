@@ -24,6 +24,11 @@ impl TrackballViewport {
 	pub fn stolen(viewport: Res<Self>) -> bool {
 		viewport.stolen != 0
 	}
+	/// Whether viewport has just been given back.
+	#[must_use]
+	pub const fn was_stolen(&self) -> bool {
+		self.entity.is_none()
+	}
 	/// Steals the viewport or gives it back.
 	///
 	/// # Examples
