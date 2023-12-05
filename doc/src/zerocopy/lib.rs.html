@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zerocopy-0.7.27/src/lib.rs`."><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="zerocopy" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../zerocopy/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zerocopy-0.7.28/src/lib.rs`."><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="zerocopy" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../zerocopy/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -7818,6 +7818,342 @@
 <a href="#7818" id="7818">7818</a>
 <a href="#7819" id="7819">7819</a>
 <a href="#7820" id="7820">7820</a>
+<a href="#7821" id="7821">7821</a>
+<a href="#7822" id="7822">7822</a>
+<a href="#7823" id="7823">7823</a>
+<a href="#7824" id="7824">7824</a>
+<a href="#7825" id="7825">7825</a>
+<a href="#7826" id="7826">7826</a>
+<a href="#7827" id="7827">7827</a>
+<a href="#7828" id="7828">7828</a>
+<a href="#7829" id="7829">7829</a>
+<a href="#7830" id="7830">7830</a>
+<a href="#7831" id="7831">7831</a>
+<a href="#7832" id="7832">7832</a>
+<a href="#7833" id="7833">7833</a>
+<a href="#7834" id="7834">7834</a>
+<a href="#7835" id="7835">7835</a>
+<a href="#7836" id="7836">7836</a>
+<a href="#7837" id="7837">7837</a>
+<a href="#7838" id="7838">7838</a>
+<a href="#7839" id="7839">7839</a>
+<a href="#7840" id="7840">7840</a>
+<a href="#7841" id="7841">7841</a>
+<a href="#7842" id="7842">7842</a>
+<a href="#7843" id="7843">7843</a>
+<a href="#7844" id="7844">7844</a>
+<a href="#7845" id="7845">7845</a>
+<a href="#7846" id="7846">7846</a>
+<a href="#7847" id="7847">7847</a>
+<a href="#7848" id="7848">7848</a>
+<a href="#7849" id="7849">7849</a>
+<a href="#7850" id="7850">7850</a>
+<a href="#7851" id="7851">7851</a>
+<a href="#7852" id="7852">7852</a>
+<a href="#7853" id="7853">7853</a>
+<a href="#7854" id="7854">7854</a>
+<a href="#7855" id="7855">7855</a>
+<a href="#7856" id="7856">7856</a>
+<a href="#7857" id="7857">7857</a>
+<a href="#7858" id="7858">7858</a>
+<a href="#7859" id="7859">7859</a>
+<a href="#7860" id="7860">7860</a>
+<a href="#7861" id="7861">7861</a>
+<a href="#7862" id="7862">7862</a>
+<a href="#7863" id="7863">7863</a>
+<a href="#7864" id="7864">7864</a>
+<a href="#7865" id="7865">7865</a>
+<a href="#7866" id="7866">7866</a>
+<a href="#7867" id="7867">7867</a>
+<a href="#7868" id="7868">7868</a>
+<a href="#7869" id="7869">7869</a>
+<a href="#7870" id="7870">7870</a>
+<a href="#7871" id="7871">7871</a>
+<a href="#7872" id="7872">7872</a>
+<a href="#7873" id="7873">7873</a>
+<a href="#7874" id="7874">7874</a>
+<a href="#7875" id="7875">7875</a>
+<a href="#7876" id="7876">7876</a>
+<a href="#7877" id="7877">7877</a>
+<a href="#7878" id="7878">7878</a>
+<a href="#7879" id="7879">7879</a>
+<a href="#7880" id="7880">7880</a>
+<a href="#7881" id="7881">7881</a>
+<a href="#7882" id="7882">7882</a>
+<a href="#7883" id="7883">7883</a>
+<a href="#7884" id="7884">7884</a>
+<a href="#7885" id="7885">7885</a>
+<a href="#7886" id="7886">7886</a>
+<a href="#7887" id="7887">7887</a>
+<a href="#7888" id="7888">7888</a>
+<a href="#7889" id="7889">7889</a>
+<a href="#7890" id="7890">7890</a>
+<a href="#7891" id="7891">7891</a>
+<a href="#7892" id="7892">7892</a>
+<a href="#7893" id="7893">7893</a>
+<a href="#7894" id="7894">7894</a>
+<a href="#7895" id="7895">7895</a>
+<a href="#7896" id="7896">7896</a>
+<a href="#7897" id="7897">7897</a>
+<a href="#7898" id="7898">7898</a>
+<a href="#7899" id="7899">7899</a>
+<a href="#7900" id="7900">7900</a>
+<a href="#7901" id="7901">7901</a>
+<a href="#7902" id="7902">7902</a>
+<a href="#7903" id="7903">7903</a>
+<a href="#7904" id="7904">7904</a>
+<a href="#7905" id="7905">7905</a>
+<a href="#7906" id="7906">7906</a>
+<a href="#7907" id="7907">7907</a>
+<a href="#7908" id="7908">7908</a>
+<a href="#7909" id="7909">7909</a>
+<a href="#7910" id="7910">7910</a>
+<a href="#7911" id="7911">7911</a>
+<a href="#7912" id="7912">7912</a>
+<a href="#7913" id="7913">7913</a>
+<a href="#7914" id="7914">7914</a>
+<a href="#7915" id="7915">7915</a>
+<a href="#7916" id="7916">7916</a>
+<a href="#7917" id="7917">7917</a>
+<a href="#7918" id="7918">7918</a>
+<a href="#7919" id="7919">7919</a>
+<a href="#7920" id="7920">7920</a>
+<a href="#7921" id="7921">7921</a>
+<a href="#7922" id="7922">7922</a>
+<a href="#7923" id="7923">7923</a>
+<a href="#7924" id="7924">7924</a>
+<a href="#7925" id="7925">7925</a>
+<a href="#7926" id="7926">7926</a>
+<a href="#7927" id="7927">7927</a>
+<a href="#7928" id="7928">7928</a>
+<a href="#7929" id="7929">7929</a>
+<a href="#7930" id="7930">7930</a>
+<a href="#7931" id="7931">7931</a>
+<a href="#7932" id="7932">7932</a>
+<a href="#7933" id="7933">7933</a>
+<a href="#7934" id="7934">7934</a>
+<a href="#7935" id="7935">7935</a>
+<a href="#7936" id="7936">7936</a>
+<a href="#7937" id="7937">7937</a>
+<a href="#7938" id="7938">7938</a>
+<a href="#7939" id="7939">7939</a>
+<a href="#7940" id="7940">7940</a>
+<a href="#7941" id="7941">7941</a>
+<a href="#7942" id="7942">7942</a>
+<a href="#7943" id="7943">7943</a>
+<a href="#7944" id="7944">7944</a>
+<a href="#7945" id="7945">7945</a>
+<a href="#7946" id="7946">7946</a>
+<a href="#7947" id="7947">7947</a>
+<a href="#7948" id="7948">7948</a>
+<a href="#7949" id="7949">7949</a>
+<a href="#7950" id="7950">7950</a>
+<a href="#7951" id="7951">7951</a>
+<a href="#7952" id="7952">7952</a>
+<a href="#7953" id="7953">7953</a>
+<a href="#7954" id="7954">7954</a>
+<a href="#7955" id="7955">7955</a>
+<a href="#7956" id="7956">7956</a>
+<a href="#7957" id="7957">7957</a>
+<a href="#7958" id="7958">7958</a>
+<a href="#7959" id="7959">7959</a>
+<a href="#7960" id="7960">7960</a>
+<a href="#7961" id="7961">7961</a>
+<a href="#7962" id="7962">7962</a>
+<a href="#7963" id="7963">7963</a>
+<a href="#7964" id="7964">7964</a>
+<a href="#7965" id="7965">7965</a>
+<a href="#7966" id="7966">7966</a>
+<a href="#7967" id="7967">7967</a>
+<a href="#7968" id="7968">7968</a>
+<a href="#7969" id="7969">7969</a>
+<a href="#7970" id="7970">7970</a>
+<a href="#7971" id="7971">7971</a>
+<a href="#7972" id="7972">7972</a>
+<a href="#7973" id="7973">7973</a>
+<a href="#7974" id="7974">7974</a>
+<a href="#7975" id="7975">7975</a>
+<a href="#7976" id="7976">7976</a>
+<a href="#7977" id="7977">7977</a>
+<a href="#7978" id="7978">7978</a>
+<a href="#7979" id="7979">7979</a>
+<a href="#7980" id="7980">7980</a>
+<a href="#7981" id="7981">7981</a>
+<a href="#7982" id="7982">7982</a>
+<a href="#7983" id="7983">7983</a>
+<a href="#7984" id="7984">7984</a>
+<a href="#7985" id="7985">7985</a>
+<a href="#7986" id="7986">7986</a>
+<a href="#7987" id="7987">7987</a>
+<a href="#7988" id="7988">7988</a>
+<a href="#7989" id="7989">7989</a>
+<a href="#7990" id="7990">7990</a>
+<a href="#7991" id="7991">7991</a>
+<a href="#7992" id="7992">7992</a>
+<a href="#7993" id="7993">7993</a>
+<a href="#7994" id="7994">7994</a>
+<a href="#7995" id="7995">7995</a>
+<a href="#7996" id="7996">7996</a>
+<a href="#7997" id="7997">7997</a>
+<a href="#7998" id="7998">7998</a>
+<a href="#7999" id="7999">7999</a>
+<a href="#8000" id="8000">8000</a>
+<a href="#8001" id="8001">8001</a>
+<a href="#8002" id="8002">8002</a>
+<a href="#8003" id="8003">8003</a>
+<a href="#8004" id="8004">8004</a>
+<a href="#8005" id="8005">8005</a>
+<a href="#8006" id="8006">8006</a>
+<a href="#8007" id="8007">8007</a>
+<a href="#8008" id="8008">8008</a>
+<a href="#8009" id="8009">8009</a>
+<a href="#8010" id="8010">8010</a>
+<a href="#8011" id="8011">8011</a>
+<a href="#8012" id="8012">8012</a>
+<a href="#8013" id="8013">8013</a>
+<a href="#8014" id="8014">8014</a>
+<a href="#8015" id="8015">8015</a>
+<a href="#8016" id="8016">8016</a>
+<a href="#8017" id="8017">8017</a>
+<a href="#8018" id="8018">8018</a>
+<a href="#8019" id="8019">8019</a>
+<a href="#8020" id="8020">8020</a>
+<a href="#8021" id="8021">8021</a>
+<a href="#8022" id="8022">8022</a>
+<a href="#8023" id="8023">8023</a>
+<a href="#8024" id="8024">8024</a>
+<a href="#8025" id="8025">8025</a>
+<a href="#8026" id="8026">8026</a>
+<a href="#8027" id="8027">8027</a>
+<a href="#8028" id="8028">8028</a>
+<a href="#8029" id="8029">8029</a>
+<a href="#8030" id="8030">8030</a>
+<a href="#8031" id="8031">8031</a>
+<a href="#8032" id="8032">8032</a>
+<a href="#8033" id="8033">8033</a>
+<a href="#8034" id="8034">8034</a>
+<a href="#8035" id="8035">8035</a>
+<a href="#8036" id="8036">8036</a>
+<a href="#8037" id="8037">8037</a>
+<a href="#8038" id="8038">8038</a>
+<a href="#8039" id="8039">8039</a>
+<a href="#8040" id="8040">8040</a>
+<a href="#8041" id="8041">8041</a>
+<a href="#8042" id="8042">8042</a>
+<a href="#8043" id="8043">8043</a>
+<a href="#8044" id="8044">8044</a>
+<a href="#8045" id="8045">8045</a>
+<a href="#8046" id="8046">8046</a>
+<a href="#8047" id="8047">8047</a>
+<a href="#8048" id="8048">8048</a>
+<a href="#8049" id="8049">8049</a>
+<a href="#8050" id="8050">8050</a>
+<a href="#8051" id="8051">8051</a>
+<a href="#8052" id="8052">8052</a>
+<a href="#8053" id="8053">8053</a>
+<a href="#8054" id="8054">8054</a>
+<a href="#8055" id="8055">8055</a>
+<a href="#8056" id="8056">8056</a>
+<a href="#8057" id="8057">8057</a>
+<a href="#8058" id="8058">8058</a>
+<a href="#8059" id="8059">8059</a>
+<a href="#8060" id="8060">8060</a>
+<a href="#8061" id="8061">8061</a>
+<a href="#8062" id="8062">8062</a>
+<a href="#8063" id="8063">8063</a>
+<a href="#8064" id="8064">8064</a>
+<a href="#8065" id="8065">8065</a>
+<a href="#8066" id="8066">8066</a>
+<a href="#8067" id="8067">8067</a>
+<a href="#8068" id="8068">8068</a>
+<a href="#8069" id="8069">8069</a>
+<a href="#8070" id="8070">8070</a>
+<a href="#8071" id="8071">8071</a>
+<a href="#8072" id="8072">8072</a>
+<a href="#8073" id="8073">8073</a>
+<a href="#8074" id="8074">8074</a>
+<a href="#8075" id="8075">8075</a>
+<a href="#8076" id="8076">8076</a>
+<a href="#8077" id="8077">8077</a>
+<a href="#8078" id="8078">8078</a>
+<a href="#8079" id="8079">8079</a>
+<a href="#8080" id="8080">8080</a>
+<a href="#8081" id="8081">8081</a>
+<a href="#8082" id="8082">8082</a>
+<a href="#8083" id="8083">8083</a>
+<a href="#8084" id="8084">8084</a>
+<a href="#8085" id="8085">8085</a>
+<a href="#8086" id="8086">8086</a>
+<a href="#8087" id="8087">8087</a>
+<a href="#8088" id="8088">8088</a>
+<a href="#8089" id="8089">8089</a>
+<a href="#8090" id="8090">8090</a>
+<a href="#8091" id="8091">8091</a>
+<a href="#8092" id="8092">8092</a>
+<a href="#8093" id="8093">8093</a>
+<a href="#8094" id="8094">8094</a>
+<a href="#8095" id="8095">8095</a>
+<a href="#8096" id="8096">8096</a>
+<a href="#8097" id="8097">8097</a>
+<a href="#8098" id="8098">8098</a>
+<a href="#8099" id="8099">8099</a>
+<a href="#8100" id="8100">8100</a>
+<a href="#8101" id="8101">8101</a>
+<a href="#8102" id="8102">8102</a>
+<a href="#8103" id="8103">8103</a>
+<a href="#8104" id="8104">8104</a>
+<a href="#8105" id="8105">8105</a>
+<a href="#8106" id="8106">8106</a>
+<a href="#8107" id="8107">8107</a>
+<a href="#8108" id="8108">8108</a>
+<a href="#8109" id="8109">8109</a>
+<a href="#8110" id="8110">8110</a>
+<a href="#8111" id="8111">8111</a>
+<a href="#8112" id="8112">8112</a>
+<a href="#8113" id="8113">8113</a>
+<a href="#8114" id="8114">8114</a>
+<a href="#8115" id="8115">8115</a>
+<a href="#8116" id="8116">8116</a>
+<a href="#8117" id="8117">8117</a>
+<a href="#8118" id="8118">8118</a>
+<a href="#8119" id="8119">8119</a>
+<a href="#8120" id="8120">8120</a>
+<a href="#8121" id="8121">8121</a>
+<a href="#8122" id="8122">8122</a>
+<a href="#8123" id="8123">8123</a>
+<a href="#8124" id="8124">8124</a>
+<a href="#8125" id="8125">8125</a>
+<a href="#8126" id="8126">8126</a>
+<a href="#8127" id="8127">8127</a>
+<a href="#8128" id="8128">8128</a>
+<a href="#8129" id="8129">8129</a>
+<a href="#8130" id="8130">8130</a>
+<a href="#8131" id="8131">8131</a>
+<a href="#8132" id="8132">8132</a>
+<a href="#8133" id="8133">8133</a>
+<a href="#8134" id="8134">8134</a>
+<a href="#8135" id="8135">8135</a>
+<a href="#8136" id="8136">8136</a>
+<a href="#8137" id="8137">8137</a>
+<a href="#8138" id="8138">8138</a>
+<a href="#8139" id="8139">8139</a>
+<a href="#8140" id="8140">8140</a>
+<a href="#8141" id="8141">8141</a>
+<a href="#8142" id="8142">8142</a>
+<a href="#8143" id="8143">8143</a>
+<a href="#8144" id="8144">8144</a>
+<a href="#8145" id="8145">8145</a>
+<a href="#8146" id="8146">8146</a>
+<a href="#8147" id="8147">8147</a>
+<a href="#8148" id="8148">8148</a>
+<a href="#8149" id="8149">8149</a>
+<a href="#8150" id="8150">8150</a>
+<a href="#8151" id="8151">8151</a>
+<a href="#8152" id="8152">8152</a>
+<a href="#8153" id="8153">8153</a>
+<a href="#8154" id="8154">8154</a>
+<a href="#8155" id="8155">8155</a>
+<a href="#8156" id="8156">8156</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright 2018 The Fuchsia Authors
 //
 // Licensed under the 2-Clause BSD License &lt;LICENSE-BSD or
@@ -8074,7 +8410,7 @@
 
 <span class="attr">#[cfg(any(feature = <span class="string">&quot;derive&quot;</span>, test))]
 #[cfg_attr(doc_cfg, doc(cfg(feature = <span class="string">&quot;derive&quot;</span>)))]
-</span><span class="kw">pub use </span>zerocopy_derive::{AsBytes, Unaligned};
+</span><span class="kw">pub use </span>zerocopy_derive::Unaligned;
 
 <span class="comment">// `pub use` separately here so that we can mark it `#[doc(hidden)]`.
 //
@@ -10288,21 +10624,45 @@
     }
 }
 
-<span class="doccomment">/// Types which are safe to treat as an immutable byte slice.
+<span class="doccomment">/// Analyzes whether a type is [`AsBytes`].
 ///
-/// WARNING: Do not implement this trait yourself! Instead, use
-/// `#[derive(AsBytes)]` (requires the `derive` Cargo feature).
+/// This derive analyzes, at compile time, whether the annotated type satisfies
+/// the [safety conditions] of `AsBytes` and implements `AsBytes` if it is
+/// sound to do so. This derive can be applied to structs, enums, and unions;
+/// e.g.:
 ///
-/// `AsBytes` types can be safely viewed as a slice of bytes. In particular,
-/// this means that, in any valid instance of the type, none of the bytes of the
-/// instance are uninitialized. This precludes the following types:
-/// - Structs with internal padding
-/// - Unions in which not all variants have the same length
+/// ```
+/// # use zerocopy_derive::{AsBytes};
+/// #[derive(AsBytes)]
+/// #[repr(C)]
+/// struct MyStruct {
+/// # /*
+///     ...
+/// # */
+/// }
 ///
-/// `AsBytes` is ignorant of byte order. For byte order-aware types, see the
-/// [`byteorder`] module.
+/// #[derive(AsBytes)]
+/// #[repr(u8)]
+/// enum MyEnum {
+/// #   Variant,
+/// # /*
+///     ...
+/// # */
+/// }
 ///
-/// # Custom Derive Errors
+/// #[derive(AsBytes)]
+/// #[repr(C)]
+/// union MyUnion {
+/// #   variant: u8,
+/// # /*
+///     ...
+/// # */
+/// }
+/// ```
+///
+/// [safety conditions]: trait@AsBytes#safety
+///
+/// # Error Messages
 ///
 /// Due to the way that the custom derive for `AsBytes` is implemented, you may
 /// get an error like this:
@@ -10324,31 +10684,23 @@
 /// the Rust Reference&#39;s page on [type layout] for more information
 /// about type layout and padding.
 ///
-/// # Safety
+/// [type layout]: https://doc.rust-lang.org/reference/type-layout.html
 ///
-/// *This section describes what is required in order for `T: AsBytes`, and what
-/// unsafe code may assume of such types. `#[derive(AsBytes)]` only permits
-/// types which satisfy these requirements. If you don&#39;t plan on implementing
-/// `AsBytes` manually, and you don&#39;t plan on writing unsafe code that operates
-/// on `AsBytes` types, then you don&#39;t need to read this section.*
+/// # Analysis
 ///
-/// If `T: AsBytes`, then unsafe code may assume that:
-/// - It is sound to treat any `t: T` as an immutable `[u8]` of length
-///   `size_of_val(t)`.
-/// - Given `t: &amp;T`, it is sound to construct a `b: &amp;[u8]` where `b.len() ==
-///   size_of_val(t)` at the same address as `t`, and it is sound for both `b`
-///   and `t` to be live at the same time.
+/// *This section describes, roughly, the analysis performed by this derive to
+/// determine whether it is sound to implement `AsBytes` for a given type.
+/// Unless you are modifying the implementation of this derive, or attempting to
+/// manually implement `AsBytes` for a type yourself, you don&#39;t need to read
+/// this section.*
 ///
-/// If a type is marked as `AsBytes` which violates this contract, it may cause
-/// undefined behavior.
-///
-/// If a type has the following properties, then it is sound to implement
+/// If a type has the following properties, then this derive can implement
 /// `AsBytes` for that type:
+///
 /// - If the type is a struct:
 ///   - It must have a defined representation (`repr(C)`, `repr(transparent)`,
 ///     or `repr(packed)`).
-///   - All of its fields must satisfy the requirements to be `AsBytes` (they do
-///     not actually have to be `AsBytes`).
+///   - All of its fields must be `AsBytes`.
 ///   - Its layout must have no padding. This is always true for
 ///     `repr(transparent)` and `repr(packed)`. For `repr(C)`, see the layout
 ///     algorithm described in the [Rust Reference].
@@ -10363,9 +10715,92 @@
 ///   is not currently implemented for, e.g., `Option&lt;&amp;UnsafeCell&lt;_&gt;&gt;`, but it
 ///   could be one day).
 ///
-/// [type layout]: https://doc.rust-lang.org/reference/type-layout.html
-/// [Rust Reference]: https://doc.rust-lang.org/reference/type-layout.html
 /// [`UnsafeCell`]: core::cell::UnsafeCell
+///
+/// This analysis is subject to change. Unsafe code may *only* rely on the
+/// documented [safety conditions] of `FromBytes`, and must *not* rely on the
+/// implementation details of this derive.
+///
+/// [Rust Reference]: https://doc.rust-lang.org/reference/type-layout.html
+</span><span class="attr">#[cfg(any(feature = <span class="string">&quot;derive&quot;</span>, test))]
+#[cfg_attr(doc_cfg, doc(cfg(feature = <span class="string">&quot;derive&quot;</span>)))]
+</span><span class="kw">pub use </span>zerocopy_derive::AsBytes;
+
+<span class="doccomment">/// Types that can be viewed as an immutable slice of initialized bytes.
+///
+/// Any `AsBytes` type can be viewed as a slice of initialized bytes of the same
+/// size. This is useful for efficiently serializing structured data as raw
+/// bytes.
+///
+/// # Implementation
+///
+/// **Do not implement this trait yourself!** Instead, use
+/// [`#[derive(AsBytes)]`][derive] (requires the `derive` Cargo feature); e.g.:
+///
+/// ```
+/// # use zerocopy_derive::AsBytes;
+/// #[derive(AsBytes)]
+/// #[repr(C)]
+/// struct MyStruct {
+/// # /*
+///     ...
+/// # */
+/// }
+///
+/// #[derive(AsBytes)]
+/// #[repr(u8)]
+/// enum MyEnum {
+/// #   Variant0,
+/// # /*
+///     ...
+/// # */
+/// }
+///
+/// #[derive(AsBytes)]
+/// #[repr(C)]
+/// union MyUnion {
+/// #   variant: u8,
+/// # /*
+///     ...
+/// # */
+/// }
+/// ```
+///
+/// This derive performs a sophisticated, compile-time safety analysis to
+/// determine whether a type is `AsBytes`. See the [derive
+/// documentation][derive] for guidance on how to interpret error messages
+/// produced by the derive&#39;s analysis.
+///
+/// # Safety
+///
+/// *This section describes what is required in order for `T: AsBytes`, and
+/// what unsafe code may assume of such types. If you don&#39;t plan on implementing
+/// `AsBytes` manually, and you don&#39;t plan on writing unsafe code that
+/// operates on `AsBytes` types, then you don&#39;t need to read this section.*
+///
+/// If `T: AsBytes`, then unsafe code may assume that:
+/// - It is sound to treat any `t: T` as an immutable `[u8]` of length
+///   `size_of_val(t)`.
+/// - Given `t: &amp;T`, it is sound to construct a `b: &amp;[u8]` where `b.len() ==
+///   size_of_val(t)` at the same address as `t`, and it is sound for both `b`
+///   and `t` to be live at the same time.
+///
+/// If a type is marked as `AsBytes` which violates this contract, it may cause
+/// undefined behavior.
+///
+/// `#[derive(AsBytes)]` only permits [types which satisfy these
+/// requirements][derive-analysis].
+///
+</span><span class="attr">#[cfg_attr(
+    feature = <span class="string">&quot;derive&quot;</span>,
+    doc = <span class="string">&quot;[derive]: zerocopy_derive::AsBytes&quot;</span>,
+    doc = <span class="string">&quot;[derive-analysis]: zerocopy_derive::AsBytes#analysis&quot;
+</span>)]
+#[cfg_attr(
+    not(feature = <span class="string">&quot;derive&quot;</span>),
+    doc = <span class="macro">concat!</span>(<span class="string">&quot;[derive]: https://docs.rs/zerocopy/&quot;</span>, <span class="macro">env!</span>(<span class="string">&quot;CARGO_PKG_VERSION&quot;</span>), <span class="string">&quot;/zerocopy/derive.AsBytes.html&quot;</span>),
+    doc = <span class="macro">concat!</span>(<span class="string">&quot;[derive-analysis]: https://docs.rs/zerocopy/&quot;</span>, <span class="macro">env!</span>(<span class="string">&quot;CARGO_PKG_VERSION&quot;</span>), <span class="string">&quot;/zerocopy/derive.AsBytes.html#analysis&quot;</span>),
+)]
 </span><span class="kw">pub unsafe trait </span>AsBytes {
     <span class="comment">// The `Self: Sized` bound makes it so that this function doesn&#39;t prevent
     // `AsBytes` from being object safe. Note that other `AsBytes` methods
@@ -10382,6 +10817,33 @@
     ///
     /// `as_bytes` provides access to the bytes of this value as an immutable
     /// byte slice.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use zerocopy::AsBytes;
+    /// # use zerocopy_derive::*;
+    ///
+    /// #[derive(AsBytes)]
+    /// #[repr(C)]
+    /// struct PacketHeader {
+    ///     src_port: [u8; 2],
+    ///     dst_port: [u8; 2],
+    ///     length: [u8; 2],
+    ///     checksum: [u8; 2],
+    /// }
+    ///
+    /// let header = PacketHeader {
+    ///     src_port: [0, 1],
+    ///     dst_port: [2, 3],
+    ///     length: [4, 5],
+    ///     checksum: [6, 7],
+    /// };
+    ///
+    /// let bytes = header.as_bytes();
+    ///
+    /// assert_eq!(bytes, [0, 1, 2, 3, 4, 5, 6, 7]);
+    /// ```
     </span><span class="attr">#[inline(always)]
     </span><span class="kw">fn </span>as_bytes(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[u8] {
         <span class="comment">// Note that this method does not have a `Self: Sized` bound;
@@ -10417,6 +10879,43 @@
     ///
     /// `as_bytes_mut` provides access to the bytes of this value as a mutable
     /// byte slice.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use zerocopy::AsBytes;
+    /// # use zerocopy_derive::*;
+    ///
+    /// # #[derive(Eq, PartialEq, Debug)]
+    /// #[derive(AsBytes, FromZeroes, FromBytes)]
+    /// #[repr(C)]
+    /// struct PacketHeader {
+    ///     src_port: [u8; 2],
+    ///     dst_port: [u8; 2],
+    ///     length: [u8; 2],
+    ///     checksum: [u8; 2],
+    /// }
+    ///
+    /// let mut header = PacketHeader {
+    ///     src_port: [0, 1],
+    ///     dst_port: [2, 3],
+    ///     length: [4, 5],
+    ///     checksum: [6, 7],
+    /// };
+    ///
+    /// let bytes = header.as_bytes_mut();
+    ///
+    /// assert_eq!(bytes, [0, 1, 2, 3, 4, 5, 6, 7]);
+    ///
+    /// bytes.reverse();
+    ///
+    /// assert_eq!(header, PacketHeader {
+    ///     src_port: [7, 6],
+    ///     dst_port: [5, 4],
+    ///     length: [3, 2],
+    ///     checksum: [1, 0],
+    /// });
+    /// ```
     </span><span class="attr">#[inline(always)]
     </span><span class="kw">fn </span>as_bytes_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>[u8]
     <span class="kw">where
@@ -10453,6 +10952,49 @@
     <span class="doccomment">/// Writes a copy of `self` to `bytes`.
     ///
     /// If `bytes.len() != size_of_val(self)`, `write_to` returns `None`.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use zerocopy::AsBytes;
+    /// # use zerocopy_derive::*;
+    ///
+    /// #[derive(AsBytes)]
+    /// #[repr(C)]
+    /// struct PacketHeader {
+    ///     src_port: [u8; 2],
+    ///     dst_port: [u8; 2],
+    ///     length: [u8; 2],
+    ///     checksum: [u8; 2],
+    /// }
+    ///
+    /// let header = PacketHeader {
+    ///     src_port: [0, 1],
+    ///     dst_port: [2, 3],
+    ///     length: [4, 5],
+    ///     checksum: [6, 7],
+    /// };
+    ///
+    /// let mut bytes = [0, 0, 0, 0, 0, 0, 0, 0];
+    ///
+    /// header.write_to(&amp;mut bytes[..]);
+    ///
+    /// assert_eq!(bytes, [0, 1, 2, 3, 4, 5, 6, 7]);
+    /// ```
+    ///
+    /// If too many or too few target bytes are provided, `write_to` returns
+    /// `None` and leaves the target bytes unmodified:
+    ///
+    /// ```
+    /// # use zerocopy::AsBytes;
+    /// # let header = u128::MAX;
+    /// let mut excessive_bytes = &amp;mut [0u8; 128][..];
+    ///
+    /// let write_result = header.write_to(excessive_bytes);
+    ///
+    /// assert!(write_result.is_none());
+    /// assert_eq!(excessive_bytes, [0u8; 128]);
+    /// ```
     </span><span class="attr">#[inline]
     </span><span class="kw">fn </span>write_to(<span class="kw-2">&amp;</span><span class="self">self</span>, bytes: <span class="kw-2">&amp;mut </span>[u8]) -&gt; <span class="prelude-ty">Option</span>&lt;()&gt; {
         <span class="kw">if </span>bytes.len() != mem::size_of_val(<span class="self">self</span>) {
@@ -10467,6 +11009,49 @@
     ///
     /// `write_to_prefix` writes `self` to the first `size_of_val(self)` bytes
     /// of `bytes`. If `bytes.len() &lt; size_of_val(self)`, it returns `None`.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use zerocopy::AsBytes;
+    /// # use zerocopy_derive::*;
+    ///
+    /// #[derive(AsBytes)]
+    /// #[repr(C)]
+    /// struct PacketHeader {
+    ///     src_port: [u8; 2],
+    ///     dst_port: [u8; 2],
+    ///     length: [u8; 2],
+    ///     checksum: [u8; 2],
+    /// }
+    ///
+    /// let header = PacketHeader {
+    ///     src_port: [0, 1],
+    ///     dst_port: [2, 3],
+    ///     length: [4, 5],
+    ///     checksum: [6, 7],
+    /// };
+    ///
+    /// let mut bytes = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    ///
+    /// header.write_to_prefix(&amp;mut bytes[..]);
+    ///
+    /// assert_eq!(bytes, [0, 1, 2, 3, 4, 5, 6, 7, 0, 0]);
+    /// ```
+    ///
+    /// If insufficient target bytes are provided, `write_to_prefix` returns
+    /// `None` and leaves the target bytes unmodified:
+    ///
+    /// ```
+    /// # use zerocopy::AsBytes;
+    /// # let header = u128::MAX;
+    /// let mut insufficent_bytes = &amp;mut [0, 0][..];
+    ///
+    /// let write_result = header.write_to_suffix(insufficent_bytes);
+    ///
+    /// assert!(write_result.is_none());
+    /// assert_eq!(insufficent_bytes, [0, 0]);
+    /// ```
     </span><span class="attr">#[inline]
     </span><span class="kw">fn </span>write_to_prefix(<span class="kw-2">&amp;</span><span class="self">self</span>, bytes: <span class="kw-2">&amp;mut </span>[u8]) -&gt; <span class="prelude-ty">Option</span>&lt;()&gt; {
         <span class="kw">let </span>size = mem::size_of_val(<span class="self">self</span>);
@@ -10478,6 +11063,56 @@
     ///
     /// `write_to_suffix` writes `self` to the last `size_of_val(self)` bytes of
     /// `bytes`. If `bytes.len() &lt; size_of_val(self)`, it returns `None`.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use zerocopy::AsBytes;
+    /// # use zerocopy_derive::*;
+    ///
+    /// #[derive(AsBytes)]
+    /// #[repr(C)]
+    /// struct PacketHeader {
+    ///     src_port: [u8; 2],
+    ///     dst_port: [u8; 2],
+    ///     length: [u8; 2],
+    ///     checksum: [u8; 2],
+    /// }
+    ///
+    /// let header = PacketHeader {
+    ///     src_port: [0, 1],
+    ///     dst_port: [2, 3],
+    ///     length: [4, 5],
+    ///     checksum: [6, 7],
+    /// };
+    ///
+    /// let mut bytes = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    ///
+    /// header.write_to_suffix(&amp;mut bytes[..]);
+    ///
+    /// assert_eq!(bytes, [0, 0, 0, 1, 2, 3, 4, 5, 6, 7]);
+    ///
+    /// let mut insufficent_bytes = &amp;mut [0, 0][..];
+    ///
+    /// let write_result = header.write_to_suffix(insufficent_bytes);
+    ///
+    /// assert!(write_result.is_none());
+    /// assert_eq!(insufficent_bytes, [0, 0]);
+    /// ```
+    ///
+    /// If insufficient target bytes are provided, `write_to_suffix` returns
+    /// `None` and leaves the target bytes unmodified:
+    ///
+    /// ```
+    /// # use zerocopy::AsBytes;
+    /// # let header = u128::MAX;
+    /// let mut insufficent_bytes = &amp;mut [0, 0][..];
+    ///
+    /// let write_result = header.write_to_suffix(insufficent_bytes);
+    ///
+    /// assert!(write_result.is_none());
+    /// assert_eq!(insufficent_bytes, [0, 0]);
+    /// ```
     </span><span class="attr">#[inline]
     </span><span class="kw">fn </span>write_to_suffix(<span class="kw-2">&amp;</span><span class="self">self</span>, bytes: <span class="kw-2">&amp;mut </span>[u8]) -&gt; <span class="prelude-ty">Option</span>&lt;()&gt; {
         <span class="kw">let </span>start = bytes.len().checked_sub(mem::size_of_val(<span class="self">self</span>))<span class="question-mark">?</span>;
@@ -11220,6 +11855,17 @@
 /// Note that the `T` produced by the expression `$e` will *not* be dropped.
 /// Semantically, its bits will be copied into a new value of type `U`, the
 /// original `T` will be forgotten, and the value of type `U` will be returned.
+///
+/// # Examples
+///
+/// ```
+/// # use zerocopy::transmute;
+/// let one_dimensional: [u8; 8] = [0, 1, 2, 3, 4, 5, 6, 7];
+///
+/// let two_dimensional: [[u8; 4]; 2] = transmute!(one_dimensional);
+///
+/// assert_eq!(two_dimensional, [[0, 1, 2, 3], [4, 5, 6, 7]]);
+/// ```
 </span><span class="attr">#[macro_export]
 </span><span class="macro">macro_rules! </span>transmute {
     (<span class="macro-nonterminal">$e</span>:expr) =&gt; {{
@@ -11274,6 +11920,17 @@
 ///
 /// The lifetime of the input type, `&amp;T` or `&amp;mut T`, must be the same as or
 /// outlive the lifetime of the output type, `&amp;U`.
+///
+/// # Examples
+///
+/// ```
+/// # use zerocopy::transmute_ref;
+/// let one_dimensional: [u8; 8] = [0, 1, 2, 3, 4, 5, 6, 7];
+///
+/// let two_dimensional: &amp;[[u8; 4]; 2] = transmute_ref!(&amp;one_dimensional);
+///
+/// assert_eq!(two_dimensional, &amp;[[0, 1, 2, 3], [4, 5, 6, 7]]);
+/// ```
 ///
 /// # Alignment increase error message
 ///
@@ -11369,6 +12026,21 @@
 ///
 /// The lifetime of the input type, `&amp;mut T`, must be the same as or outlive the
 /// lifetime of the output type, `&amp;mut U`.
+///
+/// # Examples
+///
+/// ```
+/// # use zerocopy::transmute_mut;
+/// let mut one_dimensional: [u8; 8] = [0, 1, 2, 3, 4, 5, 6, 7];
+///
+/// let two_dimensional: &amp;mut [[u8; 4]; 2] = transmute_mut!(&amp;mut one_dimensional);
+///
+/// assert_eq!(two_dimensional, &amp;[[0, 1, 2, 3], [4, 5, 6, 7]]);
+///
+/// two_dimensional.reverse();
+///
+/// assert_eq!(one_dimensional, [4, 5, 6, 7, 0, 1, 2, 3]);
+/// ```
 ///
 /// # Alignment increase error message
 ///
@@ -11484,7 +12156,7 @@
 /// compile time. So, for instance, an invocation with a Windows path containing
 /// backslashes `\` would not compile correctly on Unix.
 ///
-/// `include_bytes!` is ignorant of byte order. For byte order-aware types, see
+/// `include_value!` is ignorant of byte order. For byte order-aware types, see
 /// the [`byteorder`] module.
 ///
 /// # Examples

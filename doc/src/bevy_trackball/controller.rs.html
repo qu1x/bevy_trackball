@@ -147,6 +147,12 @@
 <a href="#147" id="147">147</a>
 <a href="#148" id="148">148</a>
 <a href="#149" id="149">149</a>
+<a href="#150" id="150">150</a>
+<a href="#151" id="151">151</a>
+<a href="#152" id="152">152</a>
+<a href="#153" id="153">153</a>
+<a href="#154" id="154">154</a>
+<a href="#155" id="155">155</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>bevy::{
 	input::{
 		keyboard::KeyCode,
@@ -210,16 +216,22 @@
 	time: Res&lt;Time&gt;,
 	key_input: Res&lt;Input&lt;KeyCode&gt;&gt;,
 	mouse_input: Res&lt;Input&lt;MouseButton&gt;&gt;,
-	touch_events: EventReader&lt;TouchInput&gt;,
+	<span class="kw-2">mut </span>touch_events: EventReader&lt;TouchInput&gt;,
 	<span class="kw-2">mut </span>touch_events_clone: EventReader&lt;TouchInput&gt;,
-	delta_events: EventReader&lt;MouseMotion&gt;,
-	mouse_events: EventReader&lt;CursorMoved&gt;,
-	wheel_events: EventReader&lt;MouseWheel&gt;,
+	<span class="kw-2">mut </span>delta_events: EventReader&lt;MouseMotion&gt;,
+	<span class="kw-2">mut </span>mouse_events: EventReader&lt;CursorMoved&gt;,
+	<span class="kw-2">mut </span>wheel_events: EventReader&lt;MouseWheel&gt;,
 	<span class="kw-2">mut </span>primary_windows: Query&lt;<span class="kw-2">&amp;mut </span>Window, With&lt;PrimaryWindow&gt;&gt;,
 	<span class="kw-2">mut </span>secondary_windows: Query&lt;<span class="kw-2">&amp;mut </span>Window, Without&lt;PrimaryWindow&gt;&gt;,
 	<span class="kw-2">mut </span>cameras: Query&lt;(Entity, <span class="kw-2">&amp;</span>Camera, <span class="kw-2">&amp;</span>TrackballCamera, <span class="kw-2">&amp;mut </span>TrackballController)&gt;,
 	<span class="kw-2">mut </span>trackball_events: EventWriter&lt;TrackballEvent&gt;,
 ) {
+	<span class="kw">if </span>viewport.was_stolen() {
+		touch_events.clear();
+		delta_events.clear();
+		mouse_events.clear();
+		wheel_events.clear();
+	}
 	<span class="kw">let </span><span class="prelude-val">Some</span>((is_changed, <span class="kw-2">mut </span>window, group, camera, trackball, <span class="kw-2">mut </span>controller)) =
 		TrackballViewport::select(
 			<span class="kw-2">&amp;mut </span>viewport,
