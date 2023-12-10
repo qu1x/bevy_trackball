@@ -26,7 +26,7 @@ Run simple and advanced [examples] in your browser using [WebAssembly] and [WebG
 Supports multiple camera modes:
 
   * Trackball mode rotates camera around target.
-  * First-Person mode rotates target around camera.
+  * First-person mode rotates target around camera.
   * Spectator mode translates target and camera.
 
 ## Coherence Features
@@ -99,7 +99,15 @@ away from the screen’s center (e.g., the rotation accelerates towards the edge
 [#10702]: https://github.com/bevyengine/bevy/pull/10702
 [#1680]: https://github.com/bevyengine/bevy/issues/1680
 
-See the [release history](RELEASES.md) to keep track of the development.
+See the [release history](RELEASES.md) and [roadmap](#Roadmap) to keep track of the development.
+
+## Roadmap
+
+  * Implement gliding clamp for first-person mode and scale operation, see
+    [issue](https://github.com/qu1x/bevy_trackball/issues/5).
+  * Support more camera modes out of the box by adding dedicated controllers for each mode, see
+    [issue](https://github.com/qu1x/bevy_trackball/issues/3).
+  * Support gamepad inputs, see [issue](https://github.com/qu1x/bevy_trackball/issues/4).
 
 ## Input Mappings
 

@@ -10,7 +10,7 @@
 //! Supports multiple camera modes:
 //!
 //!   * Trackball mode rotates camera around target.
-//!   * First-Person mode rotates target around camera.
+//!   * First-person mode rotates target around camera.
 //!   * Spectator mode translates target and camera.
 //!
 //! # Coherence Features
@@ -78,6 +78,14 @@
 //! [patched `winit`]: https://github.com/qu1x/bevy_trackball/blob/main/.cargo/config.toml
 //! [#10702]: https://github.com/bevyengine/bevy/pull/10702
 //! [#1680]: https://github.com/bevyengine/bevy/issues/1680
+//!
+//! # Roadmap
+//!
+//!   * Implement gliding clamp for first-person mode and scale operation, see
+//!     [issue](https://github.com/qu1x/bevy_trackball/issues/5).
+//!   * Support more camera modes out of the box by adding dedicated controllers for each mode, see
+//!     [issue](https://github.com/qu1x/bevy_trackball/issues/3).
+//!   * Support gamepad inputs, see [issue](https://github.com/qu1x/bevy_trackball/issues/4).
 //!
 //! # Input Mappings
 //!
