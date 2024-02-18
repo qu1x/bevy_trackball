@@ -76,8 +76,8 @@ impl TrackballViewport {
 	#[allow(clippy::type_complexity)]
 	pub(super) fn select<'a>(
 		viewport: &mut ResMut<Self>,
-		key_input: &Res<Input<KeyCode>>,
-		mouse_input: &Res<Input<MouseButton>>,
+		key_input: &Res<ButtonInput<KeyCode>>,
+		mouse_input: &Res<ButtonInput<MouseButton>>,
 		touch_events: &mut EventReader<TouchInput>,
 		wheel_events: &EventReader<MouseWheel>,
 		primary_windows: &'a mut Query<&mut Window, With<PrimaryWindow>>,

@@ -19,60 +19,60 @@ pub struct TrackballInput {
 	/// the focus operation in favor of the orbit operation.
 	pub focus: bool,
 
-	/// Key used to toggle `esdf`/`wasd` mapping. Default is [`KeyCode::M`].
+	/// Key used to toggle `esdf`/`wasd` mapping. Default is [`KeyCode::KeyM`].
 	pub gamer_key: Option<KeyCode>,
-	/// Key used to toggle projection mode. Default is [`KeyCode::P`].
+	/// Key used to toggle projection mode. Default is [`KeyCode::KeyP`].
 	pub ortho_key: Option<KeyCode>,
 
-	/// Key used to reset frame. Default is [`KeyCode::Return`].
+	/// Key used to reset frame. Default is [`KeyCode::Enter`].
 	pub reset_key: Option<KeyCode>,
 
 	/// Mouse button used to look around. Default is [`MouseButton::Middle`].
 	pub first_button: Option<MouseButton>,
 	/// Key used to look around with single-finger touch. Default is [`KeyCode::ShiftLeft`].
 	pub first_key: Option<KeyCode>,
-	/// Key used to look left. Default is [`KeyCode::Left`].
+	/// Key used to look left. Default is [`KeyCode::ArrowLeft`].
 	pub first_left_key: Option<KeyCode>,
-	/// Key used to look right. Default is [`KeyCode::Right`].
+	/// Key used to look right. Default is [`KeyCode::ArrowRight`].
 	pub first_right_key: Option<KeyCode>,
-	/// Key used to look up. Default is [`KeyCode::Up`].
+	/// Key used to look up. Default is [`KeyCode::ArrowUp`].
 	pub first_up_key: Option<KeyCode>,
-	/// Key used to look down. Default is [`KeyCode::Down`].
+	/// Key used to look down. Default is [`KeyCode::ArrowDown`].
 	pub first_down_key: Option<KeyCode>,
 
 	/// Mouse button used to orbit camera. Default is [`MouseButton::Left`].
 	pub orbit_button: Option<MouseButton>,
-	/// Key used to screw/roll left. Default is [`KeyCode::U`].
+	/// Key used to screw/roll left. Default is [`KeyCode::KeyU`].
 	pub screw_left_key: Option<KeyCode>,
-	/// Key used to screw/roll right. Default is [`KeyCode::O`].
+	/// Key used to screw/roll right. Default is [`KeyCode::KeyO`].
 	pub screw_right_key: Option<KeyCode>,
-	/// Key used to orbit left. Default is [`KeyCode::J`].
+	/// Key used to orbit left. Default is [`KeyCode::KeyJ`].
 	pub orbit_left_key: Option<KeyCode>,
-	/// Key used to orbit right. Default is [`KeyCode::L`].
+	/// Key used to orbit right. Default is [`KeyCode::KeyL`].
 	pub orbit_right_key: Option<KeyCode>,
-	/// Key used to orbit up. Default is [`KeyCode::I`].
+	/// Key used to orbit up. Default is [`KeyCode::KeyI`].
 	pub orbit_up_key: Option<KeyCode>,
-	/// Key used to orbit down. Default is [`KeyCode::K`].
+	/// Key used to orbit down. Default is [`KeyCode::KeyK`].
 	pub orbit_down_key: Option<KeyCode>,
 
 	/// Mouse button used to slide camera. Default is [`MouseButton::Right`].
 	pub slide_button: Option<MouseButton>,
-	/// Key used to slide left. Default is [`KeyCode::S`].
+	/// Key used to slide left. Default is [`KeyCode::KeyS`].
 	pub slide_left_key: Option<KeyCode>,
-	/// Key used to slide right. Default is [`KeyCode::F`].
+	/// Key used to slide right. Default is [`KeyCode::KeyF`].
 	pub slide_right_key: Option<KeyCode>,
-	/// Key used to slide up. Default is [`KeyCode::E`].
+	/// Key used to slide up. Default is [`KeyCode::KeyE`].
 	pub slide_up_key: Option<KeyCode>,
-	/// Key used to slide up. Default is [`KeyCode::D`].
+	/// Key used to slide up. Default is [`KeyCode::KeyD`].
 	pub slide_down_key: Option<KeyCode>,
-	/// Key used to slide far. Default is [`KeyCode::G`].
+	/// Key used to slide far. Default is [`KeyCode::KeyG`].
 	pub slide_far_key: Option<KeyCode>,
-	/// Key used to slide near. Default is [`KeyCode::V`].
+	/// Key used to slide near. Default is [`KeyCode::KeyV`].
 	pub slide_near_key: Option<KeyCode>,
 
-	/// Key used to scale/zoom in. Default is [`KeyCode::H`].
+	/// Key used to scale/zoom in. Default is [`KeyCode::KeyH`].
 	pub scale_in_key: Option<KeyCode>,
-	/// Key used to scale/zoom out. Default is [`KeyCode::N`].
+	/// Key used to scale/zoom out. Default is [`KeyCode::KeyN`].
 	pub scale_out_key: Option<KeyCode>,
 }
 
@@ -91,12 +91,12 @@ impl TrackballInput {
 	/// This mapping is symmetric to the `ijkl`/`hn` orbit mapping but less intuitive to gamers
 	/// compared with [`Self::map_wasd`].
 	pub fn map_esdf(&mut self) {
-		self.slide_up_key = Some(KeyCode::E);
-		self.slide_down_key = Some(KeyCode::D);
-		self.slide_left_key = Some(KeyCode::S);
-		self.slide_right_key = Some(KeyCode::F);
-		self.slide_far_key = Some(KeyCode::G);
-		self.slide_near_key = Some(KeyCode::V);
+		self.slide_up_key = Some(KeyCode::KeyE);
+		self.slide_down_key = Some(KeyCode::KeyD);
+		self.slide_left_key = Some(KeyCode::KeyS);
+		self.slide_right_key = Some(KeyCode::KeyF);
+		self.slide_far_key = Some(KeyCode::KeyG);
+		self.slide_near_key = Some(KeyCode::KeyV);
 	}
 	/// Maps `wasd`/`Space`/`ControlLeft` to slide operations.
 	///
@@ -114,10 +114,10 @@ impl TrackballInput {
 	pub fn map_wasd(&mut self) {
 		self.slide_up_key = Some(KeyCode::Space);
 		self.slide_down_key = Some(KeyCode::ControlLeft);
-		self.slide_left_key = Some(KeyCode::A);
-		self.slide_right_key = Some(KeyCode::D);
-		self.slide_far_key = Some(KeyCode::W);
-		self.slide_near_key = Some(KeyCode::S);
+		self.slide_left_key = Some(KeyCode::KeyA);
+		self.slide_right_key = Some(KeyCode::KeyD);
+		self.slide_far_key = Some(KeyCode::KeyW);
+		self.slide_near_key = Some(KeyCode::KeyS);
 	}
 }
 
@@ -129,37 +129,37 @@ impl Default for TrackballInput {
 
 			focus: true,
 
-			gamer_key: Some(KeyCode::M),
+			gamer_key: Some(KeyCode::KeyM),
 
-			ortho_key: Some(KeyCode::P),
+			ortho_key: Some(KeyCode::KeyP),
 
-			reset_key: Some(KeyCode::Return),
+			reset_key: Some(KeyCode::Enter),
 
 			first_key: Some(KeyCode::ShiftLeft),
 			first_button: Some(MouseButton::Middle),
-			first_left_key: Some(KeyCode::Left),
-			first_right_key: Some(KeyCode::Right),
-			first_up_key: Some(KeyCode::Up),
-			first_down_key: Some(KeyCode::Down),
+			first_left_key: Some(KeyCode::ArrowLeft),
+			first_right_key: Some(KeyCode::ArrowRight),
+			first_up_key: Some(KeyCode::ArrowUp),
+			first_down_key: Some(KeyCode::ArrowDown),
 
 			orbit_button: Some(MouseButton::Left),
-			screw_left_key: Some(KeyCode::U),
-			screw_right_key: Some(KeyCode::O),
-			orbit_left_key: Some(KeyCode::J),
-			orbit_right_key: Some(KeyCode::L),
-			orbit_up_key: Some(KeyCode::I),
-			orbit_down_key: Some(KeyCode::K),
+			screw_left_key: Some(KeyCode::KeyU),
+			screw_right_key: Some(KeyCode::KeyO),
+			orbit_left_key: Some(KeyCode::KeyJ),
+			orbit_right_key: Some(KeyCode::KeyL),
+			orbit_up_key: Some(KeyCode::KeyI),
+			orbit_down_key: Some(KeyCode::KeyK),
 
 			slide_button: Some(MouseButton::Right),
-			slide_up_key: Some(KeyCode::E),
-			slide_down_key: Some(KeyCode::D),
-			slide_left_key: Some(KeyCode::S),
-			slide_right_key: Some(KeyCode::F),
-			slide_far_key: Some(KeyCode::G),
-			slide_near_key: Some(KeyCode::V),
+			slide_up_key: Some(KeyCode::KeyE),
+			slide_down_key: Some(KeyCode::KeyD),
+			slide_left_key: Some(KeyCode::KeyS),
+			slide_right_key: Some(KeyCode::KeyF),
+			slide_far_key: Some(KeyCode::KeyG),
+			slide_near_key: Some(KeyCode::KeyV),
 
-			scale_in_key: Some(KeyCode::H),
-			scale_out_key: Some(KeyCode::N),
+			scale_in_key: Some(KeyCode::KeyH),
+			scale_out_key: Some(KeyCode::KeyN),
 		}
 	}
 }

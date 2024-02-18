@@ -7,7 +7,10 @@ use std::f32::consts::PI;
 
 use bevy::{
 	prelude::*,
-	render::render_resource::{Extent3d, TextureDimension, TextureFormat},
+	render::{
+		render_asset::RenderAssetUsages,
+		render_resource::{Extent3d, TextureDimension, TextureFormat},
+	},
 };
 use bevy_trackball::prelude::*;
 
@@ -19,7 +22,6 @@ fn main() {
 				.set(WindowPlugin {
 					primary_window: Some(Window {
 						canvas: Some("#bevy".to_owned()),
-						fit_canvas_to_parent: true,
 						..default()
 					}),
 					..default()
@@ -34,7 +36,7 @@ fn main() {
 #[derive(Component)]
 struct Shape;
 
-const X_EXTENT: f32 = 14.5;
+const X_EXTENT: f32 = 12.0;
 
 fn setup(
 	mut commands: Commands,
@@ -48,13 +50,12 @@ fn setup(
 	});
 
 	let shapes = [
-		meshes.add(shape::Cube::default().into()),
-		meshes.add(shape::Box::default().into()),
-		meshes.add(shape::Capsule::default().into()),
-		meshes.add(shape::Torus::default().into()),
-		meshes.add(shape::Cylinder::default().into()),
-		meshes.add(shape::Icosphere::default().try_into().unwrap()),
-		meshes.add(shape::UVSphere::default().into()),
+		meshes.add(Cuboid::default()),
+		meshes.add(Capsule3d::default()),
+		meshes.add(Torus::default()),
+		meshes.add(Cylinder::default()),
+		meshes.add(Sphere::default().mesh().ico(5).unwrap()),
+		meshes.add(Sphere::default().mesh().uv(32, 18)),
 	];
 
 	let num_shapes = shapes.len();
@@ -66,7 +67,7 @@ fn setup(
 				material: debug_material.clone(),
 				transform: Transform::from_xyz(
 					(i as f32 / (num_shapes - 1) as f32).mul_add(X_EXTENT, -X_EXTENT / 2.),
-					3.0,
+					2.0,
 					0.0,
 				)
 				.with_rotation(Quat::from_rotation_x(-PI / 4.)),
@@ -76,23 +77,25 @@ fn setup(
 		));
 	}
 
-	// ground plane
-	commands.spawn(PbrBundle {
-		mesh: meshes.add(shape::Plane::from_size(50.0).into()),
-		material: materials.add(Color::SILVER.into()),
-		..default()
-	});
 	// light
 	commands.spawn(PointLightBundle {
 		point_light: PointLight {
-			intensity: 9000.0,
-			range: 100.,
 			shadows_enabled: true,
+			intensity: 10_000_000.,
+			range: 100.0,
 			..default()
 		},
 		transform: Transform::from_xyz(8.0, 16.0, 8.0),
 		..default()
 	});
+
+	// ground plane
+	commands.spawn(PbrBundle {
+		mesh: meshes.add(Plane3d::default().mesh().size(50.0, 50.0)),
+		material: materials.add(Color::SILVER),
+		..default()
+	});
+
 	// camera
 	let [target, eye, up] = [Vec3::Y, Vec3::new(0.0, 6.0, 12.0), Vec3::Y];
 	commands.spawn((
@@ -134,5 +137,6 @@ fn uv_debug_texture() -> Image {
 		TextureDimension::D2,
 		&texture_data,
 		TextureFormat::Rgba8UnormSrgb,
+		RenderAssetUsages::RENDER_WORLD,
 	)
 }

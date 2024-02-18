@@ -9,7 +9,6 @@
 #![allow(clippy::similar_names)]
 
 use bevy::{
-	core_pipeline::clear_color::ClearColorConfig,
 	prelude::*,
 	render::camera::{RenderTarget, Viewport},
 	window::{PrimaryWindow, WindowRef, WindowResized},
@@ -32,23 +31,23 @@ fn setup(
 	mut meshes: ResMut<Assets<Mesh>>,
 	mut materials: ResMut<Assets<StandardMaterial>>,
 ) {
-	// Plane
+	// circular base
 	commands.spawn(PbrBundle {
-		mesh: meshes.add(shape::Plane::from_size(5.0).into()),
-		material: materials.add(Color::rgb(0.3, 0.5, 0.3).into()),
+		mesh: meshes.add(Circle::new(4.0)),
+		material: materials.add(Color::WHITE),
+		transform: Transform::from_rotation(Quat::from_rotation_x(-std::f32::consts::FRAC_PI_2)),
 		..default()
 	});
-	// Cube
+	// cube
 	commands.spawn(PbrBundle {
-		mesh: meshes.add(Mesh::from(shape::Cube { size: 1.0 })),
-		material: materials.add(Color::rgb(0.8, 0.7, 0.6).into()),
+		mesh: meshes.add(Cuboid::new(1.0, 1.0, 1.0)),
+		material: materials.add(Color::rgb_u8(124, 144, 255)),
 		transform: Transform::from_xyz(0.0, 0.5, 0.0),
 		..default()
 	});
-	// Light
+	// light
 	commands.spawn(PointLightBundle {
 		point_light: PointLight {
-			intensity: 1500.0,
 			shadows_enabled: true,
 			..default()
 		},
@@ -116,9 +115,6 @@ fn setup(
 						// Renders the right camera after the left camera,
 						// which has a default priority of 0.
 						order,
-						..default()
-					},
-					camera_3d: Camera3d {
 						// Don't clear on the second camera
 						// because the first camera already cleared the window.
 						clear_color: ClearColorConfig::None,

@@ -47,8 +47,7 @@
 //! # Additional Features
 //!
 //!   * Time-free multi-touch gesture recognition for orbit, scale, slide, and focus (i.e., slide to
-//!     cursor/finger position) operations. **NOTE:** Requires [patched `winit`] dependency to
-//!     account for the viewport's position offset until pull request [#10702] is merged.
+//!     cursor/finger position) operations.
 //!   * Smoothing of movement implemented as fps-agnostic exponential easy-out.
 //!   * Gimbal lock-free using quaternion instead of Euler angles.
 //!   * Gliding clamp (experimental): The movement of a camera can be restricted to user-defined
@@ -75,8 +74,6 @@
 //!     to inspect is known and hence the near clip plane can safely be placed just in front of it.
 //!   * `f64`-ready for large worlds (e.g., solar system scale) whenever Bevy is, see issue [#1680].
 //!
-//! [patched `winit`]: https://github.com/qu1x/bevy_trackball/blob/main/.cargo/config.toml
-//! [#10702]: https://github.com/bevyengine/bevy/pull/10702
 //! [#1680]: https://github.com/bevyengine/bevy/issues/1680
 //!
 //! # Roadmap
@@ -102,7 +99,7 @@
 //! Left Press + Release    | Any + Release           | &nbsp;   | Slides to cursor/finger position.
 //! &nbsp;                  | &nbsp;                  | `m`      | Toggle `esdf`/`wasd` mapping.
 //! &nbsp;                  | &nbsp;                  | `p`      | Toggle orthographic/perspective.
-//! &nbsp;                  | &nbsp;                  | `Return` | Reset camera transform.
+//! &nbsp;                  | &nbsp;                  | `Enter`  | Reset camera transform.
 //!
 //! Alternatively, [`TrackballInput::map_wasd`] maps `wasd`/`Space`/`ControlLeft` to slide
 //! operations where `ws` slides in/out and `Space`/`ControlLeft` slides up/down (jump/crouch).

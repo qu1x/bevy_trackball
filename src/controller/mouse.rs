@@ -17,7 +17,7 @@ pub fn mouse(
 	trackball: &TrackballCamera,
 	controller: &mut TrackballController,
 	window: &mut Window,
-	mouse_input: &Res<Input<MouseButton>>,
+	mouse_input: &Res<ButtonInput<MouseButton>>,
 	mut delta_events: EventReader<MouseMotion>,
 	mut mouse_events: EventReader<CursorMoved>,
 	mut wheel_events: EventReader<MouseWheel>,
@@ -57,7 +57,7 @@ pub fn mouse(
 	if just_pressed_button(controller.input.orbit_button) {
 		controller.touch.compute(None, pos, 0);
 		controller.orbit.compute(&pos, &max);
-		window.cursor.icon = CursorIcon::Hand;
+		window.cursor.icon = CursorIcon::Pointer;
 	}
 	if just_released_button(controller.input.orbit_button) {
 		if let Some((_num, pos)) = controller.touch.discard(None) {
@@ -68,7 +68,7 @@ pub fn mouse(
 			}
 		}
 		controller.orbit.discard();
-		window.cursor.icon = CursorIcon::Arrow;
+		window.cursor.icon = CursorIcon::Default;
 	}
 	if just_pressed_button(controller.input.slide_button) {
 		controller.slide.compute(pos);
@@ -76,7 +76,7 @@ pub fn mouse(
 	}
 	if just_released_button(controller.input.slide_button) {
 		controller.slide.discard();
-		window.cursor.icon = CursorIcon::Arrow;
+		window.cursor.icon = CursorIcon::Default;
 	}
 	for mouse_event in mouse_events.read() {
 		let pos = mouse_event.position - min;

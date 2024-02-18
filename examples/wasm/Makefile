@@ -54,7 +54,7 @@ target/index.html:
 	ln -sf $(word 1,$(EXAMPLES)).html target/index.html
 
 target/input.code: ../../src/lib.rs | target
-	sed -n '/| Keyboard |/,/| `Return` |/p' $< | jq -Rr @html > $@
+	sed -n '/| Keyboard |/,/| `Enter`  |/p' $< | jq -Rr @html > $@
 
 target/%.code: ../%.rs target/input.code
 	cat target/input.code > $@

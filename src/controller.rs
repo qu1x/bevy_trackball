@@ -59,8 +59,8 @@ impl TrackballController {
 pub fn trackball_controller(
 	mut viewport: ResMut<TrackballViewport>,
 	time: Res<Time>,
-	key_input: Res<Input<KeyCode>>,
-	mouse_input: Res<Input<MouseButton>>,
+	key_input: Res<ButtonInput<KeyCode>>,
+	mouse_input: Res<ButtonInput<MouseButton>>,
 	mut touch_events: EventReader<TouchInput>,
 	mut touch_events_clone: EventReader<TouchInput>,
 	mut delta_events: EventReader<MouseMotion>,
@@ -104,7 +104,7 @@ pub fn trackball_controller(
 		controller.slide.discard();
 		controller.touch.discard(None);
 		controller.touch.discard(None);
-		window.cursor.icon = CursorIcon::Arrow;
+		window.cursor.icon = CursorIcon::Default;
 		window.cursor.grab_mode = CursorGrabMode::None;
 		window.cursor.visible = true;
 	}

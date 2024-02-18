@@ -11,8 +11,8 @@ pub fn key(
 	trackball: &TrackballCamera,
 	controller: &mut TrackballController,
 	window: &mut Window,
-	key_input: &Res<Input<KeyCode>>,
-	mouse_input: &Res<Input<MouseButton>>,
+	key_input: &Res<ButtonInput<KeyCode>>,
+	mouse_input: &Res<ButtonInput<MouseButton>>,
 	zat: f32,
 	w: f32,
 	v: f32,
@@ -31,7 +31,7 @@ pub fn key(
 		trackball_events.send(TrackballEvent::ortho(group, None));
 	}
 	if just_pressed(controller.input.gamer_key) {
-		if controller.input.slide_far_key == Some(KeyCode::W) {
+		if controller.input.slide_far_key == Some(KeyCode::KeyW) {
 			controller.input.map_esdf();
 		} else {
 			controller.input.map_wasd();
