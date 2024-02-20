@@ -1,8 +1,8 @@
-use bevy::prelude::*;
 use bevy::{
-	input::{keyboard::KeyCode, mouse::MouseWheel, touch::TouchPhase},
+	input::{mouse::MouseWheel, touch::TouchPhase},
+	prelude::*,
 	render::camera::RenderTarget,
-	window::{PrimaryWindow, Window, WindowRef},
+	window::{PrimaryWindow, WindowRef},
 };
 
 use super::{TrackballCamera, TrackballController};

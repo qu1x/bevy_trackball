@@ -1,7 +1,7 @@
 use bevy::{
 	input::mouse::{MouseMotion, MouseScrollUnit, MouseWheel},
 	prelude::*,
-	window::{CursorGrabMode, CursorIcon},
+	window::CursorGrabMode,
 };
 use trackball::{
 	nalgebra::{Point2, Point3},

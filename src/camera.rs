@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use bevy::{prelude::*, render::camera::ScalingMode, transform::components::Transform};
+use bevy::{prelude::*, render::camera::ScalingMode};
 use trackball::{approx::AbsDiffEq, nalgebra::Point2, Clamp, Delta, Fixed, Frame, Scope};
 
 /// Trackball camera component mainly defined by [`Frame`] and [`Scope`].

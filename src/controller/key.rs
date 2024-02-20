@@ -1,4 +1,4 @@
-use bevy::{input::keyboard::KeyCode, prelude::*, window::CursorGrabMode};
+use bevy::{prelude::*, window::CursorGrabMode};
 use trackball::nalgebra::{Point3, Unit, UnitQuaternion};
 
 use crate::{TrackballCamera, TrackballController, TrackballEvent};

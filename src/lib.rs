@@ -333,14 +333,10 @@ impl Plugin for TrackballPlugin {
 				mut viewport: ResMut<TrackballViewport>,
 				mut contexts: Query<&mut EguiContext>,
 			) {
-				let stolen = contexts
-					.iter_mut()
-					.next()
-					.map(|mut context| {
-						let context = context.get_mut();
-						context.wants_pointer_input() || context.wants_keyboard_input()
-					})
-					.unwrap_or_default();
+				let stolen = contexts.iter_mut().next().is_some_and(|mut context| {
+					let context = context.get_mut();
+					context.wants_pointer_input() || context.wants_keyboard_input()
+				});
 				viewport.set_stolen(stolen.then_some(2));
 			}
 

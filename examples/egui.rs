@@ -3,7 +3,6 @@
 use std::f32::consts::PI;
 
 use bevy::{
-	core_pipeline::clear_color::ClearColorConfig,
 	prelude::*,
 	render::{
 		camera::RenderTarget,
@@ -91,7 +90,7 @@ fn setup(
 		..default()
 	};
 
-	let cube_handle = meshes.add(Mesh::from(shape::Cube { size: 4.0 }));
+	let cube_handle = meshes.add(Cuboid::new(4.0, 4.0, 4.0));
 	let default_material = StandardMaterial {
 		base_color: Color::rgb(0.8, 0.7, 0.6),
 		reflectance: 0.02,
@@ -117,7 +116,7 @@ fn setup(
 
 	// Cube parameters.
 	let cube_size = 4.0;
-	let cube_handle = meshes.add(Mesh::from(shape::Box::new(cube_size, cube_size, cube_size)));
+	let cube_handle = meshes.add(Cuboid::new(cube_size, cube_size, cube_size));
 
 	// Main pass cube.
 	let main_material_handle = materials.add(default_material);
@@ -142,7 +141,7 @@ fn setup(
 	commands.spawn(SpotLightBundle {
 		transform: Transform::from_xyz(eye.x, eye.y, eye.z).looking_at(target, up),
 		spot_light: SpotLight {
-			intensity: 4400.0, // lumens
+			intensity: 10_000_000.,
 			range: 100.0,
 			color: Color::WHITE,
 			shadows_enabled: true,
@@ -166,14 +165,11 @@ fn setup(
 	commands
 		.spawn((
 			Camera3dBundle {
-				camera_3d: Camera3d {
-					clear_color: ClearColorConfig::Custom(Color::rgba(1.0, 1.0, 1.0, 0.0)),
-					..default()
-				},
 				camera: Camera {
 					// render before the "main pass" camera
 					order: -1,
 					target: RenderTarget::Image(image_handle),
+					clear_color: ClearColorConfig::Custom(Color::rgba(1.0, 1.0, 1.0, 0.0)),
 					..default()
 				},
 				..default()
@@ -248,13 +244,12 @@ fn color_picker_widget(ui: &mut egui::Ui, color: &mut Color) -> egui::Response {
 		egui::color_picker::Alpha::Opaque,
 	);
 	let [r, g, b, a] = egui_color.to_srgba_unmultiplied();
-	*color = [
+	*color = Color::rgba(
 		r as f32 / 255.0,
 		g as f32 / 255.0,
 		b as f32 / 255.0,
 		a as f32 / 255.0,
-	]
-	.into();
+	);
 	res
 }
 

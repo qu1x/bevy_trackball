@@ -1,4 +1,4 @@
-use bevy::{input::keyboard::KeyCode, prelude::*};
+use bevy::prelude::*;
 use trackball::Fixed;
 
 /// Trackball controller input mappings and settings.
