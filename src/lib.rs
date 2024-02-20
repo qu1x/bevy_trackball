@@ -223,6 +223,16 @@ impl TrackballEvent {
 			setup: None,
 		}
 	}
+	/// Creates [`Delta::Track`] event for camera `group`.
+	#[must_use]
+	#[inline]
+	pub const fn track(group: Entity, vec: Vector3<f32>) -> Self {
+		Self {
+			group,
+			delta: Delta::Track { vec },
+			setup: None,
+		}
+	}
 	/// Creates [`Delta::Orbit`] event for camera `group`.
 	#[must_use]
 	#[inline]
