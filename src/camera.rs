@@ -26,10 +26,9 @@ pub struct TrackballCamera {
 	pub scope: Scope<f32>,
 	old_scope: Scope<f32>,
 	old_max: Point2<f32>,
-	/// Blend ratio between 0 (slow) and 1 (fast) for exponential easy-out. Default is `0.25`.
+	/// Blend half-life from 0 (fast) to 1000 (slow) milliseconds. Default is `40.0`.
 	///
-	/// Blend ratio aka sharpness or Lerp/Slerp parameter `t` is exponentially corrected for
-	/// deviations from reference frame rate of 60 fps.
+	/// It is the time passed until halfway of fps-agnostic exponential easy-out.
 	pub blend: f32,
 	/// Camera frame to reset to when [`TrackballInput::reset_key`] is pressed.
 	///
@@ -63,7 +62,7 @@ impl TrackballCamera {
 			scope: Scope::default(),
 			old_scope: Scope::default(),
 			old_max: Point2::default(),
-			blend: 0.25,
+			blend: 40.0,
 			reset: frame,
 			clamp: None,
 			delta: None,
@@ -77,7 +76,7 @@ impl TrackballCamera {
 		self.scope = scope;
 		self
 	}
-	/// Defines blend ratio, see [`Self::blend`].
+	/// Defines blend half-life, see [`Self::blend`].
 	#[must_use]
 	pub const fn with_blend(mut self, blend: f32) -> Self {
 		self.blend = blend;
@@ -125,8 +124,8 @@ pub fn trackball_camera(
 			if trackball.old_frame == Frame::default() {
 				trackball.old_frame = trackball.frame;
 			}
-			let blend = trackball.blend.clamp(0.0, 1.0);
-			let blend = 1.0 - (1.0 - blend).powf(60.0 * time.delta_seconds());
+			let blend = (trackball.blend * 1e-3).clamp(0.0, 1.0);
+			let blend = 1.0 - 0.5f32.powf(time.delta_seconds() / blend);
 			trackball.old_frame = trackball
 				.old_frame
 				.abs_diff_ne(&trackball.frame, f32::EPSILON.sqrt())
