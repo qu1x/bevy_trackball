@@ -106,7 +106,7 @@
 //! Left Press + Release    | Any + Release           | &amp;nbsp;   | Slides to cursor/finger position.
 //! &amp;nbsp;                  | &amp;nbsp;                  | `m`      | Toggle `esdf`/`wasd` mapping.
 //! &amp;nbsp;                  | &amp;nbsp;                  | `p`      | Toggle orthographic/perspective.
-//! &amp;nbsp;                  | &amp;nbsp;                  | `Return` | Reset camera transform.
+//! &amp;nbsp;                  | &amp;nbsp;                  | `Enter`  | Reset camera transform.
 //!
 //! A simple 3D scene with light shining over a cube sitting on a plane and a trackball camera
 //! waiting for your input to orbit around.
@@ -131,7 +131,6 @@ fn main() {
 		.add_plugins(DefaultPlugins.set(WindowPlugin {
 			primary_window: Some(Window {
 				canvas: Some(&quot;#bevy&quot;.to_owned()),
-				fit_canvas_to_parent: true,
 				..default()
 			}),
 			..default()
@@ -149,22 +148,21 @@ fn setup(
 ) {
 	// circular base
 	commands.spawn(PbrBundle {
-		mesh: meshes.add(shape::Circle::new(4.0).into()),
-		material: materials.add(Color::WHITE.into()),
+		mesh: meshes.add(Circle::new(4.0)),
+		material: materials.add(Color::WHITE),
 		transform: Transform::from_rotation(Quat::from_rotation_x(-std::f32::consts::FRAC_PI_2)),
 		..default()
 	});
 	// cube
 	commands.spawn(PbrBundle {
-		mesh: meshes.add(Mesh::from(shape::Cube { size: 1.0 })),
-		material: materials.add(Color::rgb_u8(124, 144, 255).into()),
+		mesh: meshes.add(Cuboid::new(1.0, 1.0, 1.0)),
+		material: materials.add(Color::rgb_u8(124, 144, 255)),
 		transform: Transform::from_xyz(0.0, 0.5, 0.0),
 		..default()
 	});
 	// light
 	commands.spawn(PointLightBundle {
 		point_light: PointLight {
-			intensity: 1500.0,
 			shadows_enabled: true,
 			..default()
 		},
