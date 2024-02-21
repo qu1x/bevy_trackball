@@ -1,3 +1,9 @@
+# Version 0.4.0 (2024-02-21)
+
+  * Update Bevy to `0.13`.
+  * Translate blend ratio of `0.25` into half-life of `40.0` milliseconds.
+  * Support creating `Delta::Track` events to follow a target.
+
 # Version 0.3.0 (2023-12-05)
 
   * Fix mouse and especially touch input by clearing event readers when viewport
