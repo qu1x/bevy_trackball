@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_render-0.12.1/src/render_resource/pipeline_cache.rs`."><title>pipeline_cache.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="bevy_render" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../bevy_render/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_render-0.13.0/src/render_resource/pipeline_cache.rs`."><title>pipeline_cache.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="bevy_render" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -873,18 +874,117 @@
 <a href="#873" id="873">873</a>
 <a href="#874" id="874">874</a>
 <a href="#875" id="875">875</a>
-</pre></div><pre class="rust"><code><span class="kw">use crate</span>::{
-    render_resource::{
-        BindGroupLayout, BindGroupLayoutId, ComputePipeline, ComputePipelineDescriptor,
-        RawComputePipelineDescriptor, RawFragmentState, RawRenderPipelineDescriptor,
-        RawVertexState, RenderPipeline, RenderPipelineDescriptor, Shader, ShaderImport, Source,
-    },
-    renderer::RenderDevice,
-    Extract,
-};
+<a href="#876" id="876">876</a>
+<a href="#877" id="877">877</a>
+<a href="#878" id="878">878</a>
+<a href="#879" id="879">879</a>
+<a href="#880" id="880">880</a>
+<a href="#881" id="881">881</a>
+<a href="#882" id="882">882</a>
+<a href="#883" id="883">883</a>
+<a href="#884" id="884">884</a>
+<a href="#885" id="885">885</a>
+<a href="#886" id="886">886</a>
+<a href="#887" id="887">887</a>
+<a href="#888" id="888">888</a>
+<a href="#889" id="889">889</a>
+<a href="#890" id="890">890</a>
+<a href="#891" id="891">891</a>
+<a href="#892" id="892">892</a>
+<a href="#893" id="893">893</a>
+<a href="#894" id="894">894</a>
+<a href="#895" id="895">895</a>
+<a href="#896" id="896">896</a>
+<a href="#897" id="897">897</a>
+<a href="#898" id="898">898</a>
+<a href="#899" id="899">899</a>
+<a href="#900" id="900">900</a>
+<a href="#901" id="901">901</a>
+<a href="#902" id="902">902</a>
+<a href="#903" id="903">903</a>
+<a href="#904" id="904">904</a>
+<a href="#905" id="905">905</a>
+<a href="#906" id="906">906</a>
+<a href="#907" id="907">907</a>
+<a href="#908" id="908">908</a>
+<a href="#909" id="909">909</a>
+<a href="#910" id="910">910</a>
+<a href="#911" id="911">911</a>
+<a href="#912" id="912">912</a>
+<a href="#913" id="913">913</a>
+<a href="#914" id="914">914</a>
+<a href="#915" id="915">915</a>
+<a href="#916" id="916">916</a>
+<a href="#917" id="917">917</a>
+<a href="#918" id="918">918</a>
+<a href="#919" id="919">919</a>
+<a href="#920" id="920">920</a>
+<a href="#921" id="921">921</a>
+<a href="#922" id="922">922</a>
+<a href="#923" id="923">923</a>
+<a href="#924" id="924">924</a>
+<a href="#925" id="925">925</a>
+<a href="#926" id="926">926</a>
+<a href="#927" id="927">927</a>
+<a href="#928" id="928">928</a>
+<a href="#929" id="929">929</a>
+<a href="#930" id="930">930</a>
+<a href="#931" id="931">931</a>
+<a href="#932" id="932">932</a>
+<a href="#933" id="933">933</a>
+<a href="#934" id="934">934</a>
+<a href="#935" id="935">935</a>
+<a href="#936" id="936">936</a>
+<a href="#937" id="937">937</a>
+<a href="#938" id="938">938</a>
+<a href="#939" id="939">939</a>
+<a href="#940" id="940">940</a>
+<a href="#941" id="941">941</a>
+<a href="#942" id="942">942</a>
+<a href="#943" id="943">943</a>
+<a href="#944" id="944">944</a>
+<a href="#945" id="945">945</a>
+<a href="#946" id="946">946</a>
+<a href="#947" id="947">947</a>
+<a href="#948" id="948">948</a>
+<a href="#949" id="949">949</a>
+<a href="#950" id="950">950</a>
+<a href="#951" id="951">951</a>
+<a href="#952" id="952">952</a>
+<a href="#953" id="953">953</a>
+<a href="#954" id="954">954</a>
+<a href="#955" id="955">955</a>
+<a href="#956" id="956">956</a>
+<a href="#957" id="957">957</a>
+<a href="#958" id="958">958</a>
+<a href="#959" id="959">959</a>
+<a href="#960" id="960">960</a>
+<a href="#961" id="961">961</a>
+<a href="#962" id="962">962</a>
+<a href="#963" id="963">963</a>
+<a href="#964" id="964">964</a>
+<a href="#965" id="965">965</a>
+<a href="#966" id="966">966</a>
+<a href="#967" id="967">967</a>
+<a href="#968" id="968">968</a>
+<a href="#969" id="969">969</a>
+<a href="#970" id="970">970</a>
+<a href="#971" id="971">971</a>
+<a href="#972" id="972">972</a>
+<a href="#973" id="973">973</a>
+<a href="#974" id="974">974</a>
+<a href="#975" id="975">975</a>
+<a href="#976" id="976">976</a>
+<a href="#977" id="977">977</a>
+<a href="#978" id="978">978</a>
+<a href="#979" id="979">979</a>
+<a href="#980" id="980">980</a>
+<a href="#981" id="981">981</a>
+</pre></div><pre class="rust"><code><span class="kw">use crate</span>::{render_resource::<span class="kw-2">*</span>, renderer::RenderDevice, Extract};
 <span class="kw">use </span>bevy_asset::{AssetEvent, AssetId, Assets};
 <span class="kw">use </span>bevy_ecs::system::{Res, ResMut};
 <span class="kw">use </span>bevy_ecs::{event::EventReader, system::Resource};
+<span class="kw">use </span>bevy_tasks::Task;
 <span class="kw">use </span>bevy_utils::{
     default,
     tracing::{debug, error},
@@ -893,13 +993,14 @@
 <span class="kw">use </span>naga::valid::Capabilities;
 <span class="kw">use </span>std::{
     borrow::Cow,
+    future::Future,
     hash::Hash,
     mem,
     ops::Deref,
-    sync::{Mutex, PoisonError},
+    sync::{Arc, Mutex, PoisonError},
 };
 <span class="kw">use </span>thiserror::Error;
-<span class="attr">#[cfg(feature = <span class="string">&quot;shader_format_spirv&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"shader_format_spirv"</span>)]
 </span><span class="kw">use </span>wgpu::util::make_spirv;
 <span class="kw">use </span>wgpu::{
     Features, PipelineLayoutDescriptor, PushConstantRange, ShaderModuleDescriptor,
@@ -969,6 +1070,8 @@
 </span><span class="kw">pub enum </span>CachedPipelineState {
     <span class="doccomment">/// The pipeline GPU object is queued for creation.
     </span>Queued,
+    <span class="doccomment">/// The pipeline GPU object is being created.
+    </span>Creating(Task&lt;<span class="prelude-ty">Result</span>&lt;Pipeline, PipelineCacheError&gt;&gt;),
     <span class="doccomment">/// The pipeline GPU object was created successfully and is available (allocated on the GPU).
     </span><span class="prelude-val">Ok</span>(Pipeline),
     <span class="doccomment">/// An error occurred while trying to create the pipeline GPU object.
@@ -976,7 +1079,7 @@
 }
 
 <span class="kw">impl </span>CachedPipelineState {
-    <span class="doccomment">/// Convenience method to &quot;unwrap&quot; a pipeline state into its underlying GPU object.
+    <span class="doccomment">/// Convenience method to "unwrap" a pipeline state into its underlying GPU object.
     ///
     /// # Returns
     ///
@@ -990,9 +1093,12 @@
         <span class="kw">match </span><span class="self">self </span>{
             CachedPipelineState::Ok(pipeline) =&gt; pipeline,
             CachedPipelineState::Queued =&gt; {
-                <span class="macro">panic!</span>(<span class="string">&quot;Pipeline has not been compiled yet. It is still in the &#39;Queued&#39; state.&quot;</span>)
+                <span class="macro">panic!</span>(<span class="string">"Pipeline has not been compiled yet. It is still in the 'Queued' state."</span>)
             }
-            CachedPipelineState::Err(err) =&gt; <span class="macro">panic!</span>(<span class="string">&quot;{}&quot;</span>, err),
+            CachedPipelineState::Creating(..) =&gt; {
+                <span class="macro">panic!</span>(<span class="string">"Pipeline has not been compiled yet. It is still in the 'Creating' state."</span>)
+            }
+            CachedPipelineState::Err(err) =&gt; <span class="macro">panic!</span>(<span class="string">"{}"</span>, err),
         }
     }
 }
@@ -1072,6 +1178,10 @@
             }
         }
 
+        <span class="comment">// TODO: Check if this is supported, though I'm not sure if bevy works without this feature?
+        // We can't compile for native at least without it.
+        </span>capabilities |= Capabilities::CUBE_ARRAY_TEXTURES;
+
         <span class="attr">#[cfg(debug_assertions)]
         </span><span class="kw">let </span>composer = naga_oil::compose::Composer::default();
         <span class="attr">#[cfg(not(debug_assertions))]
@@ -1143,33 +1253,33 @@
 
         data.pipelines.insert(pipeline);
 
-        <span class="comment">// PERF: this shader_defs clone isn&#39;t great. use raw_entry_mut when it stabilizes
+        <span class="comment">// PERF: this shader_defs clone isn't great. use raw_entry_mut when it stabilizes
         </span><span class="kw">let </span>module = <span class="kw">match </span>data.processed_shaders.entry(shader_defs.to_vec()) {
             Entry::Occupied(entry) =&gt; entry.into_mut(),
             Entry::Vacant(entry) =&gt; {
                 <span class="kw">let </span><span class="kw-2">mut </span>shader_defs = shader_defs.to_vec();
-                <span class="attr">#[cfg(all(feature = <span class="string">&quot;webgl&quot;</span>, target_arch = <span class="string">&quot;wasm32&quot;</span>))]
+                <span class="attr">#[cfg(all(feature = <span class="string">"webgl"</span>, target_arch = <span class="string">"wasm32"</span>, not(feature = <span class="string">"webgpu"</span>)))]
                 </span>{
-                    shader_defs.push(<span class="string">&quot;NO_ARRAY_TEXTURES_SUPPORT&quot;</span>.into());
-                    shader_defs.push(<span class="string">&quot;SIXTEEN_BYTE_ALIGNMENT&quot;</span>.into());
+                    shader_defs.push(<span class="string">"NO_ARRAY_TEXTURES_SUPPORT"</span>.into());
+                    shader_defs.push(<span class="string">"SIXTEEN_BYTE_ALIGNMENT"</span>.into());
                 }
 
                 shader_defs.push(ShaderDefVal::UInt(
-                    String::from(<span class="string">&quot;AVAILABLE_STORAGE_BUFFER_BINDINGS&quot;</span>),
+                    String::from(<span class="string">"AVAILABLE_STORAGE_BUFFER_BINDINGS"</span>),
                     render_device.limits().max_storage_buffers_per_shader_stage,
                 ));
 
                 <span class="macro">debug!</span>(
-                    <span class="string">&quot;processing shader {:?}, with shader defs {:?}&quot;</span>,
+                    <span class="string">"processing shader {:?}, with shader defs {:?}"</span>,
                     id, shader_defs
                 );
                 <span class="kw">let </span>shader_source = <span class="kw">match </span><span class="kw-2">&amp;</span>shader.source {
-                    <span class="attr">#[cfg(feature = <span class="string">&quot;shader_format_spirv&quot;</span>)]
+                    <span class="attr">#[cfg(feature = <span class="string">"shader_format_spirv"</span>)]
                     </span>Source::SpirV(data) =&gt; make_spirv(data),
-                    <span class="attr">#[cfg(not(feature = <span class="string">&quot;shader_format_spirv&quot;</span>))]
+                    <span class="attr">#[cfg(not(feature = <span class="string">"shader_format_spirv"</span>))]
                     </span>Source::SpirV(<span class="kw">_</span>) =&gt; {
                         <span class="macro">unimplemented!</span>(
-                            <span class="string">&quot;Enable feature \&quot;shader_format_spirv\&quot; to use SPIR-V shaders&quot;
+                            <span class="string">"Enable feature \"shader_format_spirv\" to use SPIR-V shaders"
                         </span>)
                     }
                     <span class="kw">_ </span>=&gt; {
@@ -1311,7 +1421,7 @@
         render_device: <span class="kw-2">&amp;</span>RenderDevice,
         bind_group_layouts: <span class="kw-2">&amp;</span>[BindGroupLayout],
         push_constant_ranges: Vec&lt;PushConstantRange&gt;,
-    ) -&gt; <span class="kw-2">&amp;</span>wgpu::PipelineLayout {
+    ) -&gt; ErasedPipelineLayout {
         <span class="kw">let </span>bind_group_ids = bind_group_layouts.iter().map(|l| l.id()).collect();
         <span class="self">self</span>.layouts
             .entry((bind_group_ids, push_constant_ranges))
@@ -1328,6 +1438,7 @@
                     },
                 ))
             })
+            .clone()
     }
 }
 
@@ -1335,22 +1446,25 @@
 ///
 /// The cache stores existing render and compute pipelines allocated on the GPU, as well as
 /// pending creation. Pipelines inserted into the cache are identified by a unique ID, which
-/// can be used to retrieve the actual GPU object once it&#39;s ready. The creation of the GPU
+/// can be used to retrieve the actual GPU object once it's ready. The creation of the GPU
 /// pipeline object is deferred to the [`RenderSet::Render`] step, just before the render
 /// graph starts being processed, as this requires access to the GPU.
 ///
-/// Note that the cache do not perform automatic deduplication of identical pipelines. It is
+/// Note that the cache does not perform automatic deduplication of identical pipelines. It is
 /// up to the user not to insert the same pipeline twice to avoid wasting GPU resources.
 ///
 /// [`RenderSet::Render`]: crate::RenderSet::Render
 </span><span class="attr">#[derive(Resource)]
 </span><span class="kw">pub struct </span>PipelineCache {
-    layout_cache: LayoutCache,
-    shader_cache: ShaderCache,
+    layout_cache: Arc&lt;Mutex&lt;LayoutCache&gt;&gt;,
+    shader_cache: Arc&lt;Mutex&lt;ShaderCache&gt;&gt;,
     device: RenderDevice,
     pipelines: Vec&lt;CachedPipeline&gt;,
     waiting_pipelines: HashSet&lt;CachedPipelineId&gt;,
     new_pipelines: Mutex&lt;Vec&lt;CachedPipeline&gt;&gt;,
+    <span class="doccomment">/// If `true`, disables asynchronous pipeline compilation.
+    /// This has no effect on MacOS, wasm, or without the `multi_threaded` feature.
+    </span>synchronous_pipeline_compilation: bool,
 }
 
 <span class="kw">impl </span>PipelineCache {
@@ -1359,14 +1473,15 @@
     }
 
     <span class="doccomment">/// Create a new pipeline cache associated with the given render device.
-    </span><span class="kw">pub fn </span>new(device: RenderDevice) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>new(device: RenderDevice, synchronous_pipeline_compilation: bool) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
-            shader_cache: ShaderCache::new(<span class="kw-2">&amp;</span>device),
+            shader_cache: Arc::new(Mutex::new(ShaderCache::new(<span class="kw-2">&amp;</span>device))),
             device,
             layout_cache: default(),
             waiting_pipelines: default(),
             new_pipelines: default(),
             pipelines: default(),
+            synchronous_pipeline_compilation,
         }
     }
 
@@ -1432,6 +1547,22 @@
         </span>}
     }
 
+    <span class="doccomment">/// Wait for a render pipeline to finish compiling.
+    </span><span class="attr">#[inline]
+    </span><span class="kw">pub fn </span>block_on_render_pipeline(<span class="kw-2">&amp;mut </span><span class="self">self</span>, id: CachedRenderPipelineId) {
+        <span class="kw">if </span><span class="self">self</span>.pipelines.len() &lt;= id.<span class="number">0 </span>{
+            <span class="self">self</span>.process_queue();
+        }
+
+        <span class="kw">let </span>state = <span class="kw-2">&amp;mut </span><span class="self">self</span>.pipelines[id.<span class="number">0</span>].state;
+        <span class="kw">if let </span>CachedPipelineState::Creating(task) = state {
+            <span class="kw-2">*</span>state = <span class="kw">match </span>bevy_tasks::block_on(task) {
+                <span class="prelude-val">Ok</span>(p) =&gt; CachedPipelineState::Ok(p),
+                <span class="prelude-val">Err</span>(e) =&gt; CachedPipelineState::Err(e),
+            };
+        }
+    }
+
     <span class="doccomment">/// Try to retrieve a compute pipeline GPU object from a cached ID.
     ///
     /// # Returns
@@ -1459,7 +1590,7 @@
     ///
     /// This method returns the unique render shader ID of the cached pipeline, which can be used to query
     /// the caching state with [`get_render_pipeline_state()`] and to retrieve the created GPU pipeline once
-    /// it&#39;s ready with [`get_render_pipeline()`].
+    /// it's ready with [`get_render_pipeline()`].
     ///
     /// [`get_render_pipeline_state()`]: PipelineCache::get_render_pipeline_state
     /// [`get_render_pipeline()`]: PipelineCache::get_render_pipeline
@@ -1488,7 +1619,7 @@
     ///
     /// This method returns the unique compute shader ID of the cached pipeline, which can be used to query
     /// the caching state with [`get_compute_pipeline_state()`] and to retrieve the created GPU pipeline once
-    /// it&#39;s ready with [`get_compute_pipeline()`].
+    /// it's ready with [`get_compute_pipeline()`].
     ///
     /// [`get_compute_pipeline_state()`]: PipelineCache::get_compute_pipeline_state
     /// [`get_compute_pipeline()`]: PipelineCache::get_compute_pipeline
@@ -1509,7 +1640,8 @@
     }
 
     <span class="kw">fn </span>set_shader(<span class="kw-2">&amp;mut </span><span class="self">self</span>, id: AssetId&lt;Shader&gt;, shader: <span class="kw-2">&amp;</span>Shader) {
-        <span class="kw">let </span>pipelines_to_queue = <span class="self">self</span>.shader_cache.set_shader(id, shader.clone());
+        <span class="kw">let </span><span class="kw-2">mut </span>shader_cache = <span class="self">self</span>.shader_cache.lock().unwrap();
+        <span class="kw">let </span>pipelines_to_queue = shader_cache.set_shader(id, shader.clone());
         <span class="kw">for </span>cached_pipeline <span class="kw">in </span>pipelines_to_queue {
             <span class="self">self</span>.pipelines[cached_pipeline].state = CachedPipelineState::Queued;
             <span class="self">self</span>.waiting_pipelines.insert(cached_pipeline);
@@ -1517,135 +1649,162 @@
     }
 
     <span class="kw">fn </span>remove_shader(<span class="kw-2">&amp;mut </span><span class="self">self</span>, shader: AssetId&lt;Shader&gt;) {
-        <span class="kw">let </span>pipelines_to_queue = <span class="self">self</span>.shader_cache.remove(shader);
+        <span class="kw">let </span><span class="kw-2">mut </span>shader_cache = <span class="self">self</span>.shader_cache.lock().unwrap();
+        <span class="kw">let </span>pipelines_to_queue = shader_cache.remove(shader);
         <span class="kw">for </span>cached_pipeline <span class="kw">in </span>pipelines_to_queue {
             <span class="self">self</span>.pipelines[cached_pipeline].state = CachedPipelineState::Queued;
             <span class="self">self</span>.waiting_pipelines.insert(cached_pipeline);
         }
     }
 
-    <span class="kw">fn </span>process_render_pipeline(
+    <span class="kw">fn </span>start_create_render_pipeline(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
         id: CachedPipelineId,
-        descriptor: <span class="kw-2">&amp;</span>RenderPipelineDescriptor,
+        descriptor: RenderPipelineDescriptor,
     ) -&gt; CachedPipelineState {
-        <span class="kw">let </span>vertex_module = <span class="kw">match </span><span class="self">self</span>.shader_cache.get(
-            <span class="kw-2">&amp;</span><span class="self">self</span>.device,
-            id,
-            descriptor.vertex.shader.id(),
-            <span class="kw-2">&amp;</span>descriptor.vertex.shader_defs,
-        ) {
-            <span class="prelude-val">Ok</span>(module) =&gt; module,
-            <span class="prelude-val">Err</span>(err) =&gt; {
-                <span class="kw">return </span>CachedPipelineState::Err(err);
-            }
-        };
+        <span class="kw">let </span>device = <span class="self">self</span>.device.clone();
+        <span class="kw">let </span>shader_cache = <span class="self">self</span>.shader_cache.clone();
+        <span class="kw">let </span>layout_cache = <span class="self">self</span>.layout_cache.clone();
+        create_pipeline_task(
+            <span class="kw">async move </span>{
+                <span class="kw">let </span><span class="kw-2">mut </span>shader_cache = shader_cache.lock().unwrap();
+                <span class="kw">let </span><span class="kw-2">mut </span>layout_cache = layout_cache.lock().unwrap();
 
-        <span class="kw">let </span>fragment_data = <span class="kw">if let </span><span class="prelude-val">Some</span>(fragment) = <span class="kw-2">&amp;</span>descriptor.fragment {
-            <span class="kw">let </span>fragment_module = <span class="kw">match </span><span class="self">self</span>.shader_cache.get(
-                <span class="kw-2">&amp;</span><span class="self">self</span>.device,
-                id,
-                fragment.shader.id(),
-                <span class="kw-2">&amp;</span>fragment.shader_defs,
-            ) {
-                <span class="prelude-val">Ok</span>(module) =&gt; module,
-                <span class="prelude-val">Err</span>(err) =&gt; {
-                    <span class="kw">return </span>CachedPipelineState::Err(err);
-                }
-            };
-            <span class="prelude-val">Some</span>((
-                fragment_module,
-                fragment.entry_point.deref(),
-                fragment.targets.as_slice(),
-            ))
-        } <span class="kw">else </span>{
-            <span class="prelude-val">None
-        </span>};
+                <span class="kw">let </span>vertex_module = <span class="kw">match </span>shader_cache.get(
+                    <span class="kw-2">&amp;</span>device,
+                    id,
+                    descriptor.vertex.shader.id(),
+                    <span class="kw-2">&amp;</span>descriptor.vertex.shader_defs,
+                ) {
+                    <span class="prelude-val">Ok</span>(module) =&gt; module,
+                    <span class="prelude-val">Err</span>(err) =&gt; <span class="kw">return </span><span class="prelude-val">Err</span>(err),
+                };
 
-        <span class="kw">let </span>vertex_buffer_layouts = descriptor
-            .vertex
-            .buffers
-            .iter()
-            .map(|layout| RawVertexBufferLayout {
-                array_stride: layout.array_stride,
-                attributes: <span class="kw-2">&amp;</span>layout.attributes,
-                step_mode: layout.step_mode,
-            })
-            .collect::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;();
+                <span class="kw">let </span>fragment_module = <span class="kw">match </span><span class="kw-2">&amp;</span>descriptor.fragment {
+                    <span class="prelude-val">Some</span>(fragment) =&gt; {
+                        <span class="kw">match </span>shader_cache.get(
+                            <span class="kw-2">&amp;</span>device,
+                            id,
+                            fragment.shader.id(),
+                            <span class="kw-2">&amp;</span>fragment.shader_defs,
+                        ) {
+                            <span class="prelude-val">Ok</span>(module) =&gt; <span class="prelude-val">Some</span>(module),
+                            <span class="prelude-val">Err</span>(err) =&gt; <span class="kw">return </span><span class="prelude-val">Err</span>(err),
+                        }
+                    }
+                    <span class="prelude-val">None </span>=&gt; <span class="prelude-val">None</span>,
+                };
 
-        <span class="kw">let </span>layout = <span class="kw">if </span>descriptor.layout.is_empty() &amp;&amp; descriptor.push_constant_ranges.is_empty() {
-            <span class="prelude-val">None
-        </span>} <span class="kw">else </span>{
-            <span class="prelude-val">Some</span>(<span class="self">self</span>.layout_cache.get(
-                <span class="kw-2">&amp;</span><span class="self">self</span>.device,
-                <span class="kw-2">&amp;</span>descriptor.layout,
-                descriptor.push_constant_ranges.to_vec(),
-            ))
-        };
+                <span class="kw">let </span>layout =
+                    <span class="kw">if </span>descriptor.layout.is_empty() &amp;&amp; descriptor.push_constant_ranges.is_empty() {
+                        <span class="prelude-val">None
+                    </span>} <span class="kw">else </span>{
+                        <span class="prelude-val">Some</span>(layout_cache.get(
+                            <span class="kw-2">&amp;</span>device,
+                            <span class="kw-2">&amp;</span>descriptor.layout,
+                            descriptor.push_constant_ranges.to_vec(),
+                        ))
+                    };
 
-        <span class="kw">let </span>descriptor = RawRenderPipelineDescriptor {
-            multiview: <span class="prelude-val">None</span>,
-            depth_stencil: descriptor.depth_stencil.clone(),
-            label: descriptor.label.as_deref(),
-            layout,
-            multisample: descriptor.multisample,
-            primitive: descriptor.primitive,
-            vertex: RawVertexState {
-                buffers: <span class="kw-2">&amp;</span>vertex_buffer_layouts,
-                entry_point: descriptor.vertex.entry_point.deref(),
-                module: <span class="kw-2">&amp;</span>vertex_module,
+                drop((shader_cache, layout_cache));
+
+                <span class="kw">let </span>vertex_buffer_layouts = descriptor
+                    .vertex
+                    .buffers
+                    .iter()
+                    .map(|layout| RawVertexBufferLayout {
+                        array_stride: layout.array_stride,
+                        attributes: <span class="kw-2">&amp;</span>layout.attributes,
+                        step_mode: layout.step_mode,
+                    })
+                    .collect::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;();
+
+                <span class="kw">let </span>fragment_data = descriptor.fragment.as_ref().map(|fragment| {
+                    (
+                        fragment_module.unwrap(),
+                        fragment.entry_point.deref(),
+                        fragment.targets.as_slice(),
+                    )
+                });
+
+                <span class="kw">let </span>descriptor = RawRenderPipelineDescriptor {
+                    multiview: <span class="prelude-val">None</span>,
+                    depth_stencil: descriptor.depth_stencil.clone(),
+                    label: descriptor.label.as_deref(),
+                    layout: layout.as_deref(),
+                    multisample: descriptor.multisample,
+                    primitive: descriptor.primitive,
+                    vertex: RawVertexState {
+                        buffers: <span class="kw-2">&amp;</span>vertex_buffer_layouts,
+                        entry_point: descriptor.vertex.entry_point.deref(),
+                        module: <span class="kw-2">&amp;</span>vertex_module,
+                    },
+                    fragment: fragment_data
+                        .as_ref()
+                        .map(|(module, entry_point, targets)| RawFragmentState {
+                            entry_point,
+                            module,
+                            targets,
+                        }),
+                };
+
+                <span class="prelude-val">Ok</span>(Pipeline::RenderPipeline(
+                    device.create_render_pipeline(<span class="kw-2">&amp;</span>descriptor),
+                ))
             },
-            fragment: fragment_data
-                .as_ref()
-                .map(|(module, entry_point, targets)| RawFragmentState {
-                    entry_point,
-                    module,
-                    targets,
-                }),
-        };
-
-        <span class="kw">let </span>pipeline = <span class="self">self</span>.device.create_render_pipeline(<span class="kw-2">&amp;</span>descriptor);
-
-        CachedPipelineState::Ok(Pipeline::RenderPipeline(pipeline))
+            <span class="self">self</span>.synchronous_pipeline_compilation,
+        )
     }
 
-    <span class="kw">fn </span>process_compute_pipeline(
+    <span class="kw">fn </span>start_create_compute_pipeline(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
         id: CachedPipelineId,
-        descriptor: <span class="kw-2">&amp;</span>ComputePipelineDescriptor,
+        descriptor: ComputePipelineDescriptor,
     ) -&gt; CachedPipelineState {
-        <span class="kw">let </span>compute_module = <span class="kw">match </span><span class="self">self</span>.shader_cache.get(
-            <span class="kw-2">&amp;</span><span class="self">self</span>.device,
-            id,
-            descriptor.shader.id(),
-            <span class="kw-2">&amp;</span>descriptor.shader_defs,
-        ) {
-            <span class="prelude-val">Ok</span>(module) =&gt; module,
-            <span class="prelude-val">Err</span>(err) =&gt; {
-                <span class="kw">return </span>CachedPipelineState::Err(err);
-            }
-        };
+        <span class="kw">let </span>device = <span class="self">self</span>.device.clone();
+        <span class="kw">let </span>shader_cache = <span class="self">self</span>.shader_cache.clone();
+        <span class="kw">let </span>layout_cache = <span class="self">self</span>.layout_cache.clone();
+        create_pipeline_task(
+            <span class="kw">async move </span>{
+                <span class="kw">let </span><span class="kw-2">mut </span>shader_cache = shader_cache.lock().unwrap();
+                <span class="kw">let </span><span class="kw-2">mut </span>layout_cache = layout_cache.lock().unwrap();
 
-        <span class="kw">let </span>layout = <span class="kw">if </span>descriptor.layout.is_empty() &amp;&amp; descriptor.push_constant_ranges.is_empty() {
-            <span class="prelude-val">None
-        </span>} <span class="kw">else </span>{
-            <span class="prelude-val">Some</span>(<span class="self">self</span>.layout_cache.get(
-                <span class="kw-2">&amp;</span><span class="self">self</span>.device,
-                <span class="kw-2">&amp;</span>descriptor.layout,
-                descriptor.push_constant_ranges.to_vec(),
-            ))
-        };
+                <span class="kw">let </span>compute_module = <span class="kw">match </span>shader_cache.get(
+                    <span class="kw-2">&amp;</span>device,
+                    id,
+                    descriptor.shader.id(),
+                    <span class="kw-2">&amp;</span>descriptor.shader_defs,
+                ) {
+                    <span class="prelude-val">Ok</span>(module) =&gt; module,
+                    <span class="prelude-val">Err</span>(err) =&gt; <span class="kw">return </span><span class="prelude-val">Err</span>(err),
+                };
 
-        <span class="kw">let </span>descriptor = RawComputePipelineDescriptor {
-            label: descriptor.label.as_deref(),
-            layout,
-            module: <span class="kw-2">&amp;</span>compute_module,
-            entry_point: descriptor.entry_point.as_ref(),
-        };
+                <span class="kw">let </span>layout =
+                    <span class="kw">if </span>descriptor.layout.is_empty() &amp;&amp; descriptor.push_constant_ranges.is_empty() {
+                        <span class="prelude-val">None
+                    </span>} <span class="kw">else </span>{
+                        <span class="prelude-val">Some</span>(layout_cache.get(
+                            <span class="kw-2">&amp;</span>device,
+                            <span class="kw-2">&amp;</span>descriptor.layout,
+                            descriptor.push_constant_ranges.to_vec(),
+                        ))
+                    };
 
-        <span class="kw">let </span>pipeline = <span class="self">self</span>.device.create_compute_pipeline(<span class="kw-2">&amp;</span>descriptor);
+                drop((shader_cache, layout_cache));
 
-        CachedPipelineState::Ok(Pipeline::ComputePipeline(pipeline))
+                <span class="kw">let </span>descriptor = RawComputePipelineDescriptor {
+                    label: descriptor.label.as_deref(),
+                    layout: layout.as_deref(),
+                    module: <span class="kw-2">&amp;</span>compute_module,
+                    entry_point: <span class="kw-2">&amp;</span>descriptor.entry_point,
+                };
+
+                <span class="prelude-val">Ok</span>(Pipeline::ComputePipeline(
+                    device.create_compute_pipeline(<span class="kw-2">&amp;</span>descriptor),
+                ))
+            },
+            <span class="self">self</span>.synchronous_pipeline_compilation,
+        )
     }
 
     <span class="doccomment">/// Process the pipeline queue and create all pending pipelines if possible.
@@ -1671,42 +1830,59 @@
         }
 
         <span class="kw">for </span>id <span class="kw">in </span>waiting_pipelines {
-            <span class="kw">let </span>pipeline = <span class="kw-2">&amp;mut </span>pipelines[id];
-            <span class="kw">if </span><span class="macro">matches!</span>(pipeline.state, CachedPipelineState::Ok(<span class="kw">_</span>)) {
-                <span class="kw">continue</span>;
-            }
-
-            pipeline.state = <span class="kw">match </span><span class="kw-2">&amp;</span>pipeline.descriptor {
-                PipelineDescriptor::RenderPipelineDescriptor(descriptor) =&gt; {
-                    <span class="self">self</span>.process_render_pipeline(id, descriptor)
-                }
-                PipelineDescriptor::ComputePipelineDescriptor(descriptor) =&gt; {
-                    <span class="self">self</span>.process_compute_pipeline(id, descriptor)
-                }
-            };
-
-            <span class="kw">if let </span>CachedPipelineState::Err(err) = <span class="kw-2">&amp;</span>pipeline.state {
-                <span class="kw">match </span>err {
-                    PipelineCacheError::ShaderNotLoaded(<span class="kw">_</span>)
-                    | PipelineCacheError::ShaderImportNotYetAvailable =&gt; {
-                        <span class="comment">// retry
-                        </span><span class="self">self</span>.waiting_pipelines.insert(id);
-                    }
-                    <span class="comment">// shader could not be processed ... retrying won&#39;t help
-                    </span>PipelineCacheError::ProcessShaderError(err) =&gt; {
-                        <span class="kw">let </span>error_detail = err.emit_to_string(<span class="kw-2">&amp;</span><span class="self">self</span>.shader_cache.composer);
-                        <span class="macro">error!</span>(<span class="string">&quot;failed to process shader:\n{}&quot;</span>, error_detail);
-                        <span class="kw">continue</span>;
-                    }
-                    PipelineCacheError::CreateShaderModule(description) =&gt; {
-                        <span class="macro">error!</span>(<span class="string">&quot;failed to create shader module: {}&quot;</span>, description);
-                        <span class="kw">continue</span>;
-                    }
-                }
-            }
+            <span class="self">self</span>.process_pipeline(<span class="kw-2">&amp;mut </span>pipelines[id], id);
         }
 
         <span class="self">self</span>.pipelines = pipelines;
+    }
+
+    <span class="kw">fn </span>process_pipeline(<span class="kw-2">&amp;mut </span><span class="self">self</span>, cached_pipeline: <span class="kw-2">&amp;mut </span>CachedPipeline, id: usize) {
+        <span class="kw">match </span><span class="kw-2">&amp;mut </span>cached_pipeline.state {
+            CachedPipelineState::Queued =&gt; {
+                cached_pipeline.state = <span class="kw">match </span><span class="kw-2">&amp;</span>cached_pipeline.descriptor {
+                    PipelineDescriptor::RenderPipelineDescriptor(descriptor) =&gt; {
+                        <span class="self">self</span>.start_create_render_pipeline(id, <span class="kw-2">*</span>descriptor.clone())
+                    }
+                    PipelineDescriptor::ComputePipelineDescriptor(descriptor) =&gt; {
+                        <span class="self">self</span>.start_create_compute_pipeline(id, <span class="kw-2">*</span>descriptor.clone())
+                    }
+                };
+            }
+
+            CachedPipelineState::Creating(<span class="kw-2">ref mut </span>task) =&gt; {
+                <span class="kw">match </span>bevy_utils::futures::check_ready(task) {
+                    <span class="prelude-val">Some</span>(<span class="prelude-val">Ok</span>(pipeline)) =&gt; {
+                        cached_pipeline.state = CachedPipelineState::Ok(pipeline);
+                        <span class="kw">return</span>;
+                    }
+                    <span class="prelude-val">Some</span>(<span class="prelude-val">Err</span>(err)) =&gt; cached_pipeline.state = CachedPipelineState::Err(err),
+                    <span class="kw">_ </span>=&gt; (),
+                }
+            }
+
+            CachedPipelineState::Err(err) =&gt; <span class="kw">match </span>err {
+                <span class="comment">// Retry
+                </span>PipelineCacheError::ShaderNotLoaded(<span class="kw">_</span>)
+                | PipelineCacheError::ShaderImportNotYetAvailable =&gt; {}
+
+                <span class="comment">// Shader could not be processed ... retrying won't help
+                </span>PipelineCacheError::ProcessShaderError(err) =&gt; {
+                    <span class="kw">let </span>error_detail =
+                        err.emit_to_string(<span class="kw-2">&amp;</span><span class="self">self</span>.shader_cache.lock().unwrap().composer);
+                    <span class="macro">error!</span>(<span class="string">"failed to process shader:\n{}"</span>, error_detail);
+                    <span class="kw">return</span>;
+                }
+                PipelineCacheError::CreateShaderModule(description) =&gt; {
+                    <span class="macro">error!</span>(<span class="string">"failed to create shader module: {}"</span>, description);
+                    <span class="kw">return</span>;
+                }
+            },
+
+            CachedPipelineState::Ok(<span class="kw">_</span>) =&gt; <span class="kw">return</span>,
+        }
+
+        <span class="comment">// Retry
+        </span><span class="self">self</span>.waiting_pipelines.insert(id);
     }
 
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>process_pipeline_queue_system(<span class="kw-2">mut </span>cache: ResMut&lt;<span class="self">Self</span>&gt;) {
@@ -1719,13 +1895,16 @@
         <span class="kw-2">mut </span>events: Extract&lt;EventReader&lt;AssetEvent&lt;Shader&gt;&gt;&gt;,
     ) {
         <span class="kw">for </span>event <span class="kw">in </span>events.read() {
-            <span class="kw">match </span>event {
-                AssetEvent::Added { id } | AssetEvent::Modified { id } =&gt; {
+            <span class="attr">#[allow(clippy::match_same_arms)]
+            </span><span class="kw">match </span>event {
+                <span class="comment">// PERF: Instead of blocking waiting for the shader cache lock, try again next frame if the lock is currently held
+                </span>AssetEvent::Added { id } | AssetEvent::Modified { id } =&gt; {
                     <span class="kw">if let </span><span class="prelude-val">Some</span>(shader) = shaders.get(<span class="kw-2">*</span>id) {
                         cache.set_shader(<span class="kw-2">*</span>id, shader);
                     }
                 }
                 AssetEvent::Removed { id } =&gt; cache.remove_shader(<span class="kw-2">*</span>id),
+                AssetEvent::Unused { .. } =&gt; {}
                 AssetEvent::LoadedWithDependencies { .. } =&gt; {
                     <span class="comment">// TODO: handle this
                 </span>}
@@ -1734,18 +1913,52 @@
     }
 }
 
+<span class="attr">#[cfg(all(
+    not(target_arch = <span class="string">"wasm32"</span>),
+    not(target_os = <span class="string">"macos"</span>),
+    feature = <span class="string">"multi-threaded"
+</span>))]
+</span><span class="kw">fn </span>create_pipeline_task(
+    task: <span class="kw">impl </span>Future&lt;Output = <span class="prelude-ty">Result</span>&lt;Pipeline, PipelineCacheError&gt;&gt; + Send + <span class="lifetime">'static</span>,
+    sync: bool,
+) -&gt; CachedPipelineState {
+    <span class="kw">if </span>!sync {
+        <span class="kw">return </span>CachedPipelineState::Creating(bevy_tasks::AsyncComputeTaskPool::get().spawn(task));
+    }
+
+    <span class="kw">match </span>futures_lite::future::block_on(task) {
+        <span class="prelude-val">Ok</span>(pipeline) =&gt; CachedPipelineState::Ok(pipeline),
+        <span class="prelude-val">Err</span>(err) =&gt; CachedPipelineState::Err(err),
+    }
+}
+
+<span class="attr">#[cfg(any(
+    target_arch = <span class="string">"wasm32"</span>,
+    target_os = <span class="string">"macos"</span>,
+    not(feature = <span class="string">"multi-threaded"</span>)
+))]
+</span><span class="kw">fn </span>create_pipeline_task(
+    task: <span class="kw">impl </span>Future&lt;Output = <span class="prelude-ty">Result</span>&lt;Pipeline, PipelineCacheError&gt;&gt; + Send + <span class="lifetime">'static</span>,
+    _sync: bool,
+) -&gt; CachedPipelineState {
+    <span class="kw">match </span>futures_lite::future::block_on(task) {
+        <span class="prelude-val">Ok</span>(pipeline) =&gt; CachedPipelineState::Ok(pipeline),
+        <span class="prelude-val">Err</span>(err) =&gt; CachedPipelineState::Err(err),
+    }
+}
+
 <span class="doccomment">/// Type of error returned by a [`PipelineCache`] when the creation of a GPU pipeline object failed.
 </span><span class="attr">#[derive(Error, Debug)]
 </span><span class="kw">pub enum </span>PipelineCacheError {
     <span class="attr">#[error(
-        <span class="string">&quot;Pipeline could not be compiled because the following shader is not loaded yet: {0:?}&quot;
+        <span class="string">"Pipeline could not be compiled because the following shader is not loaded yet: {0:?}"
     </span>)]
     </span>ShaderNotLoaded(AssetId&lt;Shader&gt;),
     <span class="attr">#[error(transparent)]
     </span>ProcessShaderError(<span class="attr">#[from] </span>naga_oil::compose::ComposerError),
-    <span class="attr">#[error(<span class="string">&quot;Shader import not yet available.&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Shader import not yet available."</span>)]
     </span>ShaderImportNotYetAvailable,
-    <span class="attr">#[error(<span class="string">&quot;Could not create shader module: {0}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Could not create shader module: {0}"</span>)]
     </span>CreateShaderModule(String),
 }
 </code></pre></div></section></main></body></html>

@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/nalgebra-0.32.3/src/base/ops.rs`."><title>ops.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="nalgebra" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="icon" href="https://nalgebra.org/img/favicon.ico"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../nalgebra/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/nalgebra-0.32.4/src/base/ops.rs`."><title>ops.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="nalgebra" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="icon" href="https://nalgebra.org/img/favicon.ico"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -897,7 +898,7 @@
         <span class="kw">let </span>shape = <span class="self">self</span>.shape();
         <span class="macro">assert!</span>(
             ij.<span class="number">0 </span>&lt; shape.<span class="number">0 </span>&amp;&amp; ij.<span class="number">1 </span>&lt; shape.<span class="number">1</span>,
-            <span class="string">&quot;Matrix index out of bounds.&quot;
+            <span class="string">"Matrix index out of bounds."
         </span>);
 
         <span class="kw">unsafe </span>{ <span class="self">self</span>.get_unchecked((ij.<span class="number">0</span>, ij.<span class="number">1</span>)) }
@@ -919,7 +920,7 @@
         <span class="kw">let </span>shape = <span class="self">self</span>.shape();
         <span class="macro">assert!</span>(
             ij.<span class="number">0 </span>&lt; shape.<span class="number">0 </span>&amp;&amp; ij.<span class="number">1 </span>&lt; shape.<span class="number">1</span>,
-            <span class="string">&quot;Matrix index out of bounds.&quot;
+            <span class="string">"Matrix index out of bounds."
         </span>);
 
         <span class="kw">unsafe </span>{ <span class="self">self</span>.get_unchecked_mut((ij.<span class="number">0</span>, ij.<span class="number">1</span>)) }
@@ -947,7 +948,7 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, T, R: Dim, C: Dim, S&gt; Neg <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Matrix&lt;T, R, C, S&gt;
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T, R: Dim, C: Dim, S&gt; Neg <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span>Matrix&lt;T, R, C, S&gt;
 <span class="kw">where
     </span>T: Scalar + ClosedNeg,
     S: Storage&lt;T, R, C&gt;,
@@ -1006,8 +1007,8 @@
                 <span class="kw">where </span>Status: InitStatus&lt;T&gt;,
                       SB: RawStorage&lt;T, R2, C2&gt;,
                       SC: RawStorageMut&lt;Status::Value, R3, C3&gt; {
-                <span class="macro">assert_eq!</span>(<span class="self">self</span>.shape(), rhs.shape(), <span class="string">&quot;Matrix addition/subtraction dimensions mismatch.&quot;</span>);
-                <span class="macro">assert_eq!</span>(<span class="self">self</span>.shape(), out.shape(), <span class="string">&quot;Matrix addition/subtraction output dimensions mismatch.&quot;</span>);
+                <span class="macro">assert_eq!</span>(<span class="self">self</span>.shape(), rhs.shape(), <span class="string">"Matrix addition/subtraction dimensions mismatch."</span>);
+                <span class="macro">assert_eq!</span>(<span class="self">self</span>.shape(), out.shape(), <span class="string">"Matrix addition/subtraction output dimensions mismatch."</span>);
 
                 <span class="comment">// This is the most common case and should be deduced at compile-time.
                 // TODO: use specialization instead?
@@ -1037,7 +1038,7 @@
                       C2: Dim,
                       SA: StorageMut&lt;T, R1, C1&gt;,
                       SB: Storage&lt;T, R2, C2&gt; {
-                <span class="macro">assert_eq!</span>(<span class="self">self</span>.shape(), rhs.shape(), <span class="string">&quot;Matrix addition/subtraction dimensions mismatch.&quot;</span>);
+                <span class="macro">assert_eq!</span>(<span class="self">self</span>.shape(), rhs.shape(), <span class="string">"Matrix addition/subtraction dimensions mismatch."</span>);
 
                 <span class="comment">// This is the most common case and should be deduced at compile-time.
                 // TODO: use specialization instead?
@@ -1065,7 +1066,7 @@
                 <span class="kw">where </span>R2: Dim,
                       C2: Dim,
                       SB: StorageMut&lt;T, R2, C2&gt; {
-                <span class="macro">assert_eq!</span>(<span class="self">self</span>.shape(), rhs.shape(), <span class="string">&quot;Matrix addition/subtraction dimensions mismatch.&quot;</span>);
+                <span class="macro">assert_eq!</span>(<span class="self">self</span>.shape(), rhs.shape(), <span class="string">"Matrix addition/subtraction dimensions mismatch."</span>);
 
                 <span class="comment">// This is the most common case and should be deduced at compile-time.
                 // TODO: use specialization instead?
@@ -1111,7 +1112,7 @@
             }
         }
 
-        <span class="kw">impl</span>&lt;<span class="lifetime">&#39;b</span>, T, R1, C1, R2, C2, SA, SB&gt; <span class="macro-nonterminal">$Trait</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;b </span>Matrix&lt;T, R2, C2, SB&gt;&gt; <span class="kw">for </span>Matrix&lt;T, R1, C1, SA&gt;
+        <span class="kw">impl</span>&lt;<span class="lifetime">'b</span>, T, R1, C1, R2, C2, SA, SB&gt; <span class="macro-nonterminal">$Trait</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'b </span>Matrix&lt;T, R2, C2, SB&gt;&gt; <span class="kw">for </span>Matrix&lt;T, R1, C1, SA&gt;
             <span class="kw">where </span>R1: Dim, C1: Dim, R2: Dim, C2: Dim,
                   T: Scalar + <span class="macro-nonterminal">$bound</span>,
                   SA: Storage&lt;T, R1, C1&gt;,
@@ -1121,15 +1122,15 @@
             <span class="kw">type </span>Output = MatrixSum&lt;T, R1, C1, R2, C2&gt;;
 
             <span class="attr">#[inline]
-            </span><span class="kw">fn </span><span class="macro-nonterminal">$method</span>(<span class="self">self</span>, rhs: <span class="kw-2">&amp;</span><span class="lifetime">&#39;b </span>Matrix&lt;T, R2, C2, SB&gt;) -&gt; <span class="self">Self</span>::Output {
-                <span class="macro">assert_eq!</span>(<span class="self">self</span>.shape(), rhs.shape(), <span class="string">&quot;Matrix addition/subtraction dimensions mismatch.&quot;</span>);
+            </span><span class="kw">fn </span><span class="macro-nonterminal">$method</span>(<span class="self">self</span>, rhs: <span class="kw-2">&amp;</span><span class="lifetime">'b </span>Matrix&lt;T, R2, C2, SB&gt;) -&gt; <span class="self">Self</span>::Output {
+                <span class="macro">assert_eq!</span>(<span class="self">self</span>.shape(), rhs.shape(), <span class="string">"Matrix addition/subtraction dimensions mismatch."</span>);
                 <span class="kw">let </span><span class="kw-2">mut </span>res = <span class="self">self</span>.into_owned_sum::&lt;R2, C2&gt;();
                 res.<span class="macro-nonterminal">$method_assign_statically_unchecked</span>(rhs);
                 res
             }
         }
 
-        <span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, T, R1, C1, R2, C2, SA, SB&gt; <span class="macro-nonterminal">$Trait</span>&lt;Matrix&lt;T, R2, C2, SB&gt;&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Matrix&lt;T, R1, C1, SA&gt;
+        <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T, R1, C1, R2, C2, SA, SB&gt; <span class="macro-nonterminal">$Trait</span>&lt;Matrix&lt;T, R2, C2, SB&gt;&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span>Matrix&lt;T, R1, C1, SA&gt;
             <span class="kw">where </span>R1: Dim, C1: Dim, R2: Dim, C2: Dim,
                   T: Scalar + <span class="macro-nonterminal">$bound</span>,
                   SA: Storage&lt;T, R1, C1&gt;,
@@ -1141,7 +1142,7 @@
             <span class="attr">#[inline]
             </span><span class="kw">fn </span><span class="macro-nonterminal">$method</span>(<span class="self">self</span>, rhs: Matrix&lt;T, R2, C2, SB&gt;) -&gt; <span class="self">Self</span>::Output {
                 <span class="kw">let </span><span class="kw-2">mut </span>rhs = rhs.into_owned_sum::&lt;R1, C1&gt;();
-                <span class="macro">assert_eq!</span>(<span class="self">self</span>.shape(), rhs.shape(), <span class="string">&quot;Matrix addition/subtraction dimensions mismatch.&quot;</span>);
+                <span class="macro">assert_eq!</span>(<span class="self">self</span>.shape(), rhs.shape(), <span class="string">"Matrix addition/subtraction dimensions mismatch."</span>);
                 <span class="self">self</span>.<span class="macro-nonterminal">$method_assign_statically_unchecked_rhs</span>(<span class="kw-2">&amp;mut </span>rhs);
                 rhs
             }
@@ -1162,7 +1163,7 @@
             }
         }
 
-        <span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;b</span>, T, R1, C1, R2, C2, SA, SB&gt; <span class="macro-nonterminal">$Trait</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;b </span>Matrix&lt;T, R2, C2, SB&gt;&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Matrix&lt;T, R1, C1, SA&gt;
+        <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, <span class="lifetime">'b</span>, T, R1, C1, R2, C2, SA, SB&gt; <span class="macro-nonterminal">$Trait</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'b </span>Matrix&lt;T, R2, C2, SB&gt;&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span>Matrix&lt;T, R1, C1, SA&gt;
             <span class="kw">where </span>R1: Dim, C1: Dim, R2: Dim, C2: Dim,
                   T: Scalar + <span class="macro-nonterminal">$bound</span>,
                   SA: Storage&lt;T, R1, C1&gt;,
@@ -1172,7 +1173,7 @@
             <span class="kw">type </span>Output = MatrixSum&lt;T, R1, C1, R2, C2&gt;;
 
             <span class="attr">#[inline]
-            </span><span class="kw">fn </span><span class="macro-nonterminal">$method</span>(<span class="self">self</span>, rhs: <span class="kw-2">&amp;</span><span class="lifetime">&#39;b </span>Matrix&lt;T, R2, C2, SB&gt;) -&gt; <span class="self">Self</span>::Output {
+            </span><span class="kw">fn </span><span class="macro-nonterminal">$method</span>(<span class="self">self</span>, rhs: <span class="kw-2">&amp;</span><span class="lifetime">'b </span>Matrix&lt;T, R2, C2, SB&gt;) -&gt; <span class="self">Self</span>::Output {
                 <span class="kw">let </span>(nrows, ncols) = <span class="self">self</span>.shape();
                 <span class="kw">let </span>nrows: SameShapeR&lt;R1, R2&gt; = Dim::from_usize(nrows);
                 <span class="kw">let </span>ncols: SameShapeC&lt;C1, C2&gt; = Dim::from_usize(ncols);
@@ -1183,7 +1184,7 @@
             }
         }
 
-        <span class="kw">impl</span>&lt;<span class="lifetime">&#39;b</span>, T, R1, C1, R2, C2, SA, SB&gt; <span class="macro-nonterminal">$TraitAssign</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;b </span>Matrix&lt;T, R2, C2, SB&gt;&gt; <span class="kw">for </span>Matrix&lt;T, R1, C1, SA&gt;
+        <span class="kw">impl</span>&lt;<span class="lifetime">'b</span>, T, R1, C1, R2, C2, SA, SB&gt; <span class="macro-nonterminal">$TraitAssign</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'b </span>Matrix&lt;T, R2, C2, SB&gt;&gt; <span class="kw">for </span>Matrix&lt;T, R1, C1, SA&gt;
             <span class="kw">where </span>R1: Dim, C1: Dim, R2: Dim, C2: Dim,
                   T: Scalar + <span class="macro-nonterminal">$bound</span>,
                   SA: StorageMut&lt;T, R1, C1&gt;,
@@ -1191,7 +1192,7 @@
                   ShapeConstraint: SameNumberOfRows&lt;R1, R2&gt; + SameNumberOfColumns&lt;C1, C2&gt; {
 
             <span class="attr">#[inline]
-            </span><span class="kw">fn </span><span class="macro-nonterminal">$method_assign</span>(<span class="kw-2">&amp;mut </span><span class="self">self</span>, rhs: <span class="kw-2">&amp;</span><span class="lifetime">&#39;b </span>Matrix&lt;T, R2, C2, SB&gt;) {
+            </span><span class="kw">fn </span><span class="macro-nonterminal">$method_assign</span>(<span class="kw-2">&amp;mut </span><span class="self">self</span>, rhs: <span class="kw-2">&amp;</span><span class="lifetime">'b </span>Matrix&lt;T, R2, C2, SB&gt;) {
                 <span class="self">self</span>.<span class="macro-nonterminal">$method_assign_statically_unchecked</span>(rhs)
             }
         }
@@ -1253,22 +1254,22 @@
         <span class="kw">if let </span><span class="prelude-val">Some</span>(first) = iter.next() {
             iter.fold(first, |acc, x| acc + x)
         } <span class="kw">else </span>{
-            <span class="macro">panic!</span>(<span class="string">&quot;Cannot compute `sum` of empty iterator.&quot;</span>)
+            <span class="macro">panic!</span>(<span class="string">"Cannot compute `sum` of empty iterator."</span>)
         }
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, T, R: DimName, C: DimName&gt; iter::Sum&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>OMatrix&lt;T, R, C&gt;&gt; <span class="kw">for </span>OMatrix&lt;T, R, C&gt;
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T, R: DimName, C: DimName&gt; iter::Sum&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>OMatrix&lt;T, R, C&gt;&gt; <span class="kw">for </span>OMatrix&lt;T, R, C&gt;
 <span class="kw">where
     </span>T: Scalar + ClosedAdd + Zero,
     DefaultAllocator: Allocator&lt;T, R, C&gt;,
 {
-    <span class="kw">fn </span>sum&lt;I: Iterator&lt;Item = <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>OMatrix&lt;T, R, C&gt;&gt;&gt;(iter: I) -&gt; OMatrix&lt;T, R, C&gt; {
+    <span class="kw">fn </span>sum&lt;I: Iterator&lt;Item = <span class="kw-2">&amp;</span><span class="lifetime">'a </span>OMatrix&lt;T, R, C&gt;&gt;&gt;(iter: I) -&gt; OMatrix&lt;T, R, C&gt; {
         iter.fold(Matrix::zero(), |acc, x| acc + x)
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, T, C: Dim&gt; iter::Sum&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>OMatrix&lt;T, Dyn, C&gt;&gt; <span class="kw">for </span>OMatrix&lt;T, Dyn, C&gt;
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T, C: Dim&gt; iter::Sum&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>OMatrix&lt;T, Dyn, C&gt;&gt; <span class="kw">for </span>OMatrix&lt;T, Dyn, C&gt;
 <span class="kw">where
     </span>T: Scalar + ClosedAdd + Zero,
     DefaultAllocator: Allocator&lt;T, Dyn, C&gt;,
@@ -1289,11 +1290,11 @@
     /// # use nalgebra::DMatrix;
     /// iter::empty::&lt;&amp;DMatrix&lt;f64&gt;&gt;().sum::&lt;DMatrix&lt;f64&gt;&gt;(); // panics!
     /// ```
-    </span><span class="kw">fn </span>sum&lt;I: Iterator&lt;Item = <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>OMatrix&lt;T, Dyn, C&gt;&gt;&gt;(<span class="kw-2">mut </span>iter: I) -&gt; OMatrix&lt;T, Dyn, C&gt; {
+    </span><span class="kw">fn </span>sum&lt;I: Iterator&lt;Item = <span class="kw-2">&amp;</span><span class="lifetime">'a </span>OMatrix&lt;T, Dyn, C&gt;&gt;&gt;(<span class="kw-2">mut </span>iter: I) -&gt; OMatrix&lt;T, Dyn, C&gt; {
         <span class="kw">if let </span><span class="prelude-val">Some</span>(first) = iter.next() {
             iter.fold(first.clone(), |acc, x| acc + x)
         } <span class="kw">else </span>{
-            <span class="macro">panic!</span>(<span class="string">&quot;Cannot compute `sum` of empty iterator.&quot;</span>)
+            <span class="macro">panic!</span>(<span class="string">"Cannot compute `sum` of empty iterator."</span>)
         }
     }
 }
@@ -1333,7 +1334,7 @@
             }
         }
 
-        <span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, T, R: Dim, C: Dim, S&gt; <span class="macro-nonterminal">$Trait</span>&lt;T&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Matrix&lt;T, R, C, S&gt;
+        <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T, R: Dim, C: Dim, S&gt; <span class="macro-nonterminal">$Trait</span>&lt;T&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span>Matrix&lt;T, R, C, S&gt;
             <span class="kw">where </span>T: Scalar + <span class="macro-nonterminal">$bound</span>,
                   S: Storage&lt;T, R, C&gt;,
                   DefaultAllocator: Allocator&lt;T, R, C&gt; {
@@ -1387,12 +1388,12 @@
             }
         }
 
-        <span class="kw">impl</span>&lt;<span class="lifetime">&#39;b</span>, R: Dim, C: Dim, S: Storage&lt;<span class="macro-nonterminal">$T</span>, R, C&gt;&gt; Mul&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;b </span>Matrix&lt;<span class="macro-nonterminal">$T</span>, R, C, S&gt;&gt; <span class="kw">for </span><span class="macro-nonterminal">$T
+        <span class="kw">impl</span>&lt;<span class="lifetime">'b</span>, R: Dim, C: Dim, S: Storage&lt;<span class="macro-nonterminal">$T</span>, R, C&gt;&gt; Mul&lt;<span class="kw-2">&amp;</span><span class="lifetime">'b </span>Matrix&lt;<span class="macro-nonterminal">$T</span>, R, C, S&gt;&gt; <span class="kw">for </span><span class="macro-nonterminal">$T
             </span><span class="kw">where </span>DefaultAllocator: Allocator&lt;<span class="macro-nonterminal">$T</span>, R, C&gt; {
             <span class="kw">type </span>Output = OMatrix&lt;<span class="macro-nonterminal">$T</span>, R, C&gt;;
 
             <span class="attr">#[inline]
-            </span><span class="kw">fn </span>mul(<span class="self">self</span>, rhs: <span class="kw-2">&amp;</span><span class="lifetime">&#39;b </span>Matrix&lt;<span class="macro-nonterminal">$T</span>, R, C, S&gt;) -&gt; <span class="self">Self</span>::Output {
+            </span><span class="kw">fn </span>mul(<span class="self">self</span>, rhs: <span class="kw-2">&amp;</span><span class="lifetime">'b </span>Matrix&lt;<span class="macro-nonterminal">$T</span>, R, C, S&gt;) -&gt; <span class="self">Self</span>::Output {
                 <span class="self">self </span>* rhs.clone_owned()
             }
         }
@@ -1402,8 +1403,8 @@
 <span class="macro">left_scalar_mul_impl!</span>(u8, u16, u32, u64, usize, i8, i16, i32, i64, isize, f32, f64);
 
 <span class="comment">// Matrix × Matrix
-</span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;b</span>, T, R1: Dim, C1: Dim, R2: Dim, C2: Dim, SA, SB&gt; Mul&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;b </span>Matrix&lt;T, R2, C2, SB&gt;&gt;
-    <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Matrix&lt;T, R1, C1, SA&gt;
+</span><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, <span class="lifetime">'b</span>, T, R1: Dim, C1: Dim, R2: Dim, C2: Dim, SA, SB&gt; Mul&lt;<span class="kw-2">&amp;</span><span class="lifetime">'b </span>Matrix&lt;T, R2, C2, SB&gt;&gt;
+    <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span>Matrix&lt;T, R1, C1, SA&gt;
 <span class="kw">where
     </span>T: Scalar + Zero + One + ClosedAdd + ClosedMul,
     SA: Storage&lt;T, R1, C1&gt;,
@@ -1414,7 +1415,7 @@
     <span class="kw">type </span>Output = OMatrix&lt;T, R1, C2&gt;;
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>mul(<span class="self">self</span>, rhs: <span class="kw-2">&amp;</span><span class="lifetime">&#39;b </span>Matrix&lt;T, R2, C2, SB&gt;) -&gt; <span class="self">Self</span>::Output {
+    </span><span class="kw">fn </span>mul(<span class="self">self</span>, rhs: <span class="kw-2">&amp;</span><span class="lifetime">'b </span>Matrix&lt;T, R2, C2, SB&gt;) -&gt; <span class="self">Self</span>::Output {
         <span class="kw">let </span><span class="kw-2">mut </span>res = Matrix::uninit(<span class="self">self</span>.shape_generic().<span class="number">0</span>, rhs.shape_generic().<span class="number">1</span>);
         <span class="kw">unsafe </span>{
             <span class="comment">// SAFETY: this is OK because status = Uninit &amp;&amp; bevy == 0
@@ -1424,8 +1425,8 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, T, R1: Dim, C1: Dim, R2: Dim, C2: Dim, SA, SB&gt; Mul&lt;Matrix&lt;T, R2, C2, SB&gt;&gt;
-    <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Matrix&lt;T, R1, C1, SA&gt;
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T, R1: Dim, C1: Dim, R2: Dim, C2: Dim, SA, SB&gt; Mul&lt;Matrix&lt;T, R2, C2, SB&gt;&gt;
+    <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span>Matrix&lt;T, R1, C1, SA&gt;
 <span class="kw">where
     </span>T: Scalar + Zero + One + ClosedAdd + ClosedMul,
     SB: Storage&lt;T, R2, C2&gt;,
@@ -1441,7 +1442,7 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;b</span>, T, R1: Dim, C1: Dim, R2: Dim, C2: Dim, SA, SB&gt; Mul&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;b </span>Matrix&lt;T, R2, C2, SB&gt;&gt;
+<span class="kw">impl</span>&lt;<span class="lifetime">'b</span>, T, R1: Dim, C1: Dim, R2: Dim, C2: Dim, SA, SB&gt; Mul&lt;<span class="kw-2">&amp;</span><span class="lifetime">'b </span>Matrix&lt;T, R2, C2, SB&gt;&gt;
     <span class="kw">for </span>Matrix&lt;T, R1, C1, SA&gt;
 <span class="kw">where
     </span>T: Scalar + Zero + One + ClosedAdd + ClosedMul,
@@ -1453,7 +1454,7 @@
     <span class="kw">type </span>Output = OMatrix&lt;T, R1, C2&gt;;
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>mul(<span class="self">self</span>, rhs: <span class="kw-2">&amp;</span><span class="lifetime">&#39;b </span>Matrix&lt;T, R2, C2, SB&gt;) -&gt; <span class="self">Self</span>::Output {
+    </span><span class="kw">fn </span>mul(<span class="self">self</span>, rhs: <span class="kw-2">&amp;</span><span class="lifetime">'b </span>Matrix&lt;T, R2, C2, SB&gt;) -&gt; <span class="self">Self</span>::Output {
         <span class="kw-2">&amp;</span><span class="self">self </span>* rhs
     }
 }
@@ -1476,8 +1477,8 @@
 }
 
 <span class="comment">// TODO: this is too restrictive:
-//    − we can&#39;t use `a *= b` when `a` is a mutable slice.
-//    − we can&#39;t use `a *= b` when C2 is not equal to C1.
+//    − we can't use `a *= b` when `a` is a mutable slice.
+//    − we can't use `a *= b` when C2 is not equal to C1.
 </span><span class="kw">impl</span>&lt;T, R1, C1, R2, SA, SB&gt; MulAssign&lt;Matrix&lt;T, R2, C1, SB&gt;&gt; <span class="kw">for </span>Matrix&lt;T, R1, C1, SA&gt;
 <span class="kw">where
     </span>R1: Dim,
@@ -1495,7 +1496,7 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;b</span>, T, R1, C1, R2, SA, SB&gt; MulAssign&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;b </span>Matrix&lt;T, R2, C1, SB&gt;&gt; <span class="kw">for </span>Matrix&lt;T, R1, C1, SA&gt;
+<span class="kw">impl</span>&lt;<span class="lifetime">'b</span>, T, R1, C1, R2, SA, SB&gt; MulAssign&lt;<span class="kw-2">&amp;</span><span class="lifetime">'b </span>Matrix&lt;T, R2, C1, SB&gt;&gt; <span class="kw">for </span>Matrix&lt;T, R1, C1, SA&gt;
 <span class="kw">where
     </span>R1: Dim,
     C1: Dim,
@@ -1508,7 +1509,7 @@
     </span>DefaultAllocator: Allocator&lt;T, R1, C1, Buffer = SA&gt;,
 {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>mul_assign(<span class="kw-2">&amp;mut </span><span class="self">self</span>, rhs: <span class="kw-2">&amp;</span><span class="lifetime">&#39;b </span>Matrix&lt;T, R2, C1, SB&gt;) {
+    </span><span class="kw">fn </span>mul_assign(<span class="kw-2">&amp;mut </span><span class="self">self</span>, rhs: <span class="kw-2">&amp;</span><span class="lifetime">'b </span>Matrix&lt;T, R2, C1, SB&gt;) {
         <span class="kw-2">*</span><span class="self">self </span>= <span class="kw-2">&amp;*</span><span class="self">self </span>* rhs
     }
 }
@@ -1557,8 +1558,8 @@
         rhs: <span class="kw-2">&amp;</span>Matrix&lt;T, R2, C2, SB&gt;,
         out: <span class="kw-2">&amp;mut </span>Matrix&lt;Status::Value, R3, C3, SC&gt;,
         dot: <span class="kw">impl </span>Fn(
-            <span class="kw-2">&amp;</span>VectorView&lt;<span class="lifetime">&#39;_</span>, T, R1, SA::RStride, SA::CStride&gt;,
-            <span class="kw-2">&amp;</span>VectorView&lt;<span class="lifetime">&#39;_</span>, T, R2, SB::RStride, SB::CStride&gt;,
+            <span class="kw-2">&amp;</span>VectorView&lt;<span class="lifetime">'_</span>, T, R1, SA::RStride, SA::CStride&gt;,
+            <span class="kw-2">&amp;</span>VectorView&lt;<span class="lifetime">'_</span>, T, R2, SB::RStride, SB::CStride&gt;,
         ) -&gt; T,
     ) <span class="kw">where
         </span>Status: InitStatus&lt;T&gt;,
@@ -1572,19 +1573,19 @@
 
         <span class="macro">assert!</span>(
             nrows1 == nrows2,
-            <span class="string">&quot;Matrix multiplication dimensions mismatch {:?} and {:?}: left rows != right rows.&quot;</span>,
+            <span class="string">"Matrix multiplication dimensions mismatch {:?} and {:?}: left rows != right rows."</span>,
             <span class="self">self</span>.shape(),
             rhs.shape()
         );
         <span class="macro">assert!</span>(
             ncols1 == nrows3,
-            <span class="string">&quot;Matrix multiplication output dimensions mismatch {:?} and {:?}: left cols != right rows.&quot;</span>,
+            <span class="string">"Matrix multiplication output dimensions mismatch {:?} and {:?}: left cols != right rows."</span>,
             <span class="self">self</span>.shape(),
             out.shape()
         );
         <span class="macro">assert!</span>(
             ncols2 == ncols3,
-            <span class="string">&quot;Matrix multiplication output dimensions mismatch {:?} and {:?}: left cols != right cols&quot;</span>,
+            <span class="string">"Matrix multiplication output dimensions mismatch {:?} and {:?}: left cols != right cols"</span>,
             rhs.shape(),
             out.shape()
         );
@@ -1697,12 +1698,12 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, T, D: DimName&gt; iter::Product&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>OMatrix&lt;T, D, D&gt;&gt; <span class="kw">for </span>OMatrix&lt;T, D, D&gt;
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T, D: DimName&gt; iter::Product&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>OMatrix&lt;T, D, D&gt;&gt; <span class="kw">for </span>OMatrix&lt;T, D, D&gt;
 <span class="kw">where
     </span>T: Scalar + Zero + One + ClosedMul + ClosedAdd,
     DefaultAllocator: Allocator&lt;T, D, D&gt;,
 {
-    <span class="kw">fn </span>product&lt;I: Iterator&lt;Item = <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>OMatrix&lt;T, D, D&gt;&gt;&gt;(iter: I) -&gt; OMatrix&lt;T, D, D&gt; {
+    <span class="kw">fn </span>product&lt;I: Iterator&lt;Item = <span class="kw-2">&amp;</span><span class="lifetime">'a </span>OMatrix&lt;T, D, D&gt;&gt;&gt;(iter: I) -&gt; OMatrix&lt;T, D, D&gt; {
         iter.fold(Matrix::one(), |acc, x| acc * x)
     }
 }

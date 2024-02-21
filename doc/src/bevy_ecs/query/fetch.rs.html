@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ecs-0.12.1/src/query/fetch.rs`."><title>fetch.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="bevy_ecs" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../bevy_ecs/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ecs-0.13.0/src/query/fetch.rs`."><title>fetch.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="bevy_ecs" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1821,47 +1822,18 @@
 <a href="#1821" id="1821">1821</a>
 <a href="#1822" id="1822">1822</a>
 <a href="#1823" id="1823">1823</a>
-<a href="#1824" id="1824">1824</a>
-<a href="#1825" id="1825">1825</a>
-<a href="#1826" id="1826">1826</a>
-<a href="#1827" id="1827">1827</a>
-<a href="#1828" id="1828">1828</a>
-<a href="#1829" id="1829">1829</a>
-<a href="#1830" id="1830">1830</a>
-<a href="#1831" id="1831">1831</a>
-<a href="#1832" id="1832">1832</a>
-<a href="#1833" id="1833">1833</a>
-<a href="#1834" id="1834">1834</a>
-<a href="#1835" id="1835">1835</a>
-<a href="#1836" id="1836">1836</a>
-<a href="#1837" id="1837">1837</a>
-<a href="#1838" id="1838">1838</a>
-<a href="#1839" id="1839">1839</a>
-<a href="#1840" id="1840">1840</a>
-<a href="#1841" id="1841">1841</a>
-<a href="#1842" id="1842">1842</a>
-<a href="#1843" id="1843">1843</a>
-<a href="#1844" id="1844">1844</a>
-<a href="#1845" id="1845">1845</a>
-<a href="#1846" id="1846">1846</a>
-<a href="#1847" id="1847">1847</a>
-<a href="#1848" id="1848">1848</a>
-<a href="#1849" id="1849">1849</a>
-<a href="#1850" id="1850">1850</a>
-<a href="#1851" id="1851">1851</a>
-<a href="#1852" id="1852">1852</a>
-<a href="#1853" id="1853">1853</a>
-<a href="#1854" id="1854">1854</a>
 </pre></div><pre class="rust"><code><span class="kw">use crate</span>::{
-    archetype::{Archetype, ArchetypeComponentId},
+    archetype::Archetype,
     change_detection::{Ticks, TicksMut},
     component::{Component, ComponentId, ComponentStorage, StorageType, Tick},
     entity::Entity,
-    query::{Access, DebugCheckedUnwrap, FilteredAccess},
+    query::{Access, DebugCheckedUnwrap, FilteredAccess, WorldQuery},
     storage::{ComponentSparseSet, Table, TableRow},
-    world::{unsafe_world_cell::UnsafeWorldCell, EntityMut, EntityRef, Mut, Ref, World},
+    world::{
+        unsafe_world_cell::UnsafeWorldCell, EntityMut, EntityRef, FilteredEntityMut,
+        FilteredEntityRef, Mut, Ref, World,
+    },
 };
-<span class="kw">pub use </span>bevy_ecs_macros::WorldQuery;
 <span class="kw">use </span>bevy_ptr::{ThinSlicePtr, UnsafeCellDeref};
 <span class="kw">use </span>bevy_utils::all_tuples;
 <span class="kw">use </span>std::{cell::UnsafeCell, marker::PhantomData};
@@ -1872,35 +1844,30 @@
 ///
 /// - **Component references.**
 ///   Fetches a component by reference (immutably or mutably).
-/// - **`WorldQuery` tuples.**
-///   If every element of a tuple implements `WorldQuery`, then the tuple itself also implements the same trait.
-///   This enables a single `Query` to access multiple components and filter over multiple conditions.
+/// - **`QueryData` tuples.**
+///   If every element of a tuple implements `QueryData`, then the tuple itself also implements the same trait.
+///   This enables a single `Query` to access multiple components.
 ///   Due to the current lack of variadic generics in Rust, the trait has been implemented for tuples from 0 to 15 elements,
 ///   but nesting of tuples allows infinite `WorldQuery`s.
-/// - **Component filters.**
-///   [`With`] and [`Without`] filters can be applied to check if the queried entity contains or not a particular component.
-/// - **Change detection filters.**
-///   [`Added`] and [`Changed`] filters can be applied to detect component changes to an entity.
-/// - **Filter disjunction operator.**
-///   By default, tuples compose query filters in such a way that all conditions must be satisfied to generate a query item for a given entity.
-///   Wrapping a tuple inside an [`Or`] operator will relax the requirement to just one condition.
 /// - **[`Entity`].**
 ///   Gets the identifier of the queried entity.
 /// - **[`Option`].**
 ///   By default, a world query only tests entities that have the matching component types.
-///   Wrapping it into an `Option` will increase the query search space, and it will return `None` if an entity doesn&#39;t satisfy the `WorldQuery`.
+///   Wrapping it into an `Option` will increase the query search space, and it will return `None` if an entity doesn't satisfy the `WorldQuery`.
 /// - **[`AnyOf`].**
 ///   Equivalent to wrapping each world query inside it into an `Option`.
 /// - **[`Ref`].**
 ///   Similar to change detection filters but it is used as a query fetch parameter.
 ///   It exposes methods to check for changes to the wrapped component.
+/// - **[`Has`].**
+///   Returns a bool indicating whether the entity has the specified component.
 ///
 /// Implementing the trait manually can allow for a fundamentally new type of behavior.
 ///
 /// # Trait derivation
 ///
-/// Query design can be easily structured by deriving `WorldQuery` for custom types.
-/// Despite the added complexity, this approach has several advantages over using `WorldQuery` tuples.
+/// Query design can be easily structured by deriving `QueryData` for custom types.
+/// Despite the added complexity, this approach has several advantages over using `QueryData` tuples.
 /// The most relevant improvements are:
 ///
 /// - Reusability across multiple systems.
@@ -1909,24 +1876,24 @@
 /// - Methods can be implemented for the query items.
 /// - There is no hardcoded limit on the number of elements.
 ///
-/// This trait can only be derived for structs, if each field also implements `WorldQuery`.
+/// This trait can only be derived for structs, if each field also implements `QueryData`.
 ///
 /// ```
 /// # use bevy_ecs::prelude::*;
-/// use bevy_ecs::query::WorldQuery;
+/// use bevy_ecs::query::QueryData;
 /// #
 /// # #[derive(Component)]
 /// # struct ComponentA;
 /// # #[derive(Component)]
 /// # struct ComponentB;
 ///
-/// #[derive(WorldQuery)]
+/// #[derive(QueryData)]
 /// struct MyQuery {
 ///     entity: Entity,
 ///     // It is required that all reference lifetimes are explicitly annotated, just like in any
-///     // struct. Each lifetime should be &#39;static.
-///     component_a: &amp;&#39;static ComponentA,
-///     component_b: &amp;&#39;static ComponentB,
+///     // struct. Each lifetime should be 'static.
+///     component_a: &amp;'static ComponentA,
+///     component_b: &amp;'static ComponentB,
 /// }
 ///
 /// fn my_system(query: Query&lt;MyQuery&gt;) {
@@ -1950,35 +1917,35 @@
 ///
 /// ## Adding mutable references
 ///
-/// Simply adding mutable references to a derived `WorldQuery` will result in a compilation error:
+/// Simply adding mutable references to a derived `QueryData` will result in a compilation error:
 ///
 /// ```compile_fail
 /// # use bevy_ecs::prelude::*;
-/// # use bevy_ecs::query::WorldQuery;
+/// # use bevy_ecs::query::QueryData;
 /// #
 /// # #[derive(Component)]
 /// # struct ComponentA;
 /// #
-/// #[derive(WorldQuery)]
+/// #[derive(QueryData)]
 /// struct CustomQuery {
-///     component_a: &amp;&#39;static mut ComponentA,
+///     component_a: &amp;'static mut ComponentA,
 /// }
 /// ```
 ///
-/// To grant mutable access to components, the struct must be marked with the `#[world_query(mutable)]` attribute.
+/// To grant mutable access to components, the struct must be marked with the `#[query_data(mutable)]` attribute.
 /// This will also create three more structs that will be used for accessing the query immutably (see table above).
 ///
 /// ```
 /// # use bevy_ecs::prelude::*;
-/// # use bevy_ecs::query::WorldQuery;
+/// # use bevy_ecs::query::QueryData;
 /// #
 /// # #[derive(Component)]
 /// # struct ComponentA;
 /// #
-/// #[derive(WorldQuery)]
-/// #[world_query(mutable)]
+/// #[derive(QueryData)]
+/// #[query_data(mutable)]
 /// struct CustomQuery {
-///     component_a: &amp;&#39;static mut ComponentA,
+///     component_a: &amp;'static mut ComponentA,
 /// }
 /// ```
 ///
@@ -1990,7 +1957,7 @@
 ///
 /// ```
 /// # use bevy_ecs::prelude::*;
-/// # use bevy_ecs::query::WorldQuery;
+/// # use bevy_ecs::query::QueryData;
 /// #
 /// #[derive(Component)]
 /// struct Health(f32);
@@ -1998,15 +1965,15 @@
 /// #[derive(Component)]
 /// struct Buff(f32);
 ///
-/// #[derive(WorldQuery)]
-/// #[world_query(mutable)]
+/// #[derive(QueryData)]
+/// #[query_data(mutable)]
 /// struct HealthQuery {
-///     health: &amp;&#39;static mut Health,
-///     buff: Option&lt;&amp;&#39;static mut Buff&gt;,
+///     health: &amp;'static mut Health,
+///     buff: Option&lt;&amp;'static mut Buff&gt;,
 /// }
 ///
 /// // `HealthQueryItem` is only available when accessing the query with mutable methods.
-/// impl&lt;&#39;w&gt; HealthQueryItem&lt;&#39;w&gt; {
+/// impl&lt;'w&gt; HealthQueryItem&lt;'w&gt; {
 ///     fn damage(&amp;mut self, value: f32) {
 ///         self.health.0 -= value;
 ///     }
@@ -2017,7 +1984,7 @@
 /// }
 ///
 /// // `HealthQueryReadOnlyItem` is only available when accessing the query with immutable methods.
-/// impl&lt;&#39;w&gt; HealthQueryReadOnlyItem&lt;&#39;w&gt; {
+/// impl&lt;'w&gt; HealthQueryReadOnlyItem&lt;'w&gt; {
 ///     fn total(&amp;self) -&gt; f32 {
 ///         self.health.0 + self.buff.map_or(0.0, |Buff(buff)| *buff)
 ///     }
@@ -2026,12 +1993,12 @@
 /// fn my_system(mut health_query: Query&lt;HealthQuery&gt;) {
 ///     // The item returned by the iterator is of type `HealthQueryReadOnlyItem`.
 ///     for health in health_query.iter() {
-///         println!(&quot;Total: {}&quot;, health.total());
+///         println!("Total: {}", health.total());
 ///     }
 ///     // The item returned by the iterator is of type `HealthQueryItem`.
 ///     for mut health in &amp;mut health_query {
 ///         health.damage(1.0);
-///         println!(&quot;Total (mut): {}&quot;, health.total());
+///         println!("Total (mut): {}", health.total());
 ///     }
 /// }
 /// # bevy_ecs::system::assert_is_system(my_system);
@@ -2039,21 +2006,21 @@
 ///
 /// ## Deriving traits for query items
 ///
-/// The `WorldQuery` derive macro does not automatically implement the traits of the struct to the query item types.
-/// Something similar can be done by using the `#[world_query(derive(...))]` attribute.
+/// The `QueryData` derive macro does not automatically implement the traits of the struct to the query item types.
+/// Something similar can be done by using the `#[query_data(derive(...))]` attribute.
 /// This will apply the listed derivable traits to the query item structs.
 ///
 /// ```
 /// # use bevy_ecs::prelude::*;
-/// # use bevy_ecs::query::WorldQuery;
+/// # use bevy_ecs::query::QueryData;
 /// #
 /// # #[derive(Component, Debug)]
 /// # struct ComponentA;
 /// #
-/// #[derive(WorldQuery)]
-/// #[world_query(mutable, derive(Debug))]
+/// #[derive(QueryData)]
+/// #[query_data(mutable, derive(Debug))]
 /// struct CustomQuery {
-///     component_a: &amp;&#39;static ComponentA,
+///     component_a: &amp;'static ComponentA,
 /// }
 ///
 /// // This function statically checks that `T` implements `Debug`.
@@ -2065,12 +2032,12 @@
 ///
 /// ## Query composition
 ///
-/// It is possible to use any `WorldQuery` as a field of another one.
-/// This means that a `WorldQuery` can also be used as a subquery, potentially in multiple places.
+/// It is possible to use any `QueryData` as a field of another one.
+/// This means that a `QueryData` can also be used as a subquery, potentially in multiple places.
 ///
 /// ```
 /// # use bevy_ecs::prelude::*;
-/// # use bevy_ecs::query::WorldQuery;
+/// # use bevy_ecs::query::QueryData;
 /// #
 /// # #[derive(Component)]
 /// # struct ComponentA;
@@ -2079,62 +2046,29 @@
 /// # #[derive(Component)]
 /// # struct ComponentC;
 /// #
-/// #[derive(WorldQuery)]
+/// #[derive(QueryData)]
 /// struct SubQuery {
-///     component_a: &amp;&#39;static ComponentA,
-///     component_b: &amp;&#39;static ComponentB,
+///     component_a: &amp;'static ComponentA,
+///     component_b: &amp;'static ComponentB,
 /// }
 ///
-/// #[derive(WorldQuery)]
+/// #[derive(QueryData)]
 /// struct MyQuery {
 ///     subquery: SubQuery,
-///     component_c: &amp;&#39;static ComponentC,
+///     component_c: &amp;'static ComponentC,
 /// }
-/// ```
-///
-/// ## Filters
-///
-/// Since the query filter type parameter is `WorldQuery`, it is also possible to use this macro to create filters.
-///
-/// ```
-/// # use bevy_ecs::prelude::*;
-/// # use bevy_ecs::{query::WorldQuery, component::Component};
-/// #
-/// # #[derive(Component)]
-/// # struct ComponentA;
-/// # #[derive(Component)]
-/// # struct ComponentB;
-/// # #[derive(Component)]
-/// # struct ComponentC;
-/// # #[derive(Component)]
-/// # struct ComponentD;
-/// # #[derive(Component)]
-/// # struct ComponentE;
-/// #
-/// #[derive(WorldQuery)]
-/// struct MyFilter&lt;T: Component, P: Component&gt; {
-///     // Field names are not relevant, since they are never manually accessed.
-///     with_a: With&lt;ComponentA&gt;,
-///     or_filter: Or&lt;(With&lt;ComponentC&gt;, Added&lt;ComponentB&gt;)&gt;,
-///     generic_tuple: (With&lt;T&gt;, Without&lt;P&gt;),
-/// }
-///
-/// fn my_system(query: Query&lt;Entity, MyFilter&lt;ComponentD, ComponentE&gt;&gt;) {
-///     // ...
-/// }
-/// # bevy_ecs::system::assert_is_system(my_system);
 /// ```
 ///
 /// # Generic Queries
 ///
 /// When writing generic code, it is often necessary to use [`PhantomData`]
-/// to constrain type parameters. Since `WorldQuery` is implemented for all
+/// to constrain type parameters. Since `QueryData` is implemented for all
 /// `PhantomData&lt;T&gt;` types, this pattern can be used with this macro.
 ///
 /// ```
-/// # use bevy_ecs::{prelude::*, query::WorldQuery};
+/// # use bevy_ecs::{prelude::*, query::QueryData};
 /// # use std::marker::PhantomData;
-/// #[derive(WorldQuery)]
+/// #[derive(QueryData)]
 /// pub struct GenericQuery&lt;T&gt; {
 ///     id: Entity,
 ///     marker: PhantomData&lt;T&gt;,
@@ -2148,226 +2082,76 @@
 /// Component access of `Self::ReadOnly` must be a subset of `Self`
 /// and `Self::ReadOnly` must match exactly the same archetypes/tables as `Self`
 ///
-/// Implementor must ensure that
-/// [`update_component_access`] and [`update_archetype_component_access`]
-/// exactly reflects the results of the following methods:
-///
-/// - [`matches_component_set`]
-/// - [`fetch`]
-///
-/// [`Added`]: crate::query::Added
-/// [`fetch`]: Self::fetch
-/// [`Changed`]: crate::query::Changed
-/// [`matches_component_set`]: Self::matches_component_set
-/// [`Or`]: crate::query::Or
 /// [`Query`]: crate::system::Query
 /// [`ReadOnly`]: Self::ReadOnly
-/// [`State`]: Self::State
-/// [`update_archetype_component_access`]: Self::update_archetype_component_access
-/// [`update_component_access`]: Self::update_component_access
-/// [`With`]: crate::query::With
-/// [`Without`]: crate::query::Without
-</span><span class="kw">pub unsafe trait </span>WorldQuery {
-    <span class="doccomment">/// The item returned by this [`WorldQuery`]
-    </span><span class="kw">type </span>Item&lt;<span class="lifetime">&#39;a</span>&gt;;
-
-    <span class="doccomment">/// Per archetype/table state used by this [`WorldQuery`] to fetch [`Self::Item`](crate::query::WorldQuery::Item)
-    </span><span class="kw">type </span>Fetch&lt;<span class="lifetime">&#39;a</span>&gt;: Clone;
-
-    <span class="doccomment">/// The read-only variant of this [`WorldQuery`], which satisfies the [`ReadOnlyWorldQuery`] trait.
-    </span><span class="kw">type </span>ReadOnly: ReadOnlyWorldQuery&lt;State = <span class="self">Self</span>::State&gt;;
-
-    <span class="doccomment">/// State used to construct a [`Self::Fetch`](crate::query::WorldQuery::Fetch). This will be cached inside [`QueryState`](crate::query::QueryState),
-    /// so it is best to move as much data / computation here as possible to reduce the cost of
-    /// constructing [`Self::Fetch`](crate::query::WorldQuery::Fetch).
-    </span><span class="kw">type </span>State: Send + Sync + Sized;
-
-    <span class="doccomment">/// This function manually implements subtyping for the query items.
-    </span><span class="kw">fn </span>shrink&lt;<span class="lifetime">&#39;wlong</span>: <span class="lifetime">&#39;wshort</span>, <span class="lifetime">&#39;wshort</span>&gt;(item: <span class="self">Self</span>::Item&lt;<span class="lifetime">&#39;wlong</span>&gt;) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">&#39;wshort</span>&gt;;
-
-    <span class="doccomment">/// Creates a new instance of this fetch.
-    ///
-    /// # Safety
-    ///
-    /// - `world` must have permission to access any of the components specified in `Self::update_archetype_component_access`.
-    /// - `state` must have been initialized (via [`WorldQuery::init_state`]) using the same `world` passed
-    ///   in to this function.
-    </span><span class="kw">unsafe fn </span>init_fetch&lt;<span class="lifetime">&#39;w</span>&gt;(
-        world: UnsafeWorldCell&lt;<span class="lifetime">&#39;w</span>&gt;,
-        state: <span class="kw-2">&amp;</span><span class="self">Self</span>::State,
-        last_run: Tick,
-        this_run: Tick,
-    ) -&gt; <span class="self">Self</span>::Fetch&lt;<span class="lifetime">&#39;w</span>&gt;;
-
-    <span class="doccomment">/// Returns true if (and only if) every table of every archetype matched by this fetch contains
-    /// all of the matched components. This is used to select a more efficient &quot;table iterator&quot;
-    /// for &quot;dense&quot; queries. If this returns true, [`WorldQuery::set_table`] must be used before
-    /// [`WorldQuery::fetch`] can be called for iterators. If this returns false,
-    /// [`WorldQuery::set_archetype`] must be used before [`WorldQuery::fetch`] can be called for
-    /// iterators.
-    </span><span class="kw">const </span>IS_DENSE: bool;
-
-    <span class="doccomment">/// Returns true if (and only if) this Fetch relies strictly on archetypes to limit which
-    /// components are accessed by the Query.
-    ///
-    /// This enables optimizations for [`crate::query::QueryIter`] that rely on knowing exactly how
-    /// many elements are being iterated (such as `Iterator::collect()`).
-    </span><span class="kw">const </span>IS_ARCHETYPAL: bool;
-
-    <span class="doccomment">/// Adjusts internal state to account for the next [`Archetype`]. This will always be called on
-    /// archetypes that match this [`WorldQuery`].
-    ///
-    /// # Safety
-    ///
-    /// - `archetype` and `tables` must be from the same [`World`] that [`WorldQuery::init_state`] was called on.
-    /// - [`Self::update_archetype_component_access`] must have been previously called with `archetype`.
-    /// - `table` must correspond to `archetype`.
-    /// - `state` must be the [`State`](Self::State) that `fetch` was initialized with.
-    </span><span class="kw">unsafe fn </span>set_archetype&lt;<span class="lifetime">&#39;w</span>&gt;(
-        fetch: <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Fetch&lt;<span class="lifetime">&#39;w</span>&gt;,
-        state: <span class="kw-2">&amp;</span><span class="self">Self</span>::State,
-        archetype: <span class="kw-2">&amp;</span><span class="lifetime">&#39;w </span>Archetype,
-        table: <span class="kw-2">&amp;</span><span class="lifetime">&#39;w </span>Table,
-    );
-
-    <span class="doccomment">/// Adjusts internal state to account for the next [`Table`]. This will always be called on tables
-    /// that match this [`WorldQuery`].
-    ///
-    /// # Safety
-    ///
-    /// - `table` must be from the same [`World`] that [`WorldQuery::init_state`] was called on.
-    /// - `table` must belong to an archetype that was previously registered with
-    ///   [`Self::update_archetype_component_access`].
-    /// - `state` must be the [`State`](Self::State) that `fetch` was initialized with.
-    </span><span class="kw">unsafe fn </span>set_table&lt;<span class="lifetime">&#39;w</span>&gt;(fetch: <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Fetch&lt;<span class="lifetime">&#39;w</span>&gt;, state: <span class="kw-2">&amp;</span><span class="self">Self</span>::State, table: <span class="kw-2">&amp;</span><span class="lifetime">&#39;w </span>Table);
-
-    <span class="doccomment">/// Fetch [`Self::Item`](`WorldQuery::Item`) for either the given `entity` in the current [`Table`],
-    /// or for the given `entity` in the current [`Archetype`]. This must always be called after
-    /// [`WorldQuery::set_table`] with a `table_row` in the range of the current [`Table`] or after
-    /// [`WorldQuery::set_archetype`]  with a `entity` in the current archetype.
-    ///
-    /// # Safety
-    ///
-    /// Must always be called _after_ [`WorldQuery::set_table`] or [`WorldQuery::set_archetype`]. `entity` and
-    /// `table_row` must be in the range of the current table and archetype.
-    ///
-    /// If `update_component_access` includes any mutable accesses, then the caller must ensure
-    /// that `fetch` is called no more than once for each `entity`/`table_row` in each archetype.
-    /// If `Self` implements [`ReadOnlyWorldQuery`], then this can safely be called multiple times.
-    </span><span class="kw">unsafe fn </span>fetch&lt;<span class="lifetime">&#39;w</span>&gt;(
-        fetch: <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Fetch&lt;<span class="lifetime">&#39;w</span>&gt;,
-        entity: Entity,
-        table_row: TableRow,
-    ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">&#39;w</span>&gt;;
-
-    <span class="doccomment">/// # Safety
-    ///
-    /// Must always be called _after_ [`WorldQuery::set_table`] or [`WorldQuery::set_archetype`]. `entity` and
-    /// `table_row` must be in the range of the current table and archetype.
-    ///
-    /// If this includes any mutable access, then this should never be called
-    /// while the return value of [`WorldQuery::fetch`] for the same entity is live.
-    </span><span class="attr">#[allow(unused_variables)]
-    #[inline(always)]
-    </span><span class="kw">unsafe fn </span>filter_fetch(
-        fetch: <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Fetch&lt;<span class="lifetime">&#39;_</span>&gt;,
-        entity: Entity,
-        table_row: TableRow,
-    ) -&gt; bool {
-        <span class="bool-val">true
-    </span>}
-
-    <span class="doccomment">/// Adds any component accesses used by this [`WorldQuery`] to `access`.
-    </span><span class="comment">// This does not have a default body of `{}` because 99% of cases need to add accesses
-    // and forgetting to do so would be unsound.
-    </span><span class="kw">fn </span>update_component_access(state: <span class="kw-2">&amp;</span><span class="self">Self</span>::State, access: <span class="kw-2">&amp;mut </span>FilteredAccess&lt;ComponentId&gt;);
-
-    <span class="doccomment">/// For the given `archetype`, adds any component accessed used by this [`WorldQuery`] to `access`.
-    </span><span class="comment">// This does not have a default body of `{}` because 99% of cases need to add accesses
-    // and forgetting to do so would be unsound.
-    </span><span class="kw">fn </span>update_archetype_component_access(
-        state: <span class="kw-2">&amp;</span><span class="self">Self</span>::State,
-        archetype: <span class="kw-2">&amp;</span>Archetype,
-        access: <span class="kw-2">&amp;mut </span>Access&lt;ArchetypeComponentId&gt;,
-    );
-
-    <span class="doccomment">/// Creates and initializes a [`State`](WorldQuery::State) for this [`WorldQuery`] type.
-    </span><span class="kw">fn </span>init_state(world: <span class="kw-2">&amp;mut </span>World) -&gt; <span class="self">Self</span>::State;
-
-    <span class="doccomment">/// Returns `true` if this query matches a set of components. Otherwise, returns `false`.
-    </span><span class="kw">fn </span>matches_component_set(
-        state: <span class="kw-2">&amp;</span><span class="self">Self</span>::State,
-        set_contains_id: <span class="kw-2">&amp;</span><span class="kw">impl </span>Fn(ComponentId) -&gt; bool,
-    ) -&gt; bool;
+</span><span class="kw">pub unsafe trait </span>QueryData: WorldQuery {
+    <span class="doccomment">/// The read-only variant of this [`QueryData`], which satisfies the [`ReadOnlyQueryData`] trait.
+    </span><span class="kw">type </span>ReadOnly: ReadOnlyQueryData&lt;State = &lt;<span class="self">Self </span><span class="kw">as </span>WorldQuery&gt;::State&gt;;
 }
 
-<span class="doccomment">/// A world query that is read only.
+<span class="doccomment">/// A [`QueryData`] that is read only.
 ///
 /// # Safety
 ///
-/// This must only be implemented for read-only [`WorldQuery`]&#39;s.
-</span><span class="kw">pub unsafe trait </span>ReadOnlyWorldQuery: WorldQuery&lt;ReadOnly = <span class="self">Self</span>&gt; {}
+/// This must only be implemented for read-only [`QueryData`]'s.
+</span><span class="kw">pub unsafe trait </span>ReadOnlyQueryData: QueryData&lt;ReadOnly = <span class="self">Self</span>&gt; {}
 
 <span class="doccomment">/// The item type returned when a [`WorldQuery`] is iterated over
-</span><span class="kw">pub type </span>QueryItem&lt;<span class="lifetime">&#39;w</span>, Q&gt; = &lt;Q <span class="kw">as </span>WorldQuery&gt;::Item&lt;<span class="lifetime">&#39;w</span>&gt;;
-<span class="doccomment">/// The read-only variant of the item type returned when a [`WorldQuery`] is iterated over immutably
-</span><span class="kw">pub type </span>ROQueryItem&lt;<span class="lifetime">&#39;w</span>, Q&gt; = QueryItem&lt;<span class="lifetime">&#39;w</span>, &lt;Q <span class="kw">as </span>WorldQuery&gt;::ReadOnly&gt;;
+</span><span class="kw">pub type </span>QueryItem&lt;<span class="lifetime">'w</span>, Q&gt; = &lt;Q <span class="kw">as </span>WorldQuery&gt;::Item&lt;<span class="lifetime">'w</span>&gt;;
+<span class="doccomment">/// The read-only variant of the item type returned when a [`QueryData`] is iterated over immutably
+</span><span class="kw">pub type </span>ROQueryItem&lt;<span class="lifetime">'w</span>, D&gt; = QueryItem&lt;<span class="lifetime">'w</span>, &lt;D <span class="kw">as </span>QueryData&gt;::ReadOnly&gt;;
 
-<span class="doccomment">/// SAFETY: no component or archetype access
+<span class="doccomment">/// SAFETY:
+/// `update_component_access` and `update_archetype_component_access` do nothing.
+/// This is sound because `fetch` does not access components.
 </span><span class="kw">unsafe impl </span>WorldQuery <span class="kw">for </span>Entity {
-    <span class="kw">type </span>Fetch&lt;<span class="lifetime">&#39;w</span>&gt; = ();
-    <span class="kw">type </span>Item&lt;<span class="lifetime">&#39;w</span>&gt; = Entity;
-    <span class="kw">type </span>ReadOnly = <span class="self">Self</span>;
+    <span class="kw">type </span>Item&lt;<span class="lifetime">'w</span>&gt; = Entity;
+    <span class="kw">type </span>Fetch&lt;<span class="lifetime">'w</span>&gt; = ();
     <span class="kw">type </span>State = ();
 
-    <span class="kw">fn </span>shrink&lt;<span class="lifetime">&#39;wlong</span>: <span class="lifetime">&#39;wshort</span>, <span class="lifetime">&#39;wshort</span>&gt;(item: <span class="self">Self</span>::Item&lt;<span class="lifetime">&#39;wlong</span>&gt;) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">&#39;wshort</span>&gt; {
+    <span class="kw">fn </span>shrink&lt;<span class="lifetime">'wlong</span>: <span class="lifetime">'wshort</span>, <span class="lifetime">'wshort</span>&gt;(item: <span class="self">Self</span>::Item&lt;<span class="lifetime">'wlong</span>&gt;) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">'wshort</span>&gt; {
         item
+    }
+
+    <span class="kw">unsafe fn </span>init_fetch&lt;<span class="lifetime">'w</span>&gt;(
+        _world: UnsafeWorldCell&lt;<span class="lifetime">'w</span>&gt;,
+        _state: <span class="kw-2">&amp;</span><span class="self">Self</span>::State,
+        _last_run: Tick,
+        _this_run: Tick,
+    ) -&gt; <span class="self">Self</span>::Fetch&lt;<span class="lifetime">'w</span>&gt; {
     }
 
     <span class="kw">const </span>IS_DENSE: bool = <span class="bool-val">true</span>;
 
-    <span class="kw">const </span>IS_ARCHETYPAL: bool = <span class="bool-val">true</span>;
-
-    <span class="kw">unsafe fn </span>init_fetch&lt;<span class="lifetime">&#39;w</span>&gt;(
-        _world: UnsafeWorldCell&lt;<span class="lifetime">&#39;w</span>&gt;,
-        _state: <span class="kw-2">&amp;</span><span class="self">Self</span>::State,
-        _last_run: Tick,
-        _this_run: Tick,
-    ) -&gt; <span class="self">Self</span>::Fetch&lt;<span class="lifetime">&#39;w</span>&gt; {
-    }
-
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>set_archetype&lt;<span class="lifetime">&#39;w</span>&gt;(
-        _fetch: <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Fetch&lt;<span class="lifetime">&#39;w</span>&gt;,
+    </span><span class="kw">unsafe fn </span>set_archetype&lt;<span class="lifetime">'w</span>&gt;(
+        _fetch: <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Fetch&lt;<span class="lifetime">'w</span>&gt;,
         _state: <span class="kw-2">&amp;</span><span class="self">Self</span>::State,
-        _archetype: <span class="kw-2">&amp;</span><span class="lifetime">&#39;w </span>Archetype,
+        _archetype: <span class="kw-2">&amp;</span><span class="lifetime">'w </span>Archetype,
         _table: <span class="kw-2">&amp;</span>Table,
     ) {
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>set_table&lt;<span class="lifetime">&#39;w</span>&gt;(_fetch: <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Fetch&lt;<span class="lifetime">&#39;w</span>&gt;, _state: <span class="kw-2">&amp;</span><span class="self">Self</span>::State, _table: <span class="kw-2">&amp;</span><span class="lifetime">&#39;w </span>Table) {
+    </span><span class="kw">unsafe fn </span>set_table&lt;<span class="lifetime">'w</span>&gt;(_fetch: <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Fetch&lt;<span class="lifetime">'w</span>&gt;, _state: <span class="kw-2">&amp;</span><span class="self">Self</span>::State, _table: <span class="kw-2">&amp;</span><span class="lifetime">'w </span>Table) {
     }
 
     <span class="attr">#[inline(always)]
-    </span><span class="kw">unsafe fn </span>fetch&lt;<span class="lifetime">&#39;w</span>&gt;(
-        _fetch: <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Fetch&lt;<span class="lifetime">&#39;w</span>&gt;,
+    </span><span class="kw">unsafe fn </span>fetch&lt;<span class="lifetime">'w</span>&gt;(
+        _fetch: <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Fetch&lt;<span class="lifetime">'w</span>&gt;,
         entity: Entity,
         _table_row: TableRow,
-    ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">&#39;w</span>&gt; {
+    ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">'w</span>&gt; {
         entity
     }
 
     <span class="kw">fn </span>update_component_access(_state: <span class="kw-2">&amp;</span><span class="self">Self</span>::State, _access: <span class="kw-2">&amp;mut </span>FilteredAccess&lt;ComponentId&gt;) {}
 
-    <span class="kw">fn </span>update_archetype_component_access(
-        _state: <span class="kw-2">&amp;</span><span class="self">Self</span>::State,
-        _archetype: <span class="kw-2">&amp;</span>Archetype,
-        _access: <span class="kw-2">&amp;mut </span>Access&lt;ArchetypeComponentId&gt;,
-    ) {
-    }
-
     <span class="kw">fn </span>init_state(_world: <span class="kw-2">&amp;mut </span>World) {}
+
+    <span class="kw">fn </span>get_state(_world: <span class="kw-2">&amp;</span>World) -&gt; <span class="prelude-ty">Option</span>&lt;()&gt; {
+        <span class="prelude-val">Some</span>(())
+    }
 
     <span class="kw">fn </span>matches_component_set(
         _state: <span class="kw-2">&amp;</span><span class="self">Self</span>::State,
@@ -2377,52 +2161,57 @@
     </span>}
 }
 
-<span class="doccomment">/// SAFETY: access is read only
-</span><span class="kw">unsafe impl </span>ReadOnlyWorldQuery <span class="kw">for </span>Entity {}
-
 <span class="doccomment">/// SAFETY: `Self` is the same as `Self::ReadOnly`
-</span><span class="kw">unsafe impl </span>WorldQuery <span class="kw">for </span>EntityRef&lt;<span class="lifetime">&#39;_</span>&gt; {
-    <span class="kw">type </span>Fetch&lt;<span class="lifetime">&#39;w</span>&gt; = UnsafeWorldCell&lt;<span class="lifetime">&#39;w</span>&gt;;
-    <span class="kw">type </span>Item&lt;<span class="lifetime">&#39;w</span>&gt; = EntityRef&lt;<span class="lifetime">&#39;w</span>&gt;;
+</span><span class="kw">unsafe impl </span>QueryData <span class="kw">for </span>Entity {
     <span class="kw">type </span>ReadOnly = <span class="self">Self</span>;
+}
+
+<span class="doccomment">/// SAFETY: access is read only
+</span><span class="kw">unsafe impl </span>ReadOnlyQueryData <span class="kw">for </span>Entity {}
+
+<span class="doccomment">/// SAFETY:
+/// `fetch` accesses all components in a readonly way.
+/// This is sound because `update_component_access` and `update_archetype_component_access` set read access for all components and panic when appropriate.
+/// Filters are unchanged.
+</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">'a</span>&gt; WorldQuery <span class="kw">for </span>EntityRef&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="kw">type </span>Item&lt;<span class="lifetime">'w</span>&gt; = EntityRef&lt;<span class="lifetime">'w</span>&gt;;
+    <span class="kw">type </span>Fetch&lt;<span class="lifetime">'w</span>&gt; = UnsafeWorldCell&lt;<span class="lifetime">'w</span>&gt;;
     <span class="kw">type </span>State = ();
 
-    <span class="kw">fn </span>shrink&lt;<span class="lifetime">&#39;wlong</span>: <span class="lifetime">&#39;wshort</span>, <span class="lifetime">&#39;wshort</span>&gt;(item: <span class="self">Self</span>::Item&lt;<span class="lifetime">&#39;wlong</span>&gt;) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">&#39;wshort</span>&gt; {
+    <span class="kw">fn </span>shrink&lt;<span class="lifetime">'wlong</span>: <span class="lifetime">'wshort</span>, <span class="lifetime">'wshort</span>&gt;(item: <span class="self">Self</span>::Item&lt;<span class="lifetime">'wlong</span>&gt;) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">'wshort</span>&gt; {
         item
+    }
+
+    <span class="kw">unsafe fn </span>init_fetch&lt;<span class="lifetime">'w</span>&gt;(
+        world: UnsafeWorldCell&lt;<span class="lifetime">'w</span>&gt;,
+        _state: <span class="kw-2">&amp;</span><span class="self">Self</span>::State,
+        _last_run: Tick,
+        _this_run: Tick,
+    ) -&gt; <span class="self">Self</span>::Fetch&lt;<span class="lifetime">'w</span>&gt; {
+        world
     }
 
     <span class="kw">const </span>IS_DENSE: bool = <span class="bool-val">true</span>;
 
-    <span class="kw">const </span>IS_ARCHETYPAL: bool = <span class="bool-val">true</span>;
-
-    <span class="kw">unsafe fn </span>init_fetch&lt;<span class="lifetime">&#39;w</span>&gt;(
-        world: UnsafeWorldCell&lt;<span class="lifetime">&#39;w</span>&gt;,
-        _state: <span class="kw-2">&amp;</span><span class="self">Self</span>::State,
-        _last_run: Tick,
-        _this_run: Tick,
-    ) -&gt; <span class="self">Self</span>::Fetch&lt;<span class="lifetime">&#39;w</span>&gt; {
-        world
-    }
-
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>set_archetype&lt;<span class="lifetime">&#39;w</span>&gt;(
-        _fetch: <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Fetch&lt;<span class="lifetime">&#39;w</span>&gt;,
+    </span><span class="kw">unsafe fn </span>set_archetype&lt;<span class="lifetime">'w</span>&gt;(
+        _fetch: <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Fetch&lt;<span class="lifetime">'w</span>&gt;,
         _state: <span class="kw-2">&amp;</span><span class="self">Self</span>::State,
-        _archetype: <span class="kw-2">&amp;</span><span class="lifetime">&#39;w </span>Archetype,
+        _archetype: <span class="kw-2">&amp;</span><span class="lifetime">'w </span>Archetype,
         _table: <span class="kw-2">&amp;</span>Table,
     ) {
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>set_table&lt;<span class="lifetime">&#39;w</span>&gt;(_fetch: <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Fetch&lt;<span class="lifetime">&#39;w</span>&gt;, _state: <span class="kw-2">&amp;</span><span class="self">Self</span>::State, _table: <span class="kw-2">&amp;</span><span class="lifetime">&#39;w </span>Table) {
+    </span><span class="kw">unsafe fn </span>set_table&lt;<span class="lifetime">'w</span>&gt;(_fetch: <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Fetch&lt;<span class="lifetime">'w</span>&gt;, _state: <span class="kw-2">&amp;</span><span class="self">Self</span>::State, _table: <span class="kw-2">&amp;</span><span class="lifetime">'w </span>Table) {
     }
 
     <span class="attr">#[inline(always)]
-    </span><span class="kw">unsafe fn </span>fetch&lt;<span class="lifetime">&#39;w</span>&gt;(
-        world: <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Fetch&lt;<span class="lifetime">&#39;w</span>&gt;,
+    </span><span class="kw">unsafe fn </span>fetch&lt;<span class="lifetime">'w</span>&gt;(
+        world: <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Fetch&lt;<span class="lifetime">'w</span>&gt;,
         entity: Entity,
         _table_row: TableRow,
-    ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">&#39;w</span>&gt; {
+    ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">'w</span>&gt; {
         <span class="comment">// SAFETY: `fetch` must be called with an entity that exists in the world
         </span><span class="kw">let </span>cell = world.get_entity(entity).debug_checked_unwrap();
         <span class="comment">// SAFETY: Read-only access to every component has been registered.
@@ -2432,22 +2221,16 @@
     <span class="kw">fn </span>update_component_access(_state: <span class="kw-2">&amp;</span><span class="self">Self</span>::State, access: <span class="kw-2">&amp;mut </span>FilteredAccess&lt;ComponentId&gt;) {
         <span class="macro">assert!</span>(
             !access.access().has_any_write(),
-            <span class="string">&quot;EntityRef conflicts with a previous access in this query. Shared access cannot coincide with exclusive access.&quot;</span>,
+            <span class="string">"EntityRef conflicts with a previous access in this query. Shared access cannot coincide with exclusive access."</span>,
         );
         access.read_all();
     }
 
-    <span class="kw">fn </span>update_archetype_component_access(
-        _state: <span class="kw-2">&amp;</span><span class="self">Self</span>::State,
-        archetype: <span class="kw-2">&amp;</span>Archetype,
-        access: <span class="kw-2">&amp;mut </span>Access&lt;ArchetypeComponentId&gt;,
-    ) {
-        <span class="kw">for </span>component_id <span class="kw">in </span>archetype.components() {
-            access.add_read(archetype.get_archetype_component_id(component_id).unwrap());
-        }
-    }
-
     <span class="kw">fn </span>init_state(_world: <span class="kw-2">&amp;mut </span>World) {}
+
+    <span class="kw">fn </span>get_state(_world: <span class="kw-2">&amp;</span>World) -&gt; <span class="prelude-ty">Option</span>&lt;()&gt; {
+        <span class="prelude-val">Some</span>(())
+    }
 
     <span class="kw">fn </span>matches_component_set(
         _state: <span class="kw-2">&amp;</span><span class="self">Self</span>::State,
@@ -2457,52 +2240,54 @@
     </span>}
 }
 
-<span class="doccomment">/// SAFETY: Access is read-only.
-</span><span class="kw">unsafe impl </span>ReadOnlyWorldQuery <span class="kw">for </span>EntityRef&lt;<span class="lifetime">&#39;_</span>&gt; {}
+<span class="doccomment">/// SAFETY: `Self` is the same as `Self::ReadOnly`
+</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">'a</span>&gt; QueryData <span class="kw">for </span>EntityRef&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="kw">type </span>ReadOnly = <span class="self">Self</span>;
+}
+
+<span class="doccomment">/// SAFETY: access is read only
+</span><span class="kw">unsafe impl </span>ReadOnlyQueryData <span class="kw">for </span>EntityRef&lt;<span class="lifetime">'_</span>&gt; {}
 
 <span class="doccomment">/// SAFETY: The accesses of `Self::ReadOnly` are a subset of the accesses of `Self`
-</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; WorldQuery <span class="kw">for </span>EntityMut&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="kw">type </span>Fetch&lt;<span class="lifetime">&#39;w</span>&gt; = UnsafeWorldCell&lt;<span class="lifetime">&#39;w</span>&gt;;
-    <span class="kw">type </span>Item&lt;<span class="lifetime">&#39;w</span>&gt; = EntityMut&lt;<span class="lifetime">&#39;w</span>&gt;;
-    <span class="kw">type </span>ReadOnly = EntityRef&lt;<span class="lifetime">&#39;a</span>&gt;;
+</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">'a</span>&gt; WorldQuery <span class="kw">for </span>EntityMut&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="kw">type </span>Item&lt;<span class="lifetime">'w</span>&gt; = EntityMut&lt;<span class="lifetime">'w</span>&gt;;
+    <span class="kw">type </span>Fetch&lt;<span class="lifetime">'w</span>&gt; = UnsafeWorldCell&lt;<span class="lifetime">'w</span>&gt;;
     <span class="kw">type </span>State = ();
 
-    <span class="kw">fn </span>shrink&lt;<span class="lifetime">&#39;wlong</span>: <span class="lifetime">&#39;wshort</span>, <span class="lifetime">&#39;wshort</span>&gt;(item: <span class="self">Self</span>::Item&lt;<span class="lifetime">&#39;wlong</span>&gt;) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">&#39;wshort</span>&gt; {
+    <span class="kw">fn </span>shrink&lt;<span class="lifetime">'wlong</span>: <span class="lifetime">'wshort</span>, <span class="lifetime">'wshort</span>&gt;(item: <span class="self">Self</span>::Item&lt;<span class="lifetime">'wlong</span>&gt;) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">'wshort</span>&gt; {
         item
+    }
+
+    <span class="kw">unsafe fn </span>init_fetch&lt;<span class="lifetime">'w</span>&gt;(
+        world: UnsafeWorldCell&lt;<span class="lifetime">'w</span>&gt;,
+        _state: <span class="kw-2">&amp;</span><span class="self">Self</span>::State,
+        _last_run: Tick,
+        _this_run: Tick,
+    ) -&gt; <span class="self">Self</span>::Fetch&lt;<span class="lifetime">'w</span>&gt; {
+        world
     }
 
     <span class="kw">const </span>IS_DENSE: bool = <span class="bool-val">true</span>;
 
-    <span class="kw">const </span>IS_ARCHETYPAL: bool = <span class="bool-val">true</span>;
-
-    <span class="kw">unsafe fn </span>init_fetch&lt;<span class="lifetime">&#39;w</span>&gt;(
-        world: UnsafeWorldCell&lt;<span class="lifetime">&#39;w</span>&gt;,
-        _state: <span class="kw-2">&amp;</span><span class="self">Self</span>::State,
-        _last_run: Tick,
-        _this_run: Tick,
-    ) -&gt; <span class="self">Self</span>::Fetch&lt;<span class="lifetime">&#39;w</span>&gt; {
-        world
-    }
-
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>set_archetype&lt;<span class="lifetime">&#39;w</span>&gt;(
-        _fetch: <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Fetch&lt;<span class="lifetime">&#39;w</span>&gt;,
+    </span><span class="kw">unsafe fn </span>set_archetype&lt;<span class="lifetime">'w</span>&gt;(
+        _fetch: <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Fetch&lt;<span class="lifetime">'w</span>&gt;,
         _state: <span class="kw-2">&amp;</span><span class="self">Self</span>::State,
-        _archetype: <span class="kw-2">&amp;</span><span class="lifetime">&#39;w </span>Archetype,
+        _archetype: <span class="kw-2">&amp;</span><span class="lifetime">'w </span>Archetype,
         _table: <span class="kw-2">&amp;</span>Table,
     ) {
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>set_table&lt;<span class="lifetime">&#39;w</span>&gt;(_fetch: <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Fetch&lt;<span class="lifetime">&#39;w</span>&gt;, _state: <span class="kw-2">&amp;</span><span class="self">Self</span>::State, _table: <span class="kw-2">&amp;</span><span class="lifetime">&#39;w </span>Table) {
+    </span><span class="kw">unsafe fn </span>set_table&lt;<span class="lifetime">'w</span>&gt;(_fetch: <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Fetch&lt;<span class="lifetime">'w</span>&gt;, _state: <span class="kw-2">&amp;</span><span class="self">Self</span>::State, _table: <span class="kw-2">&amp;</span><span class="lifetime">'w </span>Table) {
     }
 
     <span class="attr">#[inline(always)]
-    </span><span class="kw">unsafe fn </span>fetch&lt;<span class="lifetime">&#39;w</span>&gt;(
-        world: <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Fetch&lt;<span class="lifetime">&#39;w</span>&gt;,
+    </span><span class="kw">unsafe fn </span>fetch&lt;<span class="lifetime">'w</span>&gt;(
+        world: <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Fetch&lt;<span class="lifetime">'w</span>&gt;,
         entity: Entity,
         _table_row: TableRow,
-    ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">&#39;w</span>&gt; {
+    ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">'w</span>&gt; {
         <span class="comment">// SAFETY: `fetch` must be called with an entity that exists in the world
         </span><span class="kw">let </span>cell = world.get_entity(entity).debug_checked_unwrap();
         <span class="comment">// SAFETY: mutable access to every component has been registered.
@@ -2512,22 +2297,16 @@
     <span class="kw">fn </span>update_component_access(_state: <span class="kw-2">&amp;</span><span class="self">Self</span>::State, access: <span class="kw-2">&amp;mut </span>FilteredAccess&lt;ComponentId&gt;) {
         <span class="macro">assert!</span>(
             !access.access().has_any_read(),
-            <span class="string">&quot;EntityMut conflicts with a previous access in this query. Exclusive access cannot coincide with any other accesses.&quot;</span>,
+            <span class="string">"EntityMut conflicts with a previous access in this query. Exclusive access cannot coincide with any other accesses."</span>,
         );
         access.write_all();
     }
 
-    <span class="kw">fn </span>update_archetype_component_access(
-        _state: <span class="kw-2">&amp;</span><span class="self">Self</span>::State,
-        archetype: <span class="kw-2">&amp;</span>Archetype,
-        access: <span class="kw-2">&amp;mut </span>Access&lt;ArchetypeComponentId&gt;,
-    ) {
-        <span class="kw">for </span>component_id <span class="kw">in </span>archetype.components() {
-            access.add_write(archetype.get_archetype_component_id(component_id).unwrap());
-        }
-    }
-
     <span class="kw">fn </span>init_state(_world: <span class="kw-2">&amp;mut </span>World) {}
+
+    <span class="kw">fn </span>get_state(_world: <span class="kw-2">&amp;</span>World) -&gt; <span class="prelude-ty">Option</span>&lt;()&gt; {
+        <span class="prelude-val">Some</span>(())
+    }
 
     <span class="kw">fn </span>matches_component_set(
         _state: <span class="kw-2">&amp;</span><span class="self">Self</span>::State,
@@ -2537,48 +2316,259 @@
     </span>}
 }
 
-<span class="attr">#[doc(hidden)]
-</span><span class="kw">pub struct </span>ReadFetch&lt;<span class="lifetime">&#39;w</span>, T&gt; {
-    <span class="comment">// T::Storage = TableStorage
-    </span>table_components: <span class="prelude-ty">Option</span>&lt;ThinSlicePtr&lt;<span class="lifetime">&#39;w</span>, UnsafeCell&lt;T&gt;&gt;&gt;,
-    <span class="comment">// T::Storage = SparseStorage
-    </span>sparse_set: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;w </span>ComponentSparseSet&gt;,
+<span class="doccomment">/// SAFETY: access of `EntityRef` is a subset of `EntityMut`
+</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">'a</span>&gt; QueryData <span class="kw">for </span>EntityMut&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="kw">type </span>ReadOnly = EntityRef&lt;<span class="lifetime">'a</span>&gt;;
 }
 
-<span class="kw">impl</span>&lt;T&gt; Clone <span class="kw">for </span>ReadFetch&lt;<span class="lifetime">&#39;_</span>, T&gt; {
+<span class="doccomment">/// SAFETY: The accesses of `Self::ReadOnly` are a subset of the accesses of `Self`
+</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">'a</span>&gt; WorldQuery <span class="kw">for </span>FilteredEntityRef&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="kw">type </span>Fetch&lt;<span class="lifetime">'w</span>&gt; = (UnsafeWorldCell&lt;<span class="lifetime">'w</span>&gt;, Access&lt;ComponentId&gt;);
+    <span class="kw">type </span>Item&lt;<span class="lifetime">'w</span>&gt; = FilteredEntityRef&lt;<span class="lifetime">'w</span>&gt;;
+    <span class="kw">type </span>State = FilteredAccess&lt;ComponentId&gt;;
+
+    <span class="kw">fn </span>shrink&lt;<span class="lifetime">'wlong</span>: <span class="lifetime">'wshort</span>, <span class="lifetime">'wshort</span>&gt;(item: <span class="self">Self</span>::Item&lt;<span class="lifetime">'wlong</span>&gt;) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">'wshort</span>&gt; {
+        item
+    }
+
+    <span class="kw">const </span>IS_DENSE: bool = <span class="bool-val">false</span>;
+
+    <span class="kw">unsafe fn </span>init_fetch&lt;<span class="lifetime">'w</span>&gt;(
+        world: UnsafeWorldCell&lt;<span class="lifetime">'w</span>&gt;,
+        _state: <span class="kw-2">&amp;</span><span class="self">Self</span>::State,
+        _last_run: Tick,
+        _this_run: Tick,
+    ) -&gt; <span class="self">Self</span>::Fetch&lt;<span class="lifetime">'w</span>&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>access = Access::default();
+        access.read_all();
+        (world, access)
+    }
+
+    <span class="attr">#[inline]
+    </span><span class="kw">unsafe fn </span>set_archetype&lt;<span class="lifetime">'w</span>&gt;(
+        fetch: <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Fetch&lt;<span class="lifetime">'w</span>&gt;,
+        state: <span class="kw-2">&amp;</span><span class="self">Self</span>::State,
+        archetype: <span class="kw-2">&amp;</span><span class="lifetime">'w </span>Archetype,
+        _table: <span class="kw-2">&amp;</span>Table,
+    ) {
+        <span class="kw">let </span><span class="kw-2">mut </span>access = Access::default();
+        state.access.reads().for_each(|id| {
+            <span class="kw">if </span>archetype.contains(id) {
+                access.add_read(id);
+            }
+        });
+        fetch.<span class="number">1 </span>= access;
+    }
+
+    <span class="attr">#[inline]
+    </span><span class="kw">unsafe fn </span>set_table&lt;<span class="lifetime">'w</span>&gt;(fetch: <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Fetch&lt;<span class="lifetime">'w</span>&gt;, state: <span class="kw-2">&amp;</span><span class="self">Self</span>::State, table: <span class="kw-2">&amp;</span><span class="lifetime">'w </span>Table) {
+        <span class="kw">let </span><span class="kw-2">mut </span>access = Access::default();
+        state.access.reads().for_each(|id| {
+            <span class="kw">if </span>table.has_column(id) {
+                access.add_read(id);
+            }
+        });
+        fetch.<span class="number">1 </span>= access;
+    }
+
+    <span class="attr">#[inline]
+    </span><span class="kw">fn </span>set_access&lt;<span class="lifetime">'w</span>&gt;(state: <span class="kw-2">&amp;mut </span><span class="self">Self</span>::State, access: <span class="kw-2">&amp;</span>FilteredAccess&lt;ComponentId&gt;) {
+        <span class="kw-2">*</span>state = access.clone();
+        state.access_mut().clear_writes();
+    }
+
+    <span class="attr">#[inline(always)]
+    </span><span class="kw">unsafe fn </span>fetch&lt;<span class="lifetime">'w</span>&gt;(
+        (world, access): <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Fetch&lt;<span class="lifetime">'w</span>&gt;,
+        entity: Entity,
+        _table_row: TableRow,
+    ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">'w</span>&gt; {
+        <span class="comment">// SAFETY: `fetch` must be called with an entity that exists in the world
+        </span><span class="kw">let </span>cell = world.get_entity(entity).debug_checked_unwrap();
+        <span class="comment">// SAFETY: mutable access to every component has been registered.
+        </span>FilteredEntityRef::new(cell, access.clone())
+    }
+
+    <span class="kw">fn </span>update_component_access(
+        state: <span class="kw-2">&amp;</span><span class="self">Self</span>::State,
+        filtered_access: <span class="kw-2">&amp;mut </span>FilteredAccess&lt;ComponentId&gt;,
+    ) {
+        <span class="macro">assert!</span>(
+            filtered_access.access().is_compatible(<span class="kw-2">&amp;</span>state.access),
+            <span class="string">"FilteredEntityRef conflicts with a previous access in this query. Exclusive access cannot coincide with any other accesses."</span>,
+        );
+        filtered_access.access.extend(<span class="kw-2">&amp;</span>state.access);
+    }
+
+    <span class="kw">fn </span>init_state(_world: <span class="kw-2">&amp;mut </span>World) -&gt; <span class="self">Self</span>::State {
+        FilteredAccess::default()
+    }
+
+    <span class="kw">fn </span>get_state(_world: <span class="kw-2">&amp;</span>World) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::State&gt; {
+        <span class="prelude-val">Some</span>(FilteredAccess::default())
+    }
+
+    <span class="kw">fn </span>matches_component_set(
+        _state: <span class="kw-2">&amp;</span><span class="self">Self</span>::State,
+        _set_contains_id: <span class="kw-2">&amp;</span><span class="kw">impl </span>Fn(ComponentId) -&gt; bool,
+    ) -&gt; bool {
+        <span class="bool-val">true
+    </span>}
+}
+
+<span class="doccomment">/// SAFETY: `Self` is the same as `Self::ReadOnly`
+</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">'a</span>&gt; QueryData <span class="kw">for </span>FilteredEntityRef&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="kw">type </span>ReadOnly = <span class="self">Self</span>;
+}
+
+<span class="doccomment">/// SAFETY: Access is read-only.
+</span><span class="kw">unsafe impl </span>ReadOnlyQueryData <span class="kw">for </span>FilteredEntityRef&lt;<span class="lifetime">'_</span>&gt; {}
+
+<span class="doccomment">/// SAFETY: The accesses of `Self::ReadOnly` are a subset of the accesses of `Self`
+</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">'a</span>&gt; WorldQuery <span class="kw">for </span>FilteredEntityMut&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="kw">type </span>Fetch&lt;<span class="lifetime">'w</span>&gt; = (UnsafeWorldCell&lt;<span class="lifetime">'w</span>&gt;, Access&lt;ComponentId&gt;);
+    <span class="kw">type </span>Item&lt;<span class="lifetime">'w</span>&gt; = FilteredEntityMut&lt;<span class="lifetime">'w</span>&gt;;
+    <span class="kw">type </span>State = FilteredAccess&lt;ComponentId&gt;;
+
+    <span class="kw">fn </span>shrink&lt;<span class="lifetime">'wlong</span>: <span class="lifetime">'wshort</span>, <span class="lifetime">'wshort</span>&gt;(item: <span class="self">Self</span>::Item&lt;<span class="lifetime">'wlong</span>&gt;) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">'wshort</span>&gt; {
+        item
+    }
+
+    <span class="kw">const </span>IS_DENSE: bool = <span class="bool-val">false</span>;
+
+    <span class="kw">unsafe fn </span>init_fetch&lt;<span class="lifetime">'w</span>&gt;(
+        world: UnsafeWorldCell&lt;<span class="lifetime">'w</span>&gt;,
+        _state: <span class="kw-2">&amp;</span><span class="self">Self</span>::State,
+        _last_run: Tick,
+        _this_run: Tick,
+    ) -&gt; <span class="self">Self</span>::Fetch&lt;<span class="lifetime">'w</span>&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>access = Access::default();
+        access.write_all();
+        (world, access)
+    }
+
+    <span class="attr">#[inline]
+    </span><span class="kw">unsafe fn </span>set_archetype&lt;<span class="lifetime">'w</span>&gt;(
+        fetch: <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Fetch&lt;<span class="lifetime">'w</span>&gt;,
+        state: <span class="kw-2">&amp;</span><span class="self">Self</span>::State,
+        archetype: <span class="kw-2">&amp;</span><span class="lifetime">'w </span>Archetype,
+        _table: <span class="kw-2">&amp;</span>Table,
+    ) {
+        <span class="kw">let </span><span class="kw-2">mut </span>access = Access::default();
+        state.access.reads().for_each(|id| {
+            <span class="kw">if </span>archetype.contains(id) {
+                access.add_read(id);
+            }
+        });
+        state.access.writes().for_each(|id| {
+            <span class="kw">if </span>archetype.contains(id) {
+                access.add_write(id);
+            }
+        });
+        fetch.<span class="number">1 </span>= access;
+    }
+
+    <span class="attr">#[inline]
+    </span><span class="kw">unsafe fn </span>set_table&lt;<span class="lifetime">'w</span>&gt;(fetch: <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Fetch&lt;<span class="lifetime">'w</span>&gt;, state: <span class="kw-2">&amp;</span><span class="self">Self</span>::State, table: <span class="kw-2">&amp;</span><span class="lifetime">'w </span>Table) {
+        <span class="kw">let </span><span class="kw-2">mut </span>access = Access::default();
+        state.access.reads().for_each(|id| {
+            <span class="kw">if </span>table.has_column(id) {
+                access.add_read(id);
+            }
+        });
+        state.access.writes().for_each(|id| {
+            <span class="kw">if </span>table.has_column(id) {
+                access.add_write(id);
+            }
+        });
+        fetch.<span class="number">1 </span>= access;
+    }
+
+    <span class="attr">#[inline]
+    </span><span class="kw">fn </span>set_access&lt;<span class="lifetime">'w</span>&gt;(state: <span class="kw-2">&amp;mut </span><span class="self">Self</span>::State, access: <span class="kw-2">&amp;</span>FilteredAccess&lt;ComponentId&gt;) {
+        <span class="kw-2">*</span>state = access.clone();
+    }
+
+    <span class="attr">#[inline(always)]
+    </span><span class="kw">unsafe fn </span>fetch&lt;<span class="lifetime">'w</span>&gt;(
+        (world, access): <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Fetch&lt;<span class="lifetime">'w</span>&gt;,
+        entity: Entity,
+        _table_row: TableRow,
+    ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">'w</span>&gt; {
+        <span class="comment">// SAFETY: `fetch` must be called with an entity that exists in the world
+        </span><span class="kw">let </span>cell = world.get_entity(entity).debug_checked_unwrap();
+        <span class="comment">// SAFETY: mutable access to every component has been registered.
+        </span>FilteredEntityMut::new(cell, access.clone())
+    }
+
+    <span class="kw">fn </span>update_component_access(
+        state: <span class="kw-2">&amp;</span><span class="self">Self</span>::State,
+        filtered_access: <span class="kw-2">&amp;mut </span>FilteredAccess&lt;ComponentId&gt;,
+    ) {
+        <span class="macro">assert!</span>(
+            filtered_access.access().is_compatible(<span class="kw-2">&amp;</span>state.access),
+            <span class="string">"FilteredEntityMut conflicts with a previous access in this query. Exclusive access cannot coincide with any other accesses."</span>,
+        );
+        filtered_access.access.extend(<span class="kw-2">&amp;</span>state.access);
+    }
+
+    <span class="kw">fn </span>init_state(_world: <span class="kw-2">&amp;mut </span>World) -&gt; <span class="self">Self</span>::State {
+        FilteredAccess::default()
+    }
+
+    <span class="kw">fn </span>get_state(_world: <span class="kw-2">&amp;</span>World) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::State&gt; {
+        <span class="prelude-val">Some</span>(FilteredAccess::default())
+    }
+
+    <span class="kw">fn </span>matches_component_set(
+        _state: <span class="kw-2">&amp;</span><span class="self">Self</span>::State,
+        _set_contains_id: <span class="kw-2">&amp;</span><span class="kw">impl </span>Fn(ComponentId) -&gt; bool,
+    ) -&gt; bool {
+        <span class="bool-val">true
+    </span>}
+}
+
+<span class="doccomment">/// SAFETY: access of `FilteredEntityRef` is a subset of `FilteredEntityMut`
+</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">'a</span>&gt; QueryData <span class="kw">for </span>FilteredEntityMut&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="kw">type </span>ReadOnly = FilteredEntityRef&lt;<span class="lifetime">'a</span>&gt;;
+}
+
+<span class="attr">#[doc(hidden)]
+</span><span class="kw">pub struct </span>ReadFetch&lt;<span class="lifetime">'w</span>, T&gt; {
+    <span class="comment">// T::Storage = TableStorage
+    </span>table_components: <span class="prelude-ty">Option</span>&lt;ThinSlicePtr&lt;<span class="lifetime">'w</span>, UnsafeCell&lt;T&gt;&gt;&gt;,
+    <span class="comment">// T::Storage = SparseStorage
+    </span>sparse_set: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'w </span>ComponentSparseSet&gt;,
+}
+
+<span class="kw">impl</span>&lt;T&gt; Clone <span class="kw">for </span>ReadFetch&lt;<span class="lifetime">'_</span>, T&gt; {
     <span class="kw">fn </span>clone(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
         <span class="kw-2">*</span><span class="self">self
     </span>}
 }
-<span class="kw">impl</span>&lt;T&gt; Copy <span class="kw">for </span>ReadFetch&lt;<span class="lifetime">&#39;_</span>, T&gt; {}
+<span class="kw">impl</span>&lt;T&gt; Copy <span class="kw">for </span>ReadFetch&lt;<span class="lifetime">'_</span>, T&gt; {}
 
-<span class="doccomment">/// SAFETY: `Self` is the same as `Self::ReadOnly`
+<span class="doccomment">/// SAFETY:
+/// `fetch` accesses a single component in a readonly way.
+/// This is sound because `update_component_access` and `update_archetype_component_access` add read access for that component and panic when appropriate.
+/// `update_component_access` adds a `With` filter for a component.
+/// This is sound because `matches_component_set` returns whether the set contains that component.
 </span><span class="kw">unsafe impl</span>&lt;T: Component&gt; WorldQuery <span class="kw">for </span><span class="kw-2">&amp;</span>T {
-    <span class="kw">type </span>Fetch&lt;<span class="lifetime">&#39;w</span>&gt; = ReadFetch&lt;<span class="lifetime">&#39;w</span>, T&gt;;
-    <span class="kw">type </span>Item&lt;<span class="lifetime">&#39;w</span>&gt; = <span class="kw-2">&amp;</span><span class="lifetime">&#39;w </span>T;
-    <span class="kw">type </span>ReadOnly = <span class="self">Self</span>;
+    <span class="kw">type </span>Item&lt;<span class="lifetime">'w</span>&gt; = <span class="kw-2">&amp;</span><span class="lifetime">'w </span>T;
+    <span class="kw">type </span>Fetch&lt;<span class="lifetime">'w</span>&gt; = ReadFetch&lt;<span class="lifetime">'w</span>, T&gt;;
     <span class="kw">type </span>State = ComponentId;
 
-    <span class="kw">fn </span>shrink&lt;<span class="lifetime">&#39;wlong</span>: <span class="lifetime">&#39;wshort</span>, <span class="lifetime">&#39;wshort</span>&gt;(item: <span class="kw-2">&amp;</span><span class="lifetime">&#39;wlong </span>T) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;wshort </span>T {
+    <span class="kw">fn </span>shrink&lt;<span class="lifetime">'wlong</span>: <span class="lifetime">'wshort</span>, <span class="lifetime">'wshort</span>&gt;(item: <span class="kw-2">&amp;</span><span class="lifetime">'wlong </span>T) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'wshort </span>T {
         item
     }
 
-    <span class="kw">const </span>IS_DENSE: bool = {
-        <span class="kw">match </span>T::Storage::STORAGE_TYPE {
-            StorageType::Table =&gt; <span class="bool-val">true</span>,
-            StorageType::SparseSet =&gt; <span class="bool-val">false</span>,
-        }
-    };
-
-    <span class="kw">const </span>IS_ARCHETYPAL: bool = <span class="bool-val">true</span>;
-
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>init_fetch&lt;<span class="lifetime">&#39;w</span>&gt;(
-        world: UnsafeWorldCell&lt;<span class="lifetime">&#39;w</span>&gt;,
+    </span><span class="kw">unsafe fn </span>init_fetch&lt;<span class="lifetime">'w</span>&gt;(
+        world: UnsafeWorldCell&lt;<span class="lifetime">'w</span>&gt;,
         <span class="kw-2">&amp;</span>component_id: <span class="kw-2">&amp;</span>ComponentId,
         _last_run: Tick,
         _this_run: Tick,
-    ) -&gt; ReadFetch&lt;<span class="lifetime">&#39;w</span>, T&gt; {
+    ) -&gt; ReadFetch&lt;<span class="lifetime">'w</span>, T&gt; {
         ReadFetch {
             table_components: <span class="prelude-val">None</span>,
             sparse_set: (T::Storage::STORAGE_TYPE == StorageType::SparseSet).then(|| {
@@ -2595,12 +2585,19 @@
         }
     }
 
+    <span class="kw">const </span>IS_DENSE: bool = {
+        <span class="kw">match </span>T::Storage::STORAGE_TYPE {
+            StorageType::Table =&gt; <span class="bool-val">true</span>,
+            StorageType::SparseSet =&gt; <span class="bool-val">false</span>,
+        }
+    };
+
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>set_archetype&lt;<span class="lifetime">&#39;w</span>&gt;(
-        fetch: <span class="kw-2">&amp;mut </span>ReadFetch&lt;<span class="lifetime">&#39;w</span>, T&gt;,
+    </span><span class="kw">unsafe fn </span>set_archetype&lt;<span class="lifetime">'w</span>&gt;(
+        fetch: <span class="kw-2">&amp;mut </span>ReadFetch&lt;<span class="lifetime">'w</span>, T&gt;,
         component_id: <span class="kw-2">&amp;</span>ComponentId,
-        _archetype: <span class="kw-2">&amp;</span><span class="lifetime">&#39;w </span>Archetype,
-        table: <span class="kw-2">&amp;</span><span class="lifetime">&#39;w </span>Table,
+        _archetype: <span class="kw-2">&amp;</span><span class="lifetime">'w </span>Archetype,
+        table: <span class="kw-2">&amp;</span><span class="lifetime">'w </span>Table,
     ) {
         <span class="kw">if </span><span class="self">Self</span>::IS_DENSE {
             <span class="self">Self</span>::set_table(fetch, component_id, table);
@@ -2608,10 +2605,10 @@
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>set_table&lt;<span class="lifetime">&#39;w</span>&gt;(
-        fetch: <span class="kw-2">&amp;mut </span>ReadFetch&lt;<span class="lifetime">&#39;w</span>, T&gt;,
+    </span><span class="kw">unsafe fn </span>set_table&lt;<span class="lifetime">'w</span>&gt;(
+        fetch: <span class="kw-2">&amp;mut </span>ReadFetch&lt;<span class="lifetime">'w</span>, T&gt;,
         <span class="kw-2">&amp;</span>component_id: <span class="kw-2">&amp;</span>ComponentId,
-        table: <span class="kw-2">&amp;</span><span class="lifetime">&#39;w </span>Table,
+        table: <span class="kw-2">&amp;</span><span class="lifetime">'w </span>Table,
     ) {
         fetch.table_components = <span class="prelude-val">Some</span>(
             table
@@ -2623,16 +2620,16 @@
     }
 
     <span class="attr">#[inline(always)]
-    </span><span class="kw">unsafe fn </span>fetch&lt;<span class="lifetime">&#39;w</span>&gt;(
-        fetch: <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Fetch&lt;<span class="lifetime">&#39;w</span>&gt;,
+    </span><span class="kw">unsafe fn </span>fetch&lt;<span class="lifetime">'w</span>&gt;(
+        fetch: <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Fetch&lt;<span class="lifetime">'w</span>&gt;,
         entity: Entity,
         table_row: TableRow,
-    ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">&#39;w</span>&gt; {
+    ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">'w</span>&gt; {
         <span class="kw">match </span>T::Storage::STORAGE_TYPE {
             StorageType::Table =&gt; fetch
                 .table_components
                 .debug_checked_unwrap()
-                .get(table_row.index())
+                .get(table_row.as_usize())
                 .deref(),
             StorageType::SparseSet =&gt; fetch
                 .sparse_set
@@ -2649,24 +2646,18 @@
     ) {
         <span class="macro">assert!</span>(
             !access.access().has_write(component_id),
-            <span class="string">&quot;&amp;{} conflicts with a previous access in this query. Shared access cannot coincide with exclusive access.&quot;</span>,
+            <span class="string">"&amp;{} conflicts with a previous access in this query. Shared access cannot coincide with exclusive access."</span>,
                 std::any::type_name::&lt;T&gt;(),
         );
         access.add_read(component_id);
     }
 
-    <span class="kw">fn </span>update_archetype_component_access(
-        <span class="kw-2">&amp;</span>component_id: <span class="kw-2">&amp;</span>ComponentId,
-        archetype: <span class="kw-2">&amp;</span>Archetype,
-        access: <span class="kw-2">&amp;mut </span>Access&lt;ArchetypeComponentId&gt;,
-    ) {
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(archetype_component_id) = archetype.get_archetype_component_id(component_id) {
-            access.add_read(archetype_component_id);
-        }
-    }
-
     <span class="kw">fn </span>init_state(world: <span class="kw-2">&amp;mut </span>World) -&gt; ComponentId {
         world.init_component::&lt;T&gt;()
+    }
+
+    <span class="kw">fn </span>get_state(world: <span class="kw-2">&amp;</span>World) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::State&gt; {
+        world.component_id::&lt;T&gt;()
     }
 
     <span class="kw">fn </span>matches_component_set(
@@ -2677,58 +2668,57 @@
     }
 }
 
+<span class="doccomment">/// SAFETY: `Self` is the same as `Self::ReadOnly`
+</span><span class="kw">unsafe impl</span>&lt;T: Component&gt; QueryData <span class="kw">for </span><span class="kw-2">&amp;</span>T {
+    <span class="kw">type </span>ReadOnly = <span class="self">Self</span>;
+}
+
 <span class="doccomment">/// SAFETY: access is read only
-</span><span class="kw">unsafe impl</span>&lt;T: Component&gt; ReadOnlyWorldQuery <span class="kw">for </span><span class="kw-2">&amp;</span>T {}
+</span><span class="kw">unsafe impl</span>&lt;T: Component&gt; ReadOnlyQueryData <span class="kw">for </span><span class="kw-2">&amp;</span>T {}
 
 <span class="attr">#[doc(hidden)]
-</span><span class="kw">pub struct </span>RefFetch&lt;<span class="lifetime">&#39;w</span>, T&gt; {
+</span><span class="kw">pub struct </span>RefFetch&lt;<span class="lifetime">'w</span>, T&gt; {
     <span class="comment">// T::Storage = TableStorage
     </span>table_data: <span class="prelude-ty">Option</span>&lt;(
-        ThinSlicePtr&lt;<span class="lifetime">&#39;w</span>, UnsafeCell&lt;T&gt;&gt;,
-        ThinSlicePtr&lt;<span class="lifetime">&#39;w</span>, UnsafeCell&lt;Tick&gt;&gt;,
-        ThinSlicePtr&lt;<span class="lifetime">&#39;w</span>, UnsafeCell&lt;Tick&gt;&gt;,
+        ThinSlicePtr&lt;<span class="lifetime">'w</span>, UnsafeCell&lt;T&gt;&gt;,
+        ThinSlicePtr&lt;<span class="lifetime">'w</span>, UnsafeCell&lt;Tick&gt;&gt;,
+        ThinSlicePtr&lt;<span class="lifetime">'w</span>, UnsafeCell&lt;Tick&gt;&gt;,
     )&gt;,
     <span class="comment">// T::Storage = SparseStorage
-    </span>sparse_set: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;w </span>ComponentSparseSet&gt;,
+    </span>sparse_set: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'w </span>ComponentSparseSet&gt;,
 
     last_run: Tick,
     this_run: Tick,
 }
 
-<span class="kw">impl</span>&lt;T&gt; Clone <span class="kw">for </span>RefFetch&lt;<span class="lifetime">&#39;_</span>, T&gt; {
+<span class="kw">impl</span>&lt;T&gt; Clone <span class="kw">for </span>RefFetch&lt;<span class="lifetime">'_</span>, T&gt; {
     <span class="kw">fn </span>clone(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
         <span class="kw-2">*</span><span class="self">self
     </span>}
 }
-<span class="kw">impl</span>&lt;T&gt; Copy <span class="kw">for </span>RefFetch&lt;<span class="lifetime">&#39;_</span>, T&gt; {}
+<span class="kw">impl</span>&lt;T&gt; Copy <span class="kw">for </span>RefFetch&lt;<span class="lifetime">'_</span>, T&gt; {}
 
-<span class="doccomment">/// SAFETY: `Self` is the same as `Self::ReadOnly`
-</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">&#39;__w</span>, T: Component&gt; WorldQuery <span class="kw">for </span>Ref&lt;<span class="lifetime">&#39;__w</span>, T&gt; {
-    <span class="kw">type </span>Fetch&lt;<span class="lifetime">&#39;w</span>&gt; = RefFetch&lt;<span class="lifetime">&#39;w</span>, T&gt;;
-    <span class="kw">type </span>Item&lt;<span class="lifetime">&#39;w</span>&gt; = Ref&lt;<span class="lifetime">&#39;w</span>, T&gt;;
-    <span class="kw">type </span>ReadOnly = <span class="self">Self</span>;
+<span class="doccomment">/// SAFETY:
+/// `fetch` accesses a single component in a readonly way.
+/// This is sound because `update_component_access` and `update_archetype_component_access` add read access for that component and panic when appropriate.
+/// `update_component_access` adds a `With` filter for a component.
+/// This is sound because `matches_component_set` returns whether the set contains that component.
+</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">'__w</span>, T: Component&gt; WorldQuery <span class="kw">for </span>Ref&lt;<span class="lifetime">'__w</span>, T&gt; {
+    <span class="kw">type </span>Item&lt;<span class="lifetime">'w</span>&gt; = Ref&lt;<span class="lifetime">'w</span>, T&gt;;
+    <span class="kw">type </span>Fetch&lt;<span class="lifetime">'w</span>&gt; = RefFetch&lt;<span class="lifetime">'w</span>, T&gt;;
     <span class="kw">type </span>State = ComponentId;
 
-    <span class="kw">fn </span>shrink&lt;<span class="lifetime">&#39;wlong</span>: <span class="lifetime">&#39;wshort</span>, <span class="lifetime">&#39;wshort</span>&gt;(item: Ref&lt;<span class="lifetime">&#39;wlong</span>, T&gt;) -&gt; Ref&lt;<span class="lifetime">&#39;wshort</span>, T&gt; {
+    <span class="kw">fn </span>shrink&lt;<span class="lifetime">'wlong</span>: <span class="lifetime">'wshort</span>, <span class="lifetime">'wshort</span>&gt;(item: Ref&lt;<span class="lifetime">'wlong</span>, T&gt;) -&gt; Ref&lt;<span class="lifetime">'wshort</span>, T&gt; {
         item
     }
 
-    <span class="kw">const </span>IS_DENSE: bool = {
-        <span class="kw">match </span>T::Storage::STORAGE_TYPE {
-            StorageType::Table =&gt; <span class="bool-val">true</span>,
-            StorageType::SparseSet =&gt; <span class="bool-val">false</span>,
-        }
-    };
-
-    <span class="kw">const </span>IS_ARCHETYPAL: bool = <span class="bool-val">true</span>;
-
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>init_fetch&lt;<span class="lifetime">&#39;w</span>&gt;(
-        world: UnsafeWorldCell&lt;<span class="lifetime">&#39;w</span>&gt;,
+    </span><span class="kw">unsafe fn </span>init_fetch&lt;<span class="lifetime">'w</span>&gt;(
+        world: UnsafeWorldCell&lt;<span class="lifetime">'w</span>&gt;,
         <span class="kw-2">&amp;</span>component_id: <span class="kw-2">&amp;</span>ComponentId,
         last_run: Tick,
         this_run: Tick,
-    ) -&gt; RefFetch&lt;<span class="lifetime">&#39;w</span>, T&gt; {
+    ) -&gt; RefFetch&lt;<span class="lifetime">'w</span>, T&gt; {
         RefFetch {
             table_data: <span class="prelude-val">None</span>,
             sparse_set: (T::Storage::STORAGE_TYPE == StorageType::SparseSet).then(|| {
@@ -2744,12 +2734,19 @@
         }
     }
 
+    <span class="kw">const </span>IS_DENSE: bool = {
+        <span class="kw">match </span>T::Storage::STORAGE_TYPE {
+            StorageType::Table =&gt; <span class="bool-val">true</span>,
+            StorageType::SparseSet =&gt; <span class="bool-val">false</span>,
+        }
+    };
+
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>set_archetype&lt;<span class="lifetime">&#39;w</span>&gt;(
-        fetch: <span class="kw-2">&amp;mut </span>RefFetch&lt;<span class="lifetime">&#39;w</span>, T&gt;,
+    </span><span class="kw">unsafe fn </span>set_archetype&lt;<span class="lifetime">'w</span>&gt;(
+        fetch: <span class="kw-2">&amp;mut </span>RefFetch&lt;<span class="lifetime">'w</span>, T&gt;,
         component_id: <span class="kw-2">&amp;</span>ComponentId,
-        _archetype: <span class="kw-2">&amp;</span><span class="lifetime">&#39;w </span>Archetype,
-        table: <span class="kw-2">&amp;</span><span class="lifetime">&#39;w </span>Table,
+        _archetype: <span class="kw-2">&amp;</span><span class="lifetime">'w </span>Archetype,
+        table: <span class="kw-2">&amp;</span><span class="lifetime">'w </span>Table,
     ) {
         <span class="kw">if </span><span class="self">Self</span>::IS_DENSE {
             <span class="self">Self</span>::set_table(fetch, component_id, table);
@@ -2757,10 +2754,10 @@
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>set_table&lt;<span class="lifetime">&#39;w</span>&gt;(
-        fetch: <span class="kw-2">&amp;mut </span>RefFetch&lt;<span class="lifetime">&#39;w</span>, T&gt;,
+    </span><span class="kw">unsafe fn </span>set_table&lt;<span class="lifetime">'w</span>&gt;(
+        fetch: <span class="kw-2">&amp;mut </span>RefFetch&lt;<span class="lifetime">'w</span>, T&gt;,
         <span class="kw-2">&amp;</span>component_id: <span class="kw-2">&amp;</span>ComponentId,
-        table: <span class="kw-2">&amp;</span><span class="lifetime">&#39;w </span>Table,
+        table: <span class="kw-2">&amp;</span><span class="lifetime">'w </span>Table,
     ) {
         <span class="kw">let </span>column = table.get_column(component_id).debug_checked_unwrap();
         fetch.table_data = <span class="prelude-val">Some</span>((
@@ -2771,20 +2768,20 @@
     }
 
     <span class="attr">#[inline(always)]
-    </span><span class="kw">unsafe fn </span>fetch&lt;<span class="lifetime">&#39;w</span>&gt;(
-        fetch: <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Fetch&lt;<span class="lifetime">&#39;w</span>&gt;,
+    </span><span class="kw">unsafe fn </span>fetch&lt;<span class="lifetime">'w</span>&gt;(
+        fetch: <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Fetch&lt;<span class="lifetime">'w</span>&gt;,
         entity: Entity,
         table_row: TableRow,
-    ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">&#39;w</span>&gt; {
+    ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">'w</span>&gt; {
         <span class="kw">match </span>T::Storage::STORAGE_TYPE {
             StorageType::Table =&gt; {
                 <span class="kw">let </span>(table_components, added_ticks, changed_ticks) =
                     fetch.table_data.debug_checked_unwrap();
                 Ref {
-                    value: table_components.get(table_row.index()).deref(),
+                    value: table_components.get(table_row.as_usize()).deref(),
                     ticks: Ticks {
-                        added: added_ticks.get(table_row.index()).deref(),
-                        changed: changed_ticks.get(table_row.index()).deref(),
+                        added: added_ticks.get(table_row.as_usize()).deref(),
+                        changed: changed_ticks.get(table_row.as_usize()).deref(),
                         this_run: fetch.this_run,
                         last_run: fetch.last_run,
                     },
@@ -2810,24 +2807,18 @@
     ) {
         <span class="macro">assert!</span>(
             !access.access().has_write(component_id),
-            <span class="string">&quot;&amp;{} conflicts with a previous access in this query. Shared access cannot coincide with exclusive access.&quot;</span>,
+            <span class="string">"&amp;{} conflicts with a previous access in this query. Shared access cannot coincide with exclusive access."</span>,
                 std::any::type_name::&lt;T&gt;(),
         );
         access.add_read(component_id);
     }
 
-    <span class="kw">fn </span>update_archetype_component_access(
-        <span class="kw-2">&amp;</span>component_id: <span class="kw-2">&amp;</span>ComponentId,
-        archetype: <span class="kw-2">&amp;</span>Archetype,
-        access: <span class="kw-2">&amp;mut </span>Access&lt;ArchetypeComponentId&gt;,
-    ) {
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(archetype_component_id) = archetype.get_archetype_component_id(component_id) {
-            access.add_read(archetype_component_id);
-        }
-    }
-
     <span class="kw">fn </span>init_state(world: <span class="kw-2">&amp;mut </span>World) -&gt; ComponentId {
         world.init_component::&lt;T&gt;()
+    }
+
+    <span class="kw">fn </span>get_state(world: <span class="kw-2">&amp;</span>World) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::State&gt; {
+        world.component_id::&lt;T&gt;()
     }
 
     <span class="kw">fn </span>matches_component_set(
@@ -2838,58 +2829,57 @@
     }
 }
 
+<span class="doccomment">/// SAFETY: `Self` is the same as `Self::ReadOnly`
+</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">'__w</span>, T: Component&gt; QueryData <span class="kw">for </span>Ref&lt;<span class="lifetime">'__w</span>, T&gt; {
+    <span class="kw">type </span>ReadOnly = <span class="self">Self</span>;
+}
+
 <span class="doccomment">/// SAFETY: access is read only
-</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">&#39;__w</span>, T: Component&gt; ReadOnlyWorldQuery <span class="kw">for </span>Ref&lt;<span class="lifetime">&#39;__w</span>, T&gt; {}
+</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">'__w</span>, T: Component&gt; ReadOnlyQueryData <span class="kw">for </span>Ref&lt;<span class="lifetime">'__w</span>, T&gt; {}
 
 <span class="attr">#[doc(hidden)]
-</span><span class="kw">pub struct </span>WriteFetch&lt;<span class="lifetime">&#39;w</span>, T&gt; {
+</span><span class="kw">pub struct </span>WriteFetch&lt;<span class="lifetime">'w</span>, T&gt; {
     <span class="comment">// T::Storage = TableStorage
     </span>table_data: <span class="prelude-ty">Option</span>&lt;(
-        ThinSlicePtr&lt;<span class="lifetime">&#39;w</span>, UnsafeCell&lt;T&gt;&gt;,
-        ThinSlicePtr&lt;<span class="lifetime">&#39;w</span>, UnsafeCell&lt;Tick&gt;&gt;,
-        ThinSlicePtr&lt;<span class="lifetime">&#39;w</span>, UnsafeCell&lt;Tick&gt;&gt;,
+        ThinSlicePtr&lt;<span class="lifetime">'w</span>, UnsafeCell&lt;T&gt;&gt;,
+        ThinSlicePtr&lt;<span class="lifetime">'w</span>, UnsafeCell&lt;Tick&gt;&gt;,
+        ThinSlicePtr&lt;<span class="lifetime">'w</span>, UnsafeCell&lt;Tick&gt;&gt;,
     )&gt;,
     <span class="comment">// T::Storage = SparseStorage
-    </span>sparse_set: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;w </span>ComponentSparseSet&gt;,
+    </span>sparse_set: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'w </span>ComponentSparseSet&gt;,
 
     last_run: Tick,
     this_run: Tick,
 }
 
-<span class="kw">impl</span>&lt;T&gt; Clone <span class="kw">for </span>WriteFetch&lt;<span class="lifetime">&#39;_</span>, T&gt; {
+<span class="kw">impl</span>&lt;T&gt; Clone <span class="kw">for </span>WriteFetch&lt;<span class="lifetime">'_</span>, T&gt; {
     <span class="kw">fn </span>clone(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
         <span class="kw-2">*</span><span class="self">self
     </span>}
 }
-<span class="kw">impl</span>&lt;T&gt; Copy <span class="kw">for </span>WriteFetch&lt;<span class="lifetime">&#39;_</span>, T&gt; {}
+<span class="kw">impl</span>&lt;T&gt; Copy <span class="kw">for </span>WriteFetch&lt;<span class="lifetime">'_</span>, T&gt; {}
 
-<span class="doccomment">/// SAFETY: access of `&amp;T` is a subset of `&amp;mut T`
-</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">&#39;__w</span>, T: Component&gt; WorldQuery <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;__w </span><span class="kw-2">mut </span>T {
-    <span class="kw">type </span>Fetch&lt;<span class="lifetime">&#39;w</span>&gt; = WriteFetch&lt;<span class="lifetime">&#39;w</span>, T&gt;;
-    <span class="kw">type </span>Item&lt;<span class="lifetime">&#39;w</span>&gt; = Mut&lt;<span class="lifetime">&#39;w</span>, T&gt;;
-    <span class="kw">type </span>ReadOnly = <span class="kw-2">&amp;</span><span class="lifetime">&#39;__w </span>T;
+<span class="doccomment">/// SAFETY:
+/// `fetch` accesses a single component mutably.
+/// This is sound because `update_component_access` and `update_archetype_component_access` add write access for that component and panic when appropriate.
+/// `update_component_access` adds a `With` filter for a component.
+/// This is sound because `matches_component_set` returns whether the set contains that component.
+</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">'__w</span>, T: Component&gt; WorldQuery <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'__w </span><span class="kw-2">mut </span>T {
+    <span class="kw">type </span>Item&lt;<span class="lifetime">'w</span>&gt; = Mut&lt;<span class="lifetime">'w</span>, T&gt;;
+    <span class="kw">type </span>Fetch&lt;<span class="lifetime">'w</span>&gt; = WriteFetch&lt;<span class="lifetime">'w</span>, T&gt;;
     <span class="kw">type </span>State = ComponentId;
 
-    <span class="kw">fn </span>shrink&lt;<span class="lifetime">&#39;wlong</span>: <span class="lifetime">&#39;wshort</span>, <span class="lifetime">&#39;wshort</span>&gt;(item: Mut&lt;<span class="lifetime">&#39;wlong</span>, T&gt;) -&gt; Mut&lt;<span class="lifetime">&#39;wshort</span>, T&gt; {
+    <span class="kw">fn </span>shrink&lt;<span class="lifetime">'wlong</span>: <span class="lifetime">'wshort</span>, <span class="lifetime">'wshort</span>&gt;(item: Mut&lt;<span class="lifetime">'wlong</span>, T&gt;) -&gt; Mut&lt;<span class="lifetime">'wshort</span>, T&gt; {
         item
     }
 
-    <span class="kw">const </span>IS_DENSE: bool = {
-        <span class="kw">match </span>T::Storage::STORAGE_TYPE {
-            StorageType::Table =&gt; <span class="bool-val">true</span>,
-            StorageType::SparseSet =&gt; <span class="bool-val">false</span>,
-        }
-    };
-
-    <span class="kw">const </span>IS_ARCHETYPAL: bool = <span class="bool-val">true</span>;
-
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>init_fetch&lt;<span class="lifetime">&#39;w</span>&gt;(
-        world: UnsafeWorldCell&lt;<span class="lifetime">&#39;w</span>&gt;,
+    </span><span class="kw">unsafe fn </span>init_fetch&lt;<span class="lifetime">'w</span>&gt;(
+        world: UnsafeWorldCell&lt;<span class="lifetime">'w</span>&gt;,
         <span class="kw-2">&amp;</span>component_id: <span class="kw-2">&amp;</span>ComponentId,
         last_run: Tick,
         this_run: Tick,
-    ) -&gt; WriteFetch&lt;<span class="lifetime">&#39;w</span>, T&gt; {
+    ) -&gt; WriteFetch&lt;<span class="lifetime">'w</span>, T&gt; {
         WriteFetch {
             table_data: <span class="prelude-val">None</span>,
             sparse_set: (T::Storage::STORAGE_TYPE == StorageType::SparseSet).then(|| {
@@ -2905,12 +2895,19 @@
         }
     }
 
+    <span class="kw">const </span>IS_DENSE: bool = {
+        <span class="kw">match </span>T::Storage::STORAGE_TYPE {
+            StorageType::Table =&gt; <span class="bool-val">true</span>,
+            StorageType::SparseSet =&gt; <span class="bool-val">false</span>,
+        }
+    };
+
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>set_archetype&lt;<span class="lifetime">&#39;w</span>&gt;(
-        fetch: <span class="kw-2">&amp;mut </span>WriteFetch&lt;<span class="lifetime">&#39;w</span>, T&gt;,
+    </span><span class="kw">unsafe fn </span>set_archetype&lt;<span class="lifetime">'w</span>&gt;(
+        fetch: <span class="kw-2">&amp;mut </span>WriteFetch&lt;<span class="lifetime">'w</span>, T&gt;,
         component_id: <span class="kw-2">&amp;</span>ComponentId,
-        _archetype: <span class="kw-2">&amp;</span><span class="lifetime">&#39;w </span>Archetype,
-        table: <span class="kw-2">&amp;</span><span class="lifetime">&#39;w </span>Table,
+        _archetype: <span class="kw-2">&amp;</span><span class="lifetime">'w </span>Archetype,
+        table: <span class="kw-2">&amp;</span><span class="lifetime">'w </span>Table,
     ) {
         <span class="kw">if </span><span class="self">Self</span>::IS_DENSE {
             <span class="self">Self</span>::set_table(fetch, component_id, table);
@@ -2918,10 +2915,10 @@
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>set_table&lt;<span class="lifetime">&#39;w</span>&gt;(
-        fetch: <span class="kw-2">&amp;mut </span>WriteFetch&lt;<span class="lifetime">&#39;w</span>, T&gt;,
+    </span><span class="kw">unsafe fn </span>set_table&lt;<span class="lifetime">'w</span>&gt;(
+        fetch: <span class="kw-2">&amp;mut </span>WriteFetch&lt;<span class="lifetime">'w</span>, T&gt;,
         <span class="kw-2">&amp;</span>component_id: <span class="kw-2">&amp;</span>ComponentId,
-        table: <span class="kw-2">&amp;</span><span class="lifetime">&#39;w </span>Table,
+        table: <span class="kw-2">&amp;</span><span class="lifetime">'w </span>Table,
     ) {
         <span class="kw">let </span>column = table.get_column(component_id).debug_checked_unwrap();
         fetch.table_data = <span class="prelude-val">Some</span>((
@@ -2932,20 +2929,20 @@
     }
 
     <span class="attr">#[inline(always)]
-    </span><span class="kw">unsafe fn </span>fetch&lt;<span class="lifetime">&#39;w</span>&gt;(
-        fetch: <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Fetch&lt;<span class="lifetime">&#39;w</span>&gt;,
+    </span><span class="kw">unsafe fn </span>fetch&lt;<span class="lifetime">'w</span>&gt;(
+        fetch: <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Fetch&lt;<span class="lifetime">'w</span>&gt;,
         entity: Entity,
         table_row: TableRow,
-    ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">&#39;w</span>&gt; {
+    ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">'w</span>&gt; {
         <span class="kw">match </span>T::Storage::STORAGE_TYPE {
             StorageType::Table =&gt; {
                 <span class="kw">let </span>(table_components, added_ticks, changed_ticks) =
                     fetch.table_data.debug_checked_unwrap();
                 Mut {
-                    value: table_components.get(table_row.index()).deref_mut(),
+                    value: table_components.get(table_row.as_usize()).deref_mut(),
                     ticks: TicksMut {
-                        added: added_ticks.get(table_row.index()).deref_mut(),
-                        changed: changed_ticks.get(table_row.index()).deref_mut(),
+                        added: added_ticks.get(table_row.as_usize()).deref_mut(),
+                        changed: changed_ticks.get(table_row.as_usize()).deref_mut(),
                         this_run: fetch.this_run,
                         last_run: fetch.last_run,
                     },
@@ -2971,24 +2968,18 @@
     ) {
         <span class="macro">assert!</span>(
             !access.access().has_read(component_id),
-            <span class="string">&quot;&amp;mut {} conflicts with a previous access in this query. Mutable component access must be unique.&quot;</span>,
+            <span class="string">"&amp;mut {} conflicts with a previous access in this query. Mutable component access must be unique."</span>,
                 std::any::type_name::&lt;T&gt;(),
         );
         access.add_write(component_id);
     }
 
-    <span class="kw">fn </span>update_archetype_component_access(
-        <span class="kw-2">&amp;</span>component_id: <span class="kw-2">&amp;</span>ComponentId,
-        archetype: <span class="kw-2">&amp;</span>Archetype,
-        access: <span class="kw-2">&amp;mut </span>Access&lt;ArchetypeComponentId&gt;,
-    ) {
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(archetype_component_id) = archetype.get_archetype_component_id(component_id) {
-            access.add_write(archetype_component_id);
-        }
-    }
-
     <span class="kw">fn </span>init_state(world: <span class="kw-2">&amp;mut </span>World) -&gt; ComponentId {
         world.init_component::&lt;T&gt;()
+    }
+
+    <span class="kw">fn </span>get_state(world: <span class="kw-2">&amp;</span>World) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::State&gt; {
+        world.component_id::&lt;T&gt;()
     }
 
     <span class="kw">fn </span>matches_component_set(
@@ -2999,13 +2990,18 @@
     }
 }
 
+<span class="doccomment">/// SAFETY: access of `&amp;T` is a subset of `&amp;mut T`
+</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">'__w</span>, T: Component&gt; QueryData <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'__w </span><span class="kw-2">mut </span>T {
+    <span class="kw">type </span>ReadOnly = <span class="kw-2">&amp;</span><span class="lifetime">'__w </span>T;
+}
+
 <span class="attr">#[doc(hidden)]
-</span><span class="kw">pub struct </span>OptionFetch&lt;<span class="lifetime">&#39;w</span>, T: WorldQuery&gt; {
-    fetch: T::Fetch&lt;<span class="lifetime">&#39;w</span>&gt;,
+</span><span class="kw">pub struct </span>OptionFetch&lt;<span class="lifetime">'w</span>, T: WorldQuery&gt; {
+    fetch: T::Fetch&lt;<span class="lifetime">'w</span>&gt;,
     matches: bool,
 }
 
-<span class="kw">impl</span>&lt;T: WorldQuery&gt; Clone <span class="kw">for </span>OptionFetch&lt;<span class="lifetime">&#39;_</span>, T&gt; {
+<span class="kw">impl</span>&lt;T: WorldQuery&gt; Clone <span class="kw">for </span>OptionFetch&lt;<span class="lifetime">'_</span>, T&gt; {
     <span class="kw">fn </span>clone(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
             fetch: <span class="self">self</span>.fetch.clone(),
@@ -3014,40 +3010,40 @@
     }
 }
 
-<span class="comment">// SAFETY: defers to soundness of `T: WorldQuery` impl
+<span class="doccomment">/// SAFETY:
+/// `fetch` might access any components that `T` accesses.
+/// This is sound because `update_component_access` and `update_archetype_component_access` add the same accesses as `T`.
+/// Filters are unchanged.
 </span><span class="kw">unsafe impl</span>&lt;T: WorldQuery&gt; WorldQuery <span class="kw">for </span><span class="prelude-ty">Option</span>&lt;T&gt; {
-    <span class="kw">type </span>Fetch&lt;<span class="lifetime">&#39;w</span>&gt; = OptionFetch&lt;<span class="lifetime">&#39;w</span>, T&gt;;
-    <span class="kw">type </span>Item&lt;<span class="lifetime">&#39;w</span>&gt; = <span class="prelude-ty">Option</span>&lt;T::Item&lt;<span class="lifetime">&#39;w</span>&gt;&gt;;
-    <span class="kw">type </span>ReadOnly = <span class="prelude-ty">Option</span>&lt;T::ReadOnly&gt;;
+    <span class="kw">type </span>Item&lt;<span class="lifetime">'w</span>&gt; = <span class="prelude-ty">Option</span>&lt;T::Item&lt;<span class="lifetime">'w</span>&gt;&gt;;
+    <span class="kw">type </span>Fetch&lt;<span class="lifetime">'w</span>&gt; = OptionFetch&lt;<span class="lifetime">'w</span>, T&gt;;
     <span class="kw">type </span>State = T::State;
 
-    <span class="kw">fn </span>shrink&lt;<span class="lifetime">&#39;wlong</span>: <span class="lifetime">&#39;wshort</span>, <span class="lifetime">&#39;wshort</span>&gt;(item: <span class="self">Self</span>::Item&lt;<span class="lifetime">&#39;wlong</span>&gt;) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">&#39;wshort</span>&gt; {
+    <span class="kw">fn </span>shrink&lt;<span class="lifetime">'wlong</span>: <span class="lifetime">'wshort</span>, <span class="lifetime">'wshort</span>&gt;(item: <span class="self">Self</span>::Item&lt;<span class="lifetime">'wlong</span>&gt;) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">'wshort</span>&gt; {
         item.map(T::shrink)
     }
 
-    <span class="kw">const </span>IS_DENSE: bool = T::IS_DENSE;
-
-    <span class="kw">const </span>IS_ARCHETYPAL: bool = T::IS_ARCHETYPAL;
-
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>init_fetch&lt;<span class="lifetime">&#39;w</span>&gt;(
-        world: UnsafeWorldCell&lt;<span class="lifetime">&#39;w</span>&gt;,
+    </span><span class="kw">unsafe fn </span>init_fetch&lt;<span class="lifetime">'w</span>&gt;(
+        world: UnsafeWorldCell&lt;<span class="lifetime">'w</span>&gt;,
         state: <span class="kw-2">&amp;</span>T::State,
         last_run: Tick,
         this_run: Tick,
-    ) -&gt; OptionFetch&lt;<span class="lifetime">&#39;w</span>, T&gt; {
+    ) -&gt; OptionFetch&lt;<span class="lifetime">'w</span>, T&gt; {
         OptionFetch {
             fetch: T::init_fetch(world, state, last_run, this_run),
             matches: <span class="bool-val">false</span>,
         }
     }
 
+    <span class="kw">const </span>IS_DENSE: bool = T::IS_DENSE;
+
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>set_archetype&lt;<span class="lifetime">&#39;w</span>&gt;(
-        fetch: <span class="kw-2">&amp;mut </span>OptionFetch&lt;<span class="lifetime">&#39;w</span>, T&gt;,
+    </span><span class="kw">unsafe fn </span>set_archetype&lt;<span class="lifetime">'w</span>&gt;(
+        fetch: <span class="kw-2">&amp;mut </span>OptionFetch&lt;<span class="lifetime">'w</span>, T&gt;,
         state: <span class="kw-2">&amp;</span>T::State,
-        archetype: <span class="kw-2">&amp;</span><span class="lifetime">&#39;w </span>Archetype,
-        table: <span class="kw-2">&amp;</span><span class="lifetime">&#39;w </span>Table,
+        archetype: <span class="kw-2">&amp;</span><span class="lifetime">'w </span>Archetype,
+        table: <span class="kw-2">&amp;</span><span class="lifetime">'w </span>Table,
     ) {
         fetch.matches = T::matches_component_set(state, <span class="kw-2">&amp;</span>|id| archetype.contains(id));
         <span class="kw">if </span>fetch.matches {
@@ -3056,7 +3052,7 @@
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>set_table&lt;<span class="lifetime">&#39;w</span>&gt;(fetch: <span class="kw-2">&amp;mut </span>OptionFetch&lt;<span class="lifetime">&#39;w</span>, T&gt;, state: <span class="kw-2">&amp;</span>T::State, table: <span class="kw-2">&amp;</span><span class="lifetime">&#39;w </span>Table) {
+    </span><span class="kw">unsafe fn </span>set_table&lt;<span class="lifetime">'w</span>&gt;(fetch: <span class="kw-2">&amp;mut </span>OptionFetch&lt;<span class="lifetime">'w</span>, T&gt;, state: <span class="kw-2">&amp;</span>T::State, table: <span class="kw-2">&amp;</span><span class="lifetime">'w </span>Table) {
         fetch.matches = T::matches_component_set(state, <span class="kw-2">&amp;</span>|id| table.has_column(id));
         <span class="kw">if </span>fetch.matches {
             T::set_table(<span class="kw-2">&amp;mut </span>fetch.fetch, state, table);
@@ -3064,11 +3060,11 @@
     }
 
     <span class="attr">#[inline(always)]
-    </span><span class="kw">unsafe fn </span>fetch&lt;<span class="lifetime">&#39;w</span>&gt;(
-        fetch: <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Fetch&lt;<span class="lifetime">&#39;w</span>&gt;,
+    </span><span class="kw">unsafe fn </span>fetch&lt;<span class="lifetime">'w</span>&gt;(
+        fetch: <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Fetch&lt;<span class="lifetime">'w</span>&gt;,
         entity: Entity,
         table_row: TableRow,
-    ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">&#39;w</span>&gt; {
+    ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">'w</span>&gt; {
         fetch
             .matches
             .then(|| T::fetch(<span class="kw-2">&amp;mut </span>fetch.fetch, entity, table_row))
@@ -3077,30 +3073,24 @@
     <span class="kw">fn </span>update_component_access(state: <span class="kw-2">&amp;</span>T::State, access: <span class="kw-2">&amp;mut </span>FilteredAccess&lt;ComponentId&gt;) {
         <span class="comment">// FilteredAccess::add_[write,read] adds the component to the `with` filter.
         // Those methods are called on `access` in `T::update_component_access`.
-        // But in `Option&lt;T&gt;`, we specifically don&#39;t filter on `T`,
+        // But in `Option&lt;T&gt;`, we specifically don't filter on `T`,
         // since `(Option&lt;T&gt;, &amp;OtherComponent)` should be a valid item, even
         // if `Option&lt;T&gt;` is `None`.
         //
         // We pass a clone of the `FilteredAccess` to `T`, and only update the `Access`
-        // using `extend_access` so that we can apply `T`&#39;s component_access
+        // using `extend_access` so that we can apply `T`'s component_access
         // without updating the `with` filters of `access`.
         </span><span class="kw">let </span><span class="kw-2">mut </span>intermediate = access.clone();
         T::update_component_access(state, <span class="kw-2">&amp;mut </span>intermediate);
         access.extend_access(<span class="kw-2">&amp;</span>intermediate);
     }
 
-    <span class="kw">fn </span>update_archetype_component_access(
-        state: <span class="kw-2">&amp;</span>T::State,
-        archetype: <span class="kw-2">&amp;</span>Archetype,
-        access: <span class="kw-2">&amp;mut </span>Access&lt;ArchetypeComponentId&gt;,
-    ) {
-        <span class="kw">if </span>T::matches_component_set(state, <span class="kw-2">&amp;</span>|id| archetype.contains(id)) {
-            T::update_archetype_component_access(state, archetype, access);
-        }
-    }
-
     <span class="kw">fn </span>init_state(world: <span class="kw-2">&amp;mut </span>World) -&gt; T::State {
         T::init_state(world)
+    }
+
+    <span class="kw">fn </span>get_state(world: <span class="kw-2">&amp;</span>World) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::State&gt; {
+        T::get_state(world)
     }
 
     <span class="kw">fn </span>matches_component_set(
@@ -3111,13 +3101,28 @@
     </span>}
 }
 
+<span class="comment">// SAFETY: defers to soundness of `T: WorldQuery` impl
+</span><span class="kw">unsafe impl</span>&lt;T: QueryData&gt; QueryData <span class="kw">for </span><span class="prelude-ty">Option</span>&lt;T&gt; {
+    <span class="kw">type </span>ReadOnly = <span class="prelude-ty">Option</span>&lt;T::ReadOnly&gt;;
+}
+
 <span class="doccomment">/// SAFETY: [`OptionFetch`] is read only because `T` is read only
-</span><span class="kw">unsafe impl</span>&lt;T: ReadOnlyWorldQuery&gt; ReadOnlyWorldQuery <span class="kw">for </span><span class="prelude-ty">Option</span>&lt;T&gt; {}
+</span><span class="kw">unsafe impl</span>&lt;T: ReadOnlyQueryData&gt; ReadOnlyQueryData <span class="kw">for </span><span class="prelude-ty">Option</span>&lt;T&gt; {}
 
 <span class="doccomment">/// Returns a bool that describes if an entity has the component `T`.
 ///
 /// This can be used in a [`Query`](crate::system::Query) if you want to know whether or not entities
-/// have the component `T`  but don&#39;t actually care about the component&#39;s value.
+/// have the component `T`  but don't actually care about the component's value.
+///
+/// # Footguns
+///
+/// Note that a `Query&lt;Has&lt;T&gt;&gt;` will match all existing entities.
+/// Beware! Even if it matches all entities, it doesn't mean that `query.get(entity)`
+/// will always return `Ok(bool)`.
+///
+/// In the case of a non-existent entity, such as a despawned one, it will return `Err`.
+/// A workaround is to replace `query.get(entity).unwrap()` by
+/// `query.get(entity).unwrap_or_default()`.
 ///
 /// # Examples
 ///
@@ -3130,14 +3135,14 @@
 /// # #[derive(Component)]
 /// # struct IsHungry;
 /// # #[derive(Component)]
-/// # struct Name { name: &amp;&#39;static str };
+/// # struct Name { name: &amp;'static str };
 /// #
 /// fn food_entity_system(query: Query&lt;(&amp;Name, Has&lt;IsHungry&gt;) &gt;) {
 ///     for (name, is_hungry) in &amp;query {
 ///         if is_hungry{
-///             println!(&quot;{} would like some food.&quot;, name.name);
+///             println!("{} would like some food.", name.name);
 ///         } else {
-///             println!(&quot;{} has had sufficient.&quot;, name.name);
+///             println!("{} has had sufficient.", name.name);
 ///         }
 ///     }
 /// }
@@ -3169,16 +3174,27 @@
 /// ```
 </span><span class="kw">pub struct </span>Has&lt;T&gt;(PhantomData&lt;T&gt;);
 
-<span class="comment">// SAFETY: `Self::ReadOnly` is the same as `Self`
+<span class="doccomment">/// SAFETY:
+/// `update_component_access` and `update_archetype_component_access` do nothing.
+/// This is sound because `fetch` does not access components.
 </span><span class="kw">unsafe impl</span>&lt;T: Component&gt; WorldQuery <span class="kw">for </span>Has&lt;T&gt; {
-    <span class="kw">type </span>Fetch&lt;<span class="lifetime">&#39;w</span>&gt; = bool;
-    <span class="kw">type </span>Item&lt;<span class="lifetime">&#39;w</span>&gt; = bool;
-    <span class="kw">type </span>ReadOnly = <span class="self">Self</span>;
+    <span class="kw">type </span>Item&lt;<span class="lifetime">'w</span>&gt; = bool;
+    <span class="kw">type </span>Fetch&lt;<span class="lifetime">'w</span>&gt; = bool;
     <span class="kw">type </span>State = ComponentId;
 
-    <span class="kw">fn </span>shrink&lt;<span class="lifetime">&#39;wlong</span>: <span class="lifetime">&#39;wshort</span>, <span class="lifetime">&#39;wshort</span>&gt;(item: <span class="self">Self</span>::Item&lt;<span class="lifetime">&#39;wlong</span>&gt;) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">&#39;wshort</span>&gt; {
+    <span class="kw">fn </span>shrink&lt;<span class="lifetime">'wlong</span>: <span class="lifetime">'wshort</span>, <span class="lifetime">'wshort</span>&gt;(item: <span class="self">Self</span>::Item&lt;<span class="lifetime">'wlong</span>&gt;) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">'wshort</span>&gt; {
         item
     }
+
+    <span class="attr">#[inline]
+    </span><span class="kw">unsafe fn </span>init_fetch&lt;<span class="lifetime">'w</span>&gt;(
+        _world: UnsafeWorldCell&lt;<span class="lifetime">'w</span>&gt;,
+        _state: <span class="kw-2">&amp;</span><span class="self">Self</span>::State,
+        _last_run: Tick,
+        _this_run: Tick,
+    ) -&gt; <span class="self">Self</span>::Fetch&lt;<span class="lifetime">'w</span>&gt; {
+        <span class="bool-val">false
+    </span>}
 
     <span class="kw">const </span>IS_DENSE: bool = {
         <span class="kw">match </span>T::Storage::STORAGE_TYPE {
@@ -3187,55 +3203,43 @@
         }
     };
 
-    <span class="kw">const </span>IS_ARCHETYPAL: bool = <span class="bool-val">true</span>;
-
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>init_fetch&lt;<span class="lifetime">&#39;w</span>&gt;(
-        _world: UnsafeWorldCell&lt;<span class="lifetime">&#39;w</span>&gt;,
-        _state: <span class="kw-2">&amp;</span><span class="self">Self</span>::State,
-        _last_run: Tick,
-        _this_run: Tick,
-    ) -&gt; <span class="self">Self</span>::Fetch&lt;<span class="lifetime">&#39;w</span>&gt; {
-        <span class="bool-val">false
-    </span>}
-
-    <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>set_archetype&lt;<span class="lifetime">&#39;w</span>&gt;(
-        fetch: <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Fetch&lt;<span class="lifetime">&#39;w</span>&gt;,
+    </span><span class="kw">unsafe fn </span>set_archetype&lt;<span class="lifetime">'w</span>&gt;(
+        fetch: <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Fetch&lt;<span class="lifetime">'w</span>&gt;,
         state: <span class="kw-2">&amp;</span><span class="self">Self</span>::State,
-        archetype: <span class="kw-2">&amp;</span><span class="lifetime">&#39;w </span>Archetype,
+        archetype: <span class="kw-2">&amp;</span><span class="lifetime">'w </span>Archetype,
         _table: <span class="kw-2">&amp;</span>Table,
     ) {
         <span class="kw-2">*</span>fetch = archetype.contains(<span class="kw-2">*</span>state);
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>set_table&lt;<span class="lifetime">&#39;w</span>&gt;(fetch: <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Fetch&lt;<span class="lifetime">&#39;w</span>&gt;, state: <span class="kw-2">&amp;</span><span class="self">Self</span>::State, table: <span class="kw-2">&amp;</span><span class="lifetime">&#39;w </span>Table) {
+    </span><span class="kw">unsafe fn </span>set_table&lt;<span class="lifetime">'w</span>&gt;(fetch: <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Fetch&lt;<span class="lifetime">'w</span>&gt;, state: <span class="kw-2">&amp;</span><span class="self">Self</span>::State, table: <span class="kw-2">&amp;</span><span class="lifetime">'w </span>Table) {
         <span class="kw-2">*</span>fetch = table.has_column(<span class="kw-2">*</span>state);
     }
 
     <span class="attr">#[inline(always)]
-    </span><span class="kw">unsafe fn </span>fetch&lt;<span class="lifetime">&#39;w</span>&gt;(
-        fetch: <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Fetch&lt;<span class="lifetime">&#39;w</span>&gt;,
+    </span><span class="kw">unsafe fn </span>fetch&lt;<span class="lifetime">'w</span>&gt;(
+        fetch: <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Fetch&lt;<span class="lifetime">'w</span>&gt;,
         _entity: Entity,
         _table_row: TableRow,
-    ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">&#39;w</span>&gt; {
+    ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">'w</span>&gt; {
         <span class="kw-2">*</span>fetch
     }
 
-    <span class="kw">fn </span>update_component_access(_state: <span class="kw-2">&amp;</span><span class="self">Self</span>::State, _access: <span class="kw-2">&amp;mut </span>FilteredAccess&lt;ComponentId&gt;) {
-        <span class="comment">// Do nothing as presence of `Has&lt;T&gt;` never affects whether two queries are disjoint
-    </span>}
-
-    <span class="kw">fn </span>update_archetype_component_access(
-        _state: <span class="kw-2">&amp;</span><span class="self">Self</span>::State,
-        _archetype: <span class="kw-2">&amp;</span>Archetype,
-        _access: <span class="kw-2">&amp;mut </span>Access&lt;ArchetypeComponentId&gt;,
+    <span class="kw">fn </span>update_component_access(
+        <span class="kw-2">&amp;</span>component_id: <span class="kw-2">&amp;</span><span class="self">Self</span>::State,
+        access: <span class="kw-2">&amp;mut </span>FilteredAccess&lt;ComponentId&gt;,
     ) {
+        access.access_mut().add_archetypal(component_id);
     }
 
     <span class="kw">fn </span>init_state(world: <span class="kw-2">&amp;mut </span>World) -&gt; ComponentId {
         world.init_component::&lt;T&gt;()
+    }
+
+    <span class="kw">fn </span>get_state(world: <span class="kw-2">&amp;</span>World) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::State&gt; {
+        world.component_id::&lt;T&gt;()
     }
 
     <span class="kw">fn </span>matches_component_set(
@@ -3247,104 +3251,13 @@
     </span>}
 }
 
-<span class="doccomment">/// SAFETY: [`Has`] is read only
-</span><span class="kw">unsafe impl</span>&lt;T: Component&gt; ReadOnlyWorldQuery <span class="kw">for </span>Has&lt;T&gt; {}
-
-<span class="macro">macro_rules! </span>impl_tuple_fetch {
-    ($((<span class="macro-nonterminal">$name</span>: ident, <span class="macro-nonterminal">$state</span>: ident)),<span class="kw-2">*</span>) =&gt; {
-        <span class="attr">#[allow(non_snake_case)]
-        #[allow(clippy::unused_unit)]
-        </span><span class="comment">// SAFETY: defers to soundness `$name: WorldQuery` impl
-        </span><span class="kw">unsafe impl</span>&lt;$(<span class="macro-nonterminal">$name</span>: WorldQuery),<span class="kw-2">*</span>&gt; WorldQuery <span class="kw">for </span>($(<span class="macro-nonterminal">$name</span>,)<span class="kw-2">*</span>) {
-            <span class="kw">type </span>Fetch&lt;<span class="lifetime">&#39;w</span>&gt; = ($(<span class="macro-nonterminal">$name::Fetch</span>&lt;<span class="lifetime">&#39;w</span>&gt;,)<span class="kw-2">*</span>);
-            <span class="kw">type </span>Item&lt;<span class="lifetime">&#39;w</span>&gt; = ($(<span class="macro-nonterminal">$name::Item</span>&lt;<span class="lifetime">&#39;w</span>&gt;,)<span class="kw-2">*</span>);
-            <span class="kw">type </span>ReadOnly = ($(<span class="macro-nonterminal">$name::ReadOnly</span>,)<span class="kw-2">*</span>);
-            <span class="kw">type </span>State = ($(<span class="macro-nonterminal">$name::State</span>,)<span class="kw-2">*</span>);
-
-            <span class="kw">fn </span>shrink&lt;<span class="lifetime">&#39;wlong</span>: <span class="lifetime">&#39;wshort</span>, <span class="lifetime">&#39;wshort</span>&gt;(item: <span class="self">Self</span>::Item&lt;<span class="lifetime">&#39;wlong</span>&gt;) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">&#39;wshort</span>&gt; {
-                <span class="kw">let </span>($(<span class="macro-nonterminal">$name</span>,)<span class="kw-2">*</span>) = item;
-                ($(
-                    <span class="macro-nonterminal">$name::shrink</span>(<span class="macro-nonterminal">$name</span>),
-                )<span class="kw-2">*</span>)
-            }
-
-            <span class="attr">#[inline]
-            #[allow(clippy::unused_unit)]
-            </span><span class="kw">unsafe fn </span>init_fetch&lt;<span class="lifetime">&#39;w</span>&gt;(_world: UnsafeWorldCell&lt;<span class="lifetime">&#39;w</span>&gt;, state: <span class="kw-2">&amp;</span><span class="self">Self</span>::State, _last_run: Tick, _this_run: Tick) -&gt; <span class="self">Self</span>::Fetch&lt;<span class="lifetime">&#39;w</span>&gt; {
-                <span class="kw">let </span>($(<span class="macro-nonterminal">$name</span>,)<span class="kw-2">*</span>) = state;
-                ($(<span class="macro-nonterminal">$name::init_fetch</span>(_world, <span class="macro-nonterminal">$name</span>, _last_run, _this_run),)<span class="kw-2">*</span>)
-            }
-
-            <span class="kw">const </span>IS_DENSE: bool = <span class="bool-val">true </span>$(&amp;&amp; <span class="macro-nonterminal">$name::IS_DENSE</span>)<span class="kw-2">*</span>;
-
-            <span class="kw">const </span>IS_ARCHETYPAL: bool = <span class="bool-val">true </span>$(&amp;&amp; <span class="macro-nonterminal">$name::IS_ARCHETYPAL</span>)<span class="kw-2">*</span>;
-
-            <span class="attr">#[inline]
-            </span><span class="kw">unsafe fn </span>set_archetype&lt;<span class="lifetime">&#39;w</span>&gt;(
-                _fetch: <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Fetch&lt;<span class="lifetime">&#39;w</span>&gt;,
-                _state: <span class="kw-2">&amp;</span><span class="self">Self</span>::State,
-                _archetype: <span class="kw-2">&amp;</span><span class="lifetime">&#39;w </span>Archetype,
-                _table: <span class="kw-2">&amp;</span><span class="lifetime">&#39;w </span>Table
-            ) {
-                <span class="kw">let </span>($(<span class="macro-nonterminal">$name</span>,)<span class="kw-2">*</span>) = _fetch;
-                <span class="kw">let </span>($(<span class="macro-nonterminal">$state</span>,)<span class="kw-2">*</span>) = _state;
-                $(<span class="macro-nonterminal">$name::set_archetype</span>(<span class="macro-nonterminal">$name</span>, <span class="macro-nonterminal">$state</span>, _archetype, _table);)*
-            }
-
-            <span class="attr">#[inline]
-            </span><span class="kw">unsafe fn </span>set_table&lt;<span class="lifetime">&#39;w</span>&gt;(_fetch: <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Fetch&lt;<span class="lifetime">&#39;w</span>&gt;, _state: <span class="kw-2">&amp;</span><span class="self">Self</span>::State, _table: <span class="kw-2">&amp;</span><span class="lifetime">&#39;w </span>Table) {
-                <span class="kw">let </span>($(<span class="macro-nonterminal">$name</span>,)<span class="kw-2">*</span>) = _fetch;
-                <span class="kw">let </span>($(<span class="macro-nonterminal">$state</span>,)<span class="kw-2">*</span>) = _state;
-                $(<span class="macro-nonterminal">$name::set_table</span>(<span class="macro-nonterminal">$name</span>, <span class="macro-nonterminal">$state</span>, _table);)*
-            }
-
-            <span class="attr">#[inline(always)]
-            #[allow(clippy::unused_unit)]
-            </span><span class="kw">unsafe fn </span>fetch&lt;<span class="lifetime">&#39;w</span>&gt;(
-                _fetch: <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Fetch&lt;<span class="lifetime">&#39;w</span>&gt;,
-                _entity: Entity,
-                _table_row: TableRow
-            ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">&#39;w</span>&gt; {
-                <span class="kw">let </span>($(<span class="macro-nonterminal">$name</span>,)<span class="kw-2">*</span>) = _fetch;
-                ($(<span class="macro-nonterminal">$name::fetch</span>(<span class="macro-nonterminal">$name</span>, _entity, _table_row),)<span class="kw-2">*</span>)
-            }
-
-            <span class="attr">#[inline(always)]
-            </span><span class="kw">unsafe fn </span>filter_fetch(
-                _fetch: <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Fetch&lt;<span class="lifetime">&#39;_</span>&gt;,
-                _entity: Entity,
-                _table_row: TableRow
-            ) -&gt; bool {
-                <span class="kw">let </span>($(<span class="macro-nonterminal">$name</span>,)<span class="kw-2">*</span>) = _fetch;
-                <span class="bool-val">true </span>$(&amp;&amp; <span class="macro-nonterminal">$name::filter_fetch</span>(<span class="macro-nonterminal">$name</span>, _entity, _table_row))*
-            }
-
-            <span class="kw">fn </span>update_component_access(state: <span class="kw-2">&amp;</span><span class="self">Self</span>::State, _access: <span class="kw-2">&amp;mut </span>FilteredAccess&lt;ComponentId&gt;) {
-                <span class="kw">let </span>($(<span class="macro-nonterminal">$name</span>,)<span class="kw-2">*</span>) = state;
-                $(<span class="macro-nonterminal">$name::update_component_access</span>(<span class="macro-nonterminal">$name</span>, _access);)*
-            }
-
-            <span class="kw">fn </span>update_archetype_component_access(state: <span class="kw-2">&amp;</span><span class="self">Self</span>::State, _archetype: <span class="kw-2">&amp;</span>Archetype, _access: <span class="kw-2">&amp;mut </span>Access&lt;ArchetypeComponentId&gt;) {
-                <span class="kw">let </span>($(<span class="macro-nonterminal">$name</span>,)<span class="kw-2">*</span>) = state;
-                $(<span class="macro-nonterminal">$name::update_archetype_component_access</span>(<span class="macro-nonterminal">$name</span>, _archetype, _access);)*
-            }
-
-
-            <span class="kw">fn </span>init_state(_world: <span class="kw-2">&amp;mut </span>World) -&gt; <span class="self">Self</span>::State {
-                ($(<span class="macro-nonterminal">$name::init_state</span>(_world),)<span class="kw-2">*</span>)
-            }
-
-            <span class="kw">fn </span>matches_component_set(state: <span class="kw-2">&amp;</span><span class="self">Self</span>::State, _set_contains_id: <span class="kw-2">&amp;</span><span class="kw">impl </span>Fn(ComponentId) -&gt; bool) -&gt; bool {
-                <span class="kw">let </span>($(<span class="macro-nonterminal">$name</span>,)<span class="kw-2">*</span>) = state;
-                <span class="bool-val">true </span>$(&amp;&amp; <span class="macro-nonterminal">$name::matches_component_set</span>(<span class="macro-nonterminal">$name</span>, _set_contains_id))*
-            }
-        }
-
-        <span class="doccomment">/// SAFETY: each item in the tuple is read only
-        </span><span class="kw">unsafe impl</span>&lt;$(<span class="macro-nonterminal">$name</span>: ReadOnlyWorldQuery),<span class="kw-2">*</span>&gt; ReadOnlyWorldQuery <span class="kw">for </span>($(<span class="macro-nonterminal">$name</span>,)<span class="kw-2">*</span>) {}
-
-    };
+<span class="doccomment">/// SAFETY: `Self` is the same as `Self::ReadOnly`
+</span><span class="kw">unsafe impl</span>&lt;T: Component&gt; QueryData <span class="kw">for </span>Has&lt;T&gt; {
+    <span class="kw">type </span>ReadOnly = <span class="self">Self</span>;
 }
+
+<span class="doccomment">/// SAFETY: [`Has`] is read only
+</span><span class="kw">unsafe impl</span>&lt;T: Component&gt; ReadOnlyQueryData <span class="kw">for </span>Has&lt;T&gt; {}
 
 <span class="doccomment">/// The `AnyOf` query parameter fetches entities with any of the component types included in T.
 ///
@@ -3353,18 +3266,38 @@
 /// Entities are guaranteed to have at least one of the components in `T`.
 </span><span class="kw">pub struct </span>AnyOf&lt;T&gt;(PhantomData&lt;T&gt;);
 
-<span class="macro">macro_rules! </span>impl_anytuple_fetch {
+<span class="macro">macro_rules! </span>impl_tuple_query_data {
     ($((<span class="macro-nonterminal">$name</span>: ident, <span class="macro-nonterminal">$state</span>: ident)),<span class="kw-2">*</span>) =&gt; {
+
         <span class="attr">#[allow(non_snake_case)]
         #[allow(clippy::unused_unit)]
-        </span><span class="comment">// SAFETY: defers to soundness of `$name: WorldQuery` impl
+        </span><span class="comment">// SAFETY: defers to soundness `$name: WorldQuery` impl
+        </span><span class="kw">unsafe impl</span>&lt;$(<span class="macro-nonterminal">$name</span>: QueryData),<span class="kw-2">*</span>&gt; QueryData <span class="kw">for </span>($(<span class="macro-nonterminal">$name</span>,)<span class="kw-2">*</span>) {
+            <span class="kw">type </span>ReadOnly = ($(<span class="macro-nonterminal">$name::ReadOnly</span>,)<span class="kw-2">*</span>);
+        }
+
+        <span class="doccomment">/// SAFETY: each item in the tuple is read only
+        </span><span class="kw">unsafe impl</span>&lt;$(<span class="macro-nonterminal">$name</span>: ReadOnlyQueryData),<span class="kw-2">*</span>&gt; ReadOnlyQueryData <span class="kw">for </span>($(<span class="macro-nonterminal">$name</span>,)<span class="kw-2">*</span>) {}
+
+    };
+}
+
+<span class="macro">macro_rules! </span>impl_anytuple_fetch {
+    ($((<span class="macro-nonterminal">$name</span>: ident, <span class="macro-nonterminal">$state</span>: ident)),<span class="kw-2">*</span>) =&gt; {
+
+        <span class="attr">#[allow(non_snake_case)]
+        #[allow(clippy::unused_unit)]
+        </span><span class="doccomment">/// SAFETY:
+        /// `fetch` accesses are a subset of the subqueries' accesses
+        /// This is sound because `update_component_access` and `update_archetype_component_access` adds accesses according to the implementations of all the subqueries.
+        /// `update_component_access` replaces the filters with a disjunction where every element is a conjunction of the previous filters and the filters of one of the subqueries.
+        /// This is sound because `matches_component_set` returns a disjunction of the results of the subqueries' implementations.
         </span><span class="kw">unsafe impl</span>&lt;$(<span class="macro-nonterminal">$name</span>: WorldQuery),<span class="kw-2">*</span>&gt; WorldQuery <span class="kw">for </span>AnyOf&lt;($(<span class="macro-nonterminal">$name</span>,)<span class="kw-2">*</span>)&gt; {
-            <span class="kw">type </span>Fetch&lt;<span class="lifetime">&#39;w</span>&gt; = ($((<span class="macro-nonterminal">$name::Fetch</span>&lt;<span class="lifetime">&#39;w</span>&gt;, bool),)<span class="kw-2">*</span>);
-            <span class="kw">type </span>Item&lt;<span class="lifetime">&#39;w</span>&gt; = ($(<span class="prelude-ty">Option</span>&lt;<span class="macro-nonterminal">$name::Item</span>&lt;<span class="lifetime">&#39;w</span>&gt;&gt;,)<span class="kw-2">*</span>);
-            <span class="kw">type </span>ReadOnly = AnyOf&lt;($(<span class="macro-nonterminal">$name::ReadOnly</span>,)<span class="kw-2">*</span>)&gt;;
+            <span class="kw">type </span>Fetch&lt;<span class="lifetime">'w</span>&gt; = ($((<span class="macro-nonterminal">$name::Fetch</span>&lt;<span class="lifetime">'w</span>&gt;, bool),)<span class="kw-2">*</span>);
+            <span class="kw">type </span>Item&lt;<span class="lifetime">'w</span>&gt; = ($(<span class="prelude-ty">Option</span>&lt;<span class="macro-nonterminal">$name::Item</span>&lt;<span class="lifetime">'w</span>&gt;&gt;,)<span class="kw-2">*</span>);
             <span class="kw">type </span>State = ($(<span class="macro-nonterminal">$name::State</span>,)<span class="kw-2">*</span>);
 
-            <span class="kw">fn </span>shrink&lt;<span class="lifetime">&#39;wlong</span>: <span class="lifetime">&#39;wshort</span>, <span class="lifetime">&#39;wshort</span>&gt;(item: <span class="self">Self</span>::Item&lt;<span class="lifetime">&#39;wlong</span>&gt;) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">&#39;wshort</span>&gt; {
+            <span class="kw">fn </span>shrink&lt;<span class="lifetime">'wlong</span>: <span class="lifetime">'wshort</span>, <span class="lifetime">'wshort</span>&gt;(item: <span class="self">Self</span>::Item&lt;<span class="lifetime">'wlong</span>&gt;) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">'wshort</span>&gt; {
                 <span class="kw">let </span>($(<span class="macro-nonterminal">$name</span>,)<span class="kw-2">*</span>) = item;
                 ($(
                     <span class="macro-nonterminal">$name</span>.map(<span class="macro-nonterminal">$name::shrink</span>),
@@ -3373,21 +3306,19 @@
 
             <span class="attr">#[inline]
             #[allow(clippy::unused_unit)]
-            </span><span class="kw">unsafe fn </span>init_fetch&lt;<span class="lifetime">&#39;w</span>&gt;(_world: UnsafeWorldCell&lt;<span class="lifetime">&#39;w</span>&gt;, state: <span class="kw-2">&amp;</span><span class="self">Self</span>::State, _last_run: Tick, _this_run: Tick) -&gt; <span class="self">Self</span>::Fetch&lt;<span class="lifetime">&#39;w</span>&gt; {
+            </span><span class="kw">unsafe fn </span>init_fetch&lt;<span class="lifetime">'w</span>&gt;(_world: UnsafeWorldCell&lt;<span class="lifetime">'w</span>&gt;, state: <span class="kw-2">&amp;</span><span class="self">Self</span>::State, _last_run: Tick, _this_run: Tick) -&gt; <span class="self">Self</span>::Fetch&lt;<span class="lifetime">'w</span>&gt; {
                 <span class="kw">let </span>($(<span class="macro-nonterminal">$name</span>,)<span class="kw-2">*</span>) = state;
                 ($((<span class="macro-nonterminal">$name::init_fetch</span>(_world, <span class="macro-nonterminal">$name</span>, _last_run, _this_run), <span class="bool-val">false</span>),)<span class="kw-2">*</span>)
             }
 
             <span class="kw">const </span>IS_DENSE: bool = <span class="bool-val">true </span>$(&amp;&amp; <span class="macro-nonterminal">$name::IS_DENSE</span>)<span class="kw-2">*</span>;
 
-            <span class="kw">const </span>IS_ARCHETYPAL: bool = <span class="bool-val">true </span>$(&amp;&amp; <span class="macro-nonterminal">$name::IS_ARCHETYPAL</span>)<span class="kw-2">*</span>;
-
             <span class="attr">#[inline]
-            </span><span class="kw">unsafe fn </span>set_archetype&lt;<span class="lifetime">&#39;w</span>&gt;(
-                _fetch: <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Fetch&lt;<span class="lifetime">&#39;w</span>&gt;,
+            </span><span class="kw">unsafe fn </span>set_archetype&lt;<span class="lifetime">'w</span>&gt;(
+                _fetch: <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Fetch&lt;<span class="lifetime">'w</span>&gt;,
                 _state: <span class="kw-2">&amp;</span><span class="self">Self</span>::State,
-                _archetype: <span class="kw-2">&amp;</span><span class="lifetime">&#39;w </span>Archetype,
-                _table: <span class="kw-2">&amp;</span><span class="lifetime">&#39;w </span>Table
+                _archetype: <span class="kw-2">&amp;</span><span class="lifetime">'w </span>Archetype,
+                _table: <span class="kw-2">&amp;</span><span class="lifetime">'w </span>Table
             ) {
                 <span class="kw">let </span>($(<span class="macro-nonterminal">$name</span>,)<span class="kw-2">*</span>) = _fetch;
                 <span class="kw">let </span>($(<span class="macro-nonterminal">$state</span>,)<span class="kw-2">*</span>) = _state;
@@ -3400,7 +3331,7 @@
             }
 
             <span class="attr">#[inline]
-            </span><span class="kw">unsafe fn </span>set_table&lt;<span class="lifetime">&#39;w</span>&gt;(_fetch: <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Fetch&lt;<span class="lifetime">&#39;w</span>&gt;, _state: <span class="kw-2">&amp;</span><span class="self">Self</span>::State, _table: <span class="kw-2">&amp;</span><span class="lifetime">&#39;w </span>Table) {
+            </span><span class="kw">unsafe fn </span>set_table&lt;<span class="lifetime">'w</span>&gt;(_fetch: <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Fetch&lt;<span class="lifetime">'w</span>&gt;, _state: <span class="kw-2">&amp;</span><span class="self">Self</span>::State, _table: <span class="kw-2">&amp;</span><span class="lifetime">'w </span>Table) {
                 <span class="kw">let </span>($(<span class="macro-nonterminal">$name</span>,)<span class="kw-2">*</span>) = _fetch;
                 <span class="kw">let </span>($(<span class="macro-nonterminal">$state</span>,)<span class="kw-2">*</span>) = _state;
                 $(
@@ -3413,11 +3344,11 @@
 
             <span class="attr">#[inline(always)]
             #[allow(clippy::unused_unit)]
-            </span><span class="kw">unsafe fn </span>fetch&lt;<span class="lifetime">&#39;w</span>&gt;(
-                _fetch: <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Fetch&lt;<span class="lifetime">&#39;w</span>&gt;,
+            </span><span class="kw">unsafe fn </span>fetch&lt;<span class="lifetime">'w</span>&gt;(
+                _fetch: <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Fetch&lt;<span class="lifetime">'w</span>&gt;,
                 _entity: Entity,
                 _table_row: TableRow
-            ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">&#39;w</span>&gt; {
+            ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">'w</span>&gt; {
                 <span class="kw">let </span>($(<span class="macro-nonterminal">$name</span>,)<span class="kw-2">*</span>) = _fetch;
                 ($(
                     <span class="macro-nonterminal">$name</span>.<span class="number">1</span>.then(|| <span class="macro-nonterminal">$name::fetch</span>(<span class="kw-2">&amp;mut </span><span class="macro-nonterminal">$name</span>.<span class="number">0</span>, _entity, _table_row)),
@@ -3437,6 +3368,7 @@
                         _new_access.extend_access(<span class="kw-2">&amp;</span>intermediate);
                     } <span class="kw">else </span>{
                         <span class="macro-nonterminal">$name::update_component_access</span>(<span class="macro-nonterminal">$name</span>, <span class="kw-2">&amp;mut </span>_new_access);
+                        _new_access.required = _access.required.clone();
                         _not_first = <span class="bool-val">true</span>;
                     }
                 )*
@@ -3444,17 +3376,12 @@
                 <span class="kw-2">*</span>_access = _new_access;
             }
 
-            <span class="kw">fn </span>update_archetype_component_access(state: <span class="kw-2">&amp;</span><span class="self">Self</span>::State, _archetype: <span class="kw-2">&amp;</span>Archetype, _access: <span class="kw-2">&amp;mut </span>Access&lt;ArchetypeComponentId&gt;) {
-                <span class="kw">let </span>($(<span class="macro-nonterminal">$name</span>,)<span class="kw-2">*</span>) = state;
-                $(
-                    <span class="kw">if </span><span class="macro-nonterminal">$name::matches_component_set</span>(<span class="macro-nonterminal">$name</span>, <span class="kw-2">&amp;</span>|id| _archetype.contains(id)) {
-                        <span class="macro-nonterminal">$name::update_archetype_component_access</span>(<span class="macro-nonterminal">$name</span>, _archetype, _access);
-                    }
-                )*
-            }
-
             <span class="kw">fn </span>init_state(_world: <span class="kw-2">&amp;mut </span>World) -&gt; <span class="self">Self</span>::State {
                 ($(<span class="macro-nonterminal">$name::init_state</span>(_world),)<span class="kw-2">*</span>)
+            }
+
+            <span class="kw">fn </span>get_state(_world: <span class="kw-2">&amp;</span>World) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::State&gt; {
+                <span class="prelude-val">Some</span>(($(<span class="macro-nonterminal">$name::get_state</span>(_world)<span class="question-mark">?</span>,)<span class="kw-2">*</span>))
             }
 
             <span class="kw">fn </span>matches_component_set(_state: <span class="kw-2">&amp;</span><span class="self">Self</span>::State, _set_contains_id: <span class="kw-2">&amp;</span><span class="kw">impl </span>Fn(ComponentId) -&gt; bool) -&gt; bool {
@@ -3463,136 +3390,141 @@
             }
         }
 
+        <span class="attr">#[allow(non_snake_case)]
+        #[allow(clippy::unused_unit)]
+        </span><span class="comment">// SAFETY: defers to soundness of `$name: WorldQuery` impl
+        </span><span class="kw">unsafe impl</span>&lt;$(<span class="macro-nonterminal">$name</span>: QueryData),<span class="kw-2">*</span>&gt; QueryData <span class="kw">for </span>AnyOf&lt;($(<span class="macro-nonterminal">$name</span>,)<span class="kw-2">*</span>)&gt; {
+            <span class="kw">type </span>ReadOnly = AnyOf&lt;($(<span class="macro-nonterminal">$name::ReadOnly</span>,)<span class="kw-2">*</span>)&gt;;
+        }
+
         <span class="doccomment">/// SAFETY: each item in the tuple is read only
-        </span><span class="kw">unsafe impl</span>&lt;$(<span class="macro-nonterminal">$name</span>: ReadOnlyWorldQuery),<span class="kw-2">*</span>&gt; ReadOnlyWorldQuery <span class="kw">for </span>AnyOf&lt;($(<span class="macro-nonterminal">$name</span>,)<span class="kw-2">*</span>)&gt; {}
+        </span><span class="kw">unsafe impl</span>&lt;$(<span class="macro-nonterminal">$name</span>: ReadOnlyQueryData),<span class="kw-2">*</span>&gt; ReadOnlyQueryData <span class="kw">for </span>AnyOf&lt;($(<span class="macro-nonterminal">$name</span>,)<span class="kw-2">*</span>)&gt; {}
     };
 }
 
-<span class="macro">all_tuples!</span>(impl_tuple_fetch, <span class="number">0</span>, <span class="number">15</span>, F, S);
+<span class="macro">all_tuples!</span>(impl_tuple_query_data, <span class="number">0</span>, <span class="number">15</span>, F, S);
 <span class="macro">all_tuples!</span>(impl_anytuple_fetch, <span class="number">0</span>, <span class="number">15</span>, F, S);
 
-<span class="doccomment">/// [`WorldQuery`] used to nullify queries by turning `Query&lt;Q&gt;` into `Query&lt;NopWorldQuery&lt;Q&gt;&gt;`
+<span class="doccomment">/// [`WorldQuery`] used to nullify queries by turning `Query&lt;D&gt;` into `Query&lt;NopWorldQuery&lt;D&gt;&gt;`
 ///
 /// This will rarely be useful to consumers of `bevy_ecs`.
-</span><span class="kw">pub struct </span>NopWorldQuery&lt;Q: WorldQuery&gt;(PhantomData&lt;Q&gt;);
+</span><span class="kw">pub struct </span>NopWorldQuery&lt;D: QueryData&gt;(PhantomData&lt;D&gt;);
 
-<span class="doccomment">/// SAFETY: `Self::ReadOnly` is `Self`
-</span><span class="kw">unsafe impl</span>&lt;Q: WorldQuery&gt; WorldQuery <span class="kw">for </span>NopWorldQuery&lt;Q&gt; {
-    <span class="kw">type </span>Fetch&lt;<span class="lifetime">&#39;w</span>&gt; = ();
-    <span class="kw">type </span>Item&lt;<span class="lifetime">&#39;w</span>&gt; = ();
-    <span class="kw">type </span>ReadOnly = <span class="self">Self</span>;
-    <span class="kw">type </span>State = Q::State;
+<span class="doccomment">/// SAFETY:
+/// `update_component_access` and `update_archetype_component_access` do nothing.
+/// This is sound because `fetch` does not access components.
+</span><span class="kw">unsafe impl</span>&lt;D: QueryData&gt; WorldQuery <span class="kw">for </span>NopWorldQuery&lt;D&gt; {
+    <span class="kw">type </span>Item&lt;<span class="lifetime">'w</span>&gt; = ();
+    <span class="kw">type </span>Fetch&lt;<span class="lifetime">'w</span>&gt; = ();
+    <span class="kw">type </span>State = D::State;
 
-    <span class="kw">fn </span>shrink&lt;<span class="lifetime">&#39;wlong</span>: <span class="lifetime">&#39;wshort</span>, <span class="lifetime">&#39;wshort</span>&gt;(<span class="kw">_</span>: ()) {}
-
-    <span class="kw">const </span>IS_DENSE: bool = Q::IS_DENSE;
-
-    <span class="kw">const </span>IS_ARCHETYPAL: bool = <span class="bool-val">true</span>;
+    <span class="kw">fn </span>shrink&lt;<span class="lifetime">'wlong</span>: <span class="lifetime">'wshort</span>, <span class="lifetime">'wshort</span>&gt;(<span class="kw">_</span>: ()) {}
 
     <span class="attr">#[inline(always)]
     </span><span class="kw">unsafe fn </span>init_fetch(
         _world: UnsafeWorldCell,
-        _state: <span class="kw-2">&amp;</span>Q::State,
+        _state: <span class="kw-2">&amp;</span>D::State,
         _last_run: Tick,
         _this_run: Tick,
     ) {
     }
 
+    <span class="kw">const </span>IS_DENSE: bool = D::IS_DENSE;
+
     <span class="attr">#[inline(always)]
     </span><span class="kw">unsafe fn </span>set_archetype(
         _fetch: <span class="kw-2">&amp;mut </span>(),
-        _state: <span class="kw-2">&amp;</span>Q::State,
+        _state: <span class="kw-2">&amp;</span>D::State,
         _archetype: <span class="kw-2">&amp;</span>Archetype,
         _tables: <span class="kw-2">&amp;</span>Table,
     ) {
     }
 
     <span class="attr">#[inline(always)]
-    </span><span class="kw">unsafe fn </span>set_table&lt;<span class="lifetime">&#39;w</span>&gt;(_fetch: <span class="kw-2">&amp;mut </span>(), _state: <span class="kw-2">&amp;</span>Q::State, _table: <span class="kw-2">&amp;</span>Table) {}
+    </span><span class="kw">unsafe fn </span>set_table&lt;<span class="lifetime">'w</span>&gt;(_fetch: <span class="kw-2">&amp;mut </span>(), _state: <span class="kw-2">&amp;</span>D::State, _table: <span class="kw-2">&amp;</span>Table) {}
 
     <span class="attr">#[inline(always)]
-    </span><span class="kw">unsafe fn </span>fetch&lt;<span class="lifetime">&#39;w</span>&gt;(
-        _fetch: <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Fetch&lt;<span class="lifetime">&#39;w</span>&gt;,
+    </span><span class="kw">unsafe fn </span>fetch&lt;<span class="lifetime">'w</span>&gt;(
+        _fetch: <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Fetch&lt;<span class="lifetime">'w</span>&gt;,
         _entity: Entity,
         _table_row: TableRow,
-    ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">&#39;w</span>&gt; {
+    ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">'w</span>&gt; {
     }
 
-    <span class="kw">fn </span>update_component_access(_state: <span class="kw-2">&amp;</span>Q::State, _access: <span class="kw-2">&amp;mut </span>FilteredAccess&lt;ComponentId&gt;) {}
-
-    <span class="kw">fn </span>update_archetype_component_access(
-        _state: <span class="kw-2">&amp;</span>Q::State,
-        _archetype: <span class="kw-2">&amp;</span>Archetype,
-        _access: <span class="kw-2">&amp;mut </span>Access&lt;ArchetypeComponentId&gt;,
-    ) {
-    }
+    <span class="kw">fn </span>update_component_access(_state: <span class="kw-2">&amp;</span>D::State, _access: <span class="kw-2">&amp;mut </span>FilteredAccess&lt;ComponentId&gt;) {}
 
     <span class="kw">fn </span>init_state(world: <span class="kw-2">&amp;mut </span>World) -&gt; <span class="self">Self</span>::State {
-        Q::init_state(world)
+        D::init_state(world)
+    }
+
+    <span class="kw">fn </span>get_state(world: <span class="kw-2">&amp;</span>World) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::State&gt; {
+        D::get_state(world)
     }
 
     <span class="kw">fn </span>matches_component_set(
         state: <span class="kw-2">&amp;</span><span class="self">Self</span>::State,
         set_contains_id: <span class="kw-2">&amp;</span><span class="kw">impl </span>Fn(ComponentId) -&gt; bool,
     ) -&gt; bool {
-        Q::matches_component_set(state, set_contains_id)
+        D::matches_component_set(state, set_contains_id)
     }
 }
 
-<span class="doccomment">/// SAFETY: `NopFetch` never accesses any data
-</span><span class="kw">unsafe impl</span>&lt;Q: WorldQuery&gt; ReadOnlyWorldQuery <span class="kw">for </span>NopWorldQuery&lt;Q&gt; {}
-
-<span class="doccomment">/// SAFETY: `PhantomData` never accesses any world data.
-</span><span class="kw">unsafe impl</span>&lt;T: <span class="question-mark">?</span>Sized&gt; WorldQuery <span class="kw">for </span>PhantomData&lt;T&gt; {
-    <span class="kw">type </span>Item&lt;<span class="lifetime">&#39;a</span>&gt; = ();
-    <span class="kw">type </span>Fetch&lt;<span class="lifetime">&#39;a</span>&gt; = ();
+<span class="doccomment">/// SAFETY: `Self::ReadOnly` is `Self`
+</span><span class="kw">unsafe impl</span>&lt;D: QueryData&gt; QueryData <span class="kw">for </span>NopWorldQuery&lt;D&gt; {
     <span class="kw">type </span>ReadOnly = <span class="self">Self</span>;
+}
+
+<span class="doccomment">/// SAFETY: `NopFetch` never accesses any data
+</span><span class="kw">unsafe impl</span>&lt;D: QueryData&gt; ReadOnlyQueryData <span class="kw">for </span>NopWorldQuery&lt;D&gt; {}
+
+<span class="doccomment">/// SAFETY:
+/// `update_component_access` and `update_archetype_component_access` do nothing.
+/// This is sound because `fetch` does not access components.
+</span><span class="kw">unsafe impl</span>&lt;T: <span class="question-mark">?</span>Sized&gt; WorldQuery <span class="kw">for </span>PhantomData&lt;T&gt; {
+    <span class="kw">type </span>Item&lt;<span class="lifetime">'a</span>&gt; = ();
+    <span class="kw">type </span>Fetch&lt;<span class="lifetime">'a</span>&gt; = ();
+
     <span class="kw">type </span>State = ();
 
-    <span class="kw">fn </span>shrink&lt;<span class="lifetime">&#39;wlong</span>: <span class="lifetime">&#39;wshort</span>, <span class="lifetime">&#39;wshort</span>&gt;(_item: <span class="self">Self</span>::Item&lt;<span class="lifetime">&#39;wlong</span>&gt;) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">&#39;wshort</span>&gt; {}
+    <span class="kw">fn </span>shrink&lt;<span class="lifetime">'wlong</span>: <span class="lifetime">'wshort</span>, <span class="lifetime">'wshort</span>&gt;(_item: <span class="self">Self</span>::Item&lt;<span class="lifetime">'wlong</span>&gt;) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">'wshort</span>&gt; {}
 
-    <span class="kw">unsafe fn </span>init_fetch&lt;<span class="lifetime">&#39;w</span>&gt;(
-        _world: UnsafeWorldCell&lt;<span class="lifetime">&#39;w</span>&gt;,
+    <span class="kw">unsafe fn </span>init_fetch&lt;<span class="lifetime">'w</span>&gt;(
+        _world: UnsafeWorldCell&lt;<span class="lifetime">'w</span>&gt;,
         _state: <span class="kw-2">&amp;</span><span class="self">Self</span>::State,
         _last_run: Tick,
         _this_run: Tick,
-    ) -&gt; <span class="self">Self</span>::Fetch&lt;<span class="lifetime">&#39;w</span>&gt; {
+    ) -&gt; <span class="self">Self</span>::Fetch&lt;<span class="lifetime">'w</span>&gt; {
     }
 
     <span class="comment">// `PhantomData` does not match any components, so all components it matches
     // are stored in a Table (vacuous truth).
     </span><span class="kw">const </span>IS_DENSE: bool = <span class="bool-val">true</span>;
-    <span class="comment">// `PhantomData` matches every entity in each archetype.
-    </span><span class="kw">const </span>IS_ARCHETYPAL: bool = <span class="bool-val">true</span>;
 
-    <span class="kw">unsafe fn </span>set_archetype&lt;<span class="lifetime">&#39;w</span>&gt;(
-        _fetch: <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Fetch&lt;<span class="lifetime">&#39;w</span>&gt;,
+    <span class="kw">unsafe fn </span>set_archetype&lt;<span class="lifetime">'w</span>&gt;(
+        _fetch: <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Fetch&lt;<span class="lifetime">'w</span>&gt;,
         _state: <span class="kw-2">&amp;</span><span class="self">Self</span>::State,
-        _archetype: <span class="kw-2">&amp;</span><span class="lifetime">&#39;w </span>Archetype,
-        _table: <span class="kw-2">&amp;</span><span class="lifetime">&#39;w </span>Table,
+        _archetype: <span class="kw-2">&amp;</span><span class="lifetime">'w </span>Archetype,
+        _table: <span class="kw-2">&amp;</span><span class="lifetime">'w </span>Table,
     ) {
     }
 
-    <span class="kw">unsafe fn </span>set_table&lt;<span class="lifetime">&#39;w</span>&gt;(_fetch: <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Fetch&lt;<span class="lifetime">&#39;w</span>&gt;, _state: <span class="kw-2">&amp;</span><span class="self">Self</span>::State, _table: <span class="kw-2">&amp;</span><span class="lifetime">&#39;w </span>Table) {
+    <span class="kw">unsafe fn </span>set_table&lt;<span class="lifetime">'w</span>&gt;(_fetch: <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Fetch&lt;<span class="lifetime">'w</span>&gt;, _state: <span class="kw-2">&amp;</span><span class="self">Self</span>::State, _table: <span class="kw-2">&amp;</span><span class="lifetime">'w </span>Table) {
     }
 
-    <span class="kw">unsafe fn </span>fetch&lt;<span class="lifetime">&#39;w</span>&gt;(
-        _fetch: <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Fetch&lt;<span class="lifetime">&#39;w</span>&gt;,
+    <span class="kw">unsafe fn </span>fetch&lt;<span class="lifetime">'w</span>&gt;(
+        _fetch: <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Fetch&lt;<span class="lifetime">'w</span>&gt;,
         _entity: Entity,
         _table_row: TableRow,
-    ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">&#39;w</span>&gt; {
+    ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">'w</span>&gt; {
     }
 
     <span class="kw">fn </span>update_component_access(_state: <span class="kw-2">&amp;</span><span class="self">Self</span>::State, _access: <span class="kw-2">&amp;mut </span>FilteredAccess&lt;ComponentId&gt;) {}
 
-    <span class="kw">fn </span>update_archetype_component_access(
-        _state: <span class="kw-2">&amp;</span><span class="self">Self</span>::State,
-        _archetype: <span class="kw-2">&amp;</span>Archetype,
-        _access: <span class="kw-2">&amp;mut </span>Access&lt;ArchetypeComponentId&gt;,
-    ) {
-    }
-
     <span class="kw">fn </span>init_state(_world: <span class="kw-2">&amp;mut </span>World) -&gt; <span class="self">Self</span>::State {}
+
+    <span class="kw">fn </span>get_state(_world: <span class="kw-2">&amp;</span>World) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::State&gt; {
+        <span class="prelude-val">Some</span>(())
+    }
 
     <span class="kw">fn </span>matches_component_set(
         _state: <span class="kw-2">&amp;</span><span class="self">Self</span>::State,
@@ -3602,11 +3534,18 @@
     </span>}
 }
 
+<span class="doccomment">/// SAFETY: `Self::ReadOnly` is `Self`
+</span><span class="kw">unsafe impl</span>&lt;T: <span class="question-mark">?</span>Sized&gt; QueryData <span class="kw">for </span>PhantomData&lt;T&gt; {
+    <span class="kw">type </span>ReadOnly = <span class="self">Self</span>;
+}
+
 <span class="doccomment">/// SAFETY: `PhantomData` never accesses any world data.
-</span><span class="kw">unsafe impl</span>&lt;T: <span class="question-mark">?</span>Sized&gt; ReadOnlyWorldQuery <span class="kw">for </span>PhantomData&lt;T&gt; {}
+</span><span class="kw">unsafe impl</span>&lt;T: <span class="question-mark">?</span>Sized&gt; ReadOnlyQueryData <span class="kw">for </span>PhantomData&lt;T&gt; {}
 
 <span class="attr">#[cfg(test)]
 </span><span class="kw">mod </span>tests {
+    <span class="kw">use </span>bevy_ecs_macros::QueryData;
+
     <span class="kw">use super</span>::<span class="kw-2">*</span>;
     <span class="kw">use crate</span>::{
         <span class="self">self </span><span class="kw">as </span>bevy_ecs,
@@ -3622,16 +3561,16 @@
     <span class="comment">// Tests that each variant of struct can be used as a `WorldQuery`.
     </span><span class="attr">#[test]
     </span><span class="kw">fn </span>world_query_struct_variants() {
-        <span class="attr">#[derive(WorldQuery)]
+        <span class="attr">#[derive(QueryData)]
         </span><span class="kw">pub struct </span>NamedQuery {
             id: Entity,
-            a: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>A,
+            a: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>A,
         }
 
-        <span class="attr">#[derive(WorldQuery)]
-        </span><span class="kw">pub struct </span>TupleQuery(<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>A, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>B);
+        <span class="attr">#[derive(QueryData)]
+        </span><span class="kw">pub struct </span>TupleQuery(<span class="kw-2">&amp;</span><span class="lifetime">'static </span>A, <span class="kw-2">&amp;</span><span class="lifetime">'static </span>B);
 
-        <span class="attr">#[derive(WorldQuery)]
+        <span class="attr">#[derive(QueryData)]
         </span><span class="kw">pub struct </span>UnitQuery;
 
         <span class="kw">fn </span>my_system(<span class="kw">_</span>: Query&lt;(NamedQuery, TupleQuery, UnitQuery)&gt;) {}
@@ -3642,7 +3581,7 @@
     <span class="comment">// Compile test for https://github.com/bevyengine/bevy/pull/8030.
     </span><span class="attr">#[test]
     </span><span class="kw">fn </span>world_query_phantom_data() {
-        <span class="attr">#[derive(WorldQuery)]
+        <span class="attr">#[derive(QueryData)]
         </span><span class="kw">pub struct </span>IgnoredQuery&lt;Marker&gt; {
             id: Entity,
             _marker: PhantomData&lt;Marker&gt;,
@@ -3650,32 +3589,32 @@
 
         <span class="kw">fn </span>ignored_system(<span class="kw">_</span>: Query&lt;IgnoredQuery&lt;()&gt;&gt;) {}
 
-        <span class="kw">crate</span>::system::assert_is_system(ignored_system);
+        assert_is_system(ignored_system);
     }
 
-    <span class="comment">// Ensures that each field of a `WorldQuery` struct&#39;s read-only variant
+    <span class="comment">// Ensures that each field of a `WorldQuery` struct's read-only variant
     // has the same visibility as its corresponding mutable field.
     </span><span class="attr">#[test]
     </span><span class="kw">fn </span>read_only_field_visibility() {
         <span class="kw">mod </span>private {
             <span class="kw">use super</span>::<span class="kw-2">*</span>;
 
-            <span class="attr">#[derive(WorldQuery)]
-            #[world_query(mutable)]
-            </span><span class="kw">pub struct </span>Q {
-                <span class="kw">pub </span>a: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span><span class="kw-2">mut </span>A,
+            <span class="attr">#[derive(QueryData)]
+            #[query_data(mutable)]
+            </span><span class="kw">pub struct </span>D {
+                <span class="kw">pub </span>a: <span class="kw-2">&amp;</span><span class="lifetime">'static </span><span class="kw-2">mut </span>A,
             }
         }
 
-        <span class="kw">let _ </span>= private::QReadOnly { a: <span class="kw-2">&amp;</span>A };
+        <span class="kw">let _ </span>= private::DReadOnly { a: <span class="kw-2">&amp;</span>A };
 
-        <span class="kw">fn </span>my_system(query: Query&lt;private::Q&gt;) {
+        <span class="kw">fn </span>my_system(query: Query&lt;private::D&gt;) {
             <span class="kw">for </span>q <span class="kw">in </span><span class="kw-2">&amp;</span>query {
                 <span class="kw">let _ </span>= <span class="kw-2">&amp;</span>q.a;
             }
         }
 
-        <span class="kw">crate</span>::system::assert_is_system(my_system);
+        assert_is_system(my_system);
     }
 
     <span class="comment">// Ensures that metadata types generated by the WorldQuery macro
@@ -3685,10 +3624,10 @@
     </span><span class="kw">fn </span>world_query_metadata_collision() {
         <span class="comment">// The metadata types generated would be named `ClientState` and `ClientFetch`,
         // but they should rename themselves to avoid conflicts.
-        </span><span class="attr">#[derive(WorldQuery)]
+        </span><span class="attr">#[derive(QueryData)]
         </span><span class="kw">pub struct </span>Client&lt;S: ClientState&gt; {
-            <span class="kw">pub </span>state: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>S,
-            <span class="kw">pub </span>fetch: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>ClientFetch,
+            <span class="kw">pub </span>state: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>S,
+            <span class="kw">pub </span>fetch: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>ClientFetch,
         }
 
         <span class="kw">pub trait </span>ClientState: Component {}
@@ -3703,7 +3642,7 @@
 
         <span class="kw">fn </span>client_system(<span class="kw">_</span>: Query&lt;Client&lt;C&gt;&gt;) {}
 
-        <span class="kw">crate</span>::system::assert_is_system(client_system);
+        assert_is_system(client_system);
     }
 }
 </code></pre></div></section></main></body></html>

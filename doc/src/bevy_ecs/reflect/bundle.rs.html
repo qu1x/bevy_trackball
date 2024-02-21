@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ecs-0.12.1/src/reflect/bundle.rs`."><title>bundle.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="bevy_ecs" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../bevy_ecs/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ecs-0.13.0/src/reflect/bundle.rs`."><title>bundle.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="bevy_ecs" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -225,24 +226,20 @@
 <a href="#225" id="225">225</a>
 <a href="#226" id="226">226</a>
 <a href="#227" id="227">227</a>
-<a href="#228" id="228">228</a>
-<a href="#229" id="229">229</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Definitions for [`Bundle`] reflection.
+//! This allows inserting, updating and/or removing bundles whose type is only known at runtime.
 //!
 //! This module exports two types: [`ReflectBundleFns`] and [`ReflectBundle`].
 //!
 //! Same as [`super::component`], but for bundles.
 </span><span class="kw">use </span>std::any::TypeId;
 
-<span class="kw">use crate</span>::{
-    prelude::Bundle,
-    world::{EntityWorldMut, FromWorld, World},
-};
-<span class="kw">use </span>bevy_reflect::{FromType, Reflect, ReflectRef, TypeRegistry};
+<span class="kw">use crate</span>::{prelude::Bundle, world::EntityWorldMut};
+<span class="kw">use </span>bevy_reflect::{FromReflect, FromType, Reflect, ReflectRef, TypeRegistry};
 
 <span class="kw">use </span><span class="kw">super</span>::ReflectComponent;
 
-<span class="doccomment">/// A struct used to operate on reflected [`Bundle`] of a type.
+<span class="doccomment">/// A struct used to operate on reflected [`Bundle`] trait of a type.
 ///
 /// A [`ReflectBundle`] for type `T` can be obtained via
 /// [`bevy_reflect::TypeRegistration::data`].
@@ -254,8 +251,6 @@
 /// The also [`super::component::ReflectComponentFns`].
 </span><span class="attr">#[derive(Clone)]
 </span><span class="kw">pub struct </span>ReflectBundleFns {
-    <span class="doccomment">/// Function pointer implementing [`ReflectBundle::from_world()`].
-    </span><span class="kw">pub </span>from_world: <span class="kw">fn</span>(<span class="kw-2">&amp;mut </span>World) -&gt; Box&lt;<span class="kw">dyn </span>Reflect&gt;,
     <span class="doccomment">/// Function pointer implementing [`ReflectBundle::insert()`].
     </span><span class="kw">pub </span>insert: <span class="kw">fn</span>(<span class="kw-2">&amp;mut </span>EntityWorldMut, <span class="kw-2">&amp;</span><span class="kw">dyn </span>Reflect),
     <span class="doccomment">/// Function pointer implementing [`ReflectBundle::apply()`].
@@ -272,18 +267,13 @@
     ///
     /// This is useful if you want to start with the default implementation before overriding some
     /// of the functions to create a custom implementation.
-    </span><span class="kw">pub fn </span>new&lt;T: Bundle + Reflect + FromWorld&gt;() -&gt; <span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>new&lt;T: Bundle + Reflect + FromReflect&gt;() -&gt; <span class="self">Self </span>{
         &lt;ReflectBundle <span class="kw">as </span>FromType&lt;T&gt;&gt;::from_type().<span class="number">0
     </span>}
 }
 
 <span class="kw">impl </span>ReflectBundle {
-    <span class="doccomment">/// Constructs default reflected [`Bundle`] from world using [`from_world()`](FromWorld::from_world).
-    </span><span class="kw">pub fn </span>from_world(<span class="kw-2">&amp;</span><span class="self">self</span>, world: <span class="kw-2">&amp;mut </span>World) -&gt; Box&lt;<span class="kw">dyn </span>Reflect&gt; {
-        (<span class="self">self</span>.<span class="number">0</span>.from_world)(world)
-    }
-
-    <span class="doccomment">/// Insert a reflected [`Bundle`] into the entity like [`insert()`](crate::world::EntityWorldMut::insert).
+    <span class="doccomment">/// Insert a reflected [`Bundle`] into the entity like [`insert()`](EntityWorldMut::insert).
     </span><span class="kw">pub fn </span>insert(<span class="kw-2">&amp;</span><span class="self">self</span>, entity: <span class="kw-2">&amp;mut </span>EntityWorldMut, bundle: <span class="kw-2">&amp;</span><span class="kw">dyn </span>Reflect) {
         (<span class="self">self</span>.<span class="number">0</span>.insert)(entity, bundle);
     }
@@ -312,7 +302,7 @@
         (<span class="self">self</span>.<span class="number">0</span>.apply_or_insert)(entity, bundle, registry);
     }
 
-    <span class="doccomment">/// Removes this [`Bundle`] type from the entity. Does nothing if it doesn&#39;t exist.
+    <span class="doccomment">/// Removes this [`Bundle`] type from the entity. Does nothing if it doesn't exist.
     </span><span class="kw">pub fn </span>remove(<span class="kw-2">&amp;</span><span class="self">self</span>, entity: <span class="kw-2">&amp;mut </span>EntityWorldMut) {
         (<span class="self">self</span>.<span class="number">0</span>.remove)(entity);
     }
@@ -347,55 +337,58 @@
     /// and copy the subset of function pointers you care about.
     ///
     /// [`TypeRegistration::data::&lt;ReflectBundle&gt;`]: bevy_reflect::TypeRegistration::data
-    /// [`TypeRegistry::get`]: bevy_reflect::TypeRegistry::get
     </span><span class="kw">pub fn </span>fn_pointers(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>ReflectBundleFns {
         <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0
     </span>}
 }
 
-<span class="kw">impl</span>&lt;B: Bundle + Reflect + FromWorld&gt; FromType&lt;B&gt; <span class="kw">for </span>ReflectBundle {
+<span class="kw">impl</span>&lt;B: Bundle + Reflect + FromReflect&gt; FromType&lt;B&gt; <span class="kw">for </span>ReflectBundle {
     <span class="kw">fn </span>from_type() -&gt; <span class="self">Self </span>{
         ReflectBundle(ReflectBundleFns {
-            from_world: |world| Box::new(B::from_world(world)),
             insert: |entity, reflected_bundle| {
-                <span class="kw">let </span><span class="kw-2">mut </span>bundle = entity.world_scope(|world| B::from_world(world));
-                bundle.apply(reflected_bundle);
+                <span class="kw">let </span>bundle = B::from_reflect(reflected_bundle).unwrap();
                 entity.insert(bundle);
             },
             apply: |entity, reflected_bundle, registry| {
-                <span class="kw">let </span><span class="kw-2">mut </span>bundle = entity.world_scope(|world| B::from_world(world));
-                bundle.apply(reflected_bundle);
-
-                <span class="kw">match </span>bundle.reflect_ref() {
-                    ReflectRef::Struct(bundle) =&gt; bundle
-                        .iter_fields()
-                        .for_each(|field| insert_field::&lt;B&gt;(entity, field, registry)),
-                    ReflectRef::Tuple(bundle) =&gt; bundle
-                        .iter_fields()
-                        .for_each(|field| insert_field::&lt;B&gt;(entity, field, registry)),
-                    <span class="kw">_ </span>=&gt; <span class="macro">panic!</span>(
-                        <span class="string">&quot;expected bundle `{}` to be named struct or tuple&quot;</span>,
-                        <span class="comment">// FIXME: once we have unique reflect, use `TypePath`.
-                        </span>std::any::type_name::&lt;B&gt;(),
-                    ),
+                <span class="kw">if let </span><span class="prelude-val">Some</span>(reflect_component) =
+                    registry.get_type_data::&lt;ReflectComponent&gt;(TypeId::of::&lt;B&gt;())
+                {
+                    reflect_component.apply(entity, reflected_bundle);
+                } <span class="kw">else </span>{
+                    <span class="kw">match </span>reflected_bundle.reflect_ref() {
+                        ReflectRef::Struct(bundle) =&gt; bundle
+                            .iter_fields()
+                            .for_each(|field| insert_field(entity, field, registry)),
+                        ReflectRef::Tuple(bundle) =&gt; bundle
+                            .iter_fields()
+                            .for_each(|field| insert_field(entity, field, registry)),
+                        <span class="kw">_ </span>=&gt; <span class="macro">panic!</span>(
+                            <span class="string">"expected bundle `{}` to be named struct or tuple"</span>,
+                            <span class="comment">// FIXME: once we have unique reflect, use `TypePath`.
+                            </span>std::any::type_name::&lt;B&gt;(),
+                        ),
+                    }
                 }
             },
             apply_or_insert: |entity, reflected_bundle, registry| {
-                <span class="kw">let </span><span class="kw-2">mut </span>bundle = entity.world_scope(|world| B::from_world(world));
-                bundle.apply(reflected_bundle);
-
-                <span class="kw">match </span>bundle.reflect_ref() {
-                    ReflectRef::Struct(bundle) =&gt; bundle
-                        .iter_fields()
-                        .for_each(|field| apply_or_insert_field::&lt;B&gt;(entity, field, registry)),
-                    ReflectRef::Tuple(bundle) =&gt; bundle
-                        .iter_fields()
-                        .for_each(|field| apply_or_insert_field::&lt;B&gt;(entity, field, registry)),
-                    <span class="kw">_ </span>=&gt; <span class="macro">panic!</span>(
-                        <span class="string">&quot;expected bundle `{}` to be named struct or tuple&quot;</span>,
-                        <span class="comment">// FIXME: once we have unique reflect, use `TypePath`.
-                        </span>std::any::type_name::&lt;B&gt;(),
-                    ),
+                <span class="kw">if let </span><span class="prelude-val">Some</span>(reflect_component) =
+                    registry.get_type_data::&lt;ReflectComponent&gt;(TypeId::of::&lt;B&gt;())
+                {
+                    reflect_component.apply_or_insert(entity, reflected_bundle, registry);
+                } <span class="kw">else </span>{
+                    <span class="kw">match </span>reflected_bundle.reflect_ref() {
+                        ReflectRef::Struct(bundle) =&gt; bundle
+                            .iter_fields()
+                            .for_each(|field| apply_or_insert_field(entity, field, registry)),
+                        ReflectRef::Tuple(bundle) =&gt; bundle
+                            .iter_fields()
+                            .for_each(|field| apply_or_insert_field(entity, field, registry)),
+                        <span class="kw">_ </span>=&gt; <span class="macro">panic!</span>(
+                            <span class="string">"expected bundle `{}` to be named struct or tuple"</span>,
+                            <span class="comment">// FIXME: once we have unique reflect, use `TypePath`.
+                            </span>std::any::type_name::&lt;B&gt;(),
+                        ),
+                    }
                 }
             },
             remove: |entity| {
@@ -405,55 +398,59 @@
     }
 }
 
-<span class="kw">fn </span>insert_field&lt;B: <span class="lifetime">&#39;static</span>&gt;(
-    entity: <span class="kw-2">&amp;mut </span>EntityWorldMut,
-    field: <span class="kw-2">&amp;</span><span class="kw">dyn </span>Reflect,
-    registry: <span class="kw-2">&amp;</span>TypeRegistry,
-) {
+<span class="kw">fn </span>insert_field(entity: <span class="kw-2">&amp;mut </span>EntityWorldMut, field: <span class="kw-2">&amp;</span><span class="kw">dyn </span>Reflect, registry: <span class="kw-2">&amp;</span>TypeRegistry) {
     <span class="kw">if let </span><span class="prelude-val">Some</span>(reflect_component) = registry.get_type_data::&lt;ReflectComponent&gt;(field.type_id()) {
         reflect_component.apply(entity, field);
     } <span class="kw">else if let </span><span class="prelude-val">Some</span>(reflect_bundle) = registry.get_type_data::&lt;ReflectBundle&gt;(field.type_id()) {
         reflect_bundle.apply(entity, field, registry);
     } <span class="kw">else </span>{
-        entity.world_scope(|world| {
-            <span class="kw">if </span>world.components().get_id(TypeId::of::&lt;B&gt;()).is_some() {
-                <span class="macro">panic!</span>(
-                    <span class="string">&quot;no `ReflectComponent` registration found for `{}`&quot;</span>,
-                    field.reflect_type_path(),
-                );
-            };
-        });
+        <span class="kw">let </span>is_component = entity
+            .world()
+            .components()
+            .get_id(field.type_id())
+            .is_some();
 
-        <span class="macro">panic!</span>(
-            <span class="string">&quot;no `ReflectBundle` registration found for `{}`&quot;</span>,
-            field.reflect_type_path(),
-        )
+        <span class="kw">if </span>is_component {
+            <span class="macro">panic!</span>(
+                <span class="string">"no `ReflectComponent` registration found for `{}`"</span>,
+                field.reflect_type_path(),
+            );
+        } <span class="kw">else </span>{
+            <span class="macro">panic!</span>(
+                <span class="string">"no `ReflectBundle` registration found for `{}`"</span>,
+                field.reflect_type_path(),
+            )
+        }
     }
 }
 
-<span class="kw">fn </span>apply_or_insert_field&lt;B: <span class="lifetime">&#39;static</span>&gt;(
+<span class="kw">fn </span>apply_or_insert_field(
     entity: <span class="kw-2">&amp;mut </span>EntityWorldMut,
     field: <span class="kw-2">&amp;</span><span class="kw">dyn </span>Reflect,
     registry: <span class="kw-2">&amp;</span>TypeRegistry,
 ) {
     <span class="kw">if let </span><span class="prelude-val">Some</span>(reflect_component) = registry.get_type_data::&lt;ReflectComponent&gt;(field.type_id()) {
-        reflect_component.apply_or_insert(entity, field);
+        reflect_component.apply_or_insert(entity, field, registry);
     } <span class="kw">else if let </span><span class="prelude-val">Some</span>(reflect_bundle) = registry.get_type_data::&lt;ReflectBundle&gt;(field.type_id()) {
         reflect_bundle.apply_or_insert(entity, field, registry);
     } <span class="kw">else </span>{
-        entity.world_scope(|world| {
-            <span class="kw">if </span>world.components().get_id(TypeId::of::&lt;B&gt;()).is_some() {
-                <span class="macro">panic!</span>(
-                    <span class="string">&quot;no `ReflectComponent` registration found for `{}`&quot;</span>,
-                    field.reflect_type_path(),
-                );
-            };
-        });
+        <span class="kw">let </span>is_component = entity
+            .world()
+            .components()
+            .get_id(field.type_id())
+            .is_some();
 
-        <span class="macro">panic!</span>(
-            <span class="string">&quot;no `ReflectBundle` registration found for `{}`&quot;</span>,
-            field.reflect_type_path(),
-        )
+        <span class="kw">if </span>is_component {
+            <span class="macro">panic!</span>(
+                <span class="string">"no `ReflectComponent` registration found for `{}`"</span>,
+                field.reflect_type_path(),
+            );
+        } <span class="kw">else </span>{
+            <span class="macro">panic!</span>(
+                <span class="string">"no `ReflectBundle` registration found for `{}`"</span>,
+                field.reflect_type_path(),
+            )
+        }
     }
 }
 </code></pre></div></section></main></body></html>

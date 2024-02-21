@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_math-0.12.1/src/cubic_splines.rs`."><title>cubic_splines.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="bevy_math" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../bevy_math/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_math-0.13.0/src/cubic_splines.rs`."><title>cubic_splines.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="bevy_math" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -614,6 +615,9 @@
 <a href="#614" id="614">614</a>
 <a href="#615" id="615">615</a>
 <a href="#616" id="616">616</a>
+<a href="#617" id="617">617</a>
+<a href="#618" id="618">618</a>
+<a href="#619" id="619">619</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Provides types for building cubic splines for rendering curves and use with animation easing.
 
 </span><span class="kw">use </span>glam::{Vec2, Vec3, Vec3A};
@@ -950,7 +954,7 @@
     /// fixed to ensure the animation begins at 0, and ends at 1.
     ///
     /// This is a very common tool for UI animations that accelerate and decelerate smoothly. For
-    /// example, the ubiquitous &quot;ease-in-out&quot; is defined as `(0.25, 0.1), (0.25, 1.0)`.
+    /// example, the ubiquitous "ease-in-out" is defined as `(0.25, 0.1), (0.25, 1.0)`.
     </span><span class="kw">pub fn </span>new_bezier(p1: <span class="kw">impl </span>Into&lt;Vec2&gt;, p2: <span class="kw">impl </span>Into&lt;Vec2&gt;) -&gt; <span class="self">Self </span>{
         <span class="kw">let </span>(p0, p3) = (Vec2::ZERO, Vec2::ONE);
         <span class="kw">let </span>bezier = CubicBezier::new([[p0, p1.into(), p2.into(), p3]]).to_curve();
@@ -976,7 +980,7 @@
     ///
     /// # How cubic easing works
     ///
-    /// Easing is generally accomplished with the help of &quot;shaping functions&quot;. These are curves that
+    /// Easing is generally accomplished with the help of "shaping functions". These are curves that
     /// start at (0,0) and end at (1,1). The x-axis of this plot is the current `time` of the
     /// animation, from 0 to 1. The y-axis is how far along the animation is, also from 0 to 1. You
     /// can imagine that if the shaping function is a straight line, there is a 1:1 mapping between
@@ -1013,12 +1017,12 @@
     /// value. Cubic curves are implicit parametric functions like B(t) = (x,y). To find `y`, we
     /// first solve for `t` that corresponds to the given `x` (`time`). We use the Newton-Raphson
     /// root-finding method to quickly find a value of `t` that is very near the desired value of
-    /// `x`. Once we have this we can easily plug that `t` into our curve&#39;s `position` function, to
+    /// `x`. Once we have this we can easily plug that `t` into our curve's `position` function, to
     /// find the `y` component, which is how far along our animation should be. In other words:
     ///
     /// &gt; Given `time` in `0..=1`
     ///
-    /// &gt; Use Newton&#39;s method to find a value of `t` that results in B(t) = (x,y) where `x == time`
+    /// &gt; Use Newton's method to find a value of `t` that results in B(t) = (x,y) where `x == time`
     ///
     /// &gt; Once a solution is found, use the resulting `y` value as the final result
     </span><span class="attr">#[inline]
@@ -1038,7 +1042,7 @@
             <span class="kw">if </span>error.abs() &lt;= <span class="self">Self</span>::MAX_ERROR {
                 <span class="kw">break</span>;
             }
-            <span class="comment">// Using Newton&#39;s method, use the tangent line to estimate a better guess value.
+            <span class="comment">// Using Newton's method, use the tangent line to estimate a better guess value.
             </span><span class="kw">let </span>slope = <span class="self">self</span>.velocity(t_guess).x; <span class="comment">// dx/dt
             </span>t_guess -= error / slope;
         }
@@ -1047,7 +1051,10 @@
 }
 
 <span class="doccomment">/// A collection of [`CubicSegment`]s chained into a curve.
-</span><span class="attr">#[derive(Clone, Debug, Default, PartialEq)]
+///
+/// Use any struct that implements the [`CubicGenerator`] trait to create a new curve, such as
+/// [`CubicBezier`].
+</span><span class="attr">#[derive(Clone, Debug, PartialEq)]
 </span><span class="kw">pub struct </span>CubicCurve&lt;P: Point&gt; {
     segments: Vec&lt;CubicSegment&lt;P&gt;&gt;,
 }
@@ -1091,11 +1098,11 @@
     /// For `subdivisions = 2`, this will split the curve into two lines, or three points, and
     /// return an iterator with 3 items, the three points, one at the start, middle, and end.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>iter_samples&lt;<span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;b</span>: <span class="lifetime">&#39;a</span>&gt;(
-        <span class="kw-2">&amp;</span><span class="lifetime">&#39;b </span><span class="self">self</span>,
+    </span><span class="kw">pub fn </span>iter_samples&lt;<span class="lifetime">'a</span>, <span class="lifetime">'b</span>: <span class="lifetime">'a</span>&gt;(
+        <span class="kw-2">&amp;</span><span class="lifetime">'b </span><span class="self">self</span>,
         subdivisions: usize,
-        <span class="kw-2">mut </span>sample_function: <span class="kw">impl </span>FnMut(<span class="kw-2">&amp;</span><span class="self">Self</span>, f32) -&gt; P + <span class="lifetime">&#39;a</span>,
-    ) -&gt; <span class="kw">impl </span>Iterator&lt;Item = P&gt; + <span class="lifetime">&#39;a </span>{
+        <span class="kw-2">mut </span>sample_function: <span class="kw">impl </span>FnMut(<span class="kw-2">&amp;</span><span class="self">Self</span>, f32) -&gt; P + <span class="lifetime">'a</span>,
+    ) -&gt; <span class="kw">impl </span>Iterator&lt;Item = P&gt; + <span class="lifetime">'a </span>{
         <span class="self">self</span>.iter_uniformly(subdivisions)
             .map(<span class="kw">move </span>|t| sample_function(<span class="self">self</span>, t))
     }
@@ -1110,7 +1117,7 @@
 
     <span class="doccomment">/// The list of segments contained in this `CubicCurve`.
     ///
-    /// This spline&#39;s global `t` value is equal to how many segments it has.
+    /// This spline's global `t` value is equal to how many segments it has.
     ///
     /// All method accepting `t` on `CubicCurve` depends on the global `t`.
     /// When sampling over the entire curve, you should either use one of the
@@ -1121,21 +1128,21 @@
     }
 
     <span class="doccomment">/// Iterate over the curve split into `subdivisions`, sampling the position at each step.
-    </span><span class="kw">pub fn </span>iter_positions(<span class="kw-2">&amp;</span><span class="self">self</span>, subdivisions: usize) -&gt; <span class="kw">impl </span>Iterator&lt;Item = P&gt; + <span class="lifetime">&#39;_ </span>{
+    </span><span class="kw">pub fn </span>iter_positions(<span class="kw-2">&amp;</span><span class="self">self</span>, subdivisions: usize) -&gt; <span class="kw">impl </span>Iterator&lt;Item = P&gt; + <span class="lifetime">'_ </span>{
         <span class="self">self</span>.iter_samples(subdivisions, <span class="self">Self</span>::position)
     }
 
     <span class="doccomment">/// Iterate over the curve split into `subdivisions`, sampling the velocity at each step.
-    </span><span class="kw">pub fn </span>iter_velocities(<span class="kw-2">&amp;</span><span class="self">self</span>, subdivisions: usize) -&gt; <span class="kw">impl </span>Iterator&lt;Item = P&gt; + <span class="lifetime">&#39;_ </span>{
+    </span><span class="kw">pub fn </span>iter_velocities(<span class="kw-2">&amp;</span><span class="self">self</span>, subdivisions: usize) -&gt; <span class="kw">impl </span>Iterator&lt;Item = P&gt; + <span class="lifetime">'_ </span>{
         <span class="self">self</span>.iter_samples(subdivisions, <span class="self">Self</span>::velocity)
     }
 
     <span class="doccomment">/// Iterate over the curve split into `subdivisions`, sampling the acceleration at each step.
-    </span><span class="kw">pub fn </span>iter_accelerations(<span class="kw-2">&amp;</span><span class="self">self</span>, subdivisions: usize) -&gt; <span class="kw">impl </span>Iterator&lt;Item = P&gt; + <span class="lifetime">&#39;_ </span>{
+    </span><span class="kw">pub fn </span>iter_accelerations(<span class="kw-2">&amp;</span><span class="self">self</span>, subdivisions: usize) -&gt; <span class="kw">impl </span>Iterator&lt;Item = P&gt; + <span class="lifetime">'_ </span>{
         <span class="self">self</span>.iter_samples(subdivisions, <span class="self">Self</span>::acceleration)
     }
 
-    <span class="doccomment">/// Returns the [`CubicSegment`] and local `t` value given a spline&#39;s global `t` value.
+    <span class="doccomment">/// Returns the [`CubicSegment`] and local `t` value given a spline's global `t` value.
     </span><span class="attr">#[inline]
     </span><span class="kw">fn </span>segment(<span class="kw-2">&amp;</span><span class="self">self</span>, t: f32) -&gt; (<span class="kw-2">&amp;</span>CubicSegment&lt;P&gt;, f32) {
         <span class="kw">if </span><span class="self">self</span>.segments.len() == <span class="number">1 </span>{
@@ -1209,18 +1216,18 @@
         </span><span class="macro">assert_eq!</span>(bezier.ease(<span class="number">1.0</span>), <span class="number">1.0</span>);
     }
 
-    <span class="doccomment">/// A curve that forms an upside-down &quot;U&quot;, that should extend below 0.0. Useful for animations
+    <span class="doccomment">/// A curve that forms an upside-down "U", that should extend below 0.0. Useful for animations
     /// that go beyond the start and end positions, e.g. bouncing.
     </span><span class="attr">#[test]
     </span><span class="kw">fn </span>easing_overshoot() {
-        <span class="comment">// A curve that forms an upside-down &quot;U&quot;, that should extend above 1.0
+        <span class="comment">// A curve that forms an upside-down "U", that should extend above 1.0
         </span><span class="kw">let </span>bezier = CubicSegment::new_bezier([<span class="number">0.0</span>, <span class="number">2.0</span>], [<span class="number">1.0</span>, <span class="number">2.0</span>]);
         <span class="macro">assert_eq!</span>(bezier.ease(<span class="number">0.0</span>), <span class="number">0.0</span>);
         <span class="macro">assert!</span>(bezier.ease(<span class="number">0.5</span>) &gt; <span class="number">1.5</span>);
         <span class="macro">assert_eq!</span>(bezier.ease(<span class="number">1.0</span>), <span class="number">1.0</span>);
     }
 
-    <span class="doccomment">/// A curve that forms a &quot;U&quot;, that should extend below 0.0. Useful for animations that go beyond
+    <span class="doccomment">/// A curve that forms a "U", that should extend below 0.0. Useful for animations that go beyond
     /// the start and end positions, e.g. bouncing.
     </span><span class="attr">#[test]
     </span><span class="kw">fn </span>easing_undershoot() {

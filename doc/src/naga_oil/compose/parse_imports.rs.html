@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/naga_oil-0.10.1/src/compose/parse_imports.rs`."><title>parse_imports.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="naga_oil" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../naga_oil/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/naga_oil-0.13.0/src/compose/parse_imports.rs`."><title>parse_imports.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="naga_oil" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -368,28 +369,28 @@
 <a href="#368" id="368">368</a>
 <a href="#369" id="369">369</a>
 <a href="#370" id="370">370</a>
-</pre></div><pre class="rust"><code><span class="kw">use </span>std::collections::HashMap;
+</pre></div><pre class="rust"><code><span class="kw">use </span>indexmap::IndexMap;
 
 <span class="kw">use super</span>::{
     tokenizer::{Token, Tokenizer},
     Composer, ImportDefWithOffset, ImportDefinition,
 };
 
-<span class="kw">pub fn </span>parse_imports&lt;<span class="lifetime">&#39;a</span>&gt;(
-    input: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str,
-    declared_imports: <span class="kw-2">&amp;mut </span>HashMap&lt;String, Vec&lt;String&gt;&gt;,
-) -&gt; <span class="prelude-ty">Result</span>&lt;(), (<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str, usize)&gt; {
+<span class="kw">pub fn </span>parse_imports&lt;<span class="lifetime">'a</span>&gt;(
+    input: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>str,
+    declared_imports: <span class="kw-2">&amp;mut </span>IndexMap&lt;String, Vec&lt;String&gt;&gt;,
+) -&gt; <span class="prelude-ty">Result</span>&lt;(), (<span class="kw-2">&amp;</span><span class="lifetime">'a </span>str, usize)&gt; {
     <span class="kw">let </span><span class="kw-2">mut </span>tokens = Tokenizer::new(input, <span class="bool-val">false</span>).peekable();
 
     <span class="kw">match </span>tokens.next() {
-        <span class="prelude-val">Some</span>(Token::Other(<span class="string">&#39;#&#39;</span>, <span class="kw">_</span>)) =&gt; (),
-        <span class="prelude-val">Some</span>(other) =&gt; <span class="kw">return </span><span class="prelude-val">Err</span>((<span class="string">&quot;expected `#import`&quot;</span>, other.pos())),
-        <span class="prelude-val">None </span>=&gt; <span class="kw">return </span><span class="prelude-val">Err</span>((<span class="string">&quot;expected #import&quot;</span>, input.len())),
+        <span class="prelude-val">Some</span>(Token::Other(<span class="string">'#'</span>, <span class="kw">_</span>)) =&gt; (),
+        <span class="prelude-val">Some</span>(other) =&gt; <span class="kw">return </span><span class="prelude-val">Err</span>((<span class="string">"expected `#import`"</span>, other.pos())),
+        <span class="prelude-val">None </span>=&gt; <span class="kw">return </span><span class="prelude-val">Err</span>((<span class="string">"expected #import"</span>, input.len())),
     };
     <span class="kw">match </span>tokens.next() {
-        <span class="prelude-val">Some</span>(Token::Identifier(<span class="string">&quot;import&quot;</span>, <span class="kw">_</span>)) =&gt; (),
-        <span class="prelude-val">Some</span>(other) =&gt; <span class="kw">return </span><span class="prelude-val">Err</span>((<span class="string">&quot;expected `#import`&quot;</span>, other.pos())),
-        <span class="prelude-val">None </span>=&gt; <span class="kw">return </span><span class="prelude-val">Err</span>((<span class="string">&quot;expected `#import`&quot;</span>, input.len())),
+        <span class="prelude-val">Some</span>(Token::Identifier(<span class="string">"import"</span>, <span class="kw">_</span>)) =&gt; (),
+        <span class="prelude-val">Some</span>(other) =&gt; <span class="kw">return </span><span class="prelude-val">Err</span>((<span class="string">"expected `#import`"</span>, other.pos())),
+        <span class="prelude-val">None </span>=&gt; <span class="kw">return </span><span class="prelude-val">Err</span>((<span class="string">"expected `#import`"</span>, input.len())),
     };
 
     <span class="kw">let </span><span class="kw-2">mut </span>stack = Vec::default();
@@ -403,10 +404,10 @@
                 current.push_str(ident);
                 tokens.next();
 
-                <span class="kw">if </span>tokens.peek().and_then(Token::identifier) == <span class="prelude-val">Some</span>(<span class="string">&quot;as&quot;</span>) {
+                <span class="kw">if </span>tokens.peek().and_then(Token::identifier) == <span class="prelude-val">Some</span>(<span class="string">"as"</span>) {
                     <span class="kw">let </span>pos = tokens.next().unwrap().pos();
                     <span class="kw">let </span><span class="prelude-val">Some</span>(Token::Identifier(name, <span class="kw">_</span>)) = tokens.next() <span class="kw">else </span>{
-                        <span class="kw">return </span><span class="prelude-val">Err</span>((<span class="string">&quot;expected identifier after `as`&quot;</span>, pos));
+                        <span class="kw">return </span><span class="prelude-val">Err</span>((<span class="string">"expected identifier after `as`"</span>, pos));
                     };
 
                     as_name = <span class="prelude-val">Some</span>(name);
@@ -414,48 +415,48 @@
 
                 <span class="comment">// support deprecated #import mod item
                 </span><span class="kw">if let </span><span class="prelude-val">Some</span>(Token::Identifier(..)) = tokens.peek() {
-                    <span class="attr">#[cfg(not(feature = <span class="string">&quot;allow_deprecated&quot;</span>))]
-                    </span><span class="macro">tracing::warn!</span>(<span class="string">&quot;item list imports are deprecated, please use `rust::style::item_imports` (or use feature `allow_deprecated`)`\n| {}&quot;</span>, input);
+                    <span class="attr">#[cfg(not(feature = <span class="string">"allow_deprecated"</span>))]
+                    </span><span class="macro">tracing::warn!</span>(<span class="string">"item list imports are deprecated, please use `rust::style::item_imports` (or use feature `allow_deprecated`)`\n| {}"</span>, input);
 
                     is_deprecated_itemlist = <span class="bool-val">true</span>;
-                    stack.push(<span class="macro">format!</span>(<span class="string">&quot;{}::&quot;</span>, current));
+                    stack.push(<span class="macro">format!</span>(<span class="string">"{}::"</span>, current));
                     current = String::default();
                     as_name = <span class="prelude-val">None</span>;
                 }
 
                 <span class="kw">continue</span>;
             }
-            <span class="prelude-val">Some</span>(Token::Other(<span class="string">&#39;{&#39;</span>, pos)) =&gt; {
-                <span class="kw">if </span>!current.ends_with(<span class="string">&quot;::&quot;</span>) {
-                    <span class="kw">return </span><span class="prelude-val">Err</span>((<span class="string">&quot;open brace must follow `::`&quot;</span>, <span class="kw-2">*</span>pos));
+            <span class="prelude-val">Some</span>(Token::Other(<span class="string">'{'</span>, pos)) =&gt; {
+                <span class="kw">if </span>!current.ends_with(<span class="string">"::"</span>) {
+                    <span class="kw">return </span><span class="prelude-val">Err</span>((<span class="string">"open brace must follow `::`"</span>, <span class="kw-2">*</span>pos));
                 }
                 stack.push(current);
                 current = String::default();
                 as_name = <span class="prelude-val">None</span>;
             }
-            <span class="prelude-val">Some</span>(Token::Other(<span class="string">&#39;,&#39;</span>, <span class="kw">_</span>))
-            | <span class="prelude-val">Some</span>(Token::Other(<span class="string">&#39;}&#39;</span>, <span class="kw">_</span>))
-            | <span class="prelude-val">Some</span>(Token::Other(<span class="string">&#39;\n&#39;</span>, <span class="kw">_</span>))
+            <span class="prelude-val">Some</span>(Token::Other(<span class="string">','</span>, <span class="kw">_</span>))
+            | <span class="prelude-val">Some</span>(Token::Other(<span class="string">'}'</span>, <span class="kw">_</span>))
+            | <span class="prelude-val">Some</span>(Token::Other(<span class="string">'\n'</span>, <span class="kw">_</span>))
             | <span class="prelude-val">None </span>=&gt; {
                 <span class="kw">if </span>!current.is_empty() {
                     <span class="kw">let </span>used_name = as_name.map(ToString::to_string).unwrap_or_else(|| {
                         current
-                            .rsplit_once(<span class="string">&quot;::&quot;</span>)
+                            .rsplit_once(<span class="string">"::"</span>)
                             .map(|(<span class="kw">_</span>, name)| name.to_owned())
                             .unwrap_or(current.clone())
                     });
                     declared_imports.entry(used_name).or_default().push(<span class="macro">format!</span>(
-                        <span class="string">&quot;{}{}&quot;</span>,
-                        stack.join(<span class="string">&quot;&quot;</span>),
+                        <span class="string">"{}{}"</span>,
+                        stack.join(<span class="string">""</span>),
                         current
                     ));
                     current = String::default();
                     as_name = <span class="prelude-val">None</span>;
                 }
 
-                <span class="kw">if let </span><span class="prelude-val">Some</span>(Token::Other(<span class="string">&#39;}&#39;</span>, pos)) = tokens.peek() {
+                <span class="kw">if let </span><span class="prelude-val">Some</span>(Token::Other(<span class="string">'}'</span>, pos)) = tokens.peek() {
                     <span class="kw">if </span>stack.pop().is_none() {
-                        <span class="kw">return </span><span class="prelude-val">Err</span>((<span class="string">&quot;close brace without open&quot;</span>, <span class="kw-2">*</span>pos));
+                        <span class="kw">return </span><span class="prelude-val">Err</span>((<span class="string">"close brace without open"</span>, <span class="kw-2">*</span>pos));
                     }
                 }
 
@@ -463,13 +464,13 @@
                     <span class="kw">break</span>;
                 }
             }
-            <span class="prelude-val">Some</span>(Token::Other(<span class="string">&#39;;&#39;</span>, <span class="kw">_</span>)) =&gt; {
+            <span class="prelude-val">Some</span>(Token::Other(<span class="string">';'</span>, <span class="kw">_</span>)) =&gt; {
                 tokens.next();
                 <span class="kw">if let </span><span class="prelude-val">Some</span>(token) = tokens.peek() {
-                    <span class="kw">return </span><span class="prelude-val">Err</span>((<span class="string">&quot;unexpected token after &#39;;&#39;&quot;</span>, token.pos()));
+                    <span class="kw">return </span><span class="prelude-val">Err</span>((<span class="string">"unexpected token after ';'"</span>, token.pos()));
                 }
             }
-            <span class="prelude-val">Some</span>(Token::Other(<span class="kw">_</span>, pos)) =&gt; <span class="kw">return </span><span class="prelude-val">Err</span>((<span class="string">&quot;unexpected token&quot;</span>, <span class="kw-2">*</span>pos)),
+            <span class="prelude-val">Some</span>(Token::Other(<span class="kw">_</span>, pos)) =&gt; <span class="kw">return </span><span class="prelude-val">Err</span>((<span class="string">"unexpected token"</span>, <span class="kw-2">*</span>pos)),
             <span class="prelude-val">Some</span>(Token::Whitespace(..)) =&gt; <span class="macro">unreachable!</span>(),
         }
 
@@ -477,7 +478,7 @@
     }
 
     <span class="kw">if </span>!(stack.is_empty() || is_deprecated_itemlist &amp;&amp; stack.len() == <span class="number">1</span>) {
-        <span class="kw">return </span><span class="prelude-val">Err</span>((<span class="string">&quot;missing close brace&quot;</span>, input.len()));
+        <span class="kw">return </span><span class="prelude-val">Err</span>((<span class="string">"missing close brace"</span>, input.len()));
     }
 
     <span class="prelude-val">Ok</span>(())
@@ -486,8 +487,8 @@
 <span class="kw">pub fn </span>substitute_identifiers(
     input: <span class="kw-2">&amp;</span>str,
     offset: usize,
-    declared_imports: <span class="kw-2">&amp;</span>HashMap&lt;String, Vec&lt;String&gt;&gt;,
-    used_imports: <span class="kw-2">&amp;mut </span>HashMap&lt;String, ImportDefWithOffset&gt;,
+    declared_imports: <span class="kw-2">&amp;</span>IndexMap&lt;String, Vec&lt;String&gt;&gt;,
+    used_imports: <span class="kw-2">&amp;mut </span>IndexMap&lt;String, ImportDefWithOffset&gt;,
     allow_ambiguous: bool,
 ) -&gt; <span class="prelude-ty">Result</span>&lt;String, usize&gt; {
     <span class="kw">let </span>tokens = Tokenizer::new(input, <span class="bool-val">true</span>);
@@ -498,7 +499,7 @@
         <span class="kw">match </span>token {
             Token::Identifier(ident, token_pos) =&gt; {
                 <span class="kw">if </span>in_substitution_position {
-                    <span class="kw">let </span>(first, residual) = ident.split_once(<span class="string">&quot;::&quot;</span>).unwrap_or((ident, <span class="string">&quot;&quot;</span>));
+                    <span class="kw">let </span>(first, residual) = ident.split_once(<span class="string">"::"</span>).unwrap_or((ident, <span class="string">""</span>));
                     <span class="kw">let </span>full_paths = declared_imports
                         .get(first)
                         .cloned()
@@ -510,11 +511,11 @@
 
                     <span class="kw">for </span><span class="kw-2">mut </span>full_path <span class="kw">in </span>full_paths {
                         <span class="kw">if </span>!residual.is_empty() {
-                            full_path.push_str(<span class="string">&quot;::&quot;</span>);
+                            full_path.push_str(<span class="string">"::"</span>);
                             full_path.push_str(residual);
                         }
 
-                        <span class="kw">if let </span><span class="prelude-val">Some</span>((module, item)) = full_path.rsplit_once(<span class="string">&quot;::&quot;</span>) {
+                        <span class="kw">if let </span><span class="prelude-val">Some</span>((module, item)) = full_path.rsplit_once(<span class="string">"::"</span>) {
                             used_imports
                                 .entry(module.to_owned())
                                 .or_insert_with(|| ImportDefWithOffset {
@@ -529,9 +530,9 @@
                                 .push(item.to_owned());
                             output.push_str(item);
                             output.push_str(<span class="kw-2">&amp;</span>Composer::decorate(module));
-                        } <span class="kw">else if </span>full_path.find(<span class="string">&#39;&quot;&#39;</span>).is_some() {
-                            <span class="comment">// we don&#39;t want to replace local variables that shadow quoted module imports with the
-                            // quoted name as that won&#39;t compile.
+                        } <span class="kw">else if </span>full_path.find(<span class="string">'"'</span>).is_some() {
+                            <span class="comment">// we don't want to replace local variables that shadow quoted module imports with the
+                            // quoted name as that won't compile.
                             // since quoted items always refer to modules, we can just emit the original ident
                             // in this case
                             </span>output.push_str(ident);
@@ -548,7 +549,7 @@
             }
             Token::Other(other, <span class="kw">_</span>) =&gt; {
                 output.push(other);
-                <span class="kw">if </span>other == <span class="string">&#39;.&#39; </span>|| other == <span class="string">&#39;@&#39; </span>{
+                <span class="kw">if </span>other == <span class="string">'.' </span>|| other == <span class="string">'@' </span>{
                     in_substitution_position = <span class="bool-val">false</span>;
                     <span class="kw">continue</span>;
                 }
@@ -563,119 +564,119 @@
 }
 
 <span class="attr">#[cfg(test)]
-</span><span class="kw">fn </span>test_parse(input: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;HashMap&lt;String, Vec&lt;String&gt;&gt;, (<span class="kw-2">&amp;</span>str, usize)&gt; {
-    <span class="kw">let </span><span class="kw-2">mut </span>declared_imports = HashMap::default();
+</span><span class="kw">fn </span>test_parse(input: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;IndexMap&lt;String, Vec&lt;String&gt;&gt;, (<span class="kw-2">&amp;</span>str, usize)&gt; {
+    <span class="kw">let </span><span class="kw-2">mut </span>declared_imports = IndexMap::default();
     parse_imports(input, <span class="kw-2">&amp;mut </span>declared_imports)<span class="question-mark">?</span>;
     <span class="prelude-val">Ok</span>(declared_imports)
 }
 
 <span class="attr">#[test]
 </span><span class="kw">fn </span>import_tokens() {
-    <span class="kw">let </span>input = <span class="string">r&quot;
+    <span class="kw">let </span>input = <span class="string">r"
         #import a::b
-    &quot;</span>;
+    "</span>;
     <span class="macro">assert_eq!</span>(
         test_parse(input),
-        <span class="prelude-val">Ok</span>(HashMap::from_iter([(
-            <span class="string">&quot;b&quot;</span>.to_owned(),
-            <span class="macro">vec!</span>(<span class="string">&quot;a::b&quot;</span>.to_owned())
+        <span class="prelude-val">Ok</span>(IndexMap::from_iter([(
+            <span class="string">"b"</span>.to_owned(),
+            <span class="macro">vec!</span>(<span class="string">"a::b"</span>.to_owned())
         )]))
     );
 
-    <span class="kw">let </span>input = <span class="string">r&quot;
+    <span class="kw">let </span>input = <span class="string">r"
         #import a::{b, c}
-    &quot;</span>;
+    "</span>;
     <span class="macro">assert_eq!</span>(
         test_parse(input),
-        <span class="prelude-val">Ok</span>(HashMap::from_iter([
-            (<span class="string">&quot;b&quot;</span>.to_owned(), <span class="macro">vec!</span>(<span class="string">&quot;a::b&quot;</span>.to_owned())),
-            (<span class="string">&quot;c&quot;</span>.to_owned(), <span class="macro">vec!</span>(<span class="string">&quot;a::c&quot;</span>.to_owned())),
+        <span class="prelude-val">Ok</span>(IndexMap::from_iter([
+            (<span class="string">"b"</span>.to_owned(), <span class="macro">vec!</span>(<span class="string">"a::b"</span>.to_owned())),
+            (<span class="string">"c"</span>.to_owned(), <span class="macro">vec!</span>(<span class="string">"a::c"</span>.to_owned())),
         ]))
     );
 
-    <span class="kw">let </span>input = <span class="string">r&quot;
+    <span class="kw">let </span>input = <span class="string">r"
         #import a::{b as d, c}
-    &quot;</span>;
+    "</span>;
     <span class="macro">assert_eq!</span>(
         test_parse(input),
-        <span class="prelude-val">Ok</span>(HashMap::from_iter([
-            (<span class="string">&quot;d&quot;</span>.to_owned(), <span class="macro">vec!</span>(<span class="string">&quot;a::b&quot;</span>.to_owned())),
-            (<span class="string">&quot;c&quot;</span>.to_owned(), <span class="macro">vec!</span>(<span class="string">&quot;a::c&quot;</span>.to_owned())),
+        <span class="prelude-val">Ok</span>(IndexMap::from_iter([
+            (<span class="string">"d"</span>.to_owned(), <span class="macro">vec!</span>(<span class="string">"a::b"</span>.to_owned())),
+            (<span class="string">"c"</span>.to_owned(), <span class="macro">vec!</span>(<span class="string">"a::c"</span>.to_owned())),
         ]))
     );
 
-    <span class="kw">let </span>input = <span class="string">r&quot;
+    <span class="kw">let </span>input = <span class="string">r"
         #import a::{b::{c, d}, e}
-    &quot;</span>;
+    "</span>;
     <span class="macro">assert_eq!</span>(
         test_parse(input),
-        <span class="prelude-val">Ok</span>(HashMap::from_iter([
-            (<span class="string">&quot;c&quot;</span>.to_owned(), <span class="macro">vec!</span>(<span class="string">&quot;a::b::c&quot;</span>.to_owned())),
-            (<span class="string">&quot;d&quot;</span>.to_owned(), <span class="macro">vec!</span>(<span class="string">&quot;a::b::d&quot;</span>.to_owned())),
-            (<span class="string">&quot;e&quot;</span>.to_owned(), <span class="macro">vec!</span>(<span class="string">&quot;a::e&quot;</span>.to_owned())),
+        <span class="prelude-val">Ok</span>(IndexMap::from_iter([
+            (<span class="string">"c"</span>.to_owned(), <span class="macro">vec!</span>(<span class="string">"a::b::c"</span>.to_owned())),
+            (<span class="string">"d"</span>.to_owned(), <span class="macro">vec!</span>(<span class="string">"a::b::d"</span>.to_owned())),
+            (<span class="string">"e"</span>.to_owned(), <span class="macro">vec!</span>(<span class="string">"a::e"</span>.to_owned())),
         ]))
     );
 
-    <span class="kw">let </span>input = <span class="string">r&quot;
+    <span class="kw">let </span>input = <span class="string">r"
         #import a::b::{c, d}, e
-    &quot;</span>;
+    "</span>;
     <span class="macro">assert_eq!</span>(
         test_parse(input),
-        <span class="prelude-val">Ok</span>(HashMap::from_iter([
-            (<span class="string">&quot;c&quot;</span>.to_owned(), <span class="macro">vec!</span>(<span class="string">&quot;a::b::c&quot;</span>.to_owned())),
-            (<span class="string">&quot;d&quot;</span>.to_owned(), <span class="macro">vec!</span>(<span class="string">&quot;a::b::d&quot;</span>.to_owned())),
-            (<span class="string">&quot;e&quot;</span>.to_owned(), <span class="macro">vec!</span>(<span class="string">&quot;e&quot;</span>.to_owned())),
+        <span class="prelude-val">Ok</span>(IndexMap::from_iter([
+            (<span class="string">"c"</span>.to_owned(), <span class="macro">vec!</span>(<span class="string">"a::b::c"</span>.to_owned())),
+            (<span class="string">"d"</span>.to_owned(), <span class="macro">vec!</span>(<span class="string">"a::b::d"</span>.to_owned())),
+            (<span class="string">"e"</span>.to_owned(), <span class="macro">vec!</span>(<span class="string">"e"</span>.to_owned())),
         ]))
     );
 
-    <span class="kw">let </span>input = <span class="string">r&quot;
+    <span class="kw">let </span>input = <span class="string">r"
         #import a, b
-    &quot;</span>;
+    "</span>;
     <span class="macro">assert_eq!</span>(
         test_parse(input),
-        <span class="prelude-val">Ok</span>(HashMap::from_iter([
-            (<span class="string">&quot;a&quot;</span>.to_owned(), <span class="macro">vec!</span>(<span class="string">&quot;a&quot;</span>.to_owned())),
-            (<span class="string">&quot;b&quot;</span>.to_owned(), <span class="macro">vec!</span>(<span class="string">&quot;b&quot;</span>.to_owned())),
+        <span class="prelude-val">Ok</span>(IndexMap::from_iter([
+            (<span class="string">"a"</span>.to_owned(), <span class="macro">vec!</span>(<span class="string">"a"</span>.to_owned())),
+            (<span class="string">"b"</span>.to_owned(), <span class="macro">vec!</span>(<span class="string">"b"</span>.to_owned())),
         ]))
     );
 
-    <span class="kw">let </span>input = <span class="string">r&quot;
+    <span class="kw">let </span>input = <span class="string">r"
         #import a::b c, d
-    &quot;</span>;
+    "</span>;
     <span class="macro">assert_eq!</span>(
         test_parse(input),
-        <span class="prelude-val">Ok</span>(HashMap::from_iter([
-            (<span class="string">&quot;c&quot;</span>.to_owned(), <span class="macro">vec!</span>(<span class="string">&quot;a::b::c&quot;</span>.to_owned())),
-            (<span class="string">&quot;d&quot;</span>.to_owned(), <span class="macro">vec!</span>(<span class="string">&quot;a::b::d&quot;</span>.to_owned())),
+        <span class="prelude-val">Ok</span>(IndexMap::from_iter([
+            (<span class="string">"c"</span>.to_owned(), <span class="macro">vec!</span>(<span class="string">"a::b::c"</span>.to_owned())),
+            (<span class="string">"d"</span>.to_owned(), <span class="macro">vec!</span>(<span class="string">"a::b::d"</span>.to_owned())),
         ]))
     );
 
-    <span class="kw">let </span>input = <span class="string">r&quot;
+    <span class="kw">let </span>input = <span class="string">r"
         #import a::b c
-    &quot;</span>;
+    "</span>;
     <span class="macro">assert_eq!</span>(
         test_parse(input),
-        <span class="prelude-val">Ok</span>(HashMap::from_iter([(
-            <span class="string">&quot;c&quot;</span>.to_owned(),
-            <span class="macro">vec!</span>(<span class="string">&quot;a::b::c&quot;</span>.to_owned())
+        <span class="prelude-val">Ok</span>(IndexMap::from_iter([(
+            <span class="string">"c"</span>.to_owned(),
+            <span class="macro">vec!</span>(<span class="string">"a::b::c"</span>.to_owned())
         ),]))
     );
 
-    <span class="kw">let </span>input = <span class="string">r&quot;
+    <span class="kw">let </span>input = <span class="string">r"
         #import a::b::{c::{d, e}, f, g::{h as i, j}}
-    &quot;</span>;
+    "</span>;
     <span class="macro">assert_eq!</span>(
         test_parse(input),
-        <span class="prelude-val">Ok</span>(HashMap::from_iter([
-            (<span class="string">&quot;d&quot;</span>.to_owned(), <span class="macro">vec!</span>(<span class="string">&quot;a::b::c::d&quot;</span>.to_owned())),
-            (<span class="string">&quot;e&quot;</span>.to_owned(), <span class="macro">vec!</span>(<span class="string">&quot;a::b::c::e&quot;</span>.to_owned())),
-            (<span class="string">&quot;f&quot;</span>.to_owned(), <span class="macro">vec!</span>(<span class="string">&quot;a::b::f&quot;</span>.to_owned())),
-            (<span class="string">&quot;i&quot;</span>.to_owned(), <span class="macro">vec!</span>(<span class="string">&quot;a::b::g::h&quot;</span>.to_owned())),
-            (<span class="string">&quot;j&quot;</span>.to_owned(), <span class="macro">vec!</span>(<span class="string">&quot;a::b::g::j&quot;</span>.to_owned())),
+        <span class="prelude-val">Ok</span>(IndexMap::from_iter([
+            (<span class="string">"d"</span>.to_owned(), <span class="macro">vec!</span>(<span class="string">"a::b::c::d"</span>.to_owned())),
+            (<span class="string">"e"</span>.to_owned(), <span class="macro">vec!</span>(<span class="string">"a::b::c::e"</span>.to_owned())),
+            (<span class="string">"f"</span>.to_owned(), <span class="macro">vec!</span>(<span class="string">"a::b::f"</span>.to_owned())),
+            (<span class="string">"i"</span>.to_owned(), <span class="macro">vec!</span>(<span class="string">"a::b::g::h"</span>.to_owned())),
+            (<span class="string">"j"</span>.to_owned(), <span class="macro">vec!</span>(<span class="string">"a::b::g::j"</span>.to_owned())),
         ]))
     );
 
-    <span class="kw">let </span>input = <span class="string">r&quot;
+    <span class="kw">let </span>input = <span class="string">r"
         #import a::b::{
             c::{d, e}, 
             f, 
@@ -684,58 +685,58 @@
                 j::k::l as m,
             }
         }
-    &quot;</span>;
+    "</span>;
     <span class="macro">assert_eq!</span>(
         test_parse(input),
-        <span class="prelude-val">Ok</span>(HashMap::from_iter([
-            (<span class="string">&quot;d&quot;</span>.to_owned(), <span class="macro">vec!</span>(<span class="string">&quot;a::b::c::d&quot;</span>.to_owned())),
-            (<span class="string">&quot;e&quot;</span>.to_owned(), <span class="macro">vec!</span>(<span class="string">&quot;a::b::c::e&quot;</span>.to_owned())),
-            (<span class="string">&quot;f&quot;</span>.to_owned(), <span class="macro">vec!</span>(<span class="string">&quot;a::b::f&quot;</span>.to_owned())),
-            (<span class="string">&quot;i&quot;</span>.to_owned(), <span class="macro">vec!</span>(<span class="string">&quot;a::b::g::h&quot;</span>.to_owned())),
-            (<span class="string">&quot;m&quot;</span>.to_owned(), <span class="macro">vec!</span>(<span class="string">&quot;a::b::g::j::k::l&quot;</span>.to_owned())),
+        <span class="prelude-val">Ok</span>(IndexMap::from_iter([
+            (<span class="string">"d"</span>.to_owned(), <span class="macro">vec!</span>(<span class="string">"a::b::c::d"</span>.to_owned())),
+            (<span class="string">"e"</span>.to_owned(), <span class="macro">vec!</span>(<span class="string">"a::b::c::e"</span>.to_owned())),
+            (<span class="string">"f"</span>.to_owned(), <span class="macro">vec!</span>(<span class="string">"a::b::f"</span>.to_owned())),
+            (<span class="string">"i"</span>.to_owned(), <span class="macro">vec!</span>(<span class="string">"a::b::g::h"</span>.to_owned())),
+            (<span class="string">"m"</span>.to_owned(), <span class="macro">vec!</span>(<span class="string">"a::b::g::j::k::l"</span>.to_owned())),
         ]))
     );
 
-    <span class="kw">let </span>input = <span class="string">r#&quot;
-        #import &quot;path//with\ all sorts of .stuff&quot;::{a, b}
-    &quot;#</span>;
+    <span class="kw">let </span>input = <span class="string">r#"
+        #import "path//with\ all sorts of .stuff"::{a, b}
+    "#</span>;
     <span class="macro">assert_eq!</span>(
         test_parse(input),
-        <span class="prelude-val">Ok</span>(HashMap::from_iter([
+        <span class="prelude-val">Ok</span>(IndexMap::from_iter([
             (
-                <span class="string">&quot;a&quot;</span>.to_owned(),
-                <span class="macro">vec!</span>(<span class="string">r#&quot;&quot;path//with\ all sorts of .stuff&quot;::a&quot;#</span>.to_owned())
+                <span class="string">"a"</span>.to_owned(),
+                <span class="macro">vec!</span>(<span class="string">r#""path//with\ all sorts of .stuff"::a"#</span>.to_owned())
             ),
             (
-                <span class="string">&quot;b&quot;</span>.to_owned(),
-                <span class="macro">vec!</span>(<span class="string">r#&quot;&quot;path//with\ all sorts of .stuff&quot;::b&quot;#</span>.to_owned())
+                <span class="string">"b"</span>.to_owned(),
+                <span class="macro">vec!</span>(<span class="string">r#""path//with\ all sorts of .stuff"::b"#</span>.to_owned())
             ),
         ]))
     );
 
-    <span class="kw">let </span>input = <span class="string">r&quot;
+    <span class="kw">let </span>input = <span class="string">r"
         #import a::b::{
-    &quot;</span>;
+    "</span>;
     <span class="macro">assert!</span>(test_parse(input).is_err());
 
-    <span class="kw">let </span>input = <span class="string">r&quot;
+    <span class="kw">let </span>input = <span class="string">r"
         #import a::b::{{c}
-    &quot;</span>;
+    "</span>;
     <span class="macro">assert!</span>(test_parse(input).is_err());
 
-    <span class="kw">let </span>input = <span class="string">r&quot;
+    <span class="kw">let </span>input = <span class="string">r"
         #import a::b::{c}}
-    &quot;</span>;
+    "</span>;
     <span class="macro">assert!</span>(test_parse(input).is_err());
 
-    <span class="kw">let </span>input = <span class="string">r&quot;
+    <span class="kw">let </span>input = <span class="string">r"
         #import a::b{{c,d}}
-    &quot;</span>;
+    "</span>;
     <span class="macro">assert!</span>(test_parse(input).is_err());
 
-    <span class="kw">let </span>input = <span class="string">r&quot;
+    <span class="kw">let </span>input = <span class="string">r"
         #import a:b
-    &quot;</span>;
+    "</span>;
     <span class="macro">assert!</span>(test_parse(input).is_err());
 }
 </code></pre></div></section></main></body></html>

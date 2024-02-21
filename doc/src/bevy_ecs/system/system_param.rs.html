@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ecs-0.12.1/src/system/system_param.rs`."><title>system_param.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="bevy_ecs" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../bevy_ecs/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ecs-0.13.0/src/system/system_param.rs`."><title>system_param.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="bevy_ecs" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1741,35 +1742,6 @@
 <a href="#1741" id="1741">1741</a>
 <a href="#1742" id="1742">1742</a>
 <a href="#1743" id="1743">1743</a>
-<a href="#1744" id="1744">1744</a>
-<a href="#1745" id="1745">1745</a>
-<a href="#1746" id="1746">1746</a>
-<a href="#1747" id="1747">1747</a>
-<a href="#1748" id="1748">1748</a>
-<a href="#1749" id="1749">1749</a>
-<a href="#1750" id="1750">1750</a>
-<a href="#1751" id="1751">1751</a>
-<a href="#1752" id="1752">1752</a>
-<a href="#1753" id="1753">1753</a>
-<a href="#1754" id="1754">1754</a>
-<a href="#1755" id="1755">1755</a>
-<a href="#1756" id="1756">1756</a>
-<a href="#1757" id="1757">1757</a>
-<a href="#1758" id="1758">1758</a>
-<a href="#1759" id="1759">1759</a>
-<a href="#1760" id="1760">1760</a>
-<a href="#1761" id="1761">1761</a>
-<a href="#1762" id="1762">1762</a>
-<a href="#1763" id="1763">1763</a>
-<a href="#1764" id="1764">1764</a>
-<a href="#1765" id="1765">1765</a>
-<a href="#1766" id="1766">1766</a>
-<a href="#1767" id="1767">1767</a>
-<a href="#1768" id="1768">1768</a>
-<a href="#1769" id="1769">1769</a>
-<a href="#1770" id="1770">1770</a>
-<a href="#1771" id="1771">1771</a>
-<a href="#1772" id="1772">1772</a>
 </pre></div><pre class="rust"><code><span class="kw">pub use </span><span class="kw">crate</span>::change_detection::{NonSendMut, Res, ResMut};
 <span class="kw">use crate</span>::{
     archetype::{Archetype, Archetypes},
@@ -1778,7 +1750,8 @@
     component::{ComponentId, ComponentTicks, Components, Tick},
     entity::Entities,
     query::{
-        Access, FilteredAccess, FilteredAccessSet, QueryState, ReadOnlyWorldQuery, WorldQuery,
+        Access, FilteredAccess, FilteredAccessSet, QueryData, QueryFilter, QueryState,
+        ReadOnlyQueryData,
     },
     system::{Query, SystemMeta},
     world::{unsafe_world_cell::UnsafeWorldCell, FromWorld, World},
@@ -1789,7 +1762,6 @@
 <span class="kw">use </span>bevy_ptr::UnsafeCellDeref;
 <span class="kw">use </span>bevy_utils::{all_tuples, synccell::SyncCell};
 <span class="kw">use </span>std::{
-    borrow::Cow,
     fmt::Debug,
     marker::PhantomData,
     ops::{Deref, DerefMut},
@@ -1805,9 +1777,38 @@
 /// See the *Generic `SystemParam`s* section for details and workarounds of the probable
 /// cause if this derive causes an error to be emitted.
 ///
-/// Derived `SystemParam` structs may have two lifetimes: `&#39;w` for data stored in the [`World`],
-/// and `&#39;s` for data stored in the parameter&#39;s state.
+/// Derived `SystemParam` structs may have two lifetimes: `'w` for data stored in the [`World`],
+/// and `'s` for data stored in the parameter's state.
 ///
+/// The following list shows the most common [`SystemParam`]s and which lifetime they require
+///
+/// ```
+/// # use bevy_ecs::prelude::*;
+/// # #[derive(Resource)]
+/// # struct SomeResource;
+/// # #[derive(Event)]
+/// # struct SomeEvent;
+/// # #[derive(Resource)]
+/// # struct SomeOtherResource;
+/// # use bevy_ecs::system::SystemParam;
+/// # #[derive(SystemParam)]
+/// # struct ParamsExample&lt;'w, 's&gt; {
+/// #    query:
+/// Query&lt;'w, 's, Entity&gt;,
+/// #    res:
+/// Res&lt;'w, SomeResource&gt;,
+/// #    res_mut:
+/// ResMut&lt;'w, SomeOtherResource&gt;,
+/// #    local:
+/// Local&lt;'s, u8&gt;,
+/// #    commands:
+/// Commands&lt;'w, 's&gt;,
+/// #    eventreader:
+/// EventReader&lt;'w, 's, SomeEvent&gt;,
+/// #    eventwriter:
+/// EventWriter&lt;'w, SomeEvent&gt;
+/// # }
+///```
 /// ## `PhantomData`
 ///
 /// [`PhantomData`] is a special type of `SystemParam` that does nothing.
@@ -1823,12 +1824,12 @@
 /// use bevy_ecs::system::SystemParam;
 ///
 /// #[derive(SystemParam)]
-/// struct MyParam&lt;&#39;w, Marker: &#39;static&gt; {
-///     foo: Res&lt;&#39;w, SomeResource&gt;,
+/// struct MyParam&lt;'w, Marker: 'static&gt; {
+///     foo: Res&lt;'w, SomeResource&gt;,
 ///     marker: PhantomData&lt;Marker&gt;,
 /// }
 ///
-/// fn my_system&lt;T: &#39;static&gt;(param: MyParam&lt;T&gt;) {
+/// fn my_system&lt;T: 'static&gt;(param: MyParam&lt;T&gt;) {
 ///     // Access the resource through `param.foo`
 /// }
 ///
@@ -1841,7 +1842,7 @@
 ///
 /// ```text
 /// expected ... [ParamType]
-/// found associated type `&lt;[ParamType] as SystemParam&gt;::Item&lt;&#39;_, &#39;_&gt;`
+/// found associated type `&lt;[ParamType] as SystemParam&gt;::Item&lt;'_, '_&gt;`
 /// ```
 /// where `[ParamType]` is the type of one of your fields.
 /// To solve this error, you can wrap the field of type `[ParamType]` with [`StaticSystemParam`]
@@ -1850,7 +1851,7 @@
 /// ## Details
 ///
 /// The derive macro requires that the [`SystemParam`] implementation of
-/// each field `F`&#39;s [`Item`](`SystemParam::Item`)&#39;s is itself `F`
+/// each field `F`'s [`Item`](`SystemParam::Item`)'s is itself `F`
 /// (ignoring lifetimes for simplicity).
 /// This assumption is due to type inference reasons, so that the derived [`SystemParam`] can be
 /// used as an argument to a function system.
@@ -1868,16 +1869,16 @@
 ///   on `system_meta`.
 </span><span class="kw">pub unsafe trait </span>SystemParam: Sized {
     <span class="doccomment">/// Used to store data which persists across invocations of a system.
-    </span><span class="kw">type </span>State: Send + Sync + <span class="lifetime">&#39;static</span>;
+    </span><span class="kw">type </span>State: Send + Sync + <span class="lifetime">'static</span>;
 
     <span class="doccomment">/// The item type returned when constructing this system param.
     /// The value of this associated type should be `Self`, instantiated with new lifetimes.
     ///
-    /// You could think of `SystemParam::Item&lt;&#39;w, &#39;s&gt;` as being an *operation* that changes the lifetimes bound to `Self`.
-    </span><span class="kw">type </span>Item&lt;<span class="lifetime">&#39;world</span>, <span class="lifetime">&#39;state</span>&gt;: SystemParam&lt;State = <span class="self">Self</span>::State&gt;;
+    /// You could think of `SystemParam::Item&lt;'w, 's&gt;` as being an *operation* that changes the lifetimes bound to `Self`.
+    </span><span class="kw">type </span>Item&lt;<span class="lifetime">'world</span>, <span class="lifetime">'state</span>&gt;: SystemParam&lt;State = <span class="self">Self</span>::State&gt;;
 
     <span class="doccomment">/// Registers any [`World`] access used by this [`SystemParam`]
-    /// and creates a new instance of this param&#39;s [`State`](Self::State).
+    /// and creates a new instance of this param's [`State`](Self::State).
     </span><span class="kw">fn </span>init_state(world: <span class="kw-2">&amp;mut </span>World, system_meta: <span class="kw-2">&amp;mut </span>SystemMeta) -&gt; <span class="self">Self</span>::State;
 
     <span class="doccomment">/// For the specified [`Archetype`], registers the components accessed by this [`SystemParam`] (if applicable).
@@ -1889,7 +1890,7 @@
     ) {
     }
 
-    <span class="doccomment">/// Applies any deferred mutations stored in this [`SystemParam`]&#39;s state.
+    <span class="doccomment">/// Applies any deferred mutations stored in this [`SystemParam`]'s state.
     /// This is used to apply [`Commands`] during [`apply_deferred`](crate::prelude::apply_deferred).
     ///
     /// [`Commands`]: crate::prelude::Commands
@@ -1906,12 +1907,12 @@
     /// - The passed [`UnsafeWorldCell`] must have access to any world data
     ///   registered in [`init_state`](SystemParam::init_state).
     /// - `world` must be the same `World` that was used to initialize [`state`](SystemParam::init_state).
-    </span><span class="kw">unsafe fn </span>get_param&lt;<span class="lifetime">&#39;world</span>, <span class="lifetime">&#39;state</span>&gt;(
-        state: <span class="kw-2">&amp;</span><span class="lifetime">&#39;state </span><span class="kw-2">mut </span><span class="self">Self</span>::State,
+    </span><span class="kw">unsafe fn </span>get_param&lt;<span class="lifetime">'world</span>, <span class="lifetime">'state</span>&gt;(
+        state: <span class="kw-2">&amp;</span><span class="lifetime">'state </span><span class="kw-2">mut </span><span class="self">Self</span>::State,
         system_meta: <span class="kw-2">&amp;</span>SystemMeta,
-        world: UnsafeWorldCell&lt;<span class="lifetime">&#39;world</span>&gt;,
+        world: UnsafeWorldCell&lt;<span class="lifetime">'world</span>&gt;,
         change_tick: Tick,
-    ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">&#39;world</span>, <span class="lifetime">&#39;state</span>&gt;;
+    ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">'world</span>, <span class="lifetime">'state</span>&gt;;
 }
 
 <span class="doccomment">/// A [`SystemParam`] that only reads a given [`World`].
@@ -1921,27 +1922,25 @@
 </span><span class="kw">pub unsafe trait </span>ReadOnlySystemParam: SystemParam {}
 
 <span class="doccomment">/// Shorthand way of accessing the associated type [`SystemParam::Item`] for a given [`SystemParam`].
-</span><span class="kw">pub type </span>SystemParamItem&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>, P&gt; = &lt;P <span class="kw">as </span>SystemParam&gt;::Item&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>&gt;;
+</span><span class="kw">pub type </span>SystemParamItem&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>, P&gt; = &lt;P <span class="kw">as </span>SystemParam&gt;::Item&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>&gt;;
 
 <span class="comment">// SAFETY: QueryState is constrained to read-only fetches, so it only reads World.
-</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>, Q: ReadOnlyWorldQuery + <span class="lifetime">&#39;static</span>, F: ReadOnlyWorldQuery + <span class="lifetime">&#39;static</span>&gt;
-    ReadOnlySystemParam <span class="kw">for </span>Query&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>, Q, F&gt;
+</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>, D: ReadOnlyQueryData + <span class="lifetime">'static</span>, F: QueryFilter + <span class="lifetime">'static</span>&gt; ReadOnlySystemParam
+    <span class="kw">for </span>Query&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>, D, F&gt;
 {
 }
 
 <span class="comment">// SAFETY: Relevant query ComponentId and ArchetypeComponentId access is applied to SystemMeta. If
 // this Query conflicts with any prior access, a panic will occur.
-</span><span class="kw">unsafe impl</span>&lt;Q: WorldQuery + <span class="lifetime">&#39;static</span>, F: ReadOnlyWorldQuery + <span class="lifetime">&#39;static</span>&gt; SystemParam
-    <span class="kw">for </span>Query&lt;<span class="lifetime">&#39;_</span>, <span class="lifetime">&#39;_</span>, Q, F&gt;
-{
-    <span class="kw">type </span>State = QueryState&lt;Q, F&gt;;
-    <span class="kw">type </span>Item&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>&gt; = Query&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>, Q, F&gt;;
+</span><span class="kw">unsafe impl</span>&lt;D: QueryData + <span class="lifetime">'static</span>, F: QueryFilter + <span class="lifetime">'static</span>&gt; SystemParam <span class="kw">for </span>Query&lt;<span class="lifetime">'_</span>, <span class="lifetime">'_</span>, D, F&gt; {
+    <span class="kw">type </span>State = QueryState&lt;D, F&gt;;
+    <span class="kw">type </span>Item&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>&gt; = Query&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>, D, F&gt;;
 
     <span class="kw">fn </span>init_state(world: <span class="kw-2">&amp;mut </span>World, system_meta: <span class="kw-2">&amp;mut </span>SystemMeta) -&gt; <span class="self">Self</span>::State {
         <span class="kw">let </span>state = QueryState::new(world);
         assert_component_access_compatibility(
             <span class="kw-2">&amp;</span>system_meta.name,
-            std::any::type_name::&lt;Q&gt;(),
+            std::any::type_name::&lt;D&gt;(),
             std::any::type_name::&lt;F&gt;(),
             <span class="kw-2">&amp;</span>system_meta.component_access_set,
             <span class="kw-2">&amp;</span>state.component_access,
@@ -1964,13 +1963,13 @@
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>get_param&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>&gt;(
-        state: <span class="kw-2">&amp;</span><span class="lifetime">&#39;s </span><span class="kw-2">mut </span><span class="self">Self</span>::State,
+    </span><span class="kw">unsafe fn </span>get_param&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>&gt;(
+        state: <span class="kw-2">&amp;</span><span class="lifetime">'s </span><span class="kw-2">mut </span><span class="self">Self</span>::State,
         system_meta: <span class="kw-2">&amp;</span>SystemMeta,
-        world: UnsafeWorldCell&lt;<span class="lifetime">&#39;w</span>&gt;,
+        world: UnsafeWorldCell&lt;<span class="lifetime">'w</span>&gt;,
         change_tick: Tick,
-    ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>&gt; {
-        <span class="comment">// SAFETY: We have registered all of the query&#39;s world accesses,
+    ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>&gt; {
+        <span class="comment">// SAFETY: We have registered all of the query's world accesses,
         // so the caller ensures that `world` has permission to access any
         // world data that the query needs.
         </span>Query::new(world, state, system_meta.last_run, change_tick, <span class="bool-val">false</span>)
@@ -1979,8 +1978,8 @@
 
 <span class="kw">fn </span>assert_component_access_compatibility(
     system_name: <span class="kw-2">&amp;</span>str,
-    query_type: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
-    filter_type: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+    query_type: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
+    filter_type: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
     system_access: <span class="kw-2">&amp;</span>FilteredAccessSet&lt;ComponentId&gt;,
     current: <span class="kw-2">&amp;</span>FilteredAccess&lt;ComponentId&gt;,
     world: <span class="kw-2">&amp;</span>World,
@@ -1993,8 +1992,8 @@
         .into_iter()
         .map(|component_id| world.components.get_info(component_id).unwrap().name())
         .collect::&lt;Vec&lt;<span class="kw-2">&amp;</span>str&gt;&gt;();
-    <span class="kw">let </span>accesses = conflicting_components.join(<span class="string">&quot;, &quot;</span>);
-    <span class="macro">panic!</span>(<span class="string">&quot;error[B0001]: Query&lt;{query_type}, {filter_type}&gt; in system {system_name} accesses component(s) {accesses} in a way that conflicts with a previous system parameter. Consider using `Without&lt;T&gt;` to create disjoint Queries or merging conflicting Queries into a `ParamSet`.&quot;</span>);
+    <span class="kw">let </span>accesses = conflicting_components.join(<span class="string">", "</span>);
+    <span class="macro">panic!</span>(<span class="string">"error[B0001]: Query&lt;{query_type}, {filter_type}&gt; in system {system_name} accesses component(s) {accesses} in a way that conflicts with a previous system parameter. Consider using `Without&lt;T&gt;` to create disjoint Queries or merging conflicting Queries into a `ParamSet`."</span>);
 }
 
 <span class="doccomment">/// A collection of potentially conflicting [`SystemParam`]s allowed by disjoint access.
@@ -2003,13 +2002,13 @@
 /// two queries that reference the same mutable data or an event reader and writer of the same type.
 ///
 /// Each individual [`SystemParam`] can be accessed by using the functions `p0()`, `p1()`, ..., `p7()`,
-/// according to the order they are defined in the `ParamSet`. This ensures that there&#39;s either
+/// according to the order they are defined in the `ParamSet`. This ensures that there's either
 /// only one mutable reference to a parameter at a time or any number of immutable references.
 ///
 /// # Examples
 ///
 /// The following system mutably accesses the same component two times,
-/// which is not allowed due to rust&#39;s mutability rules.
+/// which is not allowed due to rust's mutability rules.
 ///
 /// ```should_panic
 /// # use bevy_ecs::prelude::*;
@@ -2031,7 +2030,7 @@
 ///     // ...
 /// }
 /// #
-/// # let mut bad_system_system = bevy_ecs::system::IntoSystem::into_system(bad_system);
+/// # let mut bad_system_system = IntoSystem::into_system(bad_system);
 /// # let mut world = World::new();
 /// # bad_system_system.initialize(&amp;mut world);
 /// # bad_system_system.run((), &amp;mut world);
@@ -2094,7 +2093,7 @@
 ///         &amp;World,
 ///     )&gt;,
 /// ) {
-///     for event in set.p0().iter() {
+///     for event in set.p0().read() {
 ///         // ...
 ///         # let _event = event;
 ///     }
@@ -2106,9 +2105,9 @@
 /// }
 /// # bevy_ecs::system::assert_is_system(event_system);
 /// ```
-</span><span class="kw">pub struct </span>ParamSet&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>, T: SystemParam&gt; {
-    param_states: <span class="kw-2">&amp;</span><span class="lifetime">&#39;s </span><span class="kw-2">mut </span>T::State,
-    world: UnsafeWorldCell&lt;<span class="lifetime">&#39;w</span>&gt;,
+</span><span class="kw">pub struct </span>ParamSet&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>, T: SystemParam&gt; {
+    param_states: <span class="kw-2">&amp;</span><span class="lifetime">'s </span><span class="kw-2">mut </span>T::State,
+    world: UnsafeWorldCell&lt;<span class="lifetime">'w</span>&gt;,
     system_meta: SystemMeta,
     change_tick: Tick,
 }
@@ -2174,25 +2173,24 @@
 /// }
 /// ```
 ///
-/// [`SyncCell`]: bevy_utils::synccell::SyncCell
 /// [`Exclusive`]: https://doc.rust-lang.org/nightly/std/sync/struct.Exclusive.html
-</span><span class="kw">pub trait </span>Resource: Send + Sync + <span class="lifetime">&#39;static </span>{}
+</span><span class="kw">pub trait </span>Resource: Send + Sync + <span class="lifetime">'static </span>{}
 
 <span class="comment">// SAFETY: Res only reads a single World resource
-</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">&#39;a</span>, T: Resource&gt; ReadOnlySystemParam <span class="kw">for </span>Res&lt;<span class="lifetime">&#39;a</span>, T&gt; {}
+</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">'a</span>, T: Resource&gt; ReadOnlySystemParam <span class="kw">for </span>Res&lt;<span class="lifetime">'a</span>, T&gt; {}
 
 <span class="comment">// SAFETY: Res ComponentId and ArchetypeComponentId access is applied to SystemMeta. If this Res
 // conflicts with any prior access, a panic will occur.
-</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">&#39;a</span>, T: Resource&gt; SystemParam <span class="kw">for </span>Res&lt;<span class="lifetime">&#39;a</span>, T&gt; {
+</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">'a</span>, T: Resource&gt; SystemParam <span class="kw">for </span>Res&lt;<span class="lifetime">'a</span>, T&gt; {
     <span class="kw">type </span>State = ComponentId;
-    <span class="kw">type </span>Item&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>&gt; = Res&lt;<span class="lifetime">&#39;w</span>, T&gt;;
+    <span class="kw">type </span>Item&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>&gt; = Res&lt;<span class="lifetime">'w</span>, T&gt;;
 
     <span class="kw">fn </span>init_state(world: <span class="kw-2">&amp;mut </span>World, system_meta: <span class="kw-2">&amp;mut </span>SystemMeta) -&gt; <span class="self">Self</span>::State {
         <span class="kw">let </span>component_id = world.initialize_resource::&lt;T&gt;();
         <span class="kw">let </span>combined_access = system_meta.component_access_set.combined_access();
         <span class="macro">assert!</span>(
             !combined_access.has_write(component_id),
-            <span class="string">&quot;error[B0002]: Res&lt;{}&gt; in system {} conflicts with a previous ResMut&lt;{0}&gt; access. Consider removing the duplicate access.&quot;</span>,
+            <span class="string">"error[B0002]: Res&lt;{}&gt; in system {} conflicts with a previous ResMut&lt;{0}&gt; access. Consider removing the duplicate access."</span>,
             std::any::type_name::&lt;T&gt;(),
             system_meta.name,
         );
@@ -2211,17 +2209,17 @@
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>get_param&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>&gt;(
-        <span class="kw-2">&amp;mut </span>component_id: <span class="kw-2">&amp;</span><span class="lifetime">&#39;s </span><span class="kw-2">mut </span><span class="self">Self</span>::State,
+    </span><span class="kw">unsafe fn </span>get_param&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>&gt;(
+        <span class="kw-2">&amp;mut </span>component_id: <span class="kw-2">&amp;</span><span class="lifetime">'s </span><span class="kw-2">mut </span><span class="self">Self</span>::State,
         system_meta: <span class="kw-2">&amp;</span>SystemMeta,
-        world: UnsafeWorldCell&lt;<span class="lifetime">&#39;w</span>&gt;,
+        world: UnsafeWorldCell&lt;<span class="lifetime">'w</span>&gt;,
         change_tick: Tick,
-    ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>&gt; {
+    ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>&gt; {
         <span class="kw">let </span>(ptr, ticks) = world
             .get_resource_with_ticks(component_id)
             .unwrap_or_else(|| {
                 <span class="macro">panic!</span>(
-                    <span class="string">&quot;Resource requested by {} does not exist: {}&quot;</span>,
+                    <span class="string">"Resource requested by {} does not exist: {}"</span>,
                     system_meta.name,
                     std::any::type_name::&lt;T&gt;()
                 )
@@ -2239,24 +2237,24 @@
 }
 
 <span class="comment">// SAFETY: Only reads a single World resource
-</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">&#39;a</span>, T: Resource&gt; ReadOnlySystemParam <span class="kw">for </span><span class="prelude-ty">Option</span>&lt;Res&lt;<span class="lifetime">&#39;a</span>, T&gt;&gt; {}
+</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">'a</span>, T: Resource&gt; ReadOnlySystemParam <span class="kw">for </span><span class="prelude-ty">Option</span>&lt;Res&lt;<span class="lifetime">'a</span>, T&gt;&gt; {}
 
 <span class="comment">// SAFETY: this impl defers to `Res`, which initializes and validates the correct world access.
-</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">&#39;a</span>, T: Resource&gt; SystemParam <span class="kw">for </span><span class="prelude-ty">Option</span>&lt;Res&lt;<span class="lifetime">&#39;a</span>, T&gt;&gt; {
+</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">'a</span>, T: Resource&gt; SystemParam <span class="kw">for </span><span class="prelude-ty">Option</span>&lt;Res&lt;<span class="lifetime">'a</span>, T&gt;&gt; {
     <span class="kw">type </span>State = ComponentId;
-    <span class="kw">type </span>Item&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>&gt; = <span class="prelude-ty">Option</span>&lt;Res&lt;<span class="lifetime">&#39;w</span>, T&gt;&gt;;
+    <span class="kw">type </span>Item&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>&gt; = <span class="prelude-ty">Option</span>&lt;Res&lt;<span class="lifetime">'w</span>, T&gt;&gt;;
 
     <span class="kw">fn </span>init_state(world: <span class="kw-2">&amp;mut </span>World, system_meta: <span class="kw-2">&amp;mut </span>SystemMeta) -&gt; <span class="self">Self</span>::State {
         Res::&lt;T&gt;::init_state(world, system_meta)
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>get_param&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>&gt;(
-        <span class="kw-2">&amp;mut </span>component_id: <span class="kw-2">&amp;</span><span class="lifetime">&#39;s </span><span class="kw-2">mut </span><span class="self">Self</span>::State,
+    </span><span class="kw">unsafe fn </span>get_param&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>&gt;(
+        <span class="kw-2">&amp;mut </span>component_id: <span class="kw-2">&amp;</span><span class="lifetime">'s </span><span class="kw-2">mut </span><span class="self">Self</span>::State,
         system_meta: <span class="kw-2">&amp;</span>SystemMeta,
-        world: UnsafeWorldCell&lt;<span class="lifetime">&#39;w</span>&gt;,
+        world: UnsafeWorldCell&lt;<span class="lifetime">'w</span>&gt;,
         change_tick: Tick,
-    ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>&gt; {
+    ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>&gt; {
         world
             .get_resource_with_ticks(component_id)
             .map(|(ptr, ticks)| Res {
@@ -2273,20 +2271,20 @@
 
 <span class="comment">// SAFETY: Res ComponentId and ArchetypeComponentId access is applied to SystemMeta. If this Res
 // conflicts with any prior access, a panic will occur.
-</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">&#39;a</span>, T: Resource&gt; SystemParam <span class="kw">for </span>ResMut&lt;<span class="lifetime">&#39;a</span>, T&gt; {
+</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">'a</span>, T: Resource&gt; SystemParam <span class="kw">for </span>ResMut&lt;<span class="lifetime">'a</span>, T&gt; {
     <span class="kw">type </span>State = ComponentId;
-    <span class="kw">type </span>Item&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>&gt; = ResMut&lt;<span class="lifetime">&#39;w</span>, T&gt;;
+    <span class="kw">type </span>Item&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>&gt; = ResMut&lt;<span class="lifetime">'w</span>, T&gt;;
 
     <span class="kw">fn </span>init_state(world: <span class="kw-2">&amp;mut </span>World, system_meta: <span class="kw-2">&amp;mut </span>SystemMeta) -&gt; <span class="self">Self</span>::State {
         <span class="kw">let </span>component_id = world.initialize_resource::&lt;T&gt;();
         <span class="kw">let </span>combined_access = system_meta.component_access_set.combined_access();
         <span class="kw">if </span>combined_access.has_write(component_id) {
             <span class="macro">panic!</span>(
-                <span class="string">&quot;error[B0002]: ResMut&lt;{}&gt; in system {} conflicts with a previous ResMut&lt;{0}&gt; access. Consider removing the duplicate access.&quot;</span>,
+                <span class="string">"error[B0002]: ResMut&lt;{}&gt; in system {} conflicts with a previous ResMut&lt;{0}&gt; access. Consider removing the duplicate access."</span>,
                 std::any::type_name::&lt;T&gt;(), system_meta.name);
         } <span class="kw">else if </span>combined_access.has_read(component_id) {
             <span class="macro">panic!</span>(
-                <span class="string">&quot;error[B0002]: ResMut&lt;{}&gt; in system {} conflicts with a previous Res&lt;{0}&gt; access. Consider removing the duplicate access.&quot;</span>,
+                <span class="string">"error[B0002]: ResMut&lt;{}&gt; in system {} conflicts with a previous Res&lt;{0}&gt; access. Consider removing the duplicate access."</span>,
                 std::any::type_name::&lt;T&gt;(), system_meta.name);
         }
         system_meta
@@ -2304,17 +2302,17 @@
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>get_param&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>&gt;(
-        <span class="kw-2">&amp;mut </span>component_id: <span class="kw-2">&amp;</span><span class="lifetime">&#39;s </span><span class="kw-2">mut </span><span class="self">Self</span>::State,
+    </span><span class="kw">unsafe fn </span>get_param&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>&gt;(
+        <span class="kw-2">&amp;mut </span>component_id: <span class="kw-2">&amp;</span><span class="lifetime">'s </span><span class="kw-2">mut </span><span class="self">Self</span>::State,
         system_meta: <span class="kw-2">&amp;</span>SystemMeta,
-        world: UnsafeWorldCell&lt;<span class="lifetime">&#39;w</span>&gt;,
+        world: UnsafeWorldCell&lt;<span class="lifetime">'w</span>&gt;,
         change_tick: Tick,
-    ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>&gt; {
+    ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>&gt; {
         <span class="kw">let </span>value = world
             .get_resource_mut_by_id(component_id)
             .unwrap_or_else(|| {
                 <span class="macro">panic!</span>(
-                    <span class="string">&quot;Resource requested by {} does not exist: {}&quot;</span>,
+                    <span class="string">"Resource requested by {} does not exist: {}"</span>,
                     system_meta.name,
                     std::any::type_name::&lt;T&gt;()
                 )
@@ -2332,21 +2330,21 @@
 }
 
 <span class="comment">// SAFETY: this impl defers to `ResMut`, which initializes and validates the correct world access.
-</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">&#39;a</span>, T: Resource&gt; SystemParam <span class="kw">for </span><span class="prelude-ty">Option</span>&lt;ResMut&lt;<span class="lifetime">&#39;a</span>, T&gt;&gt; {
+</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">'a</span>, T: Resource&gt; SystemParam <span class="kw">for </span><span class="prelude-ty">Option</span>&lt;ResMut&lt;<span class="lifetime">'a</span>, T&gt;&gt; {
     <span class="kw">type </span>State = ComponentId;
-    <span class="kw">type </span>Item&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>&gt; = <span class="prelude-ty">Option</span>&lt;ResMut&lt;<span class="lifetime">&#39;w</span>, T&gt;&gt;;
+    <span class="kw">type </span>Item&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>&gt; = <span class="prelude-ty">Option</span>&lt;ResMut&lt;<span class="lifetime">'w</span>, T&gt;&gt;;
 
     <span class="kw">fn </span>init_state(world: <span class="kw-2">&amp;mut </span>World, system_meta: <span class="kw-2">&amp;mut </span>SystemMeta) -&gt; <span class="self">Self</span>::State {
         ResMut::&lt;T&gt;::init_state(world, system_meta)
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>get_param&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>&gt;(
-        <span class="kw-2">&amp;mut </span>component_id: <span class="kw-2">&amp;</span><span class="lifetime">&#39;s </span><span class="kw-2">mut </span><span class="self">Self</span>::State,
+    </span><span class="kw">unsafe fn </span>get_param&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>&gt;(
+        <span class="kw-2">&amp;mut </span>component_id: <span class="kw-2">&amp;</span><span class="lifetime">'s </span><span class="kw-2">mut </span><span class="self">Self</span>::State,
         system_meta: <span class="kw-2">&amp;</span>SystemMeta,
-        world: UnsafeWorldCell&lt;<span class="lifetime">&#39;w</span>&gt;,
+        world: UnsafeWorldCell&lt;<span class="lifetime">'w</span>&gt;,
         change_tick: Tick,
-    ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>&gt; {
+    ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>&gt; {
         world
             .get_resource_mut_by_id(component_id)
             .map(|value| ResMut {
@@ -2362,12 +2360,12 @@
 }
 
 <span class="doccomment">/// SAFETY: only reads world
-</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">&#39;w</span>&gt; ReadOnlySystemParam <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;w </span>World {}
+</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">'w</span>&gt; ReadOnlySystemParam <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'w </span>World {}
 
 <span class="comment">// SAFETY: `read_all` access is set and conflicts result in a panic
-</span><span class="kw">unsafe impl </span>SystemParam <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;_ </span>World {
+</span><span class="kw">unsafe impl </span>SystemParam <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'_ </span>World {
     <span class="kw">type </span>State = ();
-    <span class="kw">type </span>Item&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>&gt; = <span class="kw-2">&amp;</span><span class="lifetime">&#39;w </span>World;
+    <span class="kw">type </span>Item&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>&gt; = <span class="kw-2">&amp;</span><span class="lifetime">'w </span>World;
 
     <span class="kw">fn </span>init_state(_world: <span class="kw-2">&amp;mut </span>World, system_meta: <span class="kw-2">&amp;mut </span>SystemMeta) -&gt; <span class="self">Self</span>::State {
         <span class="kw">let </span><span class="kw-2">mut </span>access = Access::default();
@@ -2376,7 +2374,7 @@
             .archetype_component_access
             .is_compatible(<span class="kw-2">&amp;</span>access)
         {
-            <span class="macro">panic!</span>(<span class="string">&quot;&amp;World conflicts with a previous mutable system parameter. Allowing this would break Rust&#39;s mutability rules&quot;</span>);
+            <span class="macro">panic!</span>(<span class="string">"&amp;World conflicts with a previous mutable system parameter. Allowing this would break Rust's mutability rules"</span>);
         }
         system_meta.archetype_component_access.extend(<span class="kw-2">&amp;</span>access);
 
@@ -2388,17 +2386,17 @@
             .get_conflicts_single(<span class="kw-2">&amp;</span>filtered_access)
             .is_empty()
         {
-            <span class="macro">panic!</span>(<span class="string">&quot;&amp;World conflicts with a previous mutable system parameter. Allowing this would break Rust&#39;s mutability rules&quot;</span>);
+            <span class="macro">panic!</span>(<span class="string">"&amp;World conflicts with a previous mutable system parameter. Allowing this would break Rust's mutability rules"</span>);
         }
         system_meta.component_access_set.add(filtered_access);
     }
 
-    <span class="kw">unsafe fn </span>get_param&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>&gt;(
-        _state: <span class="kw-2">&amp;</span><span class="lifetime">&#39;s </span><span class="kw-2">mut </span><span class="self">Self</span>::State,
+    <span class="kw">unsafe fn </span>get_param&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>&gt;(
+        _state: <span class="kw-2">&amp;</span><span class="lifetime">'s </span><span class="kw-2">mut </span><span class="self">Self</span>::State,
         _system_meta: <span class="kw-2">&amp;</span>SystemMeta,
-        world: UnsafeWorldCell&lt;<span class="lifetime">&#39;w</span>&gt;,
+        world: UnsafeWorldCell&lt;<span class="lifetime">'w</span>&gt;,
         _change_tick: Tick,
-    ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>&gt; {
+    ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>&gt; {
         <span class="comment">// SAFETY: Read-only access to the entire world was registered in `init_state`.
         </span>world.world()
     }
@@ -2411,7 +2409,7 @@
 /// If multiple [`SystemParam`]s within the same system each specify the same local type
 /// each will get their own distinct data storage.
 ///
-/// The supplied lifetime parameter is the [`SystemParam`]s `&#39;s` lifetime.
+/// The supplied lifetime parameter is the [`SystemParam`]s `'s` lifetime.
 ///
 /// # Examples
 ///
@@ -2452,12 +2450,12 @@
 /// # assert_is_system(reset_to_system(Config(10)));
 /// ```
 </span><span class="attr">#[derive(Debug)]
-</span><span class="kw">pub struct </span>Local&lt;<span class="lifetime">&#39;s</span>, T: FromWorld + Send + <span class="lifetime">&#39;static</span>&gt;(<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw-2">&amp;</span><span class="lifetime">&#39;s </span><span class="kw-2">mut </span>T);
+</span><span class="kw">pub struct </span>Local&lt;<span class="lifetime">'s</span>, T: FromWorld + Send + <span class="lifetime">'static</span>&gt;(<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw-2">&amp;</span><span class="lifetime">'s </span><span class="kw-2">mut </span>T);
 
 <span class="comment">// SAFETY: Local only accesses internal state
-</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">&#39;s</span>, T: FromWorld + Send + <span class="lifetime">&#39;static</span>&gt; ReadOnlySystemParam <span class="kw">for </span>Local&lt;<span class="lifetime">&#39;s</span>, T&gt; {}
+</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">'s</span>, T: FromWorld + Send + <span class="lifetime">'static</span>&gt; ReadOnlySystemParam <span class="kw">for </span>Local&lt;<span class="lifetime">'s</span>, T&gt; {}
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;s</span>, T: FromWorld + Send + <span class="lifetime">&#39;static</span>&gt; Deref <span class="kw">for </span>Local&lt;<span class="lifetime">&#39;s</span>, T&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'s</span>, T: FromWorld + Send + <span class="lifetime">'static</span>&gt; Deref <span class="kw">for </span>Local&lt;<span class="lifetime">'s</span>, T&gt; {
     <span class="kw">type </span>Target = T;
 
     <span class="attr">#[inline]
@@ -2466,31 +2464,31 @@
     </span>}
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;s</span>, T: FromWorld + Send + <span class="lifetime">&#39;static</span>&gt; DerefMut <span class="kw">for </span>Local&lt;<span class="lifetime">&#39;s</span>, T&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'s</span>, T: FromWorld + Send + <span class="lifetime">'static</span>&gt; DerefMut <span class="kw">for </span>Local&lt;<span class="lifetime">'s</span>, T&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>deref_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Target {
         <span class="self">self</span>.<span class="number">0
     </span>}
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;s</span>, <span class="lifetime">&#39;a</span>, T: FromWorld + Send + <span class="lifetime">&#39;static</span>&gt; IntoIterator <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Local&lt;<span class="lifetime">&#39;s</span>, T&gt;
+<span class="kw">impl</span>&lt;<span class="lifetime">'s</span>, <span class="lifetime">'a</span>, T: FromWorld + Send + <span class="lifetime">'static</span>&gt; IntoIterator <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span>Local&lt;<span class="lifetime">'s</span>, T&gt;
 <span class="kw">where
-    </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>T: IntoIterator,
+    </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span>T: IntoIterator,
 {
-    <span class="kw">type </span>Item = &lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>T <span class="kw">as </span>IntoIterator&gt;::Item;
-    <span class="kw">type </span>IntoIter = &lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>T <span class="kw">as </span>IntoIterator&gt;::IntoIter;
+    <span class="kw">type </span>Item = &lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>T <span class="kw">as </span>IntoIterator&gt;::Item;
+    <span class="kw">type </span>IntoIter = &lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>T <span class="kw">as </span>IntoIterator&gt;::IntoIter;
 
     <span class="kw">fn </span>into_iter(<span class="self">self</span>) -&gt; <span class="self">Self</span>::IntoIter {
         <span class="self">self</span>.<span class="number">0</span>.into_iter()
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;s</span>, <span class="lifetime">&#39;a</span>, T: FromWorld + Send + <span class="lifetime">&#39;static</span>&gt; IntoIterator <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>Local&lt;<span class="lifetime">&#39;s</span>, T&gt;
+<span class="kw">impl</span>&lt;<span class="lifetime">'s</span>, <span class="lifetime">'a</span>, T: FromWorld + Send + <span class="lifetime">'static</span>&gt; IntoIterator <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>Local&lt;<span class="lifetime">'s</span>, T&gt;
 <span class="kw">where
-    </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>T: IntoIterator,
+    </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>T: IntoIterator,
 {
-    <span class="kw">type </span>Item = &lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>T <span class="kw">as </span>IntoIterator&gt;::Item;
-    <span class="kw">type </span>IntoIter = &lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>T <span class="kw">as </span>IntoIterator&gt;::IntoIter;
+    <span class="kw">type </span>Item = &lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>T <span class="kw">as </span>IntoIterator&gt;::Item;
+    <span class="kw">type </span>IntoIter = &lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>T <span class="kw">as </span>IntoIterator&gt;::IntoIter;
 
     <span class="kw">fn </span>into_iter(<span class="self">self</span>) -&gt; <span class="self">Self</span>::IntoIter {
         <span class="self">self</span>.<span class="number">0</span>.into_iter()
@@ -2498,21 +2496,21 @@
 }
 
 <span class="comment">// SAFETY: only local state is accessed
-</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">&#39;a</span>, T: FromWorld + Send + <span class="lifetime">&#39;static</span>&gt; SystemParam <span class="kw">for </span>Local&lt;<span class="lifetime">&#39;a</span>, T&gt; {
+</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">'a</span>, T: FromWorld + Send + <span class="lifetime">'static</span>&gt; SystemParam <span class="kw">for </span>Local&lt;<span class="lifetime">'a</span>, T&gt; {
     <span class="kw">type </span>State = SyncCell&lt;T&gt;;
-    <span class="kw">type </span>Item&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>&gt; = Local&lt;<span class="lifetime">&#39;s</span>, T&gt;;
+    <span class="kw">type </span>Item&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>&gt; = Local&lt;<span class="lifetime">'s</span>, T&gt;;
 
     <span class="kw">fn </span>init_state(world: <span class="kw-2">&amp;mut </span>World, _system_meta: <span class="kw-2">&amp;mut </span>SystemMeta) -&gt; <span class="self">Self</span>::State {
         SyncCell::new(T::from_world(world))
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>get_param&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>&gt;(
-        state: <span class="kw-2">&amp;</span><span class="lifetime">&#39;s </span><span class="kw-2">mut </span><span class="self">Self</span>::State,
+    </span><span class="kw">unsafe fn </span>get_param&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>&gt;(
+        state: <span class="kw-2">&amp;</span><span class="lifetime">'s </span><span class="kw-2">mut </span><span class="self">Self</span>::State,
         _system_meta: <span class="kw-2">&amp;</span>SystemMeta,
-        _world: UnsafeWorldCell&lt;<span class="lifetime">&#39;w</span>&gt;,
+        _world: UnsafeWorldCell&lt;<span class="lifetime">'w</span>&gt;,
         _change_tick: Tick,
-    ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>&gt; {
+    ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>&gt; {
         Local(state.get())
     }
 }
@@ -2523,7 +2521,7 @@
 /// Types that implement `SystemBuffer` should take care to perform as many
 /// computations up-front as possible. Buffers cannot be applied in parallel,
 /// so you should try to minimize the time spent in [`SystemBuffer::apply`].
-</span><span class="kw">pub trait </span>SystemBuffer: FromWorld + Send + <span class="lifetime">&#39;static </span>{
+</span><span class="kw">pub trait </span>SystemBuffer: FromWorld + Send + <span class="lifetime">'static </span>{
     <span class="doccomment">/// Applies any deferred mutations to the [`World`].
     </span><span class="kw">fn </span>apply(<span class="kw-2">&amp;mut </span><span class="self">self</span>, system_meta: <span class="kw-2">&amp;</span>SystemMeta, world: <span class="kw-2">&amp;mut </span>World);
 }
@@ -2542,7 +2540,7 @@
 /// Note that deferring mutations is *not* free, and should only be used if
 /// the gains in parallelization outweigh the time it takes to apply deferred mutations.
 /// In general, [`Deferred`] should only be used for mutations that are infrequent,
-/// or which otherwise take up a small portion of a system&#39;s run-time.
+/// or which otherwise take up a small portion of a system's run-time.
 ///
 /// ```
 /// # use bevy_ecs::prelude::*;
@@ -2599,7 +2597,7 @@
 ///     for criminal in &amp;criminals {
 ///         // Only sound the alarm if the criminal is a threat.
 ///         // For this example, assume that this check is expensive to run.
-///         // Since the majority of this system&#39;s run-time is dominated
+///         // Since the majority of this system's run-time is dominated
 ///         // by calling `is_threat()`, we defer sounding the alarm to
 ///         // allow this system to run in parallel with other alarm systems.
 ///         if criminal.is_threat(settlement) {
@@ -2648,9 +2646,9 @@
 /// schedule.run(&amp;mut world);
 /// assert_eq!(world.resource::&lt;Alarm&gt;().0, true);
 /// ```
-</span><span class="kw">pub struct </span>Deferred&lt;<span class="lifetime">&#39;a</span>, T: SystemBuffer&gt;(<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>T);
+</span><span class="kw">pub struct </span>Deferred&lt;<span class="lifetime">'a</span>, T: SystemBuffer&gt;(<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>T);
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, T: SystemBuffer&gt; Deref <span class="kw">for </span>Deferred&lt;<span class="lifetime">&#39;a</span>, T&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T: SystemBuffer&gt; Deref <span class="kw">for </span>Deferred&lt;<span class="lifetime">'a</span>, T&gt; {
     <span class="kw">type </span>Target = T;
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>deref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="self">Self</span>::Target {
@@ -2658,22 +2656,31 @@
     </span>}
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, T: SystemBuffer&gt; DerefMut <span class="kw">for </span>Deferred&lt;<span class="lifetime">&#39;a</span>, T&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T: SystemBuffer&gt; DerefMut <span class="kw">for </span>Deferred&lt;<span class="lifetime">'a</span>, T&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>deref_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Target {
         <span class="self">self</span>.<span class="number">0
     </span>}
 }
 
-<span class="comment">// SAFETY: Only local state is accessed.
-</span><span class="kw">unsafe impl</span>&lt;T: SystemBuffer&gt; ReadOnlySystemParam <span class="kw">for </span>Deferred&lt;<span class="lifetime">&#39;_</span>, T&gt; {}
+<span class="kw">impl</span>&lt;T: SystemBuffer&gt; Deferred&lt;<span class="lifetime">'_</span>, T&gt; {
+    <span class="doccomment">/// Returns a [`Deferred&lt;T&gt;`] with a smaller lifetime.
+    /// This is useful if you have `&amp;mut Deferred&lt;T&gt;` but need `Deferred&lt;T&gt;`.
+    </span><span class="kw">pub fn </span>reborrow(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; Deferred&lt;T&gt; {
+        Deferred(<span class="self">self</span>.<span class="number">0</span>)
+    }
+}
 
 <span class="comment">// SAFETY: Only local state is accessed.
-</span><span class="kw">unsafe impl</span>&lt;T: SystemBuffer&gt; SystemParam <span class="kw">for </span>Deferred&lt;<span class="lifetime">&#39;_</span>, T&gt; {
+</span><span class="kw">unsafe impl</span>&lt;T: SystemBuffer&gt; ReadOnlySystemParam <span class="kw">for </span>Deferred&lt;<span class="lifetime">'_</span>, T&gt; {}
+
+<span class="comment">// SAFETY: Only local state is accessed.
+</span><span class="kw">unsafe impl</span>&lt;T: SystemBuffer&gt; SystemParam <span class="kw">for </span>Deferred&lt;<span class="lifetime">'_</span>, T&gt; {
     <span class="kw">type </span>State = SyncCell&lt;T&gt;;
-    <span class="kw">type </span>Item&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>&gt; = Deferred&lt;<span class="lifetime">&#39;s</span>, T&gt;;
+    <span class="kw">type </span>Item&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>&gt; = Deferred&lt;<span class="lifetime">'s</span>, T&gt;;
 
-    <span class="kw">fn </span>init_state(world: <span class="kw-2">&amp;mut </span>World, _system_meta: <span class="kw-2">&amp;mut </span>SystemMeta) -&gt; <span class="self">Self</span>::State {
+    <span class="kw">fn </span>init_state(world: <span class="kw-2">&amp;mut </span>World, system_meta: <span class="kw-2">&amp;mut </span>SystemMeta) -&gt; <span class="self">Self</span>::State {
+        system_meta.set_has_deferred();
         SyncCell::new(T::from_world(world))
     }
 
@@ -2681,12 +2688,12 @@
         state.get().apply(system_meta, world);
     }
 
-    <span class="kw">unsafe fn </span>get_param&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>&gt;(
-        state: <span class="kw-2">&amp;</span><span class="lifetime">&#39;s </span><span class="kw-2">mut </span><span class="self">Self</span>::State,
+    <span class="kw">unsafe fn </span>get_param&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>&gt;(
+        state: <span class="kw-2">&amp;</span><span class="lifetime">'s </span><span class="kw-2">mut </span><span class="self">Self</span>::State,
         _system_meta: <span class="kw-2">&amp;</span>SystemMeta,
-        _world: UnsafeWorldCell&lt;<span class="lifetime">&#39;w</span>&gt;,
+        _world: UnsafeWorldCell&lt;<span class="lifetime">'w</span>&gt;,
         _change_tick: Tick,
-    ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>&gt; {
+    ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>&gt; {
         Deferred(state.get())
     }
 }
@@ -2695,7 +2702,7 @@
 ///
 /// Only `Send` resources may be accessed with the [`Res`] [`SystemParam`]. In case that the
 /// resource does not implement `Send`, this `SystemParam` wrapper can be used. This will instruct
-/// the scheduler to instead run the system on the main thread so that it doesn&#39;t send the resource
+/// the scheduler to instead run the system on the main thread so that it doesn't send the resource
 /// over to another thread.
 ///
 /// # Panics
@@ -2703,26 +2710,26 @@
 /// Panics when used as a `SystemParameter` if the resource does not exist.
 ///
 /// Use `Option&lt;NonSend&lt;T&gt;&gt;` instead if the resource might not always exist.
-</span><span class="kw">pub struct </span>NonSend&lt;<span class="lifetime">&#39;w</span>, T: <span class="lifetime">&#39;static</span>&gt; {
-    <span class="kw">pub</span>(<span class="kw">crate</span>) value: <span class="kw-2">&amp;</span><span class="lifetime">&#39;w </span>T,
+</span><span class="kw">pub struct </span>NonSend&lt;<span class="lifetime">'w</span>, T: <span class="lifetime">'static</span>&gt; {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) value: <span class="kw-2">&amp;</span><span class="lifetime">'w </span>T,
     ticks: ComponentTicks,
     last_run: Tick,
     this_run: Tick,
 }
 
 <span class="comment">// SAFETY: Only reads a single World non-send resource
-</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">&#39;w</span>, T&gt; ReadOnlySystemParam <span class="kw">for </span>NonSend&lt;<span class="lifetime">&#39;w</span>, T&gt; {}
+</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">'w</span>, T&gt; ReadOnlySystemParam <span class="kw">for </span>NonSend&lt;<span class="lifetime">'w</span>, T&gt; {}
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;w</span>, T&gt; Debug <span class="kw">for </span>NonSend&lt;<span class="lifetime">&#39;w</span>, T&gt;
+<span class="kw">impl</span>&lt;<span class="lifetime">'w</span>, T&gt; Debug <span class="kw">for </span>NonSend&lt;<span class="lifetime">'w</span>, T&gt;
 <span class="kw">where
     </span>T: Debug,
 {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; std::fmt::Result {
-        f.debug_tuple(<span class="string">&quot;NonSend&quot;</span>).field(<span class="kw-2">&amp;</span><span class="self">self</span>.value).finish()
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; std::fmt::Result {
+        f.debug_tuple(<span class="string">"NonSend"</span>).field(<span class="kw-2">&amp;</span><span class="self">self</span>.value).finish()
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;w</span>, T: <span class="lifetime">&#39;static</span>&gt; NonSend&lt;<span class="lifetime">&#39;w</span>, T&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'w</span>, T: <span class="lifetime">'static</span>&gt; NonSend&lt;<span class="lifetime">'w</span>, T&gt; {
     <span class="doccomment">/// Returns `true` if the resource was added after the system last ran.
     </span><span class="kw">pub fn </span>is_added(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
         <span class="self">self</span>.ticks.is_added(<span class="self">self</span>.last_run, <span class="self">self</span>.this_run)
@@ -2734,15 +2741,15 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;w</span>, T&gt; Deref <span class="kw">for </span>NonSend&lt;<span class="lifetime">&#39;w</span>, T&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'w</span>, T&gt; Deref <span class="kw">for </span>NonSend&lt;<span class="lifetime">'w</span>, T&gt; {
     <span class="kw">type </span>Target = T;
 
     <span class="kw">fn </span>deref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="self">Self</span>::Target {
         <span class="self">self</span>.value
     }
 }
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, T&gt; From&lt;NonSendMut&lt;<span class="lifetime">&#39;a</span>, T&gt;&gt; <span class="kw">for </span>NonSend&lt;<span class="lifetime">&#39;a</span>, T&gt; {
-    <span class="kw">fn </span>from(nsm: NonSendMut&lt;<span class="lifetime">&#39;a</span>, T&gt;) -&gt; <span class="self">Self </span>{
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T&gt; From&lt;NonSendMut&lt;<span class="lifetime">'a</span>, T&gt;&gt; <span class="kw">for </span>NonSend&lt;<span class="lifetime">'a</span>, T&gt; {
+    <span class="kw">fn </span>from(nsm: NonSendMut&lt;<span class="lifetime">'a</span>, T&gt;) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
             value: nsm.value,
             ticks: ComponentTicks {
@@ -2757,9 +2764,9 @@
 
 <span class="comment">// SAFETY: NonSendComponentId and ArchetypeComponentId access is applied to SystemMeta. If this
 // NonSend conflicts with any prior access, a panic will occur.
-</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">&#39;a</span>, T: <span class="lifetime">&#39;static</span>&gt; SystemParam <span class="kw">for </span>NonSend&lt;<span class="lifetime">&#39;a</span>, T&gt; {
+</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">'a</span>, T: <span class="lifetime">'static</span>&gt; SystemParam <span class="kw">for </span>NonSend&lt;<span class="lifetime">'a</span>, T&gt; {
     <span class="kw">type </span>State = ComponentId;
-    <span class="kw">type </span>Item&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>&gt; = NonSend&lt;<span class="lifetime">&#39;w</span>, T&gt;;
+    <span class="kw">type </span>Item&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>&gt; = NonSend&lt;<span class="lifetime">'w</span>, T&gt;;
 
     <span class="kw">fn </span>init_state(world: <span class="kw-2">&amp;mut </span>World, system_meta: <span class="kw-2">&amp;mut </span>SystemMeta) -&gt; <span class="self">Self</span>::State {
         system_meta.set_non_send();
@@ -2768,7 +2775,7 @@
         <span class="kw">let </span>combined_access = system_meta.component_access_set.combined_access();
         <span class="macro">assert!</span>(
             !combined_access.has_write(component_id),
-            <span class="string">&quot;error[B0002]: NonSend&lt;{}&gt; in system {} conflicts with a previous mutable resource access ({0}). Consider removing the duplicate access.&quot;</span>,
+            <span class="string">"error[B0002]: NonSend&lt;{}&gt; in system {} conflicts with a previous mutable resource access ({0}). Consider removing the duplicate access."</span>,
             std::any::type_name::&lt;T&gt;(),
             system_meta.name,
         );
@@ -2787,17 +2794,17 @@
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>get_param&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>&gt;(
-        <span class="kw-2">&amp;mut </span>component_id: <span class="kw-2">&amp;</span><span class="lifetime">&#39;s </span><span class="kw-2">mut </span><span class="self">Self</span>::State,
+    </span><span class="kw">unsafe fn </span>get_param&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>&gt;(
+        <span class="kw-2">&amp;mut </span>component_id: <span class="kw-2">&amp;</span><span class="lifetime">'s </span><span class="kw-2">mut </span><span class="self">Self</span>::State,
         system_meta: <span class="kw-2">&amp;</span>SystemMeta,
-        world: UnsafeWorldCell&lt;<span class="lifetime">&#39;w</span>&gt;,
+        world: UnsafeWorldCell&lt;<span class="lifetime">'w</span>&gt;,
         change_tick: Tick,
-    ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>&gt; {
+    ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>&gt; {
         <span class="kw">let </span>(ptr, ticks) = world
             .get_non_send_with_ticks(component_id)
             .unwrap_or_else(|| {
                 <span class="macro">panic!</span>(
-                    <span class="string">&quot;Non-send resource requested by {} does not exist: {}&quot;</span>,
+                    <span class="string">"Non-send resource requested by {} does not exist: {}"</span>,
                     system_meta.name,
                     std::any::type_name::&lt;T&gt;()
                 )
@@ -2813,24 +2820,24 @@
 }
 
 <span class="comment">// SAFETY: Only reads a single World non-send resource
-</span><span class="kw">unsafe impl</span>&lt;T: <span class="lifetime">&#39;static</span>&gt; ReadOnlySystemParam <span class="kw">for </span><span class="prelude-ty">Option</span>&lt;NonSend&lt;<span class="lifetime">&#39;_</span>, T&gt;&gt; {}
+</span><span class="kw">unsafe impl</span>&lt;T: <span class="lifetime">'static</span>&gt; ReadOnlySystemParam <span class="kw">for </span><span class="prelude-ty">Option</span>&lt;NonSend&lt;<span class="lifetime">'_</span>, T&gt;&gt; {}
 
 <span class="comment">// SAFETY: this impl defers to `NonSend`, which initializes and validates the correct world access.
-</span><span class="kw">unsafe impl</span>&lt;T: <span class="lifetime">&#39;static</span>&gt; SystemParam <span class="kw">for </span><span class="prelude-ty">Option</span>&lt;NonSend&lt;<span class="lifetime">&#39;_</span>, T&gt;&gt; {
+</span><span class="kw">unsafe impl</span>&lt;T: <span class="lifetime">'static</span>&gt; SystemParam <span class="kw">for </span><span class="prelude-ty">Option</span>&lt;NonSend&lt;<span class="lifetime">'_</span>, T&gt;&gt; {
     <span class="kw">type </span>State = ComponentId;
-    <span class="kw">type </span>Item&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>&gt; = <span class="prelude-ty">Option</span>&lt;NonSend&lt;<span class="lifetime">&#39;w</span>, T&gt;&gt;;
+    <span class="kw">type </span>Item&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>&gt; = <span class="prelude-ty">Option</span>&lt;NonSend&lt;<span class="lifetime">'w</span>, T&gt;&gt;;
 
     <span class="kw">fn </span>init_state(world: <span class="kw-2">&amp;mut </span>World, system_meta: <span class="kw-2">&amp;mut </span>SystemMeta) -&gt; <span class="self">Self</span>::State {
         NonSend::&lt;T&gt;::init_state(world, system_meta)
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>get_param&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>&gt;(
-        <span class="kw-2">&amp;mut </span>component_id: <span class="kw-2">&amp;</span><span class="lifetime">&#39;s </span><span class="kw-2">mut </span><span class="self">Self</span>::State,
+    </span><span class="kw">unsafe fn </span>get_param&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>&gt;(
+        <span class="kw-2">&amp;mut </span>component_id: <span class="kw-2">&amp;</span><span class="lifetime">'s </span><span class="kw-2">mut </span><span class="self">Self</span>::State,
         system_meta: <span class="kw-2">&amp;</span>SystemMeta,
-        world: UnsafeWorldCell&lt;<span class="lifetime">&#39;w</span>&gt;,
+        world: UnsafeWorldCell&lt;<span class="lifetime">'w</span>&gt;,
         change_tick: Tick,
-    ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>&gt; {
+    ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>&gt; {
         world
             .get_non_send_with_ticks(component_id)
             .map(|(ptr, ticks)| NonSend {
@@ -2844,9 +2851,9 @@
 
 <span class="comment">// SAFETY: NonSendMut ComponentId and ArchetypeComponentId access is applied to SystemMeta. If this
 // NonSendMut conflicts with any prior access, a panic will occur.
-</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">&#39;a</span>, T: <span class="lifetime">&#39;static</span>&gt; SystemParam <span class="kw">for </span>NonSendMut&lt;<span class="lifetime">&#39;a</span>, T&gt; {
+</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">'a</span>, T: <span class="lifetime">'static</span>&gt; SystemParam <span class="kw">for </span>NonSendMut&lt;<span class="lifetime">'a</span>, T&gt; {
     <span class="kw">type </span>State = ComponentId;
-    <span class="kw">type </span>Item&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>&gt; = NonSendMut&lt;<span class="lifetime">&#39;w</span>, T&gt;;
+    <span class="kw">type </span>Item&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>&gt; = NonSendMut&lt;<span class="lifetime">'w</span>, T&gt;;
 
     <span class="kw">fn </span>init_state(world: <span class="kw-2">&amp;mut </span>World, system_meta: <span class="kw-2">&amp;mut </span>SystemMeta) -&gt; <span class="self">Self</span>::State {
         system_meta.set_non_send();
@@ -2855,11 +2862,11 @@
         <span class="kw">let </span>combined_access = system_meta.component_access_set.combined_access();
         <span class="kw">if </span>combined_access.has_write(component_id) {
             <span class="macro">panic!</span>(
-                <span class="string">&quot;error[B0002]: NonSendMut&lt;{}&gt; in system {} conflicts with a previous mutable resource access ({0}). Consider removing the duplicate access.&quot;</span>,
+                <span class="string">"error[B0002]: NonSendMut&lt;{}&gt; in system {} conflicts with a previous mutable resource access ({0}). Consider removing the duplicate access."</span>,
                 std::any::type_name::&lt;T&gt;(), system_meta.name);
         } <span class="kw">else if </span>combined_access.has_read(component_id) {
             <span class="macro">panic!</span>(
-                <span class="string">&quot;error[B0002]: NonSendMut&lt;{}&gt; in system {} conflicts with a previous immutable resource access ({0}). Consider removing the duplicate access.&quot;</span>,
+                <span class="string">"error[B0002]: NonSendMut&lt;{}&gt; in system {} conflicts with a previous immutable resource access ({0}). Consider removing the duplicate access."</span>,
                 std::any::type_name::&lt;T&gt;(), system_meta.name);
         }
         system_meta
@@ -2877,17 +2884,17 @@
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>get_param&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>&gt;(
-        <span class="kw-2">&amp;mut </span>component_id: <span class="kw-2">&amp;</span><span class="lifetime">&#39;s </span><span class="kw-2">mut </span><span class="self">Self</span>::State,
+    </span><span class="kw">unsafe fn </span>get_param&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>&gt;(
+        <span class="kw-2">&amp;mut </span>component_id: <span class="kw-2">&amp;</span><span class="lifetime">'s </span><span class="kw-2">mut </span><span class="self">Self</span>::State,
         system_meta: <span class="kw-2">&amp;</span>SystemMeta,
-        world: UnsafeWorldCell&lt;<span class="lifetime">&#39;w</span>&gt;,
+        world: UnsafeWorldCell&lt;<span class="lifetime">'w</span>&gt;,
         change_tick: Tick,
-    ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>&gt; {
+    ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>&gt; {
         <span class="kw">let </span>(ptr, ticks) = world
             .get_non_send_with_ticks(component_id)
             .unwrap_or_else(|| {
                 <span class="macro">panic!</span>(
-                    <span class="string">&quot;Non-send resource requested by {} does not exist: {}&quot;</span>,
+                    <span class="string">"Non-send resource requested by {} does not exist: {}"</span>,
                     system_meta.name,
                     std::any::type_name::&lt;T&gt;()
                 )
@@ -2900,21 +2907,21 @@
 }
 
 <span class="comment">// SAFETY: this impl defers to `NonSendMut`, which initializes and validates the correct world access.
-</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">&#39;a</span>, T: <span class="lifetime">&#39;static</span>&gt; SystemParam <span class="kw">for </span><span class="prelude-ty">Option</span>&lt;NonSendMut&lt;<span class="lifetime">&#39;a</span>, T&gt;&gt; {
+</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">'a</span>, T: <span class="lifetime">'static</span>&gt; SystemParam <span class="kw">for </span><span class="prelude-ty">Option</span>&lt;NonSendMut&lt;<span class="lifetime">'a</span>, T&gt;&gt; {
     <span class="kw">type </span>State = ComponentId;
-    <span class="kw">type </span>Item&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>&gt; = <span class="prelude-ty">Option</span>&lt;NonSendMut&lt;<span class="lifetime">&#39;w</span>, T&gt;&gt;;
+    <span class="kw">type </span>Item&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>&gt; = <span class="prelude-ty">Option</span>&lt;NonSendMut&lt;<span class="lifetime">'w</span>, T&gt;&gt;;
 
     <span class="kw">fn </span>init_state(world: <span class="kw-2">&amp;mut </span>World, system_meta: <span class="kw-2">&amp;mut </span>SystemMeta) -&gt; <span class="self">Self</span>::State {
         NonSendMut::&lt;T&gt;::init_state(world, system_meta)
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>get_param&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>&gt;(
-        <span class="kw-2">&amp;mut </span>component_id: <span class="kw-2">&amp;</span><span class="lifetime">&#39;s </span><span class="kw-2">mut </span><span class="self">Self</span>::State,
+    </span><span class="kw">unsafe fn </span>get_param&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>&gt;(
+        <span class="kw-2">&amp;mut </span>component_id: <span class="kw-2">&amp;</span><span class="lifetime">'s </span><span class="kw-2">mut </span><span class="self">Self</span>::State,
         system_meta: <span class="kw-2">&amp;</span>SystemMeta,
-        world: UnsafeWorldCell&lt;<span class="lifetime">&#39;w</span>&gt;,
+        world: UnsafeWorldCell&lt;<span class="lifetime">'w</span>&gt;,
         change_tick: Tick,
-    ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>&gt; {
+    ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>&gt; {
         world
             .get_non_send_with_ticks(component_id)
             .map(|(ptr, ticks)| NonSendMut {
@@ -2925,98 +2932,98 @@
 }
 
 <span class="comment">// SAFETY: Only reads World archetypes
-</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; ReadOnlySystemParam <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Archetypes {}
+</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">'a</span>&gt; ReadOnlySystemParam <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span>Archetypes {}
 
 <span class="comment">// SAFETY: no component value access
-</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; SystemParam <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Archetypes {
+</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">'a</span>&gt; SystemParam <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span>Archetypes {
     <span class="kw">type </span>State = ();
-    <span class="kw">type </span>Item&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>&gt; = <span class="kw-2">&amp;</span><span class="lifetime">&#39;w </span>Archetypes;
+    <span class="kw">type </span>Item&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>&gt; = <span class="kw-2">&amp;</span><span class="lifetime">'w </span>Archetypes;
 
     <span class="kw">fn </span>init_state(_world: <span class="kw-2">&amp;mut </span>World, _system_meta: <span class="kw-2">&amp;mut </span>SystemMeta) -&gt; <span class="self">Self</span>::State {}
 
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>get_param&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>&gt;(
-        _state: <span class="kw-2">&amp;</span><span class="lifetime">&#39;s </span><span class="kw-2">mut </span><span class="self">Self</span>::State,
+    </span><span class="kw">unsafe fn </span>get_param&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>&gt;(
+        _state: <span class="kw-2">&amp;</span><span class="lifetime">'s </span><span class="kw-2">mut </span><span class="self">Self</span>::State,
         _system_meta: <span class="kw-2">&amp;</span>SystemMeta,
-        world: UnsafeWorldCell&lt;<span class="lifetime">&#39;w</span>&gt;,
+        world: UnsafeWorldCell&lt;<span class="lifetime">'w</span>&gt;,
         _change_tick: Tick,
-    ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>&gt; {
+    ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>&gt; {
         world.archetypes()
     }
 }
 
 <span class="comment">// SAFETY: Only reads World components
-</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; ReadOnlySystemParam <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Components {}
+</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">'a</span>&gt; ReadOnlySystemParam <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span>Components {}
 
 <span class="comment">// SAFETY: no component value access
-</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; SystemParam <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Components {
+</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">'a</span>&gt; SystemParam <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span>Components {
     <span class="kw">type </span>State = ();
-    <span class="kw">type </span>Item&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>&gt; = <span class="kw-2">&amp;</span><span class="lifetime">&#39;w </span>Components;
+    <span class="kw">type </span>Item&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>&gt; = <span class="kw-2">&amp;</span><span class="lifetime">'w </span>Components;
 
     <span class="kw">fn </span>init_state(_world: <span class="kw-2">&amp;mut </span>World, _system_meta: <span class="kw-2">&amp;mut </span>SystemMeta) -&gt; <span class="self">Self</span>::State {}
 
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>get_param&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>&gt;(
-        _state: <span class="kw-2">&amp;</span><span class="lifetime">&#39;s </span><span class="kw-2">mut </span><span class="self">Self</span>::State,
+    </span><span class="kw">unsafe fn </span>get_param&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>&gt;(
+        _state: <span class="kw-2">&amp;</span><span class="lifetime">'s </span><span class="kw-2">mut </span><span class="self">Self</span>::State,
         _system_meta: <span class="kw-2">&amp;</span>SystemMeta,
-        world: UnsafeWorldCell&lt;<span class="lifetime">&#39;w</span>&gt;,
+        world: UnsafeWorldCell&lt;<span class="lifetime">'w</span>&gt;,
         _change_tick: Tick,
-    ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>&gt; {
+    ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>&gt; {
         world.components()
     }
 }
 
 <span class="comment">// SAFETY: Only reads World entities
-</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; ReadOnlySystemParam <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Entities {}
+</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">'a</span>&gt; ReadOnlySystemParam <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span>Entities {}
 
 <span class="comment">// SAFETY: no component value access
-</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; SystemParam <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Entities {
+</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">'a</span>&gt; SystemParam <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span>Entities {
     <span class="kw">type </span>State = ();
-    <span class="kw">type </span>Item&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>&gt; = <span class="kw-2">&amp;</span><span class="lifetime">&#39;w </span>Entities;
+    <span class="kw">type </span>Item&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>&gt; = <span class="kw-2">&amp;</span><span class="lifetime">'w </span>Entities;
 
     <span class="kw">fn </span>init_state(_world: <span class="kw-2">&amp;mut </span>World, _system_meta: <span class="kw-2">&amp;mut </span>SystemMeta) -&gt; <span class="self">Self</span>::State {}
 
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>get_param&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>&gt;(
-        _state: <span class="kw-2">&amp;</span><span class="lifetime">&#39;s </span><span class="kw-2">mut </span><span class="self">Self</span>::State,
+    </span><span class="kw">unsafe fn </span>get_param&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>&gt;(
+        _state: <span class="kw-2">&amp;</span><span class="lifetime">'s </span><span class="kw-2">mut </span><span class="self">Self</span>::State,
         _system_meta: <span class="kw-2">&amp;</span>SystemMeta,
-        world: UnsafeWorldCell&lt;<span class="lifetime">&#39;w</span>&gt;,
+        world: UnsafeWorldCell&lt;<span class="lifetime">'w</span>&gt;,
         _change_tick: Tick,
-    ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>&gt; {
+    ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>&gt; {
         world.entities()
     }
 }
 
 <span class="comment">// SAFETY: Only reads World bundles
-</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; ReadOnlySystemParam <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Bundles {}
+</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">'a</span>&gt; ReadOnlySystemParam <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span>Bundles {}
 
 <span class="comment">// SAFETY: no component value access
-</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; SystemParam <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Bundles {
+</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">'a</span>&gt; SystemParam <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span>Bundles {
     <span class="kw">type </span>State = ();
-    <span class="kw">type </span>Item&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>&gt; = <span class="kw-2">&amp;</span><span class="lifetime">&#39;w </span>Bundles;
+    <span class="kw">type </span>Item&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>&gt; = <span class="kw-2">&amp;</span><span class="lifetime">'w </span>Bundles;
 
     <span class="kw">fn </span>init_state(_world: <span class="kw-2">&amp;mut </span>World, _system_meta: <span class="kw-2">&amp;mut </span>SystemMeta) -&gt; <span class="self">Self</span>::State {}
 
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>get_param&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>&gt;(
-        _state: <span class="kw-2">&amp;</span><span class="lifetime">&#39;s </span><span class="kw-2">mut </span><span class="self">Self</span>::State,
+    </span><span class="kw">unsafe fn </span>get_param&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>&gt;(
+        _state: <span class="kw-2">&amp;</span><span class="lifetime">'s </span><span class="kw-2">mut </span><span class="self">Self</span>::State,
         _system_meta: <span class="kw-2">&amp;</span>SystemMeta,
-        world: UnsafeWorldCell&lt;<span class="lifetime">&#39;w</span>&gt;,
+        world: UnsafeWorldCell&lt;<span class="lifetime">'w</span>&gt;,
         _change_tick: Tick,
-    ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>&gt; {
+    ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>&gt; {
         world.bundles()
     }
 }
 
 <span class="doccomment">/// A [`SystemParam`] that reads the previous and current change ticks of the system.
 ///
-/// A system&#39;s change ticks are updated each time it runs:
+/// A system's change ticks are updated each time it runs:
 /// - `last_run` copies the previous value of `change_tick`
 /// - `this_run` copies the current value of [`World::read_change_tick`]
 ///
 /// Component change ticks that are more recent than `last_run` will be detected by the system.
 /// Those can be read by calling [`last_changed`](crate::change_detection::DetectChanges::last_changed)
-/// on a [`Mut&lt;T&gt;`](crate::change_detection::Mut) or [`ResMut&lt;T&gt;`](crate::change_detection::ResMut).
+/// on a [`Mut&lt;T&gt;`](crate::change_detection::Mut) or [`ResMut&lt;T&gt;`](ResMut).
 </span><span class="attr">#[derive(Debug)]
 </span><span class="kw">pub struct </span>SystemChangeTick {
     last_run: Tick,
@@ -3040,88 +3047,25 @@
 <span class="comment">// SAFETY: Only reads internal system state
 </span><span class="kw">unsafe impl </span>ReadOnlySystemParam <span class="kw">for </span>SystemChangeTick {}
 
-<span class="comment">// SAFETY: `SystemChangeTick` doesn&#39;t require any world access
+<span class="comment">// SAFETY: `SystemChangeTick` doesn't require any world access
 </span><span class="kw">unsafe impl </span>SystemParam <span class="kw">for </span>SystemChangeTick {
     <span class="kw">type </span>State = ();
-    <span class="kw">type </span>Item&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>&gt; = SystemChangeTick;
+    <span class="kw">type </span>Item&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>&gt; = SystemChangeTick;
 
     <span class="kw">fn </span>init_state(_world: <span class="kw-2">&amp;mut </span>World, _system_meta: <span class="kw-2">&amp;mut </span>SystemMeta) -&gt; <span class="self">Self</span>::State {}
 
-    <span class="kw">unsafe fn </span>get_param&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>&gt;(
-        _state: <span class="kw-2">&amp;</span><span class="lifetime">&#39;s </span><span class="kw-2">mut </span><span class="self">Self</span>::State,
+    <span class="kw">unsafe fn </span>get_param&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>&gt;(
+        _state: <span class="kw-2">&amp;</span><span class="lifetime">'s </span><span class="kw-2">mut </span><span class="self">Self</span>::State,
         system_meta: <span class="kw-2">&amp;</span>SystemMeta,
-        _world: UnsafeWorldCell&lt;<span class="lifetime">&#39;w</span>&gt;,
+        _world: UnsafeWorldCell&lt;<span class="lifetime">'w</span>&gt;,
         change_tick: Tick,
-    ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>&gt; {
+    ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>&gt; {
         SystemChangeTick {
             last_run: system_meta.last_run,
             this_run: change_tick,
         }
     }
 }
-
-<span class="doccomment">/// Name of the system that corresponds to this [`crate::system::SystemState`].
-///
-/// This is not a reliable identifier, it is more so useful for debugging
-/// purposes of finding where a system parameter is being used incorrectly.
-</span><span class="attr">#[derive(Debug)]
-</span><span class="kw">pub struct </span>SystemName&lt;<span class="lifetime">&#39;s</span>&gt;(<span class="kw-2">&amp;</span><span class="lifetime">&#39;s </span>str);
-
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;s</span>&gt; SystemName&lt;<span class="lifetime">&#39;s</span>&gt; {
-    <span class="doccomment">/// Gets the name of the system.
-    </span><span class="kw">pub fn </span>name(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>str {
-        <span class="self">self</span>.<span class="number">0
-    </span>}
-}
-
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;s</span>&gt; Deref <span class="kw">for </span>SystemName&lt;<span class="lifetime">&#39;s</span>&gt; {
-    <span class="kw">type </span>Target = str;
-    <span class="kw">fn </span>deref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="self">Self</span>::Target {
-        <span class="self">self</span>.name()
-    }
-}
-
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;s</span>&gt; AsRef&lt;str&gt; <span class="kw">for </span>SystemName&lt;<span class="lifetime">&#39;s</span>&gt; {
-    <span class="kw">fn </span>as_ref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>str {
-        <span class="self">self</span>.name()
-    }
-}
-
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;s</span>&gt; From&lt;SystemName&lt;<span class="lifetime">&#39;s</span>&gt;&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;s </span>str {
-    <span class="kw">fn </span>from(name: SystemName&lt;<span class="lifetime">&#39;s</span>&gt;) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;s </span>str {
-        name.<span class="number">0
-    </span>}
-}
-
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;s</span>&gt; std::fmt::Display <span class="kw">for </span>SystemName&lt;<span class="lifetime">&#39;s</span>&gt; {
-    <span class="attr">#[inline(always)]
-    </span><span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter) -&gt; std::fmt::Result {
-        std::fmt::Display::fmt(<span class="kw-2">&amp;</span><span class="self">self</span>.name(), f)
-    }
-}
-
-<span class="comment">// SAFETY: no component value access
-</span><span class="kw">unsafe impl </span>SystemParam <span class="kw">for </span>SystemName&lt;<span class="lifetime">&#39;_</span>&gt; {
-    <span class="kw">type </span>State = Cow&lt;<span class="lifetime">&#39;static</span>, str&gt;;
-    <span class="kw">type </span>Item&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>&gt; = SystemName&lt;<span class="lifetime">&#39;s</span>&gt;;
-
-    <span class="kw">fn </span>init_state(_world: <span class="kw-2">&amp;mut </span>World, system_meta: <span class="kw-2">&amp;mut </span>SystemMeta) -&gt; <span class="self">Self</span>::State {
-        system_meta.name.clone()
-    }
-
-    <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>get_param&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>&gt;(
-        name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;s </span><span class="kw-2">mut </span><span class="self">Self</span>::State,
-        _system_meta: <span class="kw-2">&amp;</span>SystemMeta,
-        _world: UnsafeWorldCell&lt;<span class="lifetime">&#39;w</span>&gt;,
-        _change_tick: Tick,
-    ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>&gt; {
-        SystemName(name)
-    }
-}
-
-<span class="comment">// SAFETY: Only reads internal system state
-</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">&#39;s</span>&gt; ReadOnlySystemParam <span class="kw">for </span>SystemName&lt;<span class="lifetime">&#39;s</span>&gt; {}
 
 <span class="macro">macro_rules! </span>impl_system_param_tuple {
     ($(<span class="macro-nonterminal">$param</span>: ident),<span class="kw-2">*</span>) =&gt; {
@@ -3133,7 +3077,7 @@
         </span><span class="attr">#[allow(non_snake_case)]
         </span><span class="kw">unsafe impl</span>&lt;$(<span class="macro-nonterminal">$param</span>: SystemParam),<span class="kw-2">*</span>&gt; SystemParam <span class="kw">for </span>($(<span class="macro-nonterminal">$param</span>,)<span class="kw-2">*</span>) {
             <span class="kw">type </span>State = ($(<span class="macro-nonterminal">$param::State</span>,)<span class="kw-2">*</span>);
-            <span class="kw">type </span>Item&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>&gt; = ($(<span class="macro-nonterminal">$param::Item</span>::&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>&gt;,)<span class="kw-2">*</span>);
+            <span class="kw">type </span>Item&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>&gt; = ($(<span class="macro-nonterminal">$param::Item</span>::&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>&gt;,)<span class="kw-2">*</span>);
 
             <span class="attr">#[inline]
             </span><span class="kw">fn </span>init_state(_world: <span class="kw-2">&amp;mut </span>World, _system_meta: <span class="kw-2">&amp;mut </span>SystemMeta) -&gt; <span class="self">Self</span>::State {
@@ -3152,12 +3096,12 @@
 
             <span class="attr">#[inline]
             #[allow(clippy::unused_unit)]
-            </span><span class="kw">unsafe fn </span>get_param&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>&gt;(
-                state: <span class="kw-2">&amp;</span><span class="lifetime">&#39;s </span><span class="kw-2">mut </span><span class="self">Self</span>::State,
+            </span><span class="kw">unsafe fn </span>get_param&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>&gt;(
+                state: <span class="kw-2">&amp;</span><span class="lifetime">'s </span><span class="kw-2">mut </span><span class="self">Self</span>::State,
                 _system_meta: <span class="kw-2">&amp;</span>SystemMeta,
-                _world: UnsafeWorldCell&lt;<span class="lifetime">&#39;w</span>&gt;,
+                _world: UnsafeWorldCell&lt;<span class="lifetime">'w</span>&gt;,
                 _change_tick: Tick,
-            ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>&gt; {
+            ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>&gt; {
 
                 <span class="kw">let </span>($(<span class="macro-nonterminal">$param</span>,)<span class="kw-2">*</span>) = state;
                 ($(<span class="macro-nonterminal">$param::get_param</span>(<span class="macro-nonterminal">$param</span>, _system_meta, _world, _change_tick),)<span class="kw-2">*</span>)
@@ -3168,31 +3112,31 @@
 
 <span class="macro">all_tuples!</span>(impl_system_param_tuple, <span class="number">0</span>, <span class="number">16</span>, P);
 
-<span class="doccomment">/// Contains type aliases for built-in [`SystemParam`]s with `&#39;static` lifetimes.
+<span class="doccomment">/// Contains type aliases for built-in [`SystemParam`]s with `'static` lifetimes.
 /// This makes it more convenient to refer to these types in contexts where
 /// explicit lifetime annotations are required.
 ///
 /// Note that this is entirely safe and tracks lifetimes correctly.
 /// This purely exists for convenience.
 ///
-/// You can&#39;t instantiate a static `SystemParam`, you&#39;ll always end up with
-/// `Res&lt;&#39;w, T&gt;`, `ResMut&lt;&#39;w, T&gt;` or `&amp;&#39;w T` bound to the lifetime of the provided
-/// `&amp;&#39;w World`.
+/// You can't instantiate a static `SystemParam`, you'll always end up with
+/// `Res&lt;'w, T&gt;`, `ResMut&lt;'w, T&gt;` or `&amp;'w T` bound to the lifetime of the provided
+/// `&amp;'w World`.
 ///
 /// [`SystemParam`]: super::SystemParam
 </span><span class="kw">pub mod </span>lifetimeless {
-    <span class="doccomment">/// A [`Query`](super::Query) with `&#39;static` lifetimes.
-    </span><span class="kw">pub type </span>SQuery&lt;Q, F = ()&gt; = <span class="kw">super</span>::Query&lt;<span class="lifetime">&#39;static</span>, <span class="lifetime">&#39;static</span>, Q, F&gt;;
-    <span class="doccomment">/// A shorthand for writing `&amp;&#39;static T`.
-    </span><span class="kw">pub type </span>Read&lt;T&gt; = <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>T;
-    <span class="doccomment">/// A shorthand for writing `&amp;&#39;static mut T`.
-    </span><span class="kw">pub type </span>Write&lt;T&gt; = <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span><span class="kw-2">mut </span>T;
-    <span class="doccomment">/// A [`Res`](super::Res) with `&#39;static` lifetimes.
-    </span><span class="kw">pub type </span>SRes&lt;T&gt; = <span class="kw">super</span>::Res&lt;<span class="lifetime">&#39;static</span>, T&gt;;
-    <span class="doccomment">/// A [`ResMut`](super::ResMut) with `&#39;static` lifetimes.
-    </span><span class="kw">pub type </span>SResMut&lt;T&gt; = <span class="kw">super</span>::ResMut&lt;<span class="lifetime">&#39;static</span>, T&gt;;
-    <span class="doccomment">/// [`Commands`](crate::system::Commands) with `&#39;static` lifetimes.
-    </span><span class="kw">pub type </span>SCommands = <span class="kw">crate</span>::system::Commands&lt;<span class="lifetime">&#39;static</span>, <span class="lifetime">&#39;static</span>&gt;;
+    <span class="doccomment">/// A [`Query`](super::Query) with `'static` lifetimes.
+    </span><span class="kw">pub type </span>SQuery&lt;D, F = ()&gt; = <span class="kw">super</span>::Query&lt;<span class="lifetime">'static</span>, <span class="lifetime">'static</span>, D, F&gt;;
+    <span class="doccomment">/// A shorthand for writing `&amp;'static T`.
+    </span><span class="kw">pub type </span>Read&lt;T&gt; = <span class="kw-2">&amp;</span><span class="lifetime">'static </span>T;
+    <span class="doccomment">/// A shorthand for writing `&amp;'static mut T`.
+    </span><span class="kw">pub type </span>Write&lt;T&gt; = <span class="kw-2">&amp;</span><span class="lifetime">'static </span><span class="kw-2">mut </span>T;
+    <span class="doccomment">/// A [`Res`](super::Res) with `'static` lifetimes.
+    </span><span class="kw">pub type </span>SRes&lt;T&gt; = <span class="kw">super</span>::Res&lt;<span class="lifetime">'static</span>, T&gt;;
+    <span class="doccomment">/// A [`ResMut`](super::ResMut) with `'static` lifetimes.
+    </span><span class="kw">pub type </span>SResMut&lt;T&gt; = <span class="kw">super</span>::ResMut&lt;<span class="lifetime">'static</span>, T&gt;;
+    <span class="doccomment">/// [`Commands`](crate::system::Commands) with `'static` lifetimes.
+    </span><span class="kw">pub type </span>SCommands = <span class="kw">crate</span>::system::Commands&lt;<span class="lifetime">'static</span>, <span class="lifetime">'static</span>&gt;;
 }
 
 <span class="doccomment">/// A helper for using system parameters in generic contexts
@@ -3200,7 +3144,7 @@
 /// This type is a [`SystemParam`] adapter which always has
 /// `Self::State::Item == Self` (ignoring lifetimes for brevity),
 /// no matter the argument [`SystemParam`] (`P`) (other than
-/// that `P` must be `&#39;static`)
+/// that `P` must be `'static`)
 ///
 /// This makes it useful for having arbitrary [`SystemParam`] type arguments
 /// to function systems, or for generic types using the [`derive@SystemParam`]
@@ -3210,16 +3154,16 @@
 /// # use bevy_ecs::prelude::*;
 /// use bevy_ecs::system::{SystemParam, StaticSystemParam};
 /// #[derive(SystemParam)]
-/// struct GenericParam&lt;&#39;w,&#39;s, T: SystemParam + &#39;static&gt; {
-///     field: StaticSystemParam&lt;&#39;w, &#39;s, T&gt;,
+/// struct GenericParam&lt;'w,'s, T: SystemParam + 'static&gt; {
+///     field: StaticSystemParam&lt;'w, 's, T&gt;,
 /// }
-/// fn do_thing_generically&lt;T: SystemParam + &#39;static&gt;(t: StaticSystemParam&lt;T&gt;) {}
+/// fn do_thing_generically&lt;T: SystemParam + 'static&gt;(t: StaticSystemParam&lt;T&gt;) {}
 ///
-/// fn check_always_is_system&lt;T: SystemParam + &#39;static&gt;(){
+/// fn check_always_is_system&lt;T: SystemParam + 'static&gt;(){
 ///     bevy_ecs::system::assert_is_system(do_thing_generically::&lt;T&gt;);
 /// }
 /// ```
-/// Note that in a real case you&#39;d generally want
+/// Note that in a real case you'd generally want
 /// additional bounds on `P`, for your use of the parameter
 /// to have a reason to be generic.
 ///
@@ -3229,57 +3173,57 @@
 /// [`P: DerefMut&lt;Target=MyType&gt;`](DerefMut) depending on whether the
 /// method requires mutable access or not.
 ///
-/// The method which doesn&#39;t use this type will not compile:
+/// The method which doesn't use this type will not compile:
 /// ```compile_fail
 /// # use bevy_ecs::prelude::*;
 /// # use bevy_ecs::system::{SystemParam, StaticSystemParam};
 ///
-/// fn do_thing_generically&lt;T: SystemParam + &#39;static&gt;(t: T) {}
+/// fn do_thing_generically&lt;T: SystemParam + 'static&gt;(t: T) {}
 ///
 /// #[derive(SystemParam)]
-/// struct GenericParam&lt;&#39;w, &#39;s, T: SystemParam&gt; {
+/// struct GenericParam&lt;'w, 's, T: SystemParam&gt; {
 ///     field: T,
 ///     // Use the lifetimes in this type, or they will be unbound.
-///     phantom: core::marker::PhantomData&lt;&amp;&#39;w &amp;&#39;s ()&gt;
+///     phantom: core::marker::PhantomData&lt;&amp;'w &amp;'s ()&gt;
 /// }
-/// # fn check_always_is_system&lt;T: SystemParam + &#39;static&gt;(){
+/// # fn check_always_is_system&lt;T: SystemParam + 'static&gt;(){
 /// #    bevy_ecs::system::assert_is_system(do_thing_generically::&lt;T&gt;);
 /// # }
 /// ```
 ///
-</span><span class="kw">pub struct </span>StaticSystemParam&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>, P: SystemParam&gt;(SystemParamItem&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>, P&gt;);
+</span><span class="kw">pub struct </span>StaticSystemParam&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>, P: SystemParam&gt;(SystemParamItem&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>, P&gt;);
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>, P: SystemParam&gt; Deref <span class="kw">for </span>StaticSystemParam&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>, P&gt; {
-    <span class="kw">type </span>Target = SystemParamItem&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>, P&gt;;
+<span class="kw">impl</span>&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>, P: SystemParam&gt; Deref <span class="kw">for </span>StaticSystemParam&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>, P&gt; {
+    <span class="kw">type </span>Target = SystemParamItem&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>, P&gt;;
 
     <span class="kw">fn </span>deref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="self">Self</span>::Target {
         <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0
     </span>}
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>, P: SystemParam&gt; DerefMut <span class="kw">for </span>StaticSystemParam&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>, P&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>, P: SystemParam&gt; DerefMut <span class="kw">for </span>StaticSystemParam&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>, P&gt; {
     <span class="kw">fn </span>deref_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Target {
         <span class="kw-2">&amp;mut </span><span class="self">self</span>.<span class="number">0
     </span>}
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>, P: SystemParam&gt; StaticSystemParam&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>, P&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>, P: SystemParam&gt; StaticSystemParam&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>, P&gt; {
     <span class="doccomment">/// Get the value of the parameter
-    </span><span class="kw">pub fn </span>into_inner(<span class="self">self</span>) -&gt; SystemParamItem&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>, P&gt; {
+    </span><span class="kw">pub fn </span>into_inner(<span class="self">self</span>) -&gt; SystemParamItem&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>, P&gt; {
         <span class="self">self</span>.<span class="number">0
     </span>}
 }
 
-<span class="comment">// SAFETY: This doesn&#39;t add any more reads, and the delegated fetch confirms it
-</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>, P: ReadOnlySystemParam + <span class="lifetime">&#39;static</span>&gt; ReadOnlySystemParam
-    <span class="kw">for </span>StaticSystemParam&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>, P&gt;
+<span class="comment">// SAFETY: This doesn't add any more reads, and the delegated fetch confirms it
+</span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>, P: ReadOnlySystemParam + <span class="lifetime">'static</span>&gt; ReadOnlySystemParam
+    <span class="kw">for </span>StaticSystemParam&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>, P&gt;
 {
 }
 
-<span class="comment">// SAFETY: all methods are just delegated to `P`&#39;s `SystemParam` implementation
-</span><span class="kw">unsafe impl</span>&lt;P: SystemParam + <span class="lifetime">&#39;static</span>&gt; SystemParam <span class="kw">for </span>StaticSystemParam&lt;<span class="lifetime">&#39;_</span>, <span class="lifetime">&#39;_</span>, P&gt; {
+<span class="comment">// SAFETY: all methods are just delegated to `P`'s `SystemParam` implementation
+</span><span class="kw">unsafe impl</span>&lt;P: SystemParam + <span class="lifetime">'static</span>&gt; SystemParam <span class="kw">for </span>StaticSystemParam&lt;<span class="lifetime">'_</span>, <span class="lifetime">'_</span>, P&gt; {
     <span class="kw">type </span>State = P::State;
-    <span class="kw">type </span>Item&lt;<span class="lifetime">&#39;world</span>, <span class="lifetime">&#39;state</span>&gt; = StaticSystemParam&lt;<span class="lifetime">&#39;world</span>, <span class="lifetime">&#39;state</span>, P&gt;;
+    <span class="kw">type </span>Item&lt;<span class="lifetime">'world</span>, <span class="lifetime">'state</span>&gt; = StaticSystemParam&lt;<span class="lifetime">'world</span>, <span class="lifetime">'state</span>, P&gt;;
 
     <span class="kw">fn </span>init_state(world: <span class="kw-2">&amp;mut </span>World, system_meta: <span class="kw-2">&amp;mut </span>SystemMeta) -&gt; <span class="self">Self</span>::State {
         P::init_state(world, system_meta)
@@ -3293,12 +3237,12 @@
         P::apply(state, system_meta, world);
     }
 
-    <span class="kw">unsafe fn </span>get_param&lt;<span class="lifetime">&#39;world</span>, <span class="lifetime">&#39;state</span>&gt;(
-        state: <span class="kw-2">&amp;</span><span class="lifetime">&#39;state </span><span class="kw-2">mut </span><span class="self">Self</span>::State,
+    <span class="kw">unsafe fn </span>get_param&lt;<span class="lifetime">'world</span>, <span class="lifetime">'state</span>&gt;(
+        state: <span class="kw-2">&amp;</span><span class="lifetime">'state </span><span class="kw-2">mut </span><span class="self">Self</span>::State,
         system_meta: <span class="kw-2">&amp;</span>SystemMeta,
-        world: UnsafeWorldCell&lt;<span class="lifetime">&#39;world</span>&gt;,
+        world: UnsafeWorldCell&lt;<span class="lifetime">'world</span>&gt;,
         change_tick: Tick,
-    ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">&#39;world</span>, <span class="lifetime">&#39;state</span>&gt; {
+    ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">'world</span>, <span class="lifetime">'state</span>&gt; {
         <span class="comment">// SAFETY: Defer to the safety of P::SystemParam
         </span>StaticSystemParam(P::get_param(state, system_meta, world, change_tick))
     }
@@ -3307,16 +3251,16 @@
 <span class="comment">// SAFETY: No world access.
 </span><span class="kw">unsafe impl</span>&lt;T: <span class="question-mark">?</span>Sized&gt; SystemParam <span class="kw">for </span>PhantomData&lt;T&gt; {
     <span class="kw">type </span>State = ();
-    <span class="kw">type </span>Item&lt;<span class="lifetime">&#39;world</span>, <span class="lifetime">&#39;state</span>&gt; = <span class="self">Self</span>;
+    <span class="kw">type </span>Item&lt;<span class="lifetime">'world</span>, <span class="lifetime">'state</span>&gt; = <span class="self">Self</span>;
 
     <span class="kw">fn </span>init_state(_world: <span class="kw-2">&amp;mut </span>World, _system_meta: <span class="kw-2">&amp;mut </span>SystemMeta) -&gt; <span class="self">Self</span>::State {}
 
-    <span class="kw">unsafe fn </span>get_param&lt;<span class="lifetime">&#39;world</span>, <span class="lifetime">&#39;state</span>&gt;(
-        _state: <span class="kw-2">&amp;</span><span class="lifetime">&#39;state </span><span class="kw-2">mut </span><span class="self">Self</span>::State,
+    <span class="kw">unsafe fn </span>get_param&lt;<span class="lifetime">'world</span>, <span class="lifetime">'state</span>&gt;(
+        _state: <span class="kw-2">&amp;</span><span class="lifetime">'state </span><span class="kw-2">mut </span><span class="self">Self</span>::State,
         _system_meta: <span class="kw-2">&amp;</span>SystemMeta,
-        _world: UnsafeWorldCell&lt;<span class="lifetime">&#39;world</span>&gt;,
+        _world: UnsafeWorldCell&lt;<span class="lifetime">'world</span>&gt;,
         _change_tick: Tick,
-    ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">&#39;world</span>, <span class="lifetime">&#39;state</span>&gt; {
+    ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">'world</span>, <span class="lifetime">'state</span>&gt; {
         PhantomData
     }
 }
@@ -3329,8 +3273,7 @@
     <span class="kw">use super</span>::<span class="kw-2">*</span>;
     <span class="kw">use crate</span>::{
         <span class="self">self </span><span class="kw">as </span>bevy_ecs, <span class="comment">// Necessary for the `SystemParam` Derive when used inside `bevy_ecs`.
-        </span>query::{ReadOnlyWorldQuery, WorldQuery},
-        system::{assert_is_system, Query},
+        </span>system::{assert_is_system, Query},
     };
     <span class="kw">use </span>std::{cell::RefCell, marker::PhantomData};
 
@@ -3339,12 +3282,12 @@
     </span><span class="kw">fn </span>system_param_generic_bounds() {
         <span class="attr">#[derive(SystemParam)]
         </span><span class="kw">pub struct </span>SpecialQuery&lt;
-            <span class="lifetime">&#39;w</span>,
-            <span class="lifetime">&#39;s</span>,
-            Q: WorldQuery + Send + Sync + <span class="lifetime">&#39;static</span>,
-            F: ReadOnlyWorldQuery + Send + Sync + <span class="lifetime">&#39;static </span>= (),
+            <span class="lifetime">'w</span>,
+            <span class="lifetime">'s</span>,
+            D: QueryData + Send + Sync + <span class="lifetime">'static</span>,
+            F: QueryFilter + Send + Sync + <span class="lifetime">'static </span>= (),
         &gt; {
-            _query: Query&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>, Q, F&gt;,
+            _query: Query&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>, D, F&gt;,
         }
 
         <span class="kw">fn </span>my_system(<span class="kw">_</span>: SpecialQuery&lt;(), ()&gt;) {}
@@ -3355,13 +3298,13 @@
     </span><span class="attr">#[test]
     </span><span class="kw">fn </span>system_param_flexibility() {
         <span class="attr">#[derive(SystemParam)]
-        </span><span class="kw">pub struct </span>SpecialRes&lt;<span class="lifetime">&#39;w</span>, T: Resource&gt; {
-            _res: Res&lt;<span class="lifetime">&#39;w</span>, T&gt;,
+        </span><span class="kw">pub struct </span>SpecialRes&lt;<span class="lifetime">'w</span>, T: Resource&gt; {
+            _res: Res&lt;<span class="lifetime">'w</span>, T&gt;,
         }
 
         <span class="attr">#[derive(SystemParam)]
-        </span><span class="kw">pub struct </span>SpecialLocal&lt;<span class="lifetime">&#39;s</span>, T: FromWorld + Send + <span class="lifetime">&#39;static</span>&gt; {
-            _local: Local&lt;<span class="lifetime">&#39;s</span>, T&gt;,
+        </span><span class="kw">pub struct </span>SpecialLocal&lt;<span class="lifetime">'s</span>, T: FromWorld + Send + <span class="lifetime">'static</span>&gt; {
+            _local: Local&lt;<span class="lifetime">'s</span>, T&gt;,
         }
 
         <span class="attr">#[derive(Resource)]
@@ -3378,7 +3321,7 @@
     </span><span class="attr">#[test]
     </span><span class="kw">fn </span>system_param_const_generics() {
         <span class="attr">#[derive(SystemParam)]
-        </span><span class="kw">pub struct </span>ConstGenericParam&lt;<span class="lifetime">&#39;w</span>, <span class="kw">const </span>I: usize&gt;(Res&lt;<span class="lifetime">&#39;w</span>, R&lt;I&gt;&gt;);
+        </span><span class="kw">pub struct </span>ConstGenericParam&lt;<span class="lifetime">'w</span>, <span class="kw">const </span>I: usize&gt;(Res&lt;<span class="lifetime">'w</span>, R&lt;I&gt;&gt;);
 
         <span class="kw">fn </span>my_system(<span class="kw">_</span>: ConstGenericParam&lt;<span class="number">0</span>&gt;, <span class="kw">_</span>: ConstGenericParam&lt;<span class="number">1000</span>&gt;) {}
         assert_is_system(my_system);
@@ -3388,26 +3331,26 @@
     </span><span class="attr">#[test]
     </span><span class="kw">fn </span>system_param_field_limit() {
         <span class="attr">#[derive(SystemParam)]
-        </span><span class="kw">pub struct </span>LongParam&lt;<span class="lifetime">&#39;w</span>&gt; {
+        </span><span class="kw">pub struct </span>LongParam&lt;<span class="lifetime">'w</span>&gt; {
             <span class="comment">// Each field should be a distinct type so there will
             // be an error if the derive messes up the field order.
-            </span>_r0: Res&lt;<span class="lifetime">&#39;w</span>, R&lt;<span class="number">0</span>&gt;&gt;,
-            _r1: Res&lt;<span class="lifetime">&#39;w</span>, R&lt;<span class="number">1</span>&gt;&gt;,
-            _r2: Res&lt;<span class="lifetime">&#39;w</span>, R&lt;<span class="number">2</span>&gt;&gt;,
-            _r3: Res&lt;<span class="lifetime">&#39;w</span>, R&lt;<span class="number">3</span>&gt;&gt;,
-            _r4: Res&lt;<span class="lifetime">&#39;w</span>, R&lt;<span class="number">4</span>&gt;&gt;,
-            _r5: Res&lt;<span class="lifetime">&#39;w</span>, R&lt;<span class="number">5</span>&gt;&gt;,
-            _r6: Res&lt;<span class="lifetime">&#39;w</span>, R&lt;<span class="number">6</span>&gt;&gt;,
-            _r7: Res&lt;<span class="lifetime">&#39;w</span>, R&lt;<span class="number">7</span>&gt;&gt;,
-            _r8: Res&lt;<span class="lifetime">&#39;w</span>, R&lt;<span class="number">8</span>&gt;&gt;,
-            _r9: Res&lt;<span class="lifetime">&#39;w</span>, R&lt;<span class="number">9</span>&gt;&gt;,
-            _r10: Res&lt;<span class="lifetime">&#39;w</span>, R&lt;<span class="number">10</span>&gt;&gt;,
-            _r11: Res&lt;<span class="lifetime">&#39;w</span>, R&lt;<span class="number">11</span>&gt;&gt;,
-            _r12: Res&lt;<span class="lifetime">&#39;w</span>, R&lt;<span class="number">12</span>&gt;&gt;,
-            _r13: Res&lt;<span class="lifetime">&#39;w</span>, R&lt;<span class="number">13</span>&gt;&gt;,
-            _r14: Res&lt;<span class="lifetime">&#39;w</span>, R&lt;<span class="number">14</span>&gt;&gt;,
-            _r15: Res&lt;<span class="lifetime">&#39;w</span>, R&lt;<span class="number">15</span>&gt;&gt;,
-            _r16: Res&lt;<span class="lifetime">&#39;w</span>, R&lt;<span class="number">16</span>&gt;&gt;,
+            </span>_r0: Res&lt;<span class="lifetime">'w</span>, R&lt;<span class="number">0</span>&gt;&gt;,
+            _r1: Res&lt;<span class="lifetime">'w</span>, R&lt;<span class="number">1</span>&gt;&gt;,
+            _r2: Res&lt;<span class="lifetime">'w</span>, R&lt;<span class="number">2</span>&gt;&gt;,
+            _r3: Res&lt;<span class="lifetime">'w</span>, R&lt;<span class="number">3</span>&gt;&gt;,
+            _r4: Res&lt;<span class="lifetime">'w</span>, R&lt;<span class="number">4</span>&gt;&gt;,
+            _r5: Res&lt;<span class="lifetime">'w</span>, R&lt;<span class="number">5</span>&gt;&gt;,
+            _r6: Res&lt;<span class="lifetime">'w</span>, R&lt;<span class="number">6</span>&gt;&gt;,
+            _r7: Res&lt;<span class="lifetime">'w</span>, R&lt;<span class="number">7</span>&gt;&gt;,
+            _r8: Res&lt;<span class="lifetime">'w</span>, R&lt;<span class="number">8</span>&gt;&gt;,
+            _r9: Res&lt;<span class="lifetime">'w</span>, R&lt;<span class="number">9</span>&gt;&gt;,
+            _r10: Res&lt;<span class="lifetime">'w</span>, R&lt;<span class="number">10</span>&gt;&gt;,
+            _r11: Res&lt;<span class="lifetime">'w</span>, R&lt;<span class="number">11</span>&gt;&gt;,
+            _r12: Res&lt;<span class="lifetime">'w</span>, R&lt;<span class="number">12</span>&gt;&gt;,
+            _r13: Res&lt;<span class="lifetime">'w</span>, R&lt;<span class="number">13</span>&gt;&gt;,
+            _r14: Res&lt;<span class="lifetime">'w</span>, R&lt;<span class="number">14</span>&gt;&gt;,
+            _r15: Res&lt;<span class="lifetime">'w</span>, R&lt;<span class="number">15</span>&gt;&gt;,
+            _r16: Res&lt;<span class="lifetime">'w</span>, R&lt;<span class="number">16</span>&gt;&gt;,
         }
 
         <span class="kw">fn </span>long_system(<span class="kw">_</span>: LongParam) {}
@@ -3419,9 +3362,9 @@
     </span><span class="attr">#[test]
     </span><span class="kw">fn </span>system_param_phantom_data() {
         <span class="attr">#[derive(SystemParam)]
-        </span><span class="kw">struct </span>PhantomParam&lt;<span class="lifetime">&#39;w</span>, T: Resource, Marker: <span class="lifetime">&#39;static</span>&gt; {
-            _foo: Res&lt;<span class="lifetime">&#39;w</span>, T&gt;,
-            marker: PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;w </span>Marker&gt;,
+        </span><span class="kw">struct </span>PhantomParam&lt;<span class="lifetime">'w</span>, T: Resource, Marker: <span class="lifetime">'static</span>&gt; {
+            _foo: Res&lt;<span class="lifetime">'w</span>, T&gt;,
+            marker: PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">'w </span>Marker&gt;,
         }
 
         <span class="kw">fn </span>my_system(<span class="kw">_</span>: PhantomParam&lt;R&lt;<span class="number">0</span>&gt;, ()&gt;) {}
@@ -3435,9 +3378,9 @@
         </span><span class="kw">pub struct </span>UnitParam;
 
         <span class="attr">#[derive(SystemParam)]
-        </span><span class="kw">pub struct </span>TupleParam&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>, R: Resource, L: FromWorld + Send + <span class="lifetime">&#39;static</span>&gt;(
-            Res&lt;<span class="lifetime">&#39;w</span>, R&gt;,
-            Local&lt;<span class="lifetime">&#39;s</span>, L&gt;,
+        </span><span class="kw">pub struct </span>TupleParam&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>, R: Resource, L: FromWorld + Send + <span class="lifetime">'static</span>&gt;(
+            Res&lt;<span class="lifetime">'w</span>, R&gt;,
+            Local&lt;<span class="lifetime">'s</span>, L&gt;,
         );
 
         <span class="kw">fn </span>my_system(<span class="kw">_</span>: UnitParam, <span class="kw">_</span>: TupleParam&lt;R&lt;<span class="number">0</span>&gt;, u32&gt;) {}
@@ -3451,7 +3394,7 @@
         </span><span class="kw">struct </span>PrivateResource;
 
         <span class="attr">#[derive(SystemParam)]
-        </span><span class="kw">pub struct </span>EncapsulatedParam&lt;<span class="lifetime">&#39;w</span>&gt;(Res&lt;<span class="lifetime">&#39;w</span>, PrivateResource&gt;);
+        </span><span class="kw">pub struct </span>EncapsulatedParam&lt;<span class="lifetime">'w</span>&gt;(Res&lt;<span class="lifetime">'w</span>, PrivateResource&gt;);
 
         <span class="kw">fn </span>my_system(<span class="kw">_</span>: EncapsulatedParam) {}
         assert_is_system(my_system);
@@ -3461,11 +3404,11 @@
     </span><span class="attr">#[test]
     </span><span class="kw">fn </span>system_param_where_clause() {
         <span class="attr">#[derive(SystemParam)]
-        </span><span class="kw">pub struct </span>WhereParam&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>, Q&gt;
+        </span><span class="kw">pub struct </span>WhereParam&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>, D&gt;
         <span class="kw">where
-            </span>Q: <span class="lifetime">&#39;static </span>+ WorldQuery,
+            </span>D: <span class="lifetime">'static </span>+ QueryData,
         {
-            _q: Query&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>, Q, ()&gt;,
+            _q: Query&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>, D, ()&gt;,
         }
 
         <span class="kw">fn </span>my_system(<span class="kw">_</span>: WhereParam&lt;()&gt;) {}
@@ -3479,8 +3422,8 @@
         </span><span class="kw">pub struct </span>FetchState;
 
         <span class="attr">#[derive(SystemParam)]
-        </span><span class="kw">pub struct </span>Collide&lt;<span class="lifetime">&#39;w</span>&gt; {
-            _x: Res&lt;<span class="lifetime">&#39;w</span>, FetchState&gt;,
+        </span><span class="kw">pub struct </span>Collide&lt;<span class="lifetime">'w</span>&gt; {
+            _x: Res&lt;<span class="lifetime">'w</span>, FetchState&gt;,
         }
 
         <span class="kw">fn </span>my_system(<span class="kw">_</span>: Collide) {}
@@ -3491,8 +3434,8 @@
     </span><span class="attr">#[test]
     </span><span class="kw">fn </span>system_param_invariant_lifetime() {
         <span class="attr">#[derive(SystemParam)]
-        </span><span class="kw">pub struct </span>InvariantParam&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>&gt; {
-            _set: ParamSet&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>, (Query&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>, ()&gt;,)&gt;,
+        </span><span class="kw">pub struct </span>InvariantParam&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>&gt; {
+            _set: ParamSet&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>, (Query&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>, ()&gt;,)&gt;,
         }
 
         <span class="kw">fn </span>my_system(<span class="kw">_</span>: InvariantParam) {}

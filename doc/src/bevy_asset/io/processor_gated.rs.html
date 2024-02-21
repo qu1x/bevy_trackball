@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_asset-0.12.1/src/io/processor_gated.rs`."><title>processor_gated.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="bevy_asset" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../bevy_asset/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_asset-0.13.0/src/io/processor_gated.rs`."><title>processor_gated.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="bevy_asset" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -173,14 +174,14 @@
 /// [`AssetProcessor`]: crate::processor::AssetProcessor   
 </span><span class="kw">pub struct </span>ProcessorGatedReader {
     reader: Box&lt;<span class="kw">dyn </span>AssetReader&gt;,
-    source: AssetSourceId&lt;<span class="lifetime">&#39;static</span>&gt;,
+    source: AssetSourceId&lt;<span class="lifetime">'static</span>&gt;,
     processor_data: Arc&lt;AssetProcessorData&gt;,
 }
 
 <span class="kw">impl </span>ProcessorGatedReader {
     <span class="doccomment">/// Creates a new [`ProcessorGatedReader`].
     </span><span class="kw">pub fn </span>new(
-        source: AssetSourceId&lt;<span class="lifetime">&#39;static</span>&gt;,
+        source: AssetSourceId&lt;<span class="lifetime">'static</span>&gt;,
         reader: Box&lt;<span class="kw">dyn </span>AssetReader&gt;,
         processor_data: Arc&lt;AssetProcessorData&gt;,
     ) -&gt; <span class="self">Self </span>{
@@ -191,11 +192,11 @@
         }
     }
 
-    <span class="doccomment">/// Gets a &quot;transaction lock&quot; that can be used to ensure no writes to asset or asset meta occur
+    <span class="doccomment">/// Gets a "transaction lock" that can be used to ensure no writes to asset or asset meta occur
     /// while it is held.
     </span><span class="kw">async fn </span>get_transaction_lock(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        path: <span class="kw-2">&amp;</span>AssetPath&lt;<span class="lifetime">&#39;static</span>&gt;,
+        path: <span class="kw-2">&amp;</span>AssetPath&lt;<span class="lifetime">'static</span>&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;RwLockReadGuardArc&lt;()&gt;, AssetReaderError&gt; {
         <span class="kw">let </span>infos = <span class="self">self</span>.processor_data.asset_infos.read().<span class="kw">await</span>;
         <span class="kw">let </span>info = infos
@@ -206,13 +207,13 @@
 }
 
 <span class="kw">impl </span>AssetReader <span class="kw">for </span>ProcessorGatedReader {
-    <span class="kw">fn </span>read&lt;<span class="lifetime">&#39;a</span>&gt;(
-        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>,
-        path: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Path,
-    ) -&gt; BoxedFuture&lt;<span class="lifetime">&#39;a</span>, <span class="prelude-ty">Result</span>&lt;Box&lt;Reader&lt;<span class="lifetime">&#39;a</span>&gt;&gt;, AssetReaderError&gt;&gt; {
+    <span class="kw">fn </span>read&lt;<span class="lifetime">'a</span>&gt;(
+        <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="self">self</span>,
+        path: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>Path,
+    ) -&gt; BoxedFuture&lt;<span class="lifetime">'a</span>, <span class="prelude-ty">Result</span>&lt;Box&lt;Reader&lt;<span class="lifetime">'a</span>&gt;&gt;, AssetReaderError&gt;&gt; {
         Box::pin(<span class="kw">async move </span>{
             <span class="kw">let </span>asset_path = AssetPath::from(path.to_path_buf()).with_source(<span class="self">self</span>.source.clone());
-            <span class="macro">trace!</span>(<span class="string">&quot;Waiting for processing to finish before reading {asset_path}&quot;</span>);
+            <span class="macro">trace!</span>(<span class="string">"Waiting for processing to finish before reading {asset_path}"</span>);
             <span class="kw">let </span>process_result = <span class="self">self
                 </span>.processor_data
                 .wait_until_processed(asset_path.clone())
@@ -223,22 +224,22 @@
                     <span class="kw">return </span><span class="prelude-val">Err</span>(AssetReaderError::NotFound(path.to_owned()));
                 }
             }
-            <span class="macro">trace!</span>(<span class="string">&quot;Processing finished with {asset_path}, reading {process_result:?}&quot;</span>,);
+            <span class="macro">trace!</span>(<span class="string">"Processing finished with {asset_path}, reading {process_result:?}"</span>,);
             <span class="kw">let </span>lock = <span class="self">self</span>.get_transaction_lock(<span class="kw-2">&amp;</span>asset_path).<span class="kw">await</span><span class="question-mark">?</span>;
             <span class="kw">let </span>asset_reader = <span class="self">self</span>.reader.read(path).<span class="kw">await</span><span class="question-mark">?</span>;
-            <span class="kw">let </span>reader: Box&lt;Reader&lt;<span class="lifetime">&#39;a</span>&gt;&gt; =
+            <span class="kw">let </span>reader: Box&lt;Reader&lt;<span class="lifetime">'a</span>&gt;&gt; =
                 Box::new(TransactionLockedReader::new(asset_reader, lock));
             <span class="prelude-val">Ok</span>(reader)
         })
     }
 
-    <span class="kw">fn </span>read_meta&lt;<span class="lifetime">&#39;a</span>&gt;(
-        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>,
-        path: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Path,
-    ) -&gt; BoxedFuture&lt;<span class="lifetime">&#39;a</span>, <span class="prelude-ty">Result</span>&lt;Box&lt;Reader&lt;<span class="lifetime">&#39;a</span>&gt;&gt;, AssetReaderError&gt;&gt; {
+    <span class="kw">fn </span>read_meta&lt;<span class="lifetime">'a</span>&gt;(
+        <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="self">self</span>,
+        path: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>Path,
+    ) -&gt; BoxedFuture&lt;<span class="lifetime">'a</span>, <span class="prelude-ty">Result</span>&lt;Box&lt;Reader&lt;<span class="lifetime">'a</span>&gt;&gt;, AssetReaderError&gt;&gt; {
         Box::pin(<span class="kw">async move </span>{
             <span class="kw">let </span>asset_path = AssetPath::from(path.to_path_buf()).with_source(<span class="self">self</span>.source.clone());
-            <span class="macro">trace!</span>(<span class="string">&quot;Waiting for processing to finish before reading meta for {asset_path}&quot;</span>,);
+            <span class="macro">trace!</span>(<span class="string">"Waiting for processing to finish before reading meta for {asset_path}"</span>,);
             <span class="kw">let </span>process_result = <span class="self">self
                 </span>.processor_data
                 .wait_until_processed(asset_path.clone())
@@ -249,55 +250,55 @@
                     <span class="kw">return </span><span class="prelude-val">Err</span>(AssetReaderError::NotFound(path.to_owned()));
                 }
             }
-            <span class="macro">trace!</span>(<span class="string">&quot;Processing finished with {process_result:?}, reading meta for {asset_path}&quot;</span>,);
+            <span class="macro">trace!</span>(<span class="string">"Processing finished with {process_result:?}, reading meta for {asset_path}"</span>,);
             <span class="kw">let </span>lock = <span class="self">self</span>.get_transaction_lock(<span class="kw-2">&amp;</span>asset_path).<span class="kw">await</span><span class="question-mark">?</span>;
             <span class="kw">let </span>meta_reader = <span class="self">self</span>.reader.read_meta(path).<span class="kw">await</span><span class="question-mark">?</span>;
-            <span class="kw">let </span>reader: Box&lt;Reader&lt;<span class="lifetime">&#39;a</span>&gt;&gt; = Box::new(TransactionLockedReader::new(meta_reader, lock));
+            <span class="kw">let </span>reader: Box&lt;Reader&lt;<span class="lifetime">'a</span>&gt;&gt; = Box::new(TransactionLockedReader::new(meta_reader, lock));
             <span class="prelude-val">Ok</span>(reader)
         })
     }
 
-    <span class="kw">fn </span>read_directory&lt;<span class="lifetime">&#39;a</span>&gt;(
-        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>,
-        path: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Path,
-    ) -&gt; BoxedFuture&lt;<span class="lifetime">&#39;a</span>, <span class="prelude-ty">Result</span>&lt;Box&lt;PathStream&gt;, AssetReaderError&gt;&gt; {
+    <span class="kw">fn </span>read_directory&lt;<span class="lifetime">'a</span>&gt;(
+        <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="self">self</span>,
+        path: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>Path,
+    ) -&gt; BoxedFuture&lt;<span class="lifetime">'a</span>, <span class="prelude-ty">Result</span>&lt;Box&lt;PathStream&gt;, AssetReaderError&gt;&gt; {
         Box::pin(<span class="kw">async move </span>{
             <span class="macro">trace!</span>(
-                <span class="string">&quot;Waiting for processing to finish before reading directory {:?}&quot;</span>,
+                <span class="string">"Waiting for processing to finish before reading directory {:?}"</span>,
                 path
             );
             <span class="self">self</span>.processor_data.wait_until_finished().<span class="kw">await</span>;
-            <span class="macro">trace!</span>(<span class="string">&quot;Processing finished, reading directory {:?}&quot;</span>, path);
+            <span class="macro">trace!</span>(<span class="string">"Processing finished, reading directory {:?}"</span>, path);
             <span class="kw">let </span>result = <span class="self">self</span>.reader.read_directory(path).<span class="kw">await</span><span class="question-mark">?</span>;
             <span class="prelude-val">Ok</span>(result)
         })
     }
 
-    <span class="kw">fn </span>is_directory&lt;<span class="lifetime">&#39;a</span>&gt;(
-        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>,
-        path: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Path,
-    ) -&gt; BoxedFuture&lt;<span class="lifetime">&#39;a</span>, std::result::Result&lt;bool, AssetReaderError&gt;&gt; {
+    <span class="kw">fn </span>is_directory&lt;<span class="lifetime">'a</span>&gt;(
+        <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="self">self</span>,
+        path: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>Path,
+    ) -&gt; BoxedFuture&lt;<span class="lifetime">'a</span>, <span class="prelude-ty">Result</span>&lt;bool, AssetReaderError&gt;&gt; {
         Box::pin(<span class="kw">async move </span>{
             <span class="macro">trace!</span>(
-                <span class="string">&quot;Waiting for processing to finish before reading directory {:?}&quot;</span>,
+                <span class="string">"Waiting for processing to finish before reading directory {:?}"</span>,
                 path
             );
             <span class="self">self</span>.processor_data.wait_until_finished().<span class="kw">await</span>;
-            <span class="macro">trace!</span>(<span class="string">&quot;Processing finished, getting directory status {:?}&quot;</span>, path);
+            <span class="macro">trace!</span>(<span class="string">"Processing finished, getting directory status {:?}"</span>, path);
             <span class="kw">let </span>result = <span class="self">self</span>.reader.is_directory(path).<span class="kw">await</span><span class="question-mark">?</span>;
             <span class="prelude-val">Ok</span>(result)
         })
     }
 }
 
-<span class="doccomment">/// An [`AsyncRead`] impl that will hold its asset&#39;s transaction lock until [`TransactionLockedReader`] is dropped.
-</span><span class="kw">pub struct </span>TransactionLockedReader&lt;<span class="lifetime">&#39;a</span>&gt; {
-    reader: Box&lt;Reader&lt;<span class="lifetime">&#39;a</span>&gt;&gt;,
+<span class="doccomment">/// An [`AsyncRead`] impl that will hold its asset's transaction lock until [`TransactionLockedReader`] is dropped.
+</span><span class="kw">pub struct </span>TransactionLockedReader&lt;<span class="lifetime">'a</span>&gt; {
+    reader: Box&lt;Reader&lt;<span class="lifetime">'a</span>&gt;&gt;,
     _file_transaction_lock: RwLockReadGuardArc&lt;()&gt;,
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; TransactionLockedReader&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="kw">fn </span>new(reader: Box&lt;Reader&lt;<span class="lifetime">&#39;a</span>&gt;&gt;, file_transaction_lock: RwLockReadGuardArc&lt;()&gt;) -&gt; <span class="self">Self </span>{
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; TransactionLockedReader&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="kw">fn </span>new(reader: Box&lt;Reader&lt;<span class="lifetime">'a</span>&gt;&gt;, file_transaction_lock: RwLockReadGuardArc&lt;()&gt;) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
             reader,
             _file_transaction_lock: file_transaction_lock,
@@ -305,10 +306,10 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; AsyncRead <span class="kw">for </span>TransactionLockedReader&lt;<span class="lifetime">&#39;a</span>&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; AsyncRead <span class="kw">for </span>TransactionLockedReader&lt;<span class="lifetime">'a</span>&gt; {
     <span class="kw">fn </span>poll_read(
-        <span class="kw-2">mut </span><span class="self">self</span>: std::pin::Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;,
-        cx: <span class="kw-2">&amp;mut </span>std::task::Context&lt;<span class="lifetime">&#39;_</span>&gt;,
+        <span class="kw-2">mut </span><span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;,
+        cx: <span class="kw-2">&amp;mut </span>std::task::Context&lt;<span class="lifetime">'_</span>&gt;,
         buf: <span class="kw-2">&amp;mut </span>[u8],
     ) -&gt; std::task::Poll&lt;futures_io::Result&lt;usize&gt;&gt; {
         Pin::new(<span class="kw-2">&amp;mut </span><span class="self">self</span>.reader).poll_read(cx, buf)

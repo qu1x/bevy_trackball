@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_reflect-0.12.1/src/serde/ser.rs`."><title>ser.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="bevy_reflect" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../bevy_reflect/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_reflect-0.13.0/src/serde/ser.rs`."><title>ser.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="bevy_reflect" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -935,12 +936,12 @@
 
 <span class="kw">use </span><span class="kw">super</span>::SerializationData;
 
-<span class="kw">pub enum </span>Serializable&lt;<span class="lifetime">&#39;a</span>&gt; {
-    Owned(Box&lt;<span class="kw">dyn </span>erased_serde::Serialize + <span class="lifetime">&#39;a</span>&gt;),
-    Borrowed(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw">dyn </span>erased_serde::Serialize),
+<span class="kw">pub enum </span>Serializable&lt;<span class="lifetime">'a</span>&gt; {
+    Owned(Box&lt;<span class="kw">dyn </span>erased_serde::Serialize + <span class="lifetime">'a</span>&gt;),
+    Borrowed(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw">dyn </span>erased_serde::Serialize),
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; Serializable&lt;<span class="lifetime">&#39;a</span>&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; Serializable&lt;<span class="lifetime">'a</span>&gt; {
     <span class="attr">#[allow(clippy::should_implement_trait)]
     </span><span class="kw">pub fn </span>borrow(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw">dyn </span>erased_serde::Serialize {
         <span class="kw">match </span><span class="self">self </span>{
@@ -950,15 +951,15 @@
     }
 }
 
-<span class="kw">fn </span>get_serializable&lt;<span class="lifetime">&#39;a</span>, E: serde::ser::Error&gt;(
-    reflect_value: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw">dyn </span>Reflect,
+<span class="kw">fn </span>get_serializable&lt;<span class="lifetime">'a</span>, E: Error&gt;(
+    reflect_value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw">dyn </span>Reflect,
     type_registry: <span class="kw-2">&amp;</span>TypeRegistry,
-) -&gt; <span class="prelude-ty">Result</span>&lt;Serializable&lt;<span class="lifetime">&#39;a</span>&gt;, E&gt; {
+) -&gt; <span class="prelude-ty">Result</span>&lt;Serializable&lt;<span class="lifetime">'a</span>&gt;, E&gt; {
     <span class="kw">let </span>reflect_serialize = type_registry
         .get_type_data::&lt;ReflectSerialize&gt;(reflect_value.type_id())
         .ok_or_else(|| {
-            serde::ser::Error::custom(<span class="macro">format_args!</span>(
-                <span class="string">&quot;Type &#39;{}&#39; did not register ReflectSerialize&quot;</span>,
+            Error::custom(<span class="macro">format_args!</span>(
+                <span class="string">"Type '{}' did not register ReflectSerialize"</span>,
                 reflect_value.reflect_type_path()
             ))
         })<span class="question-mark">?</span>;
@@ -972,18 +973,18 @@
 /// 2. `value`: The serialized value of the reflected type
 ///
 /// [type path]: crate::TypePath::type_path
-</span><span class="kw">pub struct </span>ReflectSerializer&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="kw">pub </span>value: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw">dyn </span>Reflect,
-    <span class="kw">pub </span>registry: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>TypeRegistry,
+</span><span class="kw">pub struct </span>ReflectSerializer&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="kw">pub </span>value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw">dyn </span>Reflect,
+    <span class="kw">pub </span>registry: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>TypeRegistry,
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; ReflectSerializer&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="kw">pub fn </span>new(value: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw">dyn </span>Reflect, registry: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>TypeRegistry) -&gt; <span class="self">Self </span>{
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; ReflectSerializer&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="kw">pub fn </span>new(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw">dyn </span>Reflect, registry: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>TypeRegistry) -&gt; <span class="self">Self </span>{
         ReflectSerializer { value, registry }
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; Serialize <span class="kw">for </span>ReflectSerializer&lt;<span class="lifetime">&#39;a</span>&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; Serialize <span class="kw">for </span>ReflectSerializer&lt;<span class="lifetime">'a</span>&gt; {
     <span class="kw">fn </span>serialize&lt;S&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, serializer: S) -&gt; <span class="prelude-ty">Result</span>&lt;S::Ok, S::Error&gt;
     <span class="kw">where
         </span>S: serde::Serializer,
@@ -995,12 +996,12 @@
                 .ok_or_else(|| {
                     <span class="kw">if </span><span class="self">self</span>.value.is_dynamic() {
                         Error::custom(<span class="macro">format_args!</span>(
-                            <span class="string">&quot;cannot serialize dynamic value without represented type: {}&quot;</span>,
+                            <span class="string">"cannot serialize dynamic value without represented type: {}"</span>,
                             <span class="self">self</span>.value.reflect_type_path()
                         ))
                     } <span class="kw">else </span>{
                         Error::custom(<span class="macro">format_args!</span>(
-                            <span class="string">&quot;cannot get type info for {}&quot;</span>,
+                            <span class="string">"cannot get type info for {}"</span>,
                             <span class="self">self</span>.value.reflect_type_path()
                         ))
                     }
@@ -1014,18 +1015,18 @@
 
 <span class="doccomment">/// A serializer for reflected types whose type is known and does not require
 /// serialization to include other metadata about it.
-</span><span class="kw">pub struct </span>TypedReflectSerializer&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="kw">pub </span>value: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw">dyn </span>Reflect,
-    <span class="kw">pub </span>registry: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>TypeRegistry,
+</span><span class="kw">pub struct </span>TypedReflectSerializer&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="kw">pub </span>value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw">dyn </span>Reflect,
+    <span class="kw">pub </span>registry: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>TypeRegistry,
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; TypedReflectSerializer&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="kw">pub fn </span>new(value: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw">dyn </span>Reflect, registry: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>TypeRegistry) -&gt; <span class="self">Self </span>{
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; TypedReflectSerializer&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="kw">pub fn </span>new(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw">dyn </span>Reflect, registry: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>TypeRegistry) -&gt; <span class="self">Self </span>{
         TypedReflectSerializer { value, registry }
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; Serialize <span class="kw">for </span>TypedReflectSerializer&lt;<span class="lifetime">&#39;a</span>&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; Serialize <span class="kw">for </span>TypedReflectSerializer&lt;<span class="lifetime">'a</span>&gt; {
     <span class="kw">fn </span>serialize&lt;S&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, serializer: S) -&gt; <span class="prelude-ty">Result</span>&lt;S::Ok, S::Error&gt;
     <span class="kw">where
         </span>S: serde::Serializer,
@@ -1077,12 +1078,12 @@
     }
 }
 
-<span class="kw">pub struct </span>ReflectValueSerializer&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="kw">pub </span>registry: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>TypeRegistry,
-    <span class="kw">pub </span>value: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw">dyn </span>Reflect,
+<span class="kw">pub struct </span>ReflectValueSerializer&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="kw">pub </span>registry: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>TypeRegistry,
+    <span class="kw">pub </span>value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw">dyn </span>Reflect,
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; Serialize <span class="kw">for </span>ReflectValueSerializer&lt;<span class="lifetime">&#39;a</span>&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; Serialize <span class="kw">for </span>ReflectValueSerializer&lt;<span class="lifetime">'a</span>&gt; {
     <span class="kw">fn </span>serialize&lt;S&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, serializer: S) -&gt; <span class="prelude-ty">Result</span>&lt;S::Ok, S::Error&gt;
     <span class="kw">where
         </span>S: serde::Serializer,
@@ -1093,12 +1094,12 @@
     }
 }
 
-<span class="kw">pub struct </span>StructSerializer&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="kw">pub </span>struct_value: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw">dyn </span>Struct,
-    <span class="kw">pub </span>registry: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>TypeRegistry,
+<span class="kw">pub struct </span>StructSerializer&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="kw">pub </span>struct_value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw">dyn </span>Struct,
+    <span class="kw">pub </span>registry: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>TypeRegistry,
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; Serialize <span class="kw">for </span>StructSerializer&lt;<span class="lifetime">&#39;a</span>&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; Serialize <span class="kw">for </span>StructSerializer&lt;<span class="lifetime">'a</span>&gt; {
     <span class="kw">fn </span>serialize&lt;S&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, serializer: S) -&gt; <span class="prelude-ty">Result</span>&lt;S::Ok, S::Error&gt;
     <span class="kw">where
         </span>S: serde::Serializer,
@@ -1108,7 +1109,7 @@
             .get_represented_type_info()
             .ok_or_else(|| {
                 Error::custom(<span class="macro">format_args!</span>(
-                    <span class="string">&quot;cannot get type info for {}&quot;</span>,
+                    <span class="string">"cannot get type info for {}"</span>,
                     <span class="self">self</span>.struct_value.reflect_type_path()
                 ))
             })<span class="question-mark">?</span>;
@@ -1117,7 +1118,7 @@
             TypeInfo::Struct(struct_info) =&gt; struct_info,
             info =&gt; {
                 <span class="kw">return </span><span class="prelude-val">Err</span>(Error::custom(<span class="macro">format_args!</span>(
-                    <span class="string">&quot;expected struct type but received {info:?}&quot;
+                    <span class="string">"expected struct type but received {info:?}"
                 </span>)));
             }
         };
@@ -1146,12 +1147,12 @@
     }
 }
 
-<span class="kw">pub struct </span>TupleStructSerializer&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="kw">pub </span>tuple_struct: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw">dyn </span>TupleStruct,
-    <span class="kw">pub </span>registry: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>TypeRegistry,
+<span class="kw">pub struct </span>TupleStructSerializer&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="kw">pub </span>tuple_struct: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw">dyn </span>TupleStruct,
+    <span class="kw">pub </span>registry: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>TypeRegistry,
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; Serialize <span class="kw">for </span>TupleStructSerializer&lt;<span class="lifetime">&#39;a</span>&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; Serialize <span class="kw">for </span>TupleStructSerializer&lt;<span class="lifetime">'a</span>&gt; {
     <span class="kw">fn </span>serialize&lt;S&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, serializer: S) -&gt; <span class="prelude-ty">Result</span>&lt;S::Ok, S::Error&gt;
     <span class="kw">where
         </span>S: serde::Serializer,
@@ -1161,7 +1162,7 @@
             .get_represented_type_info()
             .ok_or_else(|| {
                 Error::custom(<span class="macro">format_args!</span>(
-                    <span class="string">&quot;cannot get type info for {}&quot;</span>,
+                    <span class="string">"cannot get type info for {}"</span>,
                     <span class="self">self</span>.tuple_struct.reflect_type_path()
                 ))
             })<span class="question-mark">?</span>;
@@ -1170,7 +1171,7 @@
             TypeInfo::TupleStruct(tuple_struct_info) =&gt; tuple_struct_info,
             info =&gt; {
                 <span class="kw">return </span><span class="prelude-val">Err</span>(Error::custom(<span class="macro">format_args!</span>(
-                    <span class="string">&quot;expected tuple struct type but received {info:?}&quot;
+                    <span class="string">"expected tuple struct type but received {info:?}"
                 </span>)));
             }
         };
@@ -1198,19 +1199,19 @@
     }
 }
 
-<span class="kw">pub struct </span>EnumSerializer&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="kw">pub </span>enum_value: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw">dyn </span>Enum,
-    <span class="kw">pub </span>registry: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>TypeRegistry,
+<span class="kw">pub struct </span>EnumSerializer&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="kw">pub </span>enum_value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw">dyn </span>Enum,
+    <span class="kw">pub </span>registry: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>TypeRegistry,
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; Serialize <span class="kw">for </span>EnumSerializer&lt;<span class="lifetime">&#39;a</span>&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; Serialize <span class="kw">for </span>EnumSerializer&lt;<span class="lifetime">'a</span>&gt; {
     <span class="kw">fn </span>serialize&lt;S&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, serializer: S) -&gt; <span class="prelude-ty">Result</span>&lt;S::Ok, S::Error&gt;
     <span class="kw">where
         </span>S: serde::Serializer,
     {
         <span class="kw">let </span>type_info = <span class="self">self</span>.enum_value.get_represented_type_info().ok_or_else(|| {
             Error::custom(<span class="macro">format_args!</span>(
-                <span class="string">&quot;cannot get type info for {}&quot;</span>,
+                <span class="string">"cannot get type info for {}"</span>,
                 <span class="self">self</span>.enum_value.reflect_type_path()
             ))
         })<span class="question-mark">?</span>;
@@ -1219,7 +1220,7 @@
             TypeInfo::Enum(enum_info) =&gt; enum_info,
             info =&gt; {
                 <span class="kw">return </span><span class="prelude-val">Err</span>(Error::custom(<span class="macro">format_args!</span>(
-                    <span class="string">&quot;expected enum type but received {info:?}&quot;
+                    <span class="string">"expected enum type but received {info:?}"
                 </span>)));
             }
         };
@@ -1230,7 +1231,7 @@
             .variant_at(variant_index <span class="kw">as </span>usize)
             .ok_or_else(|| {
                 Error::custom(<span class="macro">format_args!</span>(
-                    <span class="string">&quot;variant at index `{variant_index}` does not exist&quot;</span>,
+                    <span class="string">"variant at index `{variant_index}` does not exist"</span>,
                 ))
             })<span class="question-mark">?</span>;
         <span class="kw">let </span>variant_name = variant_info.name();
@@ -1239,8 +1240,8 @@
 
         <span class="kw">match </span>variant_type {
             VariantType::Unit =&gt; {
-                <span class="kw">if </span>type_info.type_path_table().module_path() == <span class="prelude-val">Some</span>(<span class="string">&quot;core::option&quot;</span>)
-                    &amp;&amp; type_info.type_path_table().ident() == <span class="prelude-val">Some</span>(<span class="string">&quot;Option&quot;</span>)
+                <span class="kw">if </span>type_info.type_path_table().module_path() == <span class="prelude-val">Some</span>(<span class="string">"core::option"</span>)
+                    &amp;&amp; type_info.type_path_table().ident() == <span class="prelude-val">Some</span>(<span class="string">"Option"</span>)
                 {
                     serializer.serialize_none()
                 } <span class="kw">else </span>{
@@ -1252,7 +1253,7 @@
                     VariantInfo::Struct(struct_info) =&gt; struct_info,
                     info =&gt; {
                         <span class="kw">return </span><span class="prelude-val">Err</span>(Error::custom(<span class="macro">format_args!</span>(
-                            <span class="string">&quot;expected struct variant type but received {info:?}&quot;</span>,
+                            <span class="string">"expected struct variant type but received {info:?}"</span>,
                         )));
                     }
                 };
@@ -1275,8 +1276,8 @@
             VariantType::Tuple <span class="kw">if </span>field_len == <span class="number">1 </span>=&gt; {
                 <span class="kw">let </span>field = <span class="self">self</span>.enum_value.field_at(<span class="number">0</span>).unwrap();
 
-                <span class="kw">if </span>type_info.type_path_table().module_path() == <span class="prelude-val">Some</span>(<span class="string">&quot;core::option&quot;</span>)
-                    &amp;&amp; type_info.type_path_table().ident() == <span class="prelude-val">Some</span>(<span class="string">&quot;Option&quot;</span>)
+                <span class="kw">if </span>type_info.type_path_table().module_path() == <span class="prelude-val">Some</span>(<span class="string">"core::option"</span>)
+                    &amp;&amp; type_info.type_path_table().ident() == <span class="prelude-val">Some</span>(<span class="string">"Option"</span>)
                 {
                     serializer.serialize_some(<span class="kw-2">&amp;</span>TypedReflectSerializer::new(field, <span class="self">self</span>.registry))
                 } <span class="kw">else </span>{
@@ -1307,12 +1308,12 @@
     }
 }
 
-<span class="kw">pub struct </span>TupleSerializer&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="kw">pub </span>tuple: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw">dyn </span>Tuple,
-    <span class="kw">pub </span>registry: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>TypeRegistry,
+<span class="kw">pub struct </span>TupleSerializer&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="kw">pub </span>tuple: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw">dyn </span>Tuple,
+    <span class="kw">pub </span>registry: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>TypeRegistry,
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; Serialize <span class="kw">for </span>TupleSerializer&lt;<span class="lifetime">&#39;a</span>&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; Serialize <span class="kw">for </span>TupleSerializer&lt;<span class="lifetime">'a</span>&gt; {
     <span class="kw">fn </span>serialize&lt;S&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, serializer: S) -&gt; <span class="prelude-ty">Result</span>&lt;S::Ok, S::Error&gt;
     <span class="kw">where
         </span>S: serde::Serializer,
@@ -1326,12 +1327,12 @@
     }
 }
 
-<span class="kw">pub struct </span>MapSerializer&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="kw">pub </span>map: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw">dyn </span>Map,
-    <span class="kw">pub </span>registry: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>TypeRegistry,
+<span class="kw">pub struct </span>MapSerializer&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="kw">pub </span>map: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw">dyn </span>Map,
+    <span class="kw">pub </span>registry: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>TypeRegistry,
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; Serialize <span class="kw">for </span>MapSerializer&lt;<span class="lifetime">&#39;a</span>&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; Serialize <span class="kw">for </span>MapSerializer&lt;<span class="lifetime">'a</span>&gt; {
     <span class="kw">fn </span>serialize&lt;S&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, serializer: S) -&gt; <span class="prelude-ty">Result</span>&lt;S::Ok, S::Error&gt;
     <span class="kw">where
         </span>S: serde::Serializer,
@@ -1347,12 +1348,12 @@
     }
 }
 
-<span class="kw">pub struct </span>ListSerializer&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="kw">pub </span>list: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw">dyn </span>List,
-    <span class="kw">pub </span>registry: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>TypeRegistry,
+<span class="kw">pub struct </span>ListSerializer&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="kw">pub </span>list: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw">dyn </span>List,
+    <span class="kw">pub </span>registry: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>TypeRegistry,
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; Serialize <span class="kw">for </span>ListSerializer&lt;<span class="lifetime">&#39;a</span>&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; Serialize <span class="kw">for </span>ListSerializer&lt;<span class="lifetime">'a</span>&gt; {
     <span class="kw">fn </span>serialize&lt;S&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, serializer: S) -&gt; <span class="prelude-ty">Result</span>&lt;S::Ok, S::Error&gt;
     <span class="kw">where
         </span>S: serde::Serializer,
@@ -1365,12 +1366,12 @@
     }
 }
 
-<span class="kw">pub struct </span>ArraySerializer&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="kw">pub </span>array: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw">dyn </span>Array,
-    <span class="kw">pub </span>registry: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>TypeRegistry,
+<span class="kw">pub struct </span>ArraySerializer&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="kw">pub </span>array: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw">dyn </span>Array,
+    <span class="kw">pub </span>registry: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>TypeRegistry,
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; Serialize <span class="kw">for </span>ArraySerializer&lt;<span class="lifetime">&#39;a</span>&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; Serialize <span class="kw">for </span>ArraySerializer&lt;<span class="lifetime">'a</span>&gt; {
     <span class="kw">fn </span>serialize&lt;S&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, serializer: S) -&gt; <span class="prelude-ty">Result</span>&lt;S::Ok, S::Error&gt;
     <span class="kw">where
         </span>S: serde::Serializer,
@@ -1466,7 +1467,7 @@
     #[reflect(Serialize)]
     </span><span class="kw">struct </span>CustomSerialize {
         value: usize,
-        <span class="attr">#[serde(rename = <span class="string">&quot;renamed&quot;</span>)]
+        <span class="attr">#[serde(rename = <span class="string">"renamed"</span>)]
         </span>inner_struct: SomeSerializableStruct,
     }
 
@@ -1496,25 +1497,25 @@
 
         <span class="kw">let </span>input = MyStruct {
             primitive_value: <span class="number">123</span>,
-            option_value: <span class="prelude-val">Some</span>(String::from(<span class="string">&quot;Hello world!&quot;</span>)),
+            option_value: <span class="prelude-val">Some</span>(String::from(<span class="string">"Hello world!"</span>)),
             option_value_complex: <span class="prelude-val">Some</span>(SomeStruct { foo: <span class="number">123 </span>}),
             tuple_value: (PI, <span class="number">1337</span>),
             list_value: <span class="macro">vec!</span>[-<span class="number">2</span>, -<span class="number">1</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>],
             array_value: [-<span class="number">2</span>, -<span class="number">1</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>],
             map_value: map,
             struct_value: SomeStruct { foo: <span class="number">999999999 </span>},
-            tuple_struct_value: SomeTupleStruct(String::from(<span class="string">&quot;Tuple Struct&quot;</span>)),
+            tuple_struct_value: SomeTupleStruct(String::from(<span class="string">"Tuple Struct"</span>)),
             unit_struct: SomeUnitStruct,
             unit_enum: SomeEnum::Unit,
             newtype_enum: SomeEnum::NewType(<span class="number">123</span>),
             tuple_enum: SomeEnum::Tuple(<span class="number">1.23</span>, <span class="number">3.21</span>),
             struct_enum: SomeEnum::Struct {
-                foo: String::from(<span class="string">&quot;Struct variant value&quot;</span>),
+                foo: String::from(<span class="string">"Struct variant value"</span>),
             },
             ignored_struct: SomeIgnoredStruct { ignored: <span class="number">123 </span>},
             ignored_tuple_struct: SomeIgnoredTupleStruct(<span class="number">123</span>),
             ignored_struct_variant: SomeIgnoredEnum::Struct {
-                foo: String::from(<span class="string">&quot;Struct Variant&quot;</span>),
+                foo: String::from(<span class="string">"Struct Variant"</span>),
             },
             ignored_tuple_variant: SomeIgnoredEnum::Tuple(<span class="number">1.23</span>, <span class="number">3.45</span>),
             custom_serialize: CustomSerialize {
@@ -1527,14 +1528,14 @@
         <span class="kw">let </span>serializer = ReflectSerializer::new(<span class="kw-2">&amp;</span>input, <span class="kw-2">&amp;</span>registry);
 
         <span class="kw">let </span>config = PrettyConfig::default()
-            .new_line(String::from(<span class="string">&quot;\n&quot;</span>))
-            .indentor(String::from(<span class="string">&quot;    &quot;</span>));
+            .new_line(String::from(<span class="string">"\n"</span>))
+            .indentor(String::from(<span class="string">"    "</span>));
 
         <span class="kw">let </span>output = ron::ser::to_string_pretty(<span class="kw-2">&amp;</span>serializer, config).unwrap();
-        <span class="kw">let </span>expected = <span class="string">r#&quot;{
-    &quot;bevy_reflect::serde::ser::tests::MyStruct&quot;: (
+        <span class="kw">let </span>expected = <span class="string">r#"{
+    "bevy_reflect::serde::ser::tests::MyStruct": (
         primitive_value: 123,
-        option_value: Some(&quot;Hello world!&quot;),
+        option_value: Some("Hello world!"),
         option_value_complex: Some((
             foo: 123,
         )),
@@ -1553,13 +1554,13 @@
         struct_value: (
             foo: 999999999,
         ),
-        tuple_struct_value: (&quot;Tuple Struct&quot;),
+        tuple_struct_value: ("Tuple Struct"),
         unit_struct: (),
         unit_enum: Unit,
         newtype_enum: NewType(123),
         tuple_enum: Tuple(1.23, 3.21),
         struct_enum: Struct(
-            foo: &quot;Struct variant value&quot;,
+            foo: "Struct variant value",
         ),
         ignored_struct: (),
         ignored_tuple_struct: (),
@@ -1572,7 +1573,7 @@
             ),
         ),
     ),
-}&quot;#</span>;
+}"#</span>;
         <span class="macro">assert_eq!</span>(expected, output);
     }
 
@@ -1587,7 +1588,7 @@
 
         <span class="kw">let </span>value = OptionTest {
             none: <span class="prelude-val">None</span>,
-            simple: <span class="prelude-val">Some</span>(String::from(<span class="string">&quot;Hello world!&quot;</span>)),
+            simple: <span class="prelude-val">Some</span>(String::from(<span class="string">"Hello world!"</span>)),
             complex: <span class="prelude-val">Some</span>(SomeStruct { foo: <span class="number">123 </span>}),
         };
 
@@ -1596,39 +1597,39 @@
 
         <span class="comment">// === Normal === //
         </span><span class="kw">let </span>config = PrettyConfig::default()
-            .new_line(String::from(<span class="string">&quot;\n&quot;</span>))
-            .indentor(String::from(<span class="string">&quot;    &quot;</span>));
+            .new_line(String::from(<span class="string">"\n"</span>))
+            .indentor(String::from(<span class="string">"    "</span>));
 
         <span class="kw">let </span>output = ron::ser::to_string_pretty(<span class="kw-2">&amp;</span>serializer, config).unwrap();
-        <span class="kw">let </span>expected = <span class="string">r#&quot;{
-    &quot;bevy_reflect::serde::ser::tests::OptionTest&quot;: (
+        <span class="kw">let </span>expected = <span class="string">r#"{
+    "bevy_reflect::serde::ser::tests::OptionTest": (
         none: None,
-        simple: Some(&quot;Hello world!&quot;),
+        simple: Some("Hello world!"),
         complex: Some((
             foo: 123,
         )),
     ),
-}&quot;#</span>;
+}"#</span>;
 
         <span class="macro">assert_eq!</span>(expected, output);
 
         <span class="comment">// === Implicit Some === //
         </span><span class="kw">let </span>config = PrettyConfig::default()
-            .new_line(String::from(<span class="string">&quot;\n&quot;</span>))
+            .new_line(String::from(<span class="string">"\n"</span>))
             .extensions(Extensions::IMPLICIT_SOME)
-            .indentor(String::from(<span class="string">&quot;    &quot;</span>));
+            .indentor(String::from(<span class="string">"    "</span>));
 
         <span class="kw">let </span>output = ron::ser::to_string_pretty(<span class="kw-2">&amp;</span>serializer, config).unwrap();
-        <span class="kw">let </span>expected = <span class="string">r#&quot;#![enable(implicit_some)]
+        <span class="kw">let </span>expected = <span class="string">r#"#![enable(implicit_some)]
 {
-    &quot;bevy_reflect::serde::ser::tests::OptionTest&quot;: (
+    "bevy_reflect::serde::ser::tests::OptionTest": (
         none: None,
-        simple: &quot;Hello world!&quot;,
+        simple: "Hello world!",
         complex: (
             foo: 123,
         ),
     ),
-}&quot;#</span>;
+}"#</span>;
 
         <span class="macro">assert_eq!</span>(expected, output);
     }
@@ -1646,46 +1647,46 @@
         <span class="kw">let </span><span class="kw-2">mut </span>registry = get_registry();
         registry.register::&lt;MyEnum&gt;();
 
-        <span class="kw">let </span>config = PrettyConfig::default().new_line(String::from(<span class="string">&quot;\n&quot;</span>));
+        <span class="kw">let </span>config = PrettyConfig::default().new_line(String::from(<span class="string">"\n"</span>));
 
         <span class="comment">// === Unit Variant === //
         </span><span class="kw">let </span>value = MyEnum::Unit;
         <span class="kw">let </span>serializer = ReflectSerializer::new(<span class="kw-2">&amp;</span>value, <span class="kw-2">&amp;</span>registry);
         <span class="kw">let </span>output = ron::ser::to_string_pretty(<span class="kw-2">&amp;</span>serializer, config.clone()).unwrap();
-        <span class="kw">let </span>expected = <span class="string">r#&quot;{
-    &quot;bevy_reflect::serde::ser::tests::MyEnum&quot;: Unit,
-}&quot;#</span>;
+        <span class="kw">let </span>expected = <span class="string">r#"{
+    "bevy_reflect::serde::ser::tests::MyEnum": Unit,
+}"#</span>;
         <span class="macro">assert_eq!</span>(expected, output);
 
         <span class="comment">// === NewType Variant === //
         </span><span class="kw">let </span>value = MyEnum::NewType(<span class="number">123</span>);
         <span class="kw">let </span>serializer = ReflectSerializer::new(<span class="kw-2">&amp;</span>value, <span class="kw-2">&amp;</span>registry);
         <span class="kw">let </span>output = ron::ser::to_string_pretty(<span class="kw-2">&amp;</span>serializer, config.clone()).unwrap();
-        <span class="kw">let </span>expected = <span class="string">r#&quot;{
-    &quot;bevy_reflect::serde::ser::tests::MyEnum&quot;: NewType(123),
-}&quot;#</span>;
+        <span class="kw">let </span>expected = <span class="string">r#"{
+    "bevy_reflect::serde::ser::tests::MyEnum": NewType(123),
+}"#</span>;
         <span class="macro">assert_eq!</span>(expected, output);
 
         <span class="comment">// === Tuple Variant === //
         </span><span class="kw">let </span>value = MyEnum::Tuple(<span class="number">1.23</span>, <span class="number">3.21</span>);
         <span class="kw">let </span>serializer = ReflectSerializer::new(<span class="kw-2">&amp;</span>value, <span class="kw-2">&amp;</span>registry);
         <span class="kw">let </span>output = ron::ser::to_string_pretty(<span class="kw-2">&amp;</span>serializer, config.clone()).unwrap();
-        <span class="kw">let </span>expected = <span class="string">r#&quot;{
-    &quot;bevy_reflect::serde::ser::tests::MyEnum&quot;: Tuple(1.23, 3.21),
-}&quot;#</span>;
+        <span class="kw">let </span>expected = <span class="string">r#"{
+    "bevy_reflect::serde::ser::tests::MyEnum": Tuple(1.23, 3.21),
+}"#</span>;
         <span class="macro">assert_eq!</span>(expected, output);
 
         <span class="comment">// === Struct Variant === //
         </span><span class="kw">let </span>value = MyEnum::Struct {
-            value: String::from(<span class="string">&quot;I &lt;3 Enums&quot;</span>),
+            value: String::from(<span class="string">"I &lt;3 Enums"</span>),
         };
         <span class="kw">let </span>serializer = ReflectSerializer::new(<span class="kw-2">&amp;</span>value, <span class="kw-2">&amp;</span>registry);
         <span class="kw">let </span>output = ron::ser::to_string_pretty(<span class="kw-2">&amp;</span>serializer, config).unwrap();
-        <span class="kw">let </span>expected = <span class="string">r#&quot;{
-    &quot;bevy_reflect::serde::ser::tests::MyEnum&quot;: Struct(
-        value: &quot;I &lt;3 Enums&quot;,
+        <span class="kw">let </span>expected = <span class="string">r#"{
+    "bevy_reflect::serde::ser::tests::MyEnum": Struct(
+        value: "I &lt;3 Enums",
     ),
-}&quot;#</span>;
+}"#</span>;
         <span class="macro">assert_eq!</span>(expected, output);
     }
 
@@ -1696,25 +1697,25 @@
 
         <span class="kw">let </span>input = MyStruct {
             primitive_value: <span class="number">123</span>,
-            option_value: <span class="prelude-val">Some</span>(String::from(<span class="string">&quot;Hello world!&quot;</span>)),
+            option_value: <span class="prelude-val">Some</span>(String::from(<span class="string">"Hello world!"</span>)),
             option_value_complex: <span class="prelude-val">Some</span>(SomeStruct { foo: <span class="number">123 </span>}),
             tuple_value: (PI, <span class="number">1337</span>),
             list_value: <span class="macro">vec!</span>[-<span class="number">2</span>, -<span class="number">1</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>],
             array_value: [-<span class="number">2</span>, -<span class="number">1</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>],
             map_value: map,
             struct_value: SomeStruct { foo: <span class="number">999999999 </span>},
-            tuple_struct_value: SomeTupleStruct(String::from(<span class="string">&quot;Tuple Struct&quot;</span>)),
+            tuple_struct_value: SomeTupleStruct(String::from(<span class="string">"Tuple Struct"</span>)),
             unit_struct: SomeUnitStruct,
             unit_enum: SomeEnum::Unit,
             newtype_enum: SomeEnum::NewType(<span class="number">123</span>),
             tuple_enum: SomeEnum::Tuple(<span class="number">1.23</span>, <span class="number">3.21</span>),
             struct_enum: SomeEnum::Struct {
-                foo: String::from(<span class="string">&quot;Struct variant value&quot;</span>),
+                foo: String::from(<span class="string">"Struct variant value"</span>),
             },
             ignored_struct: SomeIgnoredStruct { ignored: <span class="number">123 </span>},
             ignored_tuple_struct: SomeIgnoredTupleStruct(<span class="number">123</span>),
             ignored_struct_variant: SomeIgnoredEnum::Struct {
-                foo: String::from(<span class="string">&quot;Struct Variant&quot;</span>),
+                foo: String::from(<span class="string">"Struct Variant"</span>),
             },
             ignored_tuple_variant: SomeIgnoredEnum::Tuple(<span class="number">1.23</span>, <span class="number">3.45</span>),
             custom_serialize: CustomSerialize {
@@ -1754,25 +1755,25 @@
 
         <span class="kw">let </span>input = MyStruct {
             primitive_value: <span class="number">123</span>,
-            option_value: <span class="prelude-val">Some</span>(String::from(<span class="string">&quot;Hello world!&quot;</span>)),
+            option_value: <span class="prelude-val">Some</span>(String::from(<span class="string">"Hello world!"</span>)),
             option_value_complex: <span class="prelude-val">Some</span>(SomeStruct { foo: <span class="number">123 </span>}),
             tuple_value: (PI, <span class="number">1337</span>),
             list_value: <span class="macro">vec!</span>[-<span class="number">2</span>, -<span class="number">1</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>],
             array_value: [-<span class="number">2</span>, -<span class="number">1</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>],
             map_value: map,
             struct_value: SomeStruct { foo: <span class="number">999999999 </span>},
-            tuple_struct_value: SomeTupleStruct(String::from(<span class="string">&quot;Tuple Struct&quot;</span>)),
+            tuple_struct_value: SomeTupleStruct(String::from(<span class="string">"Tuple Struct"</span>)),
             unit_struct: SomeUnitStruct,
             unit_enum: SomeEnum::Unit,
             newtype_enum: SomeEnum::NewType(<span class="number">123</span>),
             tuple_enum: SomeEnum::Tuple(<span class="number">1.23</span>, <span class="number">3.21</span>),
             struct_enum: SomeEnum::Struct {
-                foo: String::from(<span class="string">&quot;Struct variant value&quot;</span>),
+                foo: String::from(<span class="string">"Struct variant value"</span>),
             },
             ignored_struct: SomeIgnoredStruct { ignored: <span class="number">123 </span>},
             ignored_tuple_struct: SomeIgnoredTupleStruct(<span class="number">123</span>),
             ignored_struct_variant: SomeIgnoredEnum::Struct {
-                foo: String::from(<span class="string">&quot;Struct Variant&quot;</span>),
+                foo: String::from(<span class="string">"Struct Variant"</span>),
             },
             ignored_tuple_variant: SomeIgnoredEnum::Tuple(<span class="number">1.23</span>, <span class="number">3.45</span>),
             custom_serialize: CustomSerialize {
@@ -1824,20 +1825,20 @@
 
         <span class="kw">let </span><span class="kw-2">mut </span>buf = Vec::new();
 
-        <span class="kw">let </span>format = serde_json::ser::PrettyFormatter::with_indent(<span class="string">b&quot;    &quot;</span>);
+        <span class="kw">let </span>format = serde_json::ser::PrettyFormatter::with_indent(<span class="string">b"    "</span>);
         <span class="kw">let </span><span class="kw-2">mut </span>ser = serde_json::Serializer::with_formatter(<span class="kw-2">&amp;mut </span>buf, format);
 
         serializer.serialize(<span class="kw-2">&amp;mut </span>ser).unwrap();
 
         <span class="kw">let </span>output = std::str::from_utf8(<span class="kw-2">&amp;</span>buf).unwrap();
-        <span class="kw">let </span>expected = <span class="string">r#&quot;{
-    &quot;bevy_reflect::serde::ser::tests::OtherStruct&quot;: {
-        &quot;some&quot;: {
-            &quot;foo&quot;: 999999999
+        <span class="kw">let </span>expected = <span class="string">r#"{
+    "bevy_reflect::serde::ser::tests::OtherStruct": {
+        "some": {
+            "foo": 999999999
         },
-        &quot;none&quot;: null
+        "none": null
     }
-}&quot;#</span>;
+}"#</span>;
 
         <span class="macro">assert_eq!</span>(expected, output);
     }

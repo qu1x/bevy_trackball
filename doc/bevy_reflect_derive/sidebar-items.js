@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"attr":["reflect_trait"],"derive":["FromReflect","Reflect","TypePath","TypeUuid"],"macro":["impl_from_reflect_value","impl_reflect_struct","impl_reflect_value","impl_type_path","impl_type_uuid"]};
+window.SIDEBAR_ITEMS = {"attr":["reflect_trait"],"derive":["FromReflect","Reflect","TypePath"],"macro":["impl_from_reflect_value","impl_reflect","impl_reflect_value","impl_type_path"]};

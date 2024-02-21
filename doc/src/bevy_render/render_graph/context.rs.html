@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_render-0.12.1/src/render_graph/context.rs`."><title>context.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="bevy_render" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../bevy_render/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_render-0.13.0/src/render_graph/context.rs`."><title>context.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="bevy_render" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -274,6 +275,8 @@
 <a href="#274" id="274">274</a>
 <a href="#275" id="275">275</a>
 <a href="#276" id="276">276</a>
+<a href="#277" id="277">277</a>
+<a href="#278" id="278">278</a>
 </pre></div><pre class="rust"><code><span class="kw">use crate</span>::{
     render_graph::{NodeState, RenderGraph, SlotInfos, SlotLabel, SlotType, SlotValue},
     render_resource::{Buffer, Sampler, TextureView},
@@ -282,10 +285,12 @@
 <span class="kw">use </span>std::borrow::Cow;
 <span class="kw">use </span>thiserror::Error;
 
-<span class="doccomment">/// A command that signals the graph runner to run the sub graph corresponding to the `name`
+<span class="kw">use super</span>::{InternedRenderSubGraph, RenderSubGraph};
+
+<span class="doccomment">/// A command that signals the graph runner to run the sub graph corresponding to the `sub_graph`
 /// with the specified `inputs` next.
 </span><span class="kw">pub struct </span>RunSubGraph {
-    <span class="kw">pub </span>name: Cow&lt;<span class="lifetime">&#39;static</span>, str&gt;,
+    <span class="kw">pub </span>sub_graph: InternedRenderSubGraph,
     <span class="kw">pub </span>inputs: Vec&lt;SlotValue&gt;,
     <span class="kw">pub </span>view_entity: <span class="prelude-ty">Option</span>&lt;Entity&gt;,
 }
@@ -298,26 +303,26 @@
 ///
 /// Sub graphs can be queued for running by adding a [`RunSubGraph`] command to the context.
 /// After the node has finished running the graph runner is responsible for executing the sub graphs.
-</span><span class="kw">pub struct </span>RenderGraphContext&lt;<span class="lifetime">&#39;a</span>&gt; {
-    graph: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>RenderGraph,
-    node: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>NodeState,
-    inputs: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[SlotValue],
-    outputs: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>[<span class="prelude-ty">Option</span>&lt;SlotValue&gt;],
+</span><span class="kw">pub struct </span>RenderGraphContext&lt;<span class="lifetime">'a</span>&gt; {
+    graph: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>RenderGraph,
+    node: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>NodeState,
+    inputs: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>[SlotValue],
+    outputs: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>[<span class="prelude-ty">Option</span>&lt;SlotValue&gt;],
     run_sub_graphs: Vec&lt;RunSubGraph&gt;,
     <span class="doccomment">/// The view_entity associated with the render graph being executed
-    /// This is optional because you aren&#39;t required to have a view_entity for a node.
-    /// For example, compute shader nodes don&#39;t have one.
+    /// This is optional because you aren't required to have a view_entity for a node.
+    /// For example, compute shader nodes don't have one.
     /// It should always be set when the RenderGraph is running on a View.
     </span>view_entity: <span class="prelude-ty">Option</span>&lt;Entity&gt;,
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; RenderGraphContext&lt;<span class="lifetime">&#39;a</span>&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; RenderGraphContext&lt;<span class="lifetime">'a</span>&gt; {
     <span class="doccomment">/// Creates a new render graph context for the `node`.
     </span><span class="kw">pub fn </span>new(
-        graph: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>RenderGraph,
-        node: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>NodeState,
-        inputs: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[SlotValue],
-        outputs: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>[<span class="prelude-ty">Option</span>&lt;SlotValue&gt;],
+        graph: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>RenderGraph,
+        node: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>NodeState,
+        inputs: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>[SlotValue],
+        outputs: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>[<span class="prelude-ty">Option</span>&lt;SlotValue&gt;],
     ) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
             graph,
@@ -429,7 +434,7 @@
         <span class="kw">let </span>slot = <span class="self">self
             </span>.output_info()
             .get_slot(slot_index)
-            .expect(<span class="string">&quot;slot is valid&quot;</span>);
+            .expect(<span class="string">"slot is valid"</span>);
         <span class="kw">if </span>value.slot_type() != slot.slot_type {
             <span class="kw">return </span><span class="prelude-val">Err</span>(OutputSlotError::MismatchedSlotType {
                 label,
@@ -456,15 +461,15 @@
     <span class="doccomment">/// Queues up a sub graph for execution after the node has finished running.
     </span><span class="kw">pub fn </span>run_sub_graph(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        name: <span class="kw">impl </span>Into&lt;Cow&lt;<span class="lifetime">&#39;static</span>, str&gt;&gt;,
+        name: <span class="kw">impl </span>RenderSubGraph,
         inputs: Vec&lt;SlotValue&gt;,
         view_entity: <span class="prelude-ty">Option</span>&lt;Entity&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;(), RunSubGraphError&gt; {
-        <span class="kw">let </span>name = name.into();
+        <span class="kw">let </span>name = name.intern();
         <span class="kw">let </span>sub_graph = <span class="self">self
             </span>.graph
-            .get_sub_graph(<span class="kw-2">&amp;</span>name)
-            .ok_or_else(|| RunSubGraphError::MissingSubGraph(name.clone()))<span class="question-mark">?</span>;
+            .get_sub_graph(name)
+            .ok_or(RunSubGraphError::MissingSubGraph(name))<span class="question-mark">?</span>;
         <span class="kw">if let </span><span class="prelude-val">Some</span>(input_node) = sub_graph.get_input_node() {
             <span class="kw">for </span>(i, input_slot) <span class="kw">in </span>input_node.input_slots.iter().enumerate() {
                 <span class="kw">if let </span><span class="prelude-val">Some</span>(input_value) = inputs.get(i) {
@@ -490,7 +495,7 @@
         }
 
         <span class="self">self</span>.run_sub_graphs.push(RunSubGraph {
-            name,
+            sub_graph: name,
             inputs,
             view_entity,
         });
@@ -507,19 +512,19 @@
 
 <span class="attr">#[derive(Error, Debug, Eq, PartialEq)]
 </span><span class="kw">pub enum </span>RunSubGraphError {
-    <span class="attr">#[error(<span class="string">&quot;attempted to run sub-graph `{0}`, but it does not exist&quot;</span>)]
-    </span>MissingSubGraph(Cow&lt;<span class="lifetime">&#39;static</span>, str&gt;),
-    <span class="attr">#[error(<span class="string">&quot;attempted to pass inputs to sub-graph `{0}`, which has no input slots&quot;</span>)]
-    </span>SubGraphHasNoInputs(Cow&lt;<span class="lifetime">&#39;static</span>, str&gt;),
-    <span class="attr">#[error(<span class="string">&quot;sub graph (name: `{graph_name:?}`) could not be run because slot `{slot_name}` at index {slot_index} has no value&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"attempted to run sub-graph `{0:?}`, but it does not exist"</span>)]
+    </span>MissingSubGraph(InternedRenderSubGraph),
+    <span class="attr">#[error(<span class="string">"attempted to pass inputs to sub-graph `{0:?}`, which has no input slots"</span>)]
+    </span>SubGraphHasNoInputs(InternedRenderSubGraph),
+    <span class="attr">#[error(<span class="string">"sub graph (name: `{graph_name:?}`) could not be run because slot `{slot_name}` at index {slot_index} has no value"</span>)]
     </span>MissingInput {
         slot_index: usize,
-        slot_name: Cow&lt;<span class="lifetime">&#39;static</span>, str&gt;,
-        graph_name: Cow&lt;<span class="lifetime">&#39;static</span>, str&gt;,
+        slot_name: Cow&lt;<span class="lifetime">'static</span>, str&gt;,
+        graph_name: InternedRenderSubGraph,
     },
-    <span class="attr">#[error(<span class="string">&quot;attempted to use the wrong type for input slot&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"attempted to use the wrong type for input slot"</span>)]
     </span>MismatchedInputSlotType {
-        graph_name: Cow&lt;<span class="lifetime">&#39;static</span>, str&gt;,
+        graph_name: InternedRenderSubGraph,
         slot_index: usize,
         label: SlotLabel,
         expected: SlotType,
@@ -529,9 +534,9 @@
 
 <span class="attr">#[derive(Error, Debug, Eq, PartialEq)]
 </span><span class="kw">pub enum </span>OutputSlotError {
-    <span class="attr">#[error(<span class="string">&quot;output slot `{0:?}` does not exist&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"output slot `{0:?}` does not exist"</span>)]
     </span>InvalidSlot(SlotLabel),
-    <span class="attr">#[error(<span class="string">&quot;attempted to output a value of type `{actual}` to output slot `{label:?}`, which has type `{expected}`&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"attempted to output a value of type `{actual}` to output slot `{label:?}`, which has type `{expected}`"</span>)]
     </span>MismatchedSlotType {
         label: SlotLabel,
         expected: SlotType,
@@ -541,9 +546,9 @@
 
 <span class="attr">#[derive(Error, Debug, Eq, PartialEq)]
 </span><span class="kw">pub enum </span>InputSlotError {
-    <span class="attr">#[error(<span class="string">&quot;input slot `{0:?}` does not exist&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"input slot `{0:?}` does not exist"</span>)]
     </span>InvalidSlot(SlotLabel),
-    <span class="attr">#[error(<span class="string">&quot;attempted to retrieve a value of type `{actual}` from input slot `{label:?}`, which has type `{expected}`&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"attempted to retrieve a value of type `{actual}` from input slot `{label:?}`, which has type `{expected}`"</span>)]
     </span>MismatchedSlotType {
         label: SlotLabel,
         expected: SlotType,

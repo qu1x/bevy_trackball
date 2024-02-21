@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ecs-0.12.1/src/schedule/executor/single_threaded.rs`."><title>single_threaded.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="bevy_ecs" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../../bevy_ecs/index.html"><img class="rust-logo" src="../../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ecs-0.13.0/src/schedule/executor/single_threaded.rs`."><title>single_threaded.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="bevy_ecs" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -138,7 +139,20 @@
 <a href="#138" id="138">138</a>
 <a href="#139" id="139">139</a>
 <a href="#140" id="140">140</a>
-</pre></div><pre class="rust"><code><span class="attr">#[cfg(feature = <span class="string">&quot;trace&quot;</span>)]
+<a href="#141" id="141">141</a>
+<a href="#142" id="142">142</a>
+<a href="#143" id="143">143</a>
+<a href="#144" id="144">144</a>
+<a href="#145" id="145">145</a>
+<a href="#146" id="146">146</a>
+<a href="#147" id="147">147</a>
+<a href="#148" id="148">148</a>
+<a href="#149" id="149">149</a>
+<a href="#150" id="150">150</a>
+<a href="#151" id="151">151</a>
+<a href="#152" id="152">152</a>
+<a href="#153" id="153">153</a>
+</pre></div><pre class="rust"><code><span class="attr">#[cfg(feature = <span class="string">"trace"</span>)]
 </span><span class="kw">use </span>bevy_utils::tracing::info_span;
 <span class="kw">use </span>fixedbitset::FixedBitSet;
 <span class="kw">use </span>std::panic::AssertUnwindSafe;
@@ -150,7 +164,7 @@
 
 <span class="doccomment">/// Runs the schedule using a single thread.
 ///
-/// Useful if you&#39;re dealing with a single-threaded environment, saving your threads for
+/// Useful if you're dealing with a single-threaded environment, saving your threads for
 /// other things, or just trying minimize overhead.
 </span><span class="attr">#[derive(Default)]
 </span><span class="kw">pub struct </span>SingleThreadedExecutor {
@@ -169,10 +183,6 @@
         ExecutorKind::SingleThreaded
     }
 
-    <span class="kw">fn </span>set_apply_final_deferred(<span class="kw-2">&amp;mut </span><span class="self">self</span>, apply_final_deferred: bool) {
-        <span class="self">self</span>.apply_final_deferred = apply_final_deferred;
-    }
-
     <span class="kw">fn </span>init(<span class="kw-2">&amp;mut </span><span class="self">self</span>, schedule: <span class="kw-2">&amp;</span>SystemSchedule) {
         <span class="comment">// pre-allocate space
         </span><span class="kw">let </span>sys_count = schedule.system_ids.len();
@@ -182,12 +192,25 @@
         <span class="self">self</span>.unapplied_systems = FixedBitSet::with_capacity(sys_count);
     }
 
-    <span class="kw">fn </span>run(<span class="kw-2">&amp;mut </span><span class="self">self</span>, schedule: <span class="kw-2">&amp;mut </span>SystemSchedule, world: <span class="kw-2">&amp;mut </span>World) {
+    <span class="kw">fn </span>run(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        schedule: <span class="kw-2">&amp;mut </span>SystemSchedule,
+        _skip_systems: <span class="prelude-ty">Option</span>&lt;FixedBitSet&gt;,
+        world: <span class="kw-2">&amp;mut </span>World,
+    ) {
+        <span class="comment">// If stepping is enabled, make sure we skip those systems that should
+        // not be run.
+        </span><span class="attr">#[cfg(feature = <span class="string">"bevy_debug_stepping"</span>)]
+        </span><span class="kw">if let </span><span class="prelude-val">Some</span>(skipped_systems) = _skip_systems {
+            <span class="comment">// mark skipped systems as completed
+            </span><span class="self">self</span>.completed_systems |= <span class="kw-2">&amp;</span>skipped_systems;
+        }
+
         <span class="kw">for </span>system_index <span class="kw">in </span><span class="number">0</span>..schedule.systems.len() {
-            <span class="attr">#[cfg(feature = <span class="string">&quot;trace&quot;</span>)]
+            <span class="attr">#[cfg(feature = <span class="string">"trace"</span>)]
             </span><span class="kw">let </span>name = schedule.systems[system_index].name();
-            <span class="attr">#[cfg(feature = <span class="string">&quot;trace&quot;</span>)]
-            </span><span class="kw">let </span>should_run_span = <span class="macro">info_span!</span>(<span class="string">&quot;check_conditions&quot;</span>, name = <span class="kw-2">&amp;*</span>name).entered();
+            <span class="attr">#[cfg(feature = <span class="string">"trace"</span>)]
+            </span><span class="kw">let </span>should_run_span = <span class="macro">info_span!</span>(<span class="string">"check_conditions"</span>, name = <span class="kw-2">&amp;*</span>name).entered();
 
             <span class="kw">let </span><span class="kw-2">mut </span>should_run = !<span class="self">self</span>.completed_systems.contains(system_index);
             <span class="kw">for </span>set_idx <span class="kw">in </span>schedule.sets_with_conditions_of_systems[system_index].ones() {
@@ -195,7 +218,7 @@
                     <span class="kw">continue</span>;
                 }
 
-                <span class="comment">// evaluate system set&#39;s conditions
+                <span class="comment">// evaluate system set's conditions
                 </span><span class="kw">let </span>set_conditions_met =
                     evaluate_and_fold_conditions(<span class="kw-2">&amp;mut </span>schedule.set_conditions[set_idx], world);
 
@@ -208,13 +231,13 @@
                 <span class="self">self</span>.evaluated_sets.insert(set_idx);
             }
 
-            <span class="comment">// evaluate system&#39;s conditions
+            <span class="comment">// evaluate system's conditions
             </span><span class="kw">let </span>system_conditions_met =
                 evaluate_and_fold_conditions(<span class="kw-2">&amp;mut </span>schedule.system_conditions[system_index], world);
 
             should_run &amp;= system_conditions_met;
 
-            <span class="attr">#[cfg(feature = <span class="string">&quot;trace&quot;</span>)]
+            <span class="attr">#[cfg(feature = <span class="string">"trace"</span>)]
             </span>should_run_span.exit();
 
             <span class="comment">// system has either been skipped or will run
@@ -232,7 +255,7 @@
                     system.run((), world);
                 }));
                 <span class="kw">if let </span><span class="prelude-val">Err</span>(payload) = res {
-                    <span class="macro">eprintln!</span>(<span class="string">&quot;Encountered a panic in system `{}`!&quot;</span>, <span class="kw-2">&amp;*</span>system.name());
+                    <span class="macro">eprintln!</span>(<span class="string">"Encountered a panic in system `{}`!"</span>, <span class="kw-2">&amp;*</span>system.name());
                     std::panic::resume_unwind(payload);
                 }
                 <span class="self">self</span>.unapplied_systems.insert(system_index);
@@ -244,6 +267,10 @@
         }
         <span class="self">self</span>.evaluated_sets.clear();
         <span class="self">self</span>.completed_systems.clear();
+    }
+
+    <span class="kw">fn </span>set_apply_final_deferred(<span class="kw-2">&amp;mut </span><span class="self">self</span>, apply_final_deferred: bool) {
+        <span class="self">self</span>.apply_final_deferred = apply_final_deferred;
     }
 }
 

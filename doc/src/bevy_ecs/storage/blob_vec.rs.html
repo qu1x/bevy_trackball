@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ecs-0.12.1/src/storage/blob_vec.rs`."><title>blob_vec.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="bevy_ecs" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../bevy_ecs/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ecs-0.13.0/src/storage/blob_vec.rs`."><title>blob_vec.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="bevy_ecs" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -634,6 +635,77 @@
 <a href="#634" id="634">634</a>
 <a href="#635" id="635">635</a>
 <a href="#636" id="636">636</a>
+<a href="#637" id="637">637</a>
+<a href="#638" id="638">638</a>
+<a href="#639" id="639">639</a>
+<a href="#640" id="640">640</a>
+<a href="#641" id="641">641</a>
+<a href="#642" id="642">642</a>
+<a href="#643" id="643">643</a>
+<a href="#644" id="644">644</a>
+<a href="#645" id="645">645</a>
+<a href="#646" id="646">646</a>
+<a href="#647" id="647">647</a>
+<a href="#648" id="648">648</a>
+<a href="#649" id="649">649</a>
+<a href="#650" id="650">650</a>
+<a href="#651" id="651">651</a>
+<a href="#652" id="652">652</a>
+<a href="#653" id="653">653</a>
+<a href="#654" id="654">654</a>
+<a href="#655" id="655">655</a>
+<a href="#656" id="656">656</a>
+<a href="#657" id="657">657</a>
+<a href="#658" id="658">658</a>
+<a href="#659" id="659">659</a>
+<a href="#660" id="660">660</a>
+<a href="#661" id="661">661</a>
+<a href="#662" id="662">662</a>
+<a href="#663" id="663">663</a>
+<a href="#664" id="664">664</a>
+<a href="#665" id="665">665</a>
+<a href="#666" id="666">666</a>
+<a href="#667" id="667">667</a>
+<a href="#668" id="668">668</a>
+<a href="#669" id="669">669</a>
+<a href="#670" id="670">670</a>
+<a href="#671" id="671">671</a>
+<a href="#672" id="672">672</a>
+<a href="#673" id="673">673</a>
+<a href="#674" id="674">674</a>
+<a href="#675" id="675">675</a>
+<a href="#676" id="676">676</a>
+<a href="#677" id="677">677</a>
+<a href="#678" id="678">678</a>
+<a href="#679" id="679">679</a>
+<a href="#680" id="680">680</a>
+<a href="#681" id="681">681</a>
+<a href="#682" id="682">682</a>
+<a href="#683" id="683">683</a>
+<a href="#684" id="684">684</a>
+<a href="#685" id="685">685</a>
+<a href="#686" id="686">686</a>
+<a href="#687" id="687">687</a>
+<a href="#688" id="688">688</a>
+<a href="#689" id="689">689</a>
+<a href="#690" id="690">690</a>
+<a href="#691" id="691">691</a>
+<a href="#692" id="692">692</a>
+<a href="#693" id="693">693</a>
+<a href="#694" id="694">694</a>
+<a href="#695" id="695">695</a>
+<a href="#696" id="696">696</a>
+<a href="#697" id="697">697</a>
+<a href="#698" id="698">698</a>
+<a href="#699" id="699">699</a>
+<a href="#700" id="700">700</a>
+<a href="#701" id="701">701</a>
+<a href="#702" id="702">702</a>
+<a href="#703" id="703">703</a>
+<a href="#704" id="704">704</a>
+<a href="#705" id="705">705</a>
+<a href="#706" id="706">706</a>
+<a href="#707" id="707">707</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::{
     alloc::{handle_alloc_error, Layout},
     cell::UnsafeCell,
@@ -654,20 +726,20 @@
     capacity: usize,
     <span class="doccomment">/// Number of elements, not bytes
     </span>len: usize,
-    <span class="comment">// the `data` ptr&#39;s layout is always `array_layout(item_layout, capacity)`
+    <span class="comment">// the `data` ptr's layout is always `array_layout(item_layout, capacity)`
     </span>data: NonNull&lt;u8&gt;,
-    <span class="comment">// None if the underlying type doesn&#39;t need to be dropped
-    </span>drop: <span class="prelude-ty">Option</span>&lt;<span class="kw">unsafe fn</span>(OwningPtr&lt;<span class="lifetime">&#39;_</span>&gt;)&gt;,
+    <span class="comment">// None if the underlying type doesn't need to be dropped
+    </span>drop: <span class="prelude-ty">Option</span>&lt;<span class="kw">unsafe fn</span>(OwningPtr&lt;<span class="lifetime">'_</span>&gt;)&gt;,
 }
 
 <span class="comment">// We want to ignore the `drop` field in our `Debug` impl
 </span><span class="kw">impl </span>std::fmt::Debug <span class="kw">for </span>BlobVec {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; std::fmt::Result {
-        f.debug_struct(<span class="string">&quot;BlobVec&quot;</span>)
-            .field(<span class="string">&quot;item_layout&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.item_layout)
-            .field(<span class="string">&quot;capacity&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.capacity)
-            .field(<span class="string">&quot;len&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.len)
-            .field(<span class="string">&quot;data&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.data)
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; std::fmt::Result {
+        f.debug_struct(<span class="string">"BlobVec"</span>)
+            .field(<span class="string">"item_layout"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.item_layout)
+            .field(<span class="string">"capacity"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.capacity)
+            .field(<span class="string">"len"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.len)
+            .field(<span class="string">"data"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.data)
             .finish()
     }
 }
@@ -682,23 +754,24 @@
     ///
     /// # Safety
     ///
-    /// `drop` should be safe to call with an [`OwningPtr`] pointing to any item that&#39;s been pushed into this [`BlobVec`].
+    /// `drop` should be safe to call with an [`OwningPtr`] pointing to any item that's been pushed into this [`BlobVec`].
     ///
     /// If `drop` is `None`, the items will be leaked. This should generally be set as None based on [`needs_drop`].
     ///
     /// [`needs_drop`]: core::mem::needs_drop
-    /// [`Drop`]: core::ops::Drop
     </span><span class="kw">pub unsafe fn </span>new(
         item_layout: Layout,
-        drop: <span class="prelude-ty">Option</span>&lt;<span class="kw">unsafe fn</span>(OwningPtr&lt;<span class="lifetime">&#39;_</span>&gt;)&gt;,
+        drop: <span class="prelude-ty">Option</span>&lt;<span class="kw">unsafe fn</span>(OwningPtr&lt;<span class="lifetime">'_</span>&gt;)&gt;,
         capacity: usize,
     ) -&gt; BlobVec {
-        <span class="kw">let </span>align = NonZeroUsize::new(item_layout.align()).expect(<span class="string">&quot;alignment must be &gt; 0&quot;</span>);
+        <span class="kw">let </span>align = NonZeroUsize::new(item_layout.align()).expect(<span class="string">"alignment must be &gt; 0"</span>);
         <span class="kw">let </span>data = bevy_ptr::dangling_with_align(align);
         <span class="kw">if </span>item_layout.size() == <span class="number">0 </span>{
             BlobVec {
                 data,
-                capacity: usize::MAX,
+                <span class="comment">// ZST `BlobVec` max size is `usize::MAX`, and `reserve_exact` for ZST assumes
+                // the capacity is always `usize::MAX` and panics if it overflows.
+                </span>capacity: usize::MAX,
                 len: <span class="number">0</span>,
                 item_layout,
                 drop,
@@ -746,24 +819,50 @@
     ///
     /// Note that the allocator may give the collection more space than it requests. Therefore, capacity can not be relied upon
     /// to be precisely minimal.
+    ///
+    /// # Panics
+    ///
+    /// Panics if new capacity overflows `usize`.
     </span><span class="kw">pub fn </span>reserve_exact(<span class="kw-2">&amp;mut </span><span class="self">self</span>, additional: usize) {
         <span class="kw">let </span>available_space = <span class="self">self</span>.capacity - <span class="self">self</span>.len;
-        <span class="kw">if </span>available_space &lt; additional &amp;&amp; <span class="self">self</span>.item_layout.size() &gt; <span class="number">0 </span>{
+        <span class="kw">if </span>available_space &lt; additional {
             <span class="comment">// SAFETY: `available_space &lt; additional`, so `additional - available_space &gt; 0`
             </span><span class="kw">let </span>increment = <span class="kw">unsafe </span>{ NonZeroUsize::new_unchecked(additional - available_space) };
-            <span class="comment">// SAFETY: not called for ZSTs
-            </span><span class="kw">unsafe </span>{ <span class="self">self</span>.grow_exact(increment) };
+            <span class="self">self</span>.grow_exact(increment);
         }
     }
 
-    <span class="comment">// SAFETY: must not be called for a ZST item layout
-    </span><span class="attr">#[warn(unsafe_op_in_unsafe_fn)] </span><span class="comment">// to allow unsafe blocks in unsafe fn
-    </span><span class="kw">unsafe fn </span>grow_exact(<span class="kw-2">&amp;mut </span><span class="self">self</span>, increment: NonZeroUsize) {
-        <span class="macro">debug_assert!</span>(<span class="self">self</span>.item_layout.size() != <span class="number">0</span>);
+    <span class="doccomment">/// Reserves the minimum capacity for at least `additional` more elements to be inserted in the given `BlobVec`.
+    </span><span class="attr">#[inline]
+    </span><span class="kw">pub fn </span>reserve(<span class="kw-2">&amp;mut </span><span class="self">self</span>, additional: usize) {
+        <span class="doccomment">/// Similar to `reserve_exact`. This method ensures that the capacity will grow at least `self.capacity()` if there is no
+        /// enough space to hold `additional` more elements.
+        </span><span class="attr">#[cold]
+        </span><span class="kw">fn </span>do_reserve(slf: <span class="kw-2">&amp;mut </span>BlobVec, additional: usize) {
+            <span class="kw">let </span>increment = slf.capacity.max(additional - (slf.capacity - slf.len));
+            <span class="kw">let </span>increment = NonZeroUsize::new(increment).unwrap();
+            slf.grow_exact(increment);
+        }
 
-        <span class="kw">let </span>new_capacity = <span class="self">self</span>.capacity + increment.get();
+        <span class="kw">if </span><span class="self">self</span>.capacity - <span class="self">self</span>.len &lt; additional {
+            do_reserve(<span class="self">self</span>, additional);
+        }
+    }
+
+    <span class="doccomment">/// Grows the capacity by `increment` elements.
+    ///
+    /// # Panics
+    ///
+    /// Panics if the new capacity overflows `usize`.
+    /// For ZST it panics unconditionally because ZST `BlobVec` capacity
+    /// is initialized to `usize::MAX` and always stays that way.
+    </span><span class="kw">fn </span>grow_exact(<span class="kw-2">&amp;mut </span><span class="self">self</span>, increment: NonZeroUsize) {
+        <span class="kw">let </span>new_capacity = <span class="self">self
+            </span>.capacity
+            .checked_add(increment.get())
+            .expect(<span class="string">"capacity overflow"</span>);
         <span class="kw">let </span>new_layout =
-            array_layout(<span class="kw-2">&amp;</span><span class="self">self</span>.item_layout, new_capacity).expect(<span class="string">&quot;array layout should be valid&quot;</span>);
+            array_layout(<span class="kw-2">&amp;</span><span class="self">self</span>.item_layout, new_capacity).expect(<span class="string">"array layout should be valid"</span>);
         <span class="kw">let </span>new_data = <span class="kw">if </span><span class="self">self</span>.capacity == <span class="number">0 </span>{
             <span class="comment">// SAFETY:
             // - layout has non-zero size as per safety requirement
@@ -773,14 +872,14 @@
             // - ptr was be allocated via this allocator
             // - the layout of the ptr was `array_layout(self.item_layout, self.capacity)`
             // - `item_layout.size() &gt; 0` and `new_capacity &gt; 0`, so the layout size is non-zero
-            // - &quot;new_size, when rounded up to the nearest multiple of layout.align(), must not overflow (i.e., the rounded value must be less than usize::MAX)&quot;,
+            // - "new_size, when rounded up to the nearest multiple of layout.align(), must not overflow (i.e., the rounded value must be less than usize::MAX)",
             // since the item size is always a multiple of its align, the rounding cannot happen
             // here and the overflow is handled in `array_layout`
             </span><span class="kw">unsafe </span>{
                 std::alloc::realloc(
                     <span class="self">self</span>.get_ptr_mut().as_ptr(),
                     array_layout(<span class="kw-2">&amp;</span><span class="self">self</span>.item_layout, <span class="self">self</span>.capacity)
-                        .expect(<span class="string">&quot;array layout should be valid&quot;</span>),
+                        .expect(<span class="string">"array layout should be valid"</span>),
                     new_layout.size(),
                 )
             }
@@ -794,10 +893,10 @@
     ///
     /// # Safety
     /// - index must be in bounds
-    /// - the memory in the [`BlobVec`] starting at index `index`, of a size matching this [`BlobVec`]&#39;s
+    /// - the memory in the [`BlobVec`] starting at index `index`, of a size matching this [`BlobVec`]'s
     /// `item_layout`, must have been previously allocated.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub unsafe fn </span>initialize_unchecked(<span class="kw-2">&amp;mut </span><span class="self">self</span>, index: usize, value: OwningPtr&lt;<span class="lifetime">&#39;_</span>&gt;) {
+    </span><span class="kw">pub unsafe fn </span>initialize_unchecked(<span class="kw-2">&amp;mut </span><span class="self">self</span>, index: usize, value: OwningPtr&lt;<span class="lifetime">'_</span>&gt;) {
         <span class="macro">debug_assert!</span>(index &lt; <span class="self">self</span>.len());
         <span class="kw">let </span>ptr = <span class="self">self</span>.get_unchecked_mut(index);
         std::ptr::copy_nonoverlapping::&lt;u8&gt;(value.as_ptr(), ptr.as_ptr(), <span class="self">self</span>.item_layout.size());
@@ -808,11 +907,11 @@
     /// # Safety
     /// - index must be in-bounds
     /// - the memory in the [`BlobVec`] starting at index `index`, of a size matching this
-    /// [`BlobVec`]&#39;s `item_layout`, must have been previously initialized with an item matching
-    /// this [`BlobVec`]&#39;s `item_layout`
+    /// [`BlobVec`]'s `item_layout`, must have been previously initialized with an item matching
+    /// this [`BlobVec`]'s `item_layout`
     /// - the memory at `*value` must also be previously initialized with an item matching this
-    /// [`BlobVec`]&#39;s `item_layout`
-    </span><span class="kw">pub unsafe fn </span>replace_unchecked(<span class="kw-2">&amp;mut </span><span class="self">self</span>, index: usize, value: OwningPtr&lt;<span class="lifetime">&#39;_</span>&gt;) {
+    /// [`BlobVec`]'s `item_layout`
+    </span><span class="kw">pub unsafe fn </span>replace_unchecked(<span class="kw-2">&amp;mut </span><span class="self">self</span>, index: usize, value: OwningPtr&lt;<span class="lifetime">'_</span>&gt;) {
         <span class="macro">debug_assert!</span>(index &lt; <span class="self">self</span>.len());
 
         <span class="comment">// Pointer to the value in the vector that will get replaced.
@@ -843,10 +942,10 @@
 
             drop(old_value);
 
-            <span class="comment">// If the above code does not panic, make sure that `value` doesn&#39;t get dropped.
+            <span class="comment">// If the above code does not panic, make sure that `value` doesn't get dropped.
             </span>core::mem::forget(on_unwind);
 
-            <span class="comment">// Make the vector&#39;s contents observable again, since panics are no longer possible.
+            <span class="comment">// Make the vector's contents observable again, since panics are no longer possible.
             </span><span class="self">self</span>.len = old_len;
         }
 
@@ -866,8 +965,8 @@
     /// # Safety
     /// The `value` must match the [`layout`](`BlobVec::layout`) of the elements in the [`BlobVec`].
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub unsafe fn </span>push(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: OwningPtr&lt;<span class="lifetime">&#39;_</span>&gt;) {
-        <span class="self">self</span>.reserve_exact(<span class="number">1</span>);
+    </span><span class="kw">pub unsafe fn </span>push(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: OwningPtr&lt;<span class="lifetime">'_</span>&gt;) {
+        <span class="self">self</span>.reserve(<span class="number">1</span>);
         <span class="kw">let </span>index = <span class="self">self</span>.len;
         <span class="self">self</span>.len += <span class="number">1</span>;
         <span class="self">self</span>.initialize_unchecked(index, value);
@@ -876,7 +975,7 @@
     <span class="doccomment">/// Forces the length of the vector to `len`.
     ///
     /// # Safety
-    /// `len` must be &lt;= `capacity`. if length is decreased, &quot;out of bounds&quot; items must be dropped.
+    /// `len` must be &lt;= `capacity`. if length is decreased, "out of bounds" items must be dropped.
     /// Newly added items must be immediately populated with valid values and length must be
     /// increased. For better unwind safety, call [`BlobVec::set_len`] _after_ populating a new
     /// value.
@@ -886,15 +985,15 @@
         <span class="self">self</span>.len = len;
     }
 
-    <span class="doccomment">/// Performs a &quot;swap remove&quot; at the given `index`, which removes the item at `index` and moves
+    <span class="doccomment">/// Performs a "swap remove" at the given `index`, which removes the item at `index` and moves
     /// the last item in the [`BlobVec`] to `index` (if `index` is not the last item). It is the
-    /// caller&#39;s responsibility to drop the returned pointer, if that is desirable.
+    /// caller's responsibility to drop the returned pointer, if that is desirable.
     ///
     /// # Safety
-    /// It is the caller&#39;s responsibility to ensure that `index` is less than `self.len()`.
+    /// It is the caller's responsibility to ensure that `index` is less than `self.len()`.
     </span><span class="attr">#[inline]
-    #[must_use = <span class="string">&quot;The returned pointer should be used to dropped the removed element&quot;</span>]
-    </span><span class="kw">pub unsafe fn </span>swap_remove_and_forget_unchecked(<span class="kw-2">&amp;mut </span><span class="self">self</span>, index: usize) -&gt; OwningPtr&lt;<span class="lifetime">&#39;_</span>&gt; {
+    #[must_use = <span class="string">"The returned pointer should be used to dropped the removed element"</span>]
+    </span><span class="kw">pub unsafe fn </span>swap_remove_and_forget_unchecked(<span class="kw-2">&amp;mut </span><span class="self">self</span>, index: usize) -&gt; OwningPtr&lt;<span class="lifetime">'_</span>&gt; {
         <span class="macro">debug_assert!</span>(index &lt; <span class="self">self</span>.len());
         <span class="comment">// Since `index` must be strictly less than `self.len` and `index` is at least zero,
         // `self.len` must be at least one. Thus, this cannot underflow.
@@ -910,8 +1009,8 @@
         <span class="self">self</span>.len = new_len;
         <span class="comment">// Cannot use get_unchecked here as this is technically out of bounds after changing len.
         // SAFETY:
-        // - `new_len` is less than the old len, so it must fit in this vector&#39;s allocation.
-        // - `size` is a multiple of the erased type&#39;s alignment,
+        // - `new_len` is less than the old len, so it must fit in this vector's allocation.
+        // - `size` is a multiple of the erased type's alignment,
         //   so adding a multiple of `size` will preserve alignment.
         </span><span class="self">self</span>.get_ptr_mut().byte_add(new_len * size).promote()
     }
@@ -921,10 +1020,10 @@
     /// The removed element is replaced by the last element of the `BlobVec`.
     ///
     /// # Safety
-    /// It is the caller&#39;s responsibility to ensure that `index` is &lt; `self.len()`
+    /// It is the caller's responsibility to ensure that `index` is &lt; `self.len()`
     /// and that `self[index]` has been properly initialized.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub unsafe fn </span>swap_remove_unchecked(<span class="kw-2">&amp;mut </span><span class="self">self</span>, index: usize, ptr: PtrMut&lt;<span class="lifetime">&#39;_</span>&gt;) {
+    </span><span class="kw">pub unsafe fn </span>swap_remove_unchecked(<span class="kw-2">&amp;mut </span><span class="self">self</span>, index: usize, ptr: PtrMut&lt;<span class="lifetime">'_</span>&gt;) {
         <span class="macro">debug_assert!</span>(index &lt; <span class="self">self</span>.len());
         <span class="kw">let </span>last = <span class="self">self</span>.get_unchecked_mut(<span class="self">self</span>.len - <span class="number">1</span>).as_ptr();
         <span class="kw">let </span>target = <span class="self">self</span>.get_unchecked_mut(index).as_ptr();
@@ -943,29 +1042,29 @@
     /// The removed element is replaced by the last element of the `BlobVec`.
     ///
     /// # Safety
-    /// It is the caller&#39;s responsibility to ensure that `index` is &lt; self.len()
+    /// It is the caller's responsibility to ensure that `index` is `&lt; self.len()`.
     </span><span class="attr">#[inline]
     </span><span class="kw">pub unsafe fn </span>swap_remove_and_drop_unchecked(<span class="kw-2">&amp;mut </span><span class="self">self</span>, index: usize) {
         <span class="macro">debug_assert!</span>(index &lt; <span class="self">self</span>.len());
         <span class="kw">let </span>drop = <span class="self">self</span>.drop;
         <span class="kw">let </span>value = <span class="self">self</span>.swap_remove_and_forget_unchecked(index);
         <span class="kw">if let </span><span class="prelude-val">Some</span>(drop) = drop {
-            (drop)(value);
+            drop(value);
         }
     }
 
     <span class="doccomment">/// Returns a reference to the element at `index`, without doing bounds checking.
     ///
     /// # Safety
-    /// It is the caller&#39;s responsibility to ensure that `index &lt; self.len()`.
+    /// It is the caller's responsibility to ensure that `index &lt; self.len()`.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub unsafe fn </span>get_unchecked(<span class="kw-2">&amp;</span><span class="self">self</span>, index: usize) -&gt; Ptr&lt;<span class="lifetime">&#39;_</span>&gt; {
+    </span><span class="kw">pub unsafe fn </span>get_unchecked(<span class="kw-2">&amp;</span><span class="self">self</span>, index: usize) -&gt; Ptr&lt;<span class="lifetime">'_</span>&gt; {
         <span class="macro">debug_assert!</span>(index &lt; <span class="self">self</span>.len());
         <span class="kw">let </span>size = <span class="self">self</span>.item_layout.size();
         <span class="comment">// SAFETY:
         // - The caller ensures that `index` fits in this vector,
         //   so this operation will not overflow the original allocation.
-        // - `size` is a multiple of the erased type&#39;s alignment,
+        // - `size` is a multiple of the erased type's alignment,
         //  so adding a multiple of `size` will preserve alignment.
         </span><span class="self">self</span>.get_ptr().byte_add(index * size)
     }
@@ -973,30 +1072,30 @@
     <span class="doccomment">/// Returns a mutable reference to the element at `index`, without doing bounds checking.
     ///
     /// # Safety
-    /// It is the caller&#39;s responsibility to ensure that `index &lt; self.len()`.
+    /// It is the caller's responsibility to ensure that `index &lt; self.len()`.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub unsafe fn </span>get_unchecked_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>, index: usize) -&gt; PtrMut&lt;<span class="lifetime">&#39;_</span>&gt; {
+    </span><span class="kw">pub unsafe fn </span>get_unchecked_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>, index: usize) -&gt; PtrMut&lt;<span class="lifetime">'_</span>&gt; {
         <span class="macro">debug_assert!</span>(index &lt; <span class="self">self</span>.len());
         <span class="kw">let </span>size = <span class="self">self</span>.item_layout.size();
         <span class="comment">// SAFETY:
         // - The caller ensures that `index` fits in this vector,
         //   so this operation will not overflow the original allocation.
-        // - `size` is a multiple of the erased type&#39;s alignment,
+        // - `size` is a multiple of the erased type's alignment,
         //  so adding a multiple of `size` will preserve alignment.
         </span><span class="self">self</span>.get_ptr_mut().byte_add(index * size)
     }
 
     <span class="doccomment">/// Gets a [`Ptr`] to the start of the vec
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>get_ptr(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Ptr&lt;<span class="lifetime">&#39;_</span>&gt; {
-        <span class="comment">// SAFETY: the inner data will remain valid for as long as &#39;self.
+    </span><span class="kw">pub fn </span>get_ptr(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Ptr&lt;<span class="lifetime">'_</span>&gt; {
+        <span class="comment">// SAFETY: the inner data will remain valid for as long as 'self.
         </span><span class="kw">unsafe </span>{ Ptr::new(<span class="self">self</span>.data) }
     }
 
     <span class="doccomment">/// Gets a [`PtrMut`] to the start of the vec
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>get_ptr_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; PtrMut&lt;<span class="lifetime">&#39;_</span>&gt; {
-        <span class="comment">// SAFETY: the inner data will remain valid for as long as &#39;self.
+    </span><span class="kw">pub fn </span>get_ptr_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; PtrMut&lt;<span class="lifetime">'_</span>&gt; {
+        <span class="comment">// SAFETY: the inner data will remain valid for as long as 'self.
         </span><span class="kw">unsafe </span>{ PtrMut::new(<span class="self">self</span>.data) }
     }
 
@@ -1005,7 +1104,7 @@
     /// # Safety
     /// The type `T` must be the type of the items in this [`BlobVec`].
     </span><span class="kw">pub unsafe fn </span>get_slice&lt;T&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[UnsafeCell&lt;T&gt;] {
-        <span class="comment">// SAFETY: the inner data will remain valid for as long as &#39;self.
+        <span class="comment">// SAFETY: the inner data will remain valid for as long as 'self.
         </span>std::slice::from_raw_parts(<span class="self">self</span>.data.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span>UnsafeCell&lt;T&gt;, <span class="self">self</span>.len)
     }
 
@@ -1014,7 +1113,7 @@
     /// Note that this method has no effect on the allocated capacity of the vector.
     </span><span class="kw">pub fn </span>clear(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
         <span class="kw">let </span>len = <span class="self">self</span>.len;
-        <span class="comment">// We set len to 0 _before_ dropping elements for unwind safety. This ensures we don&#39;t
+        <span class="comment">// We set len to 0 _before_ dropping elements for unwind safety. This ensures we don't
         // accidentally drop elements twice in the event of a drop impl panicking.
         </span><span class="self">self</span>.len = <span class="number">0</span>;
         <span class="kw">if let </span><span class="prelude-val">Some</span>(drop) = <span class="self">self</span>.drop {
@@ -1022,7 +1121,7 @@
             <span class="kw">for </span>i <span class="kw">in </span><span class="number">0</span>..len {
                 <span class="comment">// SAFETY:
                 // * 0 &lt;= `i` &lt; `len`, so `i * size` must be in bounds for the allocation.
-                // * `size` is a multiple of the erased type&#39;s alignment,
+                // * `size` is a multiple of the erased type's alignment,
                 //   so adding a multiple of `size` will preserve alignment.
                 // * The item is left unreachable so it can be safely promoted to an `OwningPtr`.
                 // NOTE: `self.get_unchecked_mut(i)` cannot be used here, since the `debug_assert`
@@ -1039,7 +1138,7 @@
     <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
         <span class="self">self</span>.clear();
         <span class="kw">let </span>array_layout =
-            array_layout(<span class="kw-2">&amp;</span><span class="self">self</span>.item_layout, <span class="self">self</span>.capacity).expect(<span class="string">&quot;array layout should be valid&quot;</span>);
+            array_layout(<span class="kw-2">&amp;</span><span class="self">self</span>.item_layout, <span class="self">self</span>.capacity).expect(<span class="string">"array layout should be valid"</span>);
         <span class="kw">if </span>array_layout.size() &gt; <span class="number">0 </span>{
             <span class="comment">// SAFETY: data ptr layout is correct, swap_scratch ptr layout is correct
             </span><span class="kw">unsafe </span>{
@@ -1109,10 +1208,10 @@
     </span><span class="kw">use crate</span>::{component::Component, ptr::OwningPtr, world::World};
 
     <span class="kw">use </span><span class="kw">super</span>::BlobVec;
-    <span class="kw">use </span>std::{alloc::Layout, cell::RefCell, rc::Rc};
+    <span class="kw">use </span>std::{alloc::Layout, cell::RefCell, mem, rc::Rc};
 
     <span class="comment">// SAFETY: The pointer points to a valid value of type `T` and it is safe to drop this value.
-    </span><span class="kw">unsafe fn </span>drop_ptr&lt;T&gt;(x: OwningPtr&lt;<span class="lifetime">&#39;_</span>&gt;) {
+    </span><span class="kw">unsafe fn </span>drop_ptr&lt;T&gt;(x: OwningPtr&lt;<span class="lifetime">'_</span>&gt;) {
         x.drop_as::&lt;T&gt;();
     }
 
@@ -1146,7 +1245,7 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>resize_test() {
         <span class="kw">let </span>item_layout = Layout::new::&lt;usize&gt;();
-        <span class="comment">// SAFETY: `drop` fn is `None`, usize doesn&#39;t need dropping
+        <span class="comment">// SAFETY: `drop` fn is `None`, usize doesn't need dropping
         </span><span class="kw">let </span><span class="kw-2">mut </span>blob_vec = <span class="kw">unsafe </span>{ BlobVec::new(item_layout, <span class="prelude-val">None</span>, <span class="number">64</span>) };
         <span class="comment">// SAFETY: `i` is a usize, i.e. the type corresponding to `item_layout`
         </span><span class="kw">unsafe </span>{
@@ -1156,7 +1255,7 @@
         }
 
         <span class="macro">assert_eq!</span>(blob_vec.len(), <span class="number">1_000</span>);
-        <span class="macro">assert_eq!</span>(blob_vec.capacity(), <span class="number">1_000</span>);
+        <span class="macro">assert_eq!</span>(blob_vec.capacity(), <span class="number">1_024</span>);
     }
 
     <span class="attr">#[derive(Debug, Eq, PartialEq, Clone)]
@@ -1182,12 +1281,12 @@
             </span><span class="kw">let </span><span class="kw-2">mut </span>blob_vec = <span class="kw">unsafe </span>{ BlobVec::new(item_layout, <span class="prelude-val">Some</span>(drop), <span class="number">2</span>) };
             <span class="macro">assert_eq!</span>(blob_vec.capacity(), <span class="number">2</span>);
             <span class="comment">// SAFETY: the following code only deals with values of type `Foo`, which satisfies the safety requirement of `push`, `get_mut` and `swap_remove` that the
-            // values have a layout compatible to the blob vec&#39;s `item_layout`.
+            // values have a layout compatible to the blob vec's `item_layout`.
             // Every index is in range.
             </span><span class="kw">unsafe </span>{
                 <span class="kw">let </span>foo1 = Foo {
                     a: <span class="number">42</span>,
-                    b: <span class="string">&quot;abc&quot;</span>.to_string(),
+                    b: <span class="string">"abc"</span>.to_string(),
                     drop_counter: drop_counter.clone(),
                 };
                 push(<span class="kw-2">&amp;mut </span>blob_vec, foo1.clone());
@@ -1196,7 +1295,7 @@
 
                 <span class="kw">let </span><span class="kw-2">mut </span>foo2 = Foo {
                     a: <span class="number">7</span>,
-                    b: <span class="string">&quot;xyz&quot;</span>.to_string(),
+                    b: <span class="string">"xyz"</span>.to_string(),
                     drop_counter: drop_counter.clone(),
                 };
                 push::&lt;Foo&gt;(<span class="kw-2">&amp;mut </span>blob_vec, foo2.clone());
@@ -1210,25 +1309,25 @@
 
                 <span class="kw">let </span>foo3 = Foo {
                     a: <span class="number">16</span>,
-                    b: <span class="string">&quot;123&quot;</span>.to_string(),
+                    b: <span class="string">"123"</span>.to_string(),
                     drop_counter: drop_counter.clone(),
                 };
 
                 push(<span class="kw-2">&amp;mut </span>blob_vec, foo3.clone());
                 <span class="macro">assert_eq!</span>(blob_vec.len(), <span class="number">3</span>);
-                <span class="macro">assert_eq!</span>(blob_vec.capacity(), <span class="number">3</span>);
+                <span class="macro">assert_eq!</span>(blob_vec.capacity(), <span class="number">4</span>);
 
                 <span class="kw">let </span>last_index = blob_vec.len() - <span class="number">1</span>;
                 <span class="kw">let </span>value = swap_remove::&lt;Foo&gt;(<span class="kw-2">&amp;mut </span>blob_vec, last_index);
                 <span class="macro">assert_eq!</span>(foo3, value);
 
                 <span class="macro">assert_eq!</span>(blob_vec.len(), <span class="number">2</span>);
-                <span class="macro">assert_eq!</span>(blob_vec.capacity(), <span class="number">3</span>);
+                <span class="macro">assert_eq!</span>(blob_vec.capacity(), <span class="number">4</span>);
 
                 <span class="kw">let </span>value = swap_remove::&lt;Foo&gt;(<span class="kw-2">&amp;mut </span>blob_vec, <span class="number">0</span>);
                 <span class="macro">assert_eq!</span>(foo1, value);
                 <span class="macro">assert_eq!</span>(blob_vec.len(), <span class="number">1</span>);
-                <span class="macro">assert_eq!</span>(blob_vec.capacity(), <span class="number">3</span>);
+                <span class="macro">assert_eq!</span>(blob_vec.capacity(), <span class="number">4</span>);
 
                 foo2.a = <span class="number">8</span>;
                 <span class="macro">assert_eq!</span>(get_mut::&lt;Foo&gt;(<span class="kw-2">&amp;mut </span>blob_vec, <span class="number">0</span>), <span class="kw-2">&amp;</span>foo2);
@@ -1244,6 +1343,48 @@
         <span class="kw">let </span>drop = drop_ptr::&lt;Foo&gt;;
         <span class="comment">// SAFETY: drop is able to drop a value of its `item_layout`
         </span><span class="kw">let _ </span>= <span class="kw">unsafe </span>{ BlobVec::new(item_layout, <span class="prelude-val">Some</span>(drop), <span class="number">0</span>) };
+    }
+
+    <span class="attr">#[test]
+    #[should_panic(expected = <span class="string">"capacity overflow"</span>)]
+    </span><span class="kw">fn </span>blob_vec_zst_size_overflow() {
+        <span class="comment">// SAFETY: no drop is correct drop for `()`.
+        </span><span class="kw">let </span><span class="kw-2">mut </span>blob_vec = <span class="kw">unsafe </span>{ BlobVec::new(Layout::new::&lt;()&gt;(), <span class="prelude-val">None</span>, <span class="number">0</span>) };
+
+        <span class="macro">assert_eq!</span>(usize::MAX, blob_vec.capacity(), <span class="string">"Self-check"</span>);
+
+        <span class="comment">// SAFETY: Because `()` is a ZST trivial drop type, and because `BlobVec` capacity
+        //   is always `usize::MAX` for ZSTs, we can arbitrarily set the length
+        //   and still be sound.
+        </span><span class="kw">unsafe </span>{
+            blob_vec.set_len(usize::MAX);
+        }
+
+        <span class="comment">// SAFETY: `BlobVec` was initialized for `()`, so it is safe to push `()` to it.
+        </span><span class="kw">unsafe </span>{
+            OwningPtr::make((), |ptr| {
+                <span class="comment">// This should panic because len is usize::MAX, remaining capacity is 0.
+                </span>blob_vec.push(ptr);
+            });
+        }
+    }
+
+    <span class="attr">#[test]
+    #[should_panic(expected = <span class="string">"capacity overflow"</span>)]
+    </span><span class="kw">fn </span>blob_vec_capacity_overflow() {
+        <span class="comment">// SAFETY: no drop is correct drop for `u32`.
+        </span><span class="kw">let </span><span class="kw-2">mut </span>blob_vec = <span class="kw">unsafe </span>{ BlobVec::new(Layout::new::&lt;u32&gt;(), <span class="prelude-val">None</span>, <span class="number">0</span>) };
+
+        <span class="macro">assert_eq!</span>(<span class="number">0</span>, blob_vec.capacity(), <span class="string">"Self-check"</span>);
+
+        OwningPtr::make(<span class="number">17u32</span>, |ptr| {
+            <span class="comment">// SAFETY: we push the value of correct type.
+            </span><span class="kw">unsafe </span>{
+                blob_vec.push(ptr);
+            }
+        });
+
+        blob_vec.reserve_exact(usize::MAX);
     }
 
     <span class="attr">#[test]
@@ -1263,7 +1404,9 @@
         <span class="kw">let </span><span class="kw-2">mut </span>count = <span class="number">0</span>;
 
         <span class="kw">let </span><span class="kw-2">mut </span>q = world.query::&lt;<span class="kw-2">&amp;</span>Zst&gt;();
-        <span class="kw">for </span><span class="kw-2">&amp;</span>Zst <span class="kw">in </span>q.iter(<span class="kw-2">&amp;</span>world) {
+        <span class="kw">for </span>zst <span class="kw">in </span>q.iter(<span class="kw-2">&amp;</span>world) {
+            <span class="comment">// Ensure that the references returned are properly aligned.
+            </span><span class="macro">assert_eq!</span>(zst <span class="kw">as </span><span class="kw-2">*const </span>Zst <span class="kw">as </span>usize % mem::align_of::&lt;Zst&gt;(), <span class="number">0</span>);
             count += <span class="number">1</span>;
         }
 

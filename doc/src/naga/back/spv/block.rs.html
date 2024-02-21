@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/naga-0.13.0/src/back/spv/block.rs`."><title>block.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="naga" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../../naga/index.html"><img class="rust-logo" src="../../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/naga-0.19.0/src/back/spv/block.rs`."><title>block.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="naga" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -2339,6 +2340,33 @@
 <a href="#2339" id="2339">2339</a>
 <a href="#2340" id="2340">2340</a>
 <a href="#2341" id="2341">2341</a>
+<a href="#2342" id="2342">2342</a>
+<a href="#2343" id="2343">2343</a>
+<a href="#2344" id="2344">2344</a>
+<a href="#2345" id="2345">2345</a>
+<a href="#2346" id="2346">2346</a>
+<a href="#2347" id="2347">2347</a>
+<a href="#2348" id="2348">2348</a>
+<a href="#2349" id="2349">2349</a>
+<a href="#2350" id="2350">2350</a>
+<a href="#2351" id="2351">2351</a>
+<a href="#2352" id="2352">2352</a>
+<a href="#2353" id="2353">2353</a>
+<a href="#2354" id="2354">2354</a>
+<a href="#2355" id="2355">2355</a>
+<a href="#2356" id="2356">2356</a>
+<a href="#2357" id="2357">2357</a>
+<a href="#2358" id="2358">2358</a>
+<a href="#2359" id="2359">2359</a>
+<a href="#2360" id="2360">2360</a>
+<a href="#2361" id="2361">2361</a>
+<a href="#2362" id="2362">2362</a>
+<a href="#2363" id="2363">2363</a>
+<a href="#2364" id="2364">2364</a>
+<a href="#2365" id="2365">2365</a>
+<a href="#2366" id="2366">2366</a>
+<a href="#2367" id="2367">2367</a>
+<a href="#2368" id="2368">2368</a>
 </pre></div><pre class="rust"><code><span class="doccomment">/*!
 Implementations for `BlockContext` methods.
 */
@@ -2353,7 +2381,7 @@ Implementations for `BlockContext` methods.
 
 <span class="kw">fn </span>get_dimension(type_inner: <span class="kw-2">&amp;</span><span class="kw">crate</span>::TypeInner) -&gt; Dimension {
     <span class="kw">match </span><span class="kw-2">*</span>type_inner {
-        <span class="kw">crate</span>::TypeInner::Scalar { .. } =&gt; Dimension::Scalar,
+        <span class="kw">crate</span>::TypeInner::Scalar(<span class="kw">_</span>) =&gt; Dimension::Scalar,
         <span class="kw">crate</span>::TypeInner::Vector { .. } =&gt; Dimension::Vector,
         <span class="kw">crate</span>::TypeInner::Matrix { .. } =&gt; Dimension::Matrix,
         <span class="kw">_ </span>=&gt; <span class="macro">unreachable!</span>(),
@@ -2364,14 +2392,14 @@ Implementations for `BlockContext` methods.
 ///
 /// On success, `write_expression_pointer` returns one of these.
 </span><span class="kw">enum </span>ExpressionPointer {
-    <span class="doccomment">/// The pointer to the expression&#39;s value is available, as the value of the
+    <span class="doccomment">/// The pointer to the expression's value is available, as the value of the
     /// expression with the given id.
     </span>Ready { pointer_id: Word },
 
     <span class="doccomment">/// The access expression must be conditional on the value of `condition`, a boolean
     /// expression that is true if all indices are in bounds. If `condition` is true, then
     /// `access` is an `OpAccessChain` instruction that will compute a pointer to the
-    /// expression&#39;s value. If `condition` is false, then executing `access` would be
+    /// expression's value. If `condition` is false, then executing `access` would be
     /// undefined behavior.
     </span>Conditional {
         condition: Word,
@@ -2402,8 +2430,8 @@ Implementations for `BlockContext` methods.
 }
 
 <span class="attr">#[derive(Debug)]
-</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct </span>DebugInfoInner&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="kw">pub </span>source_code: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str,
+</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct </span>DebugInfoInner&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="kw">pub </span>source_code: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>str,
     <span class="kw">pub </span>source_file_id: Word,
 }
 
@@ -2419,8 +2447,7 @@ Implementations for `BlockContext` methods.
     ) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt; {
         <span class="kw">let </span>float_ptr_type_id = <span class="self">self</span>.get_type_id(LookupType::Local(LocalType::Value {
             vector_size: <span class="prelude-val">None</span>,
-            kind: <span class="kw">crate</span>::ScalarKind::Float,
-            width: <span class="number">4</span>,
+            scalar: <span class="kw">crate</span>::Scalar::F32,
             pointer_space: <span class="prelude-val">Some</span>(spirv::StorageClass::Output),
         }));
         <span class="kw">let </span>index_y_id = <span class="self">self</span>.get_index_constant(<span class="number">1</span>);
@@ -2434,8 +2461,7 @@ Implementations for `BlockContext` methods.
 
         <span class="kw">let </span>float_type_id = <span class="self">self</span>.get_type_id(LookupType::Local(LocalType::Value {
             vector_size: <span class="prelude-val">None</span>,
-            kind: <span class="kw">crate</span>::ScalarKind::Float,
-            width: <span class="number">4</span>,
+            scalar: <span class="kw">crate</span>::Scalar::F32,
             pointer_space: <span class="prelude-val">None</span>,
         }));
         <span class="kw">let </span>load_id = <span class="self">self</span>.id_gen.next();
@@ -2461,8 +2487,7 @@ Implementations for `BlockContext` methods.
     ) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt; {
         <span class="kw">let </span>float_type_id = <span class="self">self</span>.get_type_id(LookupType::Local(LocalType::Value {
             vector_size: <span class="prelude-val">None</span>,
-            kind: <span class="kw">crate</span>::ScalarKind::Float,
-            width: <span class="number">4</span>,
+            scalar: <span class="kw">crate</span>::Scalar::F32,
             pointer_space: <span class="prelude-val">None</span>,
         }));
         <span class="kw">let </span>zero_scalar_id = <span class="self">self</span>.get_constant_scalar(<span class="kw">crate</span>::Literal::F32(<span class="number">0.0</span>));
@@ -2531,15 +2556,15 @@ Implementations for `BlockContext` methods.
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;w</span>&gt; BlockContext&lt;<span class="lifetime">&#39;w</span>&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'w</span>&gt; BlockContext&lt;<span class="lifetime">'w</span>&gt; {
     <span class="doccomment">/// Decide whether to put off emitting instructions for `expr_handle`.
     ///
     /// We would like to gather together chains of `Access` and `AccessIndex`
     /// Naga expressions into a single `OpAccessChain` SPIR-V instruction. To do
-    /// this, we don&#39;t generate instructions for these exprs when we first
+    /// this, we don't generate instructions for these exprs when we first
     /// encounter them. Their ids in `self.writer.cached.ids` are left as zero. Then,
     /// once we encounter a `Load` or `Store` expression that actually needs the
-    /// chain&#39;s value, we call `write_expression_pointer` to handle the whole
+    /// chain's value, we call `write_expression_pointer` to handle the whole
     /// thing in one fell swoop.
     </span><span class="kw">fn </span>is_intermediate(<span class="kw-2">&amp;</span><span class="self">self</span>, expr_handle: Handle&lt;<span class="kw">crate</span>::Expression&gt;) -&gt; bool {
         <span class="kw">match </span><span class="self">self</span>.ir_function.expressions[expr_handle] {
@@ -2555,7 +2580,7 @@ Implementations for `BlockContext` methods.
                 <span class="self">self</span>.ir_module.types[arg.ty].inner.pointer_space().is_some()
             }
 
-            <span class="comment">// The chain rule: if this `Access...`&#39;s `base` operand was
+            <span class="comment">// The chain rule: if this `Access...`'s `base` operand was
             // previously omitted, then omit this one, too.
             </span><span class="kw">_ </span>=&gt; <span class="self">self</span>.cached.ids[expr_handle.index()] == <span class="number">0</span>,
         }
@@ -2583,26 +2608,55 @@ Implementations for `BlockContext` methods.
                 <span class="kw">let </span>init = <span class="self">self</span>.ir_module.constants[handle].init;
                 <span class="self">self</span>.writer.constant_ids[init.index()]
             }
-            <span class="kw">crate</span>::Expression::ZeroValue(<span class="kw">_</span>) =&gt; <span class="self">self</span>.writer.write_constant_null(result_type_id),
-            <span class="kw">crate</span>::Expression::Compose {
-                ty: <span class="kw">_</span>,
-                <span class="kw-2">ref </span>components,
-            } =&gt; {
+            <span class="kw">crate</span>::Expression::ZeroValue(<span class="kw">_</span>) =&gt; <span class="self">self</span>.writer.get_constant_null(result_type_id),
+            <span class="kw">crate</span>::Expression::Compose { ty, <span class="kw-2">ref </span>components } =&gt; {
                 <span class="self">self</span>.temp_list.clear();
-                <span class="kw">for </span><span class="kw-2">&amp;</span>component <span class="kw">in </span>components {
-                    <span class="self">self</span>.temp_list.push(<span class="self">self</span>.cached[component]);
-                }
+                <span class="kw">if </span><span class="self">self</span>.expression_constness.is_const(expr_handle) {
+                    <span class="self">self</span>.temp_list.extend(
+                        <span class="kw">crate</span>::proc::flatten_compose(
+                            ty,
+                            components,
+                            <span class="kw-2">&amp;</span><span class="self">self</span>.ir_function.expressions,
+                            <span class="kw-2">&amp;</span><span class="self">self</span>.ir_module.types,
+                        )
+                        .map(|component| <span class="self">self</span>.cached[component]),
+                    );
+                    <span class="self">self</span>.writer
+                        .get_constant_composite(LookupType::Handle(ty), <span class="kw-2">&amp;</span><span class="self">self</span>.temp_list)
+                } <span class="kw">else </span>{
+                    <span class="self">self</span>.temp_list
+                        .extend(components.iter().map(|<span class="kw-2">&amp;</span>component| <span class="self">self</span>.cached[component]));
 
-                <span class="kw">let </span>id = <span class="self">self</span>.gen_id();
-                block.body.push(Instruction::composite_construct(
-                    result_type_id,
-                    id,
-                    <span class="kw-2">&amp;</span><span class="self">self</span>.temp_list,
-                ));
-                id
+                    <span class="kw">let </span>id = <span class="self">self</span>.gen_id();
+                    block.body.push(Instruction::composite_construct(
+                        result_type_id,
+                        id,
+                        <span class="kw-2">&amp;</span><span class="self">self</span>.temp_list,
+                    ));
+                    id
+                }
+            }
+            <span class="kw">crate</span>::Expression::Splat { size, value } =&gt; {
+                <span class="kw">let </span>value_id = <span class="self">self</span>.cached[value];
+                <span class="kw">let </span>components = <span class="kw-2">&amp;</span>[value_id; <span class="number">4</span>][..size <span class="kw">as </span>usize];
+
+                <span class="kw">if </span><span class="self">self</span>.expression_constness.is_const(expr_handle) {
+                    <span class="kw">let </span>ty = <span class="self">self
+                        </span>.writer
+                        .get_expression_lookup_type(<span class="kw-2">&amp;</span><span class="self">self</span>.fun_info[expr_handle].ty);
+                    <span class="self">self</span>.writer.get_constant_composite(ty, components)
+                } <span class="kw">else </span>{
+                    <span class="kw">let </span>id = <span class="self">self</span>.gen_id();
+                    block.body.push(Instruction::composite_construct(
+                        result_type_id,
+                        id,
+                        components,
+                    ));
+                    id
+                }
             }
             <span class="kw">crate</span>::Expression::Access { base, index: <span class="kw">_ </span>} <span class="kw">if </span><span class="self">self</span>.is_intermediate(base) =&gt; {
-                <span class="comment">// See `is_intermediate`; we&#39;ll handle this later in
+                <span class="comment">// See `is_intermediate`; we'll handle this later in
                 // `write_expression_pointer`.
                 </span><span class="number">0
             </span>}
@@ -2612,7 +2666,8 @@ Implementations for `BlockContext` methods.
                     <span class="kw">crate</span>::TypeInner::Vector { .. } =&gt; {
                         <span class="self">self</span>.write_vector_access(expr_handle, base, index, block)<span class="question-mark">?
                     </span>}
-                    <span class="kw">crate</span>::TypeInner::BindingArray {
+                    <span class="comment">// Only binding arrays in the Handle address space will take this path (due to `is_intermediate`)
+                    </span><span class="kw">crate</span>::TypeInner::BindingArray {
                         base: binding_type, ..
                     } =&gt; {
                         <span class="kw">let </span>space = <span class="kw">match </span><span class="self">self</span>.ir_function.expressions[base] {
@@ -2634,7 +2689,7 @@ Implementations for `BlockContext` methods.
                             ExpressionPointer::Ready { pointer_id } =&gt; pointer_id,
                             ExpressionPointer::Conditional { .. } =&gt; {
                                 <span class="kw">return </span><span class="prelude-val">Err</span>(Error::FeatureNotImplemented(
-                                    <span class="string">&quot;Texture array out-of-bounds handling&quot;</span>,
+                                    <span class="string">"Texture array out-of-bounds handling"</span>,
                                 ));
                             }
                         };
@@ -2649,22 +2704,30 @@ Implementations for `BlockContext` methods.
                             <span class="prelude-val">None</span>,
                         ));
 
+                        <span class="comment">// Subsequent image operations require the image/sampler to be decorated as NonUniform
+                        // if the image/sampler binding array was accessed with a non-uniform index
+                        // see VUID-RuntimeSpirv-NonUniform-06274
+                        </span><span class="kw">if </span><span class="self">self</span>.fun_info[index].uniformity.non_uniform_result.is_some() {
+                            <span class="self">self</span>.writer
+                                .decorate_non_uniform_binding_array_access(load_id)<span class="question-mark">?</span>;
+                        }
+
                         load_id
                     }
                     <span class="kw-2">ref </span>other =&gt; {
                         <span class="macro">log::error!</span>(
-                            <span class="string">&quot;Unable to access base {:?} of type {:?}&quot;</span>,
+                            <span class="string">"Unable to access base {:?} of type {:?}"</span>,
                             <span class="self">self</span>.ir_function.expressions[base],
                             other
                         );
                         <span class="kw">return </span><span class="prelude-val">Err</span>(Error::Validation(
-                            <span class="string">&quot;only vectors may be dynamically indexed by value&quot;</span>,
+                            <span class="string">"only vectors may be dynamically indexed by value"</span>,
                         ));
                     }
                 }
             }
             <span class="kw">crate</span>::Expression::AccessIndex { base, index: <span class="kw">_ </span>} <span class="kw">if </span><span class="self">self</span>.is_intermediate(base) =&gt; {
-                <span class="comment">// See `is_intermediate`; we&#39;ll handle this later in
+                <span class="comment">// See `is_intermediate`; we'll handle this later in
                 // `write_expression_pointer`.
                 </span><span class="number">0
             </span>}
@@ -2676,7 +2739,7 @@ Implementations for `BlockContext` methods.
                     | <span class="kw">crate</span>::TypeInner::Struct { .. } =&gt; {
                         <span class="comment">// We never need bounds checks here: dynamically sized arrays can
                         // only appear behind pointers, and are thus handled by the
-                        // `is_intermediate` case above. Everything else&#39;s size is
+                        // `is_intermediate` case above. Everything else's size is
                         // statically known and checked in validation.
                         </span><span class="kw">let </span>id = <span class="self">self</span>.gen_id();
                         <span class="kw">let </span>base_id = <span class="self">self</span>.cached[base];
@@ -2688,7 +2751,8 @@ Implementations for `BlockContext` methods.
                         ));
                         id
                     }
-                    <span class="kw">crate</span>::TypeInner::BindingArray {
+                    <span class="comment">// Only binding arrays in the Handle address space will take this path (due to `is_intermediate`)
+                    </span><span class="kw">crate</span>::TypeInner::BindingArray {
                         base: binding_type, ..
                     } =&gt; {
                         <span class="kw">let </span>space = <span class="kw">match </span><span class="self">self</span>.ir_function.expressions[base] {
@@ -2710,7 +2774,7 @@ Implementations for `BlockContext` methods.
                             ExpressionPointer::Ready { pointer_id } =&gt; pointer_id,
                             ExpressionPointer::Conditional { .. } =&gt; {
                                 <span class="kw">return </span><span class="prelude-val">Err</span>(Error::FeatureNotImplemented(
-                                    <span class="string">&quot;Texture array out-of-bounds handling&quot;</span>,
+                                    <span class="string">"Texture array out-of-bounds handling"</span>,
                                 ));
                             }
                         };
@@ -2728,24 +2792,13 @@ Implementations for `BlockContext` methods.
                         load_id
                     }
                     <span class="kw-2">ref </span>other =&gt; {
-                        <span class="macro">log::error!</span>(<span class="string">&quot;Unable to access index of {:?}&quot;</span>, other);
-                        <span class="kw">return </span><span class="prelude-val">Err</span>(Error::FeatureNotImplemented(<span class="string">&quot;access index for type&quot;</span>));
+                        <span class="macro">log::error!</span>(<span class="string">"Unable to access index of {:?}"</span>, other);
+                        <span class="kw">return </span><span class="prelude-val">Err</span>(Error::FeatureNotImplemented(<span class="string">"access index for type"</span>));
                     }
                 }
             }
             <span class="kw">crate</span>::Expression::GlobalVariable(handle) =&gt; {
                 <span class="self">self</span>.writer.global_variables[handle.index()].access_id
-            }
-            <span class="kw">crate</span>::Expression::Splat { size, value } =&gt; {
-                <span class="kw">let </span>value_id = <span class="self">self</span>.cached[value];
-                <span class="kw">let </span>components = [value_id; <span class="number">4</span>];
-                <span class="kw">let </span>id = <span class="self">self</span>.gen_id();
-                block.body.push(Instruction::composite_construct(
-                    result_type_id,
-                    id,
-                    <span class="kw-2">&amp;</span>components[..size <span class="kw">as </span>usize],
-                ));
-                id
             }
             <span class="kw">crate</span>::Expression::Swizzle {
                 size,
@@ -2776,16 +2829,10 @@ Implementations for `BlockContext` methods.
                     <span class="kw">crate</span>::UnaryOperator::Negate =&gt; <span class="kw">match </span>expr_ty_inner.scalar_kind() {
                         <span class="prelude-val">Some</span>(<span class="kw">crate</span>::ScalarKind::Float) =&gt; spirv::Op::FNegate,
                         <span class="prelude-val">Some</span>(<span class="kw">crate</span>::ScalarKind::Sint) =&gt; spirv::Op::SNegate,
-                        <span class="prelude-val">Some</span>(<span class="kw">crate</span>::ScalarKind::Bool) =&gt; spirv::Op::LogicalNot,
-                        <span class="prelude-val">Some</span>(<span class="kw">crate</span>::ScalarKind::Uint) | <span class="prelude-val">None </span>=&gt; {
-                            <span class="macro">log::error!</span>(<span class="string">&quot;Unable to negate {:?}&quot;</span>, expr_ty_inner);
-                            <span class="kw">return </span><span class="prelude-val">Err</span>(Error::FeatureNotImplemented(<span class="string">&quot;negation&quot;</span>));
-                        }
+                        <span class="kw">_ </span>=&gt; <span class="kw">return </span><span class="prelude-val">Err</span>(Error::Validation(<span class="string">"Unexpected kind for negation"</span>)),
                     },
-                    <span class="kw">crate</span>::UnaryOperator::Not =&gt; <span class="kw">match </span>expr_ty_inner.scalar_kind() {
-                        <span class="prelude-val">Some</span>(<span class="kw">crate</span>::ScalarKind::Bool) =&gt; spirv::Op::LogicalNot,
-                        <span class="kw">_ </span>=&gt; spirv::Op::Not,
-                    },
+                    <span class="kw">crate</span>::UnaryOperator::LogicalNot =&gt; spirv::Op::LogicalNot,
+                    <span class="kw">crate</span>::UnaryOperator::BitwiseNot =&gt; spirv::Op::Not,
                 };
 
                 block
@@ -2808,15 +2855,15 @@ Implementations for `BlockContext` methods.
 
                 <span class="kw">let </span>spirv_op = <span class="kw">match </span>op {
                     <span class="kw">crate</span>::BinaryOperator::Add =&gt; <span class="kw">match </span><span class="kw-2">*</span>left_ty_inner {
-                        <span class="kw">crate</span>::TypeInner::Scalar { kind, .. }
-                        | <span class="kw">crate</span>::TypeInner::Vector { kind, .. } =&gt; <span class="kw">match </span>kind {
+                        <span class="kw">crate</span>::TypeInner::Scalar(scalar)
+                        | <span class="kw">crate</span>::TypeInner::Vector { scalar, .. } =&gt; <span class="kw">match </span>scalar.kind {
                             <span class="kw">crate</span>::ScalarKind::Float =&gt; spirv::Op::FAdd,
                             <span class="kw">_ </span>=&gt; spirv::Op::IAdd,
                         },
                         <span class="kw">crate</span>::TypeInner::Matrix {
                             columns,
                             rows,
-                            width,
+                            scalar,
                         } =&gt; {
                             <span class="self">self</span>.write_matrix_matrix_column_op(
                                 block,
@@ -2826,7 +2873,7 @@ Implementations for `BlockContext` methods.
                                 right_id,
                                 columns,
                                 rows,
-                                width,
+                                scalar.width,
                                 spirv::Op::FAdd,
                             );
 
@@ -2836,15 +2883,15 @@ Implementations for `BlockContext` methods.
                         <span class="kw">_ </span>=&gt; <span class="macro">unimplemented!</span>(),
                     },
                     <span class="kw">crate</span>::BinaryOperator::Subtract =&gt; <span class="kw">match </span><span class="kw-2">*</span>left_ty_inner {
-                        <span class="kw">crate</span>::TypeInner::Scalar { kind, .. }
-                        | <span class="kw">crate</span>::TypeInner::Vector { kind, .. } =&gt; <span class="kw">match </span>kind {
+                        <span class="kw">crate</span>::TypeInner::Scalar(scalar)
+                        | <span class="kw">crate</span>::TypeInner::Vector { scalar, .. } =&gt; <span class="kw">match </span>scalar.kind {
                             <span class="kw">crate</span>::ScalarKind::Float =&gt; spirv::Op::FSub,
                             <span class="kw">_ </span>=&gt; spirv::Op::ISub,
                         },
                         <span class="kw">crate</span>::TypeInner::Matrix {
                             columns,
                             rows,
-                            width,
+                            scalar,
                         } =&gt; {
                             <span class="self">self</span>.write_matrix_matrix_column_op(
                                 block,
@@ -2854,7 +2901,7 @@ Implementations for `BlockContext` methods.
                                 right_id,
                                 columns,
                                 rows,
-                                width,
+                                scalar.width,
                                 spirv::Op::FSub,
                             );
 
@@ -3038,42 +3085,41 @@ Implementations for `BlockContext` methods.
                                     arg0_id,
                                 ))
                             }
-                            other =&gt; <span class="macro">unimplemented!</span>(<span class="string">&quot;Unexpected abs({:?})&quot;</span>, other),
+                            other =&gt; <span class="macro">unimplemented!</span>(<span class="string">"Unexpected abs({:?})"</span>, other),
                         }
                     }
                     Mf::Min =&gt; MathOp::Ext(<span class="kw">match </span>arg_scalar_kind {
                         <span class="prelude-val">Some</span>(<span class="kw">crate</span>::ScalarKind::Float) =&gt; spirv::GLOp::FMin,
                         <span class="prelude-val">Some</span>(<span class="kw">crate</span>::ScalarKind::Sint) =&gt; spirv::GLOp::SMin,
                         <span class="prelude-val">Some</span>(<span class="kw">crate</span>::ScalarKind::Uint) =&gt; spirv::GLOp::UMin,
-                        other =&gt; <span class="macro">unimplemented!</span>(<span class="string">&quot;Unexpected min({:?})&quot;</span>, other),
+                        other =&gt; <span class="macro">unimplemented!</span>(<span class="string">"Unexpected min({:?})"</span>, other),
                     }),
                     Mf::Max =&gt; MathOp::Ext(<span class="kw">match </span>arg_scalar_kind {
                         <span class="prelude-val">Some</span>(<span class="kw">crate</span>::ScalarKind::Float) =&gt; spirv::GLOp::FMax,
                         <span class="prelude-val">Some</span>(<span class="kw">crate</span>::ScalarKind::Sint) =&gt; spirv::GLOp::SMax,
                         <span class="prelude-val">Some</span>(<span class="kw">crate</span>::ScalarKind::Uint) =&gt; spirv::GLOp::UMax,
-                        other =&gt; <span class="macro">unimplemented!</span>(<span class="string">&quot;Unexpected max({:?})&quot;</span>, other),
+                        other =&gt; <span class="macro">unimplemented!</span>(<span class="string">"Unexpected max({:?})"</span>, other),
                     }),
                     Mf::Clamp =&gt; MathOp::Ext(<span class="kw">match </span>arg_scalar_kind {
                         <span class="prelude-val">Some</span>(<span class="kw">crate</span>::ScalarKind::Float) =&gt; spirv::GLOp::FClamp,
                         <span class="prelude-val">Some</span>(<span class="kw">crate</span>::ScalarKind::Sint) =&gt; spirv::GLOp::SClamp,
                         <span class="prelude-val">Some</span>(<span class="kw">crate</span>::ScalarKind::Uint) =&gt; spirv::GLOp::UClamp,
-                        other =&gt; <span class="macro">unimplemented!</span>(<span class="string">&quot;Unexpected max({:?})&quot;</span>, other),
+                        other =&gt; <span class="macro">unimplemented!</span>(<span class="string">"Unexpected max({:?})"</span>, other),
                     }),
                     Mf::Saturate =&gt; {
-                        <span class="kw">let </span>(maybe_size, width) = <span class="kw">match </span><span class="kw-2">*</span>arg_ty {
-                            <span class="kw">crate</span>::TypeInner::Vector { size, width, .. } =&gt; (<span class="prelude-val">Some</span>(size), width),
-                            <span class="kw">crate</span>::TypeInner::Scalar { width, .. } =&gt; (<span class="prelude-val">None</span>, width),
-                            <span class="kw-2">ref </span>other =&gt; <span class="macro">unimplemented!</span>(<span class="string">&quot;Unexpected saturate({:?})&quot;</span>, other),
+                        <span class="kw">let </span>(maybe_size, scalar) = <span class="kw">match </span><span class="kw-2">*</span>arg_ty {
+                            <span class="kw">crate</span>::TypeInner::Vector { size, scalar } =&gt; (<span class="prelude-val">Some</span>(size), scalar),
+                            <span class="kw">crate</span>::TypeInner::Scalar(scalar) =&gt; (<span class="prelude-val">None</span>, scalar),
+                            <span class="kw-2">ref </span>other =&gt; <span class="macro">unimplemented!</span>(<span class="string">"Unexpected saturate({:?})"</span>, other),
                         };
-                        <span class="kw">let </span>kind = <span class="kw">crate</span>::ScalarKind::Float;
-                        <span class="kw">let </span><span class="kw-2">mut </span>arg1_id = <span class="self">self</span>.writer.get_constant_scalar_with(<span class="number">0</span>, kind, width)<span class="question-mark">?</span>;
-                        <span class="kw">let </span><span class="kw-2">mut </span>arg2_id = <span class="self">self</span>.writer.get_constant_scalar_with(<span class="number">1</span>, kind, width)<span class="question-mark">?</span>;
+                        <span class="kw">let </span>scalar = <span class="kw">crate</span>::Scalar::float(scalar.width);
+                        <span class="kw">let </span><span class="kw-2">mut </span>arg1_id = <span class="self">self</span>.writer.get_constant_scalar_with(<span class="number">0</span>, scalar)<span class="question-mark">?</span>;
+                        <span class="kw">let </span><span class="kw-2">mut </span>arg2_id = <span class="self">self</span>.writer.get_constant_scalar_with(<span class="number">1</span>, scalar)<span class="question-mark">?</span>;
 
                         <span class="kw">if let </span><span class="prelude-val">Some</span>(size) = maybe_size {
                             <span class="kw">let </span>ty = LocalType::Value {
                                 vector_size: <span class="prelude-val">Some</span>(size),
-                                kind,
-                                width,
+                                scalar,
                                 pointer_space: <span class="prelude-val">None</span>,
                             }
                             .into();
@@ -3118,13 +3164,17 @@ Implementations for `BlockContext` methods.
                     Mf::Floor =&gt; MathOp::Ext(spirv::GLOp::Floor),
                     Mf::Fract =&gt; MathOp::Ext(spirv::GLOp::Fract),
                     Mf::Trunc =&gt; MathOp::Ext(spirv::GLOp::Trunc),
-                    Mf::Modf =&gt; MathOp::Ext(spirv::GLOp::Modf),
-                    Mf::Frexp =&gt; MathOp::Ext(spirv::GLOp::Frexp),
+                    Mf::Modf =&gt; MathOp::Ext(spirv::GLOp::ModfStruct),
+                    Mf::Frexp =&gt; MathOp::Ext(spirv::GLOp::FrexpStruct),
                     Mf::Ldexp =&gt; MathOp::Ext(spirv::GLOp::Ldexp),
                     <span class="comment">// geometry
                     </span>Mf::Dot =&gt; <span class="kw">match </span><span class="kw-2">*</span><span class="self">self</span>.fun_info[arg].ty.inner_with(<span class="kw-2">&amp;</span><span class="self">self</span>.ir_module.types) {
                         <span class="kw">crate</span>::TypeInner::Vector {
-                            kind: <span class="kw">crate</span>::ScalarKind::Float,
+                            scalar:
+                                <span class="kw">crate</span>::Scalar {
+                                    kind: <span class="kw">crate</span>::ScalarKind::Float,
+                                    ..
+                                },
                             ..
                         } =&gt; MathOp::Custom(Instruction::binary(
                             spirv::Op::Dot,
@@ -3147,7 +3197,7 @@ Implementations for `BlockContext` methods.
                             <span class="kw">return </span><span class="prelude-val">Ok</span>(());
                         }
                         <span class="kw">_ </span>=&gt; <span class="macro">unreachable!</span>(
-                            <span class="string">&quot;Correct TypeInner for dot product should be already validated&quot;
+                            <span class="string">"Correct TypeInner for dot product should be already validated"
                         </span>),
                     },
                     Mf::Outer =&gt; MathOp::Custom(Instruction::binary(
@@ -3174,7 +3224,7 @@ Implementations for `BlockContext` methods.
                     </span>Mf::Sign =&gt; MathOp::Ext(<span class="kw">match </span>arg_scalar_kind {
                         <span class="prelude-val">Some</span>(<span class="kw">crate</span>::ScalarKind::Float) =&gt; spirv::GLOp::FSign,
                         <span class="prelude-val">Some</span>(<span class="kw">crate</span>::ScalarKind::Sint) =&gt; spirv::GLOp::SSign,
-                        other =&gt; <span class="macro">unimplemented!</span>(<span class="string">&quot;Unexpected sign({:?})&quot;</span>, other),
+                        other =&gt; <span class="macro">unimplemented!</span>(<span class="string">"Unexpected sign({:?})"</span>, other),
                     }),
                     Mf::Fma =&gt; MathOp::Ext(spirv::GLOp::Fma),
                     Mf::Mix =&gt; {
@@ -3185,13 +3235,12 @@ Implementations for `BlockContext` methods.
                             <span class="comment">// if the selector is a scalar, we need to splat it
                             </span>(
                                 <span class="kw-2">&amp;</span><span class="kw">crate</span>::TypeInner::Vector { size, .. },
-                                <span class="kw-2">&amp;</span><span class="kw">crate</span>::TypeInner::Scalar { kind, width },
+                                <span class="kw-2">&amp;</span><span class="kw">crate</span>::TypeInner::Scalar(scalar),
                             ) =&gt; {
                                 <span class="kw">let </span>selector_type_id =
                                     <span class="self">self</span>.get_type_id(LookupType::Local(LocalType::Value {
                                         vector_size: <span class="prelude-val">Some</span>(size),
-                                        kind,
-                                        width,
+                                        scalar,
                                         pointer_space: <span class="prelude-val">None</span>,
                                     }));
                                 <span class="self">self</span>.temp_list.clear();
@@ -3234,14 +3283,12 @@ Implementations for `BlockContext` methods.
                         arg0_id,
                     )),
                     Mf::CountTrailingZeros =&gt; {
-                        <span class="kw">let </span>kind = <span class="kw">crate</span>::ScalarKind::Uint;
-
                         <span class="kw">let </span>uint_id = <span class="kw">match </span><span class="kw-2">*</span>arg_ty {
-                            <span class="kw">crate</span>::TypeInner::Vector { size, width, .. } =&gt; {
+                            <span class="kw">crate</span>::TypeInner::Vector { size, <span class="kw-2">mut </span>scalar } =&gt; {
+                                scalar.kind = <span class="kw">crate</span>::ScalarKind::Uint;
                                 <span class="kw">let </span>ty = LocalType::Value {
                                     vector_size: <span class="prelude-val">Some</span>(size),
-                                    kind,
-                                    width,
+                                    scalar,
                                     pointer_space: <span class="prelude-val">None</span>,
                                 }
                                 .into();
@@ -3249,13 +3296,14 @@ Implementations for `BlockContext` methods.
                                 <span class="self">self</span>.temp_list.clear();
                                 <span class="self">self</span>.temp_list.resize(
                                     size <span class="kw">as _</span>,
-                                    <span class="self">self</span>.writer.get_constant_scalar_with(<span class="number">32</span>, kind, width)<span class="question-mark">?</span>,
+                                    <span class="self">self</span>.writer.get_constant_scalar_with(<span class="number">32</span>, scalar)<span class="question-mark">?</span>,
                                 );
 
                                 <span class="self">self</span>.writer.get_constant_composite(ty, <span class="kw-2">&amp;</span><span class="self">self</span>.temp_list)
                             }
-                            <span class="kw">crate</span>::TypeInner::Scalar { width, .. } =&gt; {
-                                <span class="self">self</span>.writer.get_constant_scalar_with(<span class="number">32</span>, kind, width)<span class="question-mark">?
+                            <span class="kw">crate</span>::TypeInner::Scalar(<span class="kw-2">mut </span>scalar) =&gt; {
+                                scalar.kind = <span class="kw">crate</span>::ScalarKind::Uint;
+                                <span class="self">self</span>.writer.get_constant_scalar_with(<span class="number">32</span>, scalar)<span class="question-mark">?
                             </span>}
                             <span class="kw">_ </span>=&gt; <span class="macro">unreachable!</span>(),
                         };
@@ -3278,14 +3326,12 @@ Implementations for `BlockContext` methods.
                         ))
                     }
                     Mf::CountLeadingZeros =&gt; {
-                        <span class="kw">let </span>kind = <span class="kw">crate</span>::ScalarKind::Sint;
-
                         <span class="kw">let </span>(int_type_id, int_id) = <span class="kw">match </span><span class="kw-2">*</span>arg_ty {
-                            <span class="kw">crate</span>::TypeInner::Vector { size, width, .. } =&gt; {
+                            <span class="kw">crate</span>::TypeInner::Vector { size, <span class="kw-2">mut </span>scalar } =&gt; {
+                                scalar.kind = <span class="kw">crate</span>::ScalarKind::Sint;
                                 <span class="kw">let </span>ty = LocalType::Value {
                                     vector_size: <span class="prelude-val">Some</span>(size),
-                                    kind,
-                                    width,
+                                    scalar,
                                     pointer_space: <span class="prelude-val">None</span>,
                                 }
                                 .into();
@@ -3293,7 +3339,7 @@ Implementations for `BlockContext` methods.
                                 <span class="self">self</span>.temp_list.clear();
                                 <span class="self">self</span>.temp_list.resize(
                                     size <span class="kw">as _</span>,
-                                    <span class="self">self</span>.writer.get_constant_scalar_with(<span class="number">31</span>, kind, width)<span class="question-mark">?</span>,
+                                    <span class="self">self</span>.writer.get_constant_scalar_with(<span class="number">31</span>, scalar)<span class="question-mark">?</span>,
                                 );
 
                                 (
@@ -3301,15 +3347,17 @@ Implementations for `BlockContext` methods.
                                     <span class="self">self</span>.writer.get_constant_composite(ty, <span class="kw-2">&amp;</span><span class="self">self</span>.temp_list),
                                 )
                             }
-                            <span class="kw">crate</span>::TypeInner::Scalar { width, .. } =&gt; (
-                                <span class="self">self</span>.get_type_id(LookupType::Local(LocalType::Value {
-                                    vector_size: <span class="prelude-val">None</span>,
-                                    kind,
-                                    width,
-                                    pointer_space: <span class="prelude-val">None</span>,
-                                })),
-                                <span class="self">self</span>.writer.get_constant_scalar_with(<span class="number">31</span>, kind, width)<span class="question-mark">?</span>,
-                            ),
+                            <span class="kw">crate</span>::TypeInner::Scalar(<span class="kw-2">mut </span>scalar) =&gt; {
+                                scalar.kind = <span class="kw">crate</span>::ScalarKind::Sint;
+                                (
+                                    <span class="self">self</span>.get_type_id(LookupType::Local(LocalType::Value {
+                                        vector_size: <span class="prelude-val">None</span>,
+                                        scalar,
+                                        pointer_space: <span class="prelude-val">None</span>,
+                                    })),
+                                    <span class="self">self</span>.writer.get_constant_scalar_with(<span class="number">31</span>, scalar)<span class="question-mark">?</span>,
+                                )
+                            }
                             <span class="kw">_ </span>=&gt; <span class="macro">unreachable!</span>(),
                         };
 
@@ -3340,7 +3388,7 @@ Implementations for `BlockContext` methods.
                         <span class="kw">let </span>op = <span class="kw">match </span>arg_scalar_kind {
                             <span class="prelude-val">Some</span>(<span class="kw">crate</span>::ScalarKind::Uint) =&gt; spirv::Op::BitFieldUExtract,
                             <span class="prelude-val">Some</span>(<span class="kw">crate</span>::ScalarKind::Sint) =&gt; spirv::Op::BitFieldSExtract,
-                            other =&gt; <span class="macro">unimplemented!</span>(<span class="string">&quot;Unexpected sign({:?})&quot;</span>, other),
+                            other =&gt; <span class="macro">unimplemented!</span>(<span class="string">"Unexpected sign({:?})"</span>, other),
                         };
                         MathOp::Custom(Instruction::ternary(
                             op,
@@ -3364,7 +3412,7 @@ Implementations for `BlockContext` methods.
                     Mf::FindMsb =&gt; MathOp::Ext(<span class="kw">match </span>arg_scalar_kind {
                         <span class="prelude-val">Some</span>(<span class="kw">crate</span>::ScalarKind::Uint) =&gt; spirv::GLOp::FindUMsb,
                         <span class="prelude-val">Some</span>(<span class="kw">crate</span>::ScalarKind::Sint) =&gt; spirv::GLOp::FindSMsb,
-                        other =&gt; <span class="macro">unimplemented!</span>(<span class="string">&quot;Unexpected findMSB({:?})&quot;</span>, other),
+                        other =&gt; <span class="macro">unimplemented!</span>(<span class="string">"Unexpected findMSB({:?})"</span>, other),
                     }),
                     Mf::Pack4x8unorm =&gt; MathOp::Ext(spirv::GLOp::PackUnorm4x8),
                     Mf::Pack4x8snorm =&gt; MathOp::Ext(spirv::GLOp::PackSnorm4x8),
@@ -3458,16 +3506,14 @@ Implementations for `BlockContext` methods.
                 <span class="kw">use </span><span class="kw">crate</span>::ScalarKind <span class="kw">as </span>Sk;
 
                 <span class="kw">let </span>expr_id = <span class="self">self</span>.cached[expr];
-                <span class="kw">let </span>(src_kind, src_size, src_width, is_matrix) =
+                <span class="kw">let </span>(src_scalar, src_size, is_matrix) =
                     <span class="kw">match </span><span class="kw-2">*</span><span class="self">self</span>.fun_info[expr].ty.inner_with(<span class="kw-2">&amp;</span><span class="self">self</span>.ir_module.types) {
-                        <span class="kw">crate</span>::TypeInner::Scalar { kind, width } =&gt; (kind, <span class="prelude-val">None</span>, width, <span class="bool-val">false</span>),
-                        <span class="kw">crate</span>::TypeInner::Vector { kind, width, size } =&gt; {
-                            (kind, <span class="prelude-val">Some</span>(size), width, <span class="bool-val">false</span>)
-                        }
-                        <span class="kw">crate</span>::TypeInner::Matrix { width, .. } =&gt; (kind, <span class="prelude-val">None</span>, width, <span class="bool-val">true</span>),
+                        <span class="kw">crate</span>::TypeInner::Scalar(scalar) =&gt; (scalar, <span class="prelude-val">None</span>, <span class="bool-val">false</span>),
+                        <span class="kw">crate</span>::TypeInner::Vector { scalar, size } =&gt; (scalar, <span class="prelude-val">Some</span>(size), <span class="bool-val">false</span>),
+                        <span class="kw">crate</span>::TypeInner::Matrix { scalar, .. } =&gt; (scalar, <span class="prelude-val">None</span>, <span class="bool-val">true</span>),
                         <span class="kw-2">ref </span>other =&gt; {
-                            <span class="macro">log::error!</span>(<span class="string">&quot;As source {:?}&quot;</span>, other);
-                            <span class="kw">return </span><span class="prelude-val">Err</span>(Error::Validation(<span class="string">&quot;Unexpected Expression::As source&quot;</span>));
+                            <span class="macro">log::error!</span>(<span class="string">"As source {:?}"</span>, other);
+                            <span class="kw">return </span><span class="prelude-val">Err</span>(Error::Validation(<span class="string">"Unexpected Expression::As source"</span>));
                         }
                     };
 
@@ -3482,11 +3528,12 @@ Implementations for `BlockContext` methods.
                     <span class="comment">// we only support identity casts for matrices
                     </span>Cast::Unary(spirv::Op::CopyObject)
                 } <span class="kw">else </span>{
-                    <span class="kw">match </span>(src_kind, kind, convert) {
+                    <span class="kw">match </span>(src_scalar.kind, kind, convert) {
                         <span class="comment">// Filter out identity casts. Some Adreno drivers are
                         // confused by no-op OpBitCast instructions.
                         </span>(src_kind, kind, convert)
-                            <span class="kw">if </span>src_kind == kind &amp;&amp; convert.unwrap_or(src_width) == src_width =&gt;
+                            <span class="kw">if </span>src_kind == kind
+                                &amp;&amp; convert.filter(|<span class="kw-2">&amp;</span>width| width != src_scalar.width).is_none() =&gt;
                         {
                             Cast::Identity
                         }
@@ -3494,20 +3541,18 @@ Implementations for `BlockContext` methods.
                         (<span class="kw">_</span>, <span class="kw">_</span>, <span class="prelude-val">None</span>) =&gt; Cast::Unary(spirv::Op::Bitcast),
                         <span class="comment">// casting to a bool - generate `OpXxxNotEqual`
                         </span>(<span class="kw">_</span>, Sk::Bool, <span class="prelude-val">Some</span>(<span class="kw">_</span>)) =&gt; {
-                            <span class="kw">let </span>op = <span class="kw">match </span>src_kind {
+                            <span class="kw">let </span>op = <span class="kw">match </span>src_scalar.kind {
                                 Sk::Sint | Sk::Uint =&gt; spirv::Op::INotEqual,
                                 Sk::Float =&gt; spirv::Op::FUnordNotEqual,
-                                Sk::Bool =&gt; <span class="macro">unreachable!</span>(),
+                                Sk::Bool | Sk::AbstractInt | Sk::AbstractFloat =&gt; <span class="macro">unreachable!</span>(),
                             };
-                            <span class="kw">let </span>zero_scalar_id = <span class="self">self
-                                </span>.writer
-                                .get_constant_scalar_with(<span class="number">0</span>, src_kind, src_width)<span class="question-mark">?</span>;
+                            <span class="kw">let </span>zero_scalar_id =
+                                <span class="self">self</span>.writer.get_constant_scalar_with(<span class="number">0</span>, src_scalar)<span class="question-mark">?</span>;
                             <span class="kw">let </span>zero_id = <span class="kw">match </span>src_size {
                                 <span class="prelude-val">Some</span>(size) =&gt; {
                                     <span class="kw">let </span>ty = LocalType::Value {
                                         vector_size: <span class="prelude-val">Some</span>(size),
-                                        kind: src_kind,
-                                        width: src_width,
+                                        scalar: src_scalar,
                                         pointer_space: <span class="prelude-val">None</span>,
                                     }
                                     .into();
@@ -3524,16 +3569,19 @@ Implementations for `BlockContext` methods.
                         }
                         <span class="comment">// casting from a bool - generate `OpSelect`
                         </span>(Sk::Bool, <span class="kw">_</span>, <span class="prelude-val">Some</span>(dst_width)) =&gt; {
+                            <span class="kw">let </span>dst_scalar = <span class="kw">crate</span>::Scalar {
+                                kind,
+                                width: dst_width,
+                            };
                             <span class="kw">let </span>zero_scalar_id =
-                                <span class="self">self</span>.writer.get_constant_scalar_with(<span class="number">0</span>, kind, dst_width)<span class="question-mark">?</span>;
+                                <span class="self">self</span>.writer.get_constant_scalar_with(<span class="number">0</span>, dst_scalar)<span class="question-mark">?</span>;
                             <span class="kw">let </span>one_scalar_id =
-                                <span class="self">self</span>.writer.get_constant_scalar_with(<span class="number">1</span>, kind, dst_width)<span class="question-mark">?</span>;
+                                <span class="self">self</span>.writer.get_constant_scalar_with(<span class="number">1</span>, dst_scalar)<span class="question-mark">?</span>;
                             <span class="kw">let </span>(accept_id, reject_id) = <span class="kw">match </span>src_size {
                                 <span class="prelude-val">Some</span>(size) =&gt; {
                                     <span class="kw">let </span>ty = LocalType::Value {
                                         vector_size: <span class="prelude-val">Some</span>(size),
-                                        kind,
-                                        width: dst_width,
+                                        scalar: dst_scalar,
                                         pointer_space: <span class="prelude-val">None</span>,
                                     }
                                     .into();
@@ -3558,18 +3606,20 @@ Implementations for `BlockContext` methods.
                         }
                         (Sk::Float, Sk::Uint, <span class="prelude-val">Some</span>(<span class="kw">_</span>)) =&gt; Cast::Unary(spirv::Op::ConvertFToU),
                         (Sk::Float, Sk::Sint, <span class="prelude-val">Some</span>(<span class="kw">_</span>)) =&gt; Cast::Unary(spirv::Op::ConvertFToS),
-                        (Sk::Float, Sk::Float, <span class="prelude-val">Some</span>(dst_width)) <span class="kw">if </span>src_width != dst_width =&gt; {
+                        (Sk::Float, Sk::Float, <span class="prelude-val">Some</span>(dst_width))
+                            <span class="kw">if </span>src_scalar.width != dst_width =&gt;
+                        {
                             Cast::Unary(spirv::Op::FConvert)
                         }
                         (Sk::Sint, Sk::Float, <span class="prelude-val">Some</span>(<span class="kw">_</span>)) =&gt; Cast::Unary(spirv::Op::ConvertSToF),
-                        (Sk::Sint, Sk::Sint, <span class="prelude-val">Some</span>(dst_width)) <span class="kw">if </span>src_width != dst_width =&gt; {
+                        (Sk::Sint, Sk::Sint, <span class="prelude-val">Some</span>(dst_width)) <span class="kw">if </span>src_scalar.width != dst_width =&gt; {
                             Cast::Unary(spirv::Op::SConvert)
                         }
                         (Sk::Uint, Sk::Float, <span class="prelude-val">Some</span>(<span class="kw">_</span>)) =&gt; Cast::Unary(spirv::Op::ConvertUToF),
-                        (Sk::Uint, Sk::Uint, <span class="prelude-val">Some</span>(dst_width)) <span class="kw">if </span>src_width != dst_width =&gt; {
+                        (Sk::Uint, Sk::Uint, <span class="prelude-val">Some</span>(dst_width)) <span class="kw">if </span>src_scalar.width != dst_width =&gt; {
                             Cast::Unary(spirv::Op::UConvert)
                         }
-                        <span class="comment">// We assume it&#39;s either an identity cast, or int-uint.
+                        <span class="comment">// We assume it's either an identity cast, or int-uint.
                         </span><span class="kw">_ </span>=&gt; Cast::Unary(spirv::Op::Bitcast),
                     }
                 };
@@ -3653,10 +3703,12 @@ Implementations for `BlockContext` methods.
                 <span class="kw">let </span>object_ty = <span class="self">self</span>.fun_info[accept].ty.inner_with(<span class="kw-2">&amp;</span><span class="self">self</span>.ir_module.types);
 
                 <span class="kw">if let </span>(
-                    <span class="kw-2">&amp;</span><span class="kw">crate</span>::TypeInner::Scalar {
-                        kind: <span class="kw">crate</span>::ScalarKind::Bool,
-                        width,
-                    },
+                    <span class="kw-2">&amp;</span><span class="kw">crate</span>::TypeInner::Scalar(
+                        condition_scalar @ <span class="kw">crate</span>::Scalar {
+                            kind: <span class="kw">crate</span>::ScalarKind::Bool,
+                            ..
+                        },
+                    ),
                     <span class="kw-2">&amp;</span><span class="kw">crate</span>::TypeInner::Vector { size, .. },
                 ) = (condition_ty, object_ty)
                 {
@@ -3666,8 +3718,7 @@ Implementations for `BlockContext` methods.
                     <span class="kw">let </span>bool_vector_type_id =
                         <span class="self">self</span>.get_type_id(LookupType::Local(LocalType::Value {
                             vector_size: <span class="prelude-val">Some</span>(size),
-                            kind: <span class="kw">crate</span>::ScalarKind::Bool,
-                            width,
+                            scalar: condition_scalar,
                             pointer_space: <span class="prelude-val">None</span>,
                         }));
 
@@ -3690,7 +3741,7 @@ Implementations for `BlockContext` methods.
                 <span class="kw">match </span>ctrl {
                     Ctrl::Coarse | Ctrl::Fine =&gt; {
                         <span class="self">self</span>.writer.require_any(
-                            <span class="string">&quot;DerivativeControl&quot;</span>,
+                            <span class="string">"DerivativeControl"</span>,
                             <span class="kw-2">&amp;</span>[spirv::Capability::DerivativeControl],
                         )<span class="question-mark">?</span>;
                     }
@@ -3725,10 +3776,6 @@ Implementations for `BlockContext` methods.
                     Rf::Any =&gt; spirv::Op::Any,
                     Rf::IsNan =&gt; spirv::Op::IsNan,
                     Rf::IsInf =&gt; spirv::Op::IsInf,
-                    <span class="comment">//TODO: these require Kernel capability
-                    </span>Rf::IsFinite | Rf::IsNormal =&gt; {
-                        <span class="kw">return </span><span class="prelude-val">Err</span>(Error::FeatureNotImplemented(<span class="string">&quot;is finite/normal&quot;</span>))
-                    }
                 };
                 <span class="kw">let </span>id = <span class="self">self</span>.gen_id();
                 block
@@ -3739,7 +3786,7 @@ Implementations for `BlockContext` methods.
             <span class="kw">crate</span>::Expression::ArrayLength(expr) =&gt; <span class="self">self</span>.write_runtime_array_length(expr, block)<span class="question-mark">?</span>,
             <span class="kw">crate</span>::Expression::RayQueryGetIntersection { query, committed } =&gt; {
                 <span class="kw">if </span>!committed {
-                    <span class="kw">return </span><span class="prelude-val">Err</span>(Error::FeatureNotImplemented(<span class="string">&quot;candidate intersection&quot;</span>));
+                    <span class="kw">return </span><span class="prelude-val">Err</span>(Error::FeatureNotImplemented(<span class="string">"candidate intersection"</span>));
                 }
                 <span class="self">self</span>.write_ray_query_get_intersection(query, block)
             }
@@ -3755,7 +3802,7 @@ Implementations for `BlockContext` methods.
     ///
     /// Some cases we need to generate a different return type than what the IR gives us.
     /// This is because pointers to binding arrays of handles (such as images or samplers)
-    /// don&#39;t exist in the IR, but we need to create them to create an access chain in SPIRV.
+    /// don't exist in the IR, but we need to create them to create an access chain in SPIRV.
     ///
     /// On success, the return value is an [`ExpressionPointer`] value; see the
     /// documentation for that type.
@@ -3767,8 +3814,8 @@ Implementations for `BlockContext` methods.
     ) -&gt; <span class="prelude-ty">Result</span>&lt;ExpressionPointer, Error&gt; {
         <span class="kw">let </span>result_lookup_ty = <span class="kw">match </span><span class="self">self</span>.fun_info[expr_handle].ty {
             TypeResolution::Handle(ty_handle) =&gt; <span class="kw">match </span>return_type_override {
-                <span class="comment">// We use the return type override as a special case for binding arrays as the OpAccessChain
-                // needs to return a pointer, but indexing into a binding array just gives you the type of
+                <span class="comment">// We use the return type override as a special case for handle binding arrays as the OpAccessChain
+                // needs to return a pointer, but indexing into a handle binding array just gives you the type of
                 // the binding in the IR.
                 </span><span class="prelude-val">Some</span>(ty) =&gt; ty,
                 <span class="prelude-val">None </span>=&gt; LookupType::Handle(ty_handle),
@@ -3778,14 +3825,14 @@ Implementations for `BlockContext` methods.
         <span class="kw">let </span>result_type_id = <span class="self">self</span>.get_type_id(result_lookup_ty);
 
         <span class="comment">// The id of the boolean `and` of all dynamic bounds checks up to this point. If
-        // `None`, then we haven&#39;t done any dynamic bounds checks yet.
+        // `None`, then we haven't done any dynamic bounds checks yet.
         //
         // When we have a chain of bounds checks, we combine them with `OpLogicalAnd`, not
-        // a short-circuit branch. This means we might do comparisons we don&#39;t need to,
+        // a short-circuit branch. This means we might do comparisons we don't need to,
         // but we expect these checks to almost always succeed, and keeping branches to a
         // minimum is essential.
         </span><span class="kw">let </span><span class="kw-2">mut </span>accumulated_checks = <span class="prelude-val">None</span>;
-        <span class="comment">// Is true if we are accessing into a binding array of buffers with a non-uniform index.
+        <span class="comment">// Is true if we are accessing into a binding array with a non-uniform index.
         </span><span class="kw">let </span><span class="kw-2">mut </span>is_non_uniform_binding_array = <span class="bool-val">false</span>;
 
         <span class="self">self</span>.temp_list.clear();
@@ -3795,11 +3842,13 @@ Implementations for `BlockContext` methods.
                     <span class="kw">if let </span><span class="kw">crate</span>::Expression::GlobalVariable(var_handle) =
                         <span class="self">self</span>.ir_function.expressions[base]
                     {
-                        <span class="kw">let </span>gvar = <span class="kw-2">&amp;</span><span class="self">self</span>.ir_module.global_variables[var_handle];
+                        <span class="comment">// The access chain needs to be decorated as NonUniform
+                        // see VUID-RuntimeSpirv-NonUniform-06274
+                        </span><span class="kw">let </span>gvar = <span class="kw-2">&amp;</span><span class="self">self</span>.ir_module.global_variables[var_handle];
                         <span class="kw">if let </span><span class="kw">crate</span>::TypeInner::BindingArray { .. } =
                             <span class="self">self</span>.ir_module.types[gvar.ty].inner
                         {
-                            is_non_uniform_binding_array |=
+                            is_non_uniform_binding_array =
                                 <span class="self">self</span>.fun_info[index].uniformity.non_uniform_result.is_some();
                         }
                     }
@@ -3854,7 +3903,7 @@ Implementations for `BlockContext` methods.
                 <span class="kw">crate</span>::Expression::FunctionArgument(index) =&gt; {
                     <span class="kw">break </span><span class="self">self</span>.function.parameter_id(index);
                 }
-                <span class="kw-2">ref </span>other =&gt; <span class="macro">unimplemented!</span>(<span class="string">&quot;Unexpected pointer expression {:?}&quot;</span>, other),
+                <span class="kw-2">ref </span>other =&gt; <span class="macro">unimplemented!</span>(<span class="string">"Unexpected pointer expression {:?}"</span>, other),
             }
         };
 
@@ -3884,7 +3933,10 @@ Implementations for `BlockContext` methods.
             };
             (pointer_id, expr_pointer)
         };
-        <span class="kw">if </span>is_non_uniform_binding_array {
+        <span class="comment">// Subsequent load, store and atomic operations require the pointer to be decorated as NonUniform
+        // if the binding array was accessed with a non-uniform index
+        // see VUID-RuntimeSpirv-NonUniform-06274
+        </span><span class="kw">if </span>is_non_uniform_binding_array {
             <span class="self">self</span>.writer
                 .decorate_non_uniform_binding_array_access(pointer_id)<span class="question-mark">?</span>;
         }
@@ -3910,8 +3962,7 @@ Implementations for `BlockContext` methods.
 
         <span class="kw">let </span>vector_type_id = <span class="self">self</span>.get_type_id(LookupType::Local(LocalType::Value {
             vector_size: <span class="prelude-val">Some</span>(rows),
-            kind: <span class="kw">crate</span>::ScalarKind::Float,
-            width,
+            scalar: <span class="kw">crate</span>::Scalar::float(width),
             pointer_space: <span class="prelude-val">None</span>,
         }));
 
@@ -3961,7 +4012,10 @@ Implementations for `BlockContext` methods.
         vector: <span class="kw-2">&amp;</span><span class="kw">crate</span>::TypeInner,
     ) {
         <span class="kw">let </span>(size, kind) = <span class="kw">match </span><span class="kw-2">*</span>vector {
-            <span class="kw">crate</span>::TypeInner::Vector { size, kind, .. } =&gt; (size, kind),
+            <span class="kw">crate</span>::TypeInner::Vector {
+                size,
+                scalar: <span class="kw">crate</span>::Scalar { kind, .. },
+            } =&gt; (size, kind),
             <span class="kw">_ </span>=&gt; <span class="macro">unreachable!</span>(),
         };
 
@@ -3999,7 +4053,7 @@ Implementations for `BlockContext` methods.
         size: u32,
         block: <span class="kw-2">&amp;mut </span>Block,
     ) {
-        <span class="kw">let </span><span class="kw-2">mut </span>partial_sum = <span class="self">self</span>.writer.write_constant_null(result_type_id);
+        <span class="kw">let </span><span class="kw-2">mut </span>partial_sum = <span class="self">self</span>.writer.get_constant_null(result_type_id);
         <span class="kw">let </span>last_component = size - <span class="number">1</span>;
         <span class="kw">for </span>index <span class="kw">in </span><span class="number">0</span>..=last_component {
             <span class="comment">// compute the product of the current components
@@ -4078,7 +4132,10 @@ Implementations for `BlockContext` methods.
             <span class="kw">match </span><span class="kw-2">*</span>statement {
                 <span class="kw">crate</span>::Statement::Emit(<span class="kw-2">ref </span>range) =&gt; {
                     <span class="kw">for </span>handle <span class="kw">in </span>range.clone() {
-                        <span class="self">self</span>.cache_expression_value(handle, <span class="kw-2">&amp;mut </span>block)<span class="question-mark">?</span>;
+                        <span class="comment">// omit const expressions as we've already cached those
+                        </span><span class="kw">if </span>!<span class="self">self</span>.expression_constness.is_const(handle) {
+                            <span class="self">self</span>.cache_expression_value(handle, <span class="kw-2">&amp;mut </span>block)<span class="question-mark">?</span>;
+                        }
                     }
                 }
                 <span class="kw">crate</span>::Statement::Block(<span class="kw-2">ref </span>block_statements) =&gt; {
@@ -4315,7 +4372,7 @@ Implementations for `BlockContext` methods.
                     <span class="kw">let </span>value_id = <span class="self">self</span>.cached[value];
                     <span class="kw">let </span>instruction = <span class="kw">match </span><span class="self">self</span>.function.entry_point_context {
                         <span class="comment">// If this is an entry point, and we need to return anything,
-                        // let&#39;s instead store the output variables and return `void`.
+                        // let's instead store the output variables and return `void`.
                         </span><span class="prelude-val">Some</span>(<span class="kw-2">ref </span>context) =&gt; {
                             <span class="self">self</span>.writer.write_entry_point_return(
                                 value_id,
@@ -4385,7 +4442,7 @@ Implementations for `BlockContext` methods.
                                 .push(Instruction::store(pointer_id, value_id, <span class="prelude-val">None</span>));
 
                             <span class="comment">// Finish the in-bounds block and start the merge block. This
-                            // is the block we&#39;ll leave current on return.
+                            // is the block we'll leave current on return.
                             </span>selection.finish(<span class="self">self</span>, ());
                         }
                     };
@@ -4438,7 +4495,7 @@ Implementations for `BlockContext` methods.
                             ExpressionPointer::Ready { pointer_id } =&gt; pointer_id,
                             ExpressionPointer::Conditional { .. } =&gt; {
                                 <span class="kw">return </span><span class="prelude-val">Err</span>(Error::FeatureNotImplemented(
-                                    <span class="string">&quot;Atomics out-of-bounds handling&quot;</span>,
+                                    <span class="string">"Atomics out-of-bounds handling"</span>,
                                 ));
                             }
                         };
@@ -4502,14 +4559,14 @@ Implementations for `BlockContext` methods.
                         ),
                         <span class="kw">crate</span>::AtomicFunction::Min =&gt; {
                             <span class="kw">let </span>spirv_op = <span class="kw">match </span><span class="kw-2">*</span>value_inner {
-                                <span class="kw">crate</span>::TypeInner::Scalar {
+                                <span class="kw">crate</span>::TypeInner::Scalar(<span class="kw">crate</span>::Scalar {
                                     kind: <span class="kw">crate</span>::ScalarKind::Sint,
                                     width: <span class="kw">_</span>,
-                                } =&gt; spirv::Op::AtomicSMin,
-                                <span class="kw">crate</span>::TypeInner::Scalar {
+                                }) =&gt; spirv::Op::AtomicSMin,
+                                <span class="kw">crate</span>::TypeInner::Scalar(<span class="kw">crate</span>::Scalar {
                                     kind: <span class="kw">crate</span>::ScalarKind::Uint,
                                     width: <span class="kw">_</span>,
-                                } =&gt; spirv::Op::AtomicUMin,
+                                }) =&gt; spirv::Op::AtomicUMin,
                                 <span class="kw">_ </span>=&gt; <span class="macro">unimplemented!</span>(),
                             };
                             Instruction::atomic_binary(
@@ -4524,14 +4581,14 @@ Implementations for `BlockContext` methods.
                         }
                         <span class="kw">crate</span>::AtomicFunction::Max =&gt; {
                             <span class="kw">let </span>spirv_op = <span class="kw">match </span><span class="kw-2">*</span>value_inner {
-                                <span class="kw">crate</span>::TypeInner::Scalar {
+                                <span class="kw">crate</span>::TypeInner::Scalar(<span class="kw">crate</span>::Scalar {
                                     kind: <span class="kw">crate</span>::ScalarKind::Sint,
                                     width: <span class="kw">_</span>,
-                                } =&gt; spirv::Op::AtomicSMax,
-                                <span class="kw">crate</span>::TypeInner::Scalar {
+                                }) =&gt; spirv::Op::AtomicSMax,
+                                <span class="kw">crate</span>::TypeInner::Scalar(<span class="kw">crate</span>::Scalar {
                                     kind: <span class="kw">crate</span>::ScalarKind::Uint,
                                     width: <span class="kw">_</span>,
-                                } =&gt; spirv::Op::AtomicUMax,
+                                }) =&gt; spirv::Op::AtomicUMax,
                                 <span class="kw">_ </span>=&gt; <span class="macro">unimplemented!</span>(),
                             };
                             Instruction::atomic_binary(
@@ -4557,11 +4614,10 @@ Implementations for `BlockContext` methods.
                         }
                         <span class="kw">crate</span>::AtomicFunction::Exchange { compare: <span class="prelude-val">Some</span>(cmp) } =&gt; {
                             <span class="kw">let </span>scalar_type_id = <span class="kw">match </span><span class="kw-2">*</span>value_inner {
-                                <span class="kw">crate</span>::TypeInner::Scalar { kind, width } =&gt; {
+                                <span class="kw">crate</span>::TypeInner::Scalar(scalar) =&gt; {
                                     <span class="self">self</span>.get_type_id(LookupType::Local(LocalType::Value {
                                         vector_size: <span class="prelude-val">None</span>,
-                                        kind,
-                                        width,
+                                        scalar,
                                         pointer_space: <span class="prelude-val">None</span>,
                                     }))
                                 }
@@ -4570,8 +4626,7 @@ Implementations for `BlockContext` methods.
                             <span class="kw">let </span>bool_type_id =
                                 <span class="self">self</span>.get_type_id(LookupType::Local(LocalType::Value {
                                     vector_size: <span class="prelude-val">None</span>,
-                                    kind: <span class="kw">crate</span>::ScalarKind::Bool,
-                                    width: <span class="kw">crate</span>::BOOL_WIDTH,
+                                    scalar: <span class="kw">crate</span>::Scalar::BOOL,
                                     pointer_space: <span class="prelude-val">None</span>,
                                 }));
 
@@ -4651,12 +4706,12 @@ Implementations for `BlockContext` methods.
         }
 
         <span class="kw">let </span>termination = <span class="kw">match </span>exit {
-            <span class="comment">// We&#39;re generating code for the top-level Block of the function, so we
+            <span class="comment">// We're generating code for the top-level Block of the function, so we
             // need to end it with some kind of return instruction.
             </span>BlockExit::Return =&gt; <span class="kw">match </span><span class="self">self</span>.ir_function.result {
                 <span class="prelude-val">Some</span>(<span class="kw-2">ref </span>result) <span class="kw">if </span><span class="self">self</span>.function.entry_point_context.is_none() =&gt; {
                     <span class="kw">let </span>type_id = <span class="self">self</span>.get_type_id(LookupType::Handle(result.ty));
-                    <span class="kw">let </span>null_id = <span class="self">self</span>.writer.write_constant_null(type_id);
+                    <span class="kw">let </span>null_id = <span class="self">self</span>.writer.get_constant_null(type_id);
                     Instruction::return_value(null_id)
                 }
                 <span class="kw">_ </span>=&gt; Instruction::return_void(),

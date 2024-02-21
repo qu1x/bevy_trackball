@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_hierarchy-0.12.1/src/child_builder.rs`."><title>child_builder.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="bevy_hierarchy" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../bevy_hierarchy/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_hierarchy-0.13.0/src/child_builder.rs`."><title>child_builder.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="bevy_hierarchy" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1221,6 +1222,27 @@
 <a href="#1221" id="1221">1221</a>
 <a href="#1222" id="1222">1222</a>
 <a href="#1223" id="1223">1223</a>
+<a href="#1224" id="1224">1224</a>
+<a href="#1225" id="1225">1225</a>
+<a href="#1226" id="1226">1226</a>
+<a href="#1227" id="1227">1227</a>
+<a href="#1228" id="1228">1228</a>
+<a href="#1229" id="1229">1229</a>
+<a href="#1230" id="1230">1230</a>
+<a href="#1231" id="1231">1231</a>
+<a href="#1232" id="1232">1232</a>
+<a href="#1233" id="1233">1233</a>
+<a href="#1234" id="1234">1234</a>
+<a href="#1235" id="1235">1235</a>
+<a href="#1236" id="1236">1236</a>
+<a href="#1237" id="1237">1237</a>
+<a href="#1238" id="1238">1238</a>
+<a href="#1239" id="1239">1239</a>
+<a href="#1240" id="1240">1240</a>
+<a href="#1241" id="1241">1241</a>
+<a href="#1242" id="1242">1242</a>
+<a href="#1243" id="1243">1243</a>
+<a href="#1244" id="1244">1244</a>
 </pre></div><pre class="rust"><code><span class="kw">use crate</span>::{Children, HierarchyEvent, Parent};
 <span class="kw">use </span>bevy_ecs::{
     bundle::Bundle,
@@ -1229,17 +1251,17 @@
     system::{Command, Commands, EntityCommands},
     world::{EntityWorldMut, World},
 };
-<span class="kw">use </span>smallvec::SmallVec;
+<span class="kw">use </span>bevy_utils::smallvec::{smallvec, SmallVec};
 
 <span class="comment">// Do not use `world.send_event_batch` as it prints error message when the Events are not available in the world,
-// even though it&#39;s a valid use case to execute commands on a world without events. Loading a GLTF file for example
+// even though it's a valid use case to execute commands on a world without events. Loading a GLTF file for example
 </span><span class="kw">fn </span>push_events(world: <span class="kw-2">&amp;mut </span>World, events: <span class="kw">impl </span>IntoIterator&lt;Item = HierarchyEvent&gt;) {
     <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">mut </span>moved) = world.get_resource_mut::&lt;Events&lt;HierarchyEvent&gt;&gt;() {
         moved.extend(events);
     }
 }
 
-<span class="doccomment">/// Adds `child` to `parent`&#39;s [`Children`], without checking if it is already present there.
+<span class="doccomment">/// Adds `child` to `parent`'s [`Children`], without checking if it is already present there.
 ///
 /// This might cause unexpected results when removing duplicate children.
 </span><span class="kw">fn </span>push_child_unchecked(world: <span class="kw-2">&amp;mut </span>World, parent: Entity, child: Entity) {
@@ -1247,11 +1269,11 @@
     <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">mut </span>children) = parent.get_mut::&lt;Children&gt;() {
         children.<span class="number">0</span>.push(child);
     } <span class="kw">else </span>{
-        parent.insert(Children(<span class="macro">smallvec::smallvec!</span>[child]));
+        parent.insert(Children(<span class="macro">smallvec!</span>[child]));
     }
 }
 
-<span class="doccomment">/// Sets [`Parent`] of the `child` to `new_parent`. Inserts [`Parent`] if `child` doesn&#39;t have one.
+<span class="doccomment">/// Sets [`Parent`] of the `child` to `new_parent`. Inserts [`Parent`] if `child` doesn't have one.
 </span><span class="kw">fn </span>update_parent(world: <span class="kw-2">&amp;mut </span>World, child: Entity, new_parent: Entity) -&gt; <span class="prelude-ty">Option</span>&lt;Entity&gt; {
     <span class="kw">let </span><span class="kw-2">mut </span>child = world.entity_mut(child);
     <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">mut </span>parent) = child.get_mut::&lt;Parent&gt;() {
@@ -1264,9 +1286,9 @@
     </span>}
 }
 
-<span class="doccomment">/// Remove child from the parent&#39;s [`Children`] component.
+<span class="doccomment">/// Remove child from the parent's [`Children`] component.
 ///
-/// Removes the [`Children`] component from the parent if it&#39;s empty.
+/// Removes the [`Children`] component from the parent if it's empty.
 </span><span class="kw">fn </span>remove_from_children(world: <span class="kw-2">&amp;mut </span>World, parent: Entity, child: Entity) {
     <span class="kw">let </span><span class="prelude-val">Some</span>(<span class="kw-2">mut </span>parent) = world.get_entity_mut(parent) <span class="kw">else </span>{
         <span class="kw">return</span>;
@@ -1281,13 +1303,13 @@
 }
 
 <span class="doccomment">/// Update the [`Parent`] component of the `child`.
-/// Removes the `child` from the previous parent&#39;s [`Children`].
+/// Removes the `child` from the previous parent's [`Children`].
 ///
 /// Does not update the new parents [`Children`] component.
 ///
 /// Does nothing if `child` was already a child of `parent`.
 ///
-/// Sends [`HierarchyEvent`]&#39;s.
+/// Sends [`HierarchyEvent`]'s.
 </span><span class="kw">fn </span>update_old_parent(world: <span class="kw-2">&amp;mut </span>World, child: Entity, parent: Entity) {
     <span class="kw">let </span>previous = update_parent(world, child, parent);
     <span class="kw">if let </span><span class="prelude-val">Some</span>(previous_parent) = previous {
@@ -1311,13 +1333,13 @@
 }
 
 <span class="doccomment">/// Update the [`Parent`] components of the `children`.
-/// Removes the `children` from their previous parent&#39;s [`Children`].
+/// Removes the `children` from their previous parent's [`Children`].
 ///
 /// Does not update the new parents [`Children`] component.
 ///
 /// Does nothing for a child if it was already a child of `parent`.
 ///
-/// Sends [`HierarchyEvent`]&#39;s.
+/// Sends [`HierarchyEvent`]'s.
 </span><span class="kw">fn </span>update_old_parents(world: <span class="kw-2">&amp;mut </span>World, parent: Entity, children: <span class="kw-2">&amp;</span>[Entity]) {
     <span class="kw">let </span><span class="kw-2">mut </span>events: SmallVec&lt;[HierarchyEvent; <span class="number">8</span>]&gt; = SmallVec::with_capacity(children.len());
     <span class="kw">for </span><span class="kw-2">&amp;</span>child <span class="kw">in </span>children {
@@ -1340,7 +1362,7 @@
     push_events(world, events);
 }
 
-<span class="doccomment">/// Removes entities in `children` from `parent`&#39;s [`Children`], removing the component if it ends up empty.
+<span class="doccomment">/// Removes entities in `children` from `parent`'s [`Children`], removing the component if it ends up empty.
 /// Also removes [`Parent`] component from `children`.
 </span><span class="kw">fn </span>remove_children(parent: Entity, children: <span class="kw-2">&amp;</span>[Entity], world: <span class="kw-2">&amp;mut </span>World) {
     <span class="kw">let </span><span class="kw-2">mut </span>events: SmallVec&lt;[HierarchyEvent; <span class="number">8</span>]&gt; = SmallVec::new();
@@ -1384,20 +1406,20 @@
 
 <span class="doccomment">/// Command that adds a child to an entity.
 </span><span class="attr">#[derive(Debug)]
-</span><span class="kw">pub struct </span>AddChild {
+</span><span class="kw">pub struct </span>PushChild {
     <span class="doccomment">/// Parent entity to add the child to.
     </span><span class="kw">pub </span>parent: Entity,
     <span class="doccomment">/// Child entity to add.
     </span><span class="kw">pub </span>child: Entity,
 }
 
-<span class="kw">impl </span>Command <span class="kw">for </span>AddChild {
+<span class="kw">impl </span>Command <span class="kw">for </span>PushChild {
     <span class="kw">fn </span>apply(<span class="self">self</span>, world: <span class="kw-2">&amp;mut </span>World) {
         world.entity_mut(<span class="self">self</span>.parent).add_child(<span class="self">self</span>.child);
     }
 }
 
-<span class="doccomment">/// Command that inserts a child at a given index of a parent&#39;s children, shifting following children back.
+<span class="doccomment">/// Command that inserts a child at a given index of a parent's children, shifting following children back.
 </span><span class="attr">#[derive(Debug)]
 </span><span class="kw">pub struct </span>InsertChildren {
     parent: Entity,
@@ -1413,7 +1435,7 @@
     }
 }
 
-<span class="doccomment">/// Command that pushes children to the end of the entity&#39;s [`Children`].
+<span class="doccomment">/// Command that pushes children to the end of the entity's [`Children`].
 </span><span class="attr">#[derive(Debug)]
 </span><span class="kw">pub struct </span>PushChildren {
     parent: Entity,
@@ -1426,7 +1448,7 @@
     }
 }
 
-<span class="doccomment">/// Command that removes children from an entity, and removes these children&#39;s parent.
+<span class="doccomment">/// Command that removes children from an entity, and removes these children's parent.
 </span><span class="kw">pub struct </span>RemoveChildren {
     parent: Entity,
     children: SmallVec&lt;[Entity; <span class="number">8</span>]&gt;,
@@ -1463,7 +1485,7 @@
     }
 }
 
-<span class="doccomment">/// Command that removes the parent of an entity, and removes that entity from the parent&#39;s [`Children`].
+<span class="doccomment">/// Command that removes the parent of an entity, and removes that entity from the parent's [`Children`].
 </span><span class="kw">pub struct </span>RemoveParent {
     <span class="doccomment">/// `Entity` whose parent must be removed.
     </span><span class="kw">pub </span>child: Entity,
@@ -1476,23 +1498,44 @@
 }
 
 <span class="doccomment">/// Struct for building children entities and adding them to a parent entity.
-</span><span class="kw">pub struct </span>ChildBuilder&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>, <span class="lifetime">&#39;a</span>&gt; {
-    commands: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>Commands&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>&gt;,
+///
+/// # Example
+///
+/// This example creates three entities, a parent and two children.
+///
+/// ```
+/// # use bevy_ecs::bundle::Bundle;
+/// # use bevy_ecs::system::Commands;
+/// # use bevy_hierarchy::BuildChildren;
+/// # #[derive(Bundle)]
+/// # struct MyBundle {}
+/// # #[derive(Bundle)]
+/// # struct MyChildBundle {}
+/// #
+/// # fn test(mut commands: Commands) {
+/// commands.spawn(MyBundle {}).with_children(|child_builder| {
+///     child_builder.spawn(MyChildBundle {});
+///     child_builder.spawn(MyChildBundle {});
+/// });
+/// # }
+/// ```
+</span><span class="kw">pub struct </span>ChildBuilder&lt;<span class="lifetime">'a</span>&gt; {
+    commands: Commands&lt;<span class="lifetime">'a</span>, <span class="lifetime">'a</span>&gt;,
     push_children: PushChildren,
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>, <span class="lifetime">&#39;a</span>&gt; ChildBuilder&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>, <span class="lifetime">&#39;a</span>&gt; {
-    <span class="doccomment">/// Spawns an entity with the given bundle and inserts it into the parent entity&#39;s [`Children`].
+<span class="kw">impl </span>ChildBuilder&lt;<span class="lifetime">'_</span>&gt; {
+    <span class="doccomment">/// Spawns an entity with the given bundle and inserts it into the parent entity's [`Children`].
     /// Also adds [`Parent`] component to the created entity.
-    </span><span class="kw">pub fn </span>spawn(<span class="kw-2">&amp;mut </span><span class="self">self</span>, bundle: <span class="kw">impl </span>Bundle) -&gt; EntityCommands&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>, <span class="lifetime">&#39;_</span>&gt; {
+    </span><span class="kw">pub fn </span>spawn(<span class="kw-2">&amp;mut </span><span class="self">self</span>, bundle: <span class="kw">impl </span>Bundle) -&gt; EntityCommands {
         <span class="kw">let </span>e = <span class="self">self</span>.commands.spawn(bundle);
         <span class="self">self</span>.push_children.children.push(e.id());
         e
     }
 
-    <span class="doccomment">/// Spawns an [`Entity`] with no components and inserts it into the parent entity&#39;s [`Children`].
+    <span class="doccomment">/// Spawns an [`Entity`] with no components and inserts it into the parent entity's [`Children`].
     /// Also adds [`Parent`] component to the created entity.
-    </span><span class="kw">pub fn </span>spawn_empty(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; EntityCommands&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>, <span class="lifetime">&#39;_</span>&gt; {
+    </span><span class="kw">pub fn </span>spawn_empty(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; EntityCommands {
         <span class="kw">let </span>e = <span class="self">self</span>.commands.spawn_empty();
         <span class="self">self</span>.push_children.children.push(e.id());
         e
@@ -1504,7 +1547,7 @@
     }
 
     <span class="doccomment">/// Adds a command to be executed, like [`Commands::add`].
-    </span><span class="kw">pub fn </span>add_command&lt;C: Command + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, command: C) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>add_command&lt;C: Command&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, command: C) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
         <span class="self">self</span>.commands.add(command);
         <span class="self">self
     </span>}
@@ -1514,10 +1557,10 @@
 </span><span class="kw">pub trait </span>BuildChildren {
     <span class="doccomment">/// Takes a closure which builds children for this entity using [`ChildBuilder`].
     </span><span class="kw">fn </span>with_children(<span class="kw-2">&amp;mut </span><span class="self">self</span>, f: <span class="kw">impl </span>FnOnce(<span class="kw-2">&amp;mut </span>ChildBuilder)) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self</span>;
-    <span class="doccomment">/// Pushes children to the back of the builder&#39;s children. For any entities that are
+    <span class="doccomment">/// Pushes children to the back of the builder's children. For any entities that are
     /// already a child of this one, this method does nothing.
     ///
-    /// If the children were previously children of another parent, that parent&#39;s [`Children`] component
+    /// If the children were previously children of another parent, that parent's [`Children`] component
     /// will have those children removed from its list. Removing all children from a parent causes its
     /// [`Children`] component to be removed from the entity.
     ///
@@ -1527,7 +1570,7 @@
     </span><span class="kw">fn </span>push_children(<span class="kw-2">&amp;mut </span><span class="self">self</span>, children: <span class="kw-2">&amp;</span>[Entity]) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self</span>;
     <span class="doccomment">/// Inserts children at the given index.
     ///
-    /// If the children were previously children of another parent, that parent&#39;s [`Children`] component
+    /// If the children were previously children of another parent, that parent's [`Children`] component
     /// will have those children removed from its list. Removing all children from a parent causes its
     /// [`Children`] component to be removed from the entity.
     ///
@@ -1541,7 +1584,7 @@
     </span><span class="kw">fn </span>remove_children(<span class="kw-2">&amp;mut </span><span class="self">self</span>, children: <span class="kw-2">&amp;</span>[Entity]) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self</span>;
     <span class="doccomment">/// Adds a single child.
     ///
-    /// If the children were previously children of another parent, that parent&#39;s [`Children`] component
+    /// If the children were previously children of another parent, that parent's [`Children`] component
     /// will have those children removed from its list. Removing all children from a parent causes its
     /// [`Children`] component to be removed from the entity.
     ///
@@ -1561,7 +1604,7 @@
     </span><span class="kw">fn </span>replace_children(<span class="kw-2">&amp;mut </span><span class="self">self</span>, children: <span class="kw-2">&amp;</span>[Entity]) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self</span>;
     <span class="doccomment">/// Sets the parent of this entity.
     ///
-    /// If this entity already had a parent, the parent&#39;s [`Children`] component will have this
+    /// If this entity already had a parent, the parent's [`Children`] component will have this
     /// child removed from its list. Removing all children from a parent causes its [`Children`]
     /// component to be removed from the entity.
     ///
@@ -1571,12 +1614,12 @@
     </span><span class="kw">fn </span>set_parent(<span class="kw-2">&amp;mut </span><span class="self">self</span>, parent: Entity) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self</span>;
     <span class="doccomment">/// Removes the [`Parent`] of this entity.
     ///
-    /// Also removes this entity from its parent&#39;s [`Children`] component. Removing all children from a parent causes
+    /// Also removes this entity from its parent's [`Children`] component. Removing all children from a parent causes
     /// its [`Children`] component to be removed from the entity.
     </span><span class="kw">fn </span>remove_parent(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self</span>;
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>, <span class="lifetime">&#39;a</span>&gt; BuildChildren <span class="kw">for </span>EntityCommands&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>, <span class="lifetime">&#39;a</span>&gt; {
+<span class="kw">impl </span>BuildChildren <span class="kw">for </span>EntityCommands&lt;<span class="lifetime">'_</span>&gt; {
     <span class="kw">fn </span>with_children(<span class="kw-2">&amp;mut </span><span class="self">self</span>, spawn_children: <span class="kw">impl </span>FnOnce(<span class="kw-2">&amp;mut </span>ChildBuilder)) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
         <span class="kw">let </span>parent = <span class="self">self</span>.id();
         <span class="kw">let </span><span class="kw-2">mut </span>builder = ChildBuilder {
@@ -1590,7 +1633,7 @@
         spawn_children(<span class="kw-2">&amp;mut </span>builder);
         <span class="kw">let </span>children = builder.push_children;
         <span class="kw">if </span>children.children.contains(<span class="kw-2">&amp;</span>parent) {
-            <span class="macro">panic!</span>(<span class="string">&quot;Entity cannot be a child of itself.&quot;</span>);
+            <span class="macro">panic!</span>(<span class="string">"Entity cannot be a child of itself."</span>);
         }
         <span class="self">self</span>.commands().add(children);
         <span class="self">self
@@ -1599,7 +1642,7 @@
     <span class="kw">fn </span>push_children(<span class="kw-2">&amp;mut </span><span class="self">self</span>, children: <span class="kw-2">&amp;</span>[Entity]) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
         <span class="kw">let </span>parent = <span class="self">self</span>.id();
         <span class="kw">if </span>children.contains(<span class="kw-2">&amp;</span>parent) {
-            <span class="macro">panic!</span>(<span class="string">&quot;Cannot push entity as a child of itself.&quot;</span>);
+            <span class="macro">panic!</span>(<span class="string">"Cannot push entity as a child of itself."</span>);
         }
         <span class="self">self</span>.commands().add(PushChildren {
             children: SmallVec::from(children),
@@ -1611,7 +1654,7 @@
     <span class="kw">fn </span>insert_children(<span class="kw-2">&amp;mut </span><span class="self">self</span>, index: usize, children: <span class="kw-2">&amp;</span>[Entity]) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
         <span class="kw">let </span>parent = <span class="self">self</span>.id();
         <span class="kw">if </span>children.contains(<span class="kw-2">&amp;</span>parent) {
-            <span class="macro">panic!</span>(<span class="string">&quot;Cannot insert entity as a child of itself.&quot;</span>);
+            <span class="macro">panic!</span>(<span class="string">"Cannot insert entity as a child of itself."</span>);
         }
         <span class="self">self</span>.commands().add(InsertChildren {
             children: SmallVec::from(children),
@@ -1633,9 +1676,9 @@
     <span class="kw">fn </span>add_child(<span class="kw-2">&amp;mut </span><span class="self">self</span>, child: Entity) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
         <span class="kw">let </span>parent = <span class="self">self</span>.id();
         <span class="kw">if </span>child == parent {
-            <span class="macro">panic!</span>(<span class="string">&quot;Cannot add entity as a child of itself.&quot;</span>);
+            <span class="macro">panic!</span>(<span class="string">"Cannot add entity as a child of itself."</span>);
         }
-        <span class="self">self</span>.commands().add(AddChild { child, parent });
+        <span class="self">self</span>.commands().add(PushChild { child, parent });
         <span class="self">self
     </span>}
 
@@ -1648,7 +1691,7 @@
     <span class="kw">fn </span>replace_children(<span class="kw-2">&amp;mut </span><span class="self">self</span>, children: <span class="kw-2">&amp;</span>[Entity]) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
         <span class="kw">let </span>parent = <span class="self">self</span>.id();
         <span class="kw">if </span>children.contains(<span class="kw-2">&amp;</span>parent) {
-            <span class="macro">panic!</span>(<span class="string">&quot;Cannot replace entity as a child of itself.&quot;</span>);
+            <span class="macro">panic!</span>(<span class="string">"Cannot replace entity as a child of itself."</span>);
         }
         <span class="self">self</span>.commands().add(ReplaceChildren {
             children: SmallVec::from(children),
@@ -1660,9 +1703,9 @@
     <span class="kw">fn </span>set_parent(<span class="kw-2">&amp;mut </span><span class="self">self</span>, parent: Entity) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
         <span class="kw">let </span>child = <span class="self">self</span>.id();
         <span class="kw">if </span>child == parent {
-            <span class="macro">panic!</span>(<span class="string">&quot;Cannot set parent to itself&quot;</span>);
+            <span class="macro">panic!</span>(<span class="string">"Cannot set parent to itself"</span>);
         }
-        <span class="self">self</span>.commands().add(AddChild { child, parent });
+        <span class="self">self</span>.commands().add(PushChild { child, parent });
         <span class="self">self
     </span>}
 
@@ -1675,15 +1718,15 @@
 
 <span class="doccomment">/// Struct for adding children to an entity directly through the [`World`] for use in exclusive systems.
 </span><span class="attr">#[derive(Debug)]
-</span><span class="kw">pub struct </span>WorldChildBuilder&lt;<span class="lifetime">&#39;w</span>&gt; {
-    world: <span class="kw-2">&amp;</span><span class="lifetime">&#39;w </span><span class="kw-2">mut </span>World,
+</span><span class="kw">pub struct </span>WorldChildBuilder&lt;<span class="lifetime">'w</span>&gt; {
+    world: <span class="kw-2">&amp;</span><span class="lifetime">'w </span><span class="kw-2">mut </span>World,
     parent: Entity,
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;w</span>&gt; WorldChildBuilder&lt;<span class="lifetime">&#39;w</span>&gt; {
-    <span class="doccomment">/// Spawns an entity with the given bundle and inserts it into the parent entity&#39;s [`Children`].
+<span class="kw">impl</span>&lt;<span class="lifetime">'w</span>&gt; WorldChildBuilder&lt;<span class="lifetime">'w</span>&gt; {
+    <span class="doccomment">/// Spawns an entity with the given bundle and inserts it into the parent entity's [`Children`].
     /// Also adds [`Parent`] component to the created entity.
-    </span><span class="kw">pub fn </span>spawn(<span class="kw-2">&amp;mut </span><span class="self">self</span>, bundle: <span class="kw">impl </span>Bundle + Send + Sync + <span class="lifetime">&#39;static</span>) -&gt; EntityWorldMut&lt;<span class="lifetime">&#39;_</span>&gt; {
+    </span><span class="kw">pub fn </span>spawn(<span class="kw-2">&amp;mut </span><span class="self">self</span>, bundle: <span class="kw">impl </span>Bundle + Send + Sync + <span class="lifetime">'static</span>) -&gt; EntityWorldMut&lt;<span class="lifetime">'_</span>&gt; {
         <span class="kw">let </span>entity = <span class="self">self</span>.world.spawn((bundle, Parent(<span class="self">self</span>.parent))).id();
         push_child_unchecked(<span class="self">self</span>.world, <span class="self">self</span>.parent, entity);
         push_events(
@@ -1696,9 +1739,9 @@
         <span class="self">self</span>.world.entity_mut(entity)
     }
 
-    <span class="doccomment">/// Spawns an [`Entity`] with no components and inserts it into the parent entity&#39;s [`Children`].
+    <span class="doccomment">/// Spawns an [`Entity`] with no components and inserts it into the parent entity's [`Children`].
     /// Also adds [`Parent`] component to the created entity.
-    </span><span class="kw">pub fn </span>spawn_empty(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; EntityWorldMut&lt;<span class="lifetime">&#39;_</span>&gt; {
+    </span><span class="kw">pub fn </span>spawn_empty(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; EntityWorldMut&lt;<span class="lifetime">'_</span>&gt; {
         <span class="kw">let </span>entity = <span class="self">self</span>.world.spawn(Parent(<span class="self">self</span>.parent)).id();
         push_child_unchecked(<span class="self">self</span>.world, <span class="self">self</span>.parent, entity);
         push_events(
@@ -1724,7 +1767,7 @@
 
     <span class="doccomment">/// Adds a single child.
     ///
-    /// If the children were previously children of another parent, that parent&#39;s [`Children`] component
+    /// If the children were previously children of another parent, that parent's [`Children`] component
     /// will have those children removed from its list. Removing all children from a parent causes its
     /// [`Children`] component to be removed from the entity.
     ///
@@ -1733,10 +1776,10 @@
     /// Panics if the child is the same as the parent.
     </span><span class="kw">fn </span>add_child(<span class="kw-2">&amp;mut </span><span class="self">self</span>, child: Entity) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self</span>;
 
-    <span class="doccomment">/// Pushes children to the back of the builder&#39;s children. For any entities that are
+    <span class="doccomment">/// Pushes children to the back of the builder's children. For any entities that are
     /// already a child of this one, this method does nothing.
     ///
-    /// If the children were previously children of another parent, that parent&#39;s [`Children`] component
+    /// If the children were previously children of another parent, that parent's [`Children`] component
     /// will have those children removed from its list. Removing all children from a parent causes its
     /// [`Children`] component to be removed from the entity.
     ///
@@ -1746,7 +1789,7 @@
     </span><span class="kw">fn </span>push_children(<span class="kw-2">&amp;mut </span><span class="self">self</span>, children: <span class="kw-2">&amp;</span>[Entity]) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self</span>;
     <span class="doccomment">/// Inserts children at the given index.
     ///
-    /// If the children were previously children of another parent, that parent&#39;s [`Children`] component
+    /// If the children were previously children of another parent, that parent's [`Children`] component
     /// will have those children removed from its list. Removing all children from a parent causes its
     /// [`Children`] component to be removed from the entity.
     ///
@@ -1761,7 +1804,7 @@
 
     <span class="doccomment">/// Sets the parent of this entity.
     ///
-    /// If this entity already had a parent, the parent&#39;s [`Children`] component will have this
+    /// If this entity already had a parent, the parent's [`Children`] component will have this
     /// child removed from its list. Removing all children from a parent causes its [`Children`]
     /// component to be removed from the entity.
     ///
@@ -1772,7 +1815,7 @@
 
     <span class="doccomment">/// Removes the [`Parent`] of this entity.
     ///
-    /// Also removes this entity from its parent&#39;s [`Children`] component. Removing all children from a parent causes
+    /// Also removes this entity from its parent's [`Children`] component. Removing all children from a parent causes
     /// its [`Children`] component to be removed from the entity.
     </span><span class="kw">fn </span>remove_parent(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self</span>;
     <span class="doccomment">/// Removes all children from this entity. The [`Children`] component will be removed if it exists, otherwise this does nothing.
@@ -1787,7 +1830,7 @@
     </span><span class="kw">fn </span>replace_children(<span class="kw-2">&amp;mut </span><span class="self">self</span>, children: <span class="kw-2">&amp;</span>[Entity]) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self</span>;
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;w</span>&gt; BuildWorldChildren <span class="kw">for </span>EntityWorldMut&lt;<span class="lifetime">&#39;w</span>&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'w</span>&gt; BuildWorldChildren <span class="kw">for </span>EntityWorldMut&lt;<span class="lifetime">'w</span>&gt; {
     <span class="kw">fn </span>with_children(<span class="kw-2">&amp;mut </span><span class="self">self</span>, spawn_children: <span class="kw">impl </span>FnOnce(<span class="kw-2">&amp;mut </span>WorldChildBuilder)) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
         <span class="kw">let </span>parent = <span class="self">self</span>.id();
         <span class="self">self</span>.world_scope(|world| {
@@ -1799,7 +1842,7 @@
     <span class="kw">fn </span>add_child(<span class="kw-2">&amp;mut </span><span class="self">self</span>, child: Entity) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
         <span class="kw">let </span>parent = <span class="self">self</span>.id();
         <span class="kw">if </span>child == parent {
-            <span class="macro">panic!</span>(<span class="string">&quot;Cannot add entity as a child of itself.&quot;</span>);
+            <span class="macro">panic!</span>(<span class="string">"Cannot add entity as a child of itself."</span>);
         }
         <span class="self">self</span>.world_scope(|world| {
             update_old_parent(world, child, parent);
@@ -1816,7 +1859,7 @@
     <span class="kw">fn </span>push_children(<span class="kw-2">&amp;mut </span><span class="self">self</span>, children: <span class="kw-2">&amp;</span>[Entity]) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
         <span class="kw">let </span>parent = <span class="self">self</span>.id();
         <span class="kw">if </span>children.contains(<span class="kw-2">&amp;</span>parent) {
-            <span class="macro">panic!</span>(<span class="string">&quot;Cannot push entity as a child of itself.&quot;</span>);
+            <span class="macro">panic!</span>(<span class="string">"Cannot push entity as a child of itself."</span>);
         }
         <span class="self">self</span>.world_scope(|world| {
             update_old_parents(world, parent, children);
@@ -1835,7 +1878,7 @@
     <span class="kw">fn </span>insert_children(<span class="kw-2">&amp;mut </span><span class="self">self</span>, index: usize, children: <span class="kw-2">&amp;</span>[Entity]) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
         <span class="kw">let </span>parent = <span class="self">self</span>.id();
         <span class="kw">if </span>children.contains(<span class="kw-2">&amp;</span>parent) {
-            <span class="macro">panic!</span>(<span class="string">&quot;Cannot insert entity as a child of itself.&quot;</span>);
+            <span class="macro">panic!</span>(<span class="string">"Cannot insert entity as a child of itself."</span>);
         }
         <span class="self">self</span>.world_scope(|world| {
             update_old_parents(world, parent, children);
@@ -1898,7 +1941,7 @@
         components::{Children, Parent},
         HierarchyEvent::{<span class="self">self</span>, ChildAdded, ChildMoved, ChildRemoved},
     };
-    <span class="kw">use </span>smallvec::{smallvec, SmallVec};
+    <span class="kw">use </span>bevy_utils::smallvec::{smallvec, SmallVec};
 
     <span class="kw">use </span>bevy_ecs::{
         component::Component,
@@ -1908,12 +1951,12 @@
         world::World,
     };
 
-    <span class="doccomment">/// Assert the (non)existence and state of the child&#39;s [`Parent`] component.
+    <span class="doccomment">/// Assert the (non)existence and state of the child's [`Parent`] component.
     </span><span class="kw">fn </span>assert_parent(world: <span class="kw-2">&amp;</span>World, child: Entity, parent: <span class="prelude-ty">Option</span>&lt;Entity&gt;) {
         <span class="macro">assert_eq!</span>(world.get::&lt;Parent&gt;(child).map(|p| p.get()), parent);
     }
 
-    <span class="doccomment">/// Assert the (non)existence and state of the parent&#39;s [`Children`] component.
+    <span class="doccomment">/// Assert the (non)existence and state of the parent's [`Children`] component.
     </span><span class="kw">fn </span>assert_children(world: <span class="kw-2">&amp;</span>World, parent: Entity, children: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>[Entity]&gt;) {
         <span class="macro">assert_eq!</span>(world.get::&lt;Children&gt;(parent).map(|c| <span class="kw-2">&amp;**</span>c), children);
     }
@@ -1963,7 +2006,7 @@
                 parent: a,
             }],
         );
-        <span class="comment">// Children component should be removed when it&#39;s empty.
+        <span class="comment">// Children component should be removed when it's empty.
         </span>world.entity_mut(d).add_child(b).add_child(c);
         assert_children(world, a, <span class="prelude-val">None</span>);
     }

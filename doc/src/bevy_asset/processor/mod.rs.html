@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_asset-0.12.1/src/processor/mod.rs`."><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="bevy_asset" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../bevy_asset/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_asset-0.13.0/src/processor/mod.rs`."><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="bevy_asset" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1317,6 +1318,20 @@
 <a href="#1317" id="1317">1317</a>
 <a href="#1318" id="1318">1318</a>
 <a href="#1319" id="1319">1319</a>
+<a href="#1320" id="1320">1320</a>
+<a href="#1321" id="1321">1321</a>
+<a href="#1322" id="1322">1322</a>
+<a href="#1323" id="1323">1323</a>
+<a href="#1324" id="1324">1324</a>
+<a href="#1325" id="1325">1325</a>
+<a href="#1326" id="1326">1326</a>
+<a href="#1327" id="1327">1327</a>
+<a href="#1328" id="1328">1328</a>
+<a href="#1329" id="1329">1329</a>
+<a href="#1330" id="1330">1330</a>
+<a href="#1331" id="1331">1331</a>
+<a href="#1332" id="1332">1332</a>
+<a href="#1333" id="1333">1333</a>
 </pre></div><pre class="rust"><code><span class="kw">mod </span>log;
 <span class="kw">mod </span>process;
 
@@ -1349,7 +1364,7 @@
 };
 <span class="kw">use </span>thiserror::Error;
 
-<span class="doccomment">/// A &quot;background&quot; asset processor that reads asset values from a source [`AssetSource`] (which corresponds to an [`AssetReader`] / [`AssetWriter`] pair),
+<span class="doccomment">/// A "background" asset processor that reads asset values from a source [`AssetSource`] (which corresponds to an [`AssetReader`] / [`AssetWriter`] pair),
 /// processes them in some way, and writes them to a destination [`AssetSource`].
 ///
 /// This will create .meta files (a human-editable serialized form of [`AssetMeta`]) in the source [`AssetSource`] for assets that
@@ -1360,7 +1375,7 @@
 /// Assets will only be re-processed if they have been changed. A hash of each asset source is stored in the metadata of the processed version of the
 /// asset, which is used to determine if the asset source has actually changed.  
 ///
-/// A [`ProcessorTransactionLog`] is produced, which uses &quot;write-ahead logging&quot; to make the [`AssetProcessor`] crash and failure resistant. If a failed/unfinished
+/// A [`ProcessorTransactionLog`] is produced, which uses "write-ahead logging" to make the [`AssetProcessor`] crash and failure resistant. If a failed/unfinished
 /// transaction from a previous run is detected, the affected asset(s) will be re-processed.
 ///
 /// [`AssetProcessor`] can be cloned. It is backed by an [`Arc`] so clones will share state. Clones can be freely used in parallel.
@@ -1373,9 +1388,9 @@
 <span class="kw">pub struct </span>AssetProcessorData {
     <span class="kw">pub</span>(<span class="kw">crate</span>) asset_infos: async_lock::RwLock&lt;ProcessorAssetInfos&gt;,
     log: async_lock::RwLock&lt;<span class="prelude-ty">Option</span>&lt;ProcessorTransactionLog&gt;&gt;,
-    processors: RwLock&lt;HashMap&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str, Arc&lt;<span class="kw">dyn </span>ErasedProcessor&gt;&gt;&gt;,
+    processors: RwLock&lt;HashMap&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str, Arc&lt;<span class="kw">dyn </span>ErasedProcessor&gt;&gt;&gt;,
     <span class="doccomment">/// Default processors for file extensions
-    </span>default_processors: RwLock&lt;HashMap&lt;String, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str&gt;&gt;,
+    </span>default_processors: RwLock&lt;HashMap&lt;String, <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str&gt;&gt;,
     state: async_lock::RwLock&lt;ProcessorState&gt;,
     sources: AssetSources,
     initialized_sender: async_broadcast::Sender&lt;()&gt;,
@@ -1400,7 +1415,7 @@
         <span class="self">Self </span>{ server, data }
     }
 
-    <span class="doccomment">/// The &quot;internal&quot; [`AssetServer`] used by the [`AssetProcessor`]. This is _separate_ from the asset processor used by
+    <span class="doccomment">/// The "internal" [`AssetServer`] used by the [`AssetProcessor`]. This is _separate_ from the asset processor used by
     /// the main App. It has different processor-specific configuration and a different ID space.
     </span><span class="kw">pub fn </span>server(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>AssetServer {
         <span class="kw-2">&amp;</span><span class="self">self</span>.server
@@ -1424,10 +1439,10 @@
 
     <span class="doccomment">/// Retrieves the [`AssetSource`] for this processor
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>get_source&lt;<span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;b</span>&gt;(
-        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>,
-        id: <span class="kw">impl </span>Into&lt;AssetSourceId&lt;<span class="lifetime">&#39;b</span>&gt;&gt;,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>AssetSource, MissingAssetSourceError&gt; {
+    </span><span class="kw">pub fn </span>get_source&lt;<span class="lifetime">'a</span>, <span class="lifetime">'b</span>&gt;(
+        <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="self">self</span>,
+        id: <span class="kw">impl </span>Into&lt;AssetSourceId&lt;<span class="lifetime">'b</span>&gt;&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>AssetSource, MissingAssetSourceError&gt; {
         <span class="self">self</span>.data.sources.get(id.into())
     }
 
@@ -1445,15 +1460,15 @@
     }
 
     <span class="doccomment">/// Logs the start of an asset being processed. If this is not followed at some point in the log by a closing [`AssetProcessor::log_end_processing`],
-    /// in the next run of the processor the asset processing will be considered &quot;incomplete&quot; and it will be reprocessed.
-    </span><span class="kw">async fn </span>log_begin_processing(<span class="kw-2">&amp;</span><span class="self">self</span>, path: <span class="kw-2">&amp;</span>AssetPath&lt;<span class="lifetime">&#39;_</span>&gt;) {
+    /// in the next run of the processor the asset processing will be considered "incomplete" and it will be reprocessed.
+    </span><span class="kw">async fn </span>log_begin_processing(<span class="kw-2">&amp;</span><span class="self">self</span>, path: <span class="kw-2">&amp;</span>AssetPath&lt;<span class="lifetime">'_</span>&gt;) {
         <span class="kw">let </span><span class="kw-2">mut </span>log = <span class="self">self</span>.data.log.write().<span class="kw">await</span>;
         <span class="kw">let </span>log = log.as_mut().unwrap();
         log.begin_processing(path).<span class="kw">await</span>.unwrap();
     }
 
     <span class="doccomment">/// Logs the end of an asset being successfully processed. See [`AssetProcessor::log_begin_processing`].
-    </span><span class="kw">async fn </span>log_end_processing(<span class="kw-2">&amp;</span><span class="self">self</span>, path: <span class="kw-2">&amp;</span>AssetPath&lt;<span class="lifetime">&#39;_</span>&gt;) {
+    </span><span class="kw">async fn </span>log_end_processing(<span class="kw-2">&amp;</span><span class="self">self</span>, path: <span class="kw-2">&amp;</span>AssetPath&lt;<span class="lifetime">'_</span>&gt;) {
         <span class="kw">let </span><span class="kw-2">mut </span>log = <span class="self">self</span>.data.log.write().<span class="kw">await</span>;
         <span class="kw">let </span>log = log.as_mut().unwrap();
         log.end_processing(path).<span class="kw">await</span>.unwrap();
@@ -1461,9 +1476,9 @@
 
     <span class="doccomment">/// Starts the processor in a background thread.
     </span><span class="kw">pub fn </span>start(_processor: Res&lt;<span class="self">Self</span>&gt;) {
-        <span class="attr">#[cfg(any(target_arch = <span class="string">&quot;wasm32&quot;</span>, not(feature = <span class="string">&quot;multi-threaded&quot;</span>)))]
-        </span><span class="macro">error!</span>(<span class="string">&quot;Cannot run AssetProcessor in single threaded mode (or WASM) yet.&quot;</span>);
-        <span class="attr">#[cfg(all(not(target_arch = <span class="string">&quot;wasm32&quot;</span>), feature = <span class="string">&quot;multi-threaded&quot;</span>))]
+        <span class="attr">#[cfg(any(target_arch = <span class="string">"wasm32"</span>, not(feature = <span class="string">"multi-threaded"</span>)))]
+        </span><span class="macro">error!</span>(<span class="string">"Cannot run AssetProcessor in single threaded mode (or WASM) yet."</span>);
+        <span class="attr">#[cfg(all(not(target_arch = <span class="string">"wasm32"</span>), feature = <span class="string">"multi-threaded"</span>))]
         </span>{
             <span class="kw">let </span>processor = _processor.clone();
             std::thread::spawn(<span class="kw">move </span>|| {
@@ -1474,37 +1489,37 @@
     }
 
     <span class="doccomment">/// Processes all assets. This will:
-    /// * For each &quot;processed [`AssetSource`]:
+    /// * For each "processed [`AssetSource`]:
     /// * Scan the [`ProcessorTransactionLog`] and recover from any failures detected
     /// * Scan the processed [`AssetReader`] to build the current view of already processed assets.
     /// * Scan the unprocessed [`AssetReader`] and remove any final processed assets that are invalid or no longer exist.
-    /// * For each asset in the unprocessed [`AssetReader`], kick off a new &quot;process job&quot;, which will process the asset
+    /// * For each asset in the unprocessed [`AssetReader`], kick off a new "process job", which will process the asset
     /// (if the latest version of the asset has not been processed).
-    </span><span class="attr">#[cfg(all(not(target_arch = <span class="string">&quot;wasm32&quot;</span>), feature = <span class="string">&quot;multi-threaded&quot;</span>))]
+    </span><span class="attr">#[cfg(all(not(target_arch = <span class="string">"wasm32"</span>), feature = <span class="string">"multi-threaded"</span>))]
     </span><span class="kw">pub fn </span>process_assets(<span class="kw-2">&amp;</span><span class="self">self</span>) {
         <span class="kw">let </span>start_time = std::time::Instant::now();
-        <span class="macro">debug!</span>(<span class="string">&quot;Processing Assets&quot;</span>);
+        <span class="macro">debug!</span>(<span class="string">"Processing Assets"</span>);
         IoTaskPool::get().scope(|scope| {
             scope.spawn(<span class="kw">async move </span>{
                 <span class="self">self</span>.initialize().<span class="kw">await</span>.unwrap();
                 <span class="kw">for </span>source <span class="kw">in </span><span class="self">self</span>.sources().iter_processed() {
-                    <span class="self">self</span>.process_assets_internal(scope, source, PathBuf::from(<span class="string">&quot;&quot;</span>))
+                    <span class="self">self</span>.process_assets_internal(scope, source, PathBuf::from(<span class="string">""</span>))
                         .<span class="kw">await
                         </span>.unwrap();
                 }
             });
         });
-        <span class="comment">// This must happen _after_ the scope resolves or it will happen &quot;too early&quot;
-        // Don&#39;t move this into the async scope above! process_assets is a blocking/sync function this is fine
+        <span class="comment">// This must happen _after_ the scope resolves or it will happen "too early"
+        // Don't move this into the async scope above! process_assets is a blocking/sync function this is fine
         </span>bevy_tasks::block_on(<span class="self">self</span>.finish_processing_assets());
         <span class="kw">let </span>end_time = std::time::Instant::now();
-        <span class="macro">debug!</span>(<span class="string">&quot;Processing finished in {:?}&quot;</span>, end_time - start_time);
+        <span class="macro">debug!</span>(<span class="string">"Processing finished in {:?}"</span>, end_time - start_time);
     }
 
     <span class="doccomment">/// Listens for changes to assets in the source [`AssetSource`] and update state accordingly.
     </span><span class="comment">// PERF: parallelize change event processing
     </span><span class="kw">pub async fn </span>listen_for_source_change_events(<span class="kw-2">&amp;</span><span class="self">self</span>) {
-        <span class="macro">debug!</span>(<span class="string">&quot;Listening for changes to source assets&quot;</span>);
+        <span class="macro">debug!</span>(<span class="string">"Listening for changes to source assets"</span>);
         <span class="kw">loop </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>started_processing = <span class="bool-val">false</span>;
 
@@ -1528,7 +1543,7 @@
     }
 
     <span class="kw">async fn </span>handle_asset_source_event(<span class="kw-2">&amp;</span><span class="self">self</span>, source: <span class="kw-2">&amp;</span>AssetSource, event: AssetSourceEvent) {
-        <span class="macro">trace!</span>(<span class="string">&quot;{event:?}&quot;</span>);
+        <span class="macro">trace!</span>(<span class="string">"{event:?}"</span>);
         <span class="kw">match </span>event {
             AssetSourceEvent::AddedAsset(path)
             | AssetSourceEvent::AddedMeta(path)
@@ -1545,15 +1560,15 @@
             AssetSourceEvent::AddedFolder(path) =&gt; {
                 <span class="self">self</span>.handle_added_folder(source, path).<span class="kw">await</span>;
             }
-            <span class="comment">// NOTE: As a heads up for future devs: this event shouldn&#39;t be run in parallel with other events that might
+            <span class="comment">// NOTE: As a heads up for future devs: this event shouldn't be run in parallel with other events that might
             // touch this folder (ex: the folder might be re-created with new assets). Clean up the old state first.
             // Currently this event handler is not parallel, but it could be (and likely should be) in the future.
             </span>AssetSourceEvent::RemovedFolder(path) =&gt; {
                 <span class="self">self</span>.handle_removed_folder(source, <span class="kw-2">&amp;</span>path).<span class="kw">await</span>;
             }
             AssetSourceEvent::RenamedAsset { old, new } =&gt; {
-                <span class="comment">// If there was a rename event, but the path hasn&#39;t changed, this asset might need reprocessing.
-                // Sometimes this event is returned when an asset is moved &quot;back&quot; into the asset folder
+                <span class="comment">// If there was a rename event, but the path hasn't changed, this asset might need reprocessing.
+                // Sometimes this event is returned when an asset is moved "back" into the asset folder
                 </span><span class="kw">if </span>old == new {
                     <span class="self">self</span>.process_asset(source, new).<span class="kw">await</span>;
                 } <span class="kw">else </span>{
@@ -1561,12 +1576,12 @@
                 }
             }
             AssetSourceEvent::RenamedMeta { old, new } =&gt; {
-                <span class="comment">// If there was a rename event, but the path hasn&#39;t changed, this asset meta might need reprocessing.
-                // Sometimes this event is returned when an asset meta is moved &quot;back&quot; into the asset folder
+                <span class="comment">// If there was a rename event, but the path hasn't changed, this asset meta might need reprocessing.
+                // Sometimes this event is returned when an asset meta is moved "back" into the asset folder
                 </span><span class="kw">if </span>old == new {
                     <span class="self">self</span>.process_asset(source, new).<span class="kw">await</span>;
                 } <span class="kw">else </span>{
-                    <span class="macro">debug!</span>(<span class="string">&quot;Meta renamed from {old:?} to {new:?}&quot;</span>);
+                    <span class="macro">debug!</span>(<span class="string">"Meta renamed from {old:?} to {new:?}"</span>);
                     <span class="kw">let </span><span class="kw-2">mut </span>infos = <span class="self">self</span>.data.asset_infos.write().<span class="kw">await</span>;
                     <span class="comment">// Renaming meta should not assume that an asset has also been renamed. Check both old and new assets to see
                     // if they should be re-imported (and/or have new meta generated)
@@ -1577,8 +1592,8 @@
                 }
             }
             AssetSourceEvent::RenamedFolder { old, new } =&gt; {
-                <span class="comment">// If there was a rename event, but the path hasn&#39;t changed, this asset folder might need reprocessing.
-                // Sometimes this event is returned when an asset meta is moved &quot;back&quot; into the asset folder
+                <span class="comment">// If there was a rename event, but the path hasn't changed, this asset folder might need reprocessing.
+                // Sometimes this event is returned when an asset meta is moved "back" into the asset folder
                 </span><span class="kw">if </span>old == new {
                     <span class="self">self</span>.handle_added_folder(source, new).<span class="kw">await</span>;
                 } <span class="kw">else </span>{
@@ -1607,8 +1622,15 @@
                             </span>}
                             AssetReaderError::Io(err) =&gt; {
                                 <span class="macro">error!</span>(
-                                    <span class="string">&quot;Path &#39;{}&#39; was removed, but the destination reader could not determine if it \
-                                    was a folder or a file due to the following error: {err}&quot;</span>,
+                                    <span class="string">"Path '{}' was removed, but the destination reader could not determine if it \
+                                    was a folder or a file due to the following error: {err}"</span>,
+                                    AssetPath::from_path(<span class="kw-2">&amp;</span>path).with_source(source.id())
+                                );
+                            }
+                            AssetReaderError::HttpError(status) =&gt; {
+                                <span class="macro">error!</span>(
+                                    <span class="string">"Path '{}' was removed, but the destination reader could not determine if it \
+                                    was a folder or a file due to receiving an unexpected HTTP Status {status}"</span>,
                                     AssetPath::from_path(<span class="kw-2">&amp;</span>path).with_source(source.id())
                                 );
                             }
@@ -1621,12 +1643,12 @@
 
     <span class="kw">async fn </span>handle_added_folder(<span class="kw-2">&amp;</span><span class="self">self</span>, source: <span class="kw-2">&amp;</span>AssetSource, path: PathBuf) {
         <span class="macro">debug!</span>(
-            <span class="string">&quot;Folder {} was added. Attempting to re-process&quot;</span>,
+            <span class="string">"Folder {} was added. Attempting to re-process"</span>,
             AssetPath::from_path(<span class="kw-2">&amp;</span>path).with_source(source.id())
         );
-        <span class="attr">#[cfg(any(target_arch = <span class="string">&quot;wasm32&quot;</span>, not(feature = <span class="string">&quot;multi-threaded&quot;</span>)))]
-        </span><span class="macro">error!</span>(<span class="string">&quot;AddFolder event cannot be handled in single threaded mode (or WASM) yet.&quot;</span>);
-        <span class="attr">#[cfg(all(not(target_arch = <span class="string">&quot;wasm32&quot;</span>), feature = <span class="string">&quot;multi-threaded&quot;</span>))]
+        <span class="attr">#[cfg(any(target_arch = <span class="string">"wasm32"</span>, not(feature = <span class="string">"multi-threaded"</span>)))]
+        </span><span class="macro">error!</span>(<span class="string">"AddFolder event cannot be handled in single threaded mode (or WASM) yet."</span>);
+        <span class="attr">#[cfg(all(not(target_arch = <span class="string">"wasm32"</span>), feature = <span class="string">"multi-threaded"</span>))]
         </span>IoTaskPool::get().scope(|scope| {
             scope.spawn(<span class="kw">async move </span>{
                 <span class="self">self</span>.process_assets_internal(scope, source, path)
@@ -1640,10 +1662,10 @@
     </span><span class="kw">async fn </span>handle_removed_meta(<span class="kw-2">&amp;</span><span class="self">self</span>, source: <span class="kw-2">&amp;</span>AssetSource, path: PathBuf) {
         <span class="comment">// If meta was removed, we might need to regenerate it.
         // Likewise, the user might be manually re-adding the asset.
-        // Therefore, we shouldn&#39;t automatically delete the asset ... that is a
+        // Therefore, we shouldn't automatically delete the asset ... that is a
         // user-initiated action.
         </span><span class="macro">debug!</span>(
-            <span class="string">&quot;Meta for asset {:?} was removed. Attempting to re-process&quot;</span>,
+            <span class="string">"Meta for asset {:?} was removed. Attempting to re-process"</span>,
             AssetPath::from_path(<span class="kw-2">&amp;</span>path).with_source(source.id())
         );
         <span class="self">self</span>.process_asset(source, path).<span class="kw">await</span>;
@@ -1651,7 +1673,7 @@
 
     <span class="doccomment">/// Removes all processed assets stored at the given path (respecting transactionality), then removes the folder itself.
     </span><span class="kw">async fn </span>handle_removed_folder(<span class="kw-2">&amp;</span><span class="self">self</span>, source: <span class="kw-2">&amp;</span>AssetSource, path: <span class="kw-2">&amp;</span>Path) {
-        <span class="macro">debug!</span>(<span class="string">&quot;Removing folder {:?} because source was removed&quot;</span>, path);
+        <span class="macro">debug!</span>(<span class="string">"Removing folder {:?} because source was removed"</span>, path);
         <span class="kw">let </span>processed_reader = source.processed_reader().unwrap();
         <span class="kw">match </span>processed_reader.read_directory(path).<span class="kw">await </span>{
             <span class="prelude-val">Ok</span>(<span class="kw-2">mut </span>path_stream) =&gt; {
@@ -1663,11 +1685,18 @@
                 AssetReaderError::NotFound(_err) =&gt; {
                     <span class="comment">// The processed folder does not exist. No need to update anything
                 </span>}
+                AssetReaderError::HttpError(status) =&gt; {
+                    <span class="self">self</span>.log_unrecoverable().<span class="kw">await</span>;
+                    <span class="macro">error!</span>(
+                        <span class="string">"Unrecoverable Error: Failed to read the processed assets at {path:?} in order to remove assets that no longer exist \
+                        in the source directory. Restart the asset processor to fully reprocess assets. HTTP Status Code {status}"
+                    </span>);
+                }
                 AssetReaderError::Io(err) =&gt; {
                     <span class="self">self</span>.log_unrecoverable().<span class="kw">await</span>;
                     <span class="macro">error!</span>(
-                        <span class="string">&quot;Unrecoverable Error: Failed to read the processed assets at {path:?} in order to remove assets that no longer exist \
-                        in the source directory. Restart the asset processor to fully reprocess assets. Error: {err}&quot;
+                        <span class="string">"Unrecoverable Error: Failed to read the processed assets at {path:?} in order to remove assets that no longer exist \
+                        in the source directory. Restart the asset processor to fully reprocess assets. Error: {err}"
                     </span>);
                 }
             },
@@ -1676,11 +1705,11 @@
         <span class="kw">if let </span><span class="prelude-val">Err</span>(err) = processed_writer.remove_directory(path).<span class="kw">await </span>{
             <span class="kw">match </span>err {
                 AssetWriterError::Io(err) =&gt; {
-                    <span class="comment">// we can ignore NotFound because if the &quot;final&quot; file in a folder was removed
+                    <span class="comment">// we can ignore NotFound because if the "final" file in a folder was removed
                     // then we automatically clean up this folder
                     </span><span class="kw">if </span>err.kind() != ErrorKind::NotFound {
                         <span class="kw">let </span>asset_path = AssetPath::from_path(path).with_source(source.id());
-                        <span class="macro">error!</span>(<span class="string">&quot;Failed to remove destination folder that no longer exists in {asset_path}: {err}&quot;</span>);
+                        <span class="macro">error!</span>(<span class="string">"Failed to remove destination folder that no longer exists in {asset_path}: {err}"</span>);
                     }
                 }
             }
@@ -1691,7 +1720,7 @@
     /// asset have finished, thanks to the `file_transaction_lock`.
     </span><span class="kw">async fn </span>handle_removed_asset(<span class="kw-2">&amp;</span><span class="self">self</span>, source: <span class="kw-2">&amp;</span>AssetSource, path: PathBuf) {
         <span class="kw">let </span>asset_path = AssetPath::from(path).with_source(source.id());
-        <span class="macro">debug!</span>(<span class="string">&quot;Removing processed {asset_path} because source was removed&quot;</span>);
+        <span class="macro">debug!</span>(<span class="string">"Removing processed {asset_path} because source was removed"</span>);
         <span class="kw">let </span><span class="kw-2">mut </span>infos = <span class="self">self</span>.data.asset_infos.write().<span class="kw">await</span>;
         <span class="kw">if let </span><span class="prelude-val">Some</span>(info) = infos.get(<span class="kw-2">&amp;</span>asset_path) {
             <span class="comment">// we must wait for uncontested write access to the asset source to ensure existing readers / writers
@@ -1703,7 +1732,7 @@
         infos.remove(<span class="kw-2">&amp;</span>asset_path).<span class="kw">await</span>;
     }
 
-    <span class="doccomment">/// Handles a renamed source asset by moving it&#39;s processed results to the new location and updating in-memory paths + metadata.
+    <span class="doccomment">/// Handles a renamed source asset by moving it's processed results to the new location and updating in-memory paths + metadata.
     /// This will cause direct path dependencies to break.
     </span><span class="kw">async fn </span>handle_renamed_asset(<span class="kw-2">&amp;</span><span class="self">self</span>, source: <span class="kw-2">&amp;</span>AssetSource, old: PathBuf, new: PathBuf) {
         <span class="kw">let </span><span class="kw-2">mut </span>infos = <span class="self">self</span>.data.asset_infos.write().<span class="kw">await</span>;
@@ -1734,13 +1763,13 @@
     }
 
     <span class="attr">#[allow(unused)]
-    #[cfg(all(not(target_arch = <span class="string">&quot;wasm32&quot;</span>), feature = <span class="string">&quot;multi-threaded&quot;</span>))]
-    </span><span class="kw">fn </span>process_assets_internal&lt;<span class="lifetime">&#39;scope</span>&gt;(
-        <span class="kw-2">&amp;</span><span class="lifetime">&#39;scope </span><span class="self">self</span>,
-        scope: <span class="kw-2">&amp;</span><span class="lifetime">&#39;scope </span>bevy_tasks::Scope&lt;<span class="lifetime">&#39;scope</span>, <span class="lifetime">&#39;_</span>, ()&gt;,
-        source: <span class="kw-2">&amp;</span><span class="lifetime">&#39;scope </span>AssetSource,
+    #[cfg(all(not(target_arch = <span class="string">"wasm32"</span>), feature = <span class="string">"multi-threaded"</span>))]
+    </span><span class="kw">fn </span>process_assets_internal&lt;<span class="lifetime">'scope</span>&gt;(
+        <span class="kw-2">&amp;</span><span class="lifetime">'scope </span><span class="self">self</span>,
+        scope: <span class="kw-2">&amp;</span><span class="lifetime">'scope </span>bevy_tasks::Scope&lt;<span class="lifetime">'scope</span>, <span class="lifetime">'_</span>, ()&gt;,
+        source: <span class="kw-2">&amp;</span><span class="lifetime">'scope </span>AssetSource,
         path: PathBuf,
-    ) -&gt; bevy_utils::BoxedFuture&lt;<span class="lifetime">&#39;scope</span>, <span class="prelude-ty">Result</span>&lt;(), AssetReaderError&gt;&gt; {
+    ) -&gt; BoxedFuture&lt;<span class="lifetime">'scope</span>, <span class="prelude-ty">Result</span>&lt;(), AssetReaderError&gt;&gt; {
         Box::pin(<span class="kw">async move </span>{
             <span class="kw">if </span>source.reader().is_directory(<span class="kw-2">&amp;</span>path).<span class="kw">await</span><span class="question-mark">? </span>{
                 <span class="kw">let </span><span class="kw-2">mut </span>path_stream = source.reader().read_directory(<span class="kw-2">&amp;</span>path).<span class="kw">await</span><span class="question-mark">?</span>;
@@ -1814,12 +1843,12 @@
 
         <span class="doccomment">/// Retrieves asset paths recursively. If `clean_empty_folders_writer` is Some, it will be used to clean up empty
         /// folders when they are discovered.
-        </span><span class="kw">fn </span>get_asset_paths&lt;<span class="lifetime">&#39;a</span>&gt;(
-            reader: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw">dyn </span>AssetReader,
-            clean_empty_folders_writer: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw">dyn </span>AssetWriter&gt;,
+        </span><span class="kw">fn </span>get_asset_paths&lt;<span class="lifetime">'a</span>&gt;(
+            reader: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw">dyn </span>AssetReader,
+            clean_empty_folders_writer: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw">dyn </span>AssetWriter&gt;,
             path: PathBuf,
-            paths: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>Vec&lt;PathBuf&gt;,
-        ) -&gt; BoxedFuture&lt;<span class="lifetime">&#39;a</span>, <span class="prelude-ty">Result</span>&lt;bool, AssetReaderError&gt;&gt; {
+            paths: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>Vec&lt;PathBuf&gt;,
+        ) -&gt; BoxedFuture&lt;<span class="lifetime">'a</span>, <span class="prelude-ty">Result</span>&lt;bool, AssetReaderError&gt;&gt; {
             Box::pin(<span class="kw">async move </span>{
                 <span class="kw">if </span>reader.is_directory(<span class="kw-2">&amp;</span>path).<span class="kw">await</span><span class="question-mark">? </span>{
                     <span class="kw">let </span><span class="kw-2">mut </span>path_stream = reader.read_directory(<span class="kw-2">&amp;</span>path).<span class="kw">await</span><span class="question-mark">?</span>;
@@ -1855,7 +1884,7 @@
             get_asset_paths(
                 source.reader(),
                 <span class="prelude-val">None</span>,
-                PathBuf::from(<span class="string">&quot;&quot;</span>),
+                PathBuf::from(<span class="string">""</span>),
                 <span class="kw-2">&amp;mut </span>unprocessed_paths,
             )
             .<span class="kw">await
@@ -1865,7 +1894,7 @@
             get_asset_paths(
                 processed_reader,
                 <span class="prelude-val">Some</span>(processed_writer),
-                PathBuf::from(<span class="string">&quot;&quot;</span>),
+                PathBuf::from(<span class="string">""</span>),
                 <span class="kw-2">&amp;mut </span>processed_paths,
             )
             .<span class="kw">await
@@ -1884,7 +1913,7 @@
                             <span class="kw">match </span>ron::de::from_bytes::&lt;ProcessedInfoMinimal&gt;(<span class="kw-2">&amp;</span>meta_bytes) {
                                 <span class="prelude-val">Ok</span>(minimal) =&gt; {
                                     <span class="macro">trace!</span>(
-                                        <span class="string">&quot;Populated processed info for asset {asset_path} {:?}&quot;</span>,
+                                        <span class="string">"Populated processed info for asset {asset_path} {:?}"</span>,
                                         minimal.processed_info
                                     );
 
@@ -1898,20 +1927,20 @@
                                     info.processed_info = minimal.processed_info;
                                 }
                                 <span class="prelude-val">Err</span>(err) =&gt; {
-                                    <span class="macro">trace!</span>(<span class="string">&quot;Removing processed data for {asset_path} because meta could not be parsed: {err}&quot;</span>);
+                                    <span class="macro">trace!</span>(<span class="string">"Removing processed data for {asset_path} because meta could not be parsed: {err}"</span>);
                                     <span class="self">self</span>.remove_processed_asset_and_meta(source, asset_path.path())
                                         .<span class="kw">await</span>;
                                 }
                             }
                         }
                         <span class="prelude-val">Err</span>(err) =&gt; {
-                            <span class="macro">trace!</span>(<span class="string">&quot;Removing processed data for {asset_path} because meta failed to load: {err}&quot;</span>);
+                            <span class="macro">trace!</span>(<span class="string">"Removing processed data for {asset_path} because meta failed to load: {err}"</span>);
                             <span class="self">self</span>.remove_processed_asset_and_meta(source, asset_path.path())
                                 .<span class="kw">await</span>;
                         }
                     }
                 } <span class="kw">else </span>{
-                    <span class="macro">trace!</span>(<span class="string">&quot;Removing processed data for non-existent asset {asset_path}&quot;</span>);
+                    <span class="macro">trace!</span>(<span class="string">"Removing processed data for non-existent asset {asset_path}"</span>);
                     <span class="self">self</span>.remove_processed_asset_and_meta(source, asset_path.path())
                         .<span class="kw">await</span>;
                 }
@@ -1931,11 +1960,11 @@
     /// does it remove existing in-memory metadata.
     </span><span class="kw">async fn </span>remove_processed_asset_and_meta(<span class="kw-2">&amp;</span><span class="self">self</span>, source: <span class="kw-2">&amp;</span>AssetSource, path: <span class="kw-2">&amp;</span>Path) {
         <span class="kw">if let </span><span class="prelude-val">Err</span>(err) = source.processed_writer().unwrap().remove(path).<span class="kw">await </span>{
-            <span class="macro">warn!</span>(<span class="string">&quot;Failed to remove non-existent asset {path:?}: {err}&quot;</span>);
+            <span class="macro">warn!</span>(<span class="string">"Failed to remove non-existent asset {path:?}: {err}"</span>);
         }
 
         <span class="kw">if let </span><span class="prelude-val">Err</span>(err) = source.processed_writer().unwrap().remove_meta(path).<span class="kw">await </span>{
-            <span class="macro">warn!</span>(<span class="string">&quot;Failed to remove non-existent meta {path:?}: {err}&quot;</span>);
+            <span class="macro">warn!</span>(<span class="string">"Failed to remove non-existent meta {path:?}: {err}"</span>);
         }
 
         <span class="self">self</span>.clean_empty_processed_ancestor_folders(source, path)
@@ -1943,13 +1972,13 @@
     }
 
     <span class="kw">async fn </span>clean_empty_processed_ancestor_folders(<span class="kw-2">&amp;</span><span class="self">self</span>, source: <span class="kw-2">&amp;</span>AssetSource, path: <span class="kw-2">&amp;</span>Path) {
-        <span class="comment">// As a safety precaution don&#39;t delete absolute paths to avoid deleting folders outside of the destination folder
+        <span class="comment">// As a safety precaution don't delete absolute paths to avoid deleting folders outside of the destination folder
         </span><span class="kw">if </span>path.is_absolute() {
-            <span class="macro">error!</span>(<span class="string">&quot;Attempted to clean up ancestor folders of an absolute path. This is unsafe so the operation was skipped.&quot;</span>);
+            <span class="macro">error!</span>(<span class="string">"Attempted to clean up ancestor folders of an absolute path. This is unsafe so the operation was skipped."</span>);
             <span class="kw">return</span>;
         }
         <span class="kw">while let </span><span class="prelude-val">Some</span>(parent) = path.parent() {
-            <span class="kw">if </span>parent == Path::new(<span class="string">&quot;&quot;</span>) {
+            <span class="kw">if </span>parent == Path::new(<span class="string">""</span>) {
                 <span class="kw">break</span>;
             }
             <span class="kw">if </span>source
@@ -1966,8 +1995,8 @@
     }
 
     <span class="doccomment">/// Processes the asset (if it has not already been processed or the asset source has changed).
-    /// If the asset has &quot;process dependencies&quot; (relies on the values of other assets), it will asynchronously await until
-    /// the dependencies have been processed (See [`ProcessorGatedReader`], which is used in the [`AssetProcessor`]&#39;s [`AssetServer`]
+    /// If the asset has "process dependencies" (relies on the values of other assets), it will asynchronously await until
+    /// the dependencies have been processed (See [`ProcessorGatedReader`], which is used in the [`AssetProcessor`]'s [`AssetServer`]
     /// to block reads until the asset is processed).
     ///
     /// [`LoadContext`]: crate::loader::LoadContext
@@ -1982,11 +2011,11 @@
     <span class="kw">async fn </span>process_asset_internal(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         source: <span class="kw-2">&amp;</span>AssetSource,
-        asset_path: <span class="kw-2">&amp;</span>AssetPath&lt;<span class="lifetime">&#39;static</span>&gt;,
+        asset_path: <span class="kw-2">&amp;</span>AssetPath&lt;<span class="lifetime">'static</span>&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;ProcessResult, ProcessError&gt; {
         <span class="comment">// TODO: The extension check was removed now that AssetPath is the input. is that ok?
         // TODO: check if already processing to protect against duplicate hot-reload events
-        </span><span class="macro">debug!</span>(<span class="string">&quot;Processing {:?}&quot;</span>, asset_path);
+        </span><span class="macro">debug!</span>(<span class="string">"Processing {:?}"</span>, asset_path);
         <span class="kw">let </span>server = <span class="kw-2">&amp;</span><span class="self">self</span>.server;
         <span class="kw">let </span>path = asset_path.path();
         <span class="kw">let </span>reader = source.reader();
@@ -2000,7 +2029,7 @@
             err,
         };
 
-        <span class="comment">// Note: we get the asset source reader first because we don&#39;t want to create meta files for assets that don&#39;t have source files
+        <span class="comment">// Note: we get the asset source reader first because we don't want to create meta files for assets that don't have source files
         </span><span class="kw">let </span><span class="kw-2">mut </span>byte_reader = reader.read(path).<span class="kw">await</span>.map_err(reader_err)<span class="question-mark">?</span>;
 
         <span class="kw">let </span>(<span class="kw-2">mut </span>source_meta, meta_bytes, processor) = <span class="kw">match </span>reader.read_meta_bytes(path).<span class="kw">await </span>{
@@ -2047,7 +2076,7 @@
                     }
                 };
                 <span class="kw">let </span>meta_bytes = meta.serialize();
-                <span class="comment">// write meta to source location if it doesn&#39;t already exist
+                <span class="comment">// write meta to source location if it doesn't already exist
                 </span>source
                     .writer()<span class="question-mark">?
                     </span>.write_meta_bytes(path, <span class="kw-2">&amp;</span>meta_bytes)
@@ -2071,7 +2100,7 @@
             .<span class="kw">await
             </span>.map_err(|e| ProcessError::AssetReaderError {
                 path: asset_path.clone(),
-                err: AssetReaderError::Io(e),
+                err: AssetReaderError::Io(e.into()),
             })<span class="question-mark">?</span>;
 
         <span class="comment">// PERF: in theory these hashes could be streamed if we want to avoid allocating the whole asset.
@@ -2116,7 +2145,7 @@
             info.file_transaction_lock.write_arc().<span class="kw">await
         </span>};
 
-        <span class="comment">// NOTE: if processing the asset fails this will produce an &quot;unfinished&quot; log entry, forcing a rebuild on next run.
+        <span class="comment">// NOTE: if processing the asset fails this will produce an "unfinished" log entry, forcing a rebuild on next run.
         // Directly writing to the asset destination in the processor necessitates this behavior
         // TODO: this class of failure can be recovered via re-processing + smarter log validation that allows for duplicate transactions in the event of failures
         </span><span class="self">self</span>.log_begin_processing(asset_path).<span class="kw">await</span>;
@@ -2173,11 +2202,11 @@
         <span class="kw">if let </span><span class="prelude-val">Err</span>(err) = ProcessorTransactionLog::validate().<span class="kw">await </span>{
             <span class="kw">let </span>state_is_valid = <span class="kw">match </span>err {
                 ValidateLogError::ReadLogError(err) =&gt; {
-                    <span class="macro">error!</span>(<span class="string">&quot;Failed to read processor log file. Processed assets cannot be validated so they must be re-generated {err}&quot;</span>);
+                    <span class="macro">error!</span>(<span class="string">"Failed to read processor log file. Processed assets cannot be validated so they must be re-generated {err}"</span>);
                     <span class="bool-val">false
                 </span>}
                 ValidateLogError::UnrecoverableError =&gt; {
-                    <span class="macro">error!</span>(<span class="string">&quot;Encountered an unrecoverable error in the last run. Processed assets cannot be validated so they must be re-generated&quot;</span>);
+                    <span class="macro">error!</span>(<span class="string">"Encountered an unrecoverable error in the last run. Processed assets cannot be validated so they must be re-generated"</span>);
                     <span class="bool-val">false
                 </span>}
                 ValidateLogError::EntryErrors(entry_errors) =&gt; {
@@ -2186,22 +2215,22 @@
                         <span class="kw">match </span>entry_error {
                             LogEntryError::DuplicateTransaction(<span class="kw">_</span>)
                             | LogEntryError::EndedMissingTransaction(<span class="kw">_</span>) =&gt; {
-                                <span class="macro">error!</span>(<span class="string">&quot;{}&quot;</span>, entry_error);
+                                <span class="macro">error!</span>(<span class="string">"{}"</span>, entry_error);
                                 state_is_valid = <span class="bool-val">false</span>;
                                 <span class="kw">break</span>;
                             }
                             LogEntryError::UnfinishedTransaction(path) =&gt; {
-                                <span class="macro">debug!</span>(<span class="string">&quot;Asset {path:?} did not finish processing. Clearing state for that asset&quot;</span>);
+                                <span class="macro">debug!</span>(<span class="string">"Asset {path:?} did not finish processing. Clearing state for that asset"</span>);
                                 <span class="kw">let </span><span class="kw-2">mut </span>unrecoverable_err = |message: <span class="kw-2">&amp;</span><span class="kw">dyn </span>std::fmt::Display| {
-                                    <span class="macro">error!</span>(<span class="string">&quot;Failed to remove asset {path:?}: {message}&quot;</span>);
+                                    <span class="macro">error!</span>(<span class="string">"Failed to remove asset {path:?}: {message}"</span>);
                                     state_is_valid = <span class="bool-val">false</span>;
                                 };
                                 <span class="kw">let </span><span class="prelude-val">Ok</span>(source) = <span class="self">self</span>.get_source(path.source()) <span class="kw">else </span>{
-                                    (unrecoverable_err)(<span class="kw-2">&amp;</span><span class="string">&quot;AssetSource does not exist&quot;</span>);
+                                    unrecoverable_err(<span class="kw-2">&amp;</span><span class="string">"AssetSource does not exist"</span>);
                                     <span class="kw">continue</span>;
                                 };
                                 <span class="kw">let </span><span class="prelude-val">Ok</span>(processed_writer) = source.processed_writer() <span class="kw">else </span>{
-                                    (unrecoverable_err)(<span class="kw-2">&amp;</span><span class="string">&quot;AssetSource does not have a processed AssetWriter registered&quot;</span>);
+                                    unrecoverable_err(<span class="kw-2">&amp;</span><span class="string">"AssetSource does not have a processed AssetWriter registered"</span>);
                                     <span class="kw">continue</span>;
                                 };
 
@@ -2210,7 +2239,7 @@
                                         AssetWriterError::Io(err) =&gt; {
                                             <span class="comment">// any error but NotFound means we could be in a bad state
                                             </span><span class="kw">if </span>err.kind() != ErrorKind::NotFound {
-                                                (unrecoverable_err)(<span class="kw-2">&amp;</span>err);
+                                                unrecoverable_err(<span class="kw-2">&amp;</span>err);
                                             }
                                         }
                                     }
@@ -2220,7 +2249,7 @@
                                         AssetWriterError::Io(err) =&gt; {
                                             <span class="comment">// any error but NotFound means we could be in a bad state
                                             </span><span class="kw">if </span>err.kind() != ErrorKind::NotFound {
-                                                (unrecoverable_err)(<span class="kw-2">&amp;</span>err);
+                                                unrecoverable_err(<span class="kw-2">&amp;</span>err);
                                             }
                                         }
                                     }
@@ -2233,16 +2262,16 @@
             };
 
             <span class="kw">if </span>!state_is_valid {
-                <span class="macro">error!</span>(<span class="string">&quot;Processed asset transaction log state was invalid and unrecoverable for some reason (see previous logs). Removing processed assets and starting fresh.&quot;</span>);
+                <span class="macro">error!</span>(<span class="string">"Processed asset transaction log state was invalid and unrecoverable for some reason (see previous logs). Removing processed assets and starting fresh."</span>);
                 <span class="kw">for </span>source <span class="kw">in </span><span class="self">self</span>.sources().iter_processed() {
                     <span class="kw">let </span><span class="prelude-val">Ok</span>(processed_writer) = source.processed_writer() <span class="kw">else </span>{
                         <span class="kw">continue</span>;
                     };
                     <span class="kw">if let </span><span class="prelude-val">Err</span>(err) = processed_writer
-                        .remove_assets_in_directory(Path::new(<span class="string">&quot;&quot;</span>))
+                        .remove_assets_in_directory(Path::new(<span class="string">""</span>))
                         .<span class="kw">await
                     </span>{
-                        <span class="macro">panic!</span>(<span class="string">&quot;Processed assets were in a bad state. To correct this, the asset processor attempted to remove all processed assets and start from scratch. This failed. There is no way to continue. Try restarting, or deleting imported asset folder manually. {err}&quot;</span>);
+                        <span class="macro">panic!</span>(<span class="string">"Processed assets were in a bad state. To correct this, the asset processor attempted to remove all processed assets and start from scratch. This failed. There is no way to continue. Try restarting, or deleting imported asset folder manually. {err}"</span>);
                     }
                 }
             }
@@ -2250,7 +2279,7 @@
         <span class="kw">let </span><span class="kw-2">mut </span>log = <span class="self">self</span>.data.log.write().<span class="kw">await</span>;
         <span class="kw-2">*</span>log = <span class="kw">match </span>ProcessorTransactionLog::new().<span class="kw">await </span>{
             <span class="prelude-val">Ok</span>(log) =&gt; <span class="prelude-val">Some</span>(log),
-            <span class="prelude-val">Err</span>(err) =&gt; <span class="macro">panic!</span>(<span class="string">&quot;Failed to initialize asset processor log. This cannot be recovered. Try restarting. If that doesn&#39;t work, try deleting processed asset folder. {}&quot;</span>, err),
+            <span class="prelude-val">Err</span>(err) =&gt; <span class="macro">panic!</span>(<span class="string">"Failed to initialize asset processor log. This cannot be recovered. Try restarting. If that doesn't work, try deleting processed asset folder. {}"</span>, err),
         };
     }
 }
@@ -2259,7 +2288,7 @@
     <span class="kw">pub fn </span>new(source: AssetSources) -&gt; <span class="self">Self </span>{
         <span class="kw">let </span>(<span class="kw-2">mut </span>finished_sender, finished_receiver) = async_broadcast::broadcast(<span class="number">1</span>);
         <span class="kw">let </span>(<span class="kw-2">mut </span>initialized_sender, initialized_receiver) = async_broadcast::broadcast(<span class="number">1</span>);
-        <span class="comment">// allow overflow on these &quot;one slot&quot; channels to allow receivers to retrieve the &quot;latest&quot; state, and to allow senders to
+        <span class="comment">// allow overflow on these "one slot" channels to allow receivers to retrieve the "latest" state, and to allow senders to
         // not block if there was older state present.
         </span>finished_sender.set_overflow(<span class="bool-val">true</span>);
         initialized_sender.set_overflow(<span class="bool-val">true</span>);
@@ -2279,7 +2308,7 @@
     }
 
     <span class="doccomment">/// Returns a future that will not finish until the path has been processed.
-    </span><span class="kw">pub async fn </span>wait_until_processed(<span class="kw-2">&amp;</span><span class="self">self</span>, path: AssetPath&lt;<span class="lifetime">&#39;static</span>&gt;) -&gt; ProcessStatus {
+    </span><span class="kw">pub async fn </span>wait_until_processed(<span class="kw-2">&amp;</span><span class="self">self</span>, path: AssetPath&lt;<span class="lifetime">'static</span>&gt;) -&gt; ProcessStatus {
         <span class="self">self</span>.wait_until_initialized().<span class="kw">await</span>;
         <span class="kw">let </span><span class="kw-2">mut </span>receiver = {
             <span class="kw">let </span>infos = <span class="self">self</span>.asset_infos.write().<span class="kw">await</span>;
@@ -2353,16 +2382,16 @@
 </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct </span>ProcessorAssetInfo {
     processed_info: <span class="prelude-ty">Option</span>&lt;ProcessedInfo&gt;,
     <span class="doccomment">/// Paths of assets that depend on this asset when they are being processed.
-    </span>dependants: HashSet&lt;AssetPath&lt;<span class="lifetime">&#39;static</span>&gt;&gt;,
+    </span>dependants: HashSet&lt;AssetPath&lt;<span class="lifetime">'static</span>&gt;&gt;,
     status: <span class="prelude-ty">Option</span>&lt;ProcessStatus&gt;,
     <span class="doccomment">/// A lock that controls read/write access to processed asset files. The lock is shared for both the asset bytes and the meta bytes.
     /// _This lock must be locked whenever a read or write to processed assets occurs_
     /// There are scenarios where processed assets (and their metadata) are being read and written in multiple places at once:
     /// * when the processor is running in parallel with an app
-    /// * when processing assets in parallel, the processor might read an asset&#39;s process_dependencies when processing new versions of those dependencies
-    ///     * this second scenario almost certainly isn&#39;t possible with the current implementation, but its worth protecting against
-    /// This lock defends against those scenarios by ensuring readers don&#39;t read while processed files are being written. And it ensures
-    /// Because this lock is shared across meta and asset bytes, readers can ensure they don&#39;t read &quot;old&quot; versions of metadata with &quot;new&quot; asset data.
+    /// * when processing assets in parallel, the processor might read an asset's process_dependencies when processing new versions of those dependencies
+    ///     * this second scenario almost certainly isn't possible with the current implementation, but its worth protecting against
+    /// This lock defends against those scenarios by ensuring readers don't read while processed files are being written. And it ensures
+    /// Because this lock is shared across meta and asset bytes, readers can ensure they don't read "old" versions of metadata with "new" asset data.
     </span><span class="kw">pub</span>(<span class="kw">crate</span>) file_transaction_lock: Arc&lt;async_lock::RwLock&lt;()&gt;&gt;,
     status_sender: async_broadcast::Sender&lt;ProcessStatus&gt;,
     status_receiver: async_broadcast::Receiver&lt;ProcessStatus&gt;,
@@ -2371,7 +2400,7 @@
 <span class="kw">impl </span>Default <span class="kw">for </span>ProcessorAssetInfo {
     <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
         <span class="kw">let </span>(<span class="kw-2">mut </span>status_sender, status_receiver) = async_broadcast::broadcast(<span class="number">1</span>);
-        <span class="comment">// allow overflow on these &quot;one slot&quot; channels to allow receivers to retrieve the &quot;latest&quot; state, and to allow senders to
+        <span class="comment">// allow overflow on these "one slot" channels to allow receivers to retrieve the "latest" state, and to allow senders to
         // not block if there was older state present.
         </span>status_sender.set_overflow(<span class="bool-val">true</span>);
         <span class="self">Self </span>{
@@ -2394,29 +2423,29 @@
     }
 }
 
-<span class="doccomment">/// The &quot;current&quot; in memory view of the asset space. This is &quot;eventually consistent&quot;. It does not directly
+<span class="doccomment">/// The "current" in memory view of the asset space. This is "eventually consistent". It does not directly
 /// represent the state of assets in storage, but rather a valid historical view that will gradually become more
 /// consistent as events are processed.
 </span><span class="attr">#[derive(Default, Debug)]
 </span><span class="kw">pub struct </span>ProcessorAssetInfos {
-    <span class="doccomment">/// The &quot;current&quot; in memory view of the asset space. During processing, if path does not exist in this, it should
+    <span class="doccomment">/// The "current" in memory view of the asset space. During processing, if path does not exist in this, it should
     /// be considered non-existent.
     /// NOTE: YOU MUST USE `Self::get_or_insert` or `Self::insert` TO ADD ITEMS TO THIS COLLECTION TO ENSURE
     /// non_existent_dependants DATA IS CONSUMED
-    </span>infos: HashMap&lt;AssetPath&lt;<span class="lifetime">&#39;static</span>&gt;, ProcessorAssetInfo&gt;,
-    <span class="doccomment">/// Dependants for assets that don&#39;t exist. This exists to track &quot;dangling&quot; asset references due to deleted / missing files.
-    /// If the dependant asset is added, it can &quot;resolve&quot; these dependencies and re-compute those assets.
+    </span>infos: HashMap&lt;AssetPath&lt;<span class="lifetime">'static</span>&gt;, ProcessorAssetInfo&gt;,
+    <span class="doccomment">/// Dependants for assets that don't exist. This exists to track "dangling" asset references due to deleted / missing files.
+    /// If the dependant asset is added, it can "resolve" these dependencies and re-compute those assets.
     /// Therefore this _must_ always be consistent with the `infos` data. If a new asset is added to `infos`, it should
     /// check this maps for dependencies and add them. If an asset is removed, it should update the dependants here.
-    </span>non_existent_dependants: HashMap&lt;AssetPath&lt;<span class="lifetime">&#39;static</span>&gt;, HashSet&lt;AssetPath&lt;<span class="lifetime">&#39;static</span>&gt;&gt;&gt;,
-    check_reprocess_queue: VecDeque&lt;AssetPath&lt;<span class="lifetime">&#39;static</span>&gt;&gt;,
+    </span>non_existent_dependants: HashMap&lt;AssetPath&lt;<span class="lifetime">'static</span>&gt;, HashSet&lt;AssetPath&lt;<span class="lifetime">'static</span>&gt;&gt;&gt;,
+    check_reprocess_queue: VecDeque&lt;AssetPath&lt;<span class="lifetime">'static</span>&gt;&gt;,
 }
 
 <span class="kw">impl </span>ProcessorAssetInfos {
-    <span class="kw">fn </span>get_or_insert(<span class="kw-2">&amp;mut </span><span class="self">self</span>, asset_path: AssetPath&lt;<span class="lifetime">&#39;static</span>&gt;) -&gt; <span class="kw-2">&amp;mut </span>ProcessorAssetInfo {
+    <span class="kw">fn </span>get_or_insert(<span class="kw-2">&amp;mut </span><span class="self">self</span>, asset_path: AssetPath&lt;<span class="lifetime">'static</span>&gt;) -&gt; <span class="kw-2">&amp;mut </span>ProcessorAssetInfo {
         <span class="self">self</span>.infos.entry(asset_path.clone()).or_insert_with(|| {
             <span class="kw">let </span><span class="kw-2">mut </span>info = ProcessorAssetInfo::default();
-            <span class="comment">// track existing dependants by resolving existing &quot;hanging&quot; dependants.
+            <span class="comment">// track existing dependants by resolving existing "hanging" dependants.
             </span><span class="kw">if let </span><span class="prelude-val">Some</span>(dependants) = <span class="self">self</span>.non_existent_dependants.remove(<span class="kw-2">&amp;</span>asset_path) {
                 info.dependants = dependants;
             }
@@ -2424,15 +2453,15 @@
         })
     }
 
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>get(<span class="kw-2">&amp;</span><span class="self">self</span>, asset_path: <span class="kw-2">&amp;</span>AssetPath&lt;<span class="lifetime">&#39;static</span>&gt;) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>ProcessorAssetInfo&gt; {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>get(<span class="kw-2">&amp;</span><span class="self">self</span>, asset_path: <span class="kw-2">&amp;</span>AssetPath&lt;<span class="lifetime">'static</span>&gt;) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>ProcessorAssetInfo&gt; {
         <span class="self">self</span>.infos.get(asset_path)
     }
 
-    <span class="kw">fn </span>get_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>, asset_path: <span class="kw-2">&amp;</span>AssetPath&lt;<span class="lifetime">&#39;static</span>&gt;) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;mut </span>ProcessorAssetInfo&gt; {
+    <span class="kw">fn </span>get_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>, asset_path: <span class="kw-2">&amp;</span>AssetPath&lt;<span class="lifetime">'static</span>&gt;) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;mut </span>ProcessorAssetInfo&gt; {
         <span class="self">self</span>.infos.get_mut(asset_path)
     }
 
-    <span class="kw">fn </span>add_dependant(<span class="kw-2">&amp;mut </span><span class="self">self</span>, asset_path: <span class="kw-2">&amp;</span>AssetPath&lt;<span class="lifetime">&#39;static</span>&gt;, dependant: AssetPath&lt;<span class="lifetime">&#39;static</span>&gt;) {
+    <span class="kw">fn </span>add_dependant(<span class="kw-2">&amp;mut </span><span class="self">self</span>, asset_path: <span class="kw-2">&amp;</span>AssetPath&lt;<span class="lifetime">'static</span>&gt;, dependant: AssetPath&lt;<span class="lifetime">'static</span>&gt;) {
         <span class="kw">if let </span><span class="prelude-val">Some</span>(info) = <span class="self">self</span>.get_mut(asset_path) {
             info.dependants.insert(dependant);
         } <span class="kw">else </span>{
@@ -2447,12 +2476,12 @@
     <span class="doccomment">/// Finalize processing the asset, which will incorporate the result of the processed asset into the in-memory view the processed assets.
     </span><span class="kw">async fn </span>finish_processing(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        asset_path: AssetPath&lt;<span class="lifetime">&#39;static</span>&gt;,
+        asset_path: AssetPath&lt;<span class="lifetime">'static</span>&gt;,
         result: <span class="prelude-ty">Result</span>&lt;ProcessResult, ProcessError&gt;,
     ) {
         <span class="kw">match </span>result {
             <span class="prelude-val">Ok</span>(ProcessResult::Processed(processed_info)) =&gt; {
-                <span class="macro">debug!</span>(<span class="string">&quot;Finished processing \&quot;{:?}\&quot;&quot;</span>, asset_path);
+                <span class="macro">debug!</span>(<span class="string">"Finished processing \"{:?}\""</span>, asset_path);
                 <span class="comment">// clean up old dependants
                 </span><span class="kw">let </span>old_processed_info = <span class="self">self
                     </span>.infos
@@ -2475,38 +2504,38 @@
                 }
             }
             <span class="prelude-val">Ok</span>(ProcessResult::SkippedNotChanged) =&gt; {
-                <span class="macro">debug!</span>(<span class="string">&quot;Skipping processing (unchanged) \&quot;{:?}\&quot;&quot;</span>, asset_path);
-                <span class="kw">let </span>info = <span class="self">self</span>.get_mut(<span class="kw-2">&amp;</span>asset_path).expect(<span class="string">&quot;info should exist&quot;</span>);
-                <span class="comment">// NOTE: skipping an asset on a given pass doesn&#39;t mean it won&#39;t change in the future as a result
-                // of a dependency being re-processed. This means apps might receive an &quot;old&quot; (but valid) asset first.
-                // This is in the interest of fast startup times that don&#39;t block for all assets being checked + reprocessed
-                // Therefore this relies on hot-reloading in the app to pickup the &quot;latest&quot; version of the asset
-                // If &quot;block until latest state is reflected&quot; is required, we can easily add a less granular
-                // &quot;block until first pass finished&quot; mode
+                <span class="macro">debug!</span>(<span class="string">"Skipping processing (unchanged) \"{:?}\""</span>, asset_path);
+                <span class="kw">let </span>info = <span class="self">self</span>.get_mut(<span class="kw-2">&amp;</span>asset_path).expect(<span class="string">"info should exist"</span>);
+                <span class="comment">// NOTE: skipping an asset on a given pass doesn't mean it won't change in the future as a result
+                // of a dependency being re-processed. This means apps might receive an "old" (but valid) asset first.
+                // This is in the interest of fast startup times that don't block for all assets being checked + reprocessed
+                // Therefore this relies on hot-reloading in the app to pickup the "latest" version of the asset
+                // If "block until latest state is reflected" is required, we can easily add a less granular
+                // "block until first pass finished" mode
                 </span>info.update_status(ProcessStatus::Processed).<span class="kw">await</span>;
             }
             <span class="prelude-val">Err</span>(ProcessError::ExtensionRequired) =&gt; {
                 <span class="comment">// Skip assets without extensions
             </span>}
             <span class="prelude-val">Err</span>(ProcessError::MissingAssetLoaderForExtension(<span class="kw">_</span>)) =&gt; {
-                <span class="macro">trace!</span>(<span class="string">&quot;No loader found for {asset_path}&quot;</span>);
+                <span class="macro">trace!</span>(<span class="string">"No loader found for {asset_path}"</span>);
             }
             <span class="prelude-val">Err</span>(ProcessError::AssetReaderError {
                 err: AssetReaderError::NotFound(<span class="kw">_</span>),
                 ..
             }) =&gt; {
                 <span class="comment">// if there is no asset source, no processing can be done
-                </span><span class="macro">trace!</span>(<span class="string">&quot;No need to process asset {asset_path} because it does not exist&quot;</span>);
+                </span><span class="macro">trace!</span>(<span class="string">"No need to process asset {asset_path} because it does not exist"</span>);
             }
             <span class="prelude-val">Err</span>(err) =&gt; {
-                <span class="macro">error!</span>(<span class="string">&quot;Failed to process asset {asset_path}: {err}&quot;</span>);
+                <span class="macro">error!</span>(<span class="string">"Failed to process asset {asset_path}: {err}"</span>);
                 <span class="comment">// if this failed because a dependency could not be loaded, make sure it is reprocessed if that dependency is reprocessed
                 </span><span class="kw">if let </span>ProcessError::AssetLoadError(AssetLoadError::AssetLoaderError {
                     path: dependency,
                     ..
                 }) = err
                 {
-                    <span class="kw">let </span>info = <span class="self">self</span>.get_mut(<span class="kw-2">&amp;</span>asset_path).expect(<span class="string">&quot;info should exist&quot;</span>);
+                    <span class="kw">let </span>info = <span class="self">self</span>.get_mut(<span class="kw-2">&amp;</span>asset_path).expect(<span class="string">"info should exist"</span>);
                     info.processed_info = <span class="prelude-val">Some</span>(ProcessedInfo {
                         hash: AssetHash::default(),
                         full_hash: AssetHash::default(),
@@ -2515,14 +2544,14 @@
                     <span class="self">self</span>.add_dependant(<span class="kw-2">&amp;</span>dependency, asset_path.to_owned());
                 }
 
-                <span class="kw">let </span>info = <span class="self">self</span>.get_mut(<span class="kw-2">&amp;</span>asset_path).expect(<span class="string">&quot;info should exist&quot;</span>);
+                <span class="kw">let </span>info = <span class="self">self</span>.get_mut(<span class="kw-2">&amp;</span>asset_path).expect(<span class="string">"info should exist"</span>);
                 info.update_status(ProcessStatus::Failed).<span class="kw">await</span>;
             }
         }
     }
 
-    <span class="doccomment">/// Remove the info for the given path. This should only happen if an asset&#39;s source is removed / non-existent
-    </span><span class="kw">async fn </span>remove(<span class="kw-2">&amp;mut </span><span class="self">self</span>, asset_path: <span class="kw-2">&amp;</span>AssetPath&lt;<span class="lifetime">&#39;static</span>&gt;) {
+    <span class="doccomment">/// Remove the info for the given path. This should only happen if an asset's source is removed / non-existent
+    </span><span class="kw">async fn </span>remove(<span class="kw-2">&amp;mut </span><span class="self">self</span>, asset_path: <span class="kw-2">&amp;</span>AssetPath&lt;<span class="lifetime">'static</span>&gt;) {
         <span class="kw">let </span>info = <span class="self">self</span>.infos.remove(asset_path);
         <span class="kw">if let </span><span class="prelude-val">Some</span>(info) = info {
             <span class="kw">if let </span><span class="prelude-val">Some</span>(processed_info) = info.processed_info {
@@ -2535,7 +2564,7 @@
                 </span>.unwrap();
             <span class="kw">if </span>!info.dependants.is_empty() {
                 <span class="macro">error!</span>(
-                    <span class="string">&quot;The asset at {asset_path} was removed, but it had assets that depend on it to be processed. Consider updating the path in the following assets: {:?}&quot;</span>,
+                    <span class="string">"The asset at {asset_path} was removed, but it had assets that depend on it to be processed. Consider updating the path in the following assets: {:?}"</span>,
                     info.dependants
                 );
                 <span class="self">self</span>.non_existent_dependants
@@ -2544,27 +2573,27 @@
         }
     }
 
-    <span class="doccomment">/// Remove the info for the given path. This should only happen if an asset&#39;s source is removed / non-existent
-    </span><span class="kw">async fn </span>rename(<span class="kw-2">&amp;mut </span><span class="self">self</span>, old: <span class="kw-2">&amp;</span>AssetPath&lt;<span class="lifetime">&#39;static</span>&gt;, new: <span class="kw-2">&amp;</span>AssetPath&lt;<span class="lifetime">&#39;static</span>&gt;) {
+    <span class="doccomment">/// Remove the info for the given path. This should only happen if an asset's source is removed / non-existent
+    </span><span class="kw">async fn </span>rename(<span class="kw-2">&amp;mut </span><span class="self">self</span>, old: <span class="kw-2">&amp;</span>AssetPath&lt;<span class="lifetime">'static</span>&gt;, new: <span class="kw-2">&amp;</span>AssetPath&lt;<span class="lifetime">'static</span>&gt;) {
         <span class="kw">let </span>info = <span class="self">self</span>.infos.remove(old);
         <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">mut </span>info) = info {
             <span class="kw">if </span>!info.dependants.is_empty() {
-                <span class="comment">// TODO: We can&#39;t currently ensure &quot;moved&quot; folders with relative paths aren&#39;t broken because AssetPath
-                // doesn&#39;t distinguish between absolute and relative paths. We have &quot;erased&quot; relativeness. In the short term,
-                // we could do &quot;remove everything in a folder and re-add&quot;, but that requires full rebuilds / destroying the cache.
+                <span class="comment">// TODO: We can't currently ensure "moved" folders with relative paths aren't broken because AssetPath
+                // doesn't distinguish between absolute and relative paths. We have "erased" relativeness. In the short term,
+                // we could do "remove everything in a folder and re-add", but that requires full rebuilds / destroying the cache.
                 // If processors / loaders could enumerate dependencies, we could check if the new deps line up with a rename.
-                // If deps encoded &quot;relativeness&quot; as part of loading, that would also work (this seems like the right call).
-                // TODO: it would be nice to log an error here for dependants that aren&#39;t also being moved + fixed.
+                // If deps encoded "relativeness" as part of loading, that would also work (this seems like the right call).
+                // TODO: it would be nice to log an error here for dependants that aren't also being moved + fixed.
                 // (see the remove impl).
                 </span><span class="macro">error!</span>(
-                    <span class="string">&quot;The asset at {old} was removed, but it had assets that depend on it to be processed. Consider updating the path in the following assets: {:?}&quot;</span>,
+                    <span class="string">"The asset at {old} was removed, but it had assets that depend on it to be processed. Consider updating the path in the following assets: {:?}"</span>,
                     info.dependants
                 );
                 <span class="self">self</span>.non_existent_dependants
                     .insert(old.clone(), std::mem::take(<span class="kw-2">&amp;mut </span>info.dependants));
             }
             <span class="kw">if let </span><span class="prelude-val">Some</span>(processed_info) = <span class="kw-2">&amp;</span>info.processed_info {
-                <span class="comment">// Update &quot;dependant&quot; lists for this asset&#39;s &quot;process dependencies&quot; to use new path.
+                <span class="comment">// Update "dependant" lists for this asset's "process dependencies" to use new path.
                 </span><span class="kw">for </span>dep <span class="kw">in </span><span class="kw-2">&amp;</span>processed_info.process_dependencies {
                     <span class="kw">if let </span><span class="prelude-val">Some</span>(info) = <span class="self">self</span>.infos.get_mut(<span class="kw-2">&amp;</span>dep.path) {
                         info.dependants.remove(old);
@@ -2581,7 +2610,7 @@
                 .broadcast(ProcessStatus::NonExistent)
                 .<span class="kw">await
                 </span>.unwrap();
-            <span class="kw">let </span>dependants: Vec&lt;AssetPath&lt;<span class="lifetime">&#39;static</span>&gt;&gt; = {
+            <span class="kw">let </span>dependants: Vec&lt;AssetPath&lt;<span class="lifetime">'static</span>&gt;&gt; = {
                 <span class="kw">let </span>new_info = <span class="self">self</span>.get_or_insert(new.clone());
                 new_info.processed_info = info.processed_info;
                 new_info.status = info.status;
@@ -2600,7 +2629,7 @@
         }
     }
 
-    <span class="kw">fn </span>clear_dependencies(<span class="kw-2">&amp;mut </span><span class="self">self</span>, asset_path: <span class="kw-2">&amp;</span>AssetPath&lt;<span class="lifetime">&#39;static</span>&gt;, removed_info: ProcessedInfo) {
+    <span class="kw">fn </span>clear_dependencies(<span class="kw-2">&amp;mut </span><span class="self">self</span>, asset_path: <span class="kw-2">&amp;</span>AssetPath&lt;<span class="lifetime">'static</span>&gt;, removed_info: ProcessedInfo) {
         <span class="kw">for </span>old_load_dep <span class="kw">in </span>removed_info.process_dependencies {
             <span class="kw">if let </span><span class="prelude-val">Some</span>(info) = <span class="self">self</span>.infos.get_mut(<span class="kw-2">&amp;</span>old_load_dep.path) {
                 info.dependants.remove(asset_path);
@@ -2633,7 +2662,7 @@
     </span>FailedToReadSourcePaths(AssetReaderError),
     <span class="attr">#[error(transparent)]
     </span>FailedToReadDestinationPaths(AssetReaderError),
-    <span class="attr">#[error(<span class="string">&quot;Failed to validate asset log: {0}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Failed to validate asset log: {0}"</span>)]
     </span>ValidateLogError(ValidateLogError),
 }
 </code></pre></div></section></main></body></html>

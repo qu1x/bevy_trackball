@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["CapsuleUvProfile","IcosphereError","SphereKind"],"struct":["Capsule3dMeshBuilder","CircleMeshBuilder","CylinderMeshBuilder","EllipseMeshBuilder","PlaneMeshBuilder","SphereMeshBuilder","TorusMeshBuilder"],"trait":["Meshable"]};

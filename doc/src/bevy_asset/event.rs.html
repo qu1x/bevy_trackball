@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_asset-0.12.1/src/event.rs`."><title>event.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="bevy_asset" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../bevy_asset/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_asset-0.13.0/src/event.rs`."><title>event.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="bevy_asset" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -75,11 +76,98 @@
 <a href="#75" id="75">75</a>
 <a href="#76" id="76">76</a>
 <a href="#77" id="77">77</a>
-</pre></div><pre class="rust"><code><span class="kw">use crate</span>::{Asset, AssetId};
+<a href="#78" id="78">78</a>
+<a href="#79" id="79">79</a>
+<a href="#80" id="80">80</a>
+<a href="#81" id="81">81</a>
+<a href="#82" id="82">82</a>
+<a href="#83" id="83">83</a>
+<a href="#84" id="84">84</a>
+<a href="#85" id="85">85</a>
+<a href="#86" id="86">86</a>
+<a href="#87" id="87">87</a>
+<a href="#88" id="88">88</a>
+<a href="#89" id="89">89</a>
+<a href="#90" id="90">90</a>
+<a href="#91" id="91">91</a>
+<a href="#92" id="92">92</a>
+<a href="#93" id="93">93</a>
+<a href="#94" id="94">94</a>
+<a href="#95" id="95">95</a>
+<a href="#96" id="96">96</a>
+<a href="#97" id="97">97</a>
+<a href="#98" id="98">98</a>
+<a href="#99" id="99">99</a>
+<a href="#100" id="100">100</a>
+<a href="#101" id="101">101</a>
+<a href="#102" id="102">102</a>
+<a href="#103" id="103">103</a>
+<a href="#104" id="104">104</a>
+<a href="#105" id="105">105</a>
+<a href="#106" id="106">106</a>
+<a href="#107" id="107">107</a>
+<a href="#108" id="108">108</a>
+<a href="#109" id="109">109</a>
+<a href="#110" id="110">110</a>
+<a href="#111" id="111">111</a>
+<a href="#112" id="112">112</a>
+<a href="#113" id="113">113</a>
+<a href="#114" id="114">114</a>
+<a href="#115" id="115">115</a>
+<a href="#116" id="116">116</a>
+<a href="#117" id="117">117</a>
+<a href="#118" id="118">118</a>
+<a href="#119" id="119">119</a>
+<a href="#120" id="120">120</a>
+<a href="#121" id="121">121</a>
+<a href="#122" id="122">122</a>
+<a href="#123" id="123">123</a>
+<a href="#124" id="124">124</a>
+<a href="#125" id="125">125</a>
+</pre></div><pre class="rust"><code><span class="kw">use crate</span>::{Asset, AssetId, AssetLoadError, AssetPath, UntypedAssetId};
 <span class="kw">use </span>bevy_ecs::event::Event;
 <span class="kw">use </span>std::fmt::Debug;
 
-<span class="doccomment">/// Events that occur for a specific [`Asset`], such as &quot;value changed&quot; events and &quot;dependency&quot; events.
+<span class="doccomment">/// An event emitted when a specific [`Asset`] fails to load.
+///
+/// For an untyped equivalent, see [`UntypedAssetLoadFailedEvent`].
+</span><span class="attr">#[derive(Event, Clone, Debug)]
+</span><span class="kw">pub struct </span>AssetLoadFailedEvent&lt;A: Asset&gt; {
+    <span class="kw">pub </span>id: AssetId&lt;A&gt;,
+    <span class="doccomment">/// The asset path that was attempted.
+    </span><span class="kw">pub </span>path: AssetPath&lt;<span class="lifetime">'static</span>&gt;,
+    <span class="doccomment">/// Why the asset failed to load.
+    </span><span class="kw">pub </span>error: AssetLoadError,
+}
+
+<span class="kw">impl</span>&lt;A: Asset&gt; AssetLoadFailedEvent&lt;A&gt; {
+    <span class="doccomment">/// Converts this to an "untyped" / "generic-less" asset error event that stores the type information.
+    </span><span class="kw">pub fn </span>untyped(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; UntypedAssetLoadFailedEvent {
+        <span class="self">self</span>.into()
+    }
+}
+
+<span class="doccomment">/// An untyped version of [`AssetLoadFailedEvent`].
+</span><span class="attr">#[derive(Event, Clone, Debug)]
+</span><span class="kw">pub struct </span>UntypedAssetLoadFailedEvent {
+    <span class="kw">pub </span>id: UntypedAssetId,
+    <span class="doccomment">/// The asset path that was attempted.
+    </span><span class="kw">pub </span>path: AssetPath&lt;<span class="lifetime">'static</span>&gt;,
+    <span class="doccomment">/// Why the asset failed to load.
+    </span><span class="kw">pub </span>error: AssetLoadError,
+}
+
+<span class="kw">impl</span>&lt;A: Asset&gt; From&lt;<span class="kw-2">&amp;</span>AssetLoadFailedEvent&lt;A&gt;&gt; <span class="kw">for </span>UntypedAssetLoadFailedEvent {
+    <span class="kw">fn </span>from(value: <span class="kw-2">&amp;</span>AssetLoadFailedEvent&lt;A&gt;) -&gt; <span class="self">Self </span>{
+        UntypedAssetLoadFailedEvent {
+            id: value.id.untyped(),
+            path: value.path.clone(),
+            error: value.error.clone(),
+        }
+    }
+}
+
+<span class="doccomment">/// Events that occur for a specific loaded [`Asset`], such as "value changed" events and "dependency" events.
 </span><span class="attr">#[derive(Event)]
 </span><span class="kw">pub enum </span>AssetEvent&lt;A: Asset&gt; {
     <span class="doccomment">/// Emitted whenever an [`Asset`] is added.
@@ -88,7 +176,9 @@
     </span>Modified { id: AssetId&lt;A&gt; },
     <span class="doccomment">/// Emitted whenever an [`Asset`] is removed.
     </span>Removed { id: AssetId&lt;A&gt; },
-    <span class="doccomment">/// Emitted whenever an [`Asset`] has been fully loaded (including its dependencies and all &quot;recursive dependencies&quot;).
+    <span class="doccomment">/// Emitted when the last [`super::Handle::Strong`] of an [`Asset`] is dropped.
+    </span>Unused { id: AssetId&lt;A&gt; },
+    <span class="doccomment">/// Emitted whenever an [`Asset`] has been fully loaded (including its dependencies and all "recursive dependencies").
     </span>LoadedWithDependencies { id: AssetId&lt;A&gt; },
 }
 
@@ -112,6 +202,11 @@
     </span><span class="kw">pub fn </span>is_removed(<span class="kw-2">&amp;</span><span class="self">self</span>, asset_id: <span class="kw">impl </span>Into&lt;AssetId&lt;A&gt;&gt;) -&gt; bool {
         <span class="macro">matches!</span>(<span class="self">self</span>, AssetEvent::Removed { id } <span class="kw">if </span><span class="kw-2">*</span>id == asset_id.into())
     }
+
+    <span class="doccomment">/// Returns `true` if this event is [`AssetEvent::Unused`] and matches the given `id`.
+    </span><span class="kw">pub fn </span>is_unused(<span class="kw-2">&amp;</span><span class="self">self</span>, asset_id: <span class="kw">impl </span>Into&lt;AssetId&lt;A&gt;&gt;) -&gt; bool {
+        <span class="macro">matches!</span>(<span class="self">self</span>, AssetEvent::Unused { id } <span class="kw">if </span><span class="kw-2">*</span>id == asset_id.into())
+    }
 }
 
 <span class="kw">impl</span>&lt;A: Asset&gt; Clone <span class="kw">for </span>AssetEvent&lt;A&gt; {
@@ -123,14 +218,15 @@
 <span class="kw">impl</span>&lt;A: Asset&gt; Copy <span class="kw">for </span>AssetEvent&lt;A&gt; {}
 
 <span class="kw">impl</span>&lt;A: Asset&gt; Debug <span class="kw">for </span>AssetEvent&lt;A&gt; {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; std::fmt::Result {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; std::fmt::Result {
         <span class="kw">match </span><span class="self">self </span>{
-            <span class="self">Self</span>::Added { id } =&gt; f.debug_struct(<span class="string">&quot;Added&quot;</span>).field(<span class="string">&quot;id&quot;</span>, id).finish(),
-            <span class="self">Self</span>::Modified { id } =&gt; f.debug_struct(<span class="string">&quot;Modified&quot;</span>).field(<span class="string">&quot;id&quot;</span>, id).finish(),
-            <span class="self">Self</span>::Removed { id } =&gt; f.debug_struct(<span class="string">&quot;Removed&quot;</span>).field(<span class="string">&quot;id&quot;</span>, id).finish(),
+            <span class="self">Self</span>::Added { id } =&gt; f.debug_struct(<span class="string">"Added"</span>).field(<span class="string">"id"</span>, id).finish(),
+            <span class="self">Self</span>::Modified { id } =&gt; f.debug_struct(<span class="string">"Modified"</span>).field(<span class="string">"id"</span>, id).finish(),
+            <span class="self">Self</span>::Removed { id } =&gt; f.debug_struct(<span class="string">"Removed"</span>).field(<span class="string">"id"</span>, id).finish(),
+            <span class="self">Self</span>::Unused { id } =&gt; f.debug_struct(<span class="string">"Unused"</span>).field(<span class="string">"id"</span>, id).finish(),
             <span class="self">Self</span>::LoadedWithDependencies { id } =&gt; f
-                .debug_struct(<span class="string">&quot;LoadedWithDependencies&quot;</span>)
-                .field(<span class="string">&quot;id&quot;</span>, id)
+                .debug_struct(<span class="string">"LoadedWithDependencies"</span>)
+                .field(<span class="string">"id"</span>, id)
                 .finish(),
         }
     }
@@ -142,6 +238,7 @@
             (<span class="self">Self</span>::Added { id: l_id }, <span class="self">Self</span>::Added { id: r_id })
             | (<span class="self">Self</span>::Modified { id: l_id }, <span class="self">Self</span>::Modified { id: r_id })
             | (<span class="self">Self</span>::Removed { id: l_id }, <span class="self">Self</span>::Removed { id: r_id })
+            | (<span class="self">Self</span>::Unused { id: l_id }, <span class="self">Self</span>::Unused { id: r_id })
             | (
                 <span class="self">Self</span>::LoadedWithDependencies { id: l_id },
                 <span class="self">Self</span>::LoadedWithDependencies { id: r_id },

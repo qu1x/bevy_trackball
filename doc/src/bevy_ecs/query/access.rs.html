@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ecs-0.12.1/src/query/access.rs`."><title>access.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="bevy_ecs" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../bevy_ecs/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ecs-0.13.0/src/query/access.rs`."><title>access.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="bevy_ecs" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -720,6 +721,106 @@
 <a href="#720" id="720">720</a>
 <a href="#721" id="721">721</a>
 <a href="#722" id="722">722</a>
+<a href="#723" id="723">723</a>
+<a href="#724" id="724">724</a>
+<a href="#725" id="725">725</a>
+<a href="#726" id="726">726</a>
+<a href="#727" id="727">727</a>
+<a href="#728" id="728">728</a>
+<a href="#729" id="729">729</a>
+<a href="#730" id="730">730</a>
+<a href="#731" id="731">731</a>
+<a href="#732" id="732">732</a>
+<a href="#733" id="733">733</a>
+<a href="#734" id="734">734</a>
+<a href="#735" id="735">735</a>
+<a href="#736" id="736">736</a>
+<a href="#737" id="737">737</a>
+<a href="#738" id="738">738</a>
+<a href="#739" id="739">739</a>
+<a href="#740" id="740">740</a>
+<a href="#741" id="741">741</a>
+<a href="#742" id="742">742</a>
+<a href="#743" id="743">743</a>
+<a href="#744" id="744">744</a>
+<a href="#745" id="745">745</a>
+<a href="#746" id="746">746</a>
+<a href="#747" id="747">747</a>
+<a href="#748" id="748">748</a>
+<a href="#749" id="749">749</a>
+<a href="#750" id="750">750</a>
+<a href="#751" id="751">751</a>
+<a href="#752" id="752">752</a>
+<a href="#753" id="753">753</a>
+<a href="#754" id="754">754</a>
+<a href="#755" id="755">755</a>
+<a href="#756" id="756">756</a>
+<a href="#757" id="757">757</a>
+<a href="#758" id="758">758</a>
+<a href="#759" id="759">759</a>
+<a href="#760" id="760">760</a>
+<a href="#761" id="761">761</a>
+<a href="#762" id="762">762</a>
+<a href="#763" id="763">763</a>
+<a href="#764" id="764">764</a>
+<a href="#765" id="765">765</a>
+<a href="#766" id="766">766</a>
+<a href="#767" id="767">767</a>
+<a href="#768" id="768">768</a>
+<a href="#769" id="769">769</a>
+<a href="#770" id="770">770</a>
+<a href="#771" id="771">771</a>
+<a href="#772" id="772">772</a>
+<a href="#773" id="773">773</a>
+<a href="#774" id="774">774</a>
+<a href="#775" id="775">775</a>
+<a href="#776" id="776">776</a>
+<a href="#777" id="777">777</a>
+<a href="#778" id="778">778</a>
+<a href="#779" id="779">779</a>
+<a href="#780" id="780">780</a>
+<a href="#781" id="781">781</a>
+<a href="#782" id="782">782</a>
+<a href="#783" id="783">783</a>
+<a href="#784" id="784">784</a>
+<a href="#785" id="785">785</a>
+<a href="#786" id="786">786</a>
+<a href="#787" id="787">787</a>
+<a href="#788" id="788">788</a>
+<a href="#789" id="789">789</a>
+<a href="#790" id="790">790</a>
+<a href="#791" id="791">791</a>
+<a href="#792" id="792">792</a>
+<a href="#793" id="793">793</a>
+<a href="#794" id="794">794</a>
+<a href="#795" id="795">795</a>
+<a href="#796" id="796">796</a>
+<a href="#797" id="797">797</a>
+<a href="#798" id="798">798</a>
+<a href="#799" id="799">799</a>
+<a href="#800" id="800">800</a>
+<a href="#801" id="801">801</a>
+<a href="#802" id="802">802</a>
+<a href="#803" id="803">803</a>
+<a href="#804" id="804">804</a>
+<a href="#805" id="805">805</a>
+<a href="#806" id="806">806</a>
+<a href="#807" id="807">807</a>
+<a href="#808" id="808">808</a>
+<a href="#809" id="809">809</a>
+<a href="#810" id="810">810</a>
+<a href="#811" id="811">811</a>
+<a href="#812" id="812">812</a>
+<a href="#813" id="813">813</a>
+<a href="#814" id="814">814</a>
+<a href="#815" id="815">815</a>
+<a href="#816" id="816">816</a>
+<a href="#817" id="817">817</a>
+<a href="#818" id="818">818</a>
+<a href="#819" id="819">819</a>
+<a href="#820" id="820">820</a>
+<a href="#821" id="821">821</a>
+<a href="#822" id="822">822</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::storage::SparseSetIndex;
 <span class="kw">use </span>bevy_utils::HashSet;
 <span class="kw">use </span>core::fmt;
@@ -737,19 +838,19 @@
 /// read_and_writes: FixedBitSet { data: [ 160 ], length: 8 }
 /// ```
 ///
-/// Which, unless you are a computer, doesn&#39;t help much understand what&#39;s in
+/// Which, unless you are a computer, doesn't help much understand what's in
 /// the set. With `FormattedBitSet`, we convert the present set entries into
 /// what they stand for, it is much clearer what is going on:
 /// ```text
 /// read_and_writes: [ ComponentId(5), ComponentId(7) ]
 /// ```
-</span><span class="kw">struct </span>FormattedBitSet&lt;<span class="lifetime">&#39;a</span>, T: SparseSetIndex&gt; {
-    bit_set: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>FixedBitSet,
+</span><span class="kw">struct </span>FormattedBitSet&lt;<span class="lifetime">'a</span>, T: SparseSetIndex&gt; {
+    bit_set: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>FixedBitSet,
     _marker: PhantomData&lt;T&gt;,
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, T: SparseSetIndex&gt; FormattedBitSet&lt;<span class="lifetime">&#39;a</span>, T&gt; {
-    <span class="kw">fn </span>new(bit_set: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>FixedBitSet) -&gt; <span class="self">Self </span>{
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T: SparseSetIndex&gt; FormattedBitSet&lt;<span class="lifetime">'a</span>, T&gt; {
+    <span class="kw">fn </span>new(bit_set: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>FixedBitSet) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
             bit_set,
             _marker: PhantomData,
@@ -757,8 +858,8 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, T: SparseSetIndex + fmt::Debug&gt; fmt::Debug <span class="kw">for </span>FormattedBitSet&lt;<span class="lifetime">&#39;a</span>, T&gt; {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T: SparseSetIndex + fmt::Debug&gt; fmt::Debug <span class="kw">for </span>FormattedBitSet&lt;<span class="lifetime">'a</span>, T&gt; {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
         f.debug_list()
             .entries(<span class="self">self</span>.bit_set.ones().map(T::get_sparse_set_index))
             .finish()
@@ -781,19 +882,21 @@
     <span class="doccomment">/// Is `true` if this has mutable access to all elements in the collection.
     /// If this is true, then `reads_all` must also be true.
     </span>writes_all: bool,
+    <span class="comment">// Elements that are not accessed, but whose presence in an archetype affect query results.
+    </span>archetypal: FixedBitSet,
     marker: PhantomData&lt;T&gt;,
 }
 
 <span class="kw">impl</span>&lt;T: SparseSetIndex + fmt::Debug&gt; fmt::Debug <span class="kw">for </span>Access&lt;T&gt; {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
-        f.debug_struct(<span class="string">&quot;Access&quot;</span>)
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
+        f.debug_struct(<span class="string">"Access"</span>)
             .field(
-                <span class="string">&quot;read_and_writes&quot;</span>,
+                <span class="string">"read_and_writes"</span>,
                 <span class="kw-2">&amp;</span>FormattedBitSet::&lt;T&gt;::new(<span class="kw-2">&amp;</span><span class="self">self</span>.reads_and_writes),
             )
-            .field(<span class="string">&quot;writes&quot;</span>, <span class="kw-2">&amp;</span>FormattedBitSet::&lt;T&gt;::new(<span class="kw-2">&amp;</span><span class="self">self</span>.writes))
-            .field(<span class="string">&quot;reads_all&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.reads_all)
-            .field(<span class="string">&quot;writes_all&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.writes_all)
+            .field(<span class="string">"writes"</span>, <span class="kw-2">&amp;</span>FormattedBitSet::&lt;T&gt;::new(<span class="kw-2">&amp;</span><span class="self">self</span>.writes))
+            .field(<span class="string">"reads_all"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.reads_all)
+            .field(<span class="string">"writes_all"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.writes_all)
             .finish()
     }
 }
@@ -812,6 +915,7 @@
             writes_all: <span class="bool-val">false</span>,
             reads_and_writes: FixedBitSet::new(),
             writes: FixedBitSet::new(),
+            archetypal: FixedBitSet::new(),
             marker: PhantomData,
         }
     }
@@ -838,6 +942,19 @@
         <span class="self">self</span>.writes.insert(index.sparse_set_index());
     }
 
+    <span class="doccomment">/// Adds an archetypal (indirect) access to the element given by `index`.
+    ///
+    /// This is for elements whose values are not accessed (and thus will never cause conflicts),
+    /// but whose presence in an archetype may affect query results.
+    ///
+    /// Currently, this is only used for [`Has&lt;T&gt;`].
+    ///
+    /// [`Has&lt;T&gt;`]: crate::query::Has
+    </span><span class="kw">pub fn </span>add_archetypal(<span class="kw-2">&amp;mut </span><span class="self">self</span>, index: T) {
+        <span class="self">self</span>.archetypal.grow(index.sparse_set_index() + <span class="number">1</span>);
+        <span class="self">self</span>.archetypal.insert(index.sparse_set_index());
+    }
+
     <span class="doccomment">/// Returns `true` if this can access the element given by `index`.
     </span><span class="kw">pub fn </span>has_read(<span class="kw-2">&amp;</span><span class="self">self</span>, index: T) -&gt; bool {
         <span class="self">self</span>.reads_all || <span class="self">self</span>.reads_and_writes.contains(index.sparse_set_index())
@@ -856,6 +973,18 @@
     <span class="doccomment">/// Returns `true` if this accesses anything mutably.
     </span><span class="kw">pub fn </span>has_any_write(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
         <span class="self">self</span>.writes_all || !<span class="self">self</span>.writes.is_clear()
+    }
+
+    <span class="doccomment">/// Returns true if this has an archetypal (indirect) access to the element given by `index`.
+    ///
+    /// This is an element whose value is not accessed (and thus will never cause conflicts),
+    /// but whose presence in an archetype may affect query results.
+    ///
+    /// Currently, this is only used for [`Has&lt;T&gt;`].
+    ///
+    /// [`Has&lt;T&gt;`]: crate::query::Has
+    </span><span class="kw">pub fn </span>has_archetypal(<span class="kw-2">&amp;</span><span class="self">self</span>, index: T) -&gt; bool {
+        <span class="self">self</span>.archetypal.contains(index.sparse_set_index())
     }
 
     <span class="doccomment">/// Sets this as having access to all indexed elements (i.e. `&amp;World`).
@@ -877,6 +1006,12 @@
     <span class="doccomment">/// Returns `true` if this has write access to all indexed elements (i.e. `EntityMut`).
     </span><span class="kw">pub fn </span>has_write_all(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
         <span class="self">self</span>.writes_all
+    }
+
+    <span class="doccomment">/// Removes all writes.
+    </span><span class="kw">pub fn </span>clear_writes(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="self">self</span>.writes_all = <span class="bool-val">false</span>;
+        <span class="self">self</span>.writes.clear();
     }
 
     <span class="doccomment">/// Removes all accesses.
@@ -920,6 +1055,29 @@
             &amp;&amp; other.writes.is_disjoint(<span class="kw-2">&amp;</span><span class="self">self</span>.reads_and_writes)
     }
 
+    <span class="doccomment">/// Returns `true` if the set is a subset of another, i.e. `other` contains
+    /// at least all the values in `self`.
+    </span><span class="kw">pub fn </span>is_subset(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>Access&lt;T&gt;) -&gt; bool {
+        <span class="kw">if </span><span class="self">self</span>.writes_all {
+            <span class="kw">return </span>other.writes_all;
+        }
+
+        <span class="kw">if </span>other.writes_all {
+            <span class="kw">return </span><span class="bool-val">true</span>;
+        }
+
+        <span class="kw">if </span><span class="self">self</span>.reads_all {
+            <span class="kw">return </span>other.reads_all;
+        }
+
+        <span class="kw">if </span>other.reads_all {
+            <span class="kw">return </span><span class="self">self</span>.writes.is_subset(<span class="kw-2">&amp;</span>other.writes);
+        }
+
+        <span class="self">self</span>.reads_and_writes.is_subset(<span class="kw-2">&amp;</span>other.reads_and_writes)
+            &amp;&amp; <span class="self">self</span>.writes.is_subset(<span class="kw-2">&amp;</span>other.writes)
+    }
+
     <span class="doccomment">/// Returns a vector of elements that the access and `other` cannot access at the same time.
     </span><span class="kw">pub fn </span>get_conflicts(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>Access&lt;T&gt;) -&gt; Vec&lt;T&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>conflicts = FixedBitSet::default();
@@ -950,20 +1108,32 @@
     }
 
     <span class="doccomment">/// Returns the indices of the elements this has access to.
-    </span><span class="kw">pub fn </span>reads_and_writes(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw">impl </span>Iterator&lt;Item = T&gt; + <span class="lifetime">&#39;_ </span>{
+    </span><span class="kw">pub fn </span>reads_and_writes(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw">impl </span>Iterator&lt;Item = T&gt; + <span class="lifetime">'_ </span>{
         <span class="self">self</span>.reads_and_writes.ones().map(T::get_sparse_set_index)
     }
 
     <span class="doccomment">/// Returns the indices of the elements this has non-exclusive access to.
-    </span><span class="kw">pub fn </span>reads(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw">impl </span>Iterator&lt;Item = T&gt; + <span class="lifetime">&#39;_ </span>{
+    </span><span class="kw">pub fn </span>reads(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw">impl </span>Iterator&lt;Item = T&gt; + <span class="lifetime">'_ </span>{
         <span class="self">self</span>.reads_and_writes
             .difference(<span class="kw-2">&amp;</span><span class="self">self</span>.writes)
             .map(T::get_sparse_set_index)
     }
 
     <span class="doccomment">/// Returns the indices of the elements this has exclusive access to.
-    </span><span class="kw">pub fn </span>writes(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw">impl </span>Iterator&lt;Item = T&gt; + <span class="lifetime">&#39;_ </span>{
+    </span><span class="kw">pub fn </span>writes(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw">impl </span>Iterator&lt;Item = T&gt; + <span class="lifetime">'_ </span>{
         <span class="self">self</span>.writes.ones().map(T::get_sparse_set_index)
+    }
+
+    <span class="doccomment">/// Returns the indices of the elements that this has an archetypal access to.
+    ///
+    /// These are elements whose values are not accessed (and thus will never cause conflicts),
+    /// but whose presence in an archetype may affect query results.
+    ///
+    /// Currently, this is only used for [`Has&lt;T&gt;`].
+    ///
+    /// [`Has&lt;T&gt;`]: crate::query::Has
+    </span><span class="kw">pub fn </span>archetypal(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw">impl </span>Iterator&lt;Item = T&gt; + <span class="lifetime">'_ </span>{
+        <span class="self">self</span>.archetypal.ones().map(T::get_sparse_set_index)
     }
 }
 
@@ -975,10 +1145,10 @@
 /// `with` access.
 ///
 /// For example consider `Query&lt;Option&lt;&amp;T&gt;&gt;` this only has a `read` of `T` as doing
-/// otherwise would allow for queries to be considered disjoint when they shouldn&#39;t:
+/// otherwise would allow for queries to be considered disjoint when they shouldn't:
 /// - `Query&lt;(&amp;mut T, Option&lt;&amp;U&gt;)&gt;` read/write `T`, read `U`, with `U`
 /// - `Query&lt;&amp;mut T, Without&lt;U&gt;&gt;` read/write `T`, without `U`
-/// from this we could reasonably conclude that the queries are disjoint but they aren&#39;t.
+/// from this we could reasonably conclude that the queries are disjoint but they aren't.
 ///
 /// In order to solve this the actual access that `Query&lt;(&amp;mut T, Option&lt;&amp;U&gt;)&gt;` has
 /// is read/write `T`, read `U`. It must still have a read `U` access otherwise the following
@@ -989,16 +1159,18 @@
 /// See comments the [`WorldQuery`](super::WorldQuery) impls of [`AnyOf`](super::AnyOf)/`Option`/[`Or`](super::Or) for more information.
 </span><span class="attr">#[derive(Debug, Clone, Eq, PartialEq)]
 </span><span class="kw">pub struct </span>FilteredAccess&lt;T: SparseSetIndex&gt; {
-    access: Access&lt;T&gt;,
+    <span class="kw">pub</span>(<span class="kw">crate</span>) access: Access&lt;T&gt;,
+    <span class="kw">pub</span>(<span class="kw">crate</span>) required: FixedBitSet,
     <span class="comment">// An array of filter sets to express `With` or `Without` clauses in disjunctive normal form, for example: `Or&lt;(With&lt;A&gt;, With&lt;B&gt;)&gt;`.
     // Filters like `(With&lt;A&gt;, Or&lt;(With&lt;B&gt;, Without&lt;C&gt;)&gt;` are expanded into `Or&lt;((With&lt;A&gt;, With&lt;B&gt;), (With&lt;A&gt;, Without&lt;C&gt;))&gt;`.
-    </span>filter_sets: Vec&lt;AccessFilters&lt;T&gt;&gt;,
+    </span><span class="kw">pub</span>(<span class="kw">crate</span>) filter_sets: Vec&lt;AccessFilters&lt;T&gt;&gt;,
 }
 
 <span class="kw">impl</span>&lt;T: SparseSetIndex&gt; Default <span class="kw">for </span>FilteredAccess&lt;T&gt; {
     <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
             access: Access::default(),
+            required: FixedBitSet::default(),
             filter_sets: <span class="macro">vec!</span>[AccessFilters::default()],
         }
     }
@@ -1028,13 +1200,21 @@
     <span class="doccomment">/// Adds access to the element given by `index`.
     </span><span class="kw">pub fn </span>add_read(<span class="kw-2">&amp;mut </span><span class="self">self</span>, index: T) {
         <span class="self">self</span>.access.add_read(index.clone());
+        <span class="self">self</span>.add_required(index.clone());
         <span class="self">self</span>.and_with(index);
     }
 
     <span class="doccomment">/// Adds exclusive access to the element given by `index`.
     </span><span class="kw">pub fn </span>add_write(<span class="kw-2">&amp;mut </span><span class="self">self</span>, index: T) {
         <span class="self">self</span>.access.add_write(index.clone());
+        <span class="self">self</span>.add_required(index.clone());
         <span class="self">self</span>.and_with(index);
+    }
+
+    <span class="kw">fn </span>add_required(<span class="kw-2">&amp;mut </span><span class="self">self</span>, index: T) {
+        <span class="kw">let </span>index = index.sparse_set_index();
+        <span class="self">self</span>.required.grow(index + <span class="number">1</span>);
+        <span class="self">self</span>.required.insert(index);
     }
 
     <span class="doccomment">/// Adds a `With` filter: corresponds to a conjunction (AND) operation.
@@ -1083,11 +1263,11 @@
 
         <span class="comment">// If the access instances are incompatible, we want to check that whether filters can
         // guarantee that queries are disjoint.
-        // Since the `filter_sets` array represents a Disjunctive Normal Form formula (&quot;ORs of ANDs&quot;),
+        // Since the `filter_sets` array represents a Disjunctive Normal Form formula ("ORs of ANDs"),
         // we need to make sure that each filter set (ANDs) rule out every filter set from the `other` instance.
         //
         // For example, `Query&lt;&amp;mut C, Or&lt;(With&lt;A&gt;, Without&lt;B&gt;)&gt;&gt;` is compatible `Query&lt;&amp;mut C, (With&lt;B&gt;, Without&lt;A&gt;)&gt;`,
-        // but `Query&lt;&amp;mut C, Or&lt;(Without&lt;A&gt;, Without&lt;B&gt;)&gt;&gt;` isn&#39;t compatible with `Query&lt;&amp;mut C, Or&lt;(With&lt;A&gt;, With&lt;B&gt;)&gt;&gt;`.
+        // but `Query&lt;&amp;mut C, Or&lt;(Without&lt;A&gt;, Without&lt;B&gt;)&gt;&gt;` isn't compatible with `Query&lt;&amp;mut C, Or&lt;(With&lt;A&gt;, With&lt;B&gt;)&gt;&gt;`.
         </span><span class="self">self</span>.filter_sets.iter().all(|filter| {
             other
                 .filter_sets
@@ -1113,6 +1293,7 @@
     /// `Or&lt;((With&lt;A&gt;, With&lt;C&gt;), (With&lt;A&gt;, Without&lt;D&gt;), (Without&lt;B&gt;, With&lt;C&gt;), (Without&lt;B&gt;, Without&lt;D&gt;))&gt;`.
     </span><span class="kw">pub fn </span>extend(<span class="kw-2">&amp;mut </span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>FilteredAccess&lt;T&gt;) {
         <span class="self">self</span>.access.extend(<span class="kw-2">&amp;</span>other.access);
+        <span class="self">self</span>.required.union_with(<span class="kw-2">&amp;</span>other.required);
 
         <span class="comment">// We can avoid allocating a new array of bitsets if `other` contains just a single set of filters:
         // in this case we can short-circuit by performing an in-place union for each bitset.
@@ -1145,20 +1326,40 @@
     </span><span class="kw">pub fn </span>write_all(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
         <span class="self">self</span>.access.write_all();
     }
+
+    <span class="doccomment">/// Returns `true` if the set is a subset of another, i.e. `other` contains
+    /// at least all the values in `self`.
+    </span><span class="kw">pub fn </span>is_subset(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>FilteredAccess&lt;T&gt;) -&gt; bool {
+        <span class="self">self</span>.required.is_subset(<span class="kw-2">&amp;</span>other.required) &amp;&amp; <span class="self">self</span>.access().is_subset(other.access())
+    }
+
+    <span class="doccomment">/// Returns the indices of the elements that this access filters for.
+    </span><span class="kw">pub fn </span>with_filters(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw">impl </span>Iterator&lt;Item = T&gt; + <span class="lifetime">'_ </span>{
+        <span class="self">self</span>.filter_sets
+            .iter()
+            .flat_map(|f| f.with.ones().map(T::get_sparse_set_index))
+    }
+
+    <span class="doccomment">/// Returns the indices of the elements that this access filters out.
+    </span><span class="kw">pub fn </span>without_filters(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw">impl </span>Iterator&lt;Item = T&gt; + <span class="lifetime">'_ </span>{
+        <span class="self">self</span>.filter_sets
+            .iter()
+            .flat_map(|f| f.without.ones().map(T::get_sparse_set_index))
+    }
 }
 
 <span class="attr">#[derive(Clone, Eq, PartialEq)]
-</span><span class="kw">struct </span>AccessFilters&lt;T&gt; {
-    with: FixedBitSet,
-    without: FixedBitSet,
+</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct </span>AccessFilters&lt;T&gt; {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) with: FixedBitSet,
+    <span class="kw">pub</span>(<span class="kw">crate</span>) without: FixedBitSet,
     _index_type: PhantomData&lt;T&gt;,
 }
 
 <span class="kw">impl</span>&lt;T: SparseSetIndex + fmt::Debug&gt; fmt::Debug <span class="kw">for </span>AccessFilters&lt;T&gt; {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
-        f.debug_struct(<span class="string">&quot;AccessFilters&quot;</span>)
-            .field(<span class="string">&quot;with&quot;</span>, <span class="kw-2">&amp;</span>FormattedBitSet::&lt;T&gt;::new(<span class="kw-2">&amp;</span><span class="self">self</span>.with))
-            .field(<span class="string">&quot;without&quot;</span>, <span class="kw-2">&amp;</span>FormattedBitSet::&lt;T&gt;::new(<span class="kw-2">&amp;</span><span class="self">self</span>.without))
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
+        f.debug_struct(<span class="string">"AccessFilters"</span>)
+            .field(<span class="string">"with"</span>, <span class="kw-2">&amp;</span>FormattedBitSet::&lt;T&gt;::new(<span class="kw-2">&amp;</span><span class="self">self</span>.with))
+            .field(<span class="string">"without"</span>, <span class="kw-2">&amp;</span>FormattedBitSet::&lt;T&gt;::new(<span class="kw-2">&amp;</span><span class="self">self</span>.without))
             .finish()
     }
 }
@@ -1175,9 +1376,9 @@
 
 <span class="kw">impl</span>&lt;T: SparseSetIndex&gt; AccessFilters&lt;T&gt; {
     <span class="kw">fn </span>is_ruled_out_by(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; bool {
-        <span class="comment">// Although not technically complete, we don&#39;t consider the case when `AccessFilters`&#39;s
+        <span class="comment">// Although not technically complete, we don't consider the case when `AccessFilters`'s
         // `without` bitset contradicts its own `with` bitset (e.g. `(With&lt;A&gt;, Without&lt;A&gt;)`).
-        // Such query would be considered compatible with any other query, but as it&#39;s almost
+        // Such query would be considered compatible with any other query, but as it's almost
         // always an error, we ignore this case instead of treating such query as compatible
         // with others.
         </span>!<span class="self">self</span>.with.is_disjoint(<span class="kw-2">&amp;</span>other.without) || !<span class="self">self</span>.without.is_disjoint(<span class="kw-2">&amp;</span>other.with)
@@ -1189,7 +1390,7 @@
 /// Used internally to statically check if systems have conflicting access.
 ///
 /// It stores multiple sets of accesses.
-/// - A &quot;combined&quot; set, which is the access of all filters in this set combined.
+/// - A "combined" set, which is the access of all filters in this set combined.
 /// - The set of access of each individual filters in this set.
 </span><span class="attr">#[derive(Debug, Clone)]
 </span><span class="kw">pub struct </span>FilteredAccessSet&lt;T: SparseSetIndex&gt; {
@@ -1207,10 +1408,10 @@
     <span class="doccomment">/// Returns `true` if this and `other` can be active at the same time.
     ///
     /// Access conflict resolution happen in two steps:
-    /// 1. A &quot;coarse&quot; check, if there is no mutual unfiltered conflict between
+    /// 1. A "coarse" check, if there is no mutual unfiltered conflict between
     ///    `self` and `other`, we already know that the two access sets are
     ///    compatible.
-    /// 2. A &quot;fine grained&quot; check, it kicks in when the &quot;coarse&quot; check fails.
+    /// 2. A "fine grained" check, it kicks in when the "coarse" check fails.
     ///    the two access sets might still be compatible if some of the accesses
     ///    are restricted with the [`With`](super::With) or [`Without`](super::Without) filters so that access is
     ///    mutually exclusive. The fine grained phase iterates over all filters in
@@ -1369,7 +1570,7 @@
         <span class="macro">assert_eq!</span>(
             <span class="kw-2">&amp;</span>conflicts,
             <span class="kw-2">&amp;</span>[<span class="number">1_usize</span>],
-            <span class="string">&quot;access_a: {access_a:?}, filter_b: {filter_b:?}&quot;
+            <span class="string">"access_a: {access_a:?}, filter_b: {filter_b:?}"
         </span>);
     }
 
@@ -1415,7 +1616,7 @@
 
         <span class="comment">// Turns `access_b` into `Or&lt;(With&lt;C&gt;, (With&lt;D&gt;, Without&lt;D&gt;))&gt;`.
         </span>access_b.append_or(<span class="kw-2">&amp;</span>access_c);
-        <span class="comment">// Applies the filters to the initial query, which corresponds to the FilteredAccess&#39;
+        <span class="comment">// Applies the filters to the initial query, which corresponds to the FilteredAccess'
         // representation of `Query&lt;(&amp;mut A, &amp;mut B), Or&lt;(With&lt;C&gt;, (With&lt;D&gt;, Without&lt;E&gt;))&gt;&gt;`.
         </span>access_a.extend(<span class="kw-2">&amp;</span>access_b);
 

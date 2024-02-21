@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_diagnostic-0.12.1/src/log_diagnostics_plugin.rs`."><title>log_diagnostics_plugin.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="bevy_diagnostic" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../bevy_diagnostic/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_diagnostic-0.13.0/src/log_diagnostics_plugin.rs`."><title>log_diagnostics_plugin.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="bevy_diagnostic" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -130,25 +131,45 @@
 <a href="#130" id="130">130</a>
 <a href="#131" id="131">131</a>
 <a href="#132" id="132">132</a>
-</pre></div><pre class="rust"><code><span class="kw">use super</span>::{Diagnostic, DiagnosticId, DiagnosticsStore};
+<a href="#133" id="133">133</a>
+<a href="#134" id="134">134</a>
+<a href="#135" id="135">135</a>
+<a href="#136" id="136">136</a>
+<a href="#137" id="137">137</a>
+<a href="#138" id="138">138</a>
+<a href="#139" id="139">139</a>
+<a href="#140" id="140">140</a>
+<a href="#141" id="141">141</a>
+<a href="#142" id="142">142</a>
+<a href="#143" id="143">143</a>
+<a href="#144" id="144">144</a>
+<a href="#145" id="145">145</a>
+<a href="#146" id="146">146</a>
+</pre></div><pre class="rust"><code><span class="kw">use super</span>::{Diagnostic, DiagnosticPath, DiagnosticsStore};
 <span class="kw">use </span>bevy_app::prelude::<span class="kw-2">*</span>;
 <span class="kw">use </span>bevy_ecs::prelude::<span class="kw-2">*</span>;
 <span class="kw">use </span>bevy_log::{debug, info};
 <span class="kw">use </span>bevy_time::{Real, Time, Timer, TimerMode};
 <span class="kw">use </span>bevy_utils::Duration;
 
-<span class="doccomment">/// An App Plugin that logs diagnostics to the console
+<span class="doccomment">/// An App Plugin that logs diagnostics to the console.
+///
+/// Diagnostics are collected by plugins such as
+/// [`FrameTimeDiagnosticsPlugin`](crate::FrameTimeDiagnosticsPlugin)
+/// or can be provided by the user.
+///
+/// When no diagnostics are provided, this plugin does nothing.
 </span><span class="kw">pub struct </span>LogDiagnosticsPlugin {
     <span class="kw">pub </span>debug: bool,
     <span class="kw">pub </span>wait_duration: Duration,
-    <span class="kw">pub </span>filter: <span class="prelude-ty">Option</span>&lt;Vec&lt;DiagnosticId&gt;&gt;,
+    <span class="kw">pub </span>filter: <span class="prelude-ty">Option</span>&lt;Vec&lt;DiagnosticPath&gt;&gt;,
 }
 
 <span class="doccomment">/// State used by the [`LogDiagnosticsPlugin`]
 </span><span class="attr">#[derive(Resource)]
 </span><span class="kw">struct </span>LogDiagnosticsState {
     timer: Timer,
-    filter: <span class="prelude-ty">Option</span>&lt;Vec&lt;DiagnosticId&gt;&gt;,
+    filter: <span class="prelude-ty">Option</span>&lt;Vec&lt;DiagnosticPath&gt;&gt;,
 }
 
 <span class="kw">impl </span>Default <span class="kw">for </span>LogDiagnosticsPlugin {
@@ -177,39 +198,75 @@
 }
 
 <span class="kw">impl </span>LogDiagnosticsPlugin {
-    <span class="kw">pub fn </span>filtered(filter: Vec&lt;DiagnosticId&gt;) -&gt; <span class="self">Self </span>{
+    <span class="kw">pub fn </span>filtered(filter: Vec&lt;DiagnosticPath&gt;) -&gt; <span class="self">Self </span>{
         LogDiagnosticsPlugin {
             filter: <span class="prelude-val">Some</span>(filter),
             ..Default::default()
         }
     }
 
-    <span class="kw">fn </span>log_diagnostic(diagnostic: <span class="kw-2">&amp;</span>Diagnostic) {
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(value) = diagnostic.smoothed() {
-            <span class="kw">if </span>diagnostic.get_max_history_length() &gt; <span class="number">1 </span>{
-                <span class="kw">if let </span><span class="prelude-val">Some</span>(average) = diagnostic.average() {
-                    <span class="macro">info!</span>(
-                        target: <span class="string">&quot;bevy diagnostic&quot;</span>,
-                        <span class="comment">// Suffix is only used for &#39;s&#39; or &#39;ms&#39; currently,
-                        // so we reserve two columns for it; however,
-                        // Do not reserve columns for the suffix in the average
-                        // The ) hugging the value is more aesthetically pleasing
-                        </span><span class="string">&quot;{name:&lt;name_width$}: {value:&gt;11.6}{suffix:2} (avg {average:&gt;.6}{suffix:})&quot;</span>,
-                        name = diagnostic.name,
-                        suffix = diagnostic.suffix,
-                        name_width = <span class="kw">crate</span>::MAX_DIAGNOSTIC_NAME_WIDTH,
-                    );
-                    <span class="kw">return</span>;
+    <span class="kw">fn </span>for_each_diagnostic(
+        state: <span class="kw-2">&amp;</span>LogDiagnosticsState,
+        diagnostics: <span class="kw-2">&amp;</span>DiagnosticsStore,
+        <span class="kw-2">mut </span>callback: <span class="kw">impl </span>FnMut(<span class="kw-2">&amp;</span>Diagnostic),
+    ) {
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(filter) = <span class="kw-2">&amp;</span>state.filter {
+            <span class="kw">for </span>path <span class="kw">in </span>filter {
+                <span class="kw">if let </span><span class="prelude-val">Some</span>(diagnostic) = diagnostics.get(path) {
+                    <span class="kw">if </span>diagnostic.is_enabled {
+                        callback(diagnostic);
+                    }
                 }
             }
+        } <span class="kw">else </span>{
+            <span class="kw">for </span>diagnostic <span class="kw">in </span>diagnostics.iter() {
+                <span class="kw">if </span>diagnostic.is_enabled {
+                    callback(diagnostic);
+                }
+            }
+        }
+    }
+
+    <span class="kw">fn </span>log_diagnostic(path_width: usize, diagnostic: <span class="kw-2">&amp;</span>Diagnostic) {
+        <span class="kw">let </span><span class="prelude-val">Some</span>(value) = diagnostic.smoothed() <span class="kw">else </span>{
+            <span class="kw">return</span>;
+        };
+
+        <span class="kw">if </span>diagnostic.get_max_history_length() &gt; <span class="number">1 </span>{
+            <span class="kw">let </span><span class="prelude-val">Some</span>(average) = diagnostic.average() <span class="kw">else </span>{
+                <span class="kw">return</span>;
+            };
+
             <span class="macro">info!</span>(
-                target: <span class="string">&quot;bevy diagnostic&quot;</span>,
-                <span class="string">&quot;{name:&lt;name_width$}: {value:&gt;.6}{suffix:}&quot;</span>,
-                name = diagnostic.name,
+                target: <span class="string">"bevy diagnostic"</span>,
+                <span class="comment">// Suffix is only used for 's' or 'ms' currently,
+                // so we reserve two columns for it; however,
+                // Do not reserve columns for the suffix in the average
+                // The ) hugging the value is more aesthetically pleasing
+                </span><span class="string">"{path:&lt;path_width$}: {value:&gt;11.6}{suffix:2} (avg {average:&gt;.6}{suffix:})"</span>,
+                path = diagnostic.path(),
                 suffix = diagnostic.suffix,
-                name_width = <span class="kw">crate</span>::MAX_DIAGNOSTIC_NAME_WIDTH,
+            );
+        } <span class="kw">else </span>{
+            <span class="macro">info!</span>(
+                target: <span class="string">"bevy diagnostic"</span>,
+                <span class="string">"{path:&lt;path_width$}: {value:&gt;.6}{suffix:}"</span>,
+                path = diagnostic.path(),
+                suffix = diagnostic.suffix,
             );
         }
+    }
+
+    <span class="kw">fn </span>log_diagnostics(state: <span class="kw-2">&amp;</span>LogDiagnosticsState, diagnostics: <span class="kw-2">&amp;</span>DiagnosticsStore) {
+        <span class="kw">let </span><span class="kw-2">mut </span>path_width = <span class="number">0</span>;
+        <span class="self">Self</span>::for_each_diagnostic(state, diagnostics, |diagnostic| {
+            <span class="kw">let </span>width = diagnostic.path().as_str().len();
+            path_width = path_width.max(width);
+        });
+
+        <span class="self">Self</span>::for_each_diagnostic(state, diagnostics, |diagnostic| {
+            <span class="self">Self</span>::log_diagnostic(path_width, diagnostic);
+        });
     }
 
     <span class="kw">fn </span>log_diagnostics_system(
@@ -218,22 +275,7 @@
         diagnostics: Res&lt;DiagnosticsStore&gt;,
     ) {
         <span class="kw">if </span>state.timer.tick(time.delta()).finished() {
-            <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">ref </span>filter) = state.filter {
-                <span class="kw">for </span>diagnostic <span class="kw">in </span>filter.iter().flat_map(|id| {
-                    diagnostics
-                        .get(<span class="kw-2">*</span>id)
-                        .filter(|diagnostic| diagnostic.is_enabled)
-                }) {
-                    <span class="self">Self</span>::log_diagnostic(diagnostic);
-                }
-            } <span class="kw">else </span>{
-                <span class="kw">for </span>diagnostic <span class="kw">in </span>diagnostics
-                    .iter()
-                    .filter(|diagnostic| diagnostic.is_enabled)
-                {
-                    <span class="self">Self</span>::log_diagnostic(diagnostic);
-                }
-            }
+            <span class="self">Self</span>::log_diagnostics(<span class="kw-2">&amp;</span>state, <span class="kw-2">&amp;</span>diagnostics);
         }
     }
 
@@ -243,22 +285,9 @@
         diagnostics: Res&lt;DiagnosticsStore&gt;,
     ) {
         <span class="kw">if </span>state.timer.tick(time.delta()).finished() {
-            <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">ref </span>filter) = state.filter {
-                <span class="kw">for </span>diagnostic <span class="kw">in </span>filter.iter().flat_map(|id| {
-                    diagnostics
-                        .get(<span class="kw-2">*</span>id)
-                        .filter(|diagnostic| diagnostic.is_enabled)
-                }) {
-                    <span class="macro">debug!</span>(<span class="string">&quot;{:#?}\n&quot;</span>, diagnostic);
-                }
-            } <span class="kw">else </span>{
-                <span class="kw">for </span>diagnostic <span class="kw">in </span>diagnostics
-                    .iter()
-                    .filter(|diagnostic| diagnostic.is_enabled)
-                {
-                    <span class="macro">debug!</span>(<span class="string">&quot;{:#?}\n&quot;</span>, diagnostic);
-                }
-            }
+            <span class="self">Self</span>::for_each_diagnostic(<span class="kw-2">&amp;</span>state, <span class="kw-2">&amp;</span>diagnostics, |diagnostic| {
+                <span class="macro">debug!</span>(<span class="string">"{:#?}\n"</span>, diagnostic);
+            });
         }
     }
 }

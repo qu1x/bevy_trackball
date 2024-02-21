@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_time-0.12.1/src/timer.rs`."><title>timer.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="bevy_time" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../bevy_time/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_time-0.13.0/src/timer.rs`."><title>timer.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="bevy_time" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -617,7 +618,7 @@
 ///
 /// Paused timers will not have elapsed time increased.
 </span><span class="attr">#[derive(Clone, Debug, Default, PartialEq, Eq, Reflect)]
-#[cfg_attr(feature = <span class="string">&quot;serialize&quot;</span>, derive(serde::Deserialize, serde::Serialize))]
+#[cfg_attr(feature = <span class="string">"serialize"</span>, derive(serde::Deserialize, serde::Serialize))]
 #[reflect(Default)]
 </span><span class="kw">pub struct </span>Timer {
     stopwatch: Stopwatch,
@@ -794,7 +795,7 @@
     /// timer.set_mode(TimerMode::Once);
     /// assert_eq!(timer.mode(), TimerMode::Once);
     /// ```
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;repeating&quot;</span>)]
+    </span><span class="attr">#[doc(alias = <span class="string">"repeating"</span>)]
     #[inline]
     </span><span class="kw">pub fn </span>set_mode(<span class="kw-2">&amp;mut </span><span class="self">self</span>, mode: TimerMode) {
         <span class="kw">if </span><span class="self">self</span>.mode != TimerMode::Repeating &amp;&amp; mode == TimerMode::Repeating &amp;&amp; <span class="self">self</span>.finished {
@@ -920,7 +921,7 @@
         <span class="self">self</span>.stopwatch.paused()
     }
 
-    <span class="doccomment">/// Resets the timer. The reset doesn&#39;t affect the `paused` state of the timer.
+    <span class="doccomment">/// Resets the timer. The reset doesn't affect the `paused` state of the timer.
     ///
     /// See also [`Stopwatch::reset`](Stopwatch::reset).
     ///
@@ -941,7 +942,7 @@
         <span class="self">self</span>.times_finished_this_tick = <span class="number">0</span>;
     }
 
-    <span class="doccomment">/// Returns the percentage of the timer elapsed time (goes from 0.0 to 1.0).
+    <span class="doccomment">/// Returns the fraction of the timer elapsed time (goes from 0.0 to 1.0).
     ///
     /// # Examples
     /// ```
@@ -949,10 +950,10 @@
     /// use std::time::Duration;
     /// let mut timer = Timer::from_seconds(2.0, TimerMode::Once);
     /// timer.tick(Duration::from_secs_f32(0.5));
-    /// assert_eq!(timer.percent(), 0.25);
+    /// assert_eq!(timer.fraction(), 0.25);
     /// ```
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>percent(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; f32 {
+    </span><span class="kw">pub fn </span>fraction(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; f32 {
         <span class="kw">if </span><span class="self">self</span>.duration == Duration::ZERO {
             <span class="number">1.0
         </span>} <span class="kw">else </span>{
@@ -960,7 +961,7 @@
         }
     }
 
-    <span class="doccomment">/// Returns the percentage of the timer remaining time (goes from 1.0 to 0.0).
+    <span class="doccomment">/// Returns the fraction of the timer remaining time (goes from 1.0 to 0.0).
     ///
     /// # Examples
     /// ```
@@ -968,11 +969,11 @@
     /// use std::time::Duration;
     /// let mut timer = Timer::from_seconds(2.0, TimerMode::Once);
     /// timer.tick(Duration::from_secs_f32(0.5));
-    /// assert_eq!(timer.percent_left(), 0.75);
+    /// assert_eq!(timer.fraction_remaining(), 0.75);
     /// ```
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>percent_left(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; f32 {
-        <span class="number">1.0 </span>- <span class="self">self</span>.percent()
+    </span><span class="kw">pub fn </span>fraction_remaining(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; f32 {
+        <span class="number">1.0 </span>- <span class="self">self</span>.fraction()
     }
 
     <span class="doccomment">/// Returns the remaining time in seconds
@@ -1033,7 +1034,7 @@
 
 <span class="doccomment">/// Specifies [`Timer`] behavior.
 </span><span class="attr">#[derive(Debug, Clone, Copy, Eq, PartialEq, Hash, Default, Reflect)]
-#[cfg_attr(feature = <span class="string">&quot;serialize&quot;</span>, derive(serde::Deserialize, serde::Serialize))]
+#[cfg_attr(feature = <span class="string">"serialize"</span>, derive(serde::Deserialize, serde::Serialize))]
 #[reflect(Default)]
 </span><span class="kw">pub enum </span>TimerMode {
     <span class="doccomment">/// Run once and stop.
@@ -1059,8 +1060,8 @@
         <span class="macro">assert!</span>(!t.just_finished());
         <span class="macro">assert_eq!</span>(t.times_finished_this_tick(), <span class="number">0</span>);
         <span class="macro">assert_eq!</span>(t.mode(), TimerMode::Once);
-        <span class="macro">assert_eq!</span>(t.percent(), <span class="number">0.025</span>);
-        <span class="macro">assert_eq!</span>(t.percent_left(), <span class="number">0.975</span>);
+        <span class="macro">assert_eq!</span>(t.fraction(), <span class="number">0.025</span>);
+        <span class="macro">assert_eq!</span>(t.fraction_remaining(), <span class="number">0.975</span>);
         <span class="comment">// Ticking while paused changes nothing
         </span>t.pause();
         t.tick(Duration::from_secs_f32(<span class="number">500.0</span>));
@@ -1070,25 +1071,25 @@
         <span class="macro">assert!</span>(!t.just_finished());
         <span class="macro">assert_eq!</span>(t.times_finished_this_tick(), <span class="number">0</span>);
         <span class="macro">assert_eq!</span>(t.mode(), TimerMode::Once);
-        <span class="macro">assert_eq!</span>(t.percent(), <span class="number">0.025</span>);
-        <span class="macro">assert_eq!</span>(t.percent_left(), <span class="number">0.975</span>);
-        <span class="comment">// Tick past the end and make sure elapsed doesn&#39;t go past 0.0 and other things update
+        <span class="macro">assert_eq!</span>(t.fraction(), <span class="number">0.025</span>);
+        <span class="macro">assert_eq!</span>(t.fraction_remaining(), <span class="number">0.975</span>);
+        <span class="comment">// Tick past the end and make sure elapsed doesn't go past 0.0 and other things update
         </span>t.unpause();
         t.tick(Duration::from_secs_f32(<span class="number">500.0</span>));
         <span class="macro">assert_eq!</span>(t.elapsed_secs(), <span class="number">10.0</span>);
         <span class="macro">assert!</span>(t.finished());
         <span class="macro">assert!</span>(t.just_finished());
         <span class="macro">assert_eq!</span>(t.times_finished_this_tick(), <span class="number">1</span>);
-        <span class="macro">assert_eq!</span>(t.percent(), <span class="number">1.0</span>);
-        <span class="macro">assert_eq!</span>(t.percent_left(), <span class="number">0.0</span>);
+        <span class="macro">assert_eq!</span>(t.fraction(), <span class="number">1.0</span>);
+        <span class="macro">assert_eq!</span>(t.fraction_remaining(), <span class="number">0.0</span>);
         <span class="comment">// Continuing to tick when finished should only change just_finished
         </span>t.tick(Duration::from_secs_f32(<span class="number">1.0</span>));
         <span class="macro">assert_eq!</span>(t.elapsed_secs(), <span class="number">10.0</span>);
         <span class="macro">assert!</span>(t.finished());
         <span class="macro">assert!</span>(!t.just_finished());
         <span class="macro">assert_eq!</span>(t.times_finished_this_tick(), <span class="number">0</span>);
-        <span class="macro">assert_eq!</span>(t.percent(), <span class="number">1.0</span>);
-        <span class="macro">assert_eq!</span>(t.percent_left(), <span class="number">0.0</span>);
+        <span class="macro">assert_eq!</span>(t.fraction(), <span class="number">1.0</span>);
+        <span class="macro">assert_eq!</span>(t.fraction_remaining(), <span class="number">0.0</span>);
     }
 
     <span class="attr">#[test]
@@ -1102,24 +1103,24 @@
         <span class="macro">assert!</span>(!t.just_finished());
         <span class="macro">assert_eq!</span>(t.times_finished_this_tick(), <span class="number">0</span>);
         <span class="macro">assert_eq!</span>(t.mode(), TimerMode::Repeating);
-        <span class="macro">assert_eq!</span>(t.percent(), <span class="number">0.375</span>);
-        <span class="macro">assert_eq!</span>(t.percent_left(), <span class="number">0.625</span>);
+        <span class="macro">assert_eq!</span>(t.fraction(), <span class="number">0.375</span>);
+        <span class="macro">assert_eq!</span>(t.fraction_remaining(), <span class="number">0.625</span>);
         <span class="comment">// Tick past the end and make sure elapsed wraps
         </span>t.tick(Duration::from_secs_f32(<span class="number">1.5</span>));
         <span class="macro">assert_eq!</span>(t.elapsed_secs(), <span class="number">0.25</span>);
         <span class="macro">assert!</span>(t.finished());
         <span class="macro">assert!</span>(t.just_finished());
         <span class="macro">assert_eq!</span>(t.times_finished_this_tick(), <span class="number">1</span>);
-        <span class="macro">assert_eq!</span>(t.percent(), <span class="number">0.125</span>);
-        <span class="macro">assert_eq!</span>(t.percent_left(), <span class="number">0.875</span>);
+        <span class="macro">assert_eq!</span>(t.fraction(), <span class="number">0.125</span>);
+        <span class="macro">assert_eq!</span>(t.fraction_remaining(), <span class="number">0.875</span>);
         <span class="comment">// Continuing to tick should turn off both finished &amp; just_finished for repeating timers
         </span>t.tick(Duration::from_secs_f32(<span class="number">1.0</span>));
         <span class="macro">assert_eq!</span>(t.elapsed_secs(), <span class="number">1.25</span>);
         <span class="macro">assert!</span>(!t.finished());
         <span class="macro">assert!</span>(!t.just_finished());
         <span class="macro">assert_eq!</span>(t.times_finished_this_tick(), <span class="number">0</span>);
-        <span class="macro">assert_eq!</span>(t.percent(), <span class="number">0.625</span>);
-        <span class="macro">assert_eq!</span>(t.percent_left(), <span class="number">0.375</span>);
+        <span class="macro">assert_eq!</span>(t.fraction(), <span class="number">0.625</span>);
+        <span class="macro">assert_eq!</span>(t.fraction_remaining(), <span class="number">0.375</span>);
     }
 
     <span class="attr">#[test]
@@ -1150,19 +1151,19 @@
         <span class="kw">let </span><span class="kw-2">mut </span>t = Timer::from_seconds(<span class="number">0.0</span>, TimerMode::Repeating);
         <span class="macro">assert_eq!</span>(t.times_finished_this_tick(), <span class="number">0</span>);
         <span class="macro">assert_eq!</span>(t.elapsed(), Duration::ZERO);
-        <span class="macro">assert_eq!</span>(t.percent(), <span class="number">1.0</span>);
+        <span class="macro">assert_eq!</span>(t.fraction(), <span class="number">1.0</span>);
         t.tick(Duration::from_secs(<span class="number">1</span>));
         <span class="macro">assert_eq!</span>(t.times_finished_this_tick(), u32::MAX);
         <span class="macro">assert_eq!</span>(t.elapsed(), Duration::ZERO);
-        <span class="macro">assert_eq!</span>(t.percent(), <span class="number">1.0</span>);
+        <span class="macro">assert_eq!</span>(t.fraction(), <span class="number">1.0</span>);
         t.tick(Duration::from_secs(<span class="number">2</span>));
         <span class="macro">assert_eq!</span>(t.times_finished_this_tick(), u32::MAX);
         <span class="macro">assert_eq!</span>(t.elapsed(), Duration::ZERO);
-        <span class="macro">assert_eq!</span>(t.percent(), <span class="number">1.0</span>);
+        <span class="macro">assert_eq!</span>(t.fraction(), <span class="number">1.0</span>);
         t.reset();
         <span class="macro">assert_eq!</span>(t.times_finished_this_tick(), <span class="number">0</span>);
         <span class="macro">assert_eq!</span>(t.elapsed(), Duration::ZERO);
-        <span class="macro">assert_eq!</span>(t.percent(), <span class="number">1.0</span>);
+        <span class="macro">assert_eq!</span>(t.fraction(), <span class="number">1.0</span>);
     }
 
     <span class="attr">#[test]

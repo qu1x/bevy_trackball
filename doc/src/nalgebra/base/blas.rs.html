@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/nalgebra-0.32.3/src/base/blas.rs`."><title>blas.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="nalgebra" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="icon" href="https://nalgebra.org/img/favicon.ico"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../nalgebra/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/nalgebra-0.32.4/src/base/blas.rs`."><title>blas.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="nalgebra" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="icon" href="https://nalgebra.org/img/favicon.ico"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1236,20 +1237,20 @@
     {
         <span class="macro">assert!</span>(
             <span class="self">self</span>.nrows() == rhs.nrows(),
-            <span class="string">&quot;Dot product dimensions mismatch for shapes {:?} and {:?}: left rows != right rows.&quot;</span>,
+            <span class="string">"Dot product dimensions mismatch for shapes {:?} and {:?}: left rows != right rows."</span>,
             <span class="self">self</span>.shape(),
             rhs.shape(),
         );
 
         <span class="macro">assert!</span>(
             <span class="self">self</span>.ncols() == rhs.ncols(),
-            <span class="string">&quot;Dot product dimensions mismatch for shapes {:?} and {:?}: left cols != right cols.&quot;</span>,
+            <span class="string">"Dot product dimensions mismatch for shapes {:?} and {:?}: left cols != right cols."</span>,
             <span class="self">self</span>.shape(),
             rhs.shape(),
         );
 
         <span class="comment">// So we do some special cases for common fixed-size vectors of dimension lower than 8
-        // because the `for` loop below won&#39;t be very efficient on those.
+        // because the `for` loop below won't be very efficient on those.
         </span><span class="kw">if </span>(R::is::&lt;U2&gt;() || R2::is::&lt;U2&gt;()) &amp;&amp; (C::is::&lt;U1&gt;() || C2::is::&lt;U1&gt;()) {
             <span class="kw">unsafe </span>{
                 <span class="kw">let </span>a = conjugate(<span class="self">self</span>.get_unchecked((<span class="number">0</span>, <span class="number">0</span>)).clone())
@@ -1290,7 +1291,7 @@
             }
         }
 
-        <span class="comment">// All this is inspired from the &quot;unrolled version&quot; discussed in:
+        <span class="comment">// All this is inspired from the "unrolled version" discussed in:
         // https://blog.theincredibleholk.org/blog/2012/12/10/optimizing-dot-product/
         //
         // And this comment from bluss:
@@ -1298,7 +1299,7 @@
         </span><span class="kw">let </span><span class="kw-2">mut </span>res = T::zero();
 
         <span class="comment">// We have to define them outside of the loop (and not inside at first assignment)
-        // otherwise vectorization won&#39;t kick in for some reason.
+        // otherwise vectorization won't kick in for some reason.
         </span><span class="kw">let </span><span class="kw-2">mut </span>acc0;
         <span class="kw">let </span><span class="kw-2">mut </span>acc1;
         <span class="kw">let </span><span class="kw-2">mut </span>acc2;
@@ -1460,7 +1461,7 @@
         <span class="macro">assert_eq!</span>(
             (ncols, nrows),
             rhs.shape(),
-            <span class="string">&quot;Transposed dot product dimension mismatch.&quot;
+            <span class="string">"Transposed dot product dimension mismatch."
         </span>);
 
         <span class="kw">let </span><span class="kw-2">mut </span>res = T::zero();
@@ -1524,7 +1525,7 @@
         SB: Storage&lt;T, D2&gt;,
         ShapeConstraint: DimEq&lt;D, D2&gt;,
     {
-        <span class="macro">assert_eq!</span>(<span class="self">self</span>.nrows(), x.nrows(), <span class="string">&quot;Axpy: mismatched vector shapes.&quot;</span>);
+        <span class="macro">assert_eq!</span>(<span class="self">self</span>.nrows(), x.nrows(), <span class="string">"Axpy: mismatched vector shapes."</span>);
         <span class="self">self</span>.axcpy(a, x, T::one(), b)
     }
 
@@ -1568,8 +1569,8 @@
         x: <span class="kw-2">&amp;</span>Vector&lt;T, D3, SC&gt;,
         beta: T,
         dot: <span class="kw">impl </span>Fn(
-            <span class="kw-2">&amp;</span>DVectorView&lt;<span class="lifetime">&#39;_</span>, T, SB::RStride, SB::CStride&gt;,
-            <span class="kw-2">&amp;</span>DVectorView&lt;<span class="lifetime">&#39;_</span>, T, SC::RStride, SC::CStride&gt;,
+            <span class="kw-2">&amp;</span>DVectorView&lt;<span class="lifetime">'_</span>, T, SB::RStride, SB::CStride&gt;,
+            <span class="kw-2">&amp;</span>DVectorView&lt;<span class="lifetime">'_</span>, T, SC::RStride, SC::CStride&gt;,
         ) -&gt; T,
     ) <span class="kw">where
         </span>T: One,
@@ -1583,11 +1584,11 @@
 
         <span class="macro">assert!</span>(
             a.is_square(),
-            <span class="string">&quot;Symmetric cgemv: the input matrix must be square.&quot;
+            <span class="string">"Symmetric cgemv: the input matrix must be square."
         </span>);
         <span class="macro">assert!</span>(
             dim2 == dim3 &amp;&amp; dim1 == dim2,
-            <span class="string">&quot;Symmetric cgemv: dimensions mismatch.&quot;
+            <span class="string">"Symmetric cgemv: dimensions mismatch."
         </span>);
 
         <span class="kw">if </span>dim2 == <span class="number">0 </span>{
@@ -1711,7 +1712,7 @@
         a: <span class="kw-2">&amp;</span>Matrix&lt;T, R2, C2, SB&gt;,
         x: <span class="kw-2">&amp;</span>Vector&lt;T, D3, SC&gt;,
         beta: T,
-        dot: <span class="kw">impl </span>Fn(<span class="kw-2">&amp;</span>VectorView&lt;<span class="lifetime">&#39;_</span>, T, R2, SB::RStride, SB::CStride&gt;, <span class="kw-2">&amp;</span>Vector&lt;T, D3, SC&gt;) -&gt; T,
+        dot: <span class="kw">impl </span>Fn(<span class="kw-2">&amp;</span>VectorView&lt;<span class="lifetime">'_</span>, T, R2, SB::RStride, SB::CStride&gt;, <span class="kw-2">&amp;</span>Vector&lt;T, D3, SC&gt;) -&gt; T,
     ) <span class="kw">where
         </span>T: One,
         SB: Storage&lt;T, R2, C2&gt;,
@@ -1724,7 +1725,7 @@
 
         <span class="macro">assert!</span>(
             nrows2 == dim3 &amp;&amp; dim1 == ncols2,
-            <span class="string">&quot;Gemv: dimensions mismatch.&quot;
+            <span class="string">"Gemv: dimensions mismatch."
         </span>);
 
         <span class="kw">if </span>ncols2 == <span class="number">0 </span>{
@@ -1836,7 +1837,7 @@
 
         <span class="macro">assert!</span>(
             nrows1 == dim2 &amp;&amp; ncols1 == dim3,
-            <span class="string">&quot;ger: dimensions mismatch.&quot;
+            <span class="string">"ger: dimensions mismatch."
         </span>);
 
         <span class="kw">for </span>j <span class="kw">in </span><span class="number">0</span>..ncols1 {
@@ -1992,12 +1993,12 @@
 
         <span class="macro">assert_eq!</span>(
             nrows2, nrows3,
-            <span class="string">&quot;gemm: dimensions mismatch for multiplication.&quot;
+            <span class="string">"gemm: dimensions mismatch for multiplication."
         </span>);
         <span class="macro">assert_eq!</span>(
             (nrows1, ncols1),
             (ncols2, ncols3),
-            <span class="string">&quot;gemm: dimensions mismatch for addition.&quot;
+            <span class="string">"gemm: dimensions mismatch for addition."
         </span>);
 
         <span class="kw">for </span>j1 <span class="kw">in </span><span class="number">0</span>..ncols1 {
@@ -2049,12 +2050,12 @@
 
         <span class="macro">assert_eq!</span>(
             nrows2, nrows3,
-            <span class="string">&quot;gemm: dimensions mismatch for multiplication.&quot;
+            <span class="string">"gemm: dimensions mismatch for multiplication."
         </span>);
         <span class="macro">assert_eq!</span>(
             (nrows1, ncols1),
             (ncols2, ncols3),
-            <span class="string">&quot;gemm: dimensions mismatch for addition.&quot;
+            <span class="string">"gemm: dimensions mismatch for addition."
         </span>);
 
         <span class="kw">for </span>j1 <span class="kw">in </span><span class="number">0</span>..ncols1 {
@@ -2089,9 +2090,9 @@
 
         <span class="macro">assert!</span>(
             <span class="self">self</span>.is_square(),
-            <span class="string">&quot;Symmetric ger: the input matrix must be square.&quot;
+            <span class="string">"Symmetric ger: the input matrix must be square."
         </span>);
-        <span class="macro">assert!</span>(dim1 == dim2 &amp;&amp; dim1 == dim3, <span class="string">&quot;ger: dimensions mismatch.&quot;</span>);
+        <span class="macro">assert!</span>(dim1 == dim2 &amp;&amp; dim1 == dim3, <span class="string">"ger: dimensions mismatch."</span>);
 
         <span class="kw">for </span>j <span class="kw">in </span><span class="number">0</span>..dim1 {
             <span class="kw">let </span>val = <span class="kw">unsafe </span>{ conjugate(y.vget_unchecked(j).clone()) };
@@ -2125,7 +2126,7 @@
     /// assert_eq!(mat.m12, 99999.99999); // This was untouched.
     /// ```
     </span><span class="attr">#[inline]
-    #[deprecated(note = <span class="string">&quot;This is renamed `syger` to match the original BLAS terminology.&quot;</span>)]
+    #[deprecated(note = <span class="string">"This is renamed `syger` to match the original BLAS terminology."</span>)]
     </span><span class="kw">pub fn </span>ger_symm&lt;D2: Dim, D3: Dim, SB, SC&gt;(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
         alpha: T,
@@ -2226,7 +2227,7 @@
     /// # #[macro_use] extern crate approx;
     /// # use nalgebra::{DMatrix, DVector};
     /// // Note that all those would also work with statically-sized matrices.
-    /// // We use DMatrix/DVector since that&#39;s the only case where pre-allocating the
+    /// // We use DMatrix/DVector since that's the only case where pre-allocating the
     /// // workspace is actually useful (assuming the same workspace is re-used for
     /// // several computations) because it avoids repeated dynamic allocations.
     /// let mut mat = DMatrix::identity(2, 2);
@@ -2319,7 +2320,7 @@
     /// # #[macro_use] extern crate approx;
     /// # use nalgebra::{DMatrix, DVector};
     /// // Note that all those would also work with statically-sized matrices.
-    /// // We use DMatrix/DVector since that&#39;s the only case where pre-allocating the
+    /// // We use DMatrix/DVector since that's the only case where pre-allocating the
     /// // workspace is actually useful (assuming the same workspace is re-used for
     /// // several computations) because it avoids repeated dynamic allocations.
     /// let mut mat = DMatrix::identity(2, 2);

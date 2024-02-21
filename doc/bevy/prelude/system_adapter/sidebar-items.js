@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["dbg","error","ignore","info","new","unwrap","warn"]};

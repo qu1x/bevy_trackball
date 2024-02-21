@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/syn-2.0.39/src/stmt.rs`."><title>stmt.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="syn" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../syn/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/syn-2.0.50/src/stmt.rs`."><title>stmt.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="syn" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -450,11 +451,32 @@
 <a href="#450" id="450">450</a>
 <a href="#451" id="451">451</a>
 <a href="#452" id="452">452</a>
-</pre></div><pre class="rust"><code><span class="kw">use super</span>::<span class="kw-2">*</span>;
+<a href="#453" id="453">453</a>
+<a href="#454" id="454">454</a>
+<a href="#455" id="455">455</a>
+<a href="#456" id="456">456</a>
+<a href="#457" id="457">457</a>
+<a href="#458" id="458">458</a>
+<a href="#459" id="459">459</a>
+<a href="#460" id="460">460</a>
+<a href="#461" id="461">461</a>
+<a href="#462" id="462">462</a>
+<a href="#463" id="463">463</a>
+<a href="#464" id="464">464</a>
+<a href="#465" id="465">465</a>
+<a href="#466" id="466">466</a>
+<a href="#467" id="467">467</a>
+<a href="#468" id="468">468</a>
+</pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::attr::Attribute;
+<span class="kw">use </span><span class="kw">crate</span>::expr::Expr;
+<span class="kw">use </span><span class="kw">crate</span>::item::Item;
+<span class="kw">use </span><span class="kw">crate</span>::mac::Macro;
+<span class="kw">use </span><span class="kw">crate</span>::pat::Pat;
+<span class="kw">use </span><span class="kw">crate</span>::token;
 
 <span class="macro">ast_struct! </span>{
     <span class="doccomment">/// A braced block containing Rust statements.
-    </span><span class="attr">#[cfg_attr(doc_cfg, doc(cfg(feature = <span class="string">&quot;full&quot;</span>)))]
+    </span><span class="attr">#[cfg_attr(doc_cfg, doc(cfg(feature = <span class="string">"full"</span>)))]
     </span><span class="kw">pub struct </span>Block {
         <span class="kw">pub </span>brace_token: token::Brace,
         <span class="doccomment">/// Statements in a block
@@ -464,7 +486,7 @@
 
 <span class="macro">ast_enum! </span>{
     <span class="doccomment">/// A statement, usually ending in a semicolon.
-    </span><span class="attr">#[cfg_attr(doc_cfg, doc(cfg(feature = <span class="string">&quot;full&quot;</span>)))]
+    </span><span class="attr">#[cfg_attr(doc_cfg, doc(cfg(feature = <span class="string">"full"</span>)))]
     </span><span class="kw">pub enum </span>Stmt {
         <span class="doccomment">/// A local (let) binding.
         </span>Local(Local),
@@ -477,7 +499,7 @@
 
         <span class="doccomment">/// A macro invocation in statement position.
         ///
-        /// Syntactically it&#39;s ambiguous which other kind of statement this
+        /// Syntactically it's ambiguous which other kind of statement this
         /// macro would expand to. It can be any of local variable (`let`),
         /// item, or expression.
         </span>Macro(StmtMacro),
@@ -486,7 +508,7 @@
 
 <span class="macro">ast_struct! </span>{
     <span class="doccomment">/// A local `let` binding: `let x: u64 = s.parse()?`.
-    </span><span class="attr">#[cfg_attr(doc_cfg, doc(cfg(feature = <span class="string">&quot;full&quot;</span>)))]
+    </span><span class="attr">#[cfg_attr(doc_cfg, doc(cfg(feature = <span class="string">"full"</span>)))]
     </span><span class="kw">pub struct </span>Local {
         <span class="kw">pub </span>attrs: Vec&lt;Attribute&gt;,
         <span class="kw">pub </span>let_token: <span class="macro">Token!</span>[<span class="kw">let</span>],
@@ -502,7 +524,7 @@
     ///
     /// `LocalInit` represents `= s.parse()?` in `let x: u64 = s.parse()?` and
     /// `= r else { return }` in `let Ok(x) = r else { return }`.
-    </span><span class="attr">#[cfg_attr(doc_cfg, doc(cfg(feature = <span class="string">&quot;full&quot;</span>)))]
+    </span><span class="attr">#[cfg_attr(doc_cfg, doc(cfg(feature = <span class="string">"full"</span>)))]
     </span><span class="kw">pub struct </span>LocalInit {
         <span class="kw">pub </span>eq_token: <span class="macro">Token!</span>[=],
         <span class="kw">pub </span>expr: Box&lt;Expr&gt;,
@@ -513,10 +535,10 @@
 <span class="macro">ast_struct! </span>{
     <span class="doccomment">/// A macro invocation in statement position.
     ///
-    /// Syntactically it&#39;s ambiguous which other kind of statement this macro
+    /// Syntactically it's ambiguous which other kind of statement this macro
     /// would expand to. It can be any of local variable (`let`), item, or
     /// expression.
-    </span><span class="attr">#[cfg_attr(doc_cfg, doc(cfg(feature = <span class="string">&quot;full&quot;</span>)))]
+    </span><span class="attr">#[cfg_attr(doc_cfg, doc(cfg(feature = <span class="string">"full"</span>)))]
     </span><span class="kw">pub struct </span>StmtMacro {
         <span class="kw">pub </span>attrs: Vec&lt;Attribute&gt;,
         <span class="kw">pub </span>mac: Macro,
@@ -524,11 +546,21 @@
     }
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;parsing&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"parsing"</span>)]
 </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod </span>parsing {
-    <span class="kw">use super</span>::<span class="kw-2">*</span>;
-    <span class="kw">use </span><span class="kw">crate</span>::parse::discouraged::Speculative;
-    <span class="kw">use </span><span class="kw">crate</span>::parse::{Parse, ParseStream, <span class="prelude-ty">Result</span>};
+    <span class="kw">use </span><span class="kw">crate</span>::attr::Attribute;
+    <span class="kw">use </span><span class="kw">crate</span>::error::Result;
+    <span class="kw">use </span><span class="kw">crate</span>::expr::{<span class="self">self</span>, Expr, ExprBlock, ExprMacro};
+    <span class="kw">use </span><span class="kw">crate</span>::ident::Ident;
+    <span class="kw">use </span><span class="kw">crate</span>::item;
+    <span class="kw">use </span><span class="kw">crate</span>::mac::{<span class="self">self</span>, Macro};
+    <span class="kw">use </span><span class="kw">crate</span>::parse::discouraged::Speculative <span class="kw">as _</span>;
+    <span class="kw">use </span><span class="kw">crate</span>::parse::{Parse, ParseStream};
+    <span class="kw">use </span><span class="kw">crate</span>::pat::{Pat, PatType};
+    <span class="kw">use </span><span class="kw">crate</span>::path::Path;
+    <span class="kw">use </span><span class="kw">crate</span>::stmt::{Block, Local, LocalInit, Stmt, StmtMacro};
+    <span class="kw">use </span><span class="kw">crate</span>::token;
+    <span class="kw">use </span><span class="kw">crate</span>::ty::Type;
     <span class="kw">use </span>proc_macro2::TokenStream;
 
     <span class="kw">struct </span>AllowNoSemi(bool);
@@ -548,7 +580,7 @@
         /// //     fn playground {
         /// //         let mut x = 1;
         /// //         x += 1;
-        /// //         println!(&quot;{}&quot;, x);
+        /// //         println!("{}", x);
         /// //     }
         /// struct MiniFunction {
         ///     attrs: Vec&lt;Attribute&gt;,
@@ -583,7 +615,7 @@
         ///     }
         /// }
         /// ```
-        </span><span class="attr">#[cfg_attr(doc_cfg, doc(cfg(feature = <span class="string">&quot;parsing&quot;</span>)))]
+        </span><span class="attr">#[cfg_attr(doc_cfg, doc(cfg(feature = <span class="string">"parsing"</span>)))]
         </span><span class="kw">pub fn </span>parse_within(input: ParseStream) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;Stmt&gt;&gt; {
             <span class="kw">let </span><span class="kw-2">mut </span>stmts = Vec::new();
             <span class="kw">loop </span>{
@@ -605,14 +637,14 @@
                 <span class="kw">if </span>input.is_empty() {
                     <span class="kw">break</span>;
                 } <span class="kw">else if </span>requires_semicolon {
-                    <span class="kw">return </span><span class="prelude-val">Err</span>(input.error(<span class="string">&quot;unexpected token, expected `;`&quot;</span>));
+                    <span class="kw">return </span><span class="prelude-val">Err</span>(input.error(<span class="string">"unexpected token, expected `;`"</span>));
                 }
             }
             <span class="prelude-val">Ok</span>(stmts)
         }
     }
 
-    <span class="attr">#[cfg_attr(doc_cfg, doc(cfg(feature = <span class="string">&quot;parsing&quot;</span>)))]
+    <span class="attr">#[cfg_attr(doc_cfg, doc(cfg(feature = <span class="string">"parsing"</span>)))]
     </span><span class="kw">impl </span>Parse <span class="kw">for </span>Block {
         <span class="kw">fn </span>parse(input: ParseStream) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
             <span class="kw">let </span>content;
@@ -623,7 +655,7 @@
         }
     }
 
-    <span class="attr">#[cfg_attr(doc_cfg, doc(cfg(feature = <span class="string">&quot;parsing&quot;</span>)))]
+    <span class="attr">#[cfg_attr(doc_cfg, doc(cfg(feature = <span class="string">"parsing"</span>)))]
     </span><span class="kw">impl </span>Parse <span class="kw">for </span>Stmt {
         <span class="kw">fn </span>parse(input: ParseStream) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
             <span class="kw">let </span>allow_nosemi = AllowNoSemi(<span class="bool-val">false</span>);
@@ -652,7 +684,7 @@
             }
         }
 
-        <span class="kw">if </span>input.peek(<span class="macro">Token!</span>[<span class="kw">let</span>]) {
+        <span class="kw">if </span>input.peek(<span class="macro">Token!</span>[<span class="kw">let</span>]) &amp;&amp; !input.peek(token::Group) {
             stmt_local(input, attrs).map(Stmt::Local)
         } <span class="kw">else if </span>input.peek(<span class="macro">Token!</span>[<span class="kw">pub</span>])
             || input.peek(<span class="macro">Token!</span>[<span class="kw">crate</span>]) &amp;&amp; !input.peek2(<span class="macro">Token!</span>[::])
@@ -840,18 +872,19 @@
         } <span class="kw">else if </span>allow_nosemi.<span class="number">0 </span>|| !expr::requires_terminator(<span class="kw-2">&amp;</span>e) {
             <span class="prelude-val">Ok</span>(Stmt::Expr(e, <span class="prelude-val">None</span>))
         } <span class="kw">else </span>{
-            <span class="prelude-val">Err</span>(input.error(<span class="string">&quot;expected semicolon&quot;</span>))
+            <span class="prelude-val">Err</span>(input.error(<span class="string">"expected semicolon"</span>))
         }
     }
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;printing&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"printing"</span>)]
 </span><span class="kw">mod </span>printing {
-    <span class="kw">use super</span>::<span class="kw-2">*</span>;
+    <span class="kw">use </span><span class="kw">crate</span>::expr;
+    <span class="kw">use </span><span class="kw">crate</span>::stmt::{Block, Local, Stmt, StmtMacro};
     <span class="kw">use </span>proc_macro2::TokenStream;
     <span class="kw">use </span>quote::{ToTokens, TokenStreamExt};
 
-    <span class="attr">#[cfg_attr(doc_cfg, doc(cfg(feature = <span class="string">&quot;printing&quot;</span>)))]
+    <span class="attr">#[cfg_attr(doc_cfg, doc(cfg(feature = <span class="string">"printing"</span>)))]
     </span><span class="kw">impl </span>ToTokens <span class="kw">for </span>Block {
         <span class="kw">fn </span>to_tokens(<span class="kw-2">&amp;</span><span class="self">self</span>, tokens: <span class="kw-2">&amp;mut </span>TokenStream) {
             <span class="self">self</span>.brace_token.surround(tokens, |tokens| {
@@ -860,7 +893,7 @@
         }
     }
 
-    <span class="attr">#[cfg_attr(doc_cfg, doc(cfg(feature = <span class="string">&quot;printing&quot;</span>)))]
+    <span class="attr">#[cfg_attr(doc_cfg, doc(cfg(feature = <span class="string">"printing"</span>)))]
     </span><span class="kw">impl </span>ToTokens <span class="kw">for </span>Stmt {
         <span class="kw">fn </span>to_tokens(<span class="kw-2">&amp;</span><span class="self">self</span>, tokens: <span class="kw-2">&amp;mut </span>TokenStream) {
             <span class="kw">match </span><span class="self">self </span>{
@@ -875,7 +908,7 @@
         }
     }
 
-    <span class="attr">#[cfg_attr(doc_cfg, doc(cfg(feature = <span class="string">&quot;printing&quot;</span>)))]
+    <span class="attr">#[cfg_attr(doc_cfg, doc(cfg(feature = <span class="string">"printing"</span>)))]
     </span><span class="kw">impl </span>ToTokens <span class="kw">for </span>Local {
         <span class="kw">fn </span>to_tokens(<span class="kw-2">&amp;</span><span class="self">self</span>, tokens: <span class="kw-2">&amp;mut </span>TokenStream) {
             expr::printing::outer_attrs_to_tokens(<span class="kw-2">&amp;</span><span class="self">self</span>.attrs, tokens);
@@ -893,7 +926,7 @@
         }
     }
 
-    <span class="attr">#[cfg_attr(doc_cfg, doc(cfg(feature = <span class="string">&quot;printing&quot;</span>)))]
+    <span class="attr">#[cfg_attr(doc_cfg, doc(cfg(feature = <span class="string">"printing"</span>)))]
     </span><span class="kw">impl </span>ToTokens <span class="kw">for </span>StmtMacro {
         <span class="kw">fn </span>to_tokens(<span class="kw-2">&amp;</span><span class="self">self</span>, tokens: <span class="kw-2">&amp;mut </span>TokenStream) {
             expr::printing::outer_attrs_to_tokens(<span class="kw-2">&amp;</span><span class="self">self</span>.attrs, tokens);

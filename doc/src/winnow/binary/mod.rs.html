@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/winnow-0.5.24/src/binary/mod.rs`."><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="winnow" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../winnow/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/winnow-0.5.40/src/binary/mod.rs`."><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="winnow" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -2548,6 +2549,47 @@
 <a href="#2548" id="2548">2548</a>
 <a href="#2549" id="2549">2549</a>
 <a href="#2550" id="2550">2550</a>
+<a href="#2551" id="2551">2551</a>
+<a href="#2552" id="2552">2552</a>
+<a href="#2553" id="2553">2553</a>
+<a href="#2554" id="2554">2554</a>
+<a href="#2555" id="2555">2555</a>
+<a href="#2556" id="2556">2556</a>
+<a href="#2557" id="2557">2557</a>
+<a href="#2558" id="2558">2558</a>
+<a href="#2559" id="2559">2559</a>
+<a href="#2560" id="2560">2560</a>
+<a href="#2561" id="2561">2561</a>
+<a href="#2562" id="2562">2562</a>
+<a href="#2563" id="2563">2563</a>
+<a href="#2564" id="2564">2564</a>
+<a href="#2565" id="2565">2565</a>
+<a href="#2566" id="2566">2566</a>
+<a href="#2567" id="2567">2567</a>
+<a href="#2568" id="2568">2568</a>
+<a href="#2569" id="2569">2569</a>
+<a href="#2570" id="2570">2570</a>
+<a href="#2571" id="2571">2571</a>
+<a href="#2572" id="2572">2572</a>
+<a href="#2573" id="2573">2573</a>
+<a href="#2574" id="2574">2574</a>
+<a href="#2575" id="2575">2575</a>
+<a href="#2576" id="2576">2576</a>
+<a href="#2577" id="2577">2577</a>
+<a href="#2578" id="2578">2578</a>
+<a href="#2579" id="2579">2579</a>
+<a href="#2580" id="2580">2580</a>
+<a href="#2581" id="2581">2581</a>
+<a href="#2582" id="2582">2582</a>
+<a href="#2583" id="2583">2583</a>
+<a href="#2584" id="2584">2584</a>
+<a href="#2585" id="2585">2585</a>
+<a href="#2586" id="2586">2586</a>
+<a href="#2587" id="2587">2587</a>
+<a href="#2588" id="2588">2588</a>
+<a href="#2589" id="2589">2589</a>
+<a href="#2590" id="2590">2590</a>
+<a href="#2591" id="2591">2591</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Parsers recognizing numbers
 
 </span><span class="attr">#![allow(clippy::match_same_arms)]
@@ -2558,6 +2600,7 @@
 </span><span class="kw">mod </span>tests;
 
 <span class="kw">use </span><span class="kw">crate</span>::combinator::repeat;
+<span class="kw">use </span><span class="kw">crate</span>::combinator::trace;
 <span class="kw">use </span><span class="kw">crate</span>::error::ErrMode;
 <span class="kw">use </span><span class="kw">crate</span>::error::ErrorKind;
 <span class="kw">use </span><span class="kw">crate</span>::error::Needed;
@@ -2567,7 +2610,6 @@
 <span class="kw">use </span><span class="kw">crate</span>::stream::{AsBytes, Stream, StreamIsPartial};
 <span class="kw">use </span><span class="kw">crate</span>::stream::{ToUsize, UpdateSlice};
 <span class="kw">use </span><span class="kw">crate</span>::token::take;
-<span class="kw">use </span><span class="kw">crate</span>::trace::trace;
 <span class="kw">use </span><span class="kw">crate</span>::PResult;
 <span class="kw">use </span><span class="kw">crate</span>::Parser;
 
@@ -2578,7 +2620,7 @@
     </span>Big,
     <span class="doccomment">/// Little endian
     </span>Little,
-    <span class="doccomment">/// Will match the host&#39;s endianness
+    <span class="doccomment">/// Will match the host's endianness
     </span>Native,
 }
 
@@ -2600,8 +2642,8 @@
 ///     be_u8.parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(&amp;b&quot;\x00\x03abcefg&quot;[..]), Ok((&amp;b&quot;\x03abcefg&quot;[..], 0x00)));
-/// assert_eq!(parser(&amp;b&quot;&quot;[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[][..], ErrorKind::Token))));
+/// assert_eq!(parser(&amp;b"\x00\x03abcefg"[..]), Ok((&amp;b"\x03abcefg"[..], 0x00)));
+/// assert_eq!(parser(&amp;b""[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[][..], ErrorKind::Token))));
 /// ```
 ///
 /// ```rust
@@ -2614,8 +2656,8 @@
 ///     be_u8.parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(Partial::new(&amp;b&quot;\x00\x01abcd&quot;[..])), Ok((Partial::new(&amp;b&quot;\x01abcd&quot;[..]), 0x00)));
-/// assert_eq!(parser(Partial::new(&amp;b&quot;&quot;[..])), Err(ErrMode::Incomplete(Needed::new(1))));
+/// assert_eq!(parser(Partial::new(&amp;b"\x00\x01abcd"[..])), Ok((Partial::new(&amp;b"\x01abcd"[..]), 0x00)));
+/// assert_eq!(parser(Partial::new(&amp;b""[..])), Err(ErrMode::Incomplete(Needed::new(1))));
 /// ```
 </span><span class="attr">#[inline(always)]
 </span><span class="kw">pub fn </span>be_u8&lt;I, E: ParserError&lt;I&gt;&gt;(input: <span class="kw-2">&amp;mut </span>I) -&gt; PResult&lt;u8, E&gt;
@@ -2644,8 +2686,8 @@
 ///     be_u16.parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(&amp;b&quot;\x00\x03abcefg&quot;[..]), Ok((&amp;b&quot;abcefg&quot;[..], 0x0003)));
-/// assert_eq!(parser(&amp;b&quot;\x01&quot;[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
+/// assert_eq!(parser(&amp;b"\x00\x03abcefg"[..]), Ok((&amp;b"abcefg"[..], 0x0003)));
+/// assert_eq!(parser(&amp;b"\x01"[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
 /// ```
 ///
 /// ```rust
@@ -2658,8 +2700,8 @@
 ///     be_u16.parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(Partial::new(&amp;b&quot;\x00\x01abcd&quot;[..])), Ok((Partial::new(&amp;b&quot;abcd&quot;[..]), 0x0001)));
-/// assert_eq!(parser(Partial::new(&amp;b&quot;\x01&quot;[..])), Err(ErrMode::Incomplete(Needed::new(1))));
+/// assert_eq!(parser(Partial::new(&amp;b"\x00\x01abcd"[..])), Ok((Partial::new(&amp;b"abcd"[..]), 0x0001)));
+/// assert_eq!(parser(Partial::new(&amp;b"\x01"[..])), Err(ErrMode::Incomplete(Needed::new(1))));
 /// ```
 </span><span class="attr">#[inline(always)]
 </span><span class="kw">pub fn </span>be_u16&lt;I, E: ParserError&lt;I&gt;&gt;(input: <span class="kw-2">&amp;mut </span>I) -&gt; PResult&lt;u16, E&gt;
@@ -2668,7 +2710,7 @@
     I: Stream&lt;Token = u8&gt;,
     &lt;I <span class="kw">as </span>Stream&gt;::Slice: AsBytes,
 {
-    trace(<span class="string">&quot;be_u16&quot;</span>, <span class="kw">move </span>|input: <span class="kw-2">&amp;mut </span>I| be_uint(input, <span class="number">2</span>)).parse_next(input)
+    trace(<span class="string">"be_u16"</span>, <span class="kw">move </span>|input: <span class="kw-2">&amp;mut </span>I| be_uint(input, <span class="number">2</span>)).parse_next(input)
 }
 
 <span class="doccomment">/// Recognizes a big endian unsigned 3 byte integer.
@@ -2689,8 +2731,8 @@
 ///     be_u24.parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(&amp;b&quot;\x00\x03\x05abcefg&quot;[..]), Ok((&amp;b&quot;abcefg&quot;[..], 0x000305)));
-/// assert_eq!(parser(&amp;b&quot;\x01&quot;[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
+/// assert_eq!(parser(&amp;b"\x00\x03\x05abcefg"[..]), Ok((&amp;b"abcefg"[..], 0x000305)));
+/// assert_eq!(parser(&amp;b"\x01"[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
 /// ```
 ///
 /// ```rust
@@ -2703,8 +2745,8 @@
 ///     be_u24.parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(Partial::new(&amp;b&quot;\x00\x01\x02abcd&quot;[..])), Ok((Partial::new(&amp;b&quot;abcd&quot;[..]), 0x000102)));
-/// assert_eq!(parser(Partial::new(&amp;b&quot;\x01&quot;[..])), Err(ErrMode::Incomplete(Needed::new(2))));
+/// assert_eq!(parser(Partial::new(&amp;b"\x00\x01\x02abcd"[..])), Ok((Partial::new(&amp;b"abcd"[..]), 0x000102)));
+/// assert_eq!(parser(Partial::new(&amp;b"\x01"[..])), Err(ErrMode::Incomplete(Needed::new(2))));
 /// ```
 </span><span class="attr">#[inline(always)]
 </span><span class="kw">pub fn </span>be_u24&lt;I, E: ParserError&lt;I&gt;&gt;(input: <span class="kw-2">&amp;mut </span>I) -&gt; PResult&lt;u32, E&gt;
@@ -2713,7 +2755,7 @@
     I: Stream&lt;Token = u8&gt;,
     &lt;I <span class="kw">as </span>Stream&gt;::Slice: AsBytes,
 {
-    trace(<span class="string">&quot;be_u23&quot;</span>, <span class="kw">move </span>|input: <span class="kw-2">&amp;mut </span>I| be_uint(input, <span class="number">3</span>)).parse_next(input)
+    trace(<span class="string">"be_u23"</span>, <span class="kw">move </span>|input: <span class="kw-2">&amp;mut </span>I| be_uint(input, <span class="number">3</span>)).parse_next(input)
 }
 
 <span class="doccomment">/// Recognizes a big endian unsigned 4 bytes integer.
@@ -2734,8 +2776,8 @@
 ///     be_u32.parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(&amp;b&quot;\x00\x03\x05\x07abcefg&quot;[..]), Ok((&amp;b&quot;abcefg&quot;[..], 0x00030507)));
-/// assert_eq!(parser(&amp;b&quot;\x01&quot;[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
+/// assert_eq!(parser(&amp;b"\x00\x03\x05\x07abcefg"[..]), Ok((&amp;b"abcefg"[..], 0x00030507)));
+/// assert_eq!(parser(&amp;b"\x01"[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
 /// ```
 ///
 /// ```rust
@@ -2748,8 +2790,8 @@
 ///     be_u32.parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(Partial::new(&amp;b&quot;\x00\x01\x02\x03abcd&quot;[..])), Ok((Partial::new(&amp;b&quot;abcd&quot;[..]), 0x00010203)));
-/// assert_eq!(parser(Partial::new(&amp;b&quot;\x01&quot;[..])), Err(ErrMode::Incomplete(Needed::new(3))));
+/// assert_eq!(parser(Partial::new(&amp;b"\x00\x01\x02\x03abcd"[..])), Ok((Partial::new(&amp;b"abcd"[..]), 0x00010203)));
+/// assert_eq!(parser(Partial::new(&amp;b"\x01"[..])), Err(ErrMode::Incomplete(Needed::new(3))));
 /// ```
 </span><span class="attr">#[inline(always)]
 </span><span class="kw">pub fn </span>be_u32&lt;I, E: ParserError&lt;I&gt;&gt;(input: <span class="kw-2">&amp;mut </span>I) -&gt; PResult&lt;u32, E&gt;
@@ -2758,7 +2800,7 @@
     I: Stream&lt;Token = u8&gt;,
     &lt;I <span class="kw">as </span>Stream&gt;::Slice: AsBytes,
 {
-    trace(<span class="string">&quot;be_u32&quot;</span>, <span class="kw">move </span>|input: <span class="kw-2">&amp;mut </span>I| be_uint(input, <span class="number">4</span>)).parse_next(input)
+    trace(<span class="string">"be_u32"</span>, <span class="kw">move </span>|input: <span class="kw-2">&amp;mut </span>I| be_uint(input, <span class="number">4</span>)).parse_next(input)
 }
 
 <span class="doccomment">/// Recognizes a big endian unsigned 8 bytes integer.
@@ -2779,8 +2821,8 @@
 ///     be_u64.parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(&amp;b&quot;\x00\x01\x02\x03\x04\x05\x06\x07abcefg&quot;[..]), Ok((&amp;b&quot;abcefg&quot;[..], 0x0001020304050607)));
-/// assert_eq!(parser(&amp;b&quot;\x01&quot;[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
+/// assert_eq!(parser(&amp;b"\x00\x01\x02\x03\x04\x05\x06\x07abcefg"[..]), Ok((&amp;b"abcefg"[..], 0x0001020304050607)));
+/// assert_eq!(parser(&amp;b"\x01"[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
 /// ```
 ///
 /// ```rust
@@ -2793,8 +2835,8 @@
 ///     be_u64.parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(Partial::new(&amp;b&quot;\x00\x01\x02\x03\x04\x05\x06\x07abcd&quot;[..])), Ok((Partial::new(&amp;b&quot;abcd&quot;[..]), 0x0001020304050607)));
-/// assert_eq!(parser(Partial::new(&amp;b&quot;\x01&quot;[..])), Err(ErrMode::Incomplete(Needed::new(7))));
+/// assert_eq!(parser(Partial::new(&amp;b"\x00\x01\x02\x03\x04\x05\x06\x07abcd"[..])), Ok((Partial::new(&amp;b"abcd"[..]), 0x0001020304050607)));
+/// assert_eq!(parser(Partial::new(&amp;b"\x01"[..])), Err(ErrMode::Incomplete(Needed::new(7))));
 /// ```
 </span><span class="attr">#[inline(always)]
 </span><span class="kw">pub fn </span>be_u64&lt;I, E: ParserError&lt;I&gt;&gt;(input: <span class="kw-2">&amp;mut </span>I) -&gt; PResult&lt;u64, E&gt;
@@ -2803,7 +2845,7 @@
     I: Stream&lt;Token = u8&gt;,
     &lt;I <span class="kw">as </span>Stream&gt;::Slice: AsBytes,
 {
-    trace(<span class="string">&quot;be_u64&quot;</span>, <span class="kw">move </span>|input: <span class="kw-2">&amp;mut </span>I| be_uint(input, <span class="number">8</span>)).parse_next(input)
+    trace(<span class="string">"be_u64"</span>, <span class="kw">move </span>|input: <span class="kw-2">&amp;mut </span>I| be_uint(input, <span class="number">8</span>)).parse_next(input)
 }
 
 <span class="doccomment">/// Recognizes a big endian unsigned 16 bytes integer.
@@ -2824,8 +2866,8 @@
 ///     be_u128.parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(&amp;b&quot;\x00\x01\x02\x03\x04\x05\x06\x07\x00\x01\x02\x03\x04\x05\x06\x07abcefg&quot;[..]), Ok((&amp;b&quot;abcefg&quot;[..], 0x00010203040506070001020304050607)));
-/// assert_eq!(parser(&amp;b&quot;\x01&quot;[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
+/// assert_eq!(parser(&amp;b"\x00\x01\x02\x03\x04\x05\x06\x07\x00\x01\x02\x03\x04\x05\x06\x07abcefg"[..]), Ok((&amp;b"abcefg"[..], 0x00010203040506070001020304050607)));
+/// assert_eq!(parser(&amp;b"\x01"[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
 /// ```
 ///
 /// ```rust
@@ -2838,8 +2880,8 @@
 ///     be_u128.parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(Partial::new(&amp;b&quot;\x00\x01\x02\x03\x04\x05\x06\x07\x08\x09\x10\x11\x12\x13\x14\x15abcd&quot;[..])), Ok((Partial::new(&amp;b&quot;abcd&quot;[..]), 0x00010203040506070809101112131415)));
-/// assert_eq!(parser(Partial::new(&amp;b&quot;\x01&quot;[..])), Err(ErrMode::Incomplete(Needed::new(15))));
+/// assert_eq!(parser(Partial::new(&amp;b"\x00\x01\x02\x03\x04\x05\x06\x07\x08\x09\x10\x11\x12\x13\x14\x15abcd"[..])), Ok((Partial::new(&amp;b"abcd"[..]), 0x00010203040506070809101112131415)));
+/// assert_eq!(parser(Partial::new(&amp;b"\x01"[..])), Err(ErrMode::Incomplete(Needed::new(15))));
 /// ```
 </span><span class="attr">#[inline(always)]
 </span><span class="kw">pub fn </span>be_u128&lt;I, E: ParserError&lt;I&gt;&gt;(input: <span class="kw-2">&amp;mut </span>I) -&gt; PResult&lt;u128, E&gt;
@@ -2848,7 +2890,7 @@
     I: Stream&lt;Token = u8&gt;,
     &lt;I <span class="kw">as </span>Stream&gt;::Slice: AsBytes,
 {
-    trace(<span class="string">&quot;be_u128&quot;</span>, <span class="kw">move </span>|input: <span class="kw-2">&amp;mut </span>I| be_uint(input, <span class="number">16</span>)).parse_next(input)
+    trace(<span class="string">"be_u128"</span>, <span class="kw">move </span>|input: <span class="kw-2">&amp;mut </span>I| be_uint(input, <span class="number">16</span>)).parse_next(input)
 }
 
 <span class="attr">#[inline]
@@ -2859,7 +2901,7 @@
     &lt;I <span class="kw">as </span>Stream&gt;::Slice: AsBytes,
     Uint: Default + Shl&lt;u8, Output = Uint&gt; + Add&lt;Uint, Output = Uint&gt; + From&lt;u8&gt;,
 {
-    <span class="macro">debug_assert_ne!</span>(bound, <span class="number">1</span>, <span class="string">&quot;to_be_uint needs extra work to avoid overflow&quot;</span>);
+    <span class="macro">debug_assert_ne!</span>(bound, <span class="number">1</span>, <span class="string">"to_be_uint needs extra work to avoid overflow"</span>);
     take(bound)
         .map(|n: &lt;I <span class="kw">as </span>Stream&gt;::Slice| to_be_uint(n.as_bytes()))
         .parse_next(input)
@@ -2896,8 +2938,8 @@
 ///     be_i8.parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(&amp;b&quot;\x00\x03abcefg&quot;[..]), Ok((&amp;b&quot;\x03abcefg&quot;[..], 0x00)));
-/// assert_eq!(parser(&amp;b&quot;&quot;[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[][..], ErrorKind::Token))));
+/// assert_eq!(parser(&amp;b"\x00\x03abcefg"[..]), Ok((&amp;b"\x03abcefg"[..], 0x00)));
+/// assert_eq!(parser(&amp;b""[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[][..], ErrorKind::Token))));
 /// ```
 ///
 /// ```rust
@@ -2910,8 +2952,8 @@
 ///       be_i8.parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(Partial::new(&amp;b&quot;\x00\x01abcd&quot;[..])), Ok((Partial::new(&amp;b&quot;\x01abcd&quot;[..]), 0x00)));
-/// assert_eq!(parser(Partial::new(&amp;b&quot;&quot;[..])), Err(ErrMode::Incomplete(Needed::new(1))));
+/// assert_eq!(parser(Partial::new(&amp;b"\x00\x01abcd"[..])), Ok((Partial::new(&amp;b"\x01abcd"[..]), 0x00)));
+/// assert_eq!(parser(Partial::new(&amp;b""[..])), Err(ErrMode::Incomplete(Needed::new(1))));
 /// ```
 </span><span class="attr">#[inline(always)]
 </span><span class="kw">pub fn </span>be_i8&lt;I, E: ParserError&lt;I&gt;&gt;(input: <span class="kw-2">&amp;mut </span>I) -&gt; PResult&lt;i8, E&gt;
@@ -2940,8 +2982,8 @@
 ///     be_i16.parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(&amp;b&quot;\x00\x03abcefg&quot;[..]), Ok((&amp;b&quot;abcefg&quot;[..], 0x0003)));
-/// assert_eq!(parser(&amp;b&quot;\x01&quot;[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
+/// assert_eq!(parser(&amp;b"\x00\x03abcefg"[..]), Ok((&amp;b"abcefg"[..], 0x0003)));
+/// assert_eq!(parser(&amp;b"\x01"[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
 /// ```
 ///
 /// ```rust
@@ -2954,8 +2996,8 @@
 ///       be_i16.parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(Partial::new(&amp;b&quot;\x00\x01abcd&quot;[..])), Ok((Partial::new(&amp;b&quot;abcd&quot;[..]), 0x0001)));
-/// assert_eq!(parser(Partial::new(&amp;b&quot;&quot;[..])), Err(ErrMode::Incomplete(Needed::new(2))));
+/// assert_eq!(parser(Partial::new(&amp;b"\x00\x01abcd"[..])), Ok((Partial::new(&amp;b"abcd"[..]), 0x0001)));
+/// assert_eq!(parser(Partial::new(&amp;b""[..])), Err(ErrMode::Incomplete(Needed::new(2))));
 /// ```
 </span><span class="attr">#[inline(always)]
 </span><span class="kw">pub fn </span>be_i16&lt;I, E: ParserError&lt;I&gt;&gt;(input: <span class="kw-2">&amp;mut </span>I) -&gt; PResult&lt;i16, E&gt;
@@ -2964,7 +3006,7 @@
     I: Stream&lt;Token = u8&gt;,
     &lt;I <span class="kw">as </span>Stream&gt;::Slice: AsBytes,
 {
-    trace(<span class="string">&quot;be_i16&quot;</span>, <span class="kw">move </span>|input: <span class="kw-2">&amp;mut </span>I| {
+    trace(<span class="string">"be_i16"</span>, <span class="kw">move </span>|input: <span class="kw-2">&amp;mut </span>I| {
         be_uint::&lt;<span class="kw">_</span>, u16, <span class="kw">_</span>&gt;(input, <span class="number">2</span>).map(|n| n <span class="kw">as </span>i16)
     })
     .parse_next(input)
@@ -2988,8 +3030,8 @@
 ///     be_i24.parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(&amp;b&quot;\x00\x03\x05abcefg&quot;[..]), Ok((&amp;b&quot;abcefg&quot;[..], 0x000305)));
-/// assert_eq!(parser(&amp;b&quot;\x01&quot;[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
+/// assert_eq!(parser(&amp;b"\x00\x03\x05abcefg"[..]), Ok((&amp;b"abcefg"[..], 0x000305)));
+/// assert_eq!(parser(&amp;b"\x01"[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
 /// ```
 ///
 /// ```rust
@@ -3002,8 +3044,8 @@
 ///       be_i24.parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(Partial::new(&amp;b&quot;\x00\x01\x02abcd&quot;[..])), Ok((Partial::new(&amp;b&quot;abcd&quot;[..]), 0x000102)));
-/// assert_eq!(parser(Partial::new(&amp;b&quot;&quot;[..])), Err(ErrMode::Incomplete(Needed::new(3))));
+/// assert_eq!(parser(Partial::new(&amp;b"\x00\x01\x02abcd"[..])), Ok((Partial::new(&amp;b"abcd"[..]), 0x000102)));
+/// assert_eq!(parser(Partial::new(&amp;b""[..])), Err(ErrMode::Incomplete(Needed::new(3))));
 /// ```
 </span><span class="attr">#[inline(always)]
 </span><span class="kw">pub fn </span>be_i24&lt;I, E: ParserError&lt;I&gt;&gt;(input: <span class="kw-2">&amp;mut </span>I) -&gt; PResult&lt;i32, E&gt;
@@ -3012,7 +3054,7 @@
     I: Stream&lt;Token = u8&gt;,
     &lt;I <span class="kw">as </span>Stream&gt;::Slice: AsBytes,
 {
-    trace(<span class="string">&quot;be_i24&quot;</span>, <span class="kw">move </span>|input: <span class="kw-2">&amp;mut </span>I| {
+    trace(<span class="string">"be_i24"</span>, <span class="kw">move </span>|input: <span class="kw-2">&amp;mut </span>I| {
         be_uint::&lt;<span class="kw">_</span>, u32, <span class="kw">_</span>&gt;(input, <span class="number">3</span>).map(|n| {
             <span class="comment">// Same as the unsigned version but we need to sign-extend manually here
             </span><span class="kw">let </span>n = <span class="kw">if </span>n &amp; <span class="number">0x80_00_00 </span>!= <span class="number">0 </span>{
@@ -3044,8 +3086,8 @@
 ///       be_i32.parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(&amp;b&quot;\x00\x03\x05\x07abcefg&quot;[..]), Ok((&amp;b&quot;abcefg&quot;[..], 0x00030507)));
-/// assert_eq!(parser(&amp;b&quot;\x01&quot;[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
+/// assert_eq!(parser(&amp;b"\x00\x03\x05\x07abcefg"[..]), Ok((&amp;b"abcefg"[..], 0x00030507)));
+/// assert_eq!(parser(&amp;b"\x01"[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
 /// ```
 ///
 /// ```rust
@@ -3058,8 +3100,8 @@
 ///       be_i32.parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(Partial::new(&amp;b&quot;\x00\x01\x02\x03abcd&quot;[..])), Ok((Partial::new(&amp;b&quot;abcd&quot;[..]), 0x00010203)));
-/// assert_eq!(parser(Partial::new(&amp;b&quot;&quot;[..])), Err(ErrMode::Incomplete(Needed::new(4))));
+/// assert_eq!(parser(Partial::new(&amp;b"\x00\x01\x02\x03abcd"[..])), Ok((Partial::new(&amp;b"abcd"[..]), 0x00010203)));
+/// assert_eq!(parser(Partial::new(&amp;b""[..])), Err(ErrMode::Incomplete(Needed::new(4))));
 /// ```
 </span><span class="attr">#[inline(always)]
 </span><span class="kw">pub fn </span>be_i32&lt;I, E: ParserError&lt;I&gt;&gt;(input: <span class="kw-2">&amp;mut </span>I) -&gt; PResult&lt;i32, E&gt;
@@ -3068,7 +3110,7 @@
     I: Stream&lt;Token = u8&gt;,
     &lt;I <span class="kw">as </span>Stream&gt;::Slice: AsBytes,
 {
-    trace(<span class="string">&quot;be_i32&quot;</span>, <span class="kw">move </span>|input: <span class="kw-2">&amp;mut </span>I| {
+    trace(<span class="string">"be_i32"</span>, <span class="kw">move </span>|input: <span class="kw-2">&amp;mut </span>I| {
         be_uint::&lt;<span class="kw">_</span>, u32, <span class="kw">_</span>&gt;(input, <span class="number">4</span>).map(|n| n <span class="kw">as </span>i32)
     })
     .parse_next(input)
@@ -3092,8 +3134,8 @@
 ///       be_i64.parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(&amp;b&quot;\x00\x01\x02\x03\x04\x05\x06\x07abcefg&quot;[..]), Ok((&amp;b&quot;abcefg&quot;[..], 0x0001020304050607)));
-/// assert_eq!(parser(&amp;b&quot;\x01&quot;[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
+/// assert_eq!(parser(&amp;b"\x00\x01\x02\x03\x04\x05\x06\x07abcefg"[..]), Ok((&amp;b"abcefg"[..], 0x0001020304050607)));
+/// assert_eq!(parser(&amp;b"\x01"[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
 /// ```
 ///
 /// ```rust
@@ -3106,8 +3148,8 @@
 ///       be_i64.parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(Partial::new(&amp;b&quot;\x00\x01\x02\x03\x04\x05\x06\x07abcd&quot;[..])), Ok((Partial::new(&amp;b&quot;abcd&quot;[..]), 0x0001020304050607)));
-/// assert_eq!(parser(Partial::new(&amp;b&quot;\x01&quot;[..])), Err(ErrMode::Incomplete(Needed::new(7))));
+/// assert_eq!(parser(Partial::new(&amp;b"\x00\x01\x02\x03\x04\x05\x06\x07abcd"[..])), Ok((Partial::new(&amp;b"abcd"[..]), 0x0001020304050607)));
+/// assert_eq!(parser(Partial::new(&amp;b"\x01"[..])), Err(ErrMode::Incomplete(Needed::new(7))));
 /// ```
 </span><span class="attr">#[inline(always)]
 </span><span class="kw">pub fn </span>be_i64&lt;I, E: ParserError&lt;I&gt;&gt;(input: <span class="kw-2">&amp;mut </span>I) -&gt; PResult&lt;i64, E&gt;
@@ -3116,7 +3158,7 @@
     I: Stream&lt;Token = u8&gt;,
     &lt;I <span class="kw">as </span>Stream&gt;::Slice: AsBytes,
 {
-    trace(<span class="string">&quot;be_i64&quot;</span>, <span class="kw">move </span>|input: <span class="kw-2">&amp;mut </span>I| {
+    trace(<span class="string">"be_i64"</span>, <span class="kw">move </span>|input: <span class="kw-2">&amp;mut </span>I| {
         be_uint::&lt;<span class="kw">_</span>, u64, <span class="kw">_</span>&gt;(input, <span class="number">8</span>).map(|n| n <span class="kw">as </span>i64)
     })
     .parse_next(input)
@@ -3140,8 +3182,8 @@
 ///       be_i128.parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(&amp;b&quot;\x00\x01\x02\x03\x04\x05\x06\x07\x00\x01\x02\x03\x04\x05\x06\x07abcefg&quot;[..]), Ok((&amp;b&quot;abcefg&quot;[..], 0x00010203040506070001020304050607)));
-/// assert_eq!(parser(&amp;b&quot;\x01&quot;[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
+/// assert_eq!(parser(&amp;b"\x00\x01\x02\x03\x04\x05\x06\x07\x00\x01\x02\x03\x04\x05\x06\x07abcefg"[..]), Ok((&amp;b"abcefg"[..], 0x00010203040506070001020304050607)));
+/// assert_eq!(parser(&amp;b"\x01"[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
 /// ```
 ///
 /// ```rust
@@ -3154,8 +3196,8 @@
 ///       be_i128.parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(Partial::new(&amp;b&quot;\x00\x01\x02\x03\x04\x05\x06\x07\x08\x09\x10\x11\x12\x13\x14\x15abcd&quot;[..])), Ok((Partial::new(&amp;b&quot;abcd&quot;[..]), 0x00010203040506070809101112131415)));
-/// assert_eq!(parser(Partial::new(&amp;b&quot;\x01&quot;[..])), Err(ErrMode::Incomplete(Needed::new(15))));
+/// assert_eq!(parser(Partial::new(&amp;b"\x00\x01\x02\x03\x04\x05\x06\x07\x08\x09\x10\x11\x12\x13\x14\x15abcd"[..])), Ok((Partial::new(&amp;b"abcd"[..]), 0x00010203040506070809101112131415)));
+/// assert_eq!(parser(Partial::new(&amp;b"\x01"[..])), Err(ErrMode::Incomplete(Needed::new(15))));
 /// ```
 </span><span class="attr">#[inline(always)]
 </span><span class="kw">pub fn </span>be_i128&lt;I, E: ParserError&lt;I&gt;&gt;(input: <span class="kw-2">&amp;mut </span>I) -&gt; PResult&lt;i128, E&gt;
@@ -3164,7 +3206,7 @@
     I: Stream&lt;Token = u8&gt;,
     &lt;I <span class="kw">as </span>Stream&gt;::Slice: AsBytes,
 {
-    trace(<span class="string">&quot;be_i128&quot;</span>, <span class="kw">move </span>|input: <span class="kw-2">&amp;mut </span>I| {
+    trace(<span class="string">"be_i128"</span>, <span class="kw">move </span>|input: <span class="kw-2">&amp;mut </span>I| {
         be_uint::&lt;<span class="kw">_</span>, u128, <span class="kw">_</span>&gt;(input, <span class="number">16</span>).map(|n| n <span class="kw">as </span>i128)
     })
     .parse_next(input)
@@ -3188,8 +3230,8 @@
 ///       le_u8.parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(&amp;b&quot;\x00\x03abcefg&quot;[..]), Ok((&amp;b&quot;\x03abcefg&quot;[..], 0x00)));
-/// assert_eq!(parser(&amp;b&quot;&quot;[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[][..], ErrorKind::Token))));
+/// assert_eq!(parser(&amp;b"\x00\x03abcefg"[..]), Ok((&amp;b"\x03abcefg"[..], 0x00)));
+/// assert_eq!(parser(&amp;b""[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[][..], ErrorKind::Token))));
 /// ```
 ///
 /// ```rust
@@ -3202,8 +3244,8 @@
 ///       le_u8.parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(Partial::new(&amp;b&quot;\x00\x01abcd&quot;[..])), Ok((Partial::new(&amp;b&quot;\x01abcd&quot;[..]), 0x00)));
-/// assert_eq!(parser(Partial::new(&amp;b&quot;&quot;[..])), Err(ErrMode::Incomplete(Needed::new(1))));
+/// assert_eq!(parser(Partial::new(&amp;b"\x00\x01abcd"[..])), Ok((Partial::new(&amp;b"\x01abcd"[..]), 0x00)));
+/// assert_eq!(parser(Partial::new(&amp;b""[..])), Err(ErrMode::Incomplete(Needed::new(1))));
 /// ```
 </span><span class="attr">#[inline(always)]
 </span><span class="kw">pub fn </span>le_u8&lt;I, E: ParserError&lt;I&gt;&gt;(input: <span class="kw-2">&amp;mut </span>I) -&gt; PResult&lt;u8, E&gt;
@@ -3232,8 +3274,8 @@
 ///       le_u16.parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(&amp;b&quot;\x00\x03abcefg&quot;[..]), Ok((&amp;b&quot;abcefg&quot;[..], 0x0300)));
-/// assert_eq!(parser(&amp;b&quot;\x01&quot;[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
+/// assert_eq!(parser(&amp;b"\x00\x03abcefg"[..]), Ok((&amp;b"abcefg"[..], 0x0300)));
+/// assert_eq!(parser(&amp;b"\x01"[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
 /// ```
 ///
 /// ```rust
@@ -3246,8 +3288,8 @@
 ///       le_u16::&lt;_, InputError&lt;_&gt;&gt;.parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(Partial::new(&amp;b&quot;\x00\x01abcd&quot;[..])), Ok((Partial::new(&amp;b&quot;abcd&quot;[..]), 0x0100)));
-/// assert_eq!(parser(Partial::new(&amp;b&quot;\x01&quot;[..])), Err(ErrMode::Incomplete(Needed::new(1))));
+/// assert_eq!(parser(Partial::new(&amp;b"\x00\x01abcd"[..])), Ok((Partial::new(&amp;b"abcd"[..]), 0x0100)));
+/// assert_eq!(parser(Partial::new(&amp;b"\x01"[..])), Err(ErrMode::Incomplete(Needed::new(1))));
 /// ```
 </span><span class="attr">#[inline(always)]
 </span><span class="kw">pub fn </span>le_u16&lt;I, E: ParserError&lt;I&gt;&gt;(input: <span class="kw-2">&amp;mut </span>I) -&gt; PResult&lt;u16, E&gt;
@@ -3256,7 +3298,7 @@
     I: Stream&lt;Token = u8&gt;,
     &lt;I <span class="kw">as </span>Stream&gt;::Slice: AsBytes,
 {
-    trace(<span class="string">&quot;le_u16&quot;</span>, <span class="kw">move </span>|input: <span class="kw-2">&amp;mut </span>I| le_uint(input, <span class="number">2</span>)).parse_next(input)
+    trace(<span class="string">"le_u16"</span>, <span class="kw">move </span>|input: <span class="kw-2">&amp;mut </span>I| le_uint(input, <span class="number">2</span>)).parse_next(input)
 }
 
 <span class="doccomment">/// Recognizes a little endian unsigned 3 byte integer.
@@ -3277,8 +3319,8 @@
 ///       le_u24.parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(&amp;b&quot;\x00\x03\x05abcefg&quot;[..]), Ok((&amp;b&quot;abcefg&quot;[..], 0x050300)));
-/// assert_eq!(parser(&amp;b&quot;\x01&quot;[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
+/// assert_eq!(parser(&amp;b"\x00\x03\x05abcefg"[..]), Ok((&amp;b"abcefg"[..], 0x050300)));
+/// assert_eq!(parser(&amp;b"\x01"[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
 /// ```
 ///
 /// ```rust
@@ -3291,8 +3333,8 @@
 ///       le_u24::&lt;_, InputError&lt;_&gt;&gt;.parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(Partial::new(&amp;b&quot;\x00\x01\x02abcd&quot;[..])), Ok((Partial::new(&amp;b&quot;abcd&quot;[..]), 0x020100)));
-/// assert_eq!(parser(Partial::new(&amp;b&quot;\x01&quot;[..])), Err(ErrMode::Incomplete(Needed::new(2))));
+/// assert_eq!(parser(Partial::new(&amp;b"\x00\x01\x02abcd"[..])), Ok((Partial::new(&amp;b"abcd"[..]), 0x020100)));
+/// assert_eq!(parser(Partial::new(&amp;b"\x01"[..])), Err(ErrMode::Incomplete(Needed::new(2))));
 /// ```
 </span><span class="attr">#[inline(always)]
 </span><span class="kw">pub fn </span>le_u24&lt;I, E: ParserError&lt;I&gt;&gt;(input: <span class="kw-2">&amp;mut </span>I) -&gt; PResult&lt;u32, E&gt;
@@ -3301,7 +3343,7 @@
     I: Stream&lt;Token = u8&gt;,
     &lt;I <span class="kw">as </span>Stream&gt;::Slice: AsBytes,
 {
-    trace(<span class="string">&quot;le_u24&quot;</span>, <span class="kw">move </span>|input: <span class="kw-2">&amp;mut </span>I| le_uint(input, <span class="number">3</span>)).parse_next(input)
+    trace(<span class="string">"le_u24"</span>, <span class="kw">move </span>|input: <span class="kw-2">&amp;mut </span>I| le_uint(input, <span class="number">3</span>)).parse_next(input)
 }
 
 <span class="doccomment">/// Recognizes a little endian unsigned 4 bytes integer.
@@ -3322,8 +3364,8 @@
 ///       le_u32.parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(&amp;b&quot;\x00\x03\x05\x07abcefg&quot;[..]), Ok((&amp;b&quot;abcefg&quot;[..], 0x07050300)));
-/// assert_eq!(parser(&amp;b&quot;\x01&quot;[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
+/// assert_eq!(parser(&amp;b"\x00\x03\x05\x07abcefg"[..]), Ok((&amp;b"abcefg"[..], 0x07050300)));
+/// assert_eq!(parser(&amp;b"\x01"[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
 /// ```
 ///
 /// ```rust
@@ -3336,8 +3378,8 @@
 ///       le_u32::&lt;_, InputError&lt;_&gt;&gt;.parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(Partial::new(&amp;b&quot;\x00\x01\x02\x03abcd&quot;[..])), Ok((Partial::new(&amp;b&quot;abcd&quot;[..]), 0x03020100)));
-/// assert_eq!(parser(Partial::new(&amp;b&quot;\x01&quot;[..])), Err(ErrMode::Incomplete(Needed::new(3))));
+/// assert_eq!(parser(Partial::new(&amp;b"\x00\x01\x02\x03abcd"[..])), Ok((Partial::new(&amp;b"abcd"[..]), 0x03020100)));
+/// assert_eq!(parser(Partial::new(&amp;b"\x01"[..])), Err(ErrMode::Incomplete(Needed::new(3))));
 /// ```
 </span><span class="attr">#[inline(always)]
 </span><span class="kw">pub fn </span>le_u32&lt;I, E: ParserError&lt;I&gt;&gt;(input: <span class="kw-2">&amp;mut </span>I) -&gt; PResult&lt;u32, E&gt;
@@ -3346,7 +3388,7 @@
     I: Stream&lt;Token = u8&gt;,
     &lt;I <span class="kw">as </span>Stream&gt;::Slice: AsBytes,
 {
-    trace(<span class="string">&quot;le_u32&quot;</span>, <span class="kw">move </span>|input: <span class="kw-2">&amp;mut </span>I| le_uint(input, <span class="number">4</span>)).parse_next(input)
+    trace(<span class="string">"le_u32"</span>, <span class="kw">move </span>|input: <span class="kw-2">&amp;mut </span>I| le_uint(input, <span class="number">4</span>)).parse_next(input)
 }
 
 <span class="doccomment">/// Recognizes a little endian unsigned 8 bytes integer.
@@ -3367,8 +3409,8 @@
 ///       le_u64.parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(&amp;b&quot;\x00\x01\x02\x03\x04\x05\x06\x07abcefg&quot;[..]), Ok((&amp;b&quot;abcefg&quot;[..], 0x0706050403020100)));
-/// assert_eq!(parser(&amp;b&quot;\x01&quot;[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
+/// assert_eq!(parser(&amp;b"\x00\x01\x02\x03\x04\x05\x06\x07abcefg"[..]), Ok((&amp;b"abcefg"[..], 0x0706050403020100)));
+/// assert_eq!(parser(&amp;b"\x01"[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
 /// ```
 ///
 /// ```rust
@@ -3381,8 +3423,8 @@
 ///       le_u64::&lt;_, InputError&lt;_&gt;&gt;.parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(Partial::new(&amp;b&quot;\x00\x01\x02\x03\x04\x05\x06\x07abcd&quot;[..])), Ok((Partial::new(&amp;b&quot;abcd&quot;[..]), 0x0706050403020100)));
-/// assert_eq!(parser(Partial::new(&amp;b&quot;\x01&quot;[..])), Err(ErrMode::Incomplete(Needed::new(7))));
+/// assert_eq!(parser(Partial::new(&amp;b"\x00\x01\x02\x03\x04\x05\x06\x07abcd"[..])), Ok((Partial::new(&amp;b"abcd"[..]), 0x0706050403020100)));
+/// assert_eq!(parser(Partial::new(&amp;b"\x01"[..])), Err(ErrMode::Incomplete(Needed::new(7))));
 /// ```
 </span><span class="attr">#[inline(always)]
 </span><span class="kw">pub fn </span>le_u64&lt;I, E: ParserError&lt;I&gt;&gt;(input: <span class="kw-2">&amp;mut </span>I) -&gt; PResult&lt;u64, E&gt;
@@ -3391,7 +3433,7 @@
     I: Stream&lt;Token = u8&gt;,
     &lt;I <span class="kw">as </span>Stream&gt;::Slice: AsBytes,
 {
-    trace(<span class="string">&quot;le_u64&quot;</span>, <span class="kw">move </span>|input: <span class="kw-2">&amp;mut </span>I| le_uint(input, <span class="number">8</span>)).parse_next(input)
+    trace(<span class="string">"le_u64"</span>, <span class="kw">move </span>|input: <span class="kw-2">&amp;mut </span>I| le_uint(input, <span class="number">8</span>)).parse_next(input)
 }
 
 <span class="doccomment">/// Recognizes a little endian unsigned 16 bytes integer.
@@ -3412,8 +3454,8 @@
 ///       le_u128.parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(&amp;b&quot;\x00\x01\x02\x03\x04\x05\x06\x07\x00\x01\x02\x03\x04\x05\x06\x07abcefg&quot;[..]), Ok((&amp;b&quot;abcefg&quot;[..], 0x07060504030201000706050403020100)));
-/// assert_eq!(parser(&amp;b&quot;\x01&quot;[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
+/// assert_eq!(parser(&amp;b"\x00\x01\x02\x03\x04\x05\x06\x07\x00\x01\x02\x03\x04\x05\x06\x07abcefg"[..]), Ok((&amp;b"abcefg"[..], 0x07060504030201000706050403020100)));
+/// assert_eq!(parser(&amp;b"\x01"[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
 /// ```
 ///
 /// ```rust
@@ -3426,8 +3468,8 @@
 ///       le_u128::&lt;_, InputError&lt;_&gt;&gt;.parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(Partial::new(&amp;b&quot;\x00\x01\x02\x03\x04\x05\x06\x07\x08\x09\x10\x11\x12\x13\x14\x15abcd&quot;[..])), Ok((Partial::new(&amp;b&quot;abcd&quot;[..]), 0x15141312111009080706050403020100)));
-/// assert_eq!(parser(Partial::new(&amp;b&quot;\x01&quot;[..])), Err(ErrMode::Incomplete(Needed::new(15))));
+/// assert_eq!(parser(Partial::new(&amp;b"\x00\x01\x02\x03\x04\x05\x06\x07\x08\x09\x10\x11\x12\x13\x14\x15abcd"[..])), Ok((Partial::new(&amp;b"abcd"[..]), 0x15141312111009080706050403020100)));
+/// assert_eq!(parser(Partial::new(&amp;b"\x01"[..])), Err(ErrMode::Incomplete(Needed::new(15))));
 /// ```
 </span><span class="attr">#[inline(always)]
 </span><span class="kw">pub fn </span>le_u128&lt;I, E: ParserError&lt;I&gt;&gt;(input: <span class="kw-2">&amp;mut </span>I) -&gt; PResult&lt;u128, E&gt;
@@ -3436,7 +3478,7 @@
     I: Stream&lt;Token = u8&gt;,
     &lt;I <span class="kw">as </span>Stream&gt;::Slice: AsBytes,
 {
-    trace(<span class="string">&quot;le_u128&quot;</span>, <span class="kw">move </span>|input: <span class="kw-2">&amp;mut </span>I| le_uint(input, <span class="number">16</span>)).parse_next(input)
+    trace(<span class="string">"le_u128"</span>, <span class="kw">move </span>|input: <span class="kw-2">&amp;mut </span>I| le_uint(input, <span class="number">16</span>)).parse_next(input)
 }
 
 <span class="attr">#[inline]
@@ -3483,8 +3525,8 @@
 ///       le_i8.parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(&amp;b&quot;\x00\x03abcefg&quot;[..]), Ok((&amp;b&quot;\x03abcefg&quot;[..], 0x00)));
-/// assert_eq!(parser(&amp;b&quot;&quot;[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[][..], ErrorKind::Token))));
+/// assert_eq!(parser(&amp;b"\x00\x03abcefg"[..]), Ok((&amp;b"\x03abcefg"[..], 0x00)));
+/// assert_eq!(parser(&amp;b""[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[][..], ErrorKind::Token))));
 /// ```
 ///
 /// ```rust
@@ -3497,8 +3539,8 @@
 ///       le_i8.parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(Partial::new(&amp;b&quot;\x00\x01abcd&quot;[..])), Ok((Partial::new(&amp;b&quot;\x01abcd&quot;[..]), 0x00)));
-/// assert_eq!(parser(Partial::new(&amp;b&quot;&quot;[..])), Err(ErrMode::Incomplete(Needed::new(1))));
+/// assert_eq!(parser(Partial::new(&amp;b"\x00\x01abcd"[..])), Ok((Partial::new(&amp;b"\x01abcd"[..]), 0x00)));
+/// assert_eq!(parser(Partial::new(&amp;b""[..])), Err(ErrMode::Incomplete(Needed::new(1))));
 /// ```
 </span><span class="attr">#[inline(always)]
 </span><span class="kw">pub fn </span>le_i8&lt;I, E: ParserError&lt;I&gt;&gt;(input: <span class="kw-2">&amp;mut </span>I) -&gt; PResult&lt;i8, E&gt;
@@ -3527,8 +3569,8 @@
 ///       le_i16.parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(&amp;b&quot;\x00\x03abcefg&quot;[..]), Ok((&amp;b&quot;abcefg&quot;[..], 0x0300)));
-/// assert_eq!(parser(&amp;b&quot;\x01&quot;[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
+/// assert_eq!(parser(&amp;b"\x00\x03abcefg"[..]), Ok((&amp;b"abcefg"[..], 0x0300)));
+/// assert_eq!(parser(&amp;b"\x01"[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
 /// ```
 ///
 /// ```rust
@@ -3541,8 +3583,8 @@
 ///       le_i16::&lt;_, InputError&lt;_&gt;&gt;.parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(Partial::new(&amp;b&quot;\x00\x01abcd&quot;[..])), Ok((Partial::new(&amp;b&quot;abcd&quot;[..]), 0x0100)));
-/// assert_eq!(parser(Partial::new(&amp;b&quot;\x01&quot;[..])), Err(ErrMode::Incomplete(Needed::new(1))));
+/// assert_eq!(parser(Partial::new(&amp;b"\x00\x01abcd"[..])), Ok((Partial::new(&amp;b"abcd"[..]), 0x0100)));
+/// assert_eq!(parser(Partial::new(&amp;b"\x01"[..])), Err(ErrMode::Incomplete(Needed::new(1))));
 /// ```
 </span><span class="attr">#[inline(always)]
 </span><span class="kw">pub fn </span>le_i16&lt;I, E: ParserError&lt;I&gt;&gt;(input: <span class="kw-2">&amp;mut </span>I) -&gt; PResult&lt;i16, E&gt;
@@ -3551,7 +3593,7 @@
     I: Stream&lt;Token = u8&gt;,
     &lt;I <span class="kw">as </span>Stream&gt;::Slice: AsBytes,
 {
-    trace(<span class="string">&quot;le_i16&quot;</span>, <span class="kw">move </span>|input: <span class="kw-2">&amp;mut </span>I| {
+    trace(<span class="string">"le_i16"</span>, <span class="kw">move </span>|input: <span class="kw-2">&amp;mut </span>I| {
         le_uint::&lt;<span class="kw">_</span>, u16, <span class="kw">_</span>&gt;(input, <span class="number">2</span>).map(|n| n <span class="kw">as </span>i16)
     })
     .parse_next(input)
@@ -3575,8 +3617,8 @@
 ///       le_i24.parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(&amp;b&quot;\x00\x03\x05abcefg&quot;[..]), Ok((&amp;b&quot;abcefg&quot;[..], 0x050300)));
-/// assert_eq!(parser(&amp;b&quot;\x01&quot;[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
+/// assert_eq!(parser(&amp;b"\x00\x03\x05abcefg"[..]), Ok((&amp;b"abcefg"[..], 0x050300)));
+/// assert_eq!(parser(&amp;b"\x01"[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
 /// ```
 ///
 /// ```rust
@@ -3589,8 +3631,8 @@
 ///       le_i24::&lt;_, InputError&lt;_&gt;&gt;.parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(Partial::new(&amp;b&quot;\x00\x01\x02abcd&quot;[..])), Ok((Partial::new(&amp;b&quot;abcd&quot;[..]), 0x020100)));
-/// assert_eq!(parser(Partial::new(&amp;b&quot;\x01&quot;[..])), Err(ErrMode::Incomplete(Needed::new(2))));
+/// assert_eq!(parser(Partial::new(&amp;b"\x00\x01\x02abcd"[..])), Ok((Partial::new(&amp;b"abcd"[..]), 0x020100)));
+/// assert_eq!(parser(Partial::new(&amp;b"\x01"[..])), Err(ErrMode::Incomplete(Needed::new(2))));
 /// ```
 </span><span class="attr">#[inline(always)]
 </span><span class="kw">pub fn </span>le_i24&lt;I, E: ParserError&lt;I&gt;&gt;(input: <span class="kw-2">&amp;mut </span>I) -&gt; PResult&lt;i32, E&gt;
@@ -3599,7 +3641,7 @@
     I: Stream&lt;Token = u8&gt;,
     &lt;I <span class="kw">as </span>Stream&gt;::Slice: AsBytes,
 {
-    trace(<span class="string">&quot;le_i24&quot;</span>, <span class="kw">move </span>|input: <span class="kw-2">&amp;mut </span>I| {
+    trace(<span class="string">"le_i24"</span>, <span class="kw">move </span>|input: <span class="kw-2">&amp;mut </span>I| {
         le_uint::&lt;<span class="kw">_</span>, u32, <span class="kw">_</span>&gt;(input, <span class="number">3</span>).map(|n| {
             <span class="comment">// Same as the unsigned version but we need to sign-extend manually here
             </span><span class="kw">let </span>n = <span class="kw">if </span>n &amp; <span class="number">0x80_00_00 </span>!= <span class="number">0 </span>{
@@ -3631,8 +3673,8 @@
 ///       le_i32.parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(&amp;b&quot;\x00\x03\x05\x07abcefg&quot;[..]), Ok((&amp;b&quot;abcefg&quot;[..], 0x07050300)));
-/// assert_eq!(parser(&amp;b&quot;\x01&quot;[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
+/// assert_eq!(parser(&amp;b"\x00\x03\x05\x07abcefg"[..]), Ok((&amp;b"abcefg"[..], 0x07050300)));
+/// assert_eq!(parser(&amp;b"\x01"[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
 /// ```
 ///
 /// ```rust
@@ -3645,8 +3687,8 @@
 ///       le_i32::&lt;_, InputError&lt;_&gt;&gt;.parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(Partial::new(&amp;b&quot;\x00\x01\x02\x03abcd&quot;[..])), Ok((Partial::new(&amp;b&quot;abcd&quot;[..]), 0x03020100)));
-/// assert_eq!(parser(Partial::new(&amp;b&quot;\x01&quot;[..])), Err(ErrMode::Incomplete(Needed::new(3))));
+/// assert_eq!(parser(Partial::new(&amp;b"\x00\x01\x02\x03abcd"[..])), Ok((Partial::new(&amp;b"abcd"[..]), 0x03020100)));
+/// assert_eq!(parser(Partial::new(&amp;b"\x01"[..])), Err(ErrMode::Incomplete(Needed::new(3))));
 /// ```
 </span><span class="attr">#[inline(always)]
 </span><span class="kw">pub fn </span>le_i32&lt;I, E: ParserError&lt;I&gt;&gt;(input: <span class="kw-2">&amp;mut </span>I) -&gt; PResult&lt;i32, E&gt;
@@ -3655,7 +3697,7 @@
     I: Stream&lt;Token = u8&gt;,
     &lt;I <span class="kw">as </span>Stream&gt;::Slice: AsBytes,
 {
-    trace(<span class="string">&quot;le_i32&quot;</span>, <span class="kw">move </span>|input: <span class="kw-2">&amp;mut </span>I| {
+    trace(<span class="string">"le_i32"</span>, <span class="kw">move </span>|input: <span class="kw-2">&amp;mut </span>I| {
         le_uint::&lt;<span class="kw">_</span>, u32, <span class="kw">_</span>&gt;(input, <span class="number">4</span>).map(|n| n <span class="kw">as </span>i32)
     })
     .parse_next(input)
@@ -3679,8 +3721,8 @@
 ///       le_i64.parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(&amp;b&quot;\x00\x01\x02\x03\x04\x05\x06\x07abcefg&quot;[..]), Ok((&amp;b&quot;abcefg&quot;[..], 0x0706050403020100)));
-/// assert_eq!(parser(&amp;b&quot;\x01&quot;[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
+/// assert_eq!(parser(&amp;b"\x00\x01\x02\x03\x04\x05\x06\x07abcefg"[..]), Ok((&amp;b"abcefg"[..], 0x0706050403020100)));
+/// assert_eq!(parser(&amp;b"\x01"[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
 /// ```
 ///
 /// ```rust
@@ -3693,8 +3735,8 @@
 ///       le_i64::&lt;_, InputError&lt;_&gt;&gt;.parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(Partial::new(&amp;b&quot;\x00\x01\x02\x03\x04\x05\x06\x07abcd&quot;[..])), Ok((Partial::new(&amp;b&quot;abcd&quot;[..]), 0x0706050403020100)));
-/// assert_eq!(parser(Partial::new(&amp;b&quot;\x01&quot;[..])), Err(ErrMode::Incomplete(Needed::new(7))));
+/// assert_eq!(parser(Partial::new(&amp;b"\x00\x01\x02\x03\x04\x05\x06\x07abcd"[..])), Ok((Partial::new(&amp;b"abcd"[..]), 0x0706050403020100)));
+/// assert_eq!(parser(Partial::new(&amp;b"\x01"[..])), Err(ErrMode::Incomplete(Needed::new(7))));
 /// ```
 </span><span class="attr">#[inline(always)]
 </span><span class="kw">pub fn </span>le_i64&lt;I, E: ParserError&lt;I&gt;&gt;(input: <span class="kw-2">&amp;mut </span>I) -&gt; PResult&lt;i64, E&gt;
@@ -3703,7 +3745,7 @@
     I: Stream&lt;Token = u8&gt;,
     &lt;I <span class="kw">as </span>Stream&gt;::Slice: AsBytes,
 {
-    trace(<span class="string">&quot;le_i64&quot;</span>, <span class="kw">move </span>|input: <span class="kw-2">&amp;mut </span>I| {
+    trace(<span class="string">"le_i64"</span>, <span class="kw">move </span>|input: <span class="kw-2">&amp;mut </span>I| {
         le_uint::&lt;<span class="kw">_</span>, u64, <span class="kw">_</span>&gt;(input, <span class="number">8</span>).map(|n| n <span class="kw">as </span>i64)
     })
     .parse_next(input)
@@ -3727,8 +3769,8 @@
 ///       le_i128.parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(&amp;b&quot;\x00\x01\x02\x03\x04\x05\x06\x07\x00\x01\x02\x03\x04\x05\x06\x07abcefg&quot;[..]), Ok((&amp;b&quot;abcefg&quot;[..], 0x07060504030201000706050403020100)));
-/// assert_eq!(parser(&amp;b&quot;\x01&quot;[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
+/// assert_eq!(parser(&amp;b"\x00\x01\x02\x03\x04\x05\x06\x07\x00\x01\x02\x03\x04\x05\x06\x07abcefg"[..]), Ok((&amp;b"abcefg"[..], 0x07060504030201000706050403020100)));
+/// assert_eq!(parser(&amp;b"\x01"[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
 /// ```
 ///
 /// ```rust
@@ -3741,8 +3783,8 @@
 ///       le_i128::&lt;_, InputError&lt;_&gt;&gt;.parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(Partial::new(&amp;b&quot;\x00\x01\x02\x03\x04\x05\x06\x07\x08\x09\x10\x11\x12\x13\x14\x15abcd&quot;[..])), Ok((Partial::new(&amp;b&quot;abcd&quot;[..]), 0x15141312111009080706050403020100)));
-/// assert_eq!(parser(Partial::new(&amp;b&quot;\x01&quot;[..])), Err(ErrMode::Incomplete(Needed::new(15))));
+/// assert_eq!(parser(Partial::new(&amp;b"\x00\x01\x02\x03\x04\x05\x06\x07\x08\x09\x10\x11\x12\x13\x14\x15abcd"[..])), Ok((Partial::new(&amp;b"abcd"[..]), 0x15141312111009080706050403020100)));
+/// assert_eq!(parser(Partial::new(&amp;b"\x01"[..])), Err(ErrMode::Incomplete(Needed::new(15))));
 /// ```
 </span><span class="attr">#[inline(always)]
 </span><span class="kw">pub fn </span>le_i128&lt;I, E: ParserError&lt;I&gt;&gt;(input: <span class="kw-2">&amp;mut </span>I) -&gt; PResult&lt;i128, E&gt;
@@ -3751,7 +3793,7 @@
     I: Stream&lt;Token = u8&gt;,
     &lt;I <span class="kw">as </span>Stream&gt;::Slice: AsBytes,
 {
-    trace(<span class="string">&quot;le_i128&quot;</span>, <span class="kw">move </span>|input: <span class="kw-2">&amp;mut </span>I| {
+    trace(<span class="string">"le_i128"</span>, <span class="kw">move </span>|input: <span class="kw-2">&amp;mut </span>I| {
         le_uint::&lt;<span class="kw">_</span>, u128, <span class="kw">_</span>&gt;(input, <span class="number">16</span>).map(|n| n <span class="kw">as </span>i128)
     })
     .parse_next(input)
@@ -3777,8 +3819,8 @@
 ///       u8.parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(&amp;b&quot;\x00\x03abcefg&quot;[..]), Ok((&amp;b&quot;\x03abcefg&quot;[..], 0x00)));
-/// assert_eq!(parser(&amp;b&quot;&quot;[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[][..], ErrorKind::Token))));
+/// assert_eq!(parser(&amp;b"\x00\x03abcefg"[..]), Ok((&amp;b"\x03abcefg"[..], 0x00)));
+/// assert_eq!(parser(&amp;b""[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[][..], ErrorKind::Token))));
 /// ```
 ///
 /// ```rust
@@ -3792,8 +3834,8 @@
 ///       u8::&lt;_, InputError&lt;_&gt;&gt;.parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(Partial::new(&amp;b&quot;\x00\x03abcefg&quot;[..])), Ok((Partial::new(&amp;b&quot;\x03abcefg&quot;[..]), 0x00)));
-/// assert_eq!(parser(Partial::new(&amp;b&quot;&quot;[..])), Err(ErrMode::Incomplete(Needed::new(1))));
+/// assert_eq!(parser(Partial::new(&amp;b"\x00\x03abcefg"[..])), Ok((Partial::new(&amp;b"\x03abcefg"[..]), 0x00)));
+/// assert_eq!(parser(Partial::new(&amp;b""[..])), Err(ErrMode::Incomplete(Needed::new(1))));
 /// ```
 </span><span class="attr">#[inline(always)]
 </span><span class="kw">pub fn </span>u8&lt;I, E: ParserError&lt;I&gt;&gt;(input: <span class="kw-2">&amp;mut </span>I) -&gt; PResult&lt;u8, E&gt;
@@ -3801,7 +3843,7 @@
     </span>I: StreamIsPartial,
     I: Stream&lt;Token = u8&gt;,
 {
-    trace(<span class="string">&quot;u8&quot;</span>, <span class="kw">move </span>|input: <span class="kw-2">&amp;mut </span>I| {
+    trace(<span class="string">"u8"</span>, <span class="kw">move </span>|input: <span class="kw-2">&amp;mut </span>I| {
         <span class="kw">if </span>&lt;I <span class="kw">as </span>StreamIsPartial&gt;::is_partial_supported() {
             u8_::&lt;<span class="kw">_</span>, <span class="kw">_</span>, <span class="bool-val">true</span>&gt;(input)
         } <span class="kw">else </span>{
@@ -3846,15 +3888,15 @@
 ///     u16(winnow::binary::Endianness::Big).parse_peek(s)
 /// };
 ///
-/// assert_eq!(be_u16(&amp;b&quot;\x00\x03abcefg&quot;[..]), Ok((&amp;b&quot;abcefg&quot;[..], 0x0003)));
-/// assert_eq!(be_u16(&amp;b&quot;\x01&quot;[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
+/// assert_eq!(be_u16(&amp;b"\x00\x03abcefg"[..]), Ok((&amp;b"abcefg"[..], 0x0003)));
+/// assert_eq!(be_u16(&amp;b"\x01"[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
 ///
 /// let le_u16 = |s| {
 ///     u16(winnow::binary::Endianness::Little).parse_peek(s)
 /// };
 ///
-/// assert_eq!(le_u16(&amp;b&quot;\x00\x03abcefg&quot;[..]), Ok((&amp;b&quot;abcefg&quot;[..], 0x0300)));
-/// assert_eq!(le_u16(&amp;b&quot;\x01&quot;[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
+/// assert_eq!(le_u16(&amp;b"\x00\x03abcefg"[..]), Ok((&amp;b"abcefg"[..], 0x0300)));
+/// assert_eq!(le_u16(&amp;b"\x01"[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
 /// ```
 ///
 /// ```rust
@@ -3868,15 +3910,15 @@
 ///     u16::&lt;_, InputError&lt;_&gt;&gt;(winnow::binary::Endianness::Big).parse_peek(s)
 /// };
 ///
-/// assert_eq!(be_u16(Partial::new(&amp;b&quot;\x00\x03abcefg&quot;[..])), Ok((Partial::new(&amp;b&quot;abcefg&quot;[..]), 0x0003)));
-/// assert_eq!(be_u16(Partial::new(&amp;b&quot;\x01&quot;[..])), Err(ErrMode::Incomplete(Needed::new(1))));
+/// assert_eq!(be_u16(Partial::new(&amp;b"\x00\x03abcefg"[..])), Ok((Partial::new(&amp;b"abcefg"[..]), 0x0003)));
+/// assert_eq!(be_u16(Partial::new(&amp;b"\x01"[..])), Err(ErrMode::Incomplete(Needed::new(1))));
 ///
 /// let le_u16 = |s| {
 ///     u16::&lt;_, InputError&lt;_&gt;&gt;(winnow::binary::Endianness::Little).parse_peek(s)
 /// };
 ///
-/// assert_eq!(le_u16(Partial::new(&amp;b&quot;\x00\x03abcefg&quot;[..])), Ok((Partial::new(&amp;b&quot;abcefg&quot;[..]), 0x0300)));
-/// assert_eq!(le_u16(Partial::new(&amp;b&quot;\x01&quot;[..])), Err(ErrMode::Incomplete(Needed::new(1))));
+/// assert_eq!(le_u16(Partial::new(&amp;b"\x00\x03abcefg"[..])), Ok((Partial::new(&amp;b"abcefg"[..]), 0x0300)));
+/// assert_eq!(le_u16(Partial::new(&amp;b"\x01"[..])), Err(ErrMode::Incomplete(Needed::new(1))));
 /// ```
 </span><span class="attr">#[inline(always)]
 </span><span class="kw">pub fn </span>u16&lt;I, E: ParserError&lt;I&gt;&gt;(endian: Endianness) -&gt; <span class="kw">impl </span>Parser&lt;I, u16, E&gt;
@@ -3889,9 +3931,9 @@
         <span class="kw">match </span>endian {
             Endianness::Big =&gt; be_u16,
             Endianness::Little =&gt; le_u16,
-            <span class="attr">#[cfg(target_endian = <span class="string">&quot;big&quot;</span>)]
+            <span class="attr">#[cfg(target_endian = <span class="string">"big"</span>)]
             </span>Endianness::Native =&gt; be_u16,
-            <span class="attr">#[cfg(target_endian = <span class="string">&quot;little&quot;</span>)]
+            <span class="attr">#[cfg(target_endian = <span class="string">"little"</span>)]
             </span>Endianness::Native =&gt; le_u16,
         }
     }(input)
@@ -3918,15 +3960,15 @@
 ///     u24(winnow::binary::Endianness::Big).parse_peek(s)
 /// };
 ///
-/// assert_eq!(be_u24(&amp;b&quot;\x00\x03\x05abcefg&quot;[..]), Ok((&amp;b&quot;abcefg&quot;[..], 0x000305)));
-/// assert_eq!(be_u24(&amp;b&quot;\x01&quot;[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
+/// assert_eq!(be_u24(&amp;b"\x00\x03\x05abcefg"[..]), Ok((&amp;b"abcefg"[..], 0x000305)));
+/// assert_eq!(be_u24(&amp;b"\x01"[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
 ///
 /// let le_u24 = |s| {
 ///     u24(winnow::binary::Endianness::Little).parse_peek(s)
 /// };
 ///
-/// assert_eq!(le_u24(&amp;b&quot;\x00\x03\x05abcefg&quot;[..]), Ok((&amp;b&quot;abcefg&quot;[..], 0x050300)));
-/// assert_eq!(le_u24(&amp;b&quot;\x01&quot;[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
+/// assert_eq!(le_u24(&amp;b"\x00\x03\x05abcefg"[..]), Ok((&amp;b"abcefg"[..], 0x050300)));
+/// assert_eq!(le_u24(&amp;b"\x01"[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
 /// ```
 ///
 /// ```rust
@@ -3940,15 +3982,15 @@
 ///     u24::&lt;_,InputError&lt;_&gt;&gt;(winnow::binary::Endianness::Big).parse_peek(s)
 /// };
 ///
-/// assert_eq!(be_u24(Partial::new(&amp;b&quot;\x00\x03\x05abcefg&quot;[..])), Ok((Partial::new(&amp;b&quot;abcefg&quot;[..]), 0x000305)));
-/// assert_eq!(be_u24(Partial::new(&amp;b&quot;\x01&quot;[..])), Err(ErrMode::Incomplete(Needed::new(2))));
+/// assert_eq!(be_u24(Partial::new(&amp;b"\x00\x03\x05abcefg"[..])), Ok((Partial::new(&amp;b"abcefg"[..]), 0x000305)));
+/// assert_eq!(be_u24(Partial::new(&amp;b"\x01"[..])), Err(ErrMode::Incomplete(Needed::new(2))));
 ///
 /// let le_u24 = |s| {
 ///     u24::&lt;_, InputError&lt;_&gt;&gt;(winnow::binary::Endianness::Little).parse_peek(s)
 /// };
 ///
-/// assert_eq!(le_u24(Partial::new(&amp;b&quot;\x00\x03\x05abcefg&quot;[..])), Ok((Partial::new(&amp;b&quot;abcefg&quot;[..]), 0x050300)));
-/// assert_eq!(le_u24(Partial::new(&amp;b&quot;\x01&quot;[..])), Err(ErrMode::Incomplete(Needed::new(2))));
+/// assert_eq!(le_u24(Partial::new(&amp;b"\x00\x03\x05abcefg"[..])), Ok((Partial::new(&amp;b"abcefg"[..]), 0x050300)));
+/// assert_eq!(le_u24(Partial::new(&amp;b"\x01"[..])), Err(ErrMode::Incomplete(Needed::new(2))));
 /// ```
 </span><span class="attr">#[inline(always)]
 </span><span class="kw">pub fn </span>u24&lt;I, E: ParserError&lt;I&gt;&gt;(endian: Endianness) -&gt; <span class="kw">impl </span>Parser&lt;I, u32, E&gt;
@@ -3961,9 +4003,9 @@
         <span class="kw">match </span>endian {
             Endianness::Big =&gt; be_u24,
             Endianness::Little =&gt; le_u24,
-            <span class="attr">#[cfg(target_endian = <span class="string">&quot;big&quot;</span>)]
+            <span class="attr">#[cfg(target_endian = <span class="string">"big"</span>)]
             </span>Endianness::Native =&gt; be_u24,
-            <span class="attr">#[cfg(target_endian = <span class="string">&quot;little&quot;</span>)]
+            <span class="attr">#[cfg(target_endian = <span class="string">"little"</span>)]
             </span>Endianness::Native =&gt; le_u24,
         }
     }(input)
@@ -3990,15 +4032,15 @@
 ///     u32(winnow::binary::Endianness::Big).parse_peek(s)
 /// };
 ///
-/// assert_eq!(be_u32(&amp;b&quot;\x00\x03\x05\x07abcefg&quot;[..]), Ok((&amp;b&quot;abcefg&quot;[..], 0x00030507)));
-/// assert_eq!(be_u32(&amp;b&quot;\x01&quot;[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
+/// assert_eq!(be_u32(&amp;b"\x00\x03\x05\x07abcefg"[..]), Ok((&amp;b"abcefg"[..], 0x00030507)));
+/// assert_eq!(be_u32(&amp;b"\x01"[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
 ///
 /// let le_u32 = |s| {
 ///     u32(winnow::binary::Endianness::Little).parse_peek(s)
 /// };
 ///
-/// assert_eq!(le_u32(&amp;b&quot;\x00\x03\x05\x07abcefg&quot;[..]), Ok((&amp;b&quot;abcefg&quot;[..], 0x07050300)));
-/// assert_eq!(le_u32(&amp;b&quot;\x01&quot;[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
+/// assert_eq!(le_u32(&amp;b"\x00\x03\x05\x07abcefg"[..]), Ok((&amp;b"abcefg"[..], 0x07050300)));
+/// assert_eq!(le_u32(&amp;b"\x01"[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
 /// ```
 ///
 /// ```rust
@@ -4012,15 +4054,15 @@
 ///     u32::&lt;_, InputError&lt;_&gt;&gt;(winnow::binary::Endianness::Big).parse_peek(s)
 /// };
 ///
-/// assert_eq!(be_u32(Partial::new(&amp;b&quot;\x00\x03\x05\x07abcefg&quot;[..])), Ok((Partial::new(&amp;b&quot;abcefg&quot;[..]), 0x00030507)));
-/// assert_eq!(be_u32(Partial::new(&amp;b&quot;\x01&quot;[..])), Err(ErrMode::Incomplete(Needed::new(3))));
+/// assert_eq!(be_u32(Partial::new(&amp;b"\x00\x03\x05\x07abcefg"[..])), Ok((Partial::new(&amp;b"abcefg"[..]), 0x00030507)));
+/// assert_eq!(be_u32(Partial::new(&amp;b"\x01"[..])), Err(ErrMode::Incomplete(Needed::new(3))));
 ///
 /// let le_u32 = |s| {
 ///     u32::&lt;_, InputError&lt;_&gt;&gt;(winnow::binary::Endianness::Little).parse_peek(s)
 /// };
 ///
-/// assert_eq!(le_u32(Partial::new(&amp;b&quot;\x00\x03\x05\x07abcefg&quot;[..])), Ok((Partial::new(&amp;b&quot;abcefg&quot;[..]), 0x07050300)));
-/// assert_eq!(le_u32(Partial::new(&amp;b&quot;\x01&quot;[..])), Err(ErrMode::Incomplete(Needed::new(3))));
+/// assert_eq!(le_u32(Partial::new(&amp;b"\x00\x03\x05\x07abcefg"[..])), Ok((Partial::new(&amp;b"abcefg"[..]), 0x07050300)));
+/// assert_eq!(le_u32(Partial::new(&amp;b"\x01"[..])), Err(ErrMode::Incomplete(Needed::new(3))));
 /// ```
 </span><span class="attr">#[inline(always)]
 </span><span class="kw">pub fn </span>u32&lt;I, E: ParserError&lt;I&gt;&gt;(endian: Endianness) -&gt; <span class="kw">impl </span>Parser&lt;I, u32, E&gt;
@@ -4033,9 +4075,9 @@
         <span class="kw">match </span>endian {
             Endianness::Big =&gt; be_u32,
             Endianness::Little =&gt; le_u32,
-            <span class="attr">#[cfg(target_endian = <span class="string">&quot;big&quot;</span>)]
+            <span class="attr">#[cfg(target_endian = <span class="string">"big"</span>)]
             </span>Endianness::Native =&gt; be_u32,
-            <span class="attr">#[cfg(target_endian = <span class="string">&quot;little&quot;</span>)]
+            <span class="attr">#[cfg(target_endian = <span class="string">"little"</span>)]
             </span>Endianness::Native =&gt; le_u32,
         }
     }(input)
@@ -4062,15 +4104,15 @@
 ///     u64(winnow::binary::Endianness::Big).parse_peek(s)
 /// };
 ///
-/// assert_eq!(be_u64(&amp;b&quot;\x00\x01\x02\x03\x04\x05\x06\x07abcefg&quot;[..]), Ok((&amp;b&quot;abcefg&quot;[..], 0x0001020304050607)));
-/// assert_eq!(be_u64(&amp;b&quot;\x01&quot;[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
+/// assert_eq!(be_u64(&amp;b"\x00\x01\x02\x03\x04\x05\x06\x07abcefg"[..]), Ok((&amp;b"abcefg"[..], 0x0001020304050607)));
+/// assert_eq!(be_u64(&amp;b"\x01"[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
 ///
 /// let le_u64 = |s| {
 ///     u64(winnow::binary::Endianness::Little).parse_peek(s)
 /// };
 ///
-/// assert_eq!(le_u64(&amp;b&quot;\x00\x01\x02\x03\x04\x05\x06\x07abcefg&quot;[..]), Ok((&amp;b&quot;abcefg&quot;[..], 0x0706050403020100)));
-/// assert_eq!(le_u64(&amp;b&quot;\x01&quot;[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
+/// assert_eq!(le_u64(&amp;b"\x00\x01\x02\x03\x04\x05\x06\x07abcefg"[..]), Ok((&amp;b"abcefg"[..], 0x0706050403020100)));
+/// assert_eq!(le_u64(&amp;b"\x01"[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
 /// ```
 ///
 /// ```rust
@@ -4084,15 +4126,15 @@
 ///     u64::&lt;_, InputError&lt;_&gt;&gt;(winnow::binary::Endianness::Big).parse_peek(s)
 /// };
 ///
-/// assert_eq!(be_u64(Partial::new(&amp;b&quot;\x00\x01\x02\x03\x04\x05\x06\x07abcefg&quot;[..])), Ok((Partial::new(&amp;b&quot;abcefg&quot;[..]), 0x0001020304050607)));
-/// assert_eq!(be_u64(Partial::new(&amp;b&quot;\x01&quot;[..])), Err(ErrMode::Incomplete(Needed::new(7))));
+/// assert_eq!(be_u64(Partial::new(&amp;b"\x00\x01\x02\x03\x04\x05\x06\x07abcefg"[..])), Ok((Partial::new(&amp;b"abcefg"[..]), 0x0001020304050607)));
+/// assert_eq!(be_u64(Partial::new(&amp;b"\x01"[..])), Err(ErrMode::Incomplete(Needed::new(7))));
 ///
 /// let le_u64 = |s| {
 ///     u64::&lt;_, InputError&lt;_&gt;&gt;(winnow::binary::Endianness::Little).parse_peek(s)
 /// };
 ///
-/// assert_eq!(le_u64(Partial::new(&amp;b&quot;\x00\x01\x02\x03\x04\x05\x06\x07abcefg&quot;[..])), Ok((Partial::new(&amp;b&quot;abcefg&quot;[..]), 0x0706050403020100)));
-/// assert_eq!(le_u64(Partial::new(&amp;b&quot;\x01&quot;[..])), Err(ErrMode::Incomplete(Needed::new(7))));
+/// assert_eq!(le_u64(Partial::new(&amp;b"\x00\x01\x02\x03\x04\x05\x06\x07abcefg"[..])), Ok((Partial::new(&amp;b"abcefg"[..]), 0x0706050403020100)));
+/// assert_eq!(le_u64(Partial::new(&amp;b"\x01"[..])), Err(ErrMode::Incomplete(Needed::new(7))));
 /// ```
 </span><span class="attr">#[inline(always)]
 </span><span class="kw">pub fn </span>u64&lt;I, E: ParserError&lt;I&gt;&gt;(endian: Endianness) -&gt; <span class="kw">impl </span>Parser&lt;I, u64, E&gt;
@@ -4105,9 +4147,9 @@
         <span class="kw">match </span>endian {
             Endianness::Big =&gt; be_u64,
             Endianness::Little =&gt; le_u64,
-            <span class="attr">#[cfg(target_endian = <span class="string">&quot;big&quot;</span>)]
+            <span class="attr">#[cfg(target_endian = <span class="string">"big"</span>)]
             </span>Endianness::Native =&gt; be_u64,
-            <span class="attr">#[cfg(target_endian = <span class="string">&quot;little&quot;</span>)]
+            <span class="attr">#[cfg(target_endian = <span class="string">"little"</span>)]
             </span>Endianness::Native =&gt; le_u64,
         }
     }(input)
@@ -4134,15 +4176,15 @@
 ///     u128(winnow::binary::Endianness::Big).parse_peek(s)
 /// };
 ///
-/// assert_eq!(be_u128(&amp;b&quot;\x00\x01\x02\x03\x04\x05\x06\x07\x00\x01\x02\x03\x04\x05\x06\x07abcefg&quot;[..]), Ok((&amp;b&quot;abcefg&quot;[..], 0x00010203040506070001020304050607)));
-/// assert_eq!(be_u128(&amp;b&quot;\x01&quot;[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
+/// assert_eq!(be_u128(&amp;b"\x00\x01\x02\x03\x04\x05\x06\x07\x00\x01\x02\x03\x04\x05\x06\x07abcefg"[..]), Ok((&amp;b"abcefg"[..], 0x00010203040506070001020304050607)));
+/// assert_eq!(be_u128(&amp;b"\x01"[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
 ///
 /// let le_u128 = |s| {
 ///     u128(winnow::binary::Endianness::Little).parse_peek(s)
 /// };
 ///
-/// assert_eq!(le_u128(&amp;b&quot;\x00\x01\x02\x03\x04\x05\x06\x07\x00\x01\x02\x03\x04\x05\x06\x07abcefg&quot;[..]), Ok((&amp;b&quot;abcefg&quot;[..], 0x07060504030201000706050403020100)));
-/// assert_eq!(le_u128(&amp;b&quot;\x01&quot;[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
+/// assert_eq!(le_u128(&amp;b"\x00\x01\x02\x03\x04\x05\x06\x07\x00\x01\x02\x03\x04\x05\x06\x07abcefg"[..]), Ok((&amp;b"abcefg"[..], 0x07060504030201000706050403020100)));
+/// assert_eq!(le_u128(&amp;b"\x01"[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
 /// ```
 ///
 /// ```rust
@@ -4156,15 +4198,15 @@
 ///     u128::&lt;_, InputError&lt;_&gt;&gt;(winnow::binary::Endianness::Big).parse_peek(s)
 /// };
 ///
-/// assert_eq!(be_u128(Partial::new(&amp;b&quot;\x00\x01\x02\x03\x04\x05\x06\x07\x00\x01\x02\x03\x04\x05\x06\x07abcefg&quot;[..])), Ok((Partial::new(&amp;b&quot;abcefg&quot;[..]), 0x00010203040506070001020304050607)));
-/// assert_eq!(be_u128(Partial::new(&amp;b&quot;\x01&quot;[..])), Err(ErrMode::Incomplete(Needed::new(15))));
+/// assert_eq!(be_u128(Partial::new(&amp;b"\x00\x01\x02\x03\x04\x05\x06\x07\x00\x01\x02\x03\x04\x05\x06\x07abcefg"[..])), Ok((Partial::new(&amp;b"abcefg"[..]), 0x00010203040506070001020304050607)));
+/// assert_eq!(be_u128(Partial::new(&amp;b"\x01"[..])), Err(ErrMode::Incomplete(Needed::new(15))));
 ///
 /// let le_u128 = |s| {
 ///     u128::&lt;_, InputError&lt;_&gt;&gt;(winnow::binary::Endianness::Little).parse_peek(s)
 /// };
 ///
-/// assert_eq!(le_u128(Partial::new(&amp;b&quot;\x00\x01\x02\x03\x04\x05\x06\x07\x00\x01\x02\x03\x04\x05\x06\x07abcefg&quot;[..])), Ok((Partial::new(&amp;b&quot;abcefg&quot;[..]), 0x07060504030201000706050403020100)));
-/// assert_eq!(le_u128(Partial::new(&amp;b&quot;\x01&quot;[..])), Err(ErrMode::Incomplete(Needed::new(15))));
+/// assert_eq!(le_u128(Partial::new(&amp;b"\x00\x01\x02\x03\x04\x05\x06\x07\x00\x01\x02\x03\x04\x05\x06\x07abcefg"[..])), Ok((Partial::new(&amp;b"abcefg"[..]), 0x07060504030201000706050403020100)));
+/// assert_eq!(le_u128(Partial::new(&amp;b"\x01"[..])), Err(ErrMode::Incomplete(Needed::new(15))));
 /// ```
 </span><span class="attr">#[inline(always)]
 </span><span class="kw">pub fn </span>u128&lt;I, E: ParserError&lt;I&gt;&gt;(endian: Endianness) -&gt; <span class="kw">impl </span>Parser&lt;I, u128, E&gt;
@@ -4177,9 +4219,9 @@
         <span class="kw">match </span>endian {
             Endianness::Big =&gt; be_u128,
             Endianness::Little =&gt; le_u128,
-            <span class="attr">#[cfg(target_endian = <span class="string">&quot;big&quot;</span>)]
+            <span class="attr">#[cfg(target_endian = <span class="string">"big"</span>)]
             </span>Endianness::Native =&gt; be_u128,
-            <span class="attr">#[cfg(target_endian = <span class="string">&quot;little&quot;</span>)]
+            <span class="attr">#[cfg(target_endian = <span class="string">"little"</span>)]
             </span>Endianness::Native =&gt; le_u128,
         }
     }(input)
@@ -4205,8 +4247,8 @@
 ///       i8.parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(&amp;b&quot;\x00\x03abcefg&quot;[..]), Ok((&amp;b&quot;\x03abcefg&quot;[..], 0x00)));
-/// assert_eq!(parser(&amp;b&quot;&quot;[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[][..], ErrorKind::Token))));
+/// assert_eq!(parser(&amp;b"\x00\x03abcefg"[..]), Ok((&amp;b"\x03abcefg"[..], 0x00)));
+/// assert_eq!(parser(&amp;b""[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[][..], ErrorKind::Token))));
 /// ```
 ///
 /// ```rust
@@ -4220,8 +4262,8 @@
 ///       i8.parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(Partial::new(&amp;b&quot;\x00\x03abcefg&quot;[..])), Ok((Partial::new(&amp;b&quot;\x03abcefg&quot;[..]), 0x00)));
-/// assert_eq!(parser(Partial::new(&amp;b&quot;&quot;[..])), Err(ErrMode::Incomplete(Needed::new(1))));
+/// assert_eq!(parser(Partial::new(&amp;b"\x00\x03abcefg"[..])), Ok((Partial::new(&amp;b"\x03abcefg"[..]), 0x00)));
+/// assert_eq!(parser(Partial::new(&amp;b""[..])), Err(ErrMode::Incomplete(Needed::new(1))));
 /// ```
 </span><span class="attr">#[inline(always)]
 </span><span class="kw">pub fn </span>i8&lt;I, E: ParserError&lt;I&gt;&gt;(input: <span class="kw-2">&amp;mut </span>I) -&gt; PResult&lt;i8, E&gt;
@@ -4229,7 +4271,7 @@
     </span>I: StreamIsPartial,
     I: Stream&lt;Token = u8&gt;,
 {
-    trace(<span class="string">&quot;i8&quot;</span>, <span class="kw">move </span>|input: <span class="kw-2">&amp;mut </span>I| {
+    trace(<span class="string">"i8"</span>, <span class="kw">move </span>|input: <span class="kw-2">&amp;mut </span>I| {
         <span class="kw">if </span>&lt;I <span class="kw">as </span>StreamIsPartial&gt;::is_partial_supported() {
             u8_::&lt;<span class="kw">_</span>, <span class="kw">_</span>, <span class="bool-val">true</span>&gt;(input)
         } <span class="kw">else </span>{
@@ -4261,15 +4303,15 @@
 ///     i16(winnow::binary::Endianness::Big).parse_peek(s)
 /// };
 ///
-/// assert_eq!(be_i16(&amp;b&quot;\x00\x03abcefg&quot;[..]), Ok((&amp;b&quot;abcefg&quot;[..], 0x0003)));
-/// assert_eq!(be_i16(&amp;b&quot;\x01&quot;[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
+/// assert_eq!(be_i16(&amp;b"\x00\x03abcefg"[..]), Ok((&amp;b"abcefg"[..], 0x0003)));
+/// assert_eq!(be_i16(&amp;b"\x01"[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
 ///
 /// let le_i16 = |s| {
 ///     i16(winnow::binary::Endianness::Little).parse_peek(s)
 /// };
 ///
-/// assert_eq!(le_i16(&amp;b&quot;\x00\x03abcefg&quot;[..]), Ok((&amp;b&quot;abcefg&quot;[..], 0x0300)));
-/// assert_eq!(le_i16(&amp;b&quot;\x01&quot;[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
+/// assert_eq!(le_i16(&amp;b"\x00\x03abcefg"[..]), Ok((&amp;b"abcefg"[..], 0x0300)));
+/// assert_eq!(le_i16(&amp;b"\x01"[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
 /// ```
 ///
 /// ```rust
@@ -4283,15 +4325,15 @@
 ///     i16::&lt;_, InputError&lt;_&gt;&gt;(winnow::binary::Endianness::Big).parse_peek(s)
 /// };
 ///
-/// assert_eq!(be_i16(Partial::new(&amp;b&quot;\x00\x03abcefg&quot;[..])), Ok((Partial::new(&amp;b&quot;abcefg&quot;[..]), 0x0003)));
-/// assert_eq!(be_i16(Partial::new(&amp;b&quot;\x01&quot;[..])), Err(ErrMode::Incomplete(Needed::new(1))));
+/// assert_eq!(be_i16(Partial::new(&amp;b"\x00\x03abcefg"[..])), Ok((Partial::new(&amp;b"abcefg"[..]), 0x0003)));
+/// assert_eq!(be_i16(Partial::new(&amp;b"\x01"[..])), Err(ErrMode::Incomplete(Needed::new(1))));
 ///
 /// let le_i16 = |s| {
 ///     i16::&lt;_, InputError&lt;_&gt;&gt;(winnow::binary::Endianness::Little).parse_peek(s)
 /// };
 ///
-/// assert_eq!(le_i16(Partial::new(&amp;b&quot;\x00\x03abcefg&quot;[..])), Ok((Partial::new(&amp;b&quot;abcefg&quot;[..]), 0x0300)));
-/// assert_eq!(le_i16(Partial::new(&amp;b&quot;\x01&quot;[..])), Err(ErrMode::Incomplete(Needed::new(1))));
+/// assert_eq!(le_i16(Partial::new(&amp;b"\x00\x03abcefg"[..])), Ok((Partial::new(&amp;b"abcefg"[..]), 0x0300)));
+/// assert_eq!(le_i16(Partial::new(&amp;b"\x01"[..])), Err(ErrMode::Incomplete(Needed::new(1))));
 /// ```
 </span><span class="attr">#[inline(always)]
 </span><span class="kw">pub fn </span>i16&lt;I, E: ParserError&lt;I&gt;&gt;(endian: Endianness) -&gt; <span class="kw">impl </span>Parser&lt;I, i16, E&gt;
@@ -4304,9 +4346,9 @@
         <span class="kw">match </span>endian {
             Endianness::Big =&gt; be_i16,
             Endianness::Little =&gt; le_i16,
-            <span class="attr">#[cfg(target_endian = <span class="string">&quot;big&quot;</span>)]
+            <span class="attr">#[cfg(target_endian = <span class="string">"big"</span>)]
             </span>Endianness::Native =&gt; be_i16,
-            <span class="attr">#[cfg(target_endian = <span class="string">&quot;little&quot;</span>)]
+            <span class="attr">#[cfg(target_endian = <span class="string">"little"</span>)]
             </span>Endianness::Native =&gt; le_i16,
         }
     }(input)
@@ -4333,15 +4375,15 @@
 ///     i24(winnow::binary::Endianness::Big).parse_peek(s)
 /// };
 ///
-/// assert_eq!(be_i24(&amp;b&quot;\x00\x03\x05abcefg&quot;[..]), Ok((&amp;b&quot;abcefg&quot;[..], 0x000305)));
-/// assert_eq!(be_i24(&amp;b&quot;\x01&quot;[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
+/// assert_eq!(be_i24(&amp;b"\x00\x03\x05abcefg"[..]), Ok((&amp;b"abcefg"[..], 0x000305)));
+/// assert_eq!(be_i24(&amp;b"\x01"[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
 ///
 /// let le_i24 = |s| {
 ///     i24(winnow::binary::Endianness::Little).parse_peek(s)
 /// };
 ///
-/// assert_eq!(le_i24(&amp;b&quot;\x00\x03\x05abcefg&quot;[..]), Ok((&amp;b&quot;abcefg&quot;[..], 0x050300)));
-/// assert_eq!(le_i24(&amp;b&quot;\x01&quot;[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
+/// assert_eq!(le_i24(&amp;b"\x00\x03\x05abcefg"[..]), Ok((&amp;b"abcefg"[..], 0x050300)));
+/// assert_eq!(le_i24(&amp;b"\x01"[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
 /// ```
 ///
 /// ```rust
@@ -4355,15 +4397,15 @@
 ///     i24::&lt;_, InputError&lt;_&gt;&gt;(winnow::binary::Endianness::Big).parse_peek(s)
 /// };
 ///
-/// assert_eq!(be_i24(Partial::new(&amp;b&quot;\x00\x03\x05abcefg&quot;[..])), Ok((Partial::new(&amp;b&quot;abcefg&quot;[..]), 0x000305)));
-/// assert_eq!(be_i24(Partial::new(&amp;b&quot;\x01&quot;[..])), Err(ErrMode::Incomplete(Needed::new(2))));
+/// assert_eq!(be_i24(Partial::new(&amp;b"\x00\x03\x05abcefg"[..])), Ok((Partial::new(&amp;b"abcefg"[..]), 0x000305)));
+/// assert_eq!(be_i24(Partial::new(&amp;b"\x01"[..])), Err(ErrMode::Incomplete(Needed::new(2))));
 ///
 /// let le_i24 = |s| {
 ///     i24::&lt;_, InputError&lt;_&gt;&gt;(winnow::binary::Endianness::Little).parse_peek(s)
 /// };
 ///
-/// assert_eq!(le_i24(Partial::new(&amp;b&quot;\x00\x03\x05abcefg&quot;[..])), Ok((Partial::new(&amp;b&quot;abcefg&quot;[..]), 0x050300)));
-/// assert_eq!(le_i24(Partial::new(&amp;b&quot;\x01&quot;[..])), Err(ErrMode::Incomplete(Needed::new(2))));
+/// assert_eq!(le_i24(Partial::new(&amp;b"\x00\x03\x05abcefg"[..])), Ok((Partial::new(&amp;b"abcefg"[..]), 0x050300)));
+/// assert_eq!(le_i24(Partial::new(&amp;b"\x01"[..])), Err(ErrMode::Incomplete(Needed::new(2))));
 /// ```
 </span><span class="attr">#[inline(always)]
 </span><span class="kw">pub fn </span>i24&lt;I, E: ParserError&lt;I&gt;&gt;(endian: Endianness) -&gt; <span class="kw">impl </span>Parser&lt;I, i32, E&gt;
@@ -4376,9 +4418,9 @@
         <span class="kw">match </span>endian {
             Endianness::Big =&gt; be_i24,
             Endianness::Little =&gt; le_i24,
-            <span class="attr">#[cfg(target_endian = <span class="string">&quot;big&quot;</span>)]
+            <span class="attr">#[cfg(target_endian = <span class="string">"big"</span>)]
             </span>Endianness::Native =&gt; be_i24,
-            <span class="attr">#[cfg(target_endian = <span class="string">&quot;little&quot;</span>)]
+            <span class="attr">#[cfg(target_endian = <span class="string">"little"</span>)]
             </span>Endianness::Native =&gt; le_i24,
         }
     }(input)
@@ -4405,15 +4447,15 @@
 ///     i32(winnow::binary::Endianness::Big).parse_peek(s)
 /// };
 ///
-/// assert_eq!(be_i32(&amp;b&quot;\x00\x03\x05\x07abcefg&quot;[..]), Ok((&amp;b&quot;abcefg&quot;[..], 0x00030507)));
-/// assert_eq!(be_i32(&amp;b&quot;\x01&quot;[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
+/// assert_eq!(be_i32(&amp;b"\x00\x03\x05\x07abcefg"[..]), Ok((&amp;b"abcefg"[..], 0x00030507)));
+/// assert_eq!(be_i32(&amp;b"\x01"[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
 ///
 /// let le_i32 = |s| {
 ///     i32(winnow::binary::Endianness::Little).parse_peek(s)
 /// };
 ///
-/// assert_eq!(le_i32(&amp;b&quot;\x00\x03\x05\x07abcefg&quot;[..]), Ok((&amp;b&quot;abcefg&quot;[..], 0x07050300)));
-/// assert_eq!(le_i32(&amp;b&quot;\x01&quot;[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
+/// assert_eq!(le_i32(&amp;b"\x00\x03\x05\x07abcefg"[..]), Ok((&amp;b"abcefg"[..], 0x07050300)));
+/// assert_eq!(le_i32(&amp;b"\x01"[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
 /// ```
 ///
 /// ```rust
@@ -4427,15 +4469,15 @@
 ///     i32::&lt;_, InputError&lt;_&gt;&gt;(winnow::binary::Endianness::Big).parse_peek(s)
 /// };
 ///
-/// assert_eq!(be_i32(Partial::new(&amp;b&quot;\x00\x03\x05\x07abcefg&quot;[..])), Ok((Partial::new(&amp;b&quot;abcefg&quot;[..]), 0x00030507)));
-/// assert_eq!(be_i32(Partial::new(&amp;b&quot;\x01&quot;[..])), Err(ErrMode::Incomplete(Needed::new(3))));
+/// assert_eq!(be_i32(Partial::new(&amp;b"\x00\x03\x05\x07abcefg"[..])), Ok((Partial::new(&amp;b"abcefg"[..]), 0x00030507)));
+/// assert_eq!(be_i32(Partial::new(&amp;b"\x01"[..])), Err(ErrMode::Incomplete(Needed::new(3))));
 ///
 /// let le_i32 = |s| {
 ///     i32::&lt;_, InputError&lt;_&gt;&gt;(winnow::binary::Endianness::Little).parse_peek(s)
 /// };
 ///
-/// assert_eq!(le_i32(Partial::new(&amp;b&quot;\x00\x03\x05\x07abcefg&quot;[..])), Ok((Partial::new(&amp;b&quot;abcefg&quot;[..]), 0x07050300)));
-/// assert_eq!(le_i32(Partial::new(&amp;b&quot;\x01&quot;[..])), Err(ErrMode::Incomplete(Needed::new(3))));
+/// assert_eq!(le_i32(Partial::new(&amp;b"\x00\x03\x05\x07abcefg"[..])), Ok((Partial::new(&amp;b"abcefg"[..]), 0x07050300)));
+/// assert_eq!(le_i32(Partial::new(&amp;b"\x01"[..])), Err(ErrMode::Incomplete(Needed::new(3))));
 /// ```
 </span><span class="attr">#[inline(always)]
 </span><span class="kw">pub fn </span>i32&lt;I, E: ParserError&lt;I&gt;&gt;(endian: Endianness) -&gt; <span class="kw">impl </span>Parser&lt;I, i32, E&gt;
@@ -4448,9 +4490,9 @@
         <span class="kw">match </span>endian {
             Endianness::Big =&gt; be_i32,
             Endianness::Little =&gt; le_i32,
-            <span class="attr">#[cfg(target_endian = <span class="string">&quot;big&quot;</span>)]
+            <span class="attr">#[cfg(target_endian = <span class="string">"big"</span>)]
             </span>Endianness::Native =&gt; be_i32,
-            <span class="attr">#[cfg(target_endian = <span class="string">&quot;little&quot;</span>)]
+            <span class="attr">#[cfg(target_endian = <span class="string">"little"</span>)]
             </span>Endianness::Native =&gt; le_i32,
         }
     }(input)
@@ -4477,15 +4519,15 @@
 ///     i64(winnow::binary::Endianness::Big).parse_peek(s)
 /// };
 ///
-/// assert_eq!(be_i64(&amp;b&quot;\x00\x01\x02\x03\x04\x05\x06\x07abcefg&quot;[..]), Ok((&amp;b&quot;abcefg&quot;[..], 0x0001020304050607)));
-/// assert_eq!(be_i64(&amp;b&quot;\x01&quot;[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
+/// assert_eq!(be_i64(&amp;b"\x00\x01\x02\x03\x04\x05\x06\x07abcefg"[..]), Ok((&amp;b"abcefg"[..], 0x0001020304050607)));
+/// assert_eq!(be_i64(&amp;b"\x01"[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
 ///
 /// let le_i64 = |s| {
 ///     i64(winnow::binary::Endianness::Little).parse_peek(s)
 /// };
 ///
-/// assert_eq!(le_i64(&amp;b&quot;\x00\x01\x02\x03\x04\x05\x06\x07abcefg&quot;[..]), Ok((&amp;b&quot;abcefg&quot;[..], 0x0706050403020100)));
-/// assert_eq!(le_i64(&amp;b&quot;\x01&quot;[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
+/// assert_eq!(le_i64(&amp;b"\x00\x01\x02\x03\x04\x05\x06\x07abcefg"[..]), Ok((&amp;b"abcefg"[..], 0x0706050403020100)));
+/// assert_eq!(le_i64(&amp;b"\x01"[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
 /// ```
 ///
 /// ```rust
@@ -4499,15 +4541,15 @@
 ///     i64::&lt;_, InputError&lt;_&gt;&gt;(winnow::binary::Endianness::Big).parse_peek(s)
 /// };
 ///
-/// assert_eq!(be_i64(Partial::new(&amp;b&quot;\x00\x01\x02\x03\x04\x05\x06\x07abcefg&quot;[..])), Ok((Partial::new(&amp;b&quot;abcefg&quot;[..]), 0x0001020304050607)));
-/// assert_eq!(be_i64(Partial::new(&amp;b&quot;\x01&quot;[..])), Err(ErrMode::Incomplete(Needed::new(7))));
+/// assert_eq!(be_i64(Partial::new(&amp;b"\x00\x01\x02\x03\x04\x05\x06\x07abcefg"[..])), Ok((Partial::new(&amp;b"abcefg"[..]), 0x0001020304050607)));
+/// assert_eq!(be_i64(Partial::new(&amp;b"\x01"[..])), Err(ErrMode::Incomplete(Needed::new(7))));
 ///
 /// let le_i64 = |s| {
 ///     i64::&lt;_, InputError&lt;_&gt;&gt;(winnow::binary::Endianness::Little).parse_peek(s)
 /// };
 ///
-/// assert_eq!(le_i64(Partial::new(&amp;b&quot;\x00\x01\x02\x03\x04\x05\x06\x07abcefg&quot;[..])), Ok((Partial::new(&amp;b&quot;abcefg&quot;[..]), 0x0706050403020100)));
-/// assert_eq!(le_i64(Partial::new(&amp;b&quot;\x01&quot;[..])), Err(ErrMode::Incomplete(Needed::new(7))));
+/// assert_eq!(le_i64(Partial::new(&amp;b"\x00\x01\x02\x03\x04\x05\x06\x07abcefg"[..])), Ok((Partial::new(&amp;b"abcefg"[..]), 0x0706050403020100)));
+/// assert_eq!(le_i64(Partial::new(&amp;b"\x01"[..])), Err(ErrMode::Incomplete(Needed::new(7))));
 /// ```
 </span><span class="attr">#[inline(always)]
 </span><span class="kw">pub fn </span>i64&lt;I, E: ParserError&lt;I&gt;&gt;(endian: Endianness) -&gt; <span class="kw">impl </span>Parser&lt;I, i64, E&gt;
@@ -4520,9 +4562,9 @@
         <span class="kw">match </span>endian {
             Endianness::Big =&gt; be_i64,
             Endianness::Little =&gt; le_i64,
-            <span class="attr">#[cfg(target_endian = <span class="string">&quot;big&quot;</span>)]
+            <span class="attr">#[cfg(target_endian = <span class="string">"big"</span>)]
             </span>Endianness::Native =&gt; be_i64,
-            <span class="attr">#[cfg(target_endian = <span class="string">&quot;little&quot;</span>)]
+            <span class="attr">#[cfg(target_endian = <span class="string">"little"</span>)]
             </span>Endianness::Native =&gt; le_i64,
         }
     }(input)
@@ -4549,15 +4591,15 @@
 ///     i128(winnow::binary::Endianness::Big).parse_peek(s)
 /// };
 ///
-/// assert_eq!(be_i128(&amp;b&quot;\x00\x01\x02\x03\x04\x05\x06\x07\x00\x01\x02\x03\x04\x05\x06\x07abcefg&quot;[..]), Ok((&amp;b&quot;abcefg&quot;[..], 0x00010203040506070001020304050607)));
-/// assert_eq!(be_i128(&amp;b&quot;\x01&quot;[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
+/// assert_eq!(be_i128(&amp;b"\x00\x01\x02\x03\x04\x05\x06\x07\x00\x01\x02\x03\x04\x05\x06\x07abcefg"[..]), Ok((&amp;b"abcefg"[..], 0x00010203040506070001020304050607)));
+/// assert_eq!(be_i128(&amp;b"\x01"[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
 ///
 /// let le_i128 = |s| {
 ///     i128(winnow::binary::Endianness::Little).parse_peek(s)
 /// };
 ///
-/// assert_eq!(le_i128(&amp;b&quot;\x00\x01\x02\x03\x04\x05\x06\x07\x00\x01\x02\x03\x04\x05\x06\x07abcefg&quot;[..]), Ok((&amp;b&quot;abcefg&quot;[..], 0x07060504030201000706050403020100)));
-/// assert_eq!(le_i128(&amp;b&quot;\x01&quot;[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
+/// assert_eq!(le_i128(&amp;b"\x00\x01\x02\x03\x04\x05\x06\x07\x00\x01\x02\x03\x04\x05\x06\x07abcefg"[..]), Ok((&amp;b"abcefg"[..], 0x07060504030201000706050403020100)));
+/// assert_eq!(le_i128(&amp;b"\x01"[..]), Err(ErrMode::Backtrack(InputError::new(&amp;[0x01][..], ErrorKind::Slice))));
 /// ```
 ///
 /// ```rust
@@ -4571,15 +4613,15 @@
 ///     i128::&lt;_, InputError&lt;_&gt;&gt;(winnow::binary::Endianness::Big).parse_peek(s)
 /// };
 ///
-/// assert_eq!(be_i128(Partial::new(&amp;b&quot;\x00\x01\x02\x03\x04\x05\x06\x07\x00\x01\x02\x03\x04\x05\x06\x07abcefg&quot;[..])), Ok((Partial::new(&amp;b&quot;abcefg&quot;[..]), 0x00010203040506070001020304050607)));
-/// assert_eq!(be_i128(Partial::new(&amp;b&quot;\x01&quot;[..])), Err(ErrMode::Incomplete(Needed::new(15))));
+/// assert_eq!(be_i128(Partial::new(&amp;b"\x00\x01\x02\x03\x04\x05\x06\x07\x00\x01\x02\x03\x04\x05\x06\x07abcefg"[..])), Ok((Partial::new(&amp;b"abcefg"[..]), 0x00010203040506070001020304050607)));
+/// assert_eq!(be_i128(Partial::new(&amp;b"\x01"[..])), Err(ErrMode::Incomplete(Needed::new(15))));
 ///
 /// let le_i128 = |s| {
 ///     i128::&lt;_, InputError&lt;_&gt;&gt;(winnow::binary::Endianness::Little).parse_peek(s)
 /// };
 ///
-/// assert_eq!(le_i128(Partial::new(&amp;b&quot;\x00\x01\x02\x03\x04\x05\x06\x07\x00\x01\x02\x03\x04\x05\x06\x07abcefg&quot;[..])), Ok((Partial::new(&amp;b&quot;abcefg&quot;[..]), 0x07060504030201000706050403020100)));
-/// assert_eq!(le_i128(Partial::new(&amp;b&quot;\x01&quot;[..])), Err(ErrMode::Incomplete(Needed::new(15))));
+/// assert_eq!(le_i128(Partial::new(&amp;b"\x00\x01\x02\x03\x04\x05\x06\x07\x00\x01\x02\x03\x04\x05\x06\x07abcefg"[..])), Ok((Partial::new(&amp;b"abcefg"[..]), 0x07060504030201000706050403020100)));
+/// assert_eq!(le_i128(Partial::new(&amp;b"\x01"[..])), Err(ErrMode::Incomplete(Needed::new(15))));
 /// ```
 </span><span class="attr">#[inline(always)]
 </span><span class="kw">pub fn </span>i128&lt;I, E: ParserError&lt;I&gt;&gt;(endian: Endianness) -&gt; <span class="kw">impl </span>Parser&lt;I, i128, E&gt;
@@ -4592,9 +4634,9 @@
         <span class="kw">match </span>endian {
             Endianness::Big =&gt; be_i128,
             Endianness::Little =&gt; le_i128,
-            <span class="attr">#[cfg(target_endian = <span class="string">&quot;big&quot;</span>)]
+            <span class="attr">#[cfg(target_endian = <span class="string">"big"</span>)]
             </span>Endianness::Native =&gt; be_i128,
-            <span class="attr">#[cfg(target_endian = <span class="string">&quot;little&quot;</span>)]
+            <span class="attr">#[cfg(target_endian = <span class="string">"little"</span>)]
             </span>Endianness::Native =&gt; le_i128,
         }
     }(input)
@@ -4619,8 +4661,8 @@
 ///       be_f32.parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(&amp;[0x41, 0x48, 0x00, 0x00][..]), Ok((&amp;b&quot;&quot;[..], 12.5)));
-/// assert_eq!(parser(&amp;b&quot;abc&quot;[..]), Err(ErrMode::Backtrack(InputError::new(&amp;b&quot;abc&quot;[..], ErrorKind::Slice))));
+/// assert_eq!(parser(&amp;[0x41, 0x48, 0x00, 0x00][..]), Ok((&amp;b""[..], 12.5)));
+/// assert_eq!(parser(&amp;b"abc"[..]), Err(ErrMode::Backtrack(InputError::new(&amp;b"abc"[..], ErrorKind::Slice))));
 /// ```
 ///
 /// ```rust
@@ -4633,7 +4675,7 @@
 ///       be_f32.parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(Partial::new(&amp;[0x40, 0x29, 0x00, 0x00][..])), Ok((Partial::new(&amp;b&quot;&quot;[..]), 2.640625)));
+/// assert_eq!(parser(Partial::new(&amp;[0x40, 0x29, 0x00, 0x00][..])), Ok((Partial::new(&amp;b""[..]), 2.640625)));
 /// assert_eq!(parser(Partial::new(&amp;[0x01][..])), Err(ErrMode::Incomplete(Needed::new(3))));
 /// ```
 </span><span class="attr">#[inline(always)]
@@ -4643,7 +4685,7 @@
     I: Stream&lt;Token = u8&gt;,
     &lt;I <span class="kw">as </span>Stream&gt;::Slice: AsBytes,
 {
-    trace(<span class="string">&quot;be_f32&quot;</span>, <span class="kw">move </span>|input: <span class="kw-2">&amp;mut </span>I| {
+    trace(<span class="string">"be_f32"</span>, <span class="kw">move </span>|input: <span class="kw-2">&amp;mut </span>I| {
         be_uint::&lt;<span class="kw">_</span>, u32, <span class="kw">_</span>&gt;(input, <span class="number">4</span>).map(f32::from_bits)
     })
     .parse_next(input)
@@ -4667,8 +4709,8 @@
 ///       be_f64.parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(&amp;[0x40, 0x29, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00][..]), Ok((&amp;b&quot;&quot;[..], 12.5)));
-/// assert_eq!(parser(&amp;b&quot;abc&quot;[..]), Err(ErrMode::Backtrack(InputError::new(&amp;b&quot;abc&quot;[..], ErrorKind::Slice))));
+/// assert_eq!(parser(&amp;[0x40, 0x29, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00][..]), Ok((&amp;b""[..], 12.5)));
+/// assert_eq!(parser(&amp;b"abc"[..]), Err(ErrMode::Backtrack(InputError::new(&amp;b"abc"[..], ErrorKind::Slice))));
 /// ```
 ///
 /// ```rust
@@ -4681,7 +4723,7 @@
 ///       be_f64::&lt;_, InputError&lt;_&gt;&gt;.parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(Partial::new(&amp;[0x40, 0x29, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00][..])), Ok((Partial::new(&amp;b&quot;&quot;[..]), 12.5)));
+/// assert_eq!(parser(Partial::new(&amp;[0x40, 0x29, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00][..])), Ok((Partial::new(&amp;b""[..]), 12.5)));
 /// assert_eq!(parser(Partial::new(&amp;[0x01][..])), Err(ErrMode::Incomplete(Needed::new(7))));
 /// ```
 </span><span class="attr">#[inline(always)]
@@ -4691,7 +4733,7 @@
     I: Stream&lt;Token = u8&gt;,
     &lt;I <span class="kw">as </span>Stream&gt;::Slice: AsBytes,
 {
-    trace(<span class="string">&quot;be_f64&quot;</span>, <span class="kw">move </span>|input: <span class="kw-2">&amp;mut </span>I| {
+    trace(<span class="string">"be_f64"</span>, <span class="kw">move </span>|input: <span class="kw-2">&amp;mut </span>I| {
         be_uint::&lt;<span class="kw">_</span>, u64, <span class="kw">_</span>&gt;(input, <span class="number">8</span>).map(f64::from_bits)
     })
     .parse_next(input)
@@ -4715,8 +4757,8 @@
 ///       le_f32.parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(&amp;[0x00, 0x00, 0x48, 0x41][..]), Ok((&amp;b&quot;&quot;[..], 12.5)));
-/// assert_eq!(parser(&amp;b&quot;abc&quot;[..]), Err(ErrMode::Backtrack(InputError::new(&amp;b&quot;abc&quot;[..], ErrorKind::Slice))));
+/// assert_eq!(parser(&amp;[0x00, 0x00, 0x48, 0x41][..]), Ok((&amp;b""[..], 12.5)));
+/// assert_eq!(parser(&amp;b"abc"[..]), Err(ErrMode::Backtrack(InputError::new(&amp;b"abc"[..], ErrorKind::Slice))));
 /// ```
 ///
 /// ```rust
@@ -4729,7 +4771,7 @@
 ///       le_f32::&lt;_, InputError&lt;_&gt;&gt;.parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(Partial::new(&amp;[0x00, 0x00, 0x48, 0x41][..])), Ok((Partial::new(&amp;b&quot;&quot;[..]), 12.5)));
+/// assert_eq!(parser(Partial::new(&amp;[0x00, 0x00, 0x48, 0x41][..])), Ok((Partial::new(&amp;b""[..]), 12.5)));
 /// assert_eq!(parser(Partial::new(&amp;[0x01][..])), Err(ErrMode::Incomplete(Needed::new(3))));
 /// ```
 </span><span class="attr">#[inline(always)]
@@ -4739,7 +4781,7 @@
     I: Stream&lt;Token = u8&gt;,
     &lt;I <span class="kw">as </span>Stream&gt;::Slice: AsBytes,
 {
-    trace(<span class="string">&quot;le_f32&quot;</span>, <span class="kw">move </span>|input: <span class="kw-2">&amp;mut </span>I| {
+    trace(<span class="string">"le_f32"</span>, <span class="kw">move </span>|input: <span class="kw-2">&amp;mut </span>I| {
         le_uint::&lt;<span class="kw">_</span>, u32, <span class="kw">_</span>&gt;(input, <span class="number">4</span>).map(f32::from_bits)
     })
     .parse_next(input)
@@ -4763,8 +4805,8 @@
 ///       le_f64.parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(&amp;[0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x29, 0x40][..]), Ok((&amp;b&quot;&quot;[..], 12.5)));
-/// assert_eq!(parser(&amp;b&quot;abc&quot;[..]), Err(ErrMode::Backtrack(InputError::new(&amp;b&quot;abc&quot;[..], ErrorKind::Slice))));
+/// assert_eq!(parser(&amp;[0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x29, 0x40][..]), Ok((&amp;b""[..], 12.5)));
+/// assert_eq!(parser(&amp;b"abc"[..]), Err(ErrMode::Backtrack(InputError::new(&amp;b"abc"[..], ErrorKind::Slice))));
 /// ```
 ///
 /// ```rust
@@ -4777,7 +4819,7 @@
 ///       le_f64::&lt;_, InputError&lt;_&gt;&gt;.parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(Partial::new(&amp;[0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x48, 0x41][..])), Ok((Partial::new(&amp;b&quot;&quot;[..]), 3145728.0)));
+/// assert_eq!(parser(Partial::new(&amp;[0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x48, 0x41][..])), Ok((Partial::new(&amp;b""[..]), 3145728.0)));
 /// assert_eq!(parser(Partial::new(&amp;[0x01][..])), Err(ErrMode::Incomplete(Needed::new(7))));
 /// ```
 </span><span class="attr">#[inline(always)]
@@ -4787,7 +4829,7 @@
     I: Stream&lt;Token = u8&gt;,
     &lt;I <span class="kw">as </span>Stream&gt;::Slice: AsBytes,
 {
-    trace(<span class="string">&quot;be_f64&quot;</span>, <span class="kw">move </span>|input: <span class="kw-2">&amp;mut </span>I| {
+    trace(<span class="string">"be_f64"</span>, <span class="kw">move </span>|input: <span class="kw-2">&amp;mut </span>I| {
         le_uint::&lt;<span class="kw">_</span>, u64, <span class="kw">_</span>&gt;(input, <span class="number">8</span>).map(f64::from_bits)
     })
     .parse_next(input)
@@ -4814,15 +4856,15 @@
 ///     f32(winnow::binary::Endianness::Big).parse_peek(s)
 /// };
 ///
-/// assert_eq!(be_f32(&amp;[0x41, 0x48, 0x00, 0x00][..]), Ok((&amp;b&quot;&quot;[..], 12.5)));
-/// assert_eq!(be_f32(&amp;b&quot;abc&quot;[..]), Err(ErrMode::Backtrack(InputError::new(&amp;b&quot;abc&quot;[..], ErrorKind::Slice))));
+/// assert_eq!(be_f32(&amp;[0x41, 0x48, 0x00, 0x00][..]), Ok((&amp;b""[..], 12.5)));
+/// assert_eq!(be_f32(&amp;b"abc"[..]), Err(ErrMode::Backtrack(InputError::new(&amp;b"abc"[..], ErrorKind::Slice))));
 ///
 /// let le_f32 = |s| {
 ///     f32(winnow::binary::Endianness::Little).parse_peek(s)
 /// };
 ///
-/// assert_eq!(le_f32(&amp;[0x00, 0x00, 0x48, 0x41][..]), Ok((&amp;b&quot;&quot;[..], 12.5)));
-/// assert_eq!(le_f32(&amp;b&quot;abc&quot;[..]), Err(ErrMode::Backtrack(InputError::new(&amp;b&quot;abc&quot;[..], ErrorKind::Slice))));
+/// assert_eq!(le_f32(&amp;[0x00, 0x00, 0x48, 0x41][..]), Ok((&amp;b""[..], 12.5)));
+/// assert_eq!(le_f32(&amp;b"abc"[..]), Err(ErrMode::Backtrack(InputError::new(&amp;b"abc"[..], ErrorKind::Slice))));
 /// ```
 ///
 /// ```rust
@@ -4836,15 +4878,15 @@
 ///     f32::&lt;_, InputError&lt;_&gt;&gt;(winnow::binary::Endianness::Big).parse_peek(s)
 /// };
 ///
-/// assert_eq!(be_f32(Partial::new(&amp;[0x41, 0x48, 0x00, 0x00][..])), Ok((Partial::new(&amp;b&quot;&quot;[..]), 12.5)));
-/// assert_eq!(be_f32(Partial::new(&amp;b&quot;abc&quot;[..])), Err(ErrMode::Incomplete(Needed::new(1))));
+/// assert_eq!(be_f32(Partial::new(&amp;[0x41, 0x48, 0x00, 0x00][..])), Ok((Partial::new(&amp;b""[..]), 12.5)));
+/// assert_eq!(be_f32(Partial::new(&amp;b"abc"[..])), Err(ErrMode::Incomplete(Needed::new(1))));
 ///
 /// let le_f32 = |s| {
 ///     f32::&lt;_, InputError&lt;_&gt;&gt;(winnow::binary::Endianness::Little).parse_peek(s)
 /// };
 ///
-/// assert_eq!(le_f32(Partial::new(&amp;[0x00, 0x00, 0x48, 0x41][..])), Ok((Partial::new(&amp;b&quot;&quot;[..]), 12.5)));
-/// assert_eq!(le_f32(Partial::new(&amp;b&quot;abc&quot;[..])), Err(ErrMode::Incomplete(Needed::new(1))));
+/// assert_eq!(le_f32(Partial::new(&amp;[0x00, 0x00, 0x48, 0x41][..])), Ok((Partial::new(&amp;b""[..]), 12.5)));
+/// assert_eq!(le_f32(Partial::new(&amp;b"abc"[..])), Err(ErrMode::Incomplete(Needed::new(1))));
 /// ```
 </span><span class="attr">#[inline(always)]
 </span><span class="kw">pub fn </span>f32&lt;I, E: ParserError&lt;I&gt;&gt;(endian: Endianness) -&gt; <span class="kw">impl </span>Parser&lt;I, f32, E&gt;
@@ -4857,9 +4899,9 @@
         <span class="kw">match </span>endian {
             Endianness::Big =&gt; be_f32,
             Endianness::Little =&gt; le_f32,
-            <span class="attr">#[cfg(target_endian = <span class="string">&quot;big&quot;</span>)]
+            <span class="attr">#[cfg(target_endian = <span class="string">"big"</span>)]
             </span>Endianness::Native =&gt; be_f32,
-            <span class="attr">#[cfg(target_endian = <span class="string">&quot;little&quot;</span>)]
+            <span class="attr">#[cfg(target_endian = <span class="string">"little"</span>)]
             </span>Endianness::Native =&gt; le_f32,
         }
     }(input)
@@ -4886,15 +4928,15 @@
 ///     f64(winnow::binary::Endianness::Big).parse_peek(s)
 /// };
 ///
-/// assert_eq!(be_f64(&amp;[0x40, 0x29, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00][..]), Ok((&amp;b&quot;&quot;[..], 12.5)));
-/// assert_eq!(be_f64(&amp;b&quot;abc&quot;[..]), Err(ErrMode::Backtrack(InputError::new(&amp;b&quot;abc&quot;[..], ErrorKind::Slice))));
+/// assert_eq!(be_f64(&amp;[0x40, 0x29, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00][..]), Ok((&amp;b""[..], 12.5)));
+/// assert_eq!(be_f64(&amp;b"abc"[..]), Err(ErrMode::Backtrack(InputError::new(&amp;b"abc"[..], ErrorKind::Slice))));
 ///
 /// let le_f64 = |s| {
 ///     f64(winnow::binary::Endianness::Little).parse_peek(s)
 /// };
 ///
-/// assert_eq!(le_f64(&amp;[0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x29, 0x40][..]), Ok((&amp;b&quot;&quot;[..], 12.5)));
-/// assert_eq!(le_f64(&amp;b&quot;abc&quot;[..]), Err(ErrMode::Backtrack(InputError::new(&amp;b&quot;abc&quot;[..], ErrorKind::Slice))));
+/// assert_eq!(le_f64(&amp;[0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x29, 0x40][..]), Ok((&amp;b""[..], 12.5)));
+/// assert_eq!(le_f64(&amp;b"abc"[..]), Err(ErrMode::Backtrack(InputError::new(&amp;b"abc"[..], ErrorKind::Slice))));
 /// ```
 ///
 /// ```rust
@@ -4908,15 +4950,15 @@
 ///     f64::&lt;_, InputError&lt;_&gt;&gt;(winnow::binary::Endianness::Big).parse_peek(s)
 /// };
 ///
-/// assert_eq!(be_f64(Partial::new(&amp;[0x40, 0x29, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00][..])), Ok((Partial::new(&amp;b&quot;&quot;[..]), 12.5)));
-/// assert_eq!(be_f64(Partial::new(&amp;b&quot;abc&quot;[..])), Err(ErrMode::Incomplete(Needed::new(5))));
+/// assert_eq!(be_f64(Partial::new(&amp;[0x40, 0x29, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00][..])), Ok((Partial::new(&amp;b""[..]), 12.5)));
+/// assert_eq!(be_f64(Partial::new(&amp;b"abc"[..])), Err(ErrMode::Incomplete(Needed::new(5))));
 ///
 /// let le_f64 = |s| {
 ///     f64::&lt;_, InputError&lt;_&gt;&gt;(winnow::binary::Endianness::Little).parse_peek(s)
 /// };
 ///
-/// assert_eq!(le_f64(Partial::new(&amp;[0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x29, 0x40][..])), Ok((Partial::new(&amp;b&quot;&quot;[..]), 12.5)));
-/// assert_eq!(le_f64(Partial::new(&amp;b&quot;abc&quot;[..])), Err(ErrMode::Incomplete(Needed::new(5))));
+/// assert_eq!(le_f64(Partial::new(&amp;[0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x29, 0x40][..])), Ok((Partial::new(&amp;b""[..]), 12.5)));
+/// assert_eq!(le_f64(Partial::new(&amp;b"abc"[..])), Err(ErrMode::Incomplete(Needed::new(5))));
 /// ```
 </span><span class="attr">#[inline(always)]
 </span><span class="kw">pub fn </span>f64&lt;I, E: ParserError&lt;I&gt;&gt;(endian: Endianness) -&gt; <span class="kw">impl </span>Parser&lt;I, f64, E&gt;
@@ -4929,16 +4971,19 @@
         <span class="kw">match </span>endian {
             Endianness::Big =&gt; be_f64,
             Endianness::Little =&gt; le_f64,
-            <span class="attr">#[cfg(target_endian = <span class="string">&quot;big&quot;</span>)]
+            <span class="attr">#[cfg(target_endian = <span class="string">"big"</span>)]
             </span>Endianness::Native =&gt; be_f64,
-            <span class="attr">#[cfg(target_endian = <span class="string">&quot;little&quot;</span>)]
+            <span class="attr">#[cfg(target_endian = <span class="string">"little"</span>)]
             </span>Endianness::Native =&gt; le_f64,
         }
     }(input)
 }
 
-<span class="doccomment">/// Gets a number from the parser and returns a
-/// subslice of the input of that size.
+<span class="doccomment">/// Get a length-prefixed slice ([TLV](https://en.wikipedia.org/wiki/Type-length-value))
+///
+/// To apply a parser to the returned slice, see [`length_and_then`].
+///
+/// If the count is for something besides tokens, see [`length_repeat`].
 ///
 /// *Complete version*: Returns an error if there is not enough input data.
 ///
@@ -4954,23 +4999,23 @@
 /// # use winnow::prelude::*;
 /// use winnow::Bytes;
 /// use winnow::binary::be_u16;
-/// use winnow::binary::length_data;
+/// use winnow::binary::length_take;
 /// use winnow::token::tag;
 ///
-/// type Stream&lt;&#39;i&gt; = Partial&lt;&amp;&#39;i Bytes&gt;;
+/// type Stream&lt;'i&gt; = Partial&lt;&amp;'i Bytes&gt;;
 ///
-/// fn stream(b: &amp;[u8]) -&gt; Stream&lt;&#39;_&gt; {
+/// fn stream(b: &amp;[u8]) -&gt; Stream&lt;'_&gt; {
 ///     Partial::new(Bytes::new(b))
 /// }
 ///
-/// fn parser(s: Stream&lt;&#39;_&gt;) -&gt; IResult&lt;Stream&lt;&#39;_&gt;, &amp;[u8]&gt; {
-///   length_data(be_u16).parse_peek(s)
+/// fn parser(s: Stream&lt;'_&gt;) -&gt; IResult&lt;Stream&lt;'_&gt;, &amp;[u8]&gt; {
+///   length_take(be_u16).parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(stream(b&quot;\x00\x03abcefg&quot;)), Ok((stream(&amp;b&quot;efg&quot;[..]), &amp;b&quot;abc&quot;[..])));
-/// assert_eq!(parser(stream(b&quot;\x00\x03a&quot;)), Err(ErrMode::Incomplete(Needed::new(2))));
+/// assert_eq!(parser(stream(b"\x00\x03abcefg")), Ok((stream(&amp;b"efg"[..]), &amp;b"abc"[..])));
+/// assert_eq!(parser(stream(b"\x00\x03a")), Err(ErrMode::Incomplete(Needed::new(2))));
 /// ```
-</span><span class="kw">pub fn </span>length_data&lt;I, N, E, F&gt;(<span class="kw-2">mut </span>f: F) -&gt; <span class="kw">impl </span>Parser&lt;I, &lt;I <span class="kw">as </span>Stream&gt;::Slice, E&gt;
+</span><span class="kw">pub fn </span>length_take&lt;I, N, E, F&gt;(<span class="kw-2">mut </span>f: F) -&gt; <span class="kw">impl </span>Parser&lt;I, &lt;I <span class="kw">as </span>Stream&gt;::Slice, E&gt;
 <span class="kw">where
     </span>I: StreamIsPartial,
     I: Stream,
@@ -4978,18 +5023,27 @@
     F: Parser&lt;I, N, E&gt;,
     E: ParserError&lt;I&gt;,
 {
-    trace(<span class="string">&quot;length_data&quot;</span>, <span class="kw">move </span>|i: <span class="kw-2">&amp;mut </span>I| {
+    trace(<span class="string">"length_take"</span>, <span class="kw">move </span>|i: <span class="kw-2">&amp;mut </span>I| {
         <span class="kw">let </span>length = f.parse_next(i)<span class="question-mark">?</span>;
 
         <span class="kw">crate</span>::token::take(length).parse_next(i)
     })
 }
 
-<span class="doccomment">/// Gets a number from the first parser,
-/// takes a subslice of the input of that size,
-/// then applies the second parser on that subslice.
-/// If the second parser returns `Incomplete`,
-/// `length_value` will return an error.
+<span class="doccomment">/// Deprecated since 0.5.27, replaced with [`length_take`]
+</span><span class="attr">#[deprecated(since = <span class="string">"0.5.27"</span>, note = <span class="string">"Replaced with `length_take`"</span>)]
+</span><span class="kw">pub fn </span>length_data&lt;I, N, E, F&gt;(f: F) -&gt; <span class="kw">impl </span>Parser&lt;I, &lt;I <span class="kw">as </span>Stream&gt;::Slice, E&gt;
+<span class="kw">where
+    </span>I: StreamIsPartial,
+    I: Stream,
+    N: ToUsize,
+    F: Parser&lt;I, N, E&gt;,
+    E: ParserError&lt;I&gt;,
+{
+    length_take(f)
+}
+
+<span class="doccomment">/// Parse a length-prefixed slice ([TLV](https://en.wikipedia.org/wiki/Type-length-value))
 ///
 /// *Complete version*: Returns an error if there is not enough input data.
 ///
@@ -5006,30 +5060,30 @@
 /// # use winnow::prelude::*;
 /// use winnow::Bytes;
 /// use winnow::binary::be_u16;
-/// use winnow::binary::length_value;
+/// use winnow::binary::length_and_then;
 /// use winnow::token::tag;
 ///
-/// type Stream&lt;&#39;i&gt; = Partial&lt;&amp;&#39;i Bytes&gt;;
+/// type Stream&lt;'i&gt; = Partial&lt;&amp;'i Bytes&gt;;
 ///
-/// fn stream(b: &amp;[u8]) -&gt; Stream&lt;&#39;_&gt; {
+/// fn stream(b: &amp;[u8]) -&gt; Stream&lt;'_&gt; {
 ///     Partial::new(Bytes::new(b))
 /// }
 ///
-/// fn complete_stream(b: &amp;[u8]) -&gt; Stream&lt;&#39;_&gt; {
+/// fn complete_stream(b: &amp;[u8]) -&gt; Stream&lt;'_&gt; {
 ///     let mut p = Partial::new(Bytes::new(b));
 ///     let _ = p.complete();
 ///     p
 /// }
 ///
-/// fn parser(s: Stream&lt;&#39;_&gt;) -&gt; IResult&lt;Stream&lt;&#39;_&gt;, &amp;[u8]&gt; {
-///   length_value(be_u16, &quot;abc&quot;).parse_peek(s)
+/// fn parser(s: Stream&lt;'_&gt;) -&gt; IResult&lt;Stream&lt;'_&gt;, &amp;[u8]&gt; {
+///   length_and_then(be_u16, "abc").parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(stream(b&quot;\x00\x03abcefg&quot;)), Ok((stream(&amp;b&quot;efg&quot;[..]), &amp;b&quot;abc&quot;[..])));
-/// assert_eq!(parser(stream(b&quot;\x00\x03123123&quot;)), Err(ErrMode::Backtrack(InputError::new(complete_stream(&amp;b&quot;123&quot;[..]), ErrorKind::Tag))));
-/// assert_eq!(parser(stream(b&quot;\x00\x03a&quot;)), Err(ErrMode::Incomplete(Needed::new(2))));
+/// assert_eq!(parser(stream(b"\x00\x03abcefg")), Ok((stream(&amp;b"efg"[..]), &amp;b"abc"[..])));
+/// assert_eq!(parser(stream(b"\x00\x03123123")), Err(ErrMode::Backtrack(InputError::new(complete_stream(&amp;b"123"[..]), ErrorKind::Tag))));
+/// assert_eq!(parser(stream(b"\x00\x03a")), Err(ErrMode::Incomplete(Needed::new(2))));
 /// ```
-</span><span class="kw">pub fn </span>length_value&lt;I, O, N, E, F, G&gt;(<span class="kw-2">mut </span>f: F, <span class="kw-2">mut </span>g: G) -&gt; <span class="kw">impl </span>Parser&lt;I, O, E&gt;
+</span><span class="kw">pub fn </span>length_and_then&lt;I, O, N, E, F, G&gt;(<span class="kw-2">mut </span>f: F, <span class="kw-2">mut </span>g: G) -&gt; <span class="kw">impl </span>Parser&lt;I, O, E&gt;
 <span class="kw">where
     </span>I: StreamIsPartial,
     I: Stream + UpdateSlice + Clone,
@@ -5038,8 +5092,8 @@
     G: Parser&lt;I, O, E&gt;,
     E: ParserError&lt;I&gt;,
 {
-    trace(<span class="string">&quot;length_value&quot;</span>, <span class="kw">move </span>|i: <span class="kw-2">&amp;mut </span>I| {
-        <span class="kw">let </span>data = length_data(f.by_ref()).parse_next(i)<span class="question-mark">?</span>;
+    trace(<span class="string">"length_and_then"</span>, <span class="kw">move </span>|i: <span class="kw-2">&amp;mut </span>I| {
+        <span class="kw">let </span>data = length_take(f.by_ref()).parse_next(i)<span class="question-mark">?</span>;
         <span class="kw">let </span><span class="kw-2">mut </span>data = I::update_slice(i.clone(), data);
         <span class="kw">let _ </span>= data.complete();
         <span class="kw">let </span>o = g.by_ref().complete_err().parse_next(<span class="kw-2">&amp;mut </span>data)<span class="question-mark">?</span>;
@@ -5047,8 +5101,23 @@
     })
 }
 
-<span class="doccomment">/// Gets a number from the first parser,
-/// then applies the second parser that many times.
+<span class="doccomment">/// Deprecated since 0.5.27, replaced with [`length_and_then`]
+</span><span class="attr">#[deprecated(since = <span class="string">"0.5.27"</span>, note = <span class="string">"Replaced with `length_and_then`"</span>)]
+</span><span class="kw">pub fn </span>length_value&lt;I, O, N, E, F, G&gt;(f: F, g: G) -&gt; <span class="kw">impl </span>Parser&lt;I, O, E&gt;
+<span class="kw">where
+    </span>I: StreamIsPartial,
+    I: Stream + UpdateSlice + Clone,
+    N: ToUsize,
+    F: Parser&lt;I, N, E&gt;,
+    G: Parser&lt;I, O, E&gt;,
+    E: ParserError&lt;I&gt;,
+{
+    length_and_then(f, g)
+}
+
+<span class="doccomment">/// [`Accumulate`] a length-prefixed sequence of values ([TLV](https://en.wikipedia.org/wiki/Type-length-value))
+///
+/// If the length represents token counts, see instead [`length_take`]
 ///
 /// # Arguments
 /// * `f` The parser to apply to obtain the count.
@@ -5057,7 +5126,7 @@
 /// # Example
 ///
 /// ```rust
-/// # #[cfg(feature = &quot;std&quot;)] {
+/// # #[cfg(feature = "std")] {
 /// # use winnow::prelude::*;
 /// # use winnow::{error::ErrMode, error::{InputError, ErrorKind}, error::Needed};
 /// # use winnow::prelude::*;
@@ -5066,24 +5135,24 @@
 /// use winnow::binary::length_count;
 /// use winnow::token::tag;
 ///
-/// type Stream&lt;&#39;i&gt; = &amp;&#39;i Bytes;
+/// type Stream&lt;'i&gt; = &amp;'i Bytes;
 ///
-/// fn stream(b: &amp;[u8]) -&gt; Stream&lt;&#39;_&gt; {
+/// fn stream(b: &amp;[u8]) -&gt; Stream&lt;'_&gt; {
 ///     Bytes::new(b)
 /// }
 ///
-/// fn parser(s: Stream&lt;&#39;_&gt;) -&gt; IResult&lt;Stream&lt;&#39;_&gt;, Vec&lt;&amp;[u8]&gt;&gt; {
+/// fn parser(s: Stream&lt;'_&gt;) -&gt; IResult&lt;Stream&lt;'_&gt;, Vec&lt;&amp;[u8]&gt;&gt; {
 ///   length_count(u8.map(|i| {
-///      println!(&quot;got number: {}&quot;, i);
+///      println!("got number: {}", i);
 ///      i
-///   }), &quot;abc&quot;).parse_peek(s)
+///   }), "abc").parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(stream(b&quot;\x02abcabcabc&quot;)), Ok((stream(b&quot;abc&quot;), vec![&amp;b&quot;abc&quot;[..], &amp;b&quot;abc&quot;[..]])));
-/// assert_eq!(parser(stream(b&quot;\x03123123123&quot;)), Err(ErrMode::Backtrack(InputError::new(stream(b&quot;123123123&quot;), ErrorKind::Tag))));
+/// assert_eq!(parser(stream(b"\x02abcabcabc")), Ok((stream(b"abc"), vec![&amp;b"abc"[..], &amp;b"abc"[..]])));
+/// assert_eq!(parser(stream(b"\x03123123123")), Err(ErrMode::Backtrack(InputError::new(stream(b"123123123"), ErrorKind::Tag))));
 /// # }
 /// ```
-</span><span class="kw">pub fn </span>length_count&lt;I, O, C, N, E, F, G&gt;(<span class="kw-2">mut </span>f: F, <span class="kw-2">mut </span>g: G) -&gt; <span class="kw">impl </span>Parser&lt;I, C, E&gt;
+</span><span class="kw">pub fn </span>length_repeat&lt;I, O, C, N, E, F, G&gt;(<span class="kw-2">mut </span>f: F, <span class="kw-2">mut </span>g: G) -&gt; <span class="kw">impl </span>Parser&lt;I, C, E&gt;
 <span class="kw">where
     </span>I: Stream,
     N: ToUsize,
@@ -5092,10 +5161,24 @@
     G: Parser&lt;I, O, E&gt;,
     E: ParserError&lt;I&gt;,
 {
-    trace(<span class="string">&quot;length_count&quot;</span>, <span class="kw">move </span>|i: <span class="kw-2">&amp;mut </span>I| {
+    trace(<span class="string">"length_repeat"</span>, <span class="kw">move </span>|i: <span class="kw-2">&amp;mut </span>I| {
         <span class="kw">let </span>n = f.parse_next(i)<span class="question-mark">?</span>;
         <span class="kw">let </span>n = n.to_usize();
         repeat(n, g.by_ref()).parse_next(i)
     })
+}
+
+<span class="doccomment">/// Deprecated since 0.5.27, replaced with [`length_repeat`]
+</span><span class="attr">#[deprecated(since = <span class="string">"0.5.27"</span>, note = <span class="string">"Replaced with `length_repeat`"</span>)]
+</span><span class="kw">pub fn </span>length_count&lt;I, O, C, N, E, F, G&gt;(f: F, g: G) -&gt; <span class="kw">impl </span>Parser&lt;I, C, E&gt;
+<span class="kw">where
+    </span>I: Stream,
+    N: ToUsize,
+    C: Accumulate&lt;O&gt;,
+    F: Parser&lt;I, N, E&gt;,
+    G: Parser&lt;I, O, E&gt;,
+    E: ParserError&lt;I&gt;,
+{
+    length_repeat(f, g)
 }
 </code></pre></div></section></main></body></html>

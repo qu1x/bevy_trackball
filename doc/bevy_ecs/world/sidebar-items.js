@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":["error","unsafe_world_cell"],"struct":["EntityMut","EntityRef","EntityWorldMut","SpawnBatchIter","World","WorldBorrow","WorldBorrowMut","WorldCell","WorldId"],"trait":["FromWorld"]};
+window.SIDEBAR_ITEMS = {"enum":["Entry"],"mod":["error","unsafe_world_cell"],"struct":["EntityMut","EntityRef","EntityWorldMut","FilteredEntityMut","FilteredEntityRef","OccupiedEntry","SpawnBatchIter","VacantEntry","World","WorldBorrow","WorldBorrowMut","WorldCell","WorldId"],"trait":["FromWorld"]};

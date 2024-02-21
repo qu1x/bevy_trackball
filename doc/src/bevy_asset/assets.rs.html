@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_asset-0.12.1/src/assets.rs`."><title>assets.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="bevy_asset" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../bevy_asset/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_asset-0.13.0/src/assets.rs`."><title>assets.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="bevy_asset" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -576,14 +577,33 @@
 <a href="#576" id="576">576</a>
 <a href="#577" id="577">577</a>
 <a href="#578" id="578">578</a>
-</pre></div><pre class="rust"><code><span class="kw">use crate</span>::{<span class="self">self </span><span class="kw">as </span>bevy_asset, LoadState};
-<span class="kw">use crate</span>::{Asset, AssetEvent, AssetHandleProvider, AssetId, AssetServer, Handle, UntypedHandle};
+<a href="#579" id="579">579</a>
+<a href="#580" id="580">580</a>
+<a href="#581" id="581">581</a>
+<a href="#582" id="582">582</a>
+<a href="#583" id="583">583</a>
+<a href="#584" id="584">584</a>
+<a href="#585" id="585">585</a>
+<a href="#586" id="586">586</a>
+<a href="#587" id="587">587</a>
+<a href="#588" id="588">588</a>
+<a href="#589" id="589">589</a>
+<a href="#590" id="590">590</a>
+<a href="#591" id="591">591</a>
+<a href="#592" id="592">592</a>
+<a href="#593" id="593">593</a>
+<a href="#594" id="594">594</a>
+<a href="#595" id="595">595</a>
+</pre></div><pre class="rust"><code><span class="kw">use crate</span>::{<span class="self">self </span><span class="kw">as </span>bevy_asset};
+<span class="kw">use crate</span>::{
+    Asset, AssetEvent, AssetHandleProvider, AssetId, AssetServer, Handle, LoadState, UntypedHandle,
+};
 <span class="kw">use </span>bevy_ecs::{
     prelude::EventWriter,
     system::{Res, ResMut, Resource},
 };
-<span class="kw">use </span>bevy_reflect::{Reflect, TypePath, Uuid};
-<span class="kw">use </span>bevy_utils::HashMap;
+<span class="kw">use </span>bevy_reflect::{Reflect, TypePath};
+<span class="kw">use </span>bevy_utils::{HashMap, Uuid};
 <span class="kw">use </span>crossbeam_channel::{Receiver, Sender};
 <span class="kw">use </span>serde::{Deserialize, Serialize};
 <span class="kw">use </span>std::{
@@ -653,7 +673,7 @@
     }
 }
 
-<span class="doccomment">/// A &quot;loaded asset&quot; containing the untyped handle for an asset stored in a given [`AssetPath`].
+<span class="doccomment">/// A "loaded asset" containing the untyped handle for an asset stored in a given [`AssetPath`].
 ///
 /// [`AssetPath`]: crate::AssetPath
 </span><span class="attr">#[derive(Asset, TypePath)]
@@ -662,7 +682,7 @@
     </span><span class="kw">pub </span>handle: UntypedHandle,
 }
 
-<span class="comment">// PERF: do we actually need this to be an enum? Can we just use an &quot;invalid&quot; generation instead
+<span class="comment">// PERF: do we actually need this to be an enum? Can we just use an "invalid" generation instead
 </span><span class="attr">#[derive(Default)]
 </span><span class="kw">enum </span>Entry&lt;A: Asset&gt; {
     <span class="doccomment">/// None is an indicator that this entry does not have live handles.
@@ -723,7 +743,7 @@
                 })
             }
         } <span class="kw">else </span>{
-            <span class="macro">unreachable!</span>(<span class="string">&quot;entries should always be valid after a flush&quot;</span>);
+            <span class="macro">unreachable!</span>(<span class="string">"entries should always be valid after a flush"</span>);
         }
     }
 
@@ -817,7 +837,7 @@
         <span class="self">self</span>.allocator.clone()
     }
 
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>ids(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw">impl </span>Iterator&lt;Item = AssetId&lt;A&gt;&gt; + <span class="lifetime">&#39;_ </span>{
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>ids(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw">impl </span>Iterator&lt;Item = AssetId&lt;A&gt;&gt; + <span class="lifetime">'_ </span>{
         <span class="self">self</span>.storage
             .iter()
             .enumerate()
@@ -839,7 +859,7 @@
 
 <span class="doccomment">/// Stores [`Asset`] values identified by their [`AssetId`].
 ///
-/// Assets identified by [`AssetId::Index`] will be stored in a &quot;dense&quot; vec-like storage. This is more efficient, but it means that
+/// Assets identified by [`AssetId::Index`] will be stored in a "dense" vec-like storage. This is more efficient, but it means that
 /// the assets can only be identified at runtime. This is the default behavior.
 ///
 /// Assets identified by [`AssetId::Uuid`] will be stored in a hashmap. This is less efficient, but it means that the assets can be referenced
@@ -875,6 +895,11 @@
         <span class="self">self</span>.handle_provider.clone()
     }
 
+    <span class="doccomment">/// Reserves a new [`Handle`] for an asset that will be stored in this collection.
+    </span><span class="kw">pub fn </span>reserve_handle(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Handle&lt;A&gt; {
+        <span class="self">self</span>.handle_provider.reserve_handle().typed::&lt;A&gt;()
+    }
+
     <span class="doccomment">/// Inserts the given `asset`, identified by the given `id`. If an asset already exists for `id`, it will be replaced.
     </span><span class="kw">pub fn </span>insert(<span class="kw-2">&amp;mut </span><span class="self">self</span>, id: <span class="kw">impl </span>Into&lt;AssetId&lt;A&gt;&gt;, asset: A) {
         <span class="kw">let </span>id: AssetId&lt;A&gt; = id.into();
@@ -897,7 +922,7 @@
     ) -&gt; <span class="kw-2">&amp;mut </span>A {
         <span class="kw">let </span>id: AssetId&lt;A&gt; = id.into();
         <span class="kw">if </span><span class="self">self</span>.get(id).is_none() {
-            <span class="self">self</span>.insert(id, (insert_fn)());
+            <span class="self">self</span>.insert(id, insert_fn());
         }
         <span class="self">self</span>.get_mut(id).unwrap()
     }
@@ -937,9 +962,9 @@
 
     <span class="doccomment">/// Adds the given `asset` and allocates a new strong [`Handle`] for it.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>add(<span class="kw-2">&amp;mut </span><span class="self">self</span>, asset: A) -&gt; Handle&lt;A&gt; {
+    </span><span class="kw">pub fn </span>add(<span class="kw-2">&amp;mut </span><span class="self">self</span>, asset: <span class="kw">impl </span>Into&lt;A&gt;) -&gt; Handle&lt;A&gt; {
         <span class="kw">let </span>index = <span class="self">self</span>.dense_storage.allocator.reserve();
-        <span class="self">self</span>.insert_with_index(index, asset).unwrap();
+        <span class="self">self</span>.insert_with_index(index, asset.into()).unwrap();
         Handle::Strong(
             <span class="self">self</span>.handle_provider
                 .get_handle(index.into(), <span class="bool-val">false</span>, <span class="prelude-val">None</span>, <span class="prelude-val">None</span>),
@@ -1018,7 +1043,7 @@
     }
 
     <span class="doccomment">/// Returns an iterator over the [`AssetId`] of every [`Asset`] stored in this collection.
-    </span><span class="kw">pub fn </span>ids(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw">impl </span>Iterator&lt;Item = AssetId&lt;A&gt;&gt; + <span class="lifetime">&#39;_ </span>{
+    </span><span class="kw">pub fn </span>ids(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw">impl </span>Iterator&lt;Item = AssetId&lt;A&gt;&gt; + <span class="lifetime">'_ </span>{
         <span class="self">self</span>.dense_storage
             .ids()
             .chain(<span class="self">self</span>.hash_map.keys().map(|uuid| AssetId::from(<span class="kw-2">*</span>uuid)))
@@ -1053,7 +1078,7 @@
 
     <span class="doccomment">/// Returns an iterator over the [`AssetId`] and mutable [`Asset`] ref of every asset in this collection.
     </span><span class="comment">// PERF: this could be accelerated if we implement a skip list. Consider the cost/benefits
-    </span><span class="kw">pub fn </span>iter_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; AssetsMutIterator&lt;<span class="lifetime">&#39;_</span>, A&gt; {
+    </span><span class="kw">pub fn </span>iter_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; AssetsMutIterator&lt;<span class="lifetime">'_</span>, A&gt; {
         AssetsMutIterator {
             dense_storage: <span class="self">self</span>.dense_storage.storage.iter_mut().enumerate(),
             hash_map: <span class="self">self</span>.hash_map.iter_mut(),
@@ -1062,22 +1087,23 @@
     }
 
     <span class="doccomment">/// A system that synchronizes the state of assets in this collection with the [`AssetServer`]. This manages
-    /// [`Handle`] drop events and adds queued [`AssetEvent`] values to their [`Events`] resource.
-    ///
-    /// [`Events`]: bevy_ecs::event::Events
+    /// [`Handle`] drop events.
     </span><span class="kw">pub fn </span>track_assets(<span class="kw-2">mut </span>assets: ResMut&lt;<span class="self">Self</span>&gt;, asset_server: Res&lt;AssetServer&gt;) {
         <span class="kw">let </span>assets = <span class="kw-2">&amp;mut *</span>assets;
         <span class="comment">// note that we must hold this lock for the entire duration of this function to ensure
         // that `asset_server.load` calls that occur during it block, which ensures that
-        // re-loads are kicked off appropriately. This function must be &quot;transactional&quot; relative
+        // re-loads are kicked off appropriately. This function must be "transactional" relative
         // to other asset info operations
         </span><span class="kw">let </span><span class="kw-2">mut </span>infos = asset_server.data.infos.write();
         <span class="kw">let </span><span class="kw-2">mut </span>not_ready = Vec::new();
         <span class="kw">while let </span><span class="prelude-val">Ok</span>(drop_event) = assets.handle_provider.drop_receiver.try_recv() {
-            <span class="kw">let </span>id = drop_event.id;
+            <span class="kw">let </span>id = drop_event.id.typed();
+
+            assets.queued_events.push(AssetEvent::Unused { id });
+
             <span class="kw">if </span>drop_event.asset_server_managed {
-                <span class="kw">let </span>untyped = id.untyped(TypeId::of::&lt;A&gt;());
-                <span class="kw">if let </span><span class="prelude-val">Some</span>(info) = infos.get(untyped) {
+                <span class="kw">let </span>untyped_id = drop_event.id.untyped(TypeId::of::&lt;A&gt;());
+                <span class="kw">if let </span><span class="prelude-val">Some</span>(info) = infos.get(untyped_id) {
                     <span class="kw">if </span>info.load_state == LoadState::Loading
                         || info.load_state == LoadState::NotLoaded
                     {
@@ -1085,13 +1111,14 @@
                         <span class="kw">continue</span>;
                     }
                 }
-                <span class="kw">if </span>infos.process_handle_drop(untyped) {
-                    assets.remove_dropped(id.typed());
+                <span class="kw">if </span>infos.process_handle_drop(untyped_id) {
+                    assets.remove_dropped(id);
                 }
             } <span class="kw">else </span>{
-                assets.remove_dropped(id.typed());
+                assets.remove_dropped(id);
             }
         }
+
         <span class="comment">// TODO: this is _extremely_ inefficient find a better fix
         // This will also loop failed assets indefinitely. Is that ok?
         </span><span class="kw">for </span>event <span class="kw">in </span>not_ready {
@@ -1105,17 +1132,25 @@
     </span><span class="kw">pub fn </span>asset_events(<span class="kw-2">mut </span>assets: ResMut&lt;<span class="self">Self</span>&gt;, <span class="kw-2">mut </span>events: EventWriter&lt;AssetEvent&lt;A&gt;&gt;) {
         events.send_batch(assets.queued_events.drain(..));
     }
+
+    <span class="doccomment">/// A run condition for [`asset_events`]. The system will not run if there are no events to
+    /// flush.
+    ///
+    /// [`asset_events`]: Self::asset_events
+    </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>asset_events_condition(assets: Res&lt;<span class="self">Self</span>&gt;) -&gt; bool {
+        !assets.queued_events.is_empty()
+    }
 }
 
 <span class="doccomment">/// A mutable iterator over [`Assets`].
-</span><span class="kw">pub struct </span>AssetsMutIterator&lt;<span class="lifetime">&#39;a</span>, A: Asset&gt; {
-    queued_events: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>Vec&lt;AssetEvent&lt;A&gt;&gt;,
-    dense_storage: Enumerate&lt;std::slice::IterMut&lt;<span class="lifetime">&#39;a</span>, Entry&lt;A&gt;&gt;&gt;,
-    hash_map: bevy_utils::hashbrown::hash_map::IterMut&lt;<span class="lifetime">&#39;a</span>, Uuid, A&gt;,
+</span><span class="kw">pub struct </span>AssetsMutIterator&lt;<span class="lifetime">'a</span>, A: Asset&gt; {
+    queued_events: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>Vec&lt;AssetEvent&lt;A&gt;&gt;,
+    dense_storage: Enumerate&lt;std::slice::IterMut&lt;<span class="lifetime">'a</span>, Entry&lt;A&gt;&gt;&gt;,
+    hash_map: bevy_utils::hashbrown::hash_map::IterMut&lt;<span class="lifetime">'a</span>, Uuid, A&gt;,
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, A: Asset&gt; Iterator <span class="kw">for </span>AssetsMutIterator&lt;<span class="lifetime">&#39;a</span>, A&gt; {
-    <span class="kw">type </span>Item = (AssetId&lt;A&gt;, <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>A);
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, A: Asset&gt; Iterator <span class="kw">for </span>AssetsMutIterator&lt;<span class="lifetime">'a</span>, A&gt; {
+    <span class="kw">type </span>Item = (AssetId&lt;A&gt;, <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>A);
 
     <span class="kw">fn </span>next(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::Item&gt; {
         <span class="kw">for </span>(i, entry) <span class="kw">in </span><span class="kw-2">&amp;mut </span><span class="self">self</span>.dense_storage {
@@ -1149,7 +1184,7 @@
 }
 
 <span class="attr">#[derive(Error, Debug)]
-#[error(<span class="string">&quot;AssetIndex {index:?} has an invalid generation. The current generation is: &#39;{current_generation}&#39;.&quot;</span>)]
+#[error(<span class="string">"AssetIndex {index:?} has an invalid generation. The current generation is: '{current_generation}'."</span>)]
 </span><span class="kw">pub struct </span>InvalidGenerationError {
     index: AssetIndex,
     current_generation: u32,

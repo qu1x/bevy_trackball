@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/nalgebra-0.32.3/src/base/matrix.rs`."><title>matrix.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="nalgebra" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="icon" href="https://nalgebra.org/img/favicon.ico"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../nalgebra/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/nalgebra-0.32.4/src/base/matrix.rs`."><title>matrix.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="nalgebra" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="icon" href="https://nalgebra.org/img/favicon.ico"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -2355,14 +2356,14 @@
 <span class="kw">use </span>std::marker::PhantomData;
 <span class="kw">use </span>std::mem;
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;serde-serialize-no-std&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"serde-serialize-no-std"</span>)]
 </span><span class="kw">use </span>serde::{Deserialize, Deserializer, Serialize, Serializer};
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;rkyv-serialize-no-std&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"rkyv-serialize-no-std"</span>)]
 </span><span class="kw">use </span><span class="kw">super</span>::rkyv_wrappers::CustomPhantom;
-<span class="attr">#[cfg(feature = <span class="string">&quot;rkyv-serialize&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"rkyv-serialize"</span>)]
 </span><span class="kw">use </span>rkyv::bytecheck;
-<span class="attr">#[cfg(feature = <span class="string">&quot;rkyv-serialize-no-std&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"rkyv-serialize-no-std"</span>)]
 </span><span class="kw">use </span>rkyv::{with::With, Archive, Archived};
 
 <span class="kw">use </span>simba::scalar::{ClosedAdd, ClosedMul, ClosedSub, Field, SupersetOf};
@@ -2380,7 +2381,7 @@
 
 <span class="kw">use </span><span class="kw">crate</span>::storage::IsContiguous;
 <span class="kw">use </span><span class="kw">crate</span>::uninit::{Init, InitStatus, Uninit};
-<span class="attr">#[cfg(any(feature = <span class="string">&quot;std&quot;</span>, feature = <span class="string">&quot;alloc&quot;</span>))]
+<span class="attr">#[cfg(any(feature = <span class="string">"std"</span>, feature = <span class="string">"alloc"</span>))]
 </span><span class="kw">use crate</span>::{DMatrix, DVector, Dyn, RowDVector, VecStorage};
 <span class="kw">use </span>std::mem::MaybeUninit;
 
@@ -2425,61 +2426,61 @@
 ///   (For code generic wrt. the vectors or matrices dimensions.)
 ///
 /// #### Computer graphics utilities for transformations
-/// - [2D transformations as a Matrix3 &lt;span style=&quot;float:right;&quot;&gt;`new_rotation`…&lt;/span&gt;](#2d-transformations-as-a-matrix3)
-/// - [3D transformations as a Matrix4 &lt;span style=&quot;float:right;&quot;&gt;`new_rotation`, `new_perspective`, `look_at_rh`…&lt;/span&gt;](#3d-transformations-as-a-matrix4)
-/// - [Translation and scaling in any dimension &lt;span style=&quot;float:right;&quot;&gt;`new_scaling`, `new_translation`…&lt;/span&gt;](#translation-and-scaling-in-any-dimension)
-/// - [Append/prepend translation and scaling &lt;span style=&quot;float:right;&quot;&gt;`append_scaling`, `prepend_translation_mut`…&lt;/span&gt;](#appendprepend-translation-and-scaling)
-/// - [Transformation of vectors and points &lt;span style=&quot;float:right;&quot;&gt;`transform_vector`, `transform_point`…&lt;/span&gt;](#transformation-of-vectors-and-points)
+/// - [2D transformations as a Matrix3 &lt;span style="float:right;"&gt;`new_rotation`…&lt;/span&gt;](#2d-transformations-as-a-matrix3)
+/// - [3D transformations as a Matrix4 &lt;span style="float:right;"&gt;`new_rotation`, `new_perspective`, `look_at_rh`…&lt;/span&gt;](#3d-transformations-as-a-matrix4)
+/// - [Translation and scaling in any dimension &lt;span style="float:right;"&gt;`new_scaling`, `new_translation`…&lt;/span&gt;](#translation-and-scaling-in-any-dimension)
+/// - [Append/prepend translation and scaling &lt;span style="float:right;"&gt;`append_scaling`, `prepend_translation_mut`…&lt;/span&gt;](#appendprepend-translation-and-scaling)
+/// - [Transformation of vectors and points &lt;span style="float:right;"&gt;`transform_vector`, `transform_point`…&lt;/span&gt;](#transformation-of-vectors-and-points)
 ///
 /// #### Common math operations
-/// - [Componentwise operations &lt;span style=&quot;float:right;&quot;&gt;`component_mul`, `component_div`, `inf`…&lt;/span&gt;](#componentwise-operations)
-/// - [Special multiplications &lt;span style=&quot;float:right;&quot;&gt;`tr_mul`, `ad_mul`, `kronecker`…&lt;/span&gt;](#special-multiplications)
-/// - [Dot/scalar product &lt;span style=&quot;float:right;&quot;&gt;`dot`, `dotc`, `tr_dot`…&lt;/span&gt;](#dotscalar-product)
-/// - [Cross product &lt;span style=&quot;float:right;&quot;&gt;`cross`, `perp`…&lt;/span&gt;](#cross-product)
-/// - [Magnitude and norms &lt;span style=&quot;float:right;&quot;&gt;`norm`, `normalize`, `metric_distance`…&lt;/span&gt;](#magnitude-and-norms)
-/// - [In-place normalization &lt;span style=&quot;float:right;&quot;&gt;`normalize_mut`, `try_normalize_mut`…&lt;/span&gt;](#in-place-normalization)
-/// - [Interpolation &lt;span style=&quot;float:right;&quot;&gt;`lerp`, `slerp`…&lt;/span&gt;](#interpolation)
-/// - [BLAS functions &lt;span style=&quot;float:right;&quot;&gt;`gemv`, `gemm`, `syger`…&lt;/span&gt;](#blas-functions)
-/// - [Swizzling &lt;span style=&quot;float:right;&quot;&gt;`xx`, `yxz`…&lt;/span&gt;](#swizzling)
-/// - [Triangular matrix extraction &lt;span style=&quot;float:right;&quot;&gt;`upper_triangle`, `lower_triangle`&lt;/span&gt;](#triangular-matrix-extraction)
+/// - [Componentwise operations &lt;span style="float:right;"&gt;`component_mul`, `component_div`, `inf`…&lt;/span&gt;](#componentwise-operations)
+/// - [Special multiplications &lt;span style="float:right;"&gt;`tr_mul`, `ad_mul`, `kronecker`…&lt;/span&gt;](#special-multiplications)
+/// - [Dot/scalar product &lt;span style="float:right;"&gt;`dot`, `dotc`, `tr_dot`…&lt;/span&gt;](#dotscalar-product)
+/// - [Cross product &lt;span style="float:right;"&gt;`cross`, `perp`…&lt;/span&gt;](#cross-product)
+/// - [Magnitude and norms &lt;span style="float:right;"&gt;`norm`, `normalize`, `metric_distance`…&lt;/span&gt;](#magnitude-and-norms)
+/// - [In-place normalization &lt;span style="float:right;"&gt;`normalize_mut`, `try_normalize_mut`…&lt;/span&gt;](#in-place-normalization)
+/// - [Interpolation &lt;span style="float:right;"&gt;`lerp`, `slerp`…&lt;/span&gt;](#interpolation)
+/// - [BLAS functions &lt;span style="float:right;"&gt;`gemv`, `gemm`, `syger`…&lt;/span&gt;](#blas-functions)
+/// - [Swizzling &lt;span style="float:right;"&gt;`xx`, `yxz`…&lt;/span&gt;](#swizzling)
+/// - [Triangular matrix extraction &lt;span style="float:right;"&gt;`upper_triangle`, `lower_triangle`&lt;/span&gt;](#triangular-matrix-extraction)
 ///
 /// #### Statistics
-/// - [Common operations &lt;span style=&quot;float:right;&quot;&gt;`row_sum`, `column_mean`, `variance`…&lt;/span&gt;](#common-statistics-operations)
-/// - [Find the min and max components &lt;span style=&quot;float:right;&quot;&gt;`min`, `max`, `amin`, `amax`, `camin`, `cmax`…&lt;/span&gt;](#find-the-min-and-max-components)
-/// - [Find the min and max components (vector-specific methods) &lt;span style=&quot;float:right;&quot;&gt;`argmin`, `argmax`, `icamin`, `icamax`…&lt;/span&gt;](#find-the-min-and-max-components-vector-specific-methods)
+/// - [Common operations &lt;span style="float:right;"&gt;`row_sum`, `column_mean`, `variance`…&lt;/span&gt;](#common-statistics-operations)
+/// - [Find the min and max components &lt;span style="float:right;"&gt;`min`, `max`, `amin`, `amax`, `camin`, `cmax`…&lt;/span&gt;](#find-the-min-and-max-components)
+/// - [Find the min and max components (vector-specific methods) &lt;span style="float:right;"&gt;`argmin`, `argmax`, `icamin`, `icamax`…&lt;/span&gt;](#find-the-min-and-max-components-vector-specific-methods)
 ///
 /// #### Iteration, map, and fold
-/// - [Iteration on components, rows, and columns &lt;span style=&quot;float:right;&quot;&gt;`iter`, `column_iter`…&lt;/span&gt;](#iteration-on-components-rows-and-columns)
-/// - [Parallel iterators using rayon &lt;span style=&quot;float:right;&quot;&gt;`par_column_iter`, `par_column_iter_mut`…&lt;/span&gt;](#parallel-iterators-using-rayon)
-/// - [Elementwise mapping and folding &lt;span style=&quot;float:right;&quot;&gt;`map`, `fold`, `zip_map`…&lt;/span&gt;](#elementwise-mapping-and-folding)
-/// - [Folding or columns and rows &lt;span style=&quot;float:right;&quot;&gt;`compress_rows`, `compress_columns`…&lt;/span&gt;](#folding-on-columns-and-rows)
+/// - [Iteration on components, rows, and columns &lt;span style="float:right;"&gt;`iter`, `column_iter`…&lt;/span&gt;](#iteration-on-components-rows-and-columns)
+/// - [Parallel iterators using rayon &lt;span style="float:right;"&gt;`par_column_iter`, `par_column_iter_mut`…&lt;/span&gt;](#parallel-iterators-using-rayon)
+/// - [Elementwise mapping and folding &lt;span style="float:right;"&gt;`map`, `fold`, `zip_map`…&lt;/span&gt;](#elementwise-mapping-and-folding)
+/// - [Folding or columns and rows &lt;span style="float:right;"&gt;`compress_rows`, `compress_columns`…&lt;/span&gt;](#folding-on-columns-and-rows)
 ///
 /// #### Vector and matrix views
-/// - [Creating matrix views from `&amp;[T]` &lt;span style=&quot;float:right;&quot;&gt;`from_slice`, `from_slice_with_strides`…&lt;/span&gt;](#creating-matrix-views-from-t)
-/// - [Creating mutable matrix views from `&amp;mut [T]` &lt;span style=&quot;float:right;&quot;&gt;`from_slice_mut`, `from_slice_with_strides_mut`…&lt;/span&gt;](#creating-mutable-matrix-views-from-mut-t)
-/// - [Views based on index and length &lt;span style=&quot;float:right;&quot;&gt;`row`, `columns`, `view`…&lt;/span&gt;](#views-based-on-index-and-length)
-/// - [Mutable views based on index and length &lt;span style=&quot;float:right;&quot;&gt;`row_mut`, `columns_mut`, `view_mut`…&lt;/span&gt;](#mutable-views-based-on-index-and-length)
-/// - [Views based on ranges &lt;span style=&quot;float:right;&quot;&gt;`rows_range`, `columns_range`…&lt;/span&gt;](#views-based-on-ranges)
-/// - [Mutable views based on ranges &lt;span style=&quot;float:right;&quot;&gt;`rows_range_mut`, `columns_range_mut`…&lt;/span&gt;](#mutable-views-based-on-ranges)
+/// - [Creating matrix views from `&amp;[T]` &lt;span style="float:right;"&gt;`from_slice`, `from_slice_with_strides`…&lt;/span&gt;](#creating-matrix-views-from-t)
+/// - [Creating mutable matrix views from `&amp;mut [T]` &lt;span style="float:right;"&gt;`from_slice_mut`, `from_slice_with_strides_mut`…&lt;/span&gt;](#creating-mutable-matrix-views-from-mut-t)
+/// - [Views based on index and length &lt;span style="float:right;"&gt;`row`, `columns`, `view`…&lt;/span&gt;](#views-based-on-index-and-length)
+/// - [Mutable views based on index and length &lt;span style="float:right;"&gt;`row_mut`, `columns_mut`, `view_mut`…&lt;/span&gt;](#mutable-views-based-on-index-and-length)
+/// - [Views based on ranges &lt;span style="float:right;"&gt;`rows_range`, `columns_range`…&lt;/span&gt;](#views-based-on-ranges)
+/// - [Mutable views based on ranges &lt;span style="float:right;"&gt;`rows_range_mut`, `columns_range_mut`…&lt;/span&gt;](#mutable-views-based-on-ranges)
 ///
 /// #### In-place modification of a single matrix or vector
-/// - [In-place filling &lt;span style=&quot;float:right;&quot;&gt;`fill`, `fill_diagonal`, `fill_with_identity`…&lt;/span&gt;](#in-place-filling)
-/// - [In-place swapping &lt;span style=&quot;float:right;&quot;&gt;`swap`, `swap_columns`…&lt;/span&gt;](#in-place-swapping)
-/// - [Set rows, columns, and diagonal &lt;span style=&quot;float:right;&quot;&gt;`set_column`, `set_diagonal`…&lt;/span&gt;](#set-rows-columns-and-diagonal)
+/// - [In-place filling &lt;span style="float:right;"&gt;`fill`, `fill_diagonal`, `fill_with_identity`…&lt;/span&gt;](#in-place-filling)
+/// - [In-place swapping &lt;span style="float:right;"&gt;`swap`, `swap_columns`…&lt;/span&gt;](#in-place-swapping)
+/// - [Set rows, columns, and diagonal &lt;span style="float:right;"&gt;`set_column`, `set_diagonal`…&lt;/span&gt;](#set-rows-columns-and-diagonal)
 ///
 /// #### Vector and matrix size modification
-/// - [Rows and columns insertion &lt;span style=&quot;float:right;&quot;&gt;`insert_row`, `insert_column`…&lt;/span&gt;](#rows-and-columns-insertion)
-/// - [Rows and columns removal &lt;span style=&quot;float:right;&quot;&gt;`remove_row`, `remove column`…&lt;/span&gt;](#rows-and-columns-removal)
-/// - [Rows and columns extraction &lt;span style=&quot;float:right;&quot;&gt;`select_rows`, `select_columns`…&lt;/span&gt;](#rows-and-columns-extraction)
-/// - [Resizing and reshaping &lt;span style=&quot;float:right;&quot;&gt;`resize`, `reshape_generic`…&lt;/span&gt;](#resizing-and-reshaping)
-/// - [In-place resizing &lt;span style=&quot;float:right;&quot;&gt;`resize_mut`, `resize_vertically_mut`…&lt;/span&gt;](#in-place-resizing)
+/// - [Rows and columns insertion &lt;span style="float:right;"&gt;`insert_row`, `insert_column`…&lt;/span&gt;](#rows-and-columns-insertion)
+/// - [Rows and columns removal &lt;span style="float:right;"&gt;`remove_row`, `remove column`…&lt;/span&gt;](#rows-and-columns-removal)
+/// - [Rows and columns extraction &lt;span style="float:right;"&gt;`select_rows`, `select_columns`…&lt;/span&gt;](#rows-and-columns-extraction)
+/// - [Resizing and reshaping &lt;span style="float:right;"&gt;`resize`, `reshape_generic`…&lt;/span&gt;](#resizing-and-reshaping)
+/// - [In-place resizing &lt;span style="float:right;"&gt;`resize_mut`, `resize_vertically_mut`…&lt;/span&gt;](#in-place-resizing)
 ///
 /// #### Matrix decomposition
-/// - [Rectangular matrix decomposition &lt;span style=&quot;float:right;&quot;&gt;`qr`, `lu`, `svd`…&lt;/span&gt;](#rectangular-matrix-decomposition)
-/// - [Square matrix decomposition &lt;span style=&quot;float:right;&quot;&gt;`cholesky`, `symmetric_eigen`…&lt;/span&gt;](#square-matrix-decomposition)
+/// - [Rectangular matrix decomposition &lt;span style="float:right;"&gt;`qr`, `lu`, `svd`…&lt;/span&gt;](#rectangular-matrix-decomposition)
+/// - [Square matrix decomposition &lt;span style="float:right;"&gt;`cholesky`, `symmetric_eigen`…&lt;/span&gt;](#square-matrix-decomposition)
 ///
 /// #### Vector basis computation
-/// - [Basis and orthogonalization &lt;span style=&quot;float:right;&quot;&gt;`orthonormal_subspace_basis`, `orthonormalize`…&lt;/span&gt;](#basis-and-orthogonalization)
+/// - [Basis and orthogonalization &lt;span style="float:right;"&gt;`orthonormal_subspace_basis`, `orthonormalize`…&lt;/span&gt;](#basis-and-orthogonalization)
 ///
 /// # Type parameters
 /// The generic `Matrix` type has four type parameters:
@@ -2506,19 +2507,19 @@
 </span><span class="attr">#[repr(C)]
 #[derive(Clone, Copy)]
 #[cfg_attr(
-    feature = <span class="string">&quot;rkyv-serialize-no-std&quot;</span>,
+    feature = <span class="string">"rkyv-serialize-no-std"</span>,
     derive(Archive, rkyv::Serialize, rkyv::Deserialize),
     archive(
-        <span class="kw">as </span>= <span class="string">&quot;Matrix&lt;T::Archived, R, C, S::Archived&gt;&quot;</span>,
-        bound(archive = <span class="string">&quot;
+        <span class="kw">as </span>= <span class="string">"Matrix&lt;T::Archived, R, C, S::Archived&gt;"</span>,
+        bound(archive = <span class="string">"
         T: Archive,
         S: Archive,
         With&lt;PhantomData&lt;(T, R, C)&gt;, CustomPhantom&lt;(Archived&lt;T&gt;, R, C)&gt;&gt;: Archive&lt;Archived = PhantomData&lt;(Archived&lt;T&gt;, R, C)&gt;&gt;
-    &quot;</span>)
+    "</span>)
     )
 )]
-#[cfg_attr(feature = <span class="string">&quot;rkyv-serialize&quot;</span>, derive(bytecheck::CheckBytes))]
-#[cfg_attr(feature = <span class="string">&quot;cuda&quot;</span>, derive(cust_core::DeviceCopy))]
+#[cfg_attr(feature = <span class="string">"rkyv-serialize"</span>, derive(bytecheck::CheckBytes))]
+#[cfg_attr(feature = <span class="string">"cuda"</span>, derive(cust_core::DeviceCopy))]
 </span><span class="kw">pub struct </span>Matrix&lt;T, R, C, S&gt; {
     <span class="doccomment">/// The data storage that contains all the matrix components. Disappointed?
     ///
@@ -2547,20 +2548,20 @@
 
     <span class="comment">// NOTE: the fact that this field is private is important because
     //       this prevents the user from constructing a matrix with
-    //       dimensions R, C that don&#39;t match the dimension of the
+    //       dimensions R, C that don't match the dimension of the
     //       storage S. Instead they have to use the unsafe function
     //       from_data_statically_unchecked.
     //       Note that it would probably make sense to just have
     //       the type `Matrix&lt;S&gt;`, and have `T, R, C` be associated-types
-    //       of the `RawStorage` trait. However, because we don&#39;t have
+    //       of the `RawStorage` trait. However, because we don't have
     //       specialization, this is not possible because these `T, R, C`
     //       allows us to desambiguate a lot of configurations.
-    </span><span class="attr">#[cfg_attr(feature = <span class="string">&quot;rkyv-serialize-no-std&quot;</span>, with(CustomPhantom&lt;(T::Archived, R, C)&gt;))]
+    </span><span class="attr">#[cfg_attr(feature = <span class="string">"rkyv-serialize-no-std"</span>, with(CustomPhantom&lt;(T::Archived, R, C)&gt;))]
     </span>_phantoms: PhantomData&lt;(T, R, C)&gt;,
 }
 
 <span class="kw">impl</span>&lt;T, R: Dim, C: Dim, S: fmt::Debug&gt; fmt::Debug <span class="kw">for </span>Matrix&lt;T, R, C, S&gt; {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, formatter: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;(), fmt::Error&gt; {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, formatter: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;(), fmt::Error&gt; {
         <span class="self">self</span>.data.fmt(formatter)
     }
 }
@@ -2580,7 +2581,7 @@
     }
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;serde-serialize-no-std&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"serde-serialize-no-std"</span>)]
 </span><span class="kw">impl</span>&lt;T, R, C, S&gt; Serialize <span class="kw">for </span>Matrix&lt;T, R, C, S&gt;
 <span class="kw">where
     </span>T: Scalar,
@@ -2596,17 +2597,17 @@
     }
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;serde-serialize-no-std&quot;</span>)]
-</span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;de</span>, T, R, C, S&gt; Deserialize&lt;<span class="lifetime">&#39;de</span>&gt; <span class="kw">for </span>Matrix&lt;T, R, C, S&gt;
+<span class="attr">#[cfg(feature = <span class="string">"serde-serialize-no-std"</span>)]
+</span><span class="kw">impl</span>&lt;<span class="lifetime">'de</span>, T, R, C, S&gt; Deserialize&lt;<span class="lifetime">'de</span>&gt; <span class="kw">for </span>Matrix&lt;T, R, C, S&gt;
 <span class="kw">where
     </span>T: Scalar,
     R: Dim,
     C: Dim,
-    S: Deserialize&lt;<span class="lifetime">&#39;de</span>&gt;,
+    S: Deserialize&lt;<span class="lifetime">'de</span>&gt;,
 {
     <span class="kw">fn </span>deserialize&lt;D&gt;(deserializer: D) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, D::Error&gt;
     <span class="kw">where
-        </span>D: Deserializer&lt;<span class="lifetime">&#39;de</span>&gt;,
+        </span>D: Deserializer&lt;<span class="lifetime">'de</span>&gt;,
     {
         S::deserialize(deserializer).map(|x| Matrix {
             data: x,
@@ -2615,7 +2616,7 @@
     }
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;compare&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"compare"</span>)]
 </span><span class="kw">impl</span>&lt;T: Scalar, R: Dim, C: Dim, S: RawStorage&lt;T, R, C&gt;&gt; matrixcompare_core::Matrix&lt;T&gt;
     <span class="kw">for </span>Matrix&lt;T, R, C, S&gt;
 {
@@ -2627,12 +2628,12 @@
         <span class="self">self</span>.ncols()
     }
 
-    <span class="kw">fn </span>access(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; matrixcompare_core::Access&lt;<span class="lifetime">&#39;_</span>, T&gt; {
+    <span class="kw">fn </span>access(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; matrixcompare_core::Access&lt;<span class="lifetime">'_</span>, T&gt; {
         matrixcompare_core::Access::Dense(<span class="self">self</span>)
     }
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;compare&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"compare"</span>)]
 </span><span class="kw">impl</span>&lt;T: Scalar, R: Dim, C: Dim, S: RawStorage&lt;T, R, C&gt;&gt; matrixcompare_core::DenseAccess&lt;T&gt;
     <span class="kw">for </span>Matrix&lt;T, R, C, S&gt;
 {
@@ -2641,7 +2642,7 @@
     }
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;bytemuck&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"bytemuck"</span>)]
 </span><span class="kw">unsafe impl</span>&lt;T: Scalar, R: Dim, C: Dim, S: RawStorage&lt;T, R, C&gt;&gt; bytemuck::Zeroable
     <span class="kw">for </span>Matrix&lt;T, R, C, S&gt;
 <span class="kw">where
@@ -2649,7 +2650,7 @@
 {
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;bytemuck&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"bytemuck"</span>)]
 </span><span class="kw">unsafe impl</span>&lt;T: Scalar, R: Dim, C: Dim, S: RawStorage&lt;T, R, C&gt;&gt; bytemuck::Pod <span class="kw">for </span>Matrix&lt;T, R, C, S&gt;
 <span class="kw">where
     </span>S: bytemuck::Pod,
@@ -2684,7 +2685,7 @@
 
 <span class="comment">// TODO: Consider removing/deprecating `from_vec_storage` once we are able to make
 // `from_data` const fn compatible
-</span><span class="attr">#[cfg(any(feature = <span class="string">&quot;std&quot;</span>, feature = <span class="string">&quot;alloc&quot;</span>))]
+</span><span class="attr">#[cfg(any(feature = <span class="string">"std"</span>, feature = <span class="string">"alloc"</span>))]
 </span><span class="kw">impl</span>&lt;T&gt; DMatrix&lt;T&gt; {
     <span class="doccomment">/// Creates a new heap-allocated matrix from the given [`VecStorage`].
     ///
@@ -2699,7 +2700,7 @@
 
 <span class="comment">// TODO: Consider removing/deprecating `from_vec_storage` once we are able to make
 // `from_data` const fn compatible
-</span><span class="attr">#[cfg(any(feature = <span class="string">&quot;std&quot;</span>, feature = <span class="string">&quot;alloc&quot;</span>))]
+</span><span class="attr">#[cfg(any(feature = <span class="string">"std"</span>, feature = <span class="string">"alloc"</span>))]
 </span><span class="kw">impl</span>&lt;T&gt; DVector&lt;T&gt; {
     <span class="doccomment">/// Creates a new heap-allocated matrix from the given [`VecStorage`].
     ///
@@ -2714,7 +2715,7 @@
 
 <span class="comment">// TODO: Consider removing/deprecating `from_vec_storage` once we are able to make
 // `from_data` const fn compatible
-</span><span class="attr">#[cfg(any(feature = <span class="string">&quot;std&quot;</span>, feature = <span class="string">&quot;alloc&quot;</span>))]
+</span><span class="attr">#[cfg(any(feature = <span class="string">"std"</span>, feature = <span class="string">"alloc"</span>))]
 </span><span class="kw">impl</span>&lt;T&gt; RowDVector&lt;T&gt; {
     <span class="doccomment">/// Creates a new heap-allocated matrix from the given [`VecStorage`].
     ///
@@ -2731,7 +2732,7 @@
 <span class="kw">where
     </span>DefaultAllocator: Allocator&lt;T, R, C&gt;,
 {
-    <span class="doccomment">/// Assumes a matrix&#39;s entries to be initialized. This operation should be near zero-cost.
+    <span class="doccomment">/// Assumes a matrix's entries to be initialized. This operation should be near zero-cost.
     ///
     /// # Safety
     /// The user must make sure that every single entry of the buffer has been initialized,
@@ -3008,7 +3009,7 @@
         <span class="kw">let </span>(nrows, ncols) = <span class="self">self</span>.shape();
         <span class="macro">assert!</span>(
             (ncols, nrows) == out.shape(),
-            <span class="string">&quot;Incompatible shape for transposition.&quot;
+            <span class="string">"Incompatible shape for transposition."
         </span>);
 
         <span class="comment">// TODO: optimize that.
@@ -3040,7 +3041,7 @@
 
     <span class="doccomment">/// Transposes `self`.
     </span><span class="attr">#[inline]
-    #[must_use = <span class="string">&quot;Did you mean to use transpose_mut()?&quot;</span>]
+    #[must_use = <span class="string">"Did you mean to use transpose_mut()?"</span>]
     </span><span class="kw">pub fn </span>transpose(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; OMatrix&lt;T, C, R&gt;
     <span class="kw">where
         </span>T: Scalar,
@@ -3188,7 +3189,7 @@
         <span class="macro">assert_eq!</span>(
             (nrows.value(), ncols.value()),
             rhs.shape(),
-            <span class="string">&quot;Matrix simultaneous traversal error: dimension mismatch.&quot;
+            <span class="string">"Matrix simultaneous traversal error: dimension mismatch."
         </span>);
 
         <span class="kw">for </span>j <span class="kw">in </span><span class="number">0</span>..ncols.value() {
@@ -3232,12 +3233,12 @@
         <span class="macro">assert_eq!</span>(
             (nrows.value(), ncols.value()),
             b.shape(),
-            <span class="string">&quot;Matrix simultaneous traversal error: dimension mismatch.&quot;
+            <span class="string">"Matrix simultaneous traversal error: dimension mismatch."
         </span>);
         <span class="macro">assert_eq!</span>(
             (nrows.value(), ncols.value()),
             c.shape(),
-            <span class="string">&quot;Matrix simultaneous traversal error: dimension mismatch.&quot;
+            <span class="string">"Matrix simultaneous traversal error: dimension mismatch."
         </span>);
 
         <span class="kw">for </span>j <span class="kw">in </span><span class="number">0</span>..ncols.value() {
@@ -3304,7 +3305,7 @@
         <span class="macro">assert_eq!</span>(
             (nrows.value(), ncols.value()),
             rhs.shape(),
-            <span class="string">&quot;Matrix simultaneous traversal error: dimension mismatch.&quot;
+            <span class="string">"Matrix simultaneous traversal error: dimension mismatch."
         </span>);
 
         <span class="kw">for </span>j <span class="kw">in </span><span class="number">0</span>..ncols.value() {
@@ -3358,7 +3359,7 @@
         <span class="macro">assert_eq!</span>(
             (nrows, ncols),
             rhs.shape(),
-            <span class="string">&quot;Matrix simultaneous traversal error: dimension mismatch.&quot;
+            <span class="string">"Matrix simultaneous traversal error: dimension mismatch."
         </span>);
 
         <span class="kw">for </span>j <span class="kw">in </span><span class="number">0</span>..ncols {
@@ -3398,12 +3399,12 @@
         <span class="macro">assert_eq!</span>(
             (nrows, ncols),
             b.shape(),
-            <span class="string">&quot;Matrix simultaneous traversal error: dimension mismatch.&quot;
+            <span class="string">"Matrix simultaneous traversal error: dimension mismatch."
         </span>);
         <span class="macro">assert_eq!</span>(
             (nrows, ncols),
             c.shape(),
-            <span class="string">&quot;Matrix simultaneous traversal error: dimension mismatch.&quot;
+            <span class="string">"Matrix simultaneous traversal error: dimension mismatch."
         </span>);
 
         <span class="kw">for </span>j <span class="kw">in </span><span class="number">0</span>..ncols {
@@ -3438,7 +3439,7 @@
     /// assert!(it.next().is_none());
     /// ```
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>iter(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; MatrixIter&lt;<span class="lifetime">&#39;_</span>, T, R, C, S&gt; {
+    </span><span class="kw">pub fn </span>iter(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; MatrixIter&lt;<span class="lifetime">'_</span>, T, R, C, S&gt; {
         MatrixIter::new(<span class="kw-2">&amp;</span><span class="self">self</span>.data)
     }
 
@@ -3454,7 +3455,7 @@
     /// }
     /// ```
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>row_iter(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; RowIter&lt;<span class="lifetime">&#39;_</span>, T, R, C, S&gt; {
+    </span><span class="kw">pub fn </span>row_iter(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; RowIter&lt;<span class="lifetime">'_</span>, T, R, C, S&gt; {
         RowIter::new(<span class="self">self</span>)
     }
 
@@ -3470,13 +3471,13 @@
     /// }
     /// ```
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>column_iter(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; ColumnIter&lt;<span class="lifetime">&#39;_</span>, T, R, C, S&gt; {
+    </span><span class="kw">pub fn </span>column_iter(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; ColumnIter&lt;<span class="lifetime">'_</span>, T, R, C, S&gt; {
         ColumnIter::new(<span class="self">self</span>)
     }
 
     <span class="doccomment">/// Mutably iterates through this matrix coordinates.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>iter_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; MatrixIterMut&lt;<span class="lifetime">&#39;_</span>, T, R, C, S&gt;
+    </span><span class="kw">pub fn </span>iter_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; MatrixIterMut&lt;<span class="lifetime">'_</span>, T, R, C, S&gt;
     <span class="kw">where
         </span>S: RawStorageMut&lt;T, R, C&gt;,
     {
@@ -3499,7 +3500,7 @@
     /// assert_eq!(a, expected);
     /// ```
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>row_iter_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; RowIterMut&lt;<span class="lifetime">&#39;_</span>, T, R, C, S&gt;
+    </span><span class="kw">pub fn </span>row_iter_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; RowIterMut&lt;<span class="lifetime">'_</span>, T, R, C, S&gt;
     <span class="kw">where
         </span>S: RawStorageMut&lt;T, R, C&gt;,
     {
@@ -3522,7 +3523,7 @@
     /// assert_eq!(a, expected);
     /// ```
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>column_iter_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; ColumnIterMut&lt;<span class="lifetime">&#39;_</span>, T, R, C, S&gt;
+    </span><span class="kw">pub fn </span>column_iter_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; ColumnIterMut&lt;<span class="lifetime">'_</span>, T, R, C, S&gt;
     <span class="kw">where
         </span>S: RawStorageMut&lt;T, R, C&gt;,
     {
@@ -3554,11 +3555,11 @@
         <span class="kw">let </span>(nrows, ncols) = <span class="self">self</span>.shape();
         <span class="macro">assert!</span>(
             row_cols1.<span class="number">0 </span>&lt; nrows &amp;&amp; row_cols1.<span class="number">1 </span>&lt; ncols,
-            <span class="string">&quot;Matrix elements swap index out of bounds.&quot;
+            <span class="string">"Matrix elements swap index out of bounds."
         </span>);
         <span class="macro">assert!</span>(
             row_cols2.<span class="number">0 </span>&lt; nrows &amp;&amp; row_cols2.<span class="number">1 </span>&lt; ncols,
-            <span class="string">&quot;Matrix elements swap index out of bounds.&quot;
+            <span class="string">"Matrix elements swap index out of bounds."
         </span>);
         <span class="kw">unsafe </span>{ <span class="self">self</span>.swap_unchecked(row_cols1, row_cols2) }
     }
@@ -3575,7 +3576,7 @@
 
         <span class="macro">assert!</span>(
             nrows * ncols == slice.len(),
-            <span class="string">&quot;The slice must contain the same number of elements as the matrix.&quot;
+            <span class="string">"The slice must contain the same number of elements as the matrix."
         </span>);
 
         <span class="kw">for </span>j <span class="kw">in </span><span class="number">0</span>..ncols {
@@ -3599,7 +3600,7 @@
     {
         <span class="macro">assert!</span>(
             <span class="self">self</span>.shape() == other.shape(),
-            <span class="string">&quot;Unable to copy from a matrix with a different shape.&quot;
+            <span class="string">"Unable to copy from a matrix with a different shape."
         </span>);
 
         <span class="kw">for </span>j <span class="kw">in </span><span class="number">0</span>..<span class="self">self</span>.ncols() {
@@ -3624,7 +3625,7 @@
         <span class="kw">let </span>(nrows, ncols) = <span class="self">self</span>.shape();
         <span class="macro">assert!</span>(
             (ncols, nrows) == other.shape(),
-            <span class="string">&quot;Unable to copy from a matrix with incompatible shape.&quot;
+            <span class="string">"Unable to copy from a matrix with incompatible shape."
         </span>);
 
         <span class="kw">for </span>j <span class="kw">in </span><span class="number">0</span>..ncols {
@@ -3650,7 +3651,7 @@
     </span><span class="attr">#[inline]
     #[must_use]
     </span><span class="kw">pub unsafe fn </span>vget_unchecked(<span class="kw-2">&amp;</span><span class="self">self</span>, i: usize) -&gt; <span class="kw-2">&amp;</span>T {
-        <span class="macro">debug_assert!</span>(i &lt; <span class="self">self</span>.nrows(), <span class="string">&quot;Vector index out of bounds.&quot;</span>);
+        <span class="macro">debug_assert!</span>(i &lt; <span class="self">self</span>.nrows(), <span class="string">"Vector index out of bounds."</span>);
         <span class="kw">let </span>i = i * <span class="self">self</span>.strides().<span class="number">0</span>;
         <span class="self">self</span>.data.get_unchecked_linear(i)
     }
@@ -3661,7 +3662,7 @@
     </span><span class="attr">#[inline]
     #[must_use]
     </span><span class="kw">pub unsafe fn </span>vget_unchecked_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>, i: usize) -&gt; <span class="kw-2">&amp;mut </span>T {
-        <span class="macro">debug_assert!</span>(i &lt; <span class="self">self</span>.nrows(), <span class="string">&quot;Vector index out of bounds.&quot;</span>);
+        <span class="macro">debug_assert!</span>(i &lt; <span class="self">self</span>.nrows(), <span class="string">"Vector index out of bounds."</span>);
         <span class="kw">let </span>i = i * <span class="self">self</span>.strides().<span class="number">0</span>;
         <span class="self">self</span>.data.get_unchecked_linear_mut(i)
     }
@@ -3692,7 +3693,7 @@
     </span><span class="kw">pub fn </span>transpose_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
         <span class="macro">assert!</span>(
             <span class="self">self</span>.is_square(),
-            <span class="string">&quot;Unable to transpose a non-square matrix in-place.&quot;
+            <span class="string">"Unable to transpose a non-square matrix in-place."
         </span>);
 
         <span class="kw">let </span>dim = <span class="self">self</span>.shape().<span class="number">0</span>;
@@ -3722,7 +3723,7 @@
         <span class="kw">let </span>(nrows, ncols) = <span class="self">self</span>.shape();
         <span class="macro">assert!</span>(
             (ncols, nrows) == out.shape(),
-            <span class="string">&quot;Incompatible shape for transpose-copy.&quot;
+            <span class="string">"Incompatible shape for transpose-copy."
         </span>);
 
         <span class="comment">// TODO: optimize that.
@@ -3753,7 +3754,7 @@
 
     <span class="doccomment">/// The adjoint (aka. conjugate-transpose) of `self`.
     </span><span class="attr">#[inline]
-    #[must_use = <span class="string">&quot;Did you mean to use adjoint_mut()?&quot;</span>]
+    #[must_use = <span class="string">"Did you mean to use adjoint_mut()?"</span>]
     </span><span class="kw">pub fn </span>adjoint(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; OMatrix&lt;T, C, R&gt;
     <span class="kw">where
         </span>DefaultAllocator: Allocator&lt;T, C, R&gt;,
@@ -3768,7 +3769,7 @@
     }
 
     <span class="doccomment">/// Takes the conjugate and transposes `self` and store the result into `out`.
-    </span><span class="attr">#[deprecated(note = <span class="string">&quot;Renamed `self.adjoint_to(out)`.&quot;</span>)]
+    </span><span class="attr">#[deprecated(note = <span class="string">"Renamed `self.adjoint_to(out)`."</span>)]
     #[inline]
     </span><span class="kw">pub fn </span>conjugate_transpose_to&lt;R2, C2, SB&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, out: <span class="kw-2">&amp;mut </span>Matrix&lt;T, R2, C2, SB&gt;)
     <span class="kw">where
@@ -3781,7 +3782,7 @@
     }
 
     <span class="doccomment">/// The conjugate transposition of `self`.
-    </span><span class="attr">#[deprecated(note = <span class="string">&quot;Renamed `self.adjoint()`.&quot;</span>)]
+    </span><span class="attr">#[deprecated(note = <span class="string">"Renamed `self.adjoint()`."</span>)]
     #[inline]
     </span><span class="kw">pub fn </span>conjugate_transpose(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; OMatrix&lt;T, C, R&gt;
     <span class="kw">where
@@ -3792,7 +3793,7 @@
 
     <span class="doccomment">/// The conjugate of `self`.
     </span><span class="attr">#[inline]
-    #[must_use = <span class="string">&quot;Did you mean to use conjugate_mut()?&quot;</span>]
+    #[must_use = <span class="string">"Did you mean to use conjugate_mut()?"</span>]
     </span><span class="kw">pub fn </span>conjugate(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; OMatrix&lt;T, R, C&gt;
     <span class="kw">where
         </span>DefaultAllocator: Allocator&lt;T, R, C&gt;,
@@ -3802,7 +3803,7 @@
 
     <span class="doccomment">/// Divides each component of the complex matrix `self` by the given real.
     </span><span class="attr">#[inline]
-    #[must_use = <span class="string">&quot;Did you mean to use unscale_mut()?&quot;</span>]
+    #[must_use = <span class="string">"Did you mean to use unscale_mut()?"</span>]
     </span><span class="kw">pub fn </span>unscale(<span class="kw-2">&amp;</span><span class="self">self</span>, real: T::SimdRealField) -&gt; OMatrix&lt;T, R, C&gt;
     <span class="kw">where
         </span>DefaultAllocator: Allocator&lt;T, R, C&gt;,
@@ -3812,7 +3813,7 @@
 
     <span class="doccomment">/// Multiplies each component of the complex matrix `self` by the given real.
     </span><span class="attr">#[inline]
-    #[must_use = <span class="string">&quot;Did you mean to use scale_mut()?&quot;</span>]
+    #[must_use = <span class="string">"Did you mean to use scale_mut()?"</span>]
     </span><span class="kw">pub fn </span>scale(<span class="kw-2">&amp;</span><span class="self">self</span>, real: T::SimdRealField) -&gt; OMatrix&lt;T, R, C&gt;
     <span class="kw">where
         </span>DefaultAllocator: Allocator&lt;T, R, C&gt;,
@@ -3843,7 +3844,7 @@
 
 <span class="kw">impl</span>&lt;T: SimdComplexField, D: Dim, S: RawStorageMut&lt;T, D, D&gt;&gt; Matrix&lt;T, D, D, S&gt; {
     <span class="doccomment">/// Sets `self` to its adjoint.
-    </span><span class="attr">#[deprecated(note = <span class="string">&quot;Renamed to `self.adjoint_mut()`.&quot;</span>)]
+    </span><span class="attr">#[deprecated(note = <span class="string">"Renamed to `self.adjoint_mut()`."</span>)]
     </span><span class="kw">pub fn </span>conjugate_transform_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
         <span class="self">self</span>.adjoint_mut()
     }
@@ -3852,7 +3853,7 @@
     </span><span class="kw">pub fn </span>adjoint_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
         <span class="macro">assert!</span>(
             <span class="self">self</span>.is_square(),
-            <span class="string">&quot;Unable to transpose a non-square matrix in-place.&quot;
+            <span class="string">"Unable to transpose a non-square matrix in-place."
         </span>);
 
         <span class="kw">let </span>dim = <span class="self">self</span>.shape().<span class="number">0</span>;
@@ -3888,7 +3889,7 @@
         <span class="self">self</span>.map_diagonal(|e| e)
     }
 
-    <span class="doccomment">/// Apply the given function to this matrix&#39;s diagonal and returns it.
+    <span class="doccomment">/// Apply the given function to this matrix's diagonal and returns it.
     ///
     /// This is a more efficient version of `self.diagonal().map(f)` since this
     /// allocates only once.
@@ -3899,7 +3900,7 @@
     {
         <span class="macro">assert!</span>(
             <span class="self">self</span>.is_square(),
-            <span class="string">&quot;Unable to get the diagonal of a non-square matrix.&quot;
+            <span class="string">"Unable to get the diagonal of a non-square matrix."
         </span>);
 
         <span class="kw">let </span>dim = <span class="self">self</span>.shape_generic().<span class="number">0</span>;
@@ -3926,7 +3927,7 @@
     {
         <span class="macro">assert!</span>(
             <span class="self">self</span>.is_square(),
-            <span class="string">&quot;Cannot compute the trace of non-square matrix.&quot;
+            <span class="string">"Cannot compute the trace of non-square matrix."
         </span>);
 
         <span class="kw">let </span>dim = <span class="self">self</span>.shape_generic().<span class="number">0</span>;
@@ -3950,7 +3951,7 @@
     {
         <span class="macro">assert!</span>(
             <span class="self">self</span>.is_square(),
-            <span class="string">&quot;Cannot compute the symmetric part of a non-square matrix.&quot;
+            <span class="string">"Cannot compute the symmetric part of a non-square matrix."
         </span>);
         <span class="kw">let </span><span class="kw-2">mut </span>tr = <span class="self">self</span>.transpose();
         tr += <span class="self">self</span>;
@@ -3967,7 +3968,7 @@
     {
         <span class="macro">assert!</span>(
             <span class="self">self</span>.is_square(),
-            <span class="string">&quot;Cannot compute the hermitian part of a non-square matrix.&quot;
+            <span class="string">"Cannot compute the hermitian part of a non-square matrix."
         </span>);
 
         <span class="kw">let </span><span class="kw-2">mut </span>tr = <span class="self">self</span>.adjoint();
@@ -3990,7 +3991,7 @@
     {
         <span class="macro">assert!</span>(
             <span class="self">self</span>.is_square(),
-            <span class="string">&quot;Only square matrices can currently be transformed to homogeneous coordinates.&quot;
+            <span class="string">"Only square matrices can currently be transformed to homogeneous coordinates."
         </span>);
         <span class="kw">let </span>dim = DimSum::&lt;D, U1&gt;::from_usize(<span class="self">self</span>.nrows() + <span class="number">1</span>);
         <span class="kw">let </span><span class="kw-2">mut </span>res = OMatrix::identity_generic(dim, dim);
@@ -4170,7 +4171,7 @@
         <span class="macro">assert_eq!</span>(
             <span class="self">self</span>.shape(),
             right.shape(),
-            <span class="string">&quot;Matrix comparison error: dimensions mismatch.&quot;
+            <span class="string">"Matrix comparison error: dimensions mismatch."
         </span>);
         <span class="self">self</span>.iter().zip(right.iter()).all(|(a, b)| a.lt(b))
     }
@@ -4180,7 +4181,7 @@
         <span class="macro">assert_eq!</span>(
             <span class="self">self</span>.shape(),
             right.shape(),
-            <span class="string">&quot;Matrix comparison error: dimensions mismatch.&quot;
+            <span class="string">"Matrix comparison error: dimensions mismatch."
         </span>);
         <span class="self">self</span>.iter().zip(right.iter()).all(|(a, b)| a.le(b))
     }
@@ -4190,7 +4191,7 @@
         <span class="macro">assert_eq!</span>(
             <span class="self">self</span>.shape(),
             right.shape(),
-            <span class="string">&quot;Matrix comparison error: dimensions mismatch.&quot;
+            <span class="string">"Matrix comparison error: dimensions mismatch."
         </span>);
         <span class="self">self</span>.iter().zip(right.iter()).all(|(a, b)| a.gt(b))
     }
@@ -4200,7 +4201,7 @@
         <span class="macro">assert_eq!</span>(
             <span class="self">self</span>.shape(),
             right.shape(),
-            <span class="string">&quot;Matrix comparison error: dimensions mismatch.&quot;
+            <span class="string">"Matrix comparison error: dimensions mismatch."
         </span>);
         <span class="self">self</span>.iter().zip(right.iter()).all(|(a, b)| a.ge(b))
     }
@@ -4236,9 +4237,9 @@
             </span>T: Scalar + <span class="macro-nonterminal">$</span><span class="kw">trait</span>,
             <span class="macro-nonterminal">S</span>: RawStorage&lt;T, R, C&gt;,
         {
-            <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
-                <span class="attr">#[cfg(feature = <span class="string">&quot;std&quot;</span>)]
-                </span><span class="kw">fn </span>val_width&lt;T: Scalar + <span class="macro-nonterminal">$</span><span class="kw">trait</span>&gt;(<span class="macro-nonterminal">val</span>: <span class="kw-2">&amp;</span>T, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; usize {
+            <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
+                <span class="attr">#[cfg(feature = <span class="string">"std"</span>)]
+                </span><span class="kw">fn </span>val_width&lt;T: Scalar + <span class="macro-nonterminal">$</span><span class="kw">trait</span>&gt;(<span class="macro-nonterminal">val</span>: <span class="kw-2">&amp;</span>T, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; usize {
                     <span class="kw">match </span>f.precision() {
                         <span class="prelude-val">Some</span>(precision) =&gt; <span class="macro">format!</span>(<span class="macro-nonterminal">$fmt_str_with_precision</span>, val, precision)
                             .chars()
@@ -4247,15 +4248,15 @@
                     }
                 }
 
-                <span class="attr">#[cfg(not(feature = <span class="string">&quot;std&quot;</span>))]
-                </span><span class="kw">fn </span>val_width&lt;T: Scalar + <span class="macro-nonterminal">$</span><span class="kw">trait</span>&gt;(<span class="kw">_</span>: <span class="kw-2">&amp;</span><span class="macro-nonterminal">T</span>, <span class="kw">_</span>: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; usize {
+                <span class="attr">#[cfg(not(feature = <span class="string">"std"</span>))]
+                </span><span class="kw">fn </span>val_width&lt;T: Scalar + <span class="macro-nonterminal">$</span><span class="kw">trait</span>&gt;(<span class="kw">_</span>: <span class="kw-2">&amp;</span><span class="macro-nonterminal">T</span>, <span class="kw">_</span>: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; usize {
                     <span class="number">4
                 </span>}
 
                 <span class="kw">let </span>(nrows, ncols) = <span class="self">self</span>.shape();
 
                 <span class="kw">if </span>nrows == <span class="number">0 </span>|| ncols == <span class="number">0 </span>{
-                    <span class="kw">return </span><span class="macro">write!</span>(f, <span class="string">&quot;[ ]&quot;</span>);
+                    <span class="kw">return </span><span class="macro">write!</span>(f, <span class="string">"[ ]"</span>);
                 }
 
                 <span class="kw">let </span><span class="kw-2">mut </span>max_length = <span class="number">0</span>;
@@ -4271,17 +4272,17 @@
                 <span class="macro">writeln!</span>(f)<span class="question-mark">?</span>;
                 <span class="macro">writeln!</span>(
                     f,
-                    <span class="string">&quot;  ┌ {:&gt;width$} ┐&quot;</span>,
-                    <span class="string">&quot;&quot;</span>,
+                    <span class="string">"  ┌ {:&gt;width$} ┐"</span>,
+                    <span class="string">""</span>,
                     width = max_length_with_space * ncols - <span class="number">1
                 </span>)<span class="question-mark">?</span>;
 
                 <span class="kw">for </span>i <span class="kw">in </span><span class="number">0</span>..nrows {
-                    <span class="macro">write!</span>(f, <span class="string">&quot;  │&quot;</span>)<span class="question-mark">?</span>;
+                    <span class="macro">write!</span>(f, <span class="string">"  │"</span>)<span class="question-mark">?</span>;
                     <span class="kw">for </span>j <span class="kw">in </span><span class="number">0</span>..ncols {
                         <span class="kw">let </span>number_length = val_width(<span class="kw-2">&amp;</span><span class="self">self</span>[(i, j)], f) + <span class="number">1</span>;
                         <span class="kw">let </span>pad = max_length_with_space - number_length;
-                        <span class="macro">write!</span>(f, <span class="string">&quot; {:&gt;thepad$}&quot;</span>, <span class="string">&quot;&quot;</span>, thepad = pad)<span class="question-mark">?</span>;
+                        <span class="macro">write!</span>(f, <span class="string">" {:&gt;thepad$}"</span>, <span class="string">""</span>, thepad = pad)<span class="question-mark">?</span>;
                         <span class="kw">match </span>f.precision() {
                             <span class="prelude-val">Some</span>(precision) =&gt; {
                                 <span class="macro">write!</span>(f, <span class="macro-nonterminal">$fmt_str_with_precision</span>, (<span class="kw-2">*</span><span class="self">self</span>)[(i, j)], precision)<span class="question-mark">?
@@ -4289,13 +4290,13 @@
                             <span class="prelude-val">None </span>=&gt; <span class="macro">write!</span>(f, <span class="macro-nonterminal">$fmt_str_without_precision</span>, (<span class="kw-2">*</span><span class="self">self</span>)[(i, j)])<span class="question-mark">?</span>,
                         }
                     }
-                    <span class="macro">writeln!</span>(f, <span class="string">&quot; │&quot;</span>)<span class="question-mark">?</span>;
+                    <span class="macro">writeln!</span>(f, <span class="string">" │"</span>)<span class="question-mark">?</span>;
                 }
 
                 <span class="macro">writeln!</span>(
                     f,
-                    <span class="string">&quot;  └ {:&gt;width$} ┘&quot;</span>,
-                    <span class="string">&quot;&quot;</span>,
+                    <span class="string">"  └ {:&gt;width$} ┘"</span>,
+                    <span class="string">""</span>,
                     width = max_length_with_space * ncols - <span class="number">1
                 </span>)<span class="question-mark">?</span>;
                 <span class="macro">writeln!</span>(f)
@@ -4303,14 +4304,14 @@
         }
     };
 }
-<span class="macro">impl_fmt!</span>(fmt::Display, <span class="string">&quot;{}&quot;</span>, <span class="string">&quot;{:.1$}&quot;</span>);
-<span class="macro">impl_fmt!</span>(fmt::LowerExp, <span class="string">&quot;{:e}&quot;</span>, <span class="string">&quot;{:.1$e}&quot;</span>);
-<span class="macro">impl_fmt!</span>(fmt::UpperExp, <span class="string">&quot;{:E}&quot;</span>, <span class="string">&quot;{:.1$E}&quot;</span>);
-<span class="macro">impl_fmt!</span>(fmt::Octal, <span class="string">&quot;{:o}&quot;</span>, <span class="string">&quot;{:1$o}&quot;</span>);
-<span class="macro">impl_fmt!</span>(fmt::LowerHex, <span class="string">&quot;{:x}&quot;</span>, <span class="string">&quot;{:1$x}&quot;</span>);
-<span class="macro">impl_fmt!</span>(fmt::UpperHex, <span class="string">&quot;{:X}&quot;</span>, <span class="string">&quot;{:1$X}&quot;</span>);
-<span class="macro">impl_fmt!</span>(fmt::Binary, <span class="string">&quot;{:b}&quot;</span>, <span class="string">&quot;{:.1$b}&quot;</span>);
-<span class="macro">impl_fmt!</span>(fmt::Pointer, <span class="string">&quot;{:p}&quot;</span>, <span class="string">&quot;{:.1$p}&quot;</span>);
+<span class="macro">impl_fmt!</span>(fmt::Display, <span class="string">"{}"</span>, <span class="string">"{:.1$}"</span>);
+<span class="macro">impl_fmt!</span>(fmt::LowerExp, <span class="string">"{:e}"</span>, <span class="string">"{:.1$e}"</span>);
+<span class="macro">impl_fmt!</span>(fmt::UpperExp, <span class="string">"{:E}"</span>, <span class="string">"{:.1$E}"</span>);
+<span class="macro">impl_fmt!</span>(fmt::Octal, <span class="string">"{:o}"</span>, <span class="string">"{:1$o}"</span>);
+<span class="macro">impl_fmt!</span>(fmt::LowerHex, <span class="string">"{:x}"</span>, <span class="string">"{:1$x}"</span>);
+<span class="macro">impl_fmt!</span>(fmt::UpperHex, <span class="string">"{:X}"</span>, <span class="string">"{:1$X}"</span>);
+<span class="macro">impl_fmt!</span>(fmt::Binary, <span class="string">"{:b}"</span>, <span class="string">"{:.1$b}"</span>);
+<span class="macro">impl_fmt!</span>(fmt::Pointer, <span class="string">"{:p}"</span>, <span class="string">"{:.1$p}"</span>);
 
 <span class="attr">#[cfg(test)]
 </span><span class="kw">mod </span>tests {
@@ -4318,21 +4319,21 @@
     </span><span class="kw">fn </span>empty_display() {
         <span class="kw">let </span>vec: Vec&lt;f64&gt; = Vec::new();
         <span class="kw">let </span>dvector = <span class="kw">crate</span>::DVector::from_vec(vec);
-        <span class="macro">assert_eq!</span>(<span class="macro">format!</span>(<span class="string">&quot;{}&quot;</span>, dvector), <span class="string">&quot;[ ]&quot;</span>)
+        <span class="macro">assert_eq!</span>(<span class="macro">format!</span>(<span class="string">"{}"</span>, dvector), <span class="string">"[ ]"</span>)
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>lower_exp() {
         <span class="kw">let </span>test = <span class="kw">crate</span>::Matrix2::new(<span class="number">1e6</span>, <span class="number">2e5</span>, <span class="number">2e-5</span>, <span class="number">1.</span>);
         <span class="macro">assert_eq!</span>(
-            <span class="macro">format!</span>(<span class="string">&quot;{:e}&quot;</span>, test),
-            <span class="string">r&quot;
+            <span class="macro">format!</span>(<span class="string">"{:e}"</span>, test),
+            <span class="string">r"
   ┌           ┐
   │  1e6  2e5 │
   │ 2e-5  1e0 │
   └           ┘
 
-&quot;
+"
         </span>)
     }
 }
@@ -4358,12 +4359,12 @@
         <span class="macro">assert_eq!</span>(
             shape,
             b.shape(),
-            <span class="string">&quot;2D vector perpendicular product dimension mismatch.&quot;
+            <span class="string">"2D vector perpendicular product dimension mismatch."
         </span>);
         <span class="macro">assert_eq!</span>(
             shape,
             (<span class="number">2</span>, <span class="number">1</span>),
-            <span class="string">&quot;2D perpendicular product requires (2, 1) vectors {:?}&quot;</span>,
+            <span class="string">"2D perpendicular product requires (2, 1) vectors {:?}"</span>,
             shape
         );
 
@@ -4392,10 +4393,10 @@
         ShapeConstraint: SameNumberOfRows&lt;R, R2&gt; + SameNumberOfColumns&lt;C, C2&gt;,
     {
         <span class="kw">let </span>shape = <span class="self">self</span>.shape();
-        <span class="macro">assert_eq!</span>(shape, b.shape(), <span class="string">&quot;Vector cross product dimension mismatch.&quot;</span>);
+        <span class="macro">assert_eq!</span>(shape, b.shape(), <span class="string">"Vector cross product dimension mismatch."</span>);
         <span class="macro">assert!</span>(
             shape == (<span class="number">3</span>, <span class="number">1</span>) || shape == (<span class="number">1</span>, <span class="number">3</span>),
-            <span class="string">&quot;Vector cross product dimension mismatch: must be (3, 1) or (1, 3) but found {:?}.&quot;</span>,
+            <span class="string">"Vector cross product dimension mismatch: must be (3, 1) or (1, 3) but found {:?}."</span>,
             shape
         );
 

@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_render-0.12.1/src/extract_param.rs`."><title>extract_param.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="bevy_render" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../bevy_render/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_render-0.13.0/src/extract_param.rs`."><title>extract_param.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="bevy_render" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -128,6 +129,8 @@
 <a href="#128" id="128">128</a>
 <a href="#129" id="129">129</a>
 <a href="#130" id="130">130</a>
+<a href="#131" id="131">131</a>
+<a href="#132" id="132">132</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::MainWorld;
 <span class="kw">use </span>bevy_ecs::{
     component::Tick,
@@ -157,7 +160,7 @@
 ///
 /// ## Examples
 ///
-/// ```rust
+/// ```
 /// use bevy_ecs::prelude::*;
 /// use bevy_render::Extract;
 /// # #[derive(Component)]
@@ -171,30 +174,30 @@
 ///
 /// [`ExtractSchedule`]: crate::ExtractSchedule
 /// [Window]: bevy_window::Window
-</span><span class="kw">pub struct </span>Extract&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>, P&gt;
+</span><span class="kw">pub struct </span>Extract&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>, P&gt;
 <span class="kw">where
-    </span>P: ReadOnlySystemParam + <span class="lifetime">&#39;static</span>,
+    </span>P: ReadOnlySystemParam + <span class="lifetime">'static</span>,
 {
-    item: SystemParamItem&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>, P&gt;,
+    item: SystemParamItem&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>, P&gt;,
 }
 
 <span class="attr">#[doc(hidden)]
-</span><span class="kw">pub struct </span>ExtractState&lt;P: SystemParam + <span class="lifetime">&#39;static</span>&gt; {
+</span><span class="kw">pub struct </span>ExtractState&lt;P: SystemParam + <span class="lifetime">'static</span>&gt; {
     state: SystemState&lt;P&gt;,
-    main_world_state: &lt;Res&lt;<span class="lifetime">&#39;static</span>, MainWorld&gt; <span class="kw">as </span>SystemParam&gt;::State,
+    main_world_state: &lt;Res&lt;<span class="lifetime">'static</span>, MainWorld&gt; <span class="kw">as </span>SystemParam&gt;::State,
 }
 
 <span class="comment">// SAFETY: The only `World` access (`Res&lt;MainWorld&gt;`) is read-only.
-</span><span class="kw">unsafe impl</span>&lt;P&gt; ReadOnlySystemParam <span class="kw">for </span>Extract&lt;<span class="lifetime">&#39;_</span>, <span class="lifetime">&#39;_</span>, P&gt; <span class="kw">where </span>P: ReadOnlySystemParam {}
+</span><span class="kw">unsafe impl</span>&lt;P&gt; ReadOnlySystemParam <span class="kw">for </span>Extract&lt;<span class="lifetime">'_</span>, <span class="lifetime">'_</span>, P&gt; <span class="kw">where </span>P: ReadOnlySystemParam {}
 
 <span class="comment">// SAFETY: The only `World` access is properly registered by `Res&lt;MainWorld&gt;::init_state`.
 // This call will also ensure that there are no conflicts with prior params.
-</span><span class="kw">unsafe impl</span>&lt;P&gt; SystemParam <span class="kw">for </span>Extract&lt;<span class="lifetime">&#39;_</span>, <span class="lifetime">&#39;_</span>, P&gt;
+</span><span class="kw">unsafe impl</span>&lt;P&gt; SystemParam <span class="kw">for </span>Extract&lt;<span class="lifetime">'_</span>, <span class="lifetime">'_</span>, P&gt;
 <span class="kw">where
     </span>P: ReadOnlySystemParam,
 {
     <span class="kw">type </span>State = ExtractState&lt;P&gt;;
-    <span class="kw">type </span>Item&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>&gt; = Extract&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>, P&gt;;
+    <span class="kw">type </span>Item&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>&gt; = Extract&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>, P&gt;;
 
     <span class="kw">fn </span>init_state(world: <span class="kw-2">&amp;mut </span>World, system_meta: <span class="kw-2">&amp;mut </span>SystemMeta) -&gt; <span class="self">Self</span>::State {
         <span class="kw">let </span><span class="kw-2">mut </span>main_world = world.resource_mut::&lt;MainWorld&gt;();
@@ -204,31 +207,33 @@
         }
     }
 
-    <span class="kw">unsafe fn </span>get_param&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>&gt;(
-        state: <span class="kw-2">&amp;</span><span class="lifetime">&#39;s </span><span class="kw-2">mut </span><span class="self">Self</span>::State,
+    <span class="kw">unsafe fn </span>get_param&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>&gt;(
+        state: <span class="kw-2">&amp;</span><span class="lifetime">'s </span><span class="kw-2">mut </span><span class="self">Self</span>::State,
         system_meta: <span class="kw-2">&amp;</span>SystemMeta,
-        world: UnsafeWorldCell&lt;<span class="lifetime">&#39;w</span>&gt;,
+        world: UnsafeWorldCell&lt;<span class="lifetime">'w</span>&gt;,
         change_tick: Tick,
-    ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>&gt; {
+    ) -&gt; <span class="self">Self</span>::Item&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>&gt; {
         <span class="comment">// SAFETY:
         // - The caller ensures that `world` is the same one that `init_state` was called with.
         // - The caller ensures that no other `SystemParam`s will conflict with the accesses we have registered.
-        </span><span class="kw">let </span>main_world = Res::&lt;MainWorld&gt;::get_param(
-            <span class="kw-2">&amp;mut </span>state.main_world_state,
-            system_meta,
-            world,
-            change_tick,
-        );
+        </span><span class="kw">let </span>main_world = <span class="kw">unsafe </span>{
+            Res::&lt;MainWorld&gt;::get_param(
+                <span class="kw-2">&amp;mut </span>state.main_world_state,
+                system_meta,
+                world,
+                change_tick,
+            )
+        };
         <span class="kw">let </span>item = state.state.get(main_world.into_inner());
         Extract { item }
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>, P&gt; Deref <span class="kw">for </span>Extract&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>, P&gt;
+<span class="kw">impl</span>&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>, P&gt; Deref <span class="kw">for </span>Extract&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>, P&gt;
 <span class="kw">where
     </span>P: ReadOnlySystemParam,
 {
-    <span class="kw">type </span>Target = SystemParamItem&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>, P&gt;;
+    <span class="kw">type </span>Target = SystemParamItem&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>, P&gt;;
 
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>deref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="self">Self</span>::Target {
@@ -236,7 +241,7 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>, P&gt; DerefMut <span class="kw">for </span>Extract&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>, P&gt;
+<span class="kw">impl</span>&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>, P&gt; DerefMut <span class="kw">for </span>Extract&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>, P&gt;
 <span class="kw">where
     </span>P: ReadOnlySystemParam,
 {
@@ -246,13 +251,13 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>, P&gt; IntoIterator <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Extract&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>, P&gt;
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, <span class="lifetime">'w</span>, <span class="lifetime">'s</span>, P&gt; IntoIterator <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span>Extract&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>, P&gt;
 <span class="kw">where
     </span>P: ReadOnlySystemParam,
-    <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>SystemParamItem&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>, P&gt;: IntoIterator,
+    <span class="kw-2">&amp;</span><span class="lifetime">'a </span>SystemParamItem&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>, P&gt;: IntoIterator,
 {
-    <span class="kw">type </span>Item = &lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>SystemParamItem&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>, P&gt; <span class="kw">as </span>IntoIterator&gt;::Item;
-    <span class="kw">type </span>IntoIter = &lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>SystemParamItem&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>, P&gt; <span class="kw">as </span>IntoIterator&gt;::IntoIter;
+    <span class="kw">type </span>Item = &lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>SystemParamItem&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>, P&gt; <span class="kw">as </span>IntoIterator&gt;::Item;
+    <span class="kw">type </span>IntoIter = &lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>SystemParamItem&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>, P&gt; <span class="kw">as </span>IntoIterator&gt;::IntoIter;
 
     <span class="kw">fn </span>into_iter(<span class="self">self</span>) -&gt; <span class="self">Self</span>::IntoIter {
         (<span class="kw-2">&amp;</span><span class="self">self</span>.item).into_iter()

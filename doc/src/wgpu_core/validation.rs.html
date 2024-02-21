@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/wgpu-core-0.17.1/src/validation.rs`."><title>validation.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="wgpu_core" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../wgpu_core/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/wgpu-core-0.19.0/src/validation.rs`."><title>validation.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="wgpu_core" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1246,68 +1247,8 @@
 <a href="#1246" id="1246">1246</a>
 <a href="#1247" id="1247">1247</a>
 <a href="#1248" id="1248">1248</a>
-<a href="#1249" id="1249">1249</a>
-<a href="#1250" id="1250">1250</a>
-<a href="#1251" id="1251">1251</a>
-<a href="#1252" id="1252">1252</a>
-<a href="#1253" id="1253">1253</a>
-<a href="#1254" id="1254">1254</a>
-<a href="#1255" id="1255">1255</a>
-<a href="#1256" id="1256">1256</a>
-<a href="#1257" id="1257">1257</a>
-<a href="#1258" id="1258">1258</a>
-<a href="#1259" id="1259">1259</a>
-<a href="#1260" id="1260">1260</a>
-<a href="#1261" id="1261">1261</a>
-<a href="#1262" id="1262">1262</a>
-<a href="#1263" id="1263">1263</a>
-<a href="#1264" id="1264">1264</a>
-<a href="#1265" id="1265">1265</a>
-<a href="#1266" id="1266">1266</a>
-<a href="#1267" id="1267">1267</a>
-<a href="#1268" id="1268">1268</a>
-<a href="#1269" id="1269">1269</a>
-<a href="#1270" id="1270">1270</a>
-<a href="#1271" id="1271">1271</a>
-<a href="#1272" id="1272">1272</a>
-<a href="#1273" id="1273">1273</a>
-<a href="#1274" id="1274">1274</a>
-<a href="#1275" id="1275">1275</a>
-<a href="#1276" id="1276">1276</a>
-<a href="#1277" id="1277">1277</a>
-<a href="#1278" id="1278">1278</a>
-<a href="#1279" id="1279">1279</a>
-<a href="#1280" id="1280">1280</a>
-<a href="#1281" id="1281">1281</a>
-<a href="#1282" id="1282">1282</a>
-<a href="#1283" id="1283">1283</a>
-<a href="#1284" id="1284">1284</a>
-<a href="#1285" id="1285">1285</a>
-<a href="#1286" id="1286">1286</a>
-<a href="#1287" id="1287">1287</a>
-<a href="#1288" id="1288">1288</a>
-<a href="#1289" id="1289">1289</a>
-<a href="#1290" id="1290">1290</a>
-<a href="#1291" id="1291">1291</a>
-<a href="#1292" id="1292">1292</a>
-<a href="#1293" id="1293">1293</a>
-<a href="#1294" id="1294">1294</a>
-<a href="#1295" id="1295">1295</a>
-<a href="#1296" id="1296">1296</a>
-<a href="#1297" id="1297">1297</a>
-<a href="#1298" id="1298">1298</a>
-<a href="#1299" id="1299">1299</a>
-<a href="#1300" id="1300">1300</a>
-<a href="#1301" id="1301">1301</a>
-<a href="#1302" id="1302">1302</a>
-<a href="#1303" id="1303">1303</a>
-<a href="#1304" id="1304">1304</a>
-<a href="#1305" id="1305">1305</a>
-<a href="#1306" id="1306">1306</a>
-<a href="#1307" id="1307">1307</a>
-<a href="#1308" id="1308">1308</a>
-</pre></div><pre class="rust"><code><span class="kw">use crate</span>::{binding_model::BindEntryMap, FastHashMap, FastHashSet};
-<span class="kw">use </span>naga::valid::GlobalUse;
+</pre></div><pre class="rust"><code><span class="kw">use crate</span>::{device::bgl, FastHashMap, FastHashSet};
+<span class="kw">use </span>arrayvec::ArrayVec;
 <span class="kw">use </span>std::{collections::hash_map::Entry, fmt};
 <span class="kw">use </span>thiserror::Error;
 <span class="kw">use </span>wgt::{BindGroupLayoutEntry, BindingType};
@@ -1346,9 +1287,9 @@
 <span class="kw">impl </span>fmt::Display <span class="kw">for </span>NumericDimension {
     <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
         <span class="kw">match </span><span class="kw-2">*</span><span class="self">self </span>{
-            <span class="self">Self</span>::Scalar =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;&quot;</span>),
-            <span class="self">Self</span>::Vector(size) =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;x{}&quot;</span>, size <span class="kw">as </span>u8),
-            <span class="self">Self</span>::Matrix(columns, rows) =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;x{}{}&quot;</span>, columns <span class="kw">as </span>u8, rows <span class="kw">as </span>u8),
+            <span class="self">Self</span>::Scalar =&gt; <span class="macro">write!</span>(f, <span class="string">""</span>),
+            <span class="self">Self</span>::Vector(size) =&gt; <span class="macro">write!</span>(f, <span class="string">"x{}"</span>, size <span class="kw">as </span>u8),
+            <span class="self">Self</span>::Matrix(columns, rows) =&gt; <span class="macro">write!</span>(f, <span class="string">"x{}{}"</span>, columns <span class="kw">as </span>u8, rows <span class="kw">as </span>u8),
         }
     }
 }
@@ -1366,13 +1307,18 @@
 <span class="attr">#[derive(Clone, Copy, Debug)]
 </span><span class="kw">pub struct </span>NumericType {
     dim: NumericDimension,
-    kind: naga::ScalarKind,
-    width: naga::Bytes,
+    scalar: naga::Scalar,
 }
 
 <span class="kw">impl </span>fmt::Display <span class="kw">for </span>NumericType {
     <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
-        <span class="macro">write!</span>(f, <span class="string">&quot;{:?}{}{}&quot;</span>, <span class="self">self</span>.kind, <span class="self">self</span>.width * <span class="number">8</span>, <span class="self">self</span>.dim)
+        <span class="macro">write!</span>(
+            f,
+            <span class="string">"{:?}{}{}"</span>,
+            <span class="self">self</span>.scalar.kind,
+            <span class="self">self</span>.scalar.width * <span class="number">8</span>,
+            <span class="self">self</span>.dim
+        )
     }
 }
 
@@ -1397,7 +1343,7 @@
     <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
         <span class="macro">write!</span>(
             f,
-            <span class="string">&quot;{} interpolated as {:?} with sampling {:?}&quot;</span>,
+            <span class="string">"{} interpolated as {:?} with sampling {:?}"</span>,
             <span class="self">self</span>.ty, <span class="self">self</span>.interpolation, <span class="self">self</span>.sampling
         )
     }
@@ -1420,23 +1366,24 @@
 </span><span class="kw">struct </span>EntryPoint {
     inputs: Vec&lt;Varying&gt;,
     outputs: Vec&lt;Varying&gt;,
-    resources: Vec&lt;(naga::Handle&lt;Resource&gt;, GlobalUse)&gt;,
+    resources: Vec&lt;naga::Handle&lt;Resource&gt;&gt;,
     <span class="attr">#[allow(unused)]
     </span>spec_constants: Vec&lt;SpecializationConstant&gt;,
     sampling_pairs: FastHashSet&lt;(naga::Handle&lt;Resource&gt;, naga::Handle&lt;Resource&gt;)&gt;,
     workgroup_size: [u32; <span class="number">3</span>],
+    dual_source_blending: bool,
 }
 
 <span class="attr">#[derive(Debug)]
 </span><span class="kw">pub struct </span>Interface {
-    features: wgt::Features,
     limits: wgt::Limits,
+    features: wgt::Features,
     resources: naga::Arena&lt;Resource&gt;,
     entry_points: FastHashMap&lt;(naga::ShaderStage, String), EntryPoint&gt;,
 }
 
 <span class="attr">#[derive(Clone, Debug, Error)]
-#[error(<span class="string">&quot;Buffer usage is {actual:?} which does not contain required usage {expected:?}&quot;</span>)]
+#[error(<span class="string">"Buffer usage is {actual:?} which does not contain required usage {expected:?}"</span>)]
 </span><span class="kw">pub struct </span>MissingBufferUsageError {
     <span class="kw">pub</span>(<span class="kw">crate</span>) actual: wgt::BufferUsages,
     <span class="kw">pub</span>(<span class="kw">crate</span>) expected: wgt::BufferUsages,
@@ -1456,7 +1403,7 @@
 }
 
 <span class="attr">#[derive(Clone, Debug, Error)]
-#[error(<span class="string">&quot;Texture usage is {actual:?} which does not contain required usage {expected:?}&quot;</span>)]
+#[error(<span class="string">"Texture usage is {actual:?} which does not contain required usage {expected:?}"</span>)]
 </span><span class="kw">pub struct </span>MissingTextureUsageError {
     <span class="kw">pub</span>(<span class="kw">crate</span>) actual: wgt::TextureUsages,
     <span class="kw">pub</span>(<span class="kw">crate</span>) expected: wgt::TextureUsages,
@@ -1478,66 +1425,61 @@
 <span class="attr">#[derive(Clone, Debug, Error)]
 #[non_exhaustive]
 </span><span class="kw">pub enum </span>BindingError {
-    <span class="attr">#[error(<span class="string">&quot;Binding is missing from the pipeline layout&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Binding is missing from the pipeline layout"</span>)]
     </span>Missing,
-    <span class="attr">#[error(<span class="string">&quot;Visibility flags don&#39;t include the shader stage&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Visibility flags don't include the shader stage"</span>)]
     </span>Invisible,
-    <span class="attr">#[error(<span class="string">&quot;The shader requires the load/store access flags {required:?} but only {allowed:?} is allowed&quot;</span>)]
-    </span>WrongUsage {
-        required: GlobalUse,
-        allowed: GlobalUse,
-    },
-    <span class="attr">#[error(<span class="string">&quot;Type on the shader side does not match the pipeline binding&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Type on the shader side does not match the pipeline binding"</span>)]
     </span>WrongType,
-    <span class="attr">#[error(<span class="string">&quot;Storage class {binding:?} doesn&#39;t match the shader {shader:?}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Storage class {binding:?} doesn't match the shader {shader:?}"</span>)]
     </span>WrongAddressSpace {
         binding: naga::AddressSpace,
         shader: naga::AddressSpace,
     },
-    <span class="attr">#[error(<span class="string">&quot;Buffer structure size {0}, added to one element of an unbound array, if it&#39;s the last field, ended up greater than the given `min_binding_size`&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Buffer structure size {0}, added to one element of an unbound array, if it's the last field, ended up greater than the given `min_binding_size`"</span>)]
     </span>WrongBufferSize(wgt::BufferSize),
-    <span class="attr">#[error(<span class="string">&quot;View dimension {dim:?} (is array: {is_array}) doesn&#39;t match the binding {binding:?}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"View dimension {dim:?} (is array: {is_array}) doesn't match the binding {binding:?}"</span>)]
     </span>WrongTextureViewDimension {
         dim: naga::ImageDimension,
         is_array: bool,
         binding: BindingType,
     },
-    <span class="attr">#[error(<span class="string">&quot;Texture class {binding:?} doesn&#39;t match the shader {shader:?}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Texture class {binding:?} doesn't match the shader {shader:?}"</span>)]
     </span>WrongTextureClass {
         binding: naga::ImageClass,
         shader: naga::ImageClass,
     },
-    <span class="attr">#[error(<span class="string">&quot;Comparison flag doesn&#39;t match the shader&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Comparison flag doesn't match the shader"</span>)]
     </span>WrongSamplerComparison,
-    <span class="attr">#[error(<span class="string">&quot;Derived bind group layout type is not consistent between stages&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Derived bind group layout type is not consistent between stages"</span>)]
     </span>InconsistentlyDerivedType,
-    <span class="attr">#[error(<span class="string">&quot;Texture format {0:?} is not supported for storage use&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Texture format {0:?} is not supported for storage use"</span>)]
     </span>BadStorageFormat(wgt::TextureFormat),
     <span class="attr">#[error(
-        <span class="string">&quot;Storage texture usage {0:?} doesn&#39;t have a matching supported `StorageTextureAccess`&quot;
+        <span class="string">"Storage texture with access {0:?} doesn't have a matching supported `StorageTextureAccess`"
     </span>)]
-    </span>UnsupportedTextureStorageAccess(GlobalUse),
+    </span>UnsupportedTextureStorageAccess(naga::StorageAccess),
 }
 
 <span class="attr">#[derive(Clone, Debug, Error)]
 #[non_exhaustive]
 </span><span class="kw">pub enum </span>FilteringError {
-    <span class="attr">#[error(<span class="string">&quot;Integer textures can&#39;t be sampled with a filtering sampler&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Integer textures can't be sampled with a filtering sampler"</span>)]
     </span>Integer,
-    <span class="attr">#[error(<span class="string">&quot;Non-filterable float textures can&#39;t be sampled with a filtering sampler&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Non-filterable float textures can't be sampled with a filtering sampler"</span>)]
     </span>Float,
 }
 
 <span class="attr">#[derive(Clone, Debug, Error)]
 #[non_exhaustive]
 </span><span class="kw">pub enum </span>InputError {
-    <span class="attr">#[error(<span class="string">&quot;Input is not provided by the earlier stage in the pipeline&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Input is not provided by the earlier stage in the pipeline"</span>)]
     </span>Missing,
-    <span class="attr">#[error(<span class="string">&quot;Input type is not compatible with the provided {0}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Input type is not compatible with the provided {0}"</span>)]
     </span>WrongType(NumericType),
-    <span class="attr">#[error(<span class="string">&quot;Input interpolation doesn&#39;t match provided {0:?}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Input interpolation doesn't match provided {0:?}"</span>)]
     </span>InterpolationMismatch(<span class="prelude-ty">Option</span>&lt;naga::Interpolation&gt;),
-    <span class="attr">#[error(<span class="string">&quot;Input sampling doesn&#39;t match provided {0:?}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Input sampling doesn't match provided {0:?}"</span>)]
     </span>SamplingMismatch(<span class="prelude-ty">Option</span>&lt;naga::Sampling&gt;),
 }
 
@@ -1545,10 +1487,10 @@
 </span><span class="attr">#[derive(Clone, Debug, Error)]
 #[non_exhaustive]
 </span><span class="kw">pub enum </span>StageError {
-    <span class="attr">#[error(<span class="string">&quot;Shader module is invalid&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Shader module is invalid"</span>)]
     </span>InvalidModule,
     <span class="attr">#[error(
-        <span class="string">&quot;Shader entry point&#39;s workgroup size {current:?} ({current_total} total invocations) must be less or equal to the per-dimension limit {limit:?} and the total invocation limit {total}&quot;
+        <span class="string">"Shader entry point's workgroup size {current:?} ({current_total} total invocations) must be less or equal to the per-dimension limit {limit:?} and the total invocation limit {total}"
     </span>)]
     </span>InvalidWorkgroupSize {
         current: [u32; <span class="number">3</span>],
@@ -1556,27 +1498,27 @@
         limit: [u32; <span class="number">3</span>],
         total: u32,
     },
-    <span class="attr">#[error(<span class="string">&quot;Shader uses {used} inter-stage components above the limit of {limit}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Shader uses {used} inter-stage components above the limit of {limit}"</span>)]
     </span>TooManyVaryings { used: u32, limit: u32 },
-    <span class="attr">#[error(<span class="string">&quot;Unable to find entry point &#39;{0}&#39;&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Unable to find entry point '{0}'"</span>)]
     </span>MissingEntryPoint(String),
-    <span class="attr">#[error(<span class="string">&quot;Shader global {0:?} is not available in the layout pipeline layout&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Shader global {0:?} is not available in the pipeline layout"</span>)]
     </span>Binding(naga::ResourceBinding, <span class="attr">#[source] </span>BindingError),
-    <span class="attr">#[error(<span class="string">&quot;Unable to filter the texture ({texture:?}) by the sampler ({sampler:?})&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Unable to filter the texture ({texture:?}) by the sampler ({sampler:?})"</span>)]
     </span>Filtering {
         texture: naga::ResourceBinding,
         sampler: naga::ResourceBinding,
         <span class="attr">#[source]
         </span>error: FilteringError,
     },
-    <span class="attr">#[error(<span class="string">&quot;Location[{location}] {var} is not provided by the previous stage outputs&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Location[{location}] {var} is not provided by the previous stage outputs"</span>)]
     </span>Input {
         location: wgt::ShaderLocation,
         var: InterfaceVar,
         <span class="attr">#[source]
         </span>error: InputError,
     },
-    <span class="attr">#[error(<span class="string">&quot;Location[{location}] is provided by the previous stage output but is not consumed as input by this stage.&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Location[{location}] is provided by the previous stage output but is not consumed as input by this stage."</span>)]
     </span>InputNotConsumed { location: wgt::ShaderLocation },
 }
 
@@ -1608,7 +1550,9 @@
         Tf::Rgba8Snorm =&gt; Sf::Rgba8Snorm,
         Tf::Rgba8Uint =&gt; Sf::Rgba8Uint,
         Tf::Rgba8Sint =&gt; Sf::Rgba8Sint,
+        Tf::Bgra8Unorm =&gt; Sf::Bgra8Unorm,
 
+        Tf::Rgb10a2Uint =&gt; Sf::Rgb10a2Uint,
         Tf::Rgb10a2Unorm =&gt; Sf::Rgb10a2Unorm,
         Tf::Rg11b10Float =&gt; Sf::Rg11b10Float,
 
@@ -1662,7 +1606,9 @@
         Sf::Rgba8Snorm =&gt; Tf::Rgba8Snorm,
         Sf::Rgba8Uint =&gt; Tf::Rgba8Uint,
         Sf::Rgba8Sint =&gt; Tf::Rgba8Sint,
+        Sf::Bgra8Unorm =&gt; Tf::Bgra8Unorm,
 
+        Sf::Rgb10a2Uint =&gt; Tf::Rgb10a2Uint,
         Sf::Rgb10a2Unorm =&gt; Tf::Rgb10a2Unorm,
         Sf::Rg11b10Float =&gt; Tf::Rg11b10Float,
 
@@ -1687,43 +1633,32 @@
 }
 
 <span class="kw">impl </span>Resource {
-    <span class="kw">fn </span>check_binding_use(
-        <span class="kw-2">&amp;</span><span class="self">self</span>,
-        entry: <span class="kw-2">&amp;</span>BindGroupLayoutEntry,
-        shader_usage: GlobalUse,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;(), BindingError&gt; {
-        <span class="kw">let </span>allowed_usage = <span class="kw">match </span><span class="self">self</span>.ty {
+    <span class="kw">fn </span>check_binding_use(<span class="kw-2">&amp;</span><span class="self">self</span>, entry: <span class="kw-2">&amp;</span>BindGroupLayoutEntry) -&gt; <span class="prelude-ty">Result</span>&lt;(), BindingError&gt; {
+        <span class="kw">match </span><span class="self">self</span>.ty {
             ResourceType::Buffer { size } =&gt; {
-                <span class="kw">let </span>(allowed_usage, min_size) = <span class="kw">match </span>entry.ty {
+                <span class="kw">let </span>min_size = <span class="kw">match </span>entry.ty {
                     BindingType::Buffer {
                         ty,
                         has_dynamic_offset: <span class="kw">_</span>,
                         min_binding_size,
                     } =&gt; {
-                        <span class="kw">let </span>(class, global_use) = <span class="kw">match </span>ty {
-                            wgt::BufferBindingType::Uniform =&gt; {
-                                (naga::AddressSpace::Uniform, GlobalUse::READ)
-                            }
+                        <span class="kw">let </span>class = <span class="kw">match </span>ty {
+                            wgt::BufferBindingType::Uniform =&gt; naga::AddressSpace::Uniform,
                             wgt::BufferBindingType::Storage { read_only } =&gt; {
-                                <span class="kw">let </span><span class="kw-2">mut </span>global_use = GlobalUse::READ | GlobalUse::QUERY;
-                                global_use.set(GlobalUse::WRITE, !read_only);
                                 <span class="kw">let </span><span class="kw-2">mut </span>naga_access = naga::StorageAccess::LOAD;
                                 naga_access.set(naga::StorageAccess::STORE, !read_only);
-                                (
-                                    naga::AddressSpace::Storage {
-                                        access: naga_access,
-                                    },
-                                    global_use,
-                                )
+                                naga::AddressSpace::Storage {
+                                    access: naga_access,
+                                }
                             }
                         };
-                        <span class="kw">if </span>!address_space_matches(<span class="self">self</span>.class, class) {
+                        <span class="kw">if </span><span class="self">self</span>.class != class {
                             <span class="kw">return </span><span class="prelude-val">Err</span>(BindingError::WrongAddressSpace {
                                 binding: class,
                                 shader: <span class="self">self</span>.class,
                             });
                         }
-                        (global_use, min_binding_size)
+                        min_binding_size
                     }
                     <span class="kw">_ </span>=&gt; <span class="kw">return </span><span class="prelude-val">Err</span>(BindingError::WrongType),
                 };
@@ -1733,13 +1668,10 @@
                     }
                     <span class="kw">_ </span>=&gt; (),
                 }
-                allowed_usage
             }
             ResourceType::Sampler { comparison } =&gt; <span class="kw">match </span>entry.ty {
                 BindingType::Sampler(ty) =&gt; {
-                    <span class="kw">if </span>(ty == wgt::SamplerBindingType::Comparison) == comparison {
-                        GlobalUse::READ
-                    } <span class="kw">else </span>{
+                    <span class="kw">if </span>(ty == wgt::SamplerBindingType::Comparison) != comparison {
                         <span class="kw">return </span><span class="prelude-val">Err</span>(BindingError::WrongSamplerComparison);
                     }
                 }
@@ -1788,29 +1720,26 @@
                         }
                     }
                 }
-                <span class="kw">let </span>(expected_class, usage) = <span class="kw">match </span>entry.ty {
+                <span class="kw">let </span>expected_class = <span class="kw">match </span>entry.ty {
                     BindingType::Texture {
                         sample_type,
                         view_dimension: <span class="kw">_</span>,
                         multisampled: multi,
-                    } =&gt; {
-                        <span class="kw">let </span>class = <span class="kw">match </span>sample_type {
-                            wgt::TextureSampleType::Float { .. } =&gt; naga::ImageClass::Sampled {
-                                kind: naga::ScalarKind::Float,
-                                multi,
-                            },
-                            wgt::TextureSampleType::Sint =&gt; naga::ImageClass::Sampled {
-                                kind: naga::ScalarKind::Sint,
-                                multi,
-                            },
-                            wgt::TextureSampleType::Uint =&gt; naga::ImageClass::Sampled {
-                                kind: naga::ScalarKind::Uint,
-                                multi,
-                            },
-                            wgt::TextureSampleType::Depth =&gt; naga::ImageClass::Depth { multi },
-                        };
-                        (class, GlobalUse::READ | GlobalUse::QUERY)
-                    }
+                    } =&gt; <span class="kw">match </span>sample_type {
+                        wgt::TextureSampleType::Float { .. } =&gt; naga::ImageClass::Sampled {
+                            kind: naga::ScalarKind::Float,
+                            multi,
+                        },
+                        wgt::TextureSampleType::Sint =&gt; naga::ImageClass::Sampled {
+                            kind: naga::ScalarKind::Sint,
+                            multi,
+                        },
+                        wgt::TextureSampleType::Uint =&gt; naga::ImageClass::Sampled {
+                            kind: naga::ScalarKind::Uint,
+                            multi,
+                        },
+                        wgt::TextureSampleType::Depth =&gt; naga::ImageClass::Depth { multi },
+                    },
                     BindingType::StorageTexture {
                         access,
                         format,
@@ -1818,26 +1747,15 @@
                     } =&gt; {
                         <span class="kw">let </span>naga_format = map_storage_format_to_naga(format)
                             .ok_or(BindingError::BadStorageFormat(format))<span class="question-mark">?</span>;
-                        <span class="kw">let </span>(naga_access, usage) = <span class="kw">match </span>access {
-                            wgt::StorageTextureAccess::ReadOnly =&gt; (
-                                naga::StorageAccess::LOAD,
-                                GlobalUse::READ | GlobalUse::QUERY,
-                            ),
-                            wgt::StorageTextureAccess::WriteOnly =&gt; (
-                                naga::StorageAccess::STORE,
-                                GlobalUse::WRITE | GlobalUse::QUERY,
-                            ),
-                            wgt::StorageTextureAccess::ReadWrite =&gt; {
-                                (naga::StorageAccess::all(), GlobalUse::all())
-                            }
+                        <span class="kw">let </span>naga_access = <span class="kw">match </span>access {
+                            wgt::StorageTextureAccess::ReadOnly =&gt; naga::StorageAccess::LOAD,
+                            wgt::StorageTextureAccess::WriteOnly =&gt; naga::StorageAccess::STORE,
+                            wgt::StorageTextureAccess::ReadWrite =&gt; naga::StorageAccess::all(),
                         };
-                        (
-                            naga::ImageClass::Storage {
-                                format: naga_format,
-                                access: naga_access,
-                            },
-                            usage,
-                        )
+                        naga::ImageClass::Storage {
+                            format: naga_format,
+                            access: naga_access,
+                        }
                     }
                     <span class="kw">_ </span>=&gt; <span class="kw">return </span><span class="prelude-val">Err</span>(BindingError::WrongType),
                 };
@@ -1847,31 +1765,19 @@
                         shader: class,
                     });
                 }
-                usage
             }
         };
 
-        <span class="kw">if </span>allowed_usage.contains(shader_usage) {
-            <span class="prelude-val">Ok</span>(())
-        } <span class="kw">else </span>{
-            <span class="prelude-val">Err</span>(BindingError::WrongUsage {
-                required: shader_usage,
-                allowed: allowed_usage,
-            })
-        }
+        <span class="prelude-val">Ok</span>(())
     }
 
-    <span class="kw">fn </span>derive_binding_type(
-        <span class="kw-2">&amp;</span><span class="self">self</span>,
-        shader_usage: GlobalUse,
-        features: wgt::Features,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;BindingType, BindingError&gt; {
+    <span class="kw">fn </span>derive_binding_type(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;BindingType, BindingError&gt; {
         <span class="prelude-val">Ok</span>(<span class="kw">match </span><span class="self">self</span>.ty {
             ResourceType::Buffer { size } =&gt; BindingType::Buffer {
                 ty: <span class="kw">match </span><span class="self">self</span>.class {
                     naga::AddressSpace::Uniform =&gt; wgt::BufferBindingType::Uniform,
-                    naga::AddressSpace::Storage { .. } =&gt; wgt::BufferBindingType::Storage {
-                        read_only: !shader_usage.contains(GlobalUse::WRITE),
+                    naga::AddressSpace::Storage { access } =&gt; wgt::BufferBindingType::Storage {
+                        read_only: access == naga::StorageAccess::LOAD,
                     },
                     <span class="kw">_ </span>=&gt; <span class="kw">return </span><span class="prelude-val">Err</span>(BindingError::WrongType),
                 },
@@ -1904,7 +1810,9 @@
                             }
                             naga::ScalarKind::Sint =&gt; wgt::TextureSampleType::Sint,
                             naga::ScalarKind::Uint =&gt; wgt::TextureSampleType::Uint,
-                            naga::ScalarKind::Bool =&gt; <span class="macro">unreachable!</span>(),
+                            naga::ScalarKind::AbstractInt
+                            | naga::ScalarKind::AbstractFloat
+                            | naga::ScalarKind::Bool =&gt; <span class="macro">unreachable!</span>(),
                         },
                         view_dimension,
                         multisampled: multi,
@@ -1914,19 +1822,15 @@
                         view_dimension,
                         multisampled: multi,
                     },
-                    naga::ImageClass::Storage { format, .. } =&gt; BindingType::StorageTexture {
-                        access: <span class="kw">if </span>!shader_usage.contains(GlobalUse::READ) {
-                            wgt::StorageTextureAccess::WriteOnly
-                        } <span class="kw">else if </span>!features
-                            .contains(wgt::Features::TEXTURE_ADAPTER_SPECIFIC_FORMAT_FEATURES)
-                        {
-                            <span class="kw">return </span><span class="prelude-val">Err</span>(BindingError::UnsupportedTextureStorageAccess(
-                                shader_usage,
-                            ));
-                        } <span class="kw">else if </span>shader_usage.contains(GlobalUse::WRITE) {
-                            wgt::StorageTextureAccess::ReadWrite
-                        } <span class="kw">else </span>{
-                            wgt::StorageTextureAccess::ReadOnly
+                    naga::ImageClass::Storage { format, access } =&gt; BindingType::StorageTexture {
+                        access: {
+                            <span class="kw">const </span>LOAD_STORE: naga::StorageAccess = naga::StorageAccess::all();
+                            <span class="kw">match </span>access {
+                                naga::StorageAccess::LOAD =&gt; wgt::StorageTextureAccess::ReadOnly,
+                                naga::StorageAccess::STORE =&gt; wgt::StorageTextureAccess::WriteOnly,
+                                LOAD_STORE =&gt; wgt::StorageTextureAccess::ReadWrite,
+                                <span class="kw">_ </span>=&gt; <span class="macro">unreachable!</span>(),
+                            }
                         },
                         view_dimension,
                         format: {
@@ -1945,77 +1849,76 @@
 
 <span class="kw">impl </span>NumericType {
     <span class="kw">fn </span>from_vertex_format(format: wgt::VertexFormat) -&gt; <span class="self">Self </span>{
-        <span class="kw">use </span>naga::{ScalarKind <span class="kw">as </span>Sk, VectorSize <span class="kw">as </span>Vs};
+        <span class="kw">use </span>naga::{Scalar, VectorSize <span class="kw">as </span>Vs};
         <span class="kw">use </span>wgt::VertexFormat <span class="kw">as </span>Vf;
 
-        <span class="kw">let </span>(dim, kind, width) = <span class="kw">match </span>format {
-            Vf::Uint32 =&gt; (NumericDimension::Scalar, Sk::Uint, <span class="number">4</span>),
+        <span class="kw">let </span>(dim, scalar) = <span class="kw">match </span>format {
+            Vf::Uint32 =&gt; (NumericDimension::Scalar, Scalar::U32),
             Vf::Uint8x2 | Vf::Uint16x2 | Vf::Uint32x2 =&gt; {
-                (NumericDimension::Vector(Vs::Bi), Sk::Uint, <span class="number">4</span>)
+                (NumericDimension::Vector(Vs::Bi), Scalar::U32)
             }
-            Vf::Uint32x3 =&gt; (NumericDimension::Vector(Vs::Tri), Sk::Uint, <span class="number">4</span>),
+            Vf::Uint32x3 =&gt; (NumericDimension::Vector(Vs::Tri), Scalar::U32),
             Vf::Uint8x4 | Vf::Uint16x4 | Vf::Uint32x4 =&gt; {
-                (NumericDimension::Vector(Vs::Quad), Sk::Uint, <span class="number">4</span>)
+                (NumericDimension::Vector(Vs::Quad), Scalar::U32)
             }
-            Vf::Sint32 =&gt; (NumericDimension::Scalar, Sk::Sint, <span class="number">4</span>),
+            Vf::Sint32 =&gt; (NumericDimension::Scalar, Scalar::I32),
             Vf::Sint8x2 | Vf::Sint16x2 | Vf::Sint32x2 =&gt; {
-                (NumericDimension::Vector(Vs::Bi), Sk::Sint, <span class="number">4</span>)
+                (NumericDimension::Vector(Vs::Bi), Scalar::I32)
             }
-            Vf::Sint32x3 =&gt; (NumericDimension::Vector(Vs::Tri), Sk::Sint, <span class="number">4</span>),
+            Vf::Sint32x3 =&gt; (NumericDimension::Vector(Vs::Tri), Scalar::I32),
             Vf::Sint8x4 | Vf::Sint16x4 | Vf::Sint32x4 =&gt; {
-                (NumericDimension::Vector(Vs::Quad), Sk::Sint, <span class="number">4</span>)
+                (NumericDimension::Vector(Vs::Quad), Scalar::I32)
             }
-            Vf::Float32 =&gt; (NumericDimension::Scalar, Sk::Float, <span class="number">4</span>),
+            Vf::Float32 =&gt; (NumericDimension::Scalar, Scalar::F32),
             Vf::Unorm8x2
             | Vf::Snorm8x2
             | Vf::Unorm16x2
             | Vf::Snorm16x2
             | Vf::Float16x2
-            | Vf::Float32x2 =&gt; (NumericDimension::Vector(Vs::Bi), Sk::Float, <span class="number">4</span>),
-            Vf::Float32x3 =&gt; (NumericDimension::Vector(Vs::Tri), Sk::Float, <span class="number">4</span>),
+            | Vf::Float32x2 =&gt; (NumericDimension::Vector(Vs::Bi), Scalar::F32),
+            Vf::Float32x3 =&gt; (NumericDimension::Vector(Vs::Tri), Scalar::F32),
             Vf::Unorm8x4
             | Vf::Snorm8x4
             | Vf::Unorm16x4
             | Vf::Snorm16x4
             | Vf::Float16x4
-            | Vf::Float32x4 =&gt; (NumericDimension::Vector(Vs::Quad), Sk::Float, <span class="number">4</span>),
-            Vf::Float64 =&gt; (NumericDimension::Scalar, Sk::Float, <span class="number">8</span>),
-            Vf::Float64x2 =&gt; (NumericDimension::Vector(Vs::Bi), Sk::Float, <span class="number">8</span>),
-            Vf::Float64x3 =&gt; (NumericDimension::Vector(Vs::Tri), Sk::Float, <span class="number">8</span>),
-            Vf::Float64x4 =&gt; (NumericDimension::Vector(Vs::Quad), Sk::Float, <span class="number">8</span>),
+            | Vf::Float32x4 =&gt; (NumericDimension::Vector(Vs::Quad), Scalar::F32),
+            Vf::Float64 =&gt; (NumericDimension::Scalar, Scalar::F64),
+            Vf::Float64x2 =&gt; (NumericDimension::Vector(Vs::Bi), Scalar::F64),
+            Vf::Float64x3 =&gt; (NumericDimension::Vector(Vs::Tri), Scalar::F64),
+            Vf::Float64x4 =&gt; (NumericDimension::Vector(Vs::Quad), Scalar::F64),
         };
 
         NumericType {
             dim,
-            kind,
             <span class="comment">//Note: Shader always sees data as int, uint, or float.
-            // It doesn&#39;t know if the original is normalized in a tighter form.
-            </span>width,
+            // It doesn't know if the original is normalized in a tighter form.
+            </span>scalar,
         }
     }
 
     <span class="kw">fn </span>from_texture_format(format: wgt::TextureFormat) -&gt; <span class="self">Self </span>{
-        <span class="kw">use </span>naga::{ScalarKind <span class="kw">as </span>Sk, VectorSize <span class="kw">as </span>Vs};
+        <span class="kw">use </span>naga::{Scalar, VectorSize <span class="kw">as </span>Vs};
         <span class="kw">use </span>wgt::TextureFormat <span class="kw">as </span>Tf;
 
-        <span class="kw">let </span>(dim, kind) = <span class="kw">match </span>format {
+        <span class="kw">let </span>(dim, scalar) = <span class="kw">match </span>format {
             Tf::R8Unorm | Tf::R8Snorm | Tf::R16Float | Tf::R32Float =&gt; {
-                (NumericDimension::Scalar, Sk::Float)
+                (NumericDimension::Scalar, Scalar::F32)
             }
-            Tf::R8Uint | Tf::R16Uint | Tf::R32Uint =&gt; (NumericDimension::Scalar, Sk::Uint),
-            Tf::R8Sint | Tf::R16Sint | Tf::R32Sint =&gt; (NumericDimension::Scalar, Sk::Sint),
+            Tf::R8Uint | Tf::R16Uint | Tf::R32Uint =&gt; (NumericDimension::Scalar, Scalar::U32),
+            Tf::R8Sint | Tf::R16Sint | Tf::R32Sint =&gt; (NumericDimension::Scalar, Scalar::I32),
             Tf::Rg8Unorm | Tf::Rg8Snorm | Tf::Rg16Float | Tf::Rg32Float =&gt; {
-                (NumericDimension::Vector(Vs::Bi), Sk::Float)
+                (NumericDimension::Vector(Vs::Bi), Scalar::F32)
             }
             Tf::Rg8Uint | Tf::Rg16Uint | Tf::Rg32Uint =&gt; {
-                (NumericDimension::Vector(Vs::Bi), Sk::Uint)
+                (NumericDimension::Vector(Vs::Bi), Scalar::U32)
             }
             Tf::Rg8Sint | Tf::Rg16Sint | Tf::Rg32Sint =&gt; {
-                (NumericDimension::Vector(Vs::Bi), Sk::Sint)
+                (NumericDimension::Vector(Vs::Bi), Scalar::I32)
             }
-            Tf::R16Snorm | Tf::R16Unorm =&gt; (NumericDimension::Scalar, Sk::Float),
-            Tf::Rg16Snorm | Tf::Rg16Unorm =&gt; (NumericDimension::Vector(Vs::Bi), Sk::Float),
-            Tf::Rgba16Snorm | Tf::Rgba16Unorm =&gt; (NumericDimension::Vector(Vs::Quad), Sk::Float),
+            Tf::R16Snorm | Tf::R16Unorm =&gt; (NumericDimension::Scalar, Scalar::F32),
+            Tf::Rg16Snorm | Tf::Rg16Unorm =&gt; (NumericDimension::Vector(Vs::Bi), Scalar::F32),
+            Tf::Rgba16Snorm | Tf::Rgba16Unorm =&gt; (NumericDimension::Vector(Vs::Quad), Scalar::F32),
             Tf::Rgba8Unorm
             | Tf::Rgba8UnormSrgb
             | Tf::Rgba8Snorm
@@ -2023,23 +1926,24 @@
             | Tf::Bgra8UnormSrgb
             | Tf::Rgb10a2Unorm
             | Tf::Rgba16Float
-            | Tf::Rgba32Float =&gt; (NumericDimension::Vector(Vs::Quad), Sk::Float),
-            Tf::Rgba8Uint | Tf::Rgba16Uint | Tf::Rgba32Uint =&gt; {
-                (NumericDimension::Vector(Vs::Quad), Sk::Uint)
+            | Tf::Rgba32Float =&gt; (NumericDimension::Vector(Vs::Quad), Scalar::F32),
+            Tf::Rgba8Uint | Tf::Rgba16Uint | Tf::Rgba32Uint | Tf::Rgb10a2Uint =&gt; {
+                (NumericDimension::Vector(Vs::Quad), Scalar::U32)
             }
             Tf::Rgba8Sint | Tf::Rgba16Sint | Tf::Rgba32Sint =&gt; {
-                (NumericDimension::Vector(Vs::Quad), Sk::Sint)
+                (NumericDimension::Vector(Vs::Quad), Scalar::I32)
             }
-            Tf::Rg11b10Float =&gt; (NumericDimension::Vector(Vs::Tri), Sk::Float),
+            Tf::Rg11b10Float =&gt; (NumericDimension::Vector(Vs::Tri), Scalar::F32),
             Tf::Stencil8
             | Tf::Depth16Unorm
             | Tf::Depth32Float
             | Tf::Depth32FloatStencil8
             | Tf::Depth24Plus
             | Tf::Depth24PlusStencil8 =&gt; {
-                <span class="macro">panic!</span>(<span class="string">&quot;Unexpected depth format&quot;</span>)
+                <span class="macro">panic!</span>(<span class="string">"Unexpected depth format"</span>)
             }
-            Tf::Rgb9e5Ufloat =&gt; (NumericDimension::Vector(Vs::Tri), Sk::Float),
+            Tf::NV12 =&gt; <span class="macro">panic!</span>(<span class="string">"Unexpected nv12 format"</span>),
+            Tf::Rgb9e5Ufloat =&gt; (NumericDimension::Vector(Vs::Tri), Scalar::F32),
             Tf::Bc1RgbaUnorm
             | Tf::Bc1RgbaUnormSrgb
             | Tf::Bc2RgbaUnorm
@@ -2051,36 +1955,35 @@
             | Tf::Etc2Rgb8A1Unorm
             | Tf::Etc2Rgb8A1UnormSrgb
             | Tf::Etc2Rgba8Unorm
-            | Tf::Etc2Rgba8UnormSrgb =&gt; (NumericDimension::Vector(Vs::Quad), Sk::Float),
+            | Tf::Etc2Rgba8UnormSrgb =&gt; (NumericDimension::Vector(Vs::Quad), Scalar::F32),
             Tf::Bc4RUnorm | Tf::Bc4RSnorm | Tf::EacR11Unorm | Tf::EacR11Snorm =&gt; {
-                (NumericDimension::Scalar, Sk::Float)
+                (NumericDimension::Scalar, Scalar::F32)
             }
             Tf::Bc5RgUnorm | Tf::Bc5RgSnorm | Tf::EacRg11Unorm | Tf::EacRg11Snorm =&gt; {
-                (NumericDimension::Vector(Vs::Bi), Sk::Float)
+                (NumericDimension::Vector(Vs::Bi), Scalar::F32)
             }
             Tf::Bc6hRgbUfloat | Tf::Bc6hRgbFloat | Tf::Etc2Rgb8Unorm | Tf::Etc2Rgb8UnormSrgb =&gt; {
-                (NumericDimension::Vector(Vs::Tri), Sk::Float)
+                (NumericDimension::Vector(Vs::Tri), Scalar::F32)
             }
             Tf::Astc {
                 block: <span class="kw">_</span>,
                 channel: <span class="kw">_</span>,
-            } =&gt; (NumericDimension::Vector(Vs::Quad), Sk::Float),
+            } =&gt; (NumericDimension::Vector(Vs::Quad), Scalar::F32),
         };
 
         NumericType {
             dim,
-            kind,
             <span class="comment">//Note: Shader always sees data as int, uint, or float.
-            // It doesn&#39;t know if the original is normalized in a tighter form.
-            </span>width: <span class="number">4</span>,
+            // It doesn't know if the original is normalized in a tighter form.
+            </span>scalar,
         }
     }
 
     <span class="kw">fn </span>is_subtype_of(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>NumericType) -&gt; bool {
-        <span class="kw">if </span><span class="self">self</span>.width &gt; other.width {
+        <span class="kw">if </span><span class="self">self</span>.scalar.width &gt; other.scalar.width {
             <span class="kw">return </span><span class="bool-val">false</span>;
         }
-        <span class="kw">if </span><span class="self">self</span>.kind != other.kind {
+        <span class="kw">if </span><span class="self">self</span>.scalar.kind != other.scalar.kind {
             <span class="kw">return </span><span class="bool-val">false</span>;
         }
         <span class="kw">match </span>(<span class="self">self</span>.dim, other.dim) {
@@ -2095,7 +1998,7 @@
     }
 
     <span class="kw">fn </span>is_compatible_with(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>NumericType) -&gt; bool {
-        <span class="kw">if </span><span class="self">self</span>.kind != other.kind {
+        <span class="kw">if </span><span class="self">self</span>.scalar.kind != other.scalar.kind {
             <span class="kw">return </span><span class="bool-val">false</span>;
         }
         <span class="kw">match </span>(<span class="self">self</span>.dim, other.dim) {
@@ -2121,6 +2024,27 @@
     }
 }
 
+<span class="kw">pub enum </span>BindingLayoutSource&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="doccomment">/// The binding layout is derived from the pipeline layout.
+    ///
+    /// This will be filled in by the shader binding validation, as it iterates the shader's interfaces.
+    </span>Derived(ArrayVec&lt;bgl::EntryMap, { hal::MAX_BIND_GROUPS }&gt;),
+    <span class="doccomment">/// The binding layout is provided by the user in BGLs.
+    ///
+    /// This will be validated against the shader's interfaces.
+    </span>Provided(ArrayVec&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>bgl::EntryMap, { hal::MAX_BIND_GROUPS }&gt;),
+}
+
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; BindingLayoutSource&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="kw">pub fn </span>new_derived(limits: <span class="kw-2">&amp;</span>wgt::Limits) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span><span class="kw-2">mut </span>array = ArrayVec::new();
+        <span class="kw">for _ in </span><span class="number">0</span>..limits.max_bind_groups {
+            array.push(Default::default());
+        }
+        BindingLayoutSource::Derived(array)
+    }
+}
+
 <span class="kw">pub type </span>StageIo = FastHashMap&lt;wgt::ShaderLocation, InterfaceVar&gt;;
 
 <span class="kw">impl </span>Interface {
@@ -2131,24 +2055,21 @@
         arena: <span class="kw-2">&amp;</span>naga::UniqueArena&lt;naga::Type&gt;,
     ) {
         <span class="kw">let </span>numeric_ty = <span class="kw">match </span>arena[ty].inner {
-            naga::TypeInner::Scalar { kind, width } =&gt; NumericType {
+            naga::TypeInner::Scalar(scalar) =&gt; NumericType {
                 dim: NumericDimension::Scalar,
-                kind,
-                width,
+                scalar,
             },
-            naga::TypeInner::Vector { size, kind, width } =&gt; NumericType {
+            naga::TypeInner::Vector { size, scalar } =&gt; NumericType {
                 dim: NumericDimension::Vector(size),
-                kind,
-                width,
+                scalar,
             },
             naga::TypeInner::Matrix {
                 columns,
                 rows,
-                width,
+                scalar,
             } =&gt; NumericType {
                 dim: NumericDimension::Matrix(columns, rows),
-                kind: naga::ScalarKind::Float,
-                width,
+                scalar,
             },
             naga::TypeInner::Struct { <span class="kw-2">ref </span>members, .. } =&gt; {
                 <span class="kw">for </span>member <span class="kw">in </span>members {
@@ -2161,7 +2082,7 @@
                 // the reality is - every shader coming from `glslc` outputs an array
                 // of clip distances and hits this path :(
                 // So we lower it to `log::warn` to be less annoying.
-                </span><span class="macro">log::warn!</span>(<span class="string">&quot;Unexpected varying type: {:?}&quot;</span>, other);
+                </span><span class="macro">log::warn!</span>(<span class="string">"Unexpected varying type: {:?}"</span>, other);
                 <span class="kw">return</span>;
             }
         };
@@ -2171,7 +2092,8 @@
                 location,
                 interpolation,
                 sampling,
-            }) =&gt; Varying::Local {
+                .. <span class="comment">// second_blend_source
+            </span>}) =&gt; Varying::Local {
                 location,
                 iv: InterfaceVar {
                     ty: numeric_ty,
@@ -2181,7 +2103,7 @@
             },
             <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>naga::Binding::BuiltIn(built_in)) =&gt; Varying::BuiltIn(built_in),
             <span class="prelude-val">None </span>=&gt; {
-                <span class="macro">log::error!</span>(<span class="string">&quot;Missing binding for a varying&quot;</span>);
+                <span class="macro">log::error!</span>(<span class="string">"Missing binding for a varying"</span>);
                 <span class="kw">return</span>;
             }
         };
@@ -2191,8 +2113,8 @@
     <span class="kw">pub fn </span>new(
         module: <span class="kw-2">&amp;</span>naga::Module,
         info: <span class="kw-2">&amp;</span>naga::valid::ModuleInfo,
-        features: wgt::Features,
         limits: wgt::Limits,
+        features: wgt::Features,
     ) -&gt; <span class="self">Self </span>{
         <span class="kw">let </span><span class="kw-2">mut </span>resources = naga::Arena::new();
         <span class="kw">let </span><span class="kw-2">mut </span>resource_mapping = FastHashMap::default();
@@ -2257,11 +2179,8 @@
 
             <span class="kw">for </span>(var_handle, var) <span class="kw">in </span>module.global_variables.iter() {
                 <span class="kw">let </span>usage = info[var_handle];
-                <span class="kw">if </span>usage.is_empty() {
-                    <span class="kw">continue</span>;
-                }
-                <span class="kw">if </span>var.binding.is_some() {
-                    ep.resources.push((resource_mapping[<span class="kw-2">&amp;</span>var_handle], usage));
+                <span class="kw">if </span>!usage.is_empty() &amp;&amp; var.binding.is_some() {
+                    ep.resources.push(resource_mapping[<span class="kw-2">&amp;</span>var_handle]);
                 }
             }
 
@@ -2269,15 +2188,15 @@
                 ep.sampling_pairs
                     .insert((resource_mapping[<span class="kw-2">&amp;</span>key.image], resource_mapping[<span class="kw-2">&amp;</span>key.sampler]));
             }
-
+            ep.dual_source_blending = info.dual_source_blending;
             ep.workgroup_size = entry_point.workgroup_size;
 
             entry_points.insert((entry_point.stage, entry_point.name.clone()), ep);
         }
 
         <span class="self">Self </span>{
-            features,
             limits,
+            features,
             resources,
             entry_points,
         }
@@ -2285,8 +2204,7 @@
 
     <span class="kw">pub fn </span>check_stage(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        given_layouts: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span>BindEntryMap]&gt;,
-        derived_layouts: <span class="kw-2">&amp;mut </span>[BindEntryMap],
+        layouts: <span class="kw-2">&amp;mut </span>BindingLayoutSource&lt;<span class="lifetime">'_</span>&gt;,
         shader_binding_sizes: <span class="kw-2">&amp;mut </span>FastHashMap&lt;naga::ResourceBinding, wgt::BufferSize&gt;,
         entry_point_name: <span class="kw-2">&amp;</span>str,
         stage_bit: wgt::ShaderStages,
@@ -2308,47 +2226,55 @@
             .ok_or(StageError::MissingEntryPoint(pair.<span class="number">1</span>))<span class="question-mark">?</span>;
 
         <span class="comment">// check resources visibility
-        </span><span class="kw">for </span><span class="kw-2">&amp;</span>(handle, usage) <span class="kw">in </span>entry_point.resources.iter() {
+        </span><span class="kw">for </span><span class="kw-2">&amp;</span>handle <span class="kw">in </span>entry_point.resources.iter() {
             <span class="kw">let </span>res = <span class="kw-2">&amp;</span><span class="self">self</span>.resources[handle];
-            <span class="kw">let </span>result = <span class="kw">match </span>given_layouts {
-                <span class="prelude-val">Some</span>(layouts) =&gt; {
-                    <span class="comment">// update the required binding size for this buffer
-                    </span><span class="kw">if let </span>ResourceType::Buffer { size } = res.ty {
-                        <span class="kw">match </span>shader_binding_sizes.entry(res.bind.clone()) {
-                            Entry::Occupied(e) =&gt; {
-                                <span class="kw-2">*</span>e.into_mut() = size.max(<span class="kw-2">*</span>e.get());
-                            }
-                            Entry::Vacant(e) =&gt; {
-                                e.insert(size);
+            <span class="kw">let </span>result = <span class="lifetime">'err</span>: {
+                <span class="kw">match </span>layouts {
+                    BindingLayoutSource::Provided(layouts) =&gt; {
+                        <span class="comment">// update the required binding size for this buffer
+                        </span><span class="kw">if let </span>ResourceType::Buffer { size } = res.ty {
+                            <span class="kw">match </span>shader_binding_sizes.entry(res.bind.clone()) {
+                                Entry::Occupied(e) =&gt; {
+                                    <span class="kw-2">*</span>e.into_mut() = size.max(<span class="kw-2">*</span>e.get());
+                                }
+                                Entry::Vacant(e) =&gt; {
+                                    e.insert(size);
+                                }
                             }
                         }
+
+                        <span class="kw">let </span><span class="prelude-val">Some</span>(map) = layouts.get(res.bind.group <span class="kw">as </span>usize) <span class="kw">else </span>{
+                            <span class="kw">break </span><span class="lifetime">'err </span><span class="prelude-val">Err</span>(BindingError::Missing);
+                        };
+
+                        <span class="kw">let </span><span class="prelude-val">Some</span>(entry) = map.get(res.bind.binding) <span class="kw">else </span>{
+                            <span class="kw">break </span><span class="lifetime">'err </span><span class="prelude-val">Err</span>(BindingError::Missing);
+                        };
+
+                        <span class="kw">if </span>!entry.visibility.contains(stage_bit) {
+                            <span class="kw">break </span><span class="lifetime">'err </span><span class="prelude-val">Err</span>(BindingError::Invisible);
+                        }
+
+                        res.check_binding_use(entry)
                     }
-                    layouts
-                        .get(res.bind.group <span class="kw">as </span>usize)
-                        .and_then(|map| map.get(<span class="kw-2">&amp;</span>res.bind.binding))
-                        .ok_or(BindingError::Missing)
-                        .and_then(|entry| {
-                            <span class="kw">if </span>entry.visibility.contains(stage_bit) {
-                                <span class="prelude-val">Ok</span>(entry)
-                            } <span class="kw">else </span>{
-                                <span class="prelude-val">Err</span>(BindingError::Invisible)
+                    BindingLayoutSource::Derived(layouts) =&gt; {
+                        <span class="kw">let </span><span class="prelude-val">Some</span>(map) = layouts.get_mut(res.bind.group <span class="kw">as </span>usize) <span class="kw">else </span>{
+                            <span class="kw">break </span><span class="lifetime">'err </span><span class="prelude-val">Err</span>(BindingError::Missing);
+                        };
+
+                        <span class="kw">let </span>ty = <span class="kw">match </span>res.derive_binding_type() {
+                            <span class="prelude-val">Ok</span>(ty) =&gt; ty,
+                            <span class="prelude-val">Err</span>(error) =&gt; <span class="kw">break </span><span class="lifetime">'err </span><span class="prelude-val">Err</span>(error),
+                        };
+
+                        <span class="kw">match </span>map.entry(res.bind.binding) {
+                            indexmap::map::Entry::Occupied(e) <span class="kw">if </span>e.get().ty != ty =&gt; {
+                                <span class="kw">break </span><span class="lifetime">'err </span><span class="prelude-val">Err</span>(BindingError::InconsistentlyDerivedType)
                             }
-                        })
-                        .and_then(|entry| res.check_binding_use(entry, usage))
-                }
-                <span class="prelude-val">None </span>=&gt; derived_layouts
-                    .get_mut(res.bind.group <span class="kw">as </span>usize)
-                    .ok_or(BindingError::Missing)
-                    .and_then(|set| {
-                        <span class="kw">let </span>ty = res.derive_binding_type(usage, <span class="self">self</span>.features)<span class="question-mark">?</span>;
-                        <span class="kw">match </span>set.entry(res.bind.binding) {
-                            Entry::Occupied(e) <span class="kw">if </span>e.get().ty != ty =&gt; {
-                                <span class="kw">return </span><span class="prelude-val">Err</span>(BindingError::InconsistentlyDerivedType)
-                            }
-                            Entry::Occupied(e) =&gt; {
+                            indexmap::map::Entry::Occupied(e) =&gt; {
                                 e.into_mut().visibility |= stage_bit;
                             }
-                            Entry::Vacant(e) =&gt; {
+                            indexmap::map::Entry::Vacant(e) =&gt; {
                                 e.insert(BindGroupLayoutEntry {
                                     binding: res.bind.binding,
                                     ty,
@@ -2358,20 +2284,28 @@
                             }
                         }
                         <span class="prelude-val">Ok</span>(())
-                    }),
+                    }
+                }
             };
             <span class="kw">if let </span><span class="prelude-val">Err</span>(error) = result {
                 <span class="kw">return </span><span class="prelude-val">Err</span>(StageError::Binding(res.bind.clone(), error));
             }
         }
 
-        <span class="comment">// check the compatibility between textures and samplers
-        </span><span class="kw">if let </span><span class="prelude-val">Some</span>(layouts) = given_layouts {
+        <span class="comment">// Check the compatibility between textures and samplers
+        //
+        // We only need to do this if the binding layout is provided by the user, as derived
+        // layouts will inherently be correctly tagged.
+        </span><span class="kw">if let </span>BindingLayoutSource::Provided(layouts) = layouts {
             <span class="kw">for </span><span class="kw-2">&amp;</span>(texture_handle, sampler_handle) <span class="kw">in </span>entry_point.sampling_pairs.iter() {
                 <span class="kw">let </span>texture_bind = <span class="kw-2">&amp;</span><span class="self">self</span>.resources[texture_handle].bind;
                 <span class="kw">let </span>sampler_bind = <span class="kw-2">&amp;</span><span class="self">self</span>.resources[sampler_handle].bind;
-                <span class="kw">let </span>texture_layout = <span class="kw-2">&amp;</span>layouts[texture_bind.group <span class="kw">as </span>usize][<span class="kw-2">&amp;</span>texture_bind.binding];
-                <span class="kw">let </span>sampler_layout = <span class="kw-2">&amp;</span>layouts[sampler_bind.group <span class="kw">as </span>usize][<span class="kw-2">&amp;</span>sampler_bind.binding];
+                <span class="kw">let </span>texture_layout = layouts[texture_bind.group <span class="kw">as </span>usize]
+                    .get(texture_bind.binding)
+                    .unwrap();
+                <span class="kw">let </span>sampler_layout = layouts[sampler_bind.group <span class="kw">as </span>usize]
+                    .get(sampler_bind.binding)
+                    .unwrap();
                 <span class="macro">assert!</span>(texture_layout.visibility.contains(stage_bit));
                 <span class="macro">assert!</span>(sampler_layout.visibility.contains(stage_bit));
 
@@ -2442,7 +2376,7 @@
                                     <span class="comment">// For vertex attributes, there are defaults filled out
                                     // by the driver if data is not provided.
                                     </span>naga::ShaderStage::Vertex =&gt; {
-                                        <span class="comment">// vertex inputs don&#39;t count towards inter-stage
+                                        <span class="comment">// vertex inputs don't count towards inter-stage
                                         </span>(iv.ty.is_compatible_with(<span class="kw-2">&amp;</span>provided.ty), <span class="number">0</span>)
                                     }
                                     naga::ShaderStage::Fragment =&gt; {
@@ -2487,7 +2421,12 @@
         }
 
         <span class="comment">// Check all vertex outputs and make sure the fragment shader consumes them.
-        </span><span class="kw">if </span>shader_stage == naga::ShaderStage::Fragment {
+        // This requirement is removed if the `SHADER_UNUSED_VERTEX_OUTPUT` feature is enabled.
+        </span><span class="kw">if </span>shader_stage == naga::ShaderStage::Fragment
+            &amp;&amp; !<span class="self">self
+                </span>.features
+                .contains(wgt::Features::SHADER_UNUSED_VERTEX_OUTPUT)
+        {
             <span class="kw">for </span><span class="kw-2">&amp;</span>index <span class="kw">in </span>inputs.keys() {
                 <span class="comment">// This is a linear scan, but the count should be low enough
                 // that this should be fine.
@@ -2517,10 +2456,10 @@
                     <span class="kw">if let </span>Varying::BuiltIn(naga::BuiltIn::Position { invariant: <span class="bool-val">false </span>}) = <span class="kw-2">*</span>output
                     {
                         <span class="macro">log::warn!</span>(
-                            <span class="string">&quot;Vertex shader with entry point {entry_point_name} outputs a @builtin(position) without the @invariant \
+                            <span class="string">"Vertex shader with entry point {entry_point_name} outputs a @builtin(position) without the @invariant \
                             attribute and is used in a pipeline with {cmp:?}. On some machines, this can cause bad artifacting as {cmp:?} assumes \
                             the values output from the vertex shader exactly match the value in the depth buffer. The @invariant attribute on the \
-                            @builtin(position) vertex output ensures that the exact same pixel depths are used every render.&quot;
+                            @builtin(position) vertex output ensures that the exact same pixel depths are used every render."
                         </span>);
                     }
                 }
@@ -2544,74 +2483,16 @@
             .collect();
         <span class="prelude-val">Ok</span>(outputs)
     }
-}
 
-<span class="kw">fn </span>address_space_matches(shader: naga::AddressSpace, binding: naga::AddressSpace) -&gt; bool {
-    <span class="kw">match </span>(shader, binding) {
-        (
-            naga::AddressSpace::Storage {
-                access: access_shader,
-            },
-            naga::AddressSpace::Storage {
-                access: access_pipeline,
-            },
-        ) =&gt; {
-            <span class="comment">// Allow read- and write-only usages to match read-write layouts:
-            </span>(access_shader &amp; access_pipeline) == access_shader
-        }
-        (a, b) =&gt; a == b,
-    }
-}
-
-<span class="attr">#[cfg(test)]
-</span><span class="kw">mod </span>test {
-    <span class="kw">use </span><span class="kw">super</span>::address_space_matches;
-
-    <span class="attr">#[test]
-    </span><span class="kw">fn </span>address_space_matches_correctly() {
-        <span class="macro">assert!</span>(address_space_matches(
-            naga::AddressSpace::Uniform,
-            naga::AddressSpace::Uniform
-        ));
-
-        <span class="macro">assert!</span>(!address_space_matches(
-            naga::AddressSpace::Uniform,
-            naga::AddressSpace::Storage {
-                access: naga::StorageAccess::LOAD
-            }
-        ));
-
-        <span class="kw">let </span>test_cases = [
-            (naga::StorageAccess::LOAD, naga::StorageAccess::LOAD, <span class="bool-val">true</span>),
-            (naga::StorageAccess::STORE, naga::StorageAccess::LOAD, <span class="bool-val">false</span>),
-            (naga::StorageAccess::LOAD, naga::StorageAccess::STORE, <span class="bool-val">false</span>),
-            (naga::StorageAccess::STORE, naga::StorageAccess::STORE, <span class="bool-val">true</span>),
-            (
-                naga::StorageAccess::LOAD | naga::StorageAccess::STORE,
-                naga::StorageAccess::LOAD | naga::StorageAccess::STORE,
-                <span class="bool-val">true</span>,
-            ),
-            (
-                naga::StorageAccess::STORE,
-                naga::StorageAccess::LOAD | naga::StorageAccess::STORE,
-                <span class="bool-val">true</span>,
-            ),
-            (
-                naga::StorageAccess::LOAD,
-                naga::StorageAccess::LOAD | naga::StorageAccess::STORE,
-                <span class="bool-val">true</span>,
-            ),
-        ];
-
-        <span class="kw">for </span>(shader, binding, expect_match) <span class="kw">in </span>test_cases {
-            <span class="macro">assert_eq!</span>(
-                expect_match,
-                address_space_matches(
-                    naga::AddressSpace::Storage { access: shader },
-                    naga::AddressSpace::Storage { access: binding }
-                )
-            );
-        }
+    <span class="kw">pub fn </span>fragment_uses_dual_source_blending(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        entry_point_name: <span class="kw-2">&amp;</span>str,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;bool, StageError&gt; {
+        <span class="kw">let </span>pair = (naga::ShaderStage::Fragment, entry_point_name.to_string());
+        <span class="self">self</span>.entry_points
+            .get(<span class="kw-2">&amp;</span>pair)
+            .ok_or(StageError::MissingEntryPoint(pair.<span class="number">1</span>))
+            .map(|ep| ep.dual_source_blending)
     }
 }
 </code></pre></div></section></main></body></html>

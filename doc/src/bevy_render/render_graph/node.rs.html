@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_render-0.12.1/src/render_graph/node.rs`."><title>node.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="bevy_render" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../bevy_render/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_render-0.13.0/src/render_graph/node.rs`."><title>node.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="bevy_render" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -402,12 +403,7 @@
 <a href="#402" id="402">402</a>
 <a href="#403" id="403">403</a>
 <a href="#404" id="404">404</a>
-<a href="#405" id="405">405</a>
-<a href="#406" id="406">406</a>
-<a href="#407" id="407">407</a>
-<a href="#408" id="408">408</a>
 </pre></div><pre class="rust"><code><span class="kw">use crate</span>::{
-    define_atomic_id,
     render_graph::{
         Edge, InputSlotError, OutputSlotError, RenderGraphContext, RenderGraphError,
         RunSubGraphError, SlotInfo, SlotInfos,
@@ -415,14 +411,45 @@
     renderer::RenderContext,
 };
 <span class="kw">use </span>bevy_ecs::{
-    query::{QueryItem, QueryState, ReadOnlyWorldQuery},
+    query::{QueryItem, QueryState, ReadOnlyQueryData},
     world::{FromWorld, World},
 };
+<span class="kw">pub use </span>bevy_utils::label::DynEq;
+<span class="kw">use </span>bevy_utils::{all_tuples_with_size, define_label, intern::Interned};
 <span class="kw">use </span>downcast_rs::{impl_downcast, Downcast};
-<span class="kw">use </span>std::{borrow::Cow, fmt::Debug};
+<span class="kw">use </span>std::fmt::Debug;
 <span class="kw">use </span>thiserror::Error;
 
-<span class="macro">define_atomic_id!</span>(NodeId);
+<span class="kw">pub use </span>bevy_render_macros::RenderLabel;
+
+<span class="kw">use super</span>::{InternedRenderSubGraph, RenderSubGraph};
+
+<span class="macro">define_label!</span>(
+    <span class="doccomment">/// A strongly-typed class of labels used to identify a [`Node`] in a render graph.
+    </span>RenderLabel,
+    RENDER_LABEL_INTERNER
+);
+
+<span class="doccomment">/// A shorthand for `Interned&lt;dyn RenderLabel&gt;`.
+</span><span class="kw">pub type </span>InternedRenderLabel = Interned&lt;<span class="kw">dyn </span>RenderLabel&gt;;
+
+<span class="kw">pub trait </span>IntoRenderNodeArray&lt;<span class="kw">const </span>N: usize&gt; {
+    <span class="kw">fn </span>into_array(<span class="self">self</span>) -&gt; [InternedRenderLabel; N];
+}
+
+<span class="macro">macro_rules! </span>impl_render_label_tuples {
+    (<span class="macro-nonterminal">$N</span>: expr, $((<span class="macro-nonterminal">$T</span>: ident, <span class="macro-nonterminal">$I</span>: ident)),<span class="kw-2">*</span>) =&gt; {
+        <span class="kw">impl</span>&lt;$(<span class="macro-nonterminal">$T</span>: RenderLabel),<span class="kw-2">*</span>&gt; IntoRenderNodeArray&lt;<span class="macro-nonterminal">$N</span>&gt; <span class="kw">for </span>($(<span class="macro-nonterminal">$T</span>,)<span class="kw-2">*</span>) {
+            <span class="attr">#[inline]
+            </span><span class="kw">fn </span>into_array(<span class="self">self</span>) -&gt; [InternedRenderLabel; <span class="macro-nonterminal">$N</span>] {
+                <span class="kw">let </span>($(<span class="macro-nonterminal">$I</span>,)<span class="kw-2">*</span>) = <span class="self">self</span>;
+                [$(<span class="macro-nonterminal">$I</span>.intern(), )<span class="kw-2">*</span>]
+            }
+        }
+    }
+}
+
+<span class="macro">all_tuples_with_size!</span>(impl_render_label_tuples, <span class="number">1</span>, <span class="number">32</span>, T, l);
 
 <span class="doccomment">/// A render node that can be added to a [`RenderGraph`](super::RenderGraph).
 ///
@@ -436,7 +463,7 @@
 /// A node can produce outputs used as dependencies by other nodes.
 /// Those inputs and outputs are called slots and are the default way of passing render data
 /// inside the graph. For more information see [`SlotType`](super::SlotType).
-</span><span class="kw">pub trait </span>Node: Downcast + Send + Sync + <span class="lifetime">&#39;static </span>{
+</span><span class="kw">pub trait </span>Node: Downcast + Send + Sync + <span class="lifetime">'static </span>{
     <span class="doccomment">/// Specifies the required input slots for this node.
     /// They will then be available during the run method inside the [`RenderGraphContext`].
     </span><span class="kw">fn </span>input(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;SlotInfo&gt; {
@@ -455,11 +482,11 @@
     <span class="doccomment">/// Runs the graph node logic, issues draw calls, updates the output slots and
     /// optionally queues up subgraphs for execution. The graph data, input and output values are
     /// passed via the [`RenderGraphContext`].
-    </span><span class="kw">fn </span>run(
+    </span><span class="kw">fn </span>run&lt;<span class="lifetime">'w</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         graph: <span class="kw-2">&amp;mut </span>RenderGraphContext,
-        render_context: <span class="kw-2">&amp;mut </span>RenderContext,
-        world: <span class="kw-2">&amp;</span>World,
+        render_context: <span class="kw-2">&amp;mut </span>RenderContext&lt;<span class="lifetime">'w</span>&gt;,
+        world: <span class="kw-2">&amp;</span><span class="lifetime">'w </span>World,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;(), NodeRunError&gt;;
 }
 
@@ -467,39 +494,39 @@
 
 <span class="attr">#[derive(Error, Debug, Eq, PartialEq)]
 </span><span class="kw">pub enum </span>NodeRunError {
-    <span class="attr">#[error(<span class="string">&quot;encountered an input slot error&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"encountered an input slot error"</span>)]
     </span>InputSlotError(<span class="attr">#[from] </span>InputSlotError),
-    <span class="attr">#[error(<span class="string">&quot;encountered an output slot error&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"encountered an output slot error"</span>)]
     </span>OutputSlotError(<span class="attr">#[from] </span>OutputSlotError),
-    <span class="attr">#[error(<span class="string">&quot;encountered an error when running a sub-graph&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"encountered an error when running a sub-graph"</span>)]
     </span>RunSubGraphError(<span class="attr">#[from] </span>RunSubGraphError),
 }
 
 <span class="doccomment">/// A collection of input and output [`Edges`](Edge) for a [`Node`].
 </span><span class="attr">#[derive(Debug)]
 </span><span class="kw">pub struct </span>Edges {
-    id: NodeId,
+    label: InternedRenderLabel,
     input_edges: Vec&lt;Edge&gt;,
     output_edges: Vec&lt;Edge&gt;,
 }
 
 <span class="kw">impl </span>Edges {
-    <span class="doccomment">/// Returns all &quot;input edges&quot; (edges going &quot;in&quot;) for this node .
+    <span class="doccomment">/// Returns all "input edges" (edges going "in") for this node .
     </span><span class="attr">#[inline]
     </span><span class="kw">pub fn </span>input_edges(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[Edge] {
         <span class="kw-2">&amp;</span><span class="self">self</span>.input_edges
     }
 
-    <span class="doccomment">/// Returns all &quot;output edges&quot; (edges going &quot;out&quot;) for this node .
+    <span class="doccomment">/// Returns all "output edges" (edges going "out") for this node .
     </span><span class="attr">#[inline]
     </span><span class="kw">pub fn </span>output_edges(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[Edge] {
         <span class="kw-2">&amp;</span><span class="self">self</span>.output_edges
     }
 
-    <span class="doccomment">/// Returns this node&#39;s id.
+    <span class="doccomment">/// Returns this node's label.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>id(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; NodeId {
-        <span class="self">self</span>.id
+    </span><span class="kw">pub fn </span>label(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; InternedRenderLabel {
+        <span class="self">self</span>.label
     }
 
     <span class="doccomment">/// Adds an edge to the `input_edges` if it does not already exist.
@@ -564,7 +591,7 @@
             })
             .ok_or(RenderGraphError::UnconnectedNodeInputSlot {
                 input_slot: index,
-                node: <span class="self">self</span>.id,
+                node: <span class="self">self</span>.label,
             })
     }
 
@@ -582,7 +609,7 @@
             })
             .ok_or(RenderGraphError::UnconnectedNodeOutputSlot {
                 output_slot: index,
-                node: <span class="self">self</span>.id,
+                node: <span class="self">self</span>.label,
             })
     }
 }
@@ -592,10 +619,9 @@
 ///
 /// The `input_slots` and `output_slots` are provided by the `node`.
 </span><span class="kw">pub struct </span>NodeState {
-    <span class="kw">pub </span>id: NodeId,
-    <span class="kw">pub </span>name: <span class="prelude-ty">Option</span>&lt;Cow&lt;<span class="lifetime">&#39;static</span>, str&gt;&gt;,
+    <span class="kw">pub </span>label: InternedRenderLabel,
     <span class="doccomment">/// The name of the type that implements [`Node`].
-    </span><span class="kw">pub </span>type_name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+    </span><span class="kw">pub </span>type_name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
     <span class="kw">pub </span>node: Box&lt;<span class="kw">dyn </span>Node&gt;,
     <span class="kw">pub </span>input_slots: SlotInfos,
     <span class="kw">pub </span>output_slots: SlotInfos,
@@ -603,27 +629,26 @@
 }
 
 <span class="kw">impl </span>Debug <span class="kw">for </span>NodeState {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; std::fmt::Result {
-        <span class="macro">writeln!</span>(f, <span class="string">&quot;{:?} ({:?})&quot;</span>, <span class="self">self</span>.id, <span class="self">self</span>.name)
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; std::fmt::Result {
+        <span class="macro">writeln!</span>(f, <span class="string">"{:?} ({:?})"</span>, <span class="self">self</span>.label, <span class="self">self</span>.type_name)
     }
 }
 
 <span class="kw">impl </span>NodeState {
     <span class="doccomment">/// Creates an [`NodeState`] without edges, but the `input_slots` and `output_slots`
     /// are provided by the `node`.
-    </span><span class="kw">pub fn </span>new&lt;T&gt;(id: NodeId, node: T) -&gt; <span class="self">Self
+    </span><span class="kw">pub fn </span>new&lt;T&gt;(label: InternedRenderLabel, node: T) -&gt; <span class="self">Self
     </span><span class="kw">where
         </span>T: Node,
     {
         NodeState {
-            id,
-            name: <span class="prelude-val">None</span>,
+            label,
             input_slots: node.input().into(),
             output_slots: node.output().into(),
             node: Box::new(node),
             type_name: std::any::type_name::&lt;T&gt;(),
             edges: Edges {
-                id,
+                label,
                 input_edges: Vec::new(),
                 output_edges: Vec::new(),
             },
@@ -669,38 +694,6 @@
     }
 }
 
-<span class="doccomment">/// A [`NodeLabel`] is used to reference a [`NodeState`] by either its name or [`NodeId`]
-/// inside the [`RenderGraph`](super::RenderGraph).
-</span><span class="attr">#[derive(Debug, Clone, Eq, PartialEq)]
-</span><span class="kw">pub enum </span>NodeLabel {
-    Id(NodeId),
-    Name(Cow&lt;<span class="lifetime">&#39;static</span>, str&gt;),
-}
-
-<span class="kw">impl </span>From&lt;<span class="kw-2">&amp;</span>NodeLabel&gt; <span class="kw">for </span>NodeLabel {
-    <span class="kw">fn </span>from(value: <span class="kw-2">&amp;</span>NodeLabel) -&gt; <span class="self">Self </span>{
-        value.clone()
-    }
-}
-
-<span class="kw">impl </span>From&lt;String&gt; <span class="kw">for </span>NodeLabel {
-    <span class="kw">fn </span>from(value: String) -&gt; <span class="self">Self </span>{
-        NodeLabel::Name(value.into())
-    }
-}
-
-<span class="kw">impl </span>From&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str&gt; <span class="kw">for </span>NodeLabel {
-    <span class="kw">fn </span>from(value: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str) -&gt; <span class="self">Self </span>{
-        NodeLabel::Name(value.into())
-    }
-}
-
-<span class="kw">impl </span>From&lt;NodeId&gt; <span class="kw">for </span>NodeLabel {
-    <span class="kw">fn </span>from(value: NodeId) -&gt; <span class="self">Self </span>{
-        NodeLabel::Id(value)
-    }
-}
-
 <span class="doccomment">/// A [`Node`] without any inputs, outputs and subgraphs, which does nothing when run.
 /// Used (as a label) to bundle multiple dependencies into one inside
 /// the [`RenderGraph`](super::RenderGraph).
@@ -718,16 +711,16 @@
     }
 }
 
-<span class="doccomment">/// A [`RenderGraph`](super::RenderGraph) [`Node`] that runs the configured graph name once.
+<span class="doccomment">/// A [`RenderGraph`](super::RenderGraph) [`Node`] that runs the configured subgraph once.
 /// This makes it easier to insert sub-graph runs into a graph.
 </span><span class="kw">pub struct </span>RunGraphOnViewNode {
-    graph_name: Cow&lt;<span class="lifetime">&#39;static</span>, str&gt;,
+    sub_graph: InternedRenderSubGraph,
 }
 
 <span class="kw">impl </span>RunGraphOnViewNode {
-    <span class="kw">pub fn </span>new&lt;T: Into&lt;Cow&lt;<span class="lifetime">&#39;static</span>, str&gt;&gt;&gt;(graph_name: T) -&gt; <span class="self">Self </span>{
+    <span class="kw">pub fn </span>new&lt;T: RenderSubGraph&gt;(sub_graph: T) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
-            graph_name: graph_name.into(),
+            sub_graph: sub_graph.intern(),
         }
     }
 }
@@ -739,7 +732,7 @@
         _render_context: <span class="kw-2">&amp;mut </span>RenderContext,
         _world: <span class="kw-2">&amp;</span>World,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;(), NodeRunError&gt; {
-        graph.run_sub_graph(<span class="self">self</span>.graph_name.clone(), <span class="macro">vec!</span>[], <span class="prelude-val">Some</span>(graph.view_entity()))<span class="question-mark">?</span>;
+        graph.run_sub_graph(<span class="self">self</span>.sub_graph, <span class="macro">vec!</span>[], <span class="prelude-val">Some</span>(graph.view_entity()))<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(())
     }
 }
@@ -749,8 +742,8 @@
 /// It is intended to be used with [`ViewNodeRunner`]
 </span><span class="kw">pub trait </span>ViewNode {
     <span class="doccomment">/// The query that will be used on the view entity.
-    /// It is guaranteed to run on the view entity, so there&#39;s no need for a filter
-    </span><span class="kw">type </span>ViewQuery: ReadOnlyWorldQuery;
+    /// It is guaranteed to run on the view entity, so there's no need for a filter
+    </span><span class="kw">type </span>ViewQuery: ReadOnlyQueryData;
 
     <span class="doccomment">/// Updates internal node state using the current render [`World`] prior to the run method.
     </span><span class="kw">fn </span>update(<span class="kw-2">&amp;mut </span><span class="self">self</span>, _world: <span class="kw-2">&amp;mut </span>World) {}
@@ -758,12 +751,12 @@
     <span class="doccomment">/// Runs the graph node logic, issues draw calls, updates the output slots and
     /// optionally queues up subgraphs for execution. The graph data, input and output values are
     /// passed via the [`RenderGraphContext`].
-    </span><span class="kw">fn </span>run(
+    </span><span class="kw">fn </span>run&lt;<span class="lifetime">'w</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         graph: <span class="kw-2">&amp;mut </span>RenderGraphContext,
-        render_context: <span class="kw-2">&amp;mut </span>RenderContext,
-        view_query: QueryItem&lt;<span class="self">Self</span>::ViewQuery&gt;,
-        world: <span class="kw-2">&amp;</span>World,
+        render_context: <span class="kw-2">&amp;mut </span>RenderContext&lt;<span class="lifetime">'w</span>&gt;,
+        view_query: QueryItem&lt;<span class="lifetime">'w</span>, <span class="self">Self</span>::ViewQuery&gt;,
+        world: <span class="kw-2">&amp;</span><span class="lifetime">'w </span>World,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;(), NodeRunError&gt;;
 }
 
@@ -793,18 +786,18 @@
 
 <span class="kw">impl</span>&lt;T&gt; Node <span class="kw">for </span>ViewNodeRunner&lt;T&gt;
 <span class="kw">where
-    </span>T: ViewNode + Send + Sync + <span class="lifetime">&#39;static</span>,
+    </span>T: ViewNode + Send + Sync + <span class="lifetime">'static</span>,
 {
     <span class="kw">fn </span>update(<span class="kw-2">&amp;mut </span><span class="self">self</span>, world: <span class="kw-2">&amp;mut </span>World) {
         <span class="self">self</span>.view_query.update_archetypes(world);
         <span class="self">self</span>.node.update(world);
     }
 
-    <span class="kw">fn </span>run(
+    <span class="kw">fn </span>run&lt;<span class="lifetime">'w</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         graph: <span class="kw-2">&amp;mut </span>RenderGraphContext,
-        render_context: <span class="kw-2">&amp;mut </span>RenderContext,
-        world: <span class="kw-2">&amp;</span>World,
+        render_context: <span class="kw-2">&amp;mut </span>RenderContext&lt;<span class="lifetime">'w</span>&gt;,
+        world: <span class="kw-2">&amp;</span><span class="lifetime">'w </span>World,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;(), NodeRunError&gt; {
         <span class="kw">let </span><span class="prelude-val">Ok</span>(view) = <span class="self">self</span>.view_query.get_manual(world, graph.view_entity()) <span class="kw">else </span>{
             <span class="kw">return </span><span class="prelude-val">Ok</span>(());

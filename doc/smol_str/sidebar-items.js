@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["SmolStr"]};
+window.SIDEBAR_ITEMS = {"macro":["format_smolstr"],"struct":["SmolStr"],"trait":["ToSmolStr"]};

@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/winnow-0.5.24/src/combinator/multi.rs`."><title>multi.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="winnow" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../winnow/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/winnow-0.5.40/src/combinator/multi.rs`."><title>multi.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="winnow" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1257,15 +1258,164 @@
 <a href="#1257" id="1257">1257</a>
 <a href="#1258" id="1258">1258</a>
 <a href="#1259" id="1259">1259</a>
+<a href="#1260" id="1260">1260</a>
+<a href="#1261" id="1261">1261</a>
+<a href="#1262" id="1262">1262</a>
+<a href="#1263" id="1263">1263</a>
+<a href="#1264" id="1264">1264</a>
+<a href="#1265" id="1265">1265</a>
+<a href="#1266" id="1266">1266</a>
+<a href="#1267" id="1267">1267</a>
+<a href="#1268" id="1268">1268</a>
+<a href="#1269" id="1269">1269</a>
+<a href="#1270" id="1270">1270</a>
+<a href="#1271" id="1271">1271</a>
+<a href="#1272" id="1272">1272</a>
+<a href="#1273" id="1273">1273</a>
+<a href="#1274" id="1274">1274</a>
+<a href="#1275" id="1275">1275</a>
+<a href="#1276" id="1276">1276</a>
+<a href="#1277" id="1277">1277</a>
+<a href="#1278" id="1278">1278</a>
+<a href="#1279" id="1279">1279</a>
+<a href="#1280" id="1280">1280</a>
+<a href="#1281" id="1281">1281</a>
+<a href="#1282" id="1282">1282</a>
+<a href="#1283" id="1283">1283</a>
+<a href="#1284" id="1284">1284</a>
+<a href="#1285" id="1285">1285</a>
+<a href="#1286" id="1286">1286</a>
+<a href="#1287" id="1287">1287</a>
+<a href="#1288" id="1288">1288</a>
+<a href="#1289" id="1289">1289</a>
+<a href="#1290" id="1290">1290</a>
+<a href="#1291" id="1291">1291</a>
+<a href="#1292" id="1292">1292</a>
+<a href="#1293" id="1293">1293</a>
+<a href="#1294" id="1294">1294</a>
+<a href="#1295" id="1295">1295</a>
+<a href="#1296" id="1296">1296</a>
+<a href="#1297" id="1297">1297</a>
+<a href="#1298" id="1298">1298</a>
+<a href="#1299" id="1299">1299</a>
+<a href="#1300" id="1300">1300</a>
+<a href="#1301" id="1301">1301</a>
+<a href="#1302" id="1302">1302</a>
+<a href="#1303" id="1303">1303</a>
+<a href="#1304" id="1304">1304</a>
+<a href="#1305" id="1305">1305</a>
+<a href="#1306" id="1306">1306</a>
+<a href="#1307" id="1307">1307</a>
+<a href="#1308" id="1308">1308</a>
+<a href="#1309" id="1309">1309</a>
+<a href="#1310" id="1310">1310</a>
+<a href="#1311" id="1311">1311</a>
+<a href="#1312" id="1312">1312</a>
+<a href="#1313" id="1313">1313</a>
+<a href="#1314" id="1314">1314</a>
+<a href="#1315" id="1315">1315</a>
+<a href="#1316" id="1316">1316</a>
+<a href="#1317" id="1317">1317</a>
+<a href="#1318" id="1318">1318</a>
+<a href="#1319" id="1319">1319</a>
+<a href="#1320" id="1320">1320</a>
+<a href="#1321" id="1321">1321</a>
+<a href="#1322" id="1322">1322</a>
+<a href="#1323" id="1323">1323</a>
+<a href="#1324" id="1324">1324</a>
+<a href="#1325" id="1325">1325</a>
+<a href="#1326" id="1326">1326</a>
+<a href="#1327" id="1327">1327</a>
+<a href="#1328" id="1328">1328</a>
+<a href="#1329" id="1329">1329</a>
+<a href="#1330" id="1330">1330</a>
+<a href="#1331" id="1331">1331</a>
+<a href="#1332" id="1332">1332</a>
+<a href="#1333" id="1333">1333</a>
+<a href="#1334" id="1334">1334</a>
+<a href="#1335" id="1335">1335</a>
+<a href="#1336" id="1336">1336</a>
+<a href="#1337" id="1337">1337</a>
+<a href="#1338" id="1338">1338</a>
+<a href="#1339" id="1339">1339</a>
+<a href="#1340" id="1340">1340</a>
+<a href="#1341" id="1341">1341</a>
+<a href="#1342" id="1342">1342</a>
+<a href="#1343" id="1343">1343</a>
+<a href="#1344" id="1344">1344</a>
+<a href="#1345" id="1345">1345</a>
+<a href="#1346" id="1346">1346</a>
+<a href="#1347" id="1347">1347</a>
+<a href="#1348" id="1348">1348</a>
+<a href="#1349" id="1349">1349</a>
+<a href="#1350" id="1350">1350</a>
+<a href="#1351" id="1351">1351</a>
+<a href="#1352" id="1352">1352</a>
+<a href="#1353" id="1353">1353</a>
+<a href="#1354" id="1354">1354</a>
+<a href="#1355" id="1355">1355</a>
+<a href="#1356" id="1356">1356</a>
+<a href="#1357" id="1357">1357</a>
+<a href="#1358" id="1358">1358</a>
+<a href="#1359" id="1359">1359</a>
+<a href="#1360" id="1360">1360</a>
+<a href="#1361" id="1361">1361</a>
+<a href="#1362" id="1362">1362</a>
+<a href="#1363" id="1363">1363</a>
+<a href="#1364" id="1364">1364</a>
+<a href="#1365" id="1365">1365</a>
+<a href="#1366" id="1366">1366</a>
+<a href="#1367" id="1367">1367</a>
+<a href="#1368" id="1368">1368</a>
+<a href="#1369" id="1369">1369</a>
+<a href="#1370" id="1370">1370</a>
+<a href="#1371" id="1371">1371</a>
+<a href="#1372" id="1372">1372</a>
+<a href="#1373" id="1373">1373</a>
+<a href="#1374" id="1374">1374</a>
+<a href="#1375" id="1375">1375</a>
+<a href="#1376" id="1376">1376</a>
+<a href="#1377" id="1377">1377</a>
+<a href="#1378" id="1378">1378</a>
+<a href="#1379" id="1379">1379</a>
+<a href="#1380" id="1380">1380</a>
+<a href="#1381" id="1381">1381</a>
+<a href="#1382" id="1382">1382</a>
+<a href="#1383" id="1383">1383</a>
+<a href="#1384" id="1384">1384</a>
+<a href="#1385" id="1385">1385</a>
+<a href="#1386" id="1386">1386</a>
+<a href="#1387" id="1387">1387</a>
+<a href="#1388" id="1388">1388</a>
+<a href="#1389" id="1389">1389</a>
+<a href="#1390" id="1390">1390</a>
+<a href="#1391" id="1391">1391</a>
+<a href="#1392" id="1392">1392</a>
+<a href="#1393" id="1393">1393</a>
+<a href="#1394" id="1394">1394</a>
+<a href="#1395" id="1395">1395</a>
+<a href="#1396" id="1396">1396</a>
+<a href="#1397" id="1397">1397</a>
+<a href="#1398" id="1398">1398</a>
+<a href="#1399" id="1399">1399</a>
+<a href="#1400" id="1400">1400</a>
+<a href="#1401" id="1401">1401</a>
+<a href="#1402" id="1402">1402</a>
+<a href="#1403" id="1403">1403</a>
+<a href="#1404" id="1404">1404</a>
+<a href="#1405" id="1405">1405</a>
+<a href="#1406" id="1406">1406</a>
+<a href="#1407" id="1407">1407</a>
+<a href="#1408" id="1408">1408</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Combinators applying their child parser multiple times
 
-</span><span class="kw">use </span><span class="kw">crate</span>::error::ErrMode;
+</span><span class="kw">use </span><span class="kw">crate</span>::combinator::trace;
+<span class="kw">use </span><span class="kw">crate</span>::error::ErrMode;
 <span class="kw">use </span><span class="kw">crate</span>::error::ErrorKind;
 <span class="kw">use </span><span class="kw">crate</span>::error::ParserError;
 <span class="kw">use </span><span class="kw">crate</span>::stream::Accumulate;
 <span class="kw">use </span><span class="kw">crate</span>::stream::Range;
 <span class="kw">use </span><span class="kw">crate</span>::stream::Stream;
-<span class="kw">use </span><span class="kw">crate</span>::trace::trace;
 <span class="kw">use </span><span class="kw">crate</span>::PResult;
 <span class="kw">use </span><span class="kw">crate</span>::Parser;
 
@@ -1289,110 +1439,279 @@
 ///
 /// Zero or more repetitions:
 /// ```rust
-/// # #[cfg(feature = &quot;std&quot;)] {
+/// # #[cfg(feature = "std")] {
 /// # use winnow::{error::ErrMode, error::ErrorKind, error::Needed};
 /// # use winnow::prelude::*;
 /// use winnow::combinator::repeat;
 /// use winnow::token::tag;
 ///
 /// fn parser(s: &amp;str) -&gt; IResult&lt;&amp;str, Vec&lt;&amp;str&gt;&gt; {
-///   repeat(0.., &quot;abc&quot;).parse_peek(s)
+///   repeat(0.., "abc").parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(&quot;abcabc&quot;), Ok((&quot;&quot;, vec![&quot;abc&quot;, &quot;abc&quot;])));
-/// assert_eq!(parser(&quot;abc123&quot;), Ok((&quot;123&quot;, vec![&quot;abc&quot;])));
-/// assert_eq!(parser(&quot;123123&quot;), Ok((&quot;123123&quot;, vec![])));
-/// assert_eq!(parser(&quot;&quot;), Ok((&quot;&quot;, vec![])));
+/// assert_eq!(parser("abcabc"), Ok(("", vec!["abc", "abc"])));
+/// assert_eq!(parser("abc123"), Ok(("123", vec!["abc"])));
+/// assert_eq!(parser("123123"), Ok(("123123", vec![])));
+/// assert_eq!(parser(""), Ok(("", vec![])));
 /// # }
 /// ```
 ///
 /// One or more repetitions:
 /// ```rust
-/// # #[cfg(feature = &quot;std&quot;)] {
+/// # #[cfg(feature = "std")] {
 /// # use winnow::{error::ErrMode, error::{InputError, ErrorKind}, error::Needed};
 /// # use winnow::prelude::*;
 /// use winnow::combinator::repeat;
 /// use winnow::token::tag;
 ///
 /// fn parser(s: &amp;str) -&gt; IResult&lt;&amp;str, Vec&lt;&amp;str&gt;&gt; {
-///   repeat(1.., &quot;abc&quot;).parse_peek(s)
+///   repeat(1.., "abc").parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(&quot;abcabc&quot;), Ok((&quot;&quot;, vec![&quot;abc&quot;, &quot;abc&quot;])));
-/// assert_eq!(parser(&quot;abc123&quot;), Ok((&quot;123&quot;, vec![&quot;abc&quot;])));
-/// assert_eq!(parser(&quot;123123&quot;), Err(ErrMode::Backtrack(InputError::new(&quot;123123&quot;, ErrorKind::Tag))));
-/// assert_eq!(parser(&quot;&quot;), Err(ErrMode::Backtrack(InputError::new(&quot;&quot;, ErrorKind::Tag))));
+/// assert_eq!(parser("abcabc"), Ok(("", vec!["abc", "abc"])));
+/// assert_eq!(parser("abc123"), Ok(("123", vec!["abc"])));
+/// assert_eq!(parser("123123"), Err(ErrMode::Backtrack(InputError::new("123123", ErrorKind::Tag))));
+/// assert_eq!(parser(""), Err(ErrMode::Backtrack(InputError::new("", ErrorKind::Tag))));
 /// # }
 /// ```
 ///
 /// Fixed number of repetitions:
 /// ```rust
-/// # #[cfg(feature = &quot;std&quot;)] {
+/// # #[cfg(feature = "std")] {
 /// # use winnow::{error::ErrMode, error::{InputError, ErrorKind}, error::Needed};
 /// # use winnow::prelude::*;
 /// use winnow::combinator::repeat;
 /// use winnow::token::tag;
 ///
 /// fn parser(s: &amp;str) -&gt; IResult&lt;&amp;str, Vec&lt;&amp;str&gt;&gt; {
-///   repeat(2, &quot;abc&quot;).parse_peek(s)
+///   repeat(2, "abc").parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(&quot;abcabc&quot;), Ok((&quot;&quot;, vec![&quot;abc&quot;, &quot;abc&quot;])));
-/// assert_eq!(parser(&quot;abc123&quot;), Err(ErrMode::Backtrack(InputError::new(&quot;123&quot;, ErrorKind::Tag))));
-/// assert_eq!(parser(&quot;123123&quot;), Err(ErrMode::Backtrack(InputError::new(&quot;123123&quot;, ErrorKind::Tag))));
-/// assert_eq!(parser(&quot;&quot;), Err(ErrMode::Backtrack(InputError::new(&quot;&quot;, ErrorKind::Tag))));
-/// assert_eq!(parser(&quot;abcabcabc&quot;), Ok((&quot;abc&quot;, vec![&quot;abc&quot;, &quot;abc&quot;])));
+/// assert_eq!(parser("abcabc"), Ok(("", vec!["abc", "abc"])));
+/// assert_eq!(parser("abc123"), Err(ErrMode::Backtrack(InputError::new("123", ErrorKind::Tag))));
+/// assert_eq!(parser("123123"), Err(ErrMode::Backtrack(InputError::new("123123", ErrorKind::Tag))));
+/// assert_eq!(parser(""), Err(ErrMode::Backtrack(InputError::new("", ErrorKind::Tag))));
+/// assert_eq!(parser("abcabcabc"), Ok(("abc", vec!["abc", "abc"])));
 /// # }
 /// ```
 ///
 /// Arbitrary repetitions:
 /// ```rust
-/// # #[cfg(feature = &quot;std&quot;)] {
+/// # #[cfg(feature = "std")] {
 /// # use winnow::{error::ErrMode, error::ErrorKind, error::Needed};
 /// # use winnow::prelude::*;
 /// use winnow::combinator::repeat;
 /// use winnow::token::tag;
 ///
 /// fn parser(s: &amp;str) -&gt; IResult&lt;&amp;str, Vec&lt;&amp;str&gt;&gt; {
-///   repeat(0..=2, &quot;abc&quot;).parse_peek(s)
+///   repeat(0..=2, "abc").parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(&quot;abcabc&quot;), Ok((&quot;&quot;, vec![&quot;abc&quot;, &quot;abc&quot;])));
-/// assert_eq!(parser(&quot;abc123&quot;), Ok((&quot;123&quot;, vec![&quot;abc&quot;])));
-/// assert_eq!(parser(&quot;123123&quot;), Ok((&quot;123123&quot;, vec![])));
-/// assert_eq!(parser(&quot;&quot;), Ok((&quot;&quot;, vec![])));
-/// assert_eq!(parser(&quot;abcabcabc&quot;), Ok((&quot;abc&quot;, vec![&quot;abc&quot;, &quot;abc&quot;])));
+/// assert_eq!(parser("abcabc"), Ok(("", vec!["abc", "abc"])));
+/// assert_eq!(parser("abc123"), Ok(("123", vec!["abc"])));
+/// assert_eq!(parser("123123"), Ok(("123123", vec![])));
+/// assert_eq!(parser(""), Ok(("", vec![])));
+/// assert_eq!(parser("abcabcabc"), Ok(("abc", vec!["abc", "abc"])));
 /// # }
 /// ```
-</span><span class="attr">#[doc(alias = <span class="string">&quot;many0&quot;</span>)]
-#[doc(alias = <span class="string">&quot;count&quot;</span>)]
-#[doc(alias = <span class="string">&quot;many0_count&quot;</span>)]
-#[doc(alias = <span class="string">&quot;many1&quot;</span>)]
-#[doc(alias = <span class="string">&quot;many1_count&quot;</span>)]
-#[doc(alias = <span class="string">&quot;many_m_n&quot;</span>)]
-#[doc(alias = <span class="string">&quot;repeated&quot;</span>)]
-#[doc(alias = <span class="string">&quot;skip_many&quot;</span>)]
-#[doc(alias = <span class="string">&quot;skip_many1&quot;</span>)]
+</span><span class="attr">#[doc(alias = <span class="string">"many0"</span>)]
+#[doc(alias = <span class="string">"count"</span>)]
+#[doc(alias = <span class="string">"many0_count"</span>)]
+#[doc(alias = <span class="string">"many1"</span>)]
+#[doc(alias = <span class="string">"many1_count"</span>)]
+#[doc(alias = <span class="string">"many_m_n"</span>)]
+#[doc(alias = <span class="string">"repeated"</span>)]
+#[doc(alias = <span class="string">"skip_many"</span>)]
+#[doc(alias = <span class="string">"skip_many1"</span>)]
 #[inline(always)]
-</span><span class="kw">pub fn </span>repeat&lt;I, O, C, E, F&gt;(range: <span class="kw">impl </span>Into&lt;Range&gt;, <span class="kw-2">mut </span>f: F) -&gt; <span class="kw">impl </span>Parser&lt;I, C, E&gt;
+</span><span class="kw">pub fn </span>repeat&lt;I, O, C, E, P&gt;(range: <span class="kw">impl </span>Into&lt;Range&gt;, parser: P) -&gt; Repeat&lt;P, I, O, C, E&gt;
 <span class="kw">where
     </span>I: Stream,
     C: Accumulate&lt;O&gt;,
-    F: Parser&lt;I, O, E&gt;,
+    P: Parser&lt;I, O, E&gt;,
     E: ParserError&lt;I&gt;,
 {
-    <span class="kw">let </span>Range {
-        start_inclusive,
-        end_inclusive,
-    } = range.into();
-    trace(<span class="string">&quot;repeat&quot;</span>, <span class="kw">move </span>|i: <span class="kw-2">&amp;mut </span>I| {
-        <span class="kw">match </span>(start_inclusive, end_inclusive) {
-            (<span class="number">0</span>, <span class="prelude-val">None</span>) =&gt; repeat0_(<span class="kw-2">&amp;mut </span>f, i),
-            (<span class="number">1</span>, <span class="prelude-val">None</span>) =&gt; repeat1_(<span class="kw-2">&amp;mut </span>f, i),
-            (start, end) <span class="kw">if </span><span class="prelude-val">Some</span>(start) == end =&gt; repeat_n_(start, <span class="kw-2">&amp;mut </span>f, i),
-            (start, end) =&gt; repeat_m_n_(start, end.unwrap_or(usize::MAX), <span class="kw-2">&amp;mut </span>f, i),
-        }
-    })
+    Repeat {
+        range: range.into(),
+        parser,
+        i: Default::default(),
+        o: Default::default(),
+        c: Default::default(),
+        e: Default::default(),
+    }
+}
+
+<span class="doccomment">/// Implementation of [`repeat`]
+</span><span class="attr">#[cfg_attr(nightly, warn(rustdoc::missing_doc_code_examples))]
+</span><span class="kw">pub struct </span>Repeat&lt;P, I, O, C, E&gt;
+<span class="kw">where
+    </span>P: Parser&lt;I, O, E&gt;,
+    I: Stream,
+    C: Accumulate&lt;O&gt;,
+    E: ParserError&lt;I&gt;,
+{
+    range: Range,
+    parser: P,
+    i: core::marker::PhantomData&lt;I&gt;,
+    o: core::marker::PhantomData&lt;O&gt;,
+    c: core::marker::PhantomData&lt;C&gt;,
+    e: core::marker::PhantomData&lt;E&gt;,
+}
+
+<span class="kw">impl</span>&lt;P, I, O, E&gt; Repeat&lt;P, I, O, (), E&gt;
+<span class="kw">where
+    </span>P: Parser&lt;I, O, E&gt;,
+    I: Stream,
+    E: ParserError&lt;I&gt;,
+{
+    <span class="doccomment">/// Repeats the embedded parser, calling `g` to gather the results
+    ///
+    /// This stops before `n` when the parser returns [`ErrMode::Backtrack`]. To instead chain an error up, see
+    /// [`cut_err`][crate::combinator::cut_err].
+    ///
+    /// # Arguments
+    /// * `init` A function returning the initial value.
+    /// * `g` The function that combines a result of `f` with
+    ///       the current accumulator.
+    ///
+    /// **Warning:** If the parser passed to `fold` accepts empty inputs
+    /// (like `alpha0` or `digit0`), `fold_repeat` will return an error,
+    /// to prevent going into an infinite loop.
+    ///
+    /// # Example
+    ///
+    /// Zero or more repetitions:
+    /// ```rust
+    /// # use winnow::{error::ErrMode, error::ErrorKind, error::Needed};
+    /// # use winnow::prelude::*;
+    /// use winnow::combinator::repeat;
+    /// use winnow::token::tag;
+    ///
+    /// fn parser(s: &amp;str) -&gt; IResult&lt;&amp;str, Vec&lt;&amp;str&gt;&gt; {
+    ///   repeat(
+    ///     0..,
+    ///     "abc"
+    ///   ).fold(
+    ///     Vec::new,
+    ///     |mut acc: Vec&lt;_&gt;, item| {
+    ///       acc.push(item);
+    ///       acc
+    ///     }
+    ///   ).parse_peek(s)
+    /// }
+    ///
+    /// assert_eq!(parser("abcabc"), Ok(("", vec!["abc", "abc"])));
+    /// assert_eq!(parser("abc123"), Ok(("123", vec!["abc"])));
+    /// assert_eq!(parser("123123"), Ok(("123123", vec![])));
+    /// assert_eq!(parser(""), Ok(("", vec![])));
+    /// ```
+    ///
+    /// One or more repetitions:
+    /// ```rust
+    /// # use winnow::{error::ErrMode, error::{InputError, ErrorKind}, error::Needed};
+    /// # use winnow::prelude::*;
+    /// use winnow::combinator::repeat;
+    /// use winnow::token::tag;
+    ///
+    /// fn parser(s: &amp;str) -&gt; IResult&lt;&amp;str, Vec&lt;&amp;str&gt;&gt; {
+    ///   repeat(
+    ///     1..,
+    ///     "abc",
+    ///   ).fold(
+    ///     Vec::new,
+    ///     |mut acc: Vec&lt;_&gt;, item| {
+    ///       acc.push(item);
+    ///       acc
+    ///     }
+    ///   ).parse_peek(s)
+    /// }
+    ///
+    /// assert_eq!(parser("abcabc"), Ok(("", vec!["abc", "abc"])));
+    /// assert_eq!(parser("abc123"), Ok(("123", vec!["abc"])));
+    /// assert_eq!(parser("123123"), Err(ErrMode::Backtrack(InputError::new("123123", ErrorKind::Many))));
+    /// assert_eq!(parser(""), Err(ErrMode::Backtrack(InputError::new("", ErrorKind::Many))));
+    /// ```
+    ///
+    /// Arbitrary number of repetitions:
+    /// ```rust
+    /// # use winnow::{error::ErrMode, error::ErrorKind, error::Needed};
+    /// # use winnow::prelude::*;
+    /// use winnow::combinator::repeat;
+    /// use winnow::token::tag;
+    ///
+    /// fn parser(s: &amp;str) -&gt; IResult&lt;&amp;str, Vec&lt;&amp;str&gt;&gt; {
+    ///   repeat(
+    ///     0..=2,
+    ///     "abc",
+    ///   ).fold(
+    ///     Vec::new,
+    ///     |mut acc: Vec&lt;_&gt;, item| {
+    ///       acc.push(item);
+    ///       acc
+    ///     }
+    ///   ).parse_peek(s)
+    /// }
+    ///
+    /// assert_eq!(parser("abcabc"), Ok(("", vec!["abc", "abc"])));
+    /// assert_eq!(parser("abc123"), Ok(("123", vec!["abc"])));
+    /// assert_eq!(parser("123123"), Ok(("123123", vec![])));
+    /// assert_eq!(parser(""), Ok(("", vec![])));
+    /// assert_eq!(parser("abcabcabc"), Ok(("abc", vec!["abc", "abc"])));
+    /// ```
+    </span><span class="attr">#[doc(alias = <span class="string">"fold_many0"</span>)]
+    #[doc(alias = <span class="string">"fold_many1"</span>)]
+    #[doc(alias = <span class="string">"fold_many_m_n"</span>)]
+    #[doc(alias = <span class="string">"fold_repeat"</span>)]
+    #[inline(always)]
+    </span><span class="kw">pub fn </span>fold&lt;H, G, R&gt;(<span class="kw-2">mut </span><span class="self">self</span>, <span class="kw-2">mut </span>init: H, <span class="kw-2">mut </span>g: G) -&gt; <span class="kw">impl </span>Parser&lt;I, R, E&gt;
+    <span class="kw">where
+        </span>G: FnMut(R, O) -&gt; R,
+        H: FnMut() -&gt; R,
+    {
+        <span class="kw">let </span>Range {
+            start_inclusive,
+            end_inclusive,
+        } = <span class="self">self</span>.range;
+        trace(<span class="string">"repeat_fold"</span>, <span class="kw">move </span>|i: <span class="kw-2">&amp;mut </span>I| {
+            <span class="kw">match </span>(start_inclusive, end_inclusive) {
+                (<span class="number">0</span>, <span class="prelude-val">None</span>) =&gt; fold_repeat0_(<span class="kw-2">&amp;mut </span><span class="self">self</span>.parser, <span class="kw-2">&amp;mut </span>init, <span class="kw-2">&amp;mut </span>g, i),
+                (<span class="number">1</span>, <span class="prelude-val">None</span>) =&gt; fold_repeat1_(<span class="kw-2">&amp;mut </span><span class="self">self</span>.parser, <span class="kw-2">&amp;mut </span>init, <span class="kw-2">&amp;mut </span>g, i),
+                (start, end) =&gt; fold_repeat_m_n_(
+                    start,
+                    end.unwrap_or(usize::MAX),
+                    <span class="kw-2">&amp;mut </span><span class="self">self</span>.parser,
+                    <span class="kw-2">&amp;mut </span>init,
+                    <span class="kw-2">&amp;mut </span>g,
+                    i,
+                ),
+            }
+        })
+    }
+}
+
+<span class="kw">impl</span>&lt;P, I, O, C, E&gt; Parser&lt;I, C, E&gt; <span class="kw">for </span>Repeat&lt;P, I, O, C, E&gt;
+<span class="kw">where
+    </span>P: Parser&lt;I, O, E&gt;,
+    I: Stream,
+    C: Accumulate&lt;O&gt;,
+    E: ParserError&lt;I&gt;,
+{
+    <span class="attr">#[inline(always)]
+    </span><span class="kw">fn </span>parse_next(<span class="kw-2">&amp;mut </span><span class="self">self</span>, i: <span class="kw-2">&amp;mut </span>I) -&gt; PResult&lt;C, E&gt; {
+        <span class="kw">let </span>Range {
+            start_inclusive,
+            end_inclusive,
+        } = <span class="self">self</span>.range;
+        trace(<span class="string">"repeat"</span>, <span class="kw">move </span>|i: <span class="kw-2">&amp;mut </span>I| {
+            <span class="kw">match </span>(start_inclusive, end_inclusive) {
+                (<span class="number">0</span>, <span class="prelude-val">None</span>) =&gt; repeat0_(<span class="kw-2">&amp;mut </span><span class="self">self</span>.parser, i),
+                (<span class="number">1</span>, <span class="prelude-val">None</span>) =&gt; repeat1_(<span class="kw-2">&amp;mut </span><span class="self">self</span>.parser, i),
+                (start, end) <span class="kw">if </span><span class="prelude-val">Some</span>(start) == end =&gt; repeat_n_(start, <span class="kw-2">&amp;mut </span><span class="self">self</span>.parser, i),
+                (start, end) =&gt; repeat_m_n_(start, end.unwrap_or(usize::MAX), <span class="kw-2">&amp;mut </span><span class="self">self</span>.parser, i),
+            }
+        })
+        .parse_next(i)
+    }
 }
 
 <span class="kw">fn </span>repeat0_&lt;I, O, C, E, F&gt;(f: <span class="kw-2">&amp;mut </span>F, i: <span class="kw-2">&amp;mut </span>I) -&gt; PResult&lt;C, E&gt;
@@ -1415,7 +1734,7 @@
             <span class="prelude-val">Ok</span>(o) =&gt; {
                 <span class="comment">// infinite loop check: the parser must always consume
                 </span><span class="kw">if </span>i.eof_offset() == len {
-                    <span class="kw">return </span><span class="prelude-val">Err</span>(ErrMode::assert(i, <span class="string">&quot;`repeat` parsers must always consume&quot;</span>));
+                    <span class="kw">return </span><span class="prelude-val">Err</span>(ErrMode::assert(i, <span class="string">"`repeat` parsers must always consume"</span>));
                 }
 
                 acc.accumulate(o);
@@ -1449,7 +1768,7 @@
                     <span class="prelude-val">Ok</span>(o) =&gt; {
                         <span class="comment">// infinite loop check: the parser must always consume
                         </span><span class="kw">if </span>i.eof_offset() == len {
-                            <span class="kw">return </span><span class="prelude-val">Err</span>(ErrMode::assert(i, <span class="string">&quot;`repeat` parsers must always consume&quot;</span>));
+                            <span class="kw">return </span><span class="prelude-val">Err</span>(ErrMode::assert(i, <span class="string">"`repeat` parsers must always consume"</span>));
                         }
 
                         acc.accumulate(o);
@@ -1504,7 +1823,7 @@
                 </span><span class="kw">if </span>input.eof_offset() == len {
                     <span class="kw">return </span><span class="prelude-val">Err</span>(ErrMode::assert(
                         input,
-                        <span class="string">&quot;`repeat` parsers must always consume&quot;</span>,
+                        <span class="string">"`repeat` parsers must always consume"</span>,
                     ));
                 }
 
@@ -1539,25 +1858,29 @@
 /// # Example
 ///
 /// ```rust
-/// # #[cfg(feature = &quot;std&quot;)] {
+/// # #[cfg(feature = "std")] {
 /// # use winnow::{error::ErrMode, error::{InputError, ErrorKind}, error::Needed};
 /// # use winnow::prelude::*;
-/// use winnow::combinator::repeat_till0;
+/// use winnow::combinator::repeat_till;
 /// use winnow::token::tag;
 ///
 /// fn parser(s: &amp;str) -&gt; IResult&lt;&amp;str, (Vec&lt;&amp;str&gt;, &amp;str)&gt; {
-///   repeat_till0(&quot;abc&quot;, &quot;end&quot;).parse_peek(s)
+///   repeat_till(0.., "abc", "end").parse_peek(s)
 /// };
 ///
-/// assert_eq!(parser(&quot;abcabcend&quot;), Ok((&quot;&quot;, (vec![&quot;abc&quot;, &quot;abc&quot;], &quot;end&quot;))));
-/// assert_eq!(parser(&quot;abc123end&quot;), Err(ErrMode::Backtrack(InputError::new(&quot;123end&quot;, ErrorKind::Tag))));
-/// assert_eq!(parser(&quot;123123end&quot;), Err(ErrMode::Backtrack(InputError::new(&quot;123123end&quot;, ErrorKind::Tag))));
-/// assert_eq!(parser(&quot;&quot;), Err(ErrMode::Backtrack(InputError::new(&quot;&quot;, ErrorKind::Tag))));
-/// assert_eq!(parser(&quot;abcendefg&quot;), Ok((&quot;efg&quot;, (vec![&quot;abc&quot;], &quot;end&quot;))));
+/// assert_eq!(parser("abcabcend"), Ok(("", (vec!["abc", "abc"], "end"))));
+/// assert_eq!(parser("abc123end"), Err(ErrMode::Backtrack(InputError::new("123end", ErrorKind::Tag))));
+/// assert_eq!(parser("123123end"), Err(ErrMode::Backtrack(InputError::new("123123end", ErrorKind::Tag))));
+/// assert_eq!(parser(""), Err(ErrMode::Backtrack(InputError::new("", ErrorKind::Tag))));
+/// assert_eq!(parser("abcendefg"), Ok(("efg", (vec!["abc"], "end"))));
 /// # }
 /// ```
-</span><span class="attr">#[doc(alias = <span class="string">&quot;many_till0&quot;</span>)]
-</span><span class="kw">pub fn </span>repeat_till0&lt;I, O, C, P, E, F, G&gt;(<span class="kw-2">mut </span>f: F, <span class="kw-2">mut </span>g: G) -&gt; <span class="kw">impl </span>Parser&lt;I, (C, P), E&gt;
+</span><span class="attr">#[doc(alias = <span class="string">"many_till0"</span>)]
+</span><span class="kw">pub fn </span>repeat_till&lt;I, O, C, P, E, F, G&gt;(
+    range: <span class="kw">impl </span>Into&lt;Range&gt;,
+    <span class="kw-2">mut </span>f: F,
+    <span class="kw-2">mut </span>g: G,
+) -&gt; <span class="kw">impl </span>Parser&lt;I, (C, P), E&gt;
 <span class="kw">where
     </span>I: Stream,
     C: Accumulate&lt;O&gt;,
@@ -1565,34 +1888,122 @@
     G: Parser&lt;I, P, E&gt;,
     E: ParserError&lt;I&gt;,
 {
-    trace(<span class="string">&quot;repeat_till0&quot;</span>, <span class="kw">move </span>|i: <span class="kw-2">&amp;mut </span>I| {
-        <span class="kw">let </span><span class="kw-2">mut </span>res = C::initial(<span class="prelude-val">None</span>);
-        <span class="kw">loop </span>{
-            <span class="kw">let </span>start = i.checkpoint();
-            <span class="kw">let </span>len = i.eof_offset();
-            <span class="kw">match </span>g.parse_next(i) {
-                <span class="prelude-val">Ok</span>(o) =&gt; <span class="kw">return </span><span class="prelude-val">Ok</span>((res, o)),
-                <span class="prelude-val">Err</span>(ErrMode::Backtrack(<span class="kw">_</span>)) =&gt; {
-                    i.reset(start);
-                    <span class="kw">match </span>f.parse_next(i) {
-                        <span class="prelude-val">Err</span>(e) =&gt; <span class="kw">return </span><span class="prelude-val">Err</span>(e.append(i, ErrorKind::Many)),
-                        <span class="prelude-val">Ok</span>(o) =&gt; {
-                            <span class="comment">// infinite loop check: the parser must always consume
-                            </span><span class="kw">if </span>i.eof_offset() == len {
-                                <span class="kw">return </span><span class="prelude-val">Err</span>(ErrMode::assert(
-                                    i,
-                                    <span class="string">&quot;`repeat` parsers must always consume&quot;</span>,
-                                ));
-                            }
-
-                            res.accumulate(o);
-                        }
-                    }
-                }
-                <span class="prelude-val">Err</span>(e) =&gt; <span class="kw">return </span><span class="prelude-val">Err</span>(e),
-            }
+    <span class="kw">let </span>Range {
+        start_inclusive,
+        end_inclusive,
+    } = range.into();
+    trace(<span class="string">"repeat_till"</span>, <span class="kw">move </span>|i: <span class="kw-2">&amp;mut </span>I| {
+        <span class="kw">match </span>(start_inclusive, end_inclusive) {
+            (<span class="number">0</span>, <span class="prelude-val">None</span>) =&gt; repeat_till0_(<span class="kw-2">&amp;mut </span>f, <span class="kw-2">&amp;mut </span>g, i),
+            (start, end) =&gt; repeat_till_m_n_(start, end.unwrap_or(usize::MAX), <span class="kw-2">&amp;mut </span>f, <span class="kw-2">&amp;mut </span>g, i),
         }
     })
+}
+
+<span class="doccomment">/// Deprecated, replaced with [`repeat_till`]
+</span><span class="attr">#[deprecated(since = <span class="string">"0.5.35"</span>, note = <span class="string">"Replaced with `repeat_till`"</span>)]
+#[inline(always)]
+</span><span class="kw">pub fn </span>repeat_till0&lt;I, O, C, P, E, F, G&gt;(f: F, g: G) -&gt; <span class="kw">impl </span>Parser&lt;I, (C, P), E&gt;
+<span class="kw">where
+    </span>I: Stream,
+    C: Accumulate&lt;O&gt;,
+    F: Parser&lt;I, O, E&gt;,
+    G: Parser&lt;I, P, E&gt;,
+    E: ParserError&lt;I&gt;,
+{
+    repeat_till(<span class="number">0</span>.., f, g)
+}
+
+<span class="kw">fn </span>repeat_till0_&lt;I, O, C, P, E, F, G&gt;(f: <span class="kw-2">&amp;mut </span>F, g: <span class="kw-2">&amp;mut </span>G, i: <span class="kw-2">&amp;mut </span>I) -&gt; PResult&lt;(C, P), E&gt;
+<span class="kw">where
+    </span>I: Stream,
+    C: Accumulate&lt;O&gt;,
+    F: Parser&lt;I, O, E&gt;,
+    G: Parser&lt;I, P, E&gt;,
+    E: ParserError&lt;I&gt;,
+{
+    <span class="kw">let </span><span class="kw-2">mut </span>res = C::initial(<span class="prelude-val">None</span>);
+    <span class="kw">loop </span>{
+        <span class="kw">let </span>start = i.checkpoint();
+        <span class="kw">let </span>len = i.eof_offset();
+        <span class="kw">match </span>g.parse_next(i) {
+            <span class="prelude-val">Ok</span>(o) =&gt; <span class="kw">return </span><span class="prelude-val">Ok</span>((res, o)),
+            <span class="prelude-val">Err</span>(ErrMode::Backtrack(<span class="kw">_</span>)) =&gt; {
+                i.reset(start);
+                <span class="kw">match </span>f.parse_next(i) {
+                    <span class="prelude-val">Err</span>(e) =&gt; <span class="kw">return </span><span class="prelude-val">Err</span>(e.append(i, ErrorKind::Many)),
+                    <span class="prelude-val">Ok</span>(o) =&gt; {
+                        <span class="comment">// infinite loop check: the parser must always consume
+                        </span><span class="kw">if </span>i.eof_offset() == len {
+                            <span class="kw">return </span><span class="prelude-val">Err</span>(ErrMode::assert(i, <span class="string">"`repeat` parsers must always consume"</span>));
+                        }
+
+                        res.accumulate(o);
+                    }
+                }
+            }
+            <span class="prelude-val">Err</span>(e) =&gt; <span class="kw">return </span><span class="prelude-val">Err</span>(e),
+        }
+    }
+}
+
+<span class="kw">fn </span>repeat_till_m_n_&lt;I, O, C, P, E, F, G&gt;(
+    min: usize,
+    max: usize,
+    f: <span class="kw-2">&amp;mut </span>F,
+    g: <span class="kw-2">&amp;mut </span>G,
+    i: <span class="kw-2">&amp;mut </span>I,
+) -&gt; PResult&lt;(C, P), E&gt;
+<span class="kw">where
+    </span>I: Stream,
+    C: Accumulate&lt;O&gt;,
+    F: Parser&lt;I, O, E&gt;,
+    G: Parser&lt;I, P, E&gt;,
+    E: ParserError&lt;I&gt;,
+{
+    <span class="kw">if </span>min &gt; max {
+        <span class="kw">return </span><span class="prelude-val">Err</span>(ErrMode::Cut(E::from_error_kind(i, ErrorKind::Many)));
+    }
+
+    <span class="kw">let </span><span class="kw-2">mut </span>res = C::initial(<span class="prelude-val">Some</span>(min));
+    <span class="kw">for _ in </span><span class="number">0</span>..min {
+        <span class="kw">match </span>f.parse_next(i) {
+            <span class="prelude-val">Ok</span>(o) =&gt; {
+                res.accumulate(o);
+            }
+            <span class="prelude-val">Err</span>(e) =&gt; {
+                <span class="kw">return </span><span class="prelude-val">Err</span>(e.append(i, ErrorKind::Many));
+            }
+        }
+    }
+    <span class="kw">for </span>count <span class="kw">in </span>min..=max {
+        <span class="kw">let </span>start = i.checkpoint();
+        <span class="kw">let </span>len = i.eof_offset();
+        <span class="kw">match </span>g.parse_next(i) {
+            <span class="prelude-val">Ok</span>(o) =&gt; <span class="kw">return </span><span class="prelude-val">Ok</span>((res, o)),
+            <span class="prelude-val">Err</span>(ErrMode::Backtrack(err)) =&gt; {
+                <span class="kw">if </span>count == max {
+                    <span class="kw">return </span><span class="prelude-val">Err</span>(ErrMode::Backtrack(err));
+                }
+                i.reset(start);
+                <span class="kw">match </span>f.parse_next(i) {
+                    <span class="prelude-val">Err</span>(e) =&gt; {
+                        <span class="kw">return </span><span class="prelude-val">Err</span>(e.append(i, ErrorKind::Many));
+                    }
+                    <span class="prelude-val">Ok</span>(o) =&gt; {
+                        <span class="comment">// infinite loop check: the parser must always consume
+                        </span><span class="kw">if </span>i.eof_offset() == len {
+                            <span class="kw">return </span><span class="prelude-val">Err</span>(ErrMode::assert(i, <span class="string">"`repeat` parsers must always consume"</span>));
+                        }
+
+                        res.accumulate(o);
+                    }
+                }
+            }
+            <span class="prelude-val">Err</span>(e) =&gt; <span class="kw">return </span><span class="prelude-val">Err</span>(e),
+        }
+    }
+    <span class="macro">unreachable!</span>()
 }
 
 <span class="doccomment">/// [`Accumulate`] the output of a parser, interleaved with `sep`
@@ -1613,88 +2024,88 @@
 ///
 /// Zero or more repetitions:
 /// ```rust
-/// # #[cfg(feature = &quot;std&quot;)] {
+/// # #[cfg(feature = "std")] {
 /// # use winnow::{error::ErrMode, error::ErrorKind, error::Needed};
 /// # use winnow::prelude::*;
 /// use winnow::combinator::separated;
 /// use winnow::token::tag;
 ///
 /// fn parser(s: &amp;str) -&gt; IResult&lt;&amp;str, Vec&lt;&amp;str&gt;&gt; {
-///   separated(0.., &quot;abc&quot;, &quot;|&quot;).parse_peek(s)
+///   separated(0.., "abc", "|").parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(&quot;abc|abc|abc&quot;), Ok((&quot;&quot;, vec![&quot;abc&quot;, &quot;abc&quot;, &quot;abc&quot;])));
-/// assert_eq!(parser(&quot;abc123abc&quot;), Ok((&quot;123abc&quot;, vec![&quot;abc&quot;])));
-/// assert_eq!(parser(&quot;abc|def&quot;), Ok((&quot;|def&quot;, vec![&quot;abc&quot;])));
-/// assert_eq!(parser(&quot;&quot;), Ok((&quot;&quot;, vec![])));
-/// assert_eq!(parser(&quot;def|abc&quot;), Ok((&quot;def|abc&quot;, vec![])));
+/// assert_eq!(parser("abc|abc|abc"), Ok(("", vec!["abc", "abc", "abc"])));
+/// assert_eq!(parser("abc123abc"), Ok(("123abc", vec!["abc"])));
+/// assert_eq!(parser("abc|def"), Ok(("|def", vec!["abc"])));
+/// assert_eq!(parser(""), Ok(("", vec![])));
+/// assert_eq!(parser("def|abc"), Ok(("def|abc", vec![])));
 /// # }
 /// ```
 ///
 /// One or more repetitions:
 /// ```rust
-/// # #[cfg(feature = &quot;std&quot;)] {
+/// # #[cfg(feature = "std")] {
 /// # use winnow::{error::ErrMode, error::{InputError, ErrorKind}, error::Needed};
 /// # use winnow::prelude::*;
 /// use winnow::combinator::separated;
 /// use winnow::token::tag;
 ///
 /// fn parser(s: &amp;str) -&gt; IResult&lt;&amp;str, Vec&lt;&amp;str&gt;&gt; {
-///   separated(1.., &quot;abc&quot;, &quot;|&quot;).parse_peek(s)
+///   separated(1.., "abc", "|").parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(&quot;abc|abc|abc&quot;), Ok((&quot;&quot;, vec![&quot;abc&quot;, &quot;abc&quot;, &quot;abc&quot;])));
-/// assert_eq!(parser(&quot;abc123abc&quot;), Ok((&quot;123abc&quot;, vec![&quot;abc&quot;])));
-/// assert_eq!(parser(&quot;abc|def&quot;), Ok((&quot;|def&quot;, vec![&quot;abc&quot;])));
-/// assert_eq!(parser(&quot;&quot;), Err(ErrMode::Backtrack(InputError::new(&quot;&quot;, ErrorKind::Tag))));
-/// assert_eq!(parser(&quot;def|abc&quot;), Err(ErrMode::Backtrack(InputError::new(&quot;def|abc&quot;, ErrorKind::Tag))));
+/// assert_eq!(parser("abc|abc|abc"), Ok(("", vec!["abc", "abc", "abc"])));
+/// assert_eq!(parser("abc123abc"), Ok(("123abc", vec!["abc"])));
+/// assert_eq!(parser("abc|def"), Ok(("|def", vec!["abc"])));
+/// assert_eq!(parser(""), Err(ErrMode::Backtrack(InputError::new("", ErrorKind::Tag))));
+/// assert_eq!(parser("def|abc"), Err(ErrMode::Backtrack(InputError::new("def|abc", ErrorKind::Tag))));
 /// # }
 /// ```
 ///
 /// Fixed number of repetitions:
 /// ```rust
-/// # #[cfg(feature = &quot;std&quot;)] {
+/// # #[cfg(feature = "std")] {
 /// # use winnow::{error::ErrMode, error::{InputError, ErrorKind}, error::Needed};
 /// # use winnow::prelude::*;
 /// use winnow::combinator::separated;
 /// use winnow::token::tag;
 ///
 /// fn parser(s: &amp;str) -&gt; IResult&lt;&amp;str, Vec&lt;&amp;str&gt;&gt; {
-///   separated(2, &quot;abc&quot;, &quot;|&quot;).parse_peek(s)
+///   separated(2, "abc", "|").parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(&quot;abc|abc|abc&quot;), Ok((&quot;|abc&quot;, vec![&quot;abc&quot;, &quot;abc&quot;])));
-/// assert_eq!(parser(&quot;abc123abc&quot;), Err(ErrMode::Backtrack(InputError::new(&quot;123abc&quot;, ErrorKind::Tag))));
-/// assert_eq!(parser(&quot;abc|def&quot;), Err(ErrMode::Backtrack(InputError::new(&quot;def&quot;, ErrorKind::Tag))));
-/// assert_eq!(parser(&quot;&quot;), Err(ErrMode::Backtrack(InputError::new(&quot;&quot;, ErrorKind::Tag))));
-/// assert_eq!(parser(&quot;def|abc&quot;), Err(ErrMode::Backtrack(InputError::new(&quot;def|abc&quot;, ErrorKind::Tag))));
+/// assert_eq!(parser("abc|abc|abc"), Ok(("|abc", vec!["abc", "abc"])));
+/// assert_eq!(parser("abc123abc"), Err(ErrMode::Backtrack(InputError::new("123abc", ErrorKind::Tag))));
+/// assert_eq!(parser("abc|def"), Err(ErrMode::Backtrack(InputError::new("def", ErrorKind::Tag))));
+/// assert_eq!(parser(""), Err(ErrMode::Backtrack(InputError::new("", ErrorKind::Tag))));
+/// assert_eq!(parser("def|abc"), Err(ErrMode::Backtrack(InputError::new("def|abc", ErrorKind::Tag))));
 /// # }
 /// ```
 ///
 /// Arbitrary repetitions:
 /// ```rust
-/// # #[cfg(feature = &quot;std&quot;)] {
+/// # #[cfg(feature = "std")] {
 /// # use winnow::{error::ErrMode, error::{InputError, ErrorKind}, error::Needed};
 /// # use winnow::prelude::*;
 /// use winnow::combinator::separated;
 /// use winnow::token::tag;
 ///
 /// fn parser(s: &amp;str) -&gt; IResult&lt;&amp;str, Vec&lt;&amp;str&gt;&gt; {
-///   separated(0..=2, &quot;abc&quot;, &quot;|&quot;).parse_peek(s)
+///   separated(0..=2, "abc", "|").parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(&quot;abc|abc|abc&quot;), Ok((&quot;|abc&quot;, vec![&quot;abc&quot;, &quot;abc&quot;])));
-/// assert_eq!(parser(&quot;abc123abc&quot;), Ok((&quot;123abc&quot;, vec![&quot;abc&quot;])));
-/// assert_eq!(parser(&quot;abc|def&quot;), Ok((&quot;|def&quot;, vec![&quot;abc&quot;])));
-/// assert_eq!(parser(&quot;&quot;), Ok((&quot;&quot;, vec![])));
-/// assert_eq!(parser(&quot;def|abc&quot;), Ok((&quot;def|abc&quot;, vec![])));
+/// assert_eq!(parser("abc|abc|abc"), Ok(("|abc", vec!["abc", "abc"])));
+/// assert_eq!(parser("abc123abc"), Ok(("123abc", vec!["abc"])));
+/// assert_eq!(parser("abc|def"), Ok(("|def", vec!["abc"])));
+/// assert_eq!(parser(""), Ok(("", vec![])));
+/// assert_eq!(parser("def|abc"), Ok(("def|abc", vec![])));
 /// # }
 /// ```
-</span><span class="attr">#[doc(alias = <span class="string">&quot;sep_by&quot;</span>)]
-#[doc(alias = <span class="string">&quot;sep_by1&quot;</span>)]
-#[doc(alias = <span class="string">&quot;separated_list0&quot;</span>)]
-#[doc(alias = <span class="string">&quot;separated_list1&quot;</span>)]
-#[doc(alias = <span class="string">&quot;separated_m_n&quot;</span>)]
+</span><span class="attr">#[doc(alias = <span class="string">"sep_by"</span>)]
+#[doc(alias = <span class="string">"sep_by1"</span>)]
+#[doc(alias = <span class="string">"separated_list0"</span>)]
+#[doc(alias = <span class="string">"separated_list1"</span>)]
+#[doc(alias = <span class="string">"separated_m_n"</span>)]
 #[inline(always)]
 </span><span class="kw">pub fn </span>separated&lt;I, O, C, O2, E, P, S&gt;(
     range: <span class="kw">impl </span>Into&lt;Range&gt;,
@@ -1712,7 +2123,7 @@
         start_inclusive,
         end_inclusive,
     } = range.into();
-    trace(<span class="string">&quot;separated&quot;</span>, <span class="kw">move </span>|input: <span class="kw-2">&amp;mut </span>I| {
+    trace(<span class="string">"separated"</span>, <span class="kw">move </span>|input: <span class="kw-2">&amp;mut </span>I| {
         <span class="kw">match </span>(start_inclusive, end_inclusive) {
             (<span class="number">0</span>, <span class="prelude-val">None</span>) =&gt; separated0_(<span class="kw-2">&amp;mut </span>parser, <span class="kw-2">&amp;mut </span>separator, input),
             (<span class="number">1</span>, <span class="prelude-val">None</span>) =&gt; separated1_(<span class="kw-2">&amp;mut </span>parser, <span class="kw-2">&amp;mut </span>separator, input),
@@ -1742,26 +2153,26 @@
 /// # Example
 ///
 /// ```rust
-/// # #[cfg(feature = &quot;std&quot;)] {
+/// # #[cfg(feature = "std")] {
 /// # use winnow::{error::ErrMode, error::ErrorKind, error::Needed};
 /// # use winnow::prelude::*;
 /// use winnow::combinator::separated0;
 /// use winnow::token::tag;
 ///
 /// fn parser(s: &amp;str) -&gt; IResult&lt;&amp;str, Vec&lt;&amp;str&gt;&gt; {
-///   separated0(&quot;abc&quot;, &quot;|&quot;).parse_peek(s)
+///   separated0("abc", "|").parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(&quot;abc|abc|abc&quot;), Ok((&quot;&quot;, vec![&quot;abc&quot;, &quot;abc&quot;, &quot;abc&quot;])));
-/// assert_eq!(parser(&quot;abc123abc&quot;), Ok((&quot;123abc&quot;, vec![&quot;abc&quot;])));
-/// assert_eq!(parser(&quot;abc|def&quot;), Ok((&quot;|def&quot;, vec![&quot;abc&quot;])));
-/// assert_eq!(parser(&quot;&quot;), Ok((&quot;&quot;, vec![])));
-/// assert_eq!(parser(&quot;def|abc&quot;), Ok((&quot;def|abc&quot;, vec![])));
+/// assert_eq!(parser("abc|abc|abc"), Ok(("", vec!["abc", "abc", "abc"])));
+/// assert_eq!(parser("abc123abc"), Ok(("123abc", vec!["abc"])));
+/// assert_eq!(parser("abc|def"), Ok(("|def", vec!["abc"])));
+/// assert_eq!(parser(""), Ok(("", vec![])));
+/// assert_eq!(parser("def|abc"), Ok(("def|abc", vec![])));
 /// # }
 /// ```
-</span><span class="attr">#[doc(alias = <span class="string">&quot;sep_by&quot;</span>)]
-#[doc(alias = <span class="string">&quot;separated_list0&quot;</span>)]
-#[deprecated(since = <span class="string">&quot;0.5.19&quot;</span>, note = <span class="string">&quot;Replaced with `combinator::separated`&quot;</span>)]
+</span><span class="attr">#[doc(alias = <span class="string">"sep_by"</span>)]
+#[doc(alias = <span class="string">"separated_list0"</span>)]
+#[deprecated(since = <span class="string">"0.5.19"</span>, note = <span class="string">"Replaced with `combinator::separated`"</span>)]
 </span><span class="kw">pub fn </span>separated0&lt;I, O, C, O2, E, P, S&gt;(<span class="kw-2">mut </span>parser: P, <span class="kw-2">mut </span>sep: S) -&gt; <span class="kw">impl </span>Parser&lt;I, C, E&gt;
 <span class="kw">where
     </span>I: Stream,
@@ -1770,7 +2181,7 @@
     S: Parser&lt;I, O2, E&gt;,
     E: ParserError&lt;I&gt;,
 {
-    trace(<span class="string">&quot;separated0&quot;</span>, <span class="kw">move </span>|i: <span class="kw-2">&amp;mut </span>I| {
+    trace(<span class="string">"separated0"</span>, <span class="kw">move </span>|i: <span class="kw-2">&amp;mut </span>I| {
         separated0_(<span class="kw-2">&amp;mut </span>parser, <span class="kw-2">&amp;mut </span>sep, i)
     })
 }
@@ -1815,7 +2226,7 @@
                 </span><span class="kw">if </span>input.eof_offset() == len {
                     <span class="kw">return </span><span class="prelude-val">Err</span>(ErrMode::assert(
                         input,
-                        <span class="string">&quot;`separated` separator parser must always consume&quot;</span>,
+                        <span class="string">"`separated` separator parser must always consume"</span>,
                     ));
                 }
 
@@ -1848,26 +2259,26 @@
 /// # Example
 ///
 /// ```rust
-/// # #[cfg(feature = &quot;std&quot;)] {
+/// # #[cfg(feature = "std")] {
 /// # use winnow::{error::ErrMode, error::{InputError, ErrorKind}, error::Needed};
 /// # use winnow::prelude::*;
 /// use winnow::combinator::separated1;
 /// use winnow::token::tag;
 ///
 /// fn parser(s: &amp;str) -&gt; IResult&lt;&amp;str, Vec&lt;&amp;str&gt;&gt; {
-///   separated1(&quot;abc&quot;, &quot;|&quot;).parse_peek(s)
+///   separated1("abc", "|").parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(&quot;abc|abc|abc&quot;), Ok((&quot;&quot;, vec![&quot;abc&quot;, &quot;abc&quot;, &quot;abc&quot;])));
-/// assert_eq!(parser(&quot;abc123abc&quot;), Ok((&quot;123abc&quot;, vec![&quot;abc&quot;])));
-/// assert_eq!(parser(&quot;abc|def&quot;), Ok((&quot;|def&quot;, vec![&quot;abc&quot;])));
-/// assert_eq!(parser(&quot;&quot;), Err(ErrMode::Backtrack(InputError::new(&quot;&quot;, ErrorKind::Tag))));
-/// assert_eq!(parser(&quot;def|abc&quot;), Err(ErrMode::Backtrack(InputError::new(&quot;def|abc&quot;, ErrorKind::Tag))));
+/// assert_eq!(parser("abc|abc|abc"), Ok(("", vec!["abc", "abc", "abc"])));
+/// assert_eq!(parser("abc123abc"), Ok(("123abc", vec!["abc"])));
+/// assert_eq!(parser("abc|def"), Ok(("|def", vec!["abc"])));
+/// assert_eq!(parser(""), Err(ErrMode::Backtrack(InputError::new("", ErrorKind::Tag))));
+/// assert_eq!(parser("def|abc"), Err(ErrMode::Backtrack(InputError::new("def|abc", ErrorKind::Tag))));
 /// # }
 /// ```
-</span><span class="attr">#[doc(alias = <span class="string">&quot;sep_by1&quot;</span>)]
-#[doc(alias = <span class="string">&quot;separated_list1&quot;</span>)]
-#[deprecated(since = <span class="string">&quot;0.5.19&quot;</span>, note = <span class="string">&quot;Replaced with `combinator::separated`&quot;</span>)]
+</span><span class="attr">#[doc(alias = <span class="string">"sep_by1"</span>)]
+#[doc(alias = <span class="string">"separated_list1"</span>)]
+#[deprecated(since = <span class="string">"0.5.19"</span>, note = <span class="string">"Replaced with `combinator::separated`"</span>)]
 </span><span class="kw">pub fn </span>separated1&lt;I, O, C, O2, E, P, S&gt;(<span class="kw-2">mut </span>parser: P, <span class="kw-2">mut </span>sep: S) -&gt; <span class="kw">impl </span>Parser&lt;I, C, E&gt;
 <span class="kw">where
     </span>I: Stream,
@@ -1876,7 +2287,7 @@
     S: Parser&lt;I, O2, E&gt;,
     E: ParserError&lt;I&gt;,
 {
-    trace(<span class="string">&quot;separated1&quot;</span>, <span class="kw">move </span>|i: <span class="kw-2">&amp;mut </span>I| {
+    trace(<span class="string">"separated1"</span>, <span class="kw">move </span>|i: <span class="kw-2">&amp;mut </span>I| {
         separated1_(<span class="kw-2">&amp;mut </span>parser, <span class="kw-2">&amp;mut </span>sep, i)
     })
 }
@@ -1917,7 +2328,7 @@
                 </span><span class="kw">if </span>input.eof_offset() == len {
                     <span class="kw">return </span><span class="prelude-val">Err</span>(ErrMode::assert(
                         input,
-                        <span class="string">&quot;`separated` separator parser must always consume&quot;</span>,
+                        <span class="string">"`separated` separator parser must always consume"</span>,
                     ));
                 }
 
@@ -1975,7 +2386,7 @@
                 </span><span class="kw">if </span>input.eof_offset() == len {
                     <span class="kw">return </span><span class="prelude-val">Err</span>(ErrMode::assert(
                         input,
-                        <span class="string">&quot;`separated` separator parser must always consume&quot;</span>,
+                        <span class="string">"`separated` separator parser must always consume"</span>,
                     ));
                 }
 
@@ -2050,7 +2461,7 @@
                 </span><span class="kw">if </span>input.eof_offset() == len {
                     <span class="kw">return </span><span class="prelude-val">Err</span>(ErrMode::assert(
                         input,
-                        <span class="string">&quot;`separated` separator parser must always consume&quot;</span>,
+                        <span class="string">"`separated` separator parser must always consume"</span>,
                     ));
                 }
 
@@ -2091,26 +2502,26 @@
 /// use winnow::ascii::dec_int;
 ///
 /// fn parser(s: &amp;str) -&gt; IResult&lt;&amp;str, i32&gt; {
-///   separated_foldl1(dec_int, &quot;-&quot;, |l, _, r| l - r).parse_peek(s)
+///   separated_foldl1(dec_int, "-", |l, _, r| l - r).parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(&quot;9-3-5&quot;), Ok((&quot;&quot;, 1)));
-/// assert_eq!(parser(&quot;&quot;), Err(ErrMode::Backtrack(InputError::new(&quot;&quot;, ErrorKind::Slice))));
-/// assert_eq!(parser(&quot;def|abc&quot;), Err(ErrMode::Backtrack(InputError::new(&quot;def|abc&quot;, ErrorKind::Slice))));
+/// assert_eq!(parser("9-3-5"), Ok(("", 1)));
+/// assert_eq!(parser(""), Err(ErrMode::Backtrack(InputError::new("", ErrorKind::Slice))));
+/// assert_eq!(parser("def|abc"), Err(ErrMode::Backtrack(InputError::new("def|abc", ErrorKind::Slice))));
 /// ```
 </span><span class="kw">pub fn </span>separated_foldl1&lt;I, O, O2, E, P, S, Op&gt;(
     <span class="kw-2">mut </span>parser: P,
     <span class="kw-2">mut </span>sep: S,
-    op: Op,
+    <span class="kw-2">mut </span>op: Op,
 ) -&gt; <span class="kw">impl </span>Parser&lt;I, O, E&gt;
 <span class="kw">where
     </span>I: Stream,
     P: Parser&lt;I, O, E&gt;,
     S: Parser&lt;I, O2, E&gt;,
     E: ParserError&lt;I&gt;,
-    Op: Fn(O, O2, O) -&gt; O,
+    Op: FnMut(O, O2, O) -&gt; O,
 {
-    trace(<span class="string">&quot;separated_foldl1&quot;</span>, <span class="kw">move </span>|i: <span class="kw-2">&amp;mut </span>I| {
+    trace(<span class="string">"separated_foldl1"</span>, <span class="kw">move </span>|i: <span class="kw-2">&amp;mut </span>I| {
         <span class="kw">let </span><span class="kw-2">mut </span>ol = parser.parse_next(i)<span class="question-mark">?</span>;
 
         <span class="kw">loop </span>{
@@ -2125,7 +2536,7 @@
                 <span class="prelude-val">Ok</span>(s) =&gt; {
                     <span class="comment">// infinite loop check: the parser must always consume
                     </span><span class="kw">if </span>i.eof_offset() == len {
-                        <span class="kw">return </span><span class="prelude-val">Err</span>(ErrMode::assert(i, <span class="string">&quot;`repeat` parsers must always consume&quot;</span>));
+                        <span class="kw">return </span><span class="prelude-val">Err</span>(ErrMode::assert(i, <span class="string">"`repeat` parsers must always consume"</span>));
                     }
 
                     <span class="kw">match </span>parser.parse_next(i) {
@@ -2158,28 +2569,28 @@
 /// use winnow::ascii::dec_uint;
 ///
 /// fn parser(s: &amp;str) -&gt; IResult&lt;&amp;str, u32&gt; {
-///   separated_foldr1(dec_uint, &quot;^&quot;, |l: u32, _, r: u32| l.pow(r)).parse_peek(s)
+///   separated_foldr1(dec_uint, "^", |l: u32, _, r: u32| l.pow(r)).parse_peek(s)
 /// }
 ///
-/// assert_eq!(parser(&quot;2^3^2&quot;), Ok((&quot;&quot;, 512)));
-/// assert_eq!(parser(&quot;2&quot;), Ok((&quot;&quot;, 2)));
-/// assert_eq!(parser(&quot;&quot;), Err(ErrMode::Backtrack(InputError::new(&quot;&quot;, ErrorKind::Slice))));
-/// assert_eq!(parser(&quot;def|abc&quot;), Err(ErrMode::Backtrack(InputError::new(&quot;def|abc&quot;, ErrorKind::Slice))));
+/// assert_eq!(parser("2^3^2"), Ok(("", 512)));
+/// assert_eq!(parser("2"), Ok(("", 2)));
+/// assert_eq!(parser(""), Err(ErrMode::Backtrack(InputError::new("", ErrorKind::Slice))));
+/// assert_eq!(parser("def|abc"), Err(ErrMode::Backtrack(InputError::new("def|abc", ErrorKind::Slice))));
 /// ```
-</span><span class="attr">#[cfg(feature = <span class="string">&quot;alloc&quot;</span>)]
+</span><span class="attr">#[cfg(feature = <span class="string">"alloc"</span>)]
 </span><span class="kw">pub fn </span>separated_foldr1&lt;I, O, O2, E, P, S, Op&gt;(
     <span class="kw-2">mut </span>parser: P,
     <span class="kw-2">mut </span>sep: S,
-    op: Op,
+    <span class="kw-2">mut </span>op: Op,
 ) -&gt; <span class="kw">impl </span>Parser&lt;I, O, E&gt;
 <span class="kw">where
     </span>I: Stream,
     P: Parser&lt;I, O, E&gt;,
     S: Parser&lt;I, O2, E&gt;,
     E: ParserError&lt;I&gt;,
-    Op: Fn(O, O2, O) -&gt; O,
+    Op: FnMut(O, O2, O) -&gt; O,
 {
-    trace(<span class="string">&quot;separated_foldr1&quot;</span>, <span class="kw">move </span>|i: <span class="kw-2">&amp;mut </span>I| {
+    trace(<span class="string">"separated_foldr1"</span>, <span class="kw">move </span>|i: <span class="kw-2">&amp;mut </span>I| {
         <span class="kw">let </span>ol = parser.parse_next(i)<span class="question-mark">?</span>;
         <span class="kw">let </span>all: <span class="kw">crate</span>::lib::std::vec::Vec&lt;(O2, O)&gt; =
             repeat(<span class="number">0</span>.., (sep.by_ref(), parser.by_ref())).parse_next(i)<span class="question-mark">?</span>;
@@ -2213,24 +2624,24 @@
 /// use winnow::token::tag;
 ///
 /// fn parser(s: &amp;str) -&gt; IResult&lt;&amp;str, [&amp;str; 2]&gt; {
-///   let mut buf = [&quot;&quot;, &quot;&quot;];
-///   let (rest, ()) = fill(&quot;abc&quot;, &amp;mut buf).parse_peek(s)?;
+///   let mut buf = ["", ""];
+///   let (rest, ()) = fill("abc", &amp;mut buf).parse_peek(s)?;
 ///   Ok((rest, buf))
 /// }
 ///
-/// assert_eq!(parser(&quot;abcabc&quot;), Ok((&quot;&quot;, [&quot;abc&quot;, &quot;abc&quot;])));
-/// assert_eq!(parser(&quot;abc123&quot;), Err(ErrMode::Backtrack(InputError::new(&quot;123&quot;, ErrorKind::Tag))));
-/// assert_eq!(parser(&quot;123123&quot;), Err(ErrMode::Backtrack(InputError::new(&quot;123123&quot;, ErrorKind::Tag))));
-/// assert_eq!(parser(&quot;&quot;), Err(ErrMode::Backtrack(InputError::new(&quot;&quot;, ErrorKind::Tag))));
-/// assert_eq!(parser(&quot;abcabcabc&quot;), Ok((&quot;abc&quot;, [&quot;abc&quot;, &quot;abc&quot;])));
+/// assert_eq!(parser("abcabc"), Ok(("", ["abc", "abc"])));
+/// assert_eq!(parser("abc123"), Err(ErrMode::Backtrack(InputError::new("123", ErrorKind::Tag))));
+/// assert_eq!(parser("123123"), Err(ErrMode::Backtrack(InputError::new("123123", ErrorKind::Tag))));
+/// assert_eq!(parser(""), Err(ErrMode::Backtrack(InputError::new("", ErrorKind::Tag))));
+/// assert_eq!(parser("abcabcabc"), Ok(("abc", ["abc", "abc"])));
 /// ```
-</span><span class="kw">pub fn </span>fill&lt;<span class="lifetime">&#39;a</span>, I, O, E, F&gt;(<span class="kw-2">mut </span>f: F, buf: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>[O]) -&gt; <span class="kw">impl </span>Parser&lt;I, (), E&gt; + <span class="lifetime">&#39;a
+</span><span class="kw">pub fn </span>fill&lt;<span class="lifetime">'a</span>, I, O, E, F&gt;(<span class="kw-2">mut </span>f: F, buf: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>[O]) -&gt; <span class="kw">impl </span>Parser&lt;I, (), E&gt; + <span class="lifetime">'a
 </span><span class="kw">where
-    </span>I: Stream + <span class="lifetime">&#39;a</span>,
-    F: Parser&lt;I, O, E&gt; + <span class="lifetime">&#39;a</span>,
-    E: ParserError&lt;I&gt; + <span class="lifetime">&#39;a</span>,
+    </span>I: Stream + <span class="lifetime">'a</span>,
+    F: Parser&lt;I, O, E&gt; + <span class="lifetime">'a</span>,
+    E: ParserError&lt;I&gt; + <span class="lifetime">'a</span>,
 {
-    trace(<span class="string">&quot;fill&quot;</span>, <span class="kw">move </span>|i: <span class="kw-2">&amp;mut </span>I| {
+    trace(<span class="string">"fill"</span>, <span class="kw">move </span>|i: <span class="kw-2">&amp;mut </span>I| {
         <span class="kw">for </span>elem <span class="kw">in </span>buf.iter_mut() {
             <span class="kw">match </span>f.parse_next(i) {
                 <span class="prelude-val">Ok</span>(o) =&gt; {
@@ -2246,109 +2657,14 @@
     })
 }
 
-<span class="doccomment">/// Repeats the embedded parser `m..=n` times, calling `g` to gather the results
-///
-/// This stops before `n` when the parser returns [`ErrMode::Backtrack`]. To instead chain an error up, see
-/// [`cut_err`][crate::combinator::cut_err].
-///
-/// # Arguments
-/// * `m` The minimum number of iterations.
-/// * `n` The maximum number of iterations.
-/// * `f` The parser to apply.
-/// * `init` A function returning the initial value.
-/// * `g` The function that combines a result of `f` with
-///       the current accumulator.
-///
-/// **Warning:** If the parser passed to `fold_repeat` accepts empty inputs
-/// (like `alpha0` or `digit0`), `fold_repeat` will return an error,
-/// to prevent going into an infinite loop.
-///
-/// # Example
-///
-/// Zero or more repetitions:
-/// ```rust
-/// # use winnow::{error::ErrMode, error::ErrorKind, error::Needed};
-/// # use winnow::prelude::*;
-/// use winnow::combinator::fold_repeat;
-/// use winnow::token::tag;
-///
-/// fn parser(s: &amp;str) -&gt; IResult&lt;&amp;str, Vec&lt;&amp;str&gt;&gt; {
-///   fold_repeat(
-///     0..,
-///     &quot;abc&quot;,
-///     Vec::new,
-///     |mut acc: Vec&lt;_&gt;, item| {
-///       acc.push(item);
-///       acc
-///     }
-///   ).parse_peek(s)
-/// }
-///
-/// assert_eq!(parser(&quot;abcabc&quot;), Ok((&quot;&quot;, vec![&quot;abc&quot;, &quot;abc&quot;])));
-/// assert_eq!(parser(&quot;abc123&quot;), Ok((&quot;123&quot;, vec![&quot;abc&quot;])));
-/// assert_eq!(parser(&quot;123123&quot;), Ok((&quot;123123&quot;, vec![])));
-/// assert_eq!(parser(&quot;&quot;), Ok((&quot;&quot;, vec![])));
-/// ```
-///
-/// One or more repetitions:
-/// ```rust
-/// # use winnow::{error::ErrMode, error::{InputError, ErrorKind}, error::Needed};
-/// # use winnow::prelude::*;
-/// use winnow::combinator::fold_repeat;
-/// use winnow::token::tag;
-///
-/// fn parser(s: &amp;str) -&gt; IResult&lt;&amp;str, Vec&lt;&amp;str&gt;&gt; {
-///   fold_repeat(
-///     1..,
-///     &quot;abc&quot;,
-///     Vec::new,
-///     |mut acc: Vec&lt;_&gt;, item| {
-///       acc.push(item);
-///       acc
-///     }
-///   ).parse_peek(s)
-/// }
-///
-/// assert_eq!(parser(&quot;abcabc&quot;), Ok((&quot;&quot;, vec![&quot;abc&quot;, &quot;abc&quot;])));
-/// assert_eq!(parser(&quot;abc123&quot;), Ok((&quot;123&quot;, vec![&quot;abc&quot;])));
-/// assert_eq!(parser(&quot;123123&quot;), Err(ErrMode::Backtrack(InputError::new(&quot;123123&quot;, ErrorKind::Many))));
-/// assert_eq!(parser(&quot;&quot;), Err(ErrMode::Backtrack(InputError::new(&quot;&quot;, ErrorKind::Many))));
-/// ```
-///
-/// Arbitrary number of repetitions:
-/// ```rust
-/// # use winnow::{error::ErrMode, error::ErrorKind, error::Needed};
-/// # use winnow::prelude::*;
-/// use winnow::combinator::fold_repeat;
-/// use winnow::token::tag;
-///
-/// fn parser(s: &amp;str) -&gt; IResult&lt;&amp;str, Vec&lt;&amp;str&gt;&gt; {
-///   fold_repeat(
-///     0..=2,
-///     &quot;abc&quot;,
-///     Vec::new,
-///     |mut acc: Vec&lt;_&gt;, item| {
-///       acc.push(item);
-///       acc
-///     }
-///   ).parse_peek(s)
-/// }
-///
-/// assert_eq!(parser(&quot;abcabc&quot;), Ok((&quot;&quot;, vec![&quot;abc&quot;, &quot;abc&quot;])));
-/// assert_eq!(parser(&quot;abc123&quot;), Ok((&quot;123&quot;, vec![&quot;abc&quot;])));
-/// assert_eq!(parser(&quot;123123&quot;), Ok((&quot;123123&quot;, vec![])));
-/// assert_eq!(parser(&quot;&quot;), Ok((&quot;&quot;, vec![])));
-/// assert_eq!(parser(&quot;abcabcabc&quot;), Ok((&quot;abc&quot;, vec![&quot;abc&quot;, &quot;abc&quot;])));
-/// ```
-</span><span class="attr">#[doc(alias = <span class="string">&quot;fold_many0&quot;</span>)]
-#[doc(alias = <span class="string">&quot;fold_many1&quot;</span>)]
-#[doc(alias = <span class="string">&quot;fold_many_m_n&quot;</span>)]
+<span class="doccomment">/// Deprecated, replaced with [`Repeat::fold`]
+</span><span class="attr">#[deprecated(since = <span class="string">"0.5.36"</span>, note = <span class="string">"Replaced with `repeat(...).fold(...)`"</span>)]
 #[inline(always)]
 </span><span class="kw">pub fn </span>fold_repeat&lt;I, O, E, F, G, H, R&gt;(
     range: <span class="kw">impl </span>Into&lt;Range&gt;,
-    <span class="kw-2">mut </span>f: F,
-    <span class="kw-2">mut </span>init: H,
-    <span class="kw-2">mut </span>g: G,
+    f: F,
+    init: H,
+    g: G,
 ) -&gt; <span class="kw">impl </span>Parser&lt;I, R, E&gt;
 <span class="kw">where
     </span>I: Stream,
@@ -2357,24 +2673,7 @@
     H: FnMut() -&gt; R,
     E: ParserError&lt;I&gt;,
 {
-    <span class="kw">let </span>Range {
-        start_inclusive,
-        end_inclusive,
-    } = range.into();
-    trace(<span class="string">&quot;fold_repeat&quot;</span>, <span class="kw">move </span>|i: <span class="kw-2">&amp;mut </span>I| {
-        <span class="kw">match </span>(start_inclusive, end_inclusive) {
-            (<span class="number">0</span>, <span class="prelude-val">None</span>) =&gt; fold_repeat0_(<span class="kw-2">&amp;mut </span>f, <span class="kw-2">&amp;mut </span>init, <span class="kw-2">&amp;mut </span>g, i),
-            (<span class="number">1</span>, <span class="prelude-val">None</span>) =&gt; fold_repeat1_(<span class="kw-2">&amp;mut </span>f, <span class="kw-2">&amp;mut </span>init, <span class="kw-2">&amp;mut </span>g, i),
-            (start, end) =&gt; fold_repeat_m_n_(
-                start,
-                end.unwrap_or(usize::MAX),
-                <span class="kw-2">&amp;mut </span>f,
-                <span class="kw-2">&amp;mut </span>init,
-                <span class="kw-2">&amp;mut </span>g,
-                i,
-            ),
-        }
-    })
+    repeat(range, f).fold(init, g)
 }
 
 <span class="kw">fn </span>fold_repeat0_&lt;I, O, E, F, G, H, R&gt;(
@@ -2401,7 +2700,7 @@
                 </span><span class="kw">if </span>input.eof_offset() == len {
                     <span class="kw">return </span><span class="prelude-val">Err</span>(ErrMode::assert(
                         input,
-                        <span class="string">&quot;`repeat` parsers must always consume&quot;</span>,
+                        <span class="string">"`repeat` parsers must always consume"</span>,
                     ));
                 }
 
@@ -2452,7 +2751,7 @@
                         </span><span class="kw">if </span>input.eof_offset() == len {
                             <span class="kw">return </span><span class="prelude-val">Err</span>(ErrMode::assert(
                                 input,
-                                <span class="string">&quot;`repeat` parsers must always consume&quot;</span>,
+                                <span class="string">"`repeat` parsers must always consume"</span>,
                             ));
                         }
 
@@ -2495,7 +2794,7 @@
                 </span><span class="kw">if </span>input.eof_offset() == len {
                     <span class="kw">return </span><span class="prelude-val">Err</span>(ErrMode::assert(
                         input,
-                        <span class="string">&quot;`repeat` parsers must always consume&quot;</span>,
+                        <span class="string">"`repeat` parsers must always consume"</span>,
                     ));
                 }
 

@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ecs-0.12.1/src/entity/mod.rs`."><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="bevy_ecs" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../bevy_ecs/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ecs-0.13.0/src/entity/mod.rs`."><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="bevy_ecs" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -918,6 +919,218 @@
 <a href="#918" id="918">918</a>
 <a href="#919" id="919">919</a>
 <a href="#920" id="920">920</a>
+<a href="#921" id="921">921</a>
+<a href="#922" id="922">922</a>
+<a href="#923" id="923">923</a>
+<a href="#924" id="924">924</a>
+<a href="#925" id="925">925</a>
+<a href="#926" id="926">926</a>
+<a href="#927" id="927">927</a>
+<a href="#928" id="928">928</a>
+<a href="#929" id="929">929</a>
+<a href="#930" id="930">930</a>
+<a href="#931" id="931">931</a>
+<a href="#932" id="932">932</a>
+<a href="#933" id="933">933</a>
+<a href="#934" id="934">934</a>
+<a href="#935" id="935">935</a>
+<a href="#936" id="936">936</a>
+<a href="#937" id="937">937</a>
+<a href="#938" id="938">938</a>
+<a href="#939" id="939">939</a>
+<a href="#940" id="940">940</a>
+<a href="#941" id="941">941</a>
+<a href="#942" id="942">942</a>
+<a href="#943" id="943">943</a>
+<a href="#944" id="944">944</a>
+<a href="#945" id="945">945</a>
+<a href="#946" id="946">946</a>
+<a href="#947" id="947">947</a>
+<a href="#948" id="948">948</a>
+<a href="#949" id="949">949</a>
+<a href="#950" id="950">950</a>
+<a href="#951" id="951">951</a>
+<a href="#952" id="952">952</a>
+<a href="#953" id="953">953</a>
+<a href="#954" id="954">954</a>
+<a href="#955" id="955">955</a>
+<a href="#956" id="956">956</a>
+<a href="#957" id="957">957</a>
+<a href="#958" id="958">958</a>
+<a href="#959" id="959">959</a>
+<a href="#960" id="960">960</a>
+<a href="#961" id="961">961</a>
+<a href="#962" id="962">962</a>
+<a href="#963" id="963">963</a>
+<a href="#964" id="964">964</a>
+<a href="#965" id="965">965</a>
+<a href="#966" id="966">966</a>
+<a href="#967" id="967">967</a>
+<a href="#968" id="968">968</a>
+<a href="#969" id="969">969</a>
+<a href="#970" id="970">970</a>
+<a href="#971" id="971">971</a>
+<a href="#972" id="972">972</a>
+<a href="#973" id="973">973</a>
+<a href="#974" id="974">974</a>
+<a href="#975" id="975">975</a>
+<a href="#976" id="976">976</a>
+<a href="#977" id="977">977</a>
+<a href="#978" id="978">978</a>
+<a href="#979" id="979">979</a>
+<a href="#980" id="980">980</a>
+<a href="#981" id="981">981</a>
+<a href="#982" id="982">982</a>
+<a href="#983" id="983">983</a>
+<a href="#984" id="984">984</a>
+<a href="#985" id="985">985</a>
+<a href="#986" id="986">986</a>
+<a href="#987" id="987">987</a>
+<a href="#988" id="988">988</a>
+<a href="#989" id="989">989</a>
+<a href="#990" id="990">990</a>
+<a href="#991" id="991">991</a>
+<a href="#992" id="992">992</a>
+<a href="#993" id="993">993</a>
+<a href="#994" id="994">994</a>
+<a href="#995" id="995">995</a>
+<a href="#996" id="996">996</a>
+<a href="#997" id="997">997</a>
+<a href="#998" id="998">998</a>
+<a href="#999" id="999">999</a>
+<a href="#1000" id="1000">1000</a>
+<a href="#1001" id="1001">1001</a>
+<a href="#1002" id="1002">1002</a>
+<a href="#1003" id="1003">1003</a>
+<a href="#1004" id="1004">1004</a>
+<a href="#1005" id="1005">1005</a>
+<a href="#1006" id="1006">1006</a>
+<a href="#1007" id="1007">1007</a>
+<a href="#1008" id="1008">1008</a>
+<a href="#1009" id="1009">1009</a>
+<a href="#1010" id="1010">1010</a>
+<a href="#1011" id="1011">1011</a>
+<a href="#1012" id="1012">1012</a>
+<a href="#1013" id="1013">1013</a>
+<a href="#1014" id="1014">1014</a>
+<a href="#1015" id="1015">1015</a>
+<a href="#1016" id="1016">1016</a>
+<a href="#1017" id="1017">1017</a>
+<a href="#1018" id="1018">1018</a>
+<a href="#1019" id="1019">1019</a>
+<a href="#1020" id="1020">1020</a>
+<a href="#1021" id="1021">1021</a>
+<a href="#1022" id="1022">1022</a>
+<a href="#1023" id="1023">1023</a>
+<a href="#1024" id="1024">1024</a>
+<a href="#1025" id="1025">1025</a>
+<a href="#1026" id="1026">1026</a>
+<a href="#1027" id="1027">1027</a>
+<a href="#1028" id="1028">1028</a>
+<a href="#1029" id="1029">1029</a>
+<a href="#1030" id="1030">1030</a>
+<a href="#1031" id="1031">1031</a>
+<a href="#1032" id="1032">1032</a>
+<a href="#1033" id="1033">1033</a>
+<a href="#1034" id="1034">1034</a>
+<a href="#1035" id="1035">1035</a>
+<a href="#1036" id="1036">1036</a>
+<a href="#1037" id="1037">1037</a>
+<a href="#1038" id="1038">1038</a>
+<a href="#1039" id="1039">1039</a>
+<a href="#1040" id="1040">1040</a>
+<a href="#1041" id="1041">1041</a>
+<a href="#1042" id="1042">1042</a>
+<a href="#1043" id="1043">1043</a>
+<a href="#1044" id="1044">1044</a>
+<a href="#1045" id="1045">1045</a>
+<a href="#1046" id="1046">1046</a>
+<a href="#1047" id="1047">1047</a>
+<a href="#1048" id="1048">1048</a>
+<a href="#1049" id="1049">1049</a>
+<a href="#1050" id="1050">1050</a>
+<a href="#1051" id="1051">1051</a>
+<a href="#1052" id="1052">1052</a>
+<a href="#1053" id="1053">1053</a>
+<a href="#1054" id="1054">1054</a>
+<a href="#1055" id="1055">1055</a>
+<a href="#1056" id="1056">1056</a>
+<a href="#1057" id="1057">1057</a>
+<a href="#1058" id="1058">1058</a>
+<a href="#1059" id="1059">1059</a>
+<a href="#1060" id="1060">1060</a>
+<a href="#1061" id="1061">1061</a>
+<a href="#1062" id="1062">1062</a>
+<a href="#1063" id="1063">1063</a>
+<a href="#1064" id="1064">1064</a>
+<a href="#1065" id="1065">1065</a>
+<a href="#1066" id="1066">1066</a>
+<a href="#1067" id="1067">1067</a>
+<a href="#1068" id="1068">1068</a>
+<a href="#1069" id="1069">1069</a>
+<a href="#1070" id="1070">1070</a>
+<a href="#1071" id="1071">1071</a>
+<a href="#1072" id="1072">1072</a>
+<a href="#1073" id="1073">1073</a>
+<a href="#1074" id="1074">1074</a>
+<a href="#1075" id="1075">1075</a>
+<a href="#1076" id="1076">1076</a>
+<a href="#1077" id="1077">1077</a>
+<a href="#1078" id="1078">1078</a>
+<a href="#1079" id="1079">1079</a>
+<a href="#1080" id="1080">1080</a>
+<a href="#1081" id="1081">1081</a>
+<a href="#1082" id="1082">1082</a>
+<a href="#1083" id="1083">1083</a>
+<a href="#1084" id="1084">1084</a>
+<a href="#1085" id="1085">1085</a>
+<a href="#1086" id="1086">1086</a>
+<a href="#1087" id="1087">1087</a>
+<a href="#1088" id="1088">1088</a>
+<a href="#1089" id="1089">1089</a>
+<a href="#1090" id="1090">1090</a>
+<a href="#1091" id="1091">1091</a>
+<a href="#1092" id="1092">1092</a>
+<a href="#1093" id="1093">1093</a>
+<a href="#1094" id="1094">1094</a>
+<a href="#1095" id="1095">1095</a>
+<a href="#1096" id="1096">1096</a>
+<a href="#1097" id="1097">1097</a>
+<a href="#1098" id="1098">1098</a>
+<a href="#1099" id="1099">1099</a>
+<a href="#1100" id="1100">1100</a>
+<a href="#1101" id="1101">1101</a>
+<a href="#1102" id="1102">1102</a>
+<a href="#1103" id="1103">1103</a>
+<a href="#1104" id="1104">1104</a>
+<a href="#1105" id="1105">1105</a>
+<a href="#1106" id="1106">1106</a>
+<a href="#1107" id="1107">1107</a>
+<a href="#1108" id="1108">1108</a>
+<a href="#1109" id="1109">1109</a>
+<a href="#1110" id="1110">1110</a>
+<a href="#1111" id="1111">1111</a>
+<a href="#1112" id="1112">1112</a>
+<a href="#1113" id="1113">1113</a>
+<a href="#1114" id="1114">1114</a>
+<a href="#1115" id="1115">1115</a>
+<a href="#1116" id="1116">1116</a>
+<a href="#1117" id="1117">1117</a>
+<a href="#1118" id="1118">1118</a>
+<a href="#1119" id="1119">1119</a>
+<a href="#1120" id="1120">1120</a>
+<a href="#1121" id="1121">1121</a>
+<a href="#1122" id="1122">1122</a>
+<a href="#1123" id="1123">1123</a>
+<a href="#1124" id="1124">1124</a>
+<a href="#1125" id="1125">1125</a>
+<a href="#1126" id="1126">1126</a>
+<a href="#1127" id="1127">1127</a>
+<a href="#1128" id="1128">1128</a>
+<a href="#1129" id="1129">1129</a>
+<a href="#1130" id="1130">1130</a>
+<a href="#1131" id="1131">1131</a>
+<a href="#1132" id="1132">1132</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Entity handling types.
 //!
 //! An **entity** exclusively owns zero or more [component] instances, all of different types, and can dynamically acquire or lose them over its lifetime.
@@ -956,27 +1169,39 @@
 //! [`EntityWorldMut::insert`]: crate::world::EntityWorldMut::insert
 //! [`EntityWorldMut::remove`]: crate::world::EntityWorldMut::remove
 </span><span class="kw">mod </span>map_entities;
-
+<span class="attr">#[cfg(feature = <span class="string">"bevy_reflect"</span>)]
+</span><span class="kw">use </span>bevy_reflect::{Reflect, ReflectDeserialize, ReflectSerialize};
 <span class="kw">pub use </span>map_entities::<span class="kw-2">*</span>;
+
+<span class="kw">mod </span>hash;
+<span class="kw">pub use </span>hash::<span class="kw-2">*</span>;
+
+<span class="kw">use </span>bevy_utils::tracing::warn;
 
 <span class="kw">use crate</span>::{
     archetype::{ArchetypeId, ArchetypeRow},
+    identifier::{
+        error::IdentifierError,
+        kinds::IdKind,
+        masks::{IdentifierMask, HIGH_MASK},
+        Identifier,
+    },
     storage::{SparseSetIndex, TableId, TableRow},
 };
 <span class="kw">use </span>serde::{Deserialize, Serialize};
-<span class="kw">use </span>std::{convert::TryFrom, fmt, hash::Hash, mem, sync::atomic::Ordering};
+<span class="kw">use </span>std::{convert::TryFrom, fmt, hash::Hash, mem, num::NonZeroU32, sync::atomic::Ordering};
 
-<span class="attr">#[cfg(target_has_atomic = <span class="string">&quot;64&quot;</span>)]
+<span class="attr">#[cfg(target_has_atomic = <span class="string">"64"</span>)]
 </span><span class="kw">use </span>std::sync::atomic::AtomicI64 <span class="kw">as </span>AtomicIdCursor;
-<span class="attr">#[cfg(target_has_atomic = <span class="string">&quot;64&quot;</span>)]
+<span class="attr">#[cfg(target_has_atomic = <span class="string">"64"</span>)]
 </span><span class="kw">type </span>IdCursor = i64;
 
 <span class="doccomment">/// Most modern platforms support 64-bit atomics, but some less-common platforms
 /// do not. This fallback allows compilation using a 32-bit cursor instead, with
 /// the caveat that some conversions may fail (and panic) at runtime.
-</span><span class="attr">#[cfg(not(target_has_atomic = <span class="string">&quot;64&quot;</span>))]
+</span><span class="attr">#[cfg(not(target_has_atomic = <span class="string">"64"</span>))]
 </span><span class="kw">use </span>std::sync::atomic::AtomicIsize <span class="kw">as </span>AtomicIdCursor;
-<span class="attr">#[cfg(not(target_has_atomic = <span class="string">&quot;64&quot;</span>))]
+<span class="attr">#[cfg(not(target_has_atomic = <span class="string">"64"</span>))]
 </span><span class="kw">type </span>IdCursor = isize;
 
 <span class="doccomment">/// Lightweight identifier of an [entity](crate::entity).
@@ -984,7 +1209,7 @@
 /// The identifier is implemented using a [generational index]: a combination of an index and a generation.
 /// This allows fast insertion after data removal in an array while minimizing loss of spatial locality.
 ///
-/// These identifiers are only valid on the [`World`] it&#39;s sourced from. Attempting to use an `Entity` to
+/// These identifiers are only valid on the [`World`] it's sourced from. Attempting to use an `Entity` to
 /// fetch entity components or metadata from a different world will either fail or return unexpected results.
 ///
 /// [generational index]: https://lucassardois.medium.com/generational-indices-guide-8e3c5f7fd594
@@ -1035,10 +1260,67 @@
 /// [`EntityCommands`]: crate::system::EntityCommands
 /// [`Query::get`]: crate::system::Query::get
 /// [`World`]: crate::world::World
-</span><span class="attr">#[derive(Clone, Copy, Eq, Ord, PartialEq, PartialOrd)]
+</span><span class="attr">#[derive(Clone, Copy)]
+#[cfg_attr(feature = <span class="string">"bevy_reflect"</span>, derive(Reflect))]
+#[cfg_attr(
+    feature = <span class="string">"bevy_reflect"</span>,
+    reflect_value(Hash, PartialEq, Serialize, Deserialize)
+)]
+</span><span class="comment">// Alignment repr necessary to allow LLVM to better output
+// optimised codegen for `to_bits`, `PartialEq` and `Ord`.
+</span><span class="attr">#[repr(C, align(<span class="number">8</span>))]
 </span><span class="kw">pub struct </span>Entity {
-    generation: u32,
-    index: u32,
+    <span class="comment">// Do not reorder the fields here. The ordering is explicitly used by repr(C)
+    // to make this struct equivalent to a u64.
+    </span><span class="attr">#[cfg(target_endian = <span class="string">"little"</span>)]
+    </span>index: u32,
+    generation: NonZeroU32,
+    <span class="attr">#[cfg(target_endian = <span class="string">"big"</span>)]
+    </span>index: u32,
+}
+
+<span class="comment">// By not short-circuiting in comparisons, we get better codegen.
+// See &lt;https://github.com/rust-lang/rust/issues/117800&gt;
+</span><span class="kw">impl </span>PartialEq <span class="kw">for </span>Entity {
+    <span class="attr">#[inline]
+    </span><span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>Entity) -&gt; bool {
+        <span class="comment">// By using `to_bits`, the codegen can be optimised out even
+        // further potentially. Relies on the correct alignment/field
+        // order of `Entity`.
+        </span><span class="self">self</span>.to_bits() == other.to_bits()
+    }
+}
+
+<span class="kw">impl </span>Eq <span class="kw">for </span>Entity {}
+
+<span class="comment">// The derive macro codegen output is not optimal and can't be optimised as well
+// by the compiler. This impl resolves the issue of non-optimal codegen by relying
+// on comparing against the bit representation of `Entity` instead of comparing
+// the fields. The result is then LLVM is able to optimise the codegen for Entity
+// far beyond what the derive macro can.
+// See &lt;https://github.com/rust-lang/rust/issues/106107&gt;
+</span><span class="kw">impl </span>PartialOrd <span class="kw">for </span>Entity {
+    <span class="attr">#[inline]
+    </span><span class="kw">fn </span>partial_cmp(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;std::cmp::Ordering&gt; {
+        <span class="comment">// Make use of our `Ord` impl to ensure optimal codegen output
+        </span><span class="prelude-val">Some</span>(<span class="self">self</span>.cmp(other))
+    }
+}
+
+<span class="comment">// The derive macro codegen output is not optimal and can't be optimised as well
+// by the compiler. This impl resolves the issue of non-optimal codegen by relying
+// on comparing against the bit representation of `Entity` instead of comparing
+// the fields. The result is then LLVM is able to optimise the codegen for Entity
+// far beyond what the derive macro can.
+// See &lt;https://github.com/rust-lang/rust/issues/106107&gt;
+</span><span class="kw">impl </span>Ord <span class="kw">for </span>Entity {
+    <span class="attr">#[inline]
+    </span><span class="kw">fn </span>cmp(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; std::cmp::Ordering {
+        <span class="comment">// This will result in better codegen for ordering comparisons, plus
+        // avoids pitfalls with regards to macro codegen relying on property
+        // position when we want to compare against the bit representation.
+        </span><span class="self">self</span>.to_bits().cmp(<span class="kw-2">&amp;</span>other.to_bits())
+    }
 }
 
 <span class="kw">impl </span>Hash <span class="kw">for </span>Entity {
@@ -1055,9 +1337,13 @@
 }
 
 <span class="kw">impl </span>Entity {
-    <span class="attr">#[cfg(test)]
-    </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const fn </span>new(index: u32, generation: u32) -&gt; Entity {
-        Entity { index, generation }
+    <span class="doccomment">/// Construct an [`Entity`] from a raw `index` value and a non-zero `generation` value.
+    /// Ensure that the generation value is never greater than `0x7FFF_FFFF`.
+    </span><span class="attr">#[inline(always)]
+    </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const fn </span>from_raw_and_generation(index: u32, generation: NonZeroU32) -&gt; Entity {
+        <span class="macro">debug_assert!</span>(generation.get() &lt;= HIGH_MASK);
+
+        <span class="self">Self </span>{ index, generation }
     }
 
     <span class="doccomment">/// An entity ID with a placeholder value. This may or may not correspond to an actual entity,
@@ -1075,7 +1361,7 @@
     /// // ... replace the entities with valid ones.
     /// ```
     ///
-    /// Deriving [`Reflect`](bevy_reflect::Reflect) for a component that has an `Entity` field:
+    /// Deriving [`Reflect`] for a component that has an `Entity` field:
     ///
     /// ```no_run
     /// # use bevy_ecs::{prelude::*, component::*};
@@ -1096,23 +1382,21 @@
     /// ```
     </span><span class="kw">pub const </span>PLACEHOLDER: <span class="self">Self </span>= <span class="self">Self</span>::from_raw(u32::MAX);
 
-    <span class="doccomment">/// Creates a new entity ID with the specified `index` and a generation of 0.
+    <span class="doccomment">/// Creates a new entity ID with the specified `index` and a generation of 1.
     ///
     /// # Note
     ///
     /// Spawning a specific `entity` value is __rarely the right choice__. Most apps should favor
     /// [`Commands::spawn`](crate::system::Commands::spawn). This method should generally
     /// only be used for sharing entities across apps, and only when they have a scheme
-    /// worked out to share an index space (which doesn&#39;t happen by default).
+    /// worked out to share an index space (which doesn't happen by default).
     ///
     /// In general, one should not try to synchronize the ECS by attempting to ensure that
     /// `Entity` lines up between instances, but instead insert a secondary identifier as
     /// a component.
+    </span><span class="attr">#[inline(always)]
     </span><span class="kw">pub const fn </span>from_raw(index: u32) -&gt; Entity {
-        Entity {
-            index,
-            generation: <span class="number">0</span>,
-        }
+        <span class="self">Self</span>::from_raw_and_generation(index, NonZeroU32::MIN)
     }
 
     <span class="doccomment">/// Convert to a form convenient for passing outside of rust.
@@ -1121,23 +1405,53 @@
     /// for serialization between runs.
     ///
     /// No particular structure is guaranteed for the returned bits.
+    </span><span class="attr">#[inline(always)]
     </span><span class="kw">pub const fn </span>to_bits(<span class="self">self</span>) -&gt; u64 {
-        (<span class="self">self</span>.generation <span class="kw">as </span>u64) &lt;&lt; <span class="number">32 </span>| <span class="self">self</span>.index <span class="kw">as </span>u64
+        IdentifierMask::pack_into_u64(<span class="self">self</span>.index, <span class="self">self</span>.generation.get())
     }
 
     <span class="doccomment">/// Reconstruct an `Entity` previously destructured with [`Entity::to_bits`].
     ///
     /// Only useful when applied to results from `to_bits` in the same instance of an application.
+    ///
+    /// # Panics
+    ///
+    /// This method will likely panic if given `u64` values that did not come from [`Entity::to_bits`].
+    </span><span class="attr">#[inline]
     </span><span class="kw">pub const fn </span>from_bits(bits: u64) -&gt; <span class="self">Self </span>{
-        <span class="self">Self </span>{
-            generation: (bits &gt;&gt; <span class="number">32</span>) <span class="kw">as </span>u32,
-            index: bits <span class="kw">as </span>u32,
+        <span class="comment">// Construct an Identifier initially to extract the kind from.
+        </span><span class="kw">let </span>id = <span class="self">Self</span>::try_from_bits(bits);
+
+        <span class="kw">match </span>id {
+            <span class="prelude-val">Ok</span>(entity) =&gt; entity,
+            <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; <span class="macro">panic!</span>(<span class="string">"Attempted to initialise invalid bits as an entity"</span>),
         }
+    }
+
+    <span class="doccomment">/// Reconstruct an `Entity` previously destructured with [`Entity::to_bits`].
+    ///
+    /// Only useful when applied to results from `to_bits` in the same instance of an application.
+    ///
+    /// This method is the fallible counterpart to [`Entity::from_bits`].
+    </span><span class="attr">#[inline(always)]
+    </span><span class="kw">pub const fn </span>try_from_bits(bits: u64) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, IdentifierError&gt; {
+        <span class="kw">if let </span><span class="prelude-val">Ok</span>(id) = Identifier::try_from_bits(bits) {
+            <span class="kw">let </span>kind = id.kind() <span class="kw">as </span>u8;
+
+            <span class="kw">if </span>kind == (IdKind::Entity <span class="kw">as </span>u8) {
+                <span class="kw">return </span><span class="prelude-val">Ok</span>(<span class="self">Self </span>{
+                    index: id.low(),
+                    generation: id.high(),
+                });
+            }
+        }
+
+        <span class="prelude-val">Err</span>(IdentifierError::InvalidEntityId(bits))
     }
 
     <span class="doccomment">/// Return a transiently unique identifier.
     ///
-    /// No two simultaneously-live entities share the same index, but dead entities&#39; indices may collide
+    /// No two simultaneously-live entities share the same index, but dead entities' indices may collide
     /// with both live and dead entities. Useful for compactly representing entities within a
     /// specific snapshot of the world, such as when serializing.
     </span><span class="attr">#[inline]
@@ -1145,12 +1459,29 @@
         <span class="self">self</span>.index
     }
 
-    <span class="doccomment">/// Returns the generation of this Entity&#39;s index. The generation is incremented each time an
-    /// entity with a given index is despawned. This serves as a &quot;count&quot; of the number of times a
+    <span class="doccomment">/// Returns the generation of this Entity's index. The generation is incremented each time an
+    /// entity with a given index is despawned. This serves as a "count" of the number of times a
     /// given index has been reused (index, generation) pairs uniquely identify a given Entity.
     </span><span class="attr">#[inline]
     </span><span class="kw">pub const fn </span>generation(<span class="self">self</span>) -&gt; u32 {
-        <span class="self">self</span>.generation
+        <span class="comment">// Mask so not to expose any flags
+        </span>IdentifierMask::extract_value_from_high(<span class="self">self</span>.generation.get())
+    }
+}
+
+<span class="kw">impl </span>TryFrom&lt;Identifier&gt; <span class="kw">for </span>Entity {
+    <span class="kw">type </span>Error = IdentifierError;
+
+    <span class="attr">#[inline]
+    </span><span class="kw">fn </span>try_from(value: Identifier) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, <span class="self">Self</span>::Error&gt; {
+        <span class="self">Self</span>::try_from_bits(value.to_bits())
+    }
+}
+
+<span class="kw">impl </span>From&lt;Entity&gt; <span class="kw">for </span>Identifier {
+    <span class="attr">#[inline]
+    </span><span class="kw">fn </span>from(value: Entity) -&gt; <span class="self">Self </span>{
+        Identifier::from_bits(value.to_bits())
     }
 }
 
@@ -1163,19 +1494,20 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;de</span>&gt; Deserialize&lt;<span class="lifetime">&#39;de</span>&gt; <span class="kw">for </span>Entity {
+<span class="kw">impl</span>&lt;<span class="lifetime">'de</span>&gt; Deserialize&lt;<span class="lifetime">'de</span>&gt; <span class="kw">for </span>Entity {
     <span class="kw">fn </span>deserialize&lt;D&gt;(deserializer: D) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, D::Error&gt;
     <span class="kw">where
-        </span>D: serde::Deserializer&lt;<span class="lifetime">&#39;de</span>&gt;,
+        </span>D: serde::Deserializer&lt;<span class="lifetime">'de</span>&gt;,
     {
+        <span class="kw">use </span>serde::de::Error;
         <span class="kw">let </span>id: u64 = serde::de::Deserialize::deserialize(deserializer)<span class="question-mark">?</span>;
-        <span class="prelude-val">Ok</span>(Entity::from_bits(id))
+        Entity::try_from_bits(id).map_err(D::Error::custom)
     }
 }
 
 <span class="kw">impl </span>fmt::Debug <span class="kw">for </span>Entity {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
-        <span class="macro">write!</span>(f, <span class="string">&quot;{}v{}&quot;</span>, <span class="self">self</span>.index, <span class="self">self</span>.generation)
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
+        <span class="macro">write!</span>(f, <span class="string">"{}v{}"</span>, <span class="self">self</span>.index(), <span class="self">self</span>.generation())
     }
 }
 
@@ -1192,34 +1524,27 @@
 }
 
 <span class="doccomment">/// An [`Iterator`] returning a sequence of [`Entity`] values from
-/// [`Entities::reserve_entities`](crate::entity::Entities::reserve_entities).
-</span><span class="kw">pub struct </span>ReserveEntitiesIterator&lt;<span class="lifetime">&#39;a</span>&gt; {
+</span><span class="kw">pub struct </span>ReserveEntitiesIterator&lt;<span class="lifetime">'a</span>&gt; {
     <span class="comment">// Metas, so we can recover the current generation for anything in the freelist.
-    </span>meta: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[EntityMeta],
+    </span>meta: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>[EntityMeta],
 
     <span class="comment">// Reserved indices formerly in the freelist to hand out.
-    </span>index_iter: std::slice::Iter&lt;<span class="lifetime">&#39;a</span>, u32&gt;,
+    </span>index_iter: std::slice::Iter&lt;<span class="lifetime">'a</span>, u32&gt;,
 
     <span class="comment">// New Entity indices to hand out, outside the range of meta.len().
     </span>index_range: std::ops::Range&lt;u32&gt;,
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; Iterator <span class="kw">for </span>ReserveEntitiesIterator&lt;<span class="lifetime">&#39;a</span>&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; Iterator <span class="kw">for </span>ReserveEntitiesIterator&lt;<span class="lifetime">'a</span>&gt; {
     <span class="kw">type </span>Item = Entity;
 
     <span class="kw">fn </span>next(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::Item&gt; {
         <span class="self">self</span>.index_iter
             .next()
-            .map(|<span class="kw-2">&amp;</span>index| Entity {
-                generation: <span class="self">self</span>.meta[index <span class="kw">as </span>usize].generation,
-                index,
+            .map(|<span class="kw-2">&amp;</span>index| {
+                Entity::from_raw_and_generation(index, <span class="self">self</span>.meta[index <span class="kw">as </span>usize].generation)
             })
-            .or_else(|| {
-                <span class="self">self</span>.index_range.next().map(|index| Entity {
-                    generation: <span class="number">0</span>,
-                    index,
-                })
-            })
+            .or_else(|| <span class="self">self</span>.index_range.next().map(Entity::from_raw))
     }
 
     <span class="kw">fn </span>size_hint(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; (usize, <span class="prelude-ty">Option</span>&lt;usize&gt;) {
@@ -1228,15 +1553,15 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; core::iter::ExactSizeIterator <span class="kw">for </span>ReserveEntitiesIterator&lt;<span class="lifetime">&#39;a</span>&gt; {}
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; core::iter::FusedIterator <span class="kw">for </span>ReserveEntitiesIterator&lt;<span class="lifetime">&#39;a</span>&gt; {}
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; ExactSizeIterator <span class="kw">for </span>ReserveEntitiesIterator&lt;<span class="lifetime">'a</span>&gt; {}
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; core::iter::FusedIterator <span class="kw">for </span>ReserveEntitiesIterator&lt;<span class="lifetime">'a</span>&gt; {}
 
-<span class="doccomment">/// A [`World`]&#39;s internal metadata store on all of its entities.
+<span class="doccomment">/// A [`World`]'s internal metadata store on all of its entities.
 ///
 /// Contains metadata on:
 ///  - The generation of every entity.
-///  - The alive/dead status of a particular entity. (i.e. &quot;has entity 3 been despawned?&quot;)
-///  - The location of the entity&#39;s components in memory (via [`EntityLocation`])
+///  - The alive/dead status of a particular entity. (i.e. "has entity 3 been despawned?")
+///  - The location of the entity's components in memory (via [`EntityLocation`])
 ///
 /// [`World`]: crate::world::World
 </span><span class="attr">#[derive(Debug)]
@@ -1302,13 +1627,14 @@
     <span class="doccomment">/// Reserve entity IDs concurrently.
     ///
     /// Storage for entity generation and location is lazily allocated by calling [`flush`](Entities::flush).
+    </span><span class="attr">#[allow(clippy::unnecessary_fallible_conversions)] </span><span class="comment">// Because `IdCursor::try_from` may fail on 32-bit platforms.
     </span><span class="kw">pub fn </span>reserve_entities(<span class="kw-2">&amp;</span><span class="self">self</span>, count: u32) -&gt; ReserveEntitiesIterator {
         <span class="comment">// Use one atomic subtract to grab a range of new IDs. The range might be
         // entirely nonnegative, meaning all IDs come from the freelist, or entirely
         // negative, meaning they are all new IDs to allocate, or a mix of both.
         </span><span class="kw">let </span>range_end = <span class="self">self
             </span>.free_cursor
-            <span class="comment">// Unwrap: these conversions can only fail on platforms that don&#39;t support 64-bit atomics
+            <span class="comment">// Unwrap: these conversions can only fail on platforms that don't support 64-bit atomics
             // and use AtomicIsize instead (see note on `IdCursor`).
             </span>.fetch_sub(IdCursor::try_from(count).unwrap(), Ordering::Relaxed);
         <span class="kw">let </span>range_start = range_end - IdCursor::try_from(count).unwrap();
@@ -1330,7 +1656,7 @@
             // to go, yielding `meta.len()+0 .. meta.len()+3`.
             </span><span class="kw">let </span>base = <span class="self">self</span>.meta.len() <span class="kw">as </span>IdCursor;
 
-            <span class="kw">let </span>new_id_end = u32::try_from(base - range_start).expect(<span class="string">&quot;too many entities&quot;</span>);
+            <span class="kw">let </span>new_id_end = u32::try_from(base - range_start).expect(<span class="string">"too many entities"</span>);
 
             <span class="comment">// `new_id_end` is in range, so no need to check `start`.
             </span><span class="kw">let </span>new_id_start = (base - range_end.min(<span class="number">0</span>)) <span class="kw">as </span>u32;
@@ -1353,20 +1679,16 @@
         <span class="kw">if </span>n &gt; <span class="number">0 </span>{
             <span class="comment">// Allocate from the freelist.
             </span><span class="kw">let </span>index = <span class="self">self</span>.pending[(n - <span class="number">1</span>) <span class="kw">as </span>usize];
-            Entity {
-                generation: <span class="self">self</span>.meta[index <span class="kw">as </span>usize].generation,
-                index,
-            }
+            Entity::from_raw_and_generation(index, <span class="self">self</span>.meta[index <span class="kw">as </span>usize].generation)
         } <span class="kw">else </span>{
             <span class="comment">// Grab a new ID, outside the range of `meta.len()`. `flush()` must
             // eventually be called to make it valid.
             //
             // As `self.free_cursor` goes more and more negative, we return IDs farther
             // and farther beyond `meta.len()`.
-            </span>Entity {
-                generation: <span class="number">0</span>,
-                index: u32::try_from(<span class="self">self</span>.meta.len() <span class="kw">as </span>IdCursor - n).expect(<span class="string">&quot;too many entities&quot;</span>),
-            }
+            </span>Entity::from_raw(
+                u32::try_from(<span class="self">self</span>.meta.len() <span class="kw">as </span>IdCursor - n).expect(<span class="string">"too many entities"</span>),
+            )
         }
     }
 
@@ -1374,7 +1696,7 @@
     </span><span class="kw">fn </span>verify_flushed(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
         <span class="macro">debug_assert!</span>(
             !<span class="self">self</span>.needs_flush(),
-            <span class="string">&quot;flush() needs to be called before this operation is legal&quot;
+            <span class="string">"flush() needs to be called before this operation is legal"
         </span>);
     }
 
@@ -1385,17 +1707,11 @@
         <span class="kw">if let </span><span class="prelude-val">Some</span>(index) = <span class="self">self</span>.pending.pop() {
             <span class="kw">let </span>new_free_cursor = <span class="self">self</span>.pending.len() <span class="kw">as </span>IdCursor;
             <span class="kw-2">*</span><span class="self">self</span>.free_cursor.get_mut() = new_free_cursor;
-            Entity {
-                generation: <span class="self">self</span>.meta[index <span class="kw">as </span>usize].generation,
-                index,
-            }
+            Entity::from_raw_and_generation(index, <span class="self">self</span>.meta[index <span class="kw">as </span>usize].generation)
         } <span class="kw">else </span>{
-            <span class="kw">let </span>index = u32::try_from(<span class="self">self</span>.meta.len()).expect(<span class="string">&quot;too many entities&quot;</span>);
+            <span class="kw">let </span>index = u32::try_from(<span class="self">self</span>.meta.len()).expect(<span class="string">"too many entities"</span>);
             <span class="self">self</span>.meta.push(EntityMeta::EMPTY);
-            Entity {
-                generation: <span class="number">0</span>,
-                index,
-            }
+            Entity::from_raw(index)
         }
     }
 
@@ -1406,15 +1722,16 @@
     </span><span class="kw">pub fn </span>alloc_at(<span class="kw-2">&amp;mut </span><span class="self">self</span>, entity: Entity) -&gt; <span class="prelude-ty">Option</span>&lt;EntityLocation&gt; {
         <span class="self">self</span>.verify_flushed();
 
-        <span class="kw">let </span>loc = <span class="kw">if </span>entity.index <span class="kw">as </span>usize &gt;= <span class="self">self</span>.meta.len() {
-            <span class="self">self</span>.pending.extend((<span class="self">self</span>.meta.len() <span class="kw">as </span>u32)..entity.index);
+        <span class="kw">let </span>loc = <span class="kw">if </span>entity.index() <span class="kw">as </span>usize &gt;= <span class="self">self</span>.meta.len() {
+            <span class="self">self</span>.pending
+                .extend((<span class="self">self</span>.meta.len() <span class="kw">as </span>u32)..entity.index());
             <span class="kw">let </span>new_free_cursor = <span class="self">self</span>.pending.len() <span class="kw">as </span>IdCursor;
             <span class="kw-2">*</span><span class="self">self</span>.free_cursor.get_mut() = new_free_cursor;
             <span class="self">self</span>.meta
-                .resize(entity.index <span class="kw">as </span>usize + <span class="number">1</span>, EntityMeta::EMPTY);
+                .resize(entity.index() <span class="kw">as </span>usize + <span class="number">1</span>, EntityMeta::EMPTY);
             <span class="self">self</span>.len += <span class="number">1</span>;
             <span class="prelude-val">None
-        </span>} <span class="kw">else if let </span><span class="prelude-val">Some</span>(index) = <span class="self">self</span>.pending.iter().position(|item| <span class="kw-2">*</span>item == entity.index) {
+        </span>} <span class="kw">else if let </span><span class="prelude-val">Some</span>(index) = <span class="self">self</span>.pending.iter().position(|item| <span class="kw-2">*</span>item == entity.index()) {
             <span class="self">self</span>.pending.swap_remove(index);
             <span class="kw">let </span>new_free_cursor = <span class="self">self</span>.pending.len() <span class="kw">as </span>IdCursor;
             <span class="kw-2">*</span><span class="self">self</span>.free_cursor.get_mut() = new_free_cursor;
@@ -1422,12 +1739,12 @@
             <span class="prelude-val">None
         </span>} <span class="kw">else </span>{
             <span class="prelude-val">Some</span>(mem::replace(
-                <span class="kw-2">&amp;mut </span><span class="self">self</span>.meta[entity.index <span class="kw">as </span>usize].location,
+                <span class="kw-2">&amp;mut </span><span class="self">self</span>.meta[entity.index() <span class="kw">as </span>usize].location,
                 EntityMeta::EMPTY.location,
             ))
         };
 
-        <span class="self">self</span>.meta[entity.index <span class="kw">as </span>usize].generation = entity.generation;
+        <span class="self">self</span>.meta[entity.index() <span class="kw">as </span>usize].generation = entity.generation;
 
         loc
     }
@@ -1441,22 +1758,23 @@
     ) -&gt; AllocAtWithoutReplacement {
         <span class="self">self</span>.verify_flushed();
 
-        <span class="kw">let </span>result = <span class="kw">if </span>entity.index <span class="kw">as </span>usize &gt;= <span class="self">self</span>.meta.len() {
-            <span class="self">self</span>.pending.extend((<span class="self">self</span>.meta.len() <span class="kw">as </span>u32)..entity.index);
+        <span class="kw">let </span>result = <span class="kw">if </span>entity.index() <span class="kw">as </span>usize &gt;= <span class="self">self</span>.meta.len() {
+            <span class="self">self</span>.pending
+                .extend((<span class="self">self</span>.meta.len() <span class="kw">as </span>u32)..entity.index());
             <span class="kw">let </span>new_free_cursor = <span class="self">self</span>.pending.len() <span class="kw">as </span>IdCursor;
             <span class="kw-2">*</span><span class="self">self</span>.free_cursor.get_mut() = new_free_cursor;
             <span class="self">self</span>.meta
-                .resize(entity.index <span class="kw">as </span>usize + <span class="number">1</span>, EntityMeta::EMPTY);
+                .resize(entity.index() <span class="kw">as </span>usize + <span class="number">1</span>, EntityMeta::EMPTY);
             <span class="self">self</span>.len += <span class="number">1</span>;
             AllocAtWithoutReplacement::DidNotExist
-        } <span class="kw">else if let </span><span class="prelude-val">Some</span>(index) = <span class="self">self</span>.pending.iter().position(|item| <span class="kw-2">*</span>item == entity.index) {
+        } <span class="kw">else if let </span><span class="prelude-val">Some</span>(index) = <span class="self">self</span>.pending.iter().position(|item| <span class="kw-2">*</span>item == entity.index()) {
             <span class="self">self</span>.pending.swap_remove(index);
             <span class="kw">let </span>new_free_cursor = <span class="self">self</span>.pending.len() <span class="kw">as </span>IdCursor;
             <span class="kw-2">*</span><span class="self">self</span>.free_cursor.get_mut() = new_free_cursor;
             <span class="self">self</span>.len += <span class="number">1</span>;
             AllocAtWithoutReplacement::DidNotExist
         } <span class="kw">else </span>{
-            <span class="kw">let </span>current_meta = <span class="kw-2">&amp;</span><span class="self">self</span>.meta[entity.index <span class="kw">as </span>usize];
+            <span class="kw">let </span>current_meta = <span class="kw-2">&amp;</span><span class="self">self</span>.meta[entity.index() <span class="kw">as </span>usize];
             <span class="kw">if </span>current_meta.location.archetype_id == ArchetypeId::INVALID {
                 AllocAtWithoutReplacement::DidNotExist
             } <span class="kw">else if </span>current_meta.generation == entity.generation {
@@ -1466,7 +1784,7 @@
             }
         };
 
-        <span class="self">self</span>.meta[entity.index <span class="kw">as </span>usize].generation = entity.generation;
+        <span class="self">self</span>.meta[entity.index() <span class="kw">as </span>usize].generation = entity.generation;
         result
     }
 
@@ -1476,15 +1794,23 @@
     </span><span class="kw">pub fn </span>free(<span class="kw-2">&amp;mut </span><span class="self">self</span>, entity: Entity) -&gt; <span class="prelude-ty">Option</span>&lt;EntityLocation&gt; {
         <span class="self">self</span>.verify_flushed();
 
-        <span class="kw">let </span>meta = <span class="kw-2">&amp;mut </span><span class="self">self</span>.meta[entity.index <span class="kw">as </span>usize];
+        <span class="kw">let </span>meta = <span class="kw-2">&amp;mut </span><span class="self">self</span>.meta[entity.index() <span class="kw">as </span>usize];
         <span class="kw">if </span>meta.generation != entity.generation {
             <span class="kw">return </span><span class="prelude-val">None</span>;
         }
-        meta.generation += <span class="number">1</span>;
+
+        meta.generation = IdentifierMask::inc_masked_high_by(meta.generation, <span class="number">1</span>);
+
+        <span class="kw">if </span>meta.generation == NonZeroU32::MIN {
+            <span class="macro">warn!</span>(
+                <span class="string">"Entity({}) generation wrapped on Entities::free, aliasing may occur"</span>,
+                entity.index
+            );
+        }
 
         <span class="kw">let </span>loc = mem::replace(<span class="kw-2">&amp;mut </span>meta.location, EntityMeta::EMPTY.location);
 
-        <span class="self">self</span>.pending.push(entity.index);
+        <span class="self">self</span>.pending.push(entity.index());
 
         <span class="kw">let </span>new_free_cursor = <span class="self">self</span>.pending.len() <span class="kw">as </span>IdCursor;
         <span class="kw-2">*</span><span class="self">self</span>.free_cursor.get_mut() = new_free_cursor;
@@ -1493,11 +1819,12 @@
     }
 
     <span class="doccomment">/// Ensure at least `n` allocations can succeed without reallocating.
+    </span><span class="attr">#[allow(clippy::unnecessary_fallible_conversions)] </span><span class="comment">// Because `IdCursor::try_from` may fail on 32-bit platforms.
     </span><span class="kw">pub fn </span>reserve(<span class="kw-2">&amp;mut </span><span class="self">self</span>, additional: u32) {
         <span class="self">self</span>.verify_flushed();
 
         <span class="kw">let </span>freelist_size = <span class="kw-2">*</span><span class="self">self</span>.free_cursor.get_mut();
-        <span class="comment">// Unwrap: these conversions can only fail on platforms that don&#39;t support 64-bit atomics
+        <span class="comment">// Unwrap: these conversions can only fail on platforms that don't support 64-bit atomics
         // and use AtomicIsize instead (see note on `IdCursor`).
         </span><span class="kw">let </span>shortfall = IdCursor::try_from(additional).unwrap() - freelist_size;
         <span class="kw">if </span>shortfall &gt; <span class="number">0 </span>{
@@ -1510,7 +1837,7 @@
     // not reallocated since the generation is incremented in `free`
     </span><span class="kw">pub fn </span>contains(<span class="kw-2">&amp;</span><span class="self">self</span>, entity: Entity) -&gt; bool {
         <span class="self">self</span>.resolve_from_id(entity.index())
-            .map_or(<span class="bool-val">false</span>, |e| e.generation() == entity.generation)
+            .map_or(<span class="bool-val">false</span>, |e| e.generation() == entity.generation())
     }
 
     <span class="doccomment">/// Clears all [`Entity`] from the World.
@@ -1525,7 +1852,7 @@
     /// Note: for pending entities, returns `Some(EntityLocation::INVALID)`.
     </span><span class="attr">#[inline]
     </span><span class="kw">pub fn </span>get(<span class="kw-2">&amp;</span><span class="self">self</span>, entity: Entity) -&gt; <span class="prelude-ty">Option</span>&lt;EntityLocation&gt; {
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(meta) = <span class="self">self</span>.meta.get(entity.index <span class="kw">as </span>usize) {
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(meta) = <span class="self">self</span>.meta.get(entity.index() <span class="kw">as </span>usize) {
             <span class="kw">if </span>meta.generation != entity.generation
                 || meta.location.archetype_id == ArchetypeId::INVALID
             {
@@ -1562,7 +1889,7 @@
 
         <span class="kw">let </span>meta = <span class="kw-2">&amp;mut </span><span class="self">self</span>.meta[index <span class="kw">as </span>usize];
         <span class="kw">if </span>meta.location.archetype_id == ArchetypeId::INVALID {
-            meta.generation += generations;
+            meta.generation = IdentifierMask::inc_masked_high_by(meta.generation, generations);
             <span class="bool-val">true
         </span>} <span class="kw">else </span>{
             <span class="bool-val">false
@@ -1578,17 +1905,14 @@
     </span><span class="kw">pub fn </span>resolve_from_id(<span class="kw-2">&amp;</span><span class="self">self</span>, index: u32) -&gt; <span class="prelude-ty">Option</span>&lt;Entity&gt; {
         <span class="kw">let </span>idu = index <span class="kw">as </span>usize;
         <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>EntityMeta { generation, .. }) = <span class="self">self</span>.meta.get(idu) {
-            <span class="prelude-val">Some</span>(Entity { generation, index })
+            <span class="prelude-val">Some</span>(Entity::from_raw_and_generation(index, generation))
         } <span class="kw">else </span>{
             <span class="comment">// `id` is outside of the meta list - check whether it is reserved but not yet flushed.
             </span><span class="kw">let </span>free_cursor = <span class="self">self</span>.free_cursor.load(Ordering::Relaxed);
             <span class="comment">// If this entity was manually created, then free_cursor might be positive
             // Returning None handles that case correctly
             </span><span class="kw">let </span>num_pending = usize::try_from(-free_cursor).ok()<span class="question-mark">?</span>;
-            (idu &lt; <span class="self">self</span>.meta.len() + num_pending).then_some(Entity {
-                generation: <span class="number">0</span>,
-                index,
-            })
+            (idu &lt; <span class="self">self</span>.meta.len() + num_pending).then_some(Entity::from_raw(index))
         }
     }
 
@@ -1604,7 +1928,7 @@
     /// each time init is called. This _can_ be [`ArchetypeId::INVALID`], provided the [`Entity`]
     /// has not been assigned to an [`Archetype`][crate::archetype::Archetype].
     ///
-    /// Note: freshly-allocated entities (ones which don&#39;t come from the pending list) are guaranteed
+    /// Note: freshly-allocated entities (ones which don't come from the pending list) are guaranteed
     /// to be initialized with the invalid archetype.
     </span><span class="kw">pub unsafe fn </span>flush(<span class="kw-2">&amp;mut </span><span class="self">self</span>, <span class="kw-2">mut </span>init: <span class="kw">impl </span>FnMut(Entity, <span class="kw-2">&amp;mut </span>EntityLocation)) {
         <span class="kw">let </span>free_cursor = <span class="self">self</span>.free_cursor.get_mut();
@@ -1619,10 +1943,7 @@
             <span class="self">self</span>.len += -current_free_cursor <span class="kw">as </span>u32;
             <span class="kw">for </span>(index, meta) <span class="kw">in </span><span class="self">self</span>.meta.iter_mut().enumerate().skip(old_meta_len) {
                 init(
-                    Entity {
-                        index: index <span class="kw">as </span>u32,
-                        generation: meta.generation,
-                    },
+                    Entity::from_raw_and_generation(index <span class="kw">as </span>u32, meta.generation),
                     <span class="kw-2">&amp;mut </span>meta.location,
                 );
             }
@@ -1635,16 +1956,13 @@
         <span class="kw">for </span>index <span class="kw">in </span><span class="self">self</span>.pending.drain(new_free_cursor..) {
             <span class="kw">let </span>meta = <span class="kw-2">&amp;mut </span><span class="self">self</span>.meta[index <span class="kw">as </span>usize];
             init(
-                Entity {
-                    index,
-                    generation: meta.generation,
-                },
+                Entity::from_raw_and_generation(index, meta.generation),
                 <span class="kw-2">&amp;mut </span>meta.location,
             );
         }
     }
 
-    <span class="doccomment">/// Flushes all reserved entities to an &quot;invalid&quot; state. Attempting to retrieve them will return `None`
+    <span class="doccomment">/// Flushes all reserved entities to an "invalid" state. Attempting to retrieve them will return `None`
     /// unless they are later populated with a valid archetype.
     </span><span class="kw">pub fn </span>flush_as_invalid(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
         <span class="comment">// SAFETY: as per `flush` safety docs, the archetype id can be set to [`ArchetypeId::INVALID`] if
@@ -1704,7 +2022,7 @@
 #[repr(C)]
 </span><span class="kw">struct </span>EntityMeta {
     <span class="doccomment">/// The current generation of the [`Entity`].
-    </span><span class="kw">pub </span>generation: u32,
+    </span><span class="kw">pub </span>generation: NonZeroU32,
     <span class="doccomment">/// The current location of the [`Entity`]
     </span><span class="kw">pub </span>location: EntityLocation,
 }
@@ -1712,7 +2030,7 @@
 <span class="kw">impl </span>EntityMeta {
     <span class="doccomment">/// meta for **pending entity**
     </span><span class="kw">const </span>EMPTY: EntityMeta = EntityMeta {
-        generation: <span class="number">0</span>,
+        generation: NonZeroU32::MIN,
         location: EntityLocation::INVALID,
     };
 }
@@ -1761,11 +2079,17 @@
     <span class="kw">use super</span>::<span class="kw-2">*</span>;
 
     <span class="attr">#[test]
+    </span><span class="kw">fn </span>entity_niche_optimization() {
+        <span class="macro">assert_eq!</span>(
+            std::mem::size_of::&lt;Entity&gt;(),
+            std::mem::size_of::&lt;<span class="prelude-ty">Option</span>&lt;Entity&gt;&gt;()
+        );
+    }
+
+    <span class="attr">#[test]
     </span><span class="kw">fn </span>entity_bits_roundtrip() {
-        <span class="kw">let </span>e = Entity {
-            generation: <span class="number">0xDEADBEEF</span>,
-            index: <span class="number">0xBAADF00D</span>,
-        };
+        <span class="comment">// Generation cannot be greater than 0x7FFF_FFFF else it will be an invalid Entity id
+        </span><span class="kw">let </span>e = Entity::from_raw_and_generation(<span class="number">0xDEADBEEF</span>, NonZeroU32::new(<span class="number">0x5AADF00D</span>).unwrap());
         <span class="macro">assert_eq!</span>(Entity::from_bits(e.to_bits()), e);
     }
 
@@ -1799,12 +2123,12 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>entity_const() {
         <span class="kw">const </span>C1: Entity = Entity::from_raw(<span class="number">42</span>);
-        <span class="macro">assert_eq!</span>(<span class="number">42</span>, C1.index);
-        <span class="macro">assert_eq!</span>(<span class="number">0</span>, C1.generation);
+        <span class="macro">assert_eq!</span>(<span class="number">42</span>, C1.index());
+        <span class="macro">assert_eq!</span>(<span class="number">1</span>, C1.generation());
 
         <span class="kw">const </span>C2: Entity = Entity::from_bits(<span class="number">0x0000_00ff_0000_00cc</span>);
-        <span class="macro">assert_eq!</span>(<span class="number">0x0000_00cc</span>, C2.index);
-        <span class="macro">assert_eq!</span>(<span class="number">0x0000_00ff</span>, C2.generation);
+        <span class="macro">assert_eq!</span>(<span class="number">0x0000_00cc</span>, C2.index());
+        <span class="macro">assert_eq!</span>(<span class="number">0x0000_00ff</span>, C2.generation());
 
         <span class="kw">const </span>C3: u32 = Entity::from_raw(<span class="number">33</span>).index();
         <span class="macro">assert_eq!</span>(<span class="number">33</span>, C3);
@@ -1819,7 +2143,7 @@
         <span class="kw">let </span>entity = entities.alloc();
         entities.free(entity);
 
-        <span class="macro">assert!</span>(entities.reserve_generations(entity.index, <span class="number">1</span>));
+        <span class="macro">assert!</span>(entities.reserve_generations(entity.index(), <span class="number">1</span>));
     }
 
     <span class="attr">#[test]
@@ -1830,12 +2154,113 @@
         <span class="kw">let </span>entity = entities.alloc();
         entities.free(entity);
 
-        <span class="macro">assert!</span>(entities.reserve_generations(entity.index, GENERATIONS));
+        <span class="macro">assert!</span>(entities.reserve_generations(entity.index(), GENERATIONS));
 
         <span class="comment">// The very next entity allocated should be a further generation on the same index
         </span><span class="kw">let </span>next_entity = entities.alloc();
         <span class="macro">assert_eq!</span>(next_entity.index(), entity.index());
-        <span class="macro">assert!</span>(next_entity.generation &gt; entity.generation + GENERATIONS);
+        <span class="macro">assert!</span>(next_entity.generation() &gt; entity.generation() + GENERATIONS);
+    }
+
+    <span class="attr">#[test]
+    </span><span class="kw">fn </span>entity_comparison() {
+        <span class="comment">// This is intentionally testing `lt` and `ge` as separate functions.
+        </span><span class="attr">#![allow(clippy::nonminimal_bool)]
+
+        </span><span class="macro">assert_eq!</span>(
+            Entity::from_raw_and_generation(<span class="number">123</span>, NonZeroU32::new(<span class="number">456</span>).unwrap()),
+            Entity::from_raw_and_generation(<span class="number">123</span>, NonZeroU32::new(<span class="number">456</span>).unwrap())
+        );
+        <span class="macro">assert_ne!</span>(
+            Entity::from_raw_and_generation(<span class="number">123</span>, NonZeroU32::new(<span class="number">789</span>).unwrap()),
+            Entity::from_raw_and_generation(<span class="number">123</span>, NonZeroU32::new(<span class="number">456</span>).unwrap())
+        );
+        <span class="macro">assert_ne!</span>(
+            Entity::from_raw_and_generation(<span class="number">123</span>, NonZeroU32::new(<span class="number">456</span>).unwrap()),
+            Entity::from_raw_and_generation(<span class="number">123</span>, NonZeroU32::new(<span class="number">789</span>).unwrap())
+        );
+        <span class="macro">assert_ne!</span>(
+            Entity::from_raw_and_generation(<span class="number">123</span>, NonZeroU32::new(<span class="number">456</span>).unwrap()),
+            Entity::from_raw_and_generation(<span class="number">456</span>, NonZeroU32::new(<span class="number">123</span>).unwrap())
+        );
+
+        <span class="comment">// ordering is by generation then by index
+
+        </span><span class="macro">assert!</span>(
+            Entity::from_raw_and_generation(<span class="number">123</span>, NonZeroU32::new(<span class="number">456</span>).unwrap())
+                &gt;= Entity::from_raw_and_generation(<span class="number">123</span>, NonZeroU32::new(<span class="number">456</span>).unwrap())
+        );
+        <span class="macro">assert!</span>(
+            Entity::from_raw_and_generation(<span class="number">123</span>, NonZeroU32::new(<span class="number">456</span>).unwrap())
+                &lt;= Entity::from_raw_and_generation(<span class="number">123</span>, NonZeroU32::new(<span class="number">456</span>).unwrap())
+        );
+        <span class="macro">assert!</span>(
+            !(Entity::from_raw_and_generation(<span class="number">123</span>, NonZeroU32::new(<span class="number">456</span>).unwrap())
+                &lt; Entity::from_raw_and_generation(<span class="number">123</span>, NonZeroU32::new(<span class="number">456</span>).unwrap()))
+        );
+        <span class="macro">assert!</span>(
+            !(Entity::from_raw_and_generation(<span class="number">123</span>, NonZeroU32::new(<span class="number">456</span>).unwrap())
+                &gt; Entity::from_raw_and_generation(<span class="number">123</span>, NonZeroU32::new(<span class="number">456</span>).unwrap()))
+        );
+
+        <span class="macro">assert!</span>(
+            Entity::from_raw_and_generation(<span class="number">9</span>, NonZeroU32::new(<span class="number">1</span>).unwrap())
+                &lt; Entity::from_raw_and_generation(<span class="number">1</span>, NonZeroU32::new(<span class="number">9</span>).unwrap())
+        );
+        <span class="macro">assert!</span>(
+            Entity::from_raw_and_generation(<span class="number">1</span>, NonZeroU32::new(<span class="number">9</span>).unwrap())
+                &gt; Entity::from_raw_and_generation(<span class="number">9</span>, NonZeroU32::new(<span class="number">1</span>).unwrap())
+        );
+
+        <span class="macro">assert!</span>(
+            Entity::from_raw_and_generation(<span class="number">1</span>, NonZeroU32::new(<span class="number">1</span>).unwrap())
+                &lt; Entity::from_raw_and_generation(<span class="number">2</span>, NonZeroU32::new(<span class="number">1</span>).unwrap())
+        );
+        <span class="macro">assert!</span>(
+            Entity::from_raw_and_generation(<span class="number">1</span>, NonZeroU32::new(<span class="number">1</span>).unwrap())
+                &lt;= Entity::from_raw_and_generation(<span class="number">2</span>, NonZeroU32::new(<span class="number">1</span>).unwrap())
+        );
+        <span class="macro">assert!</span>(
+            Entity::from_raw_and_generation(<span class="number">2</span>, NonZeroU32::new(<span class="number">2</span>).unwrap())
+                &gt; Entity::from_raw_and_generation(<span class="number">1</span>, NonZeroU32::new(<span class="number">2</span>).unwrap())
+        );
+        <span class="macro">assert!</span>(
+            Entity::from_raw_and_generation(<span class="number">2</span>, NonZeroU32::new(<span class="number">2</span>).unwrap())
+                &gt;= Entity::from_raw_and_generation(<span class="number">1</span>, NonZeroU32::new(<span class="number">2</span>).unwrap())
+        );
+    }
+
+    <span class="comment">// Feel free to change this test if needed, but it seemed like an important
+    // part of the best-case performance changes in PR#9903.
+    </span><span class="attr">#[test]
+    </span><span class="kw">fn </span>entity_hash_keeps_similar_ids_together() {
+        <span class="kw">use </span>std::hash::BuildHasher;
+        <span class="kw">let </span>hash = EntityHash;
+
+        <span class="kw">let </span>first_id = <span class="number">0xC0FFEE </span>&lt;&lt; <span class="number">8</span>;
+        <span class="kw">let </span>first_hash = hash.hash_one(Entity::from_raw(first_id));
+
+        <span class="kw">for </span>i <span class="kw">in </span><span class="number">1</span>..=<span class="number">255 </span>{
+            <span class="kw">let </span>id = first_id + i;
+            <span class="kw">let </span>hash = hash.hash_one(Entity::from_raw(id));
+            <span class="macro">assert_eq!</span>(hash.wrapping_sub(first_hash) <span class="kw">as </span>u32, i);
+        }
+    }
+
+    <span class="attr">#[test]
+    </span><span class="kw">fn </span>entity_hash_id_bitflip_affects_high_7_bits() {
+        <span class="kw">use </span>std::hash::BuildHasher;
+
+        <span class="kw">let </span>hash = EntityHash;
+
+        <span class="kw">let </span>first_id = <span class="number">0xC0FFEE</span>;
+        <span class="kw">let </span>first_hash = hash.hash_one(Entity::from_raw(first_id)) &gt;&gt; <span class="number">57</span>;
+
+        <span class="kw">for </span>bit <span class="kw">in </span><span class="number">0</span>..u32::BITS {
+            <span class="kw">let </span>id = first_id ^ (<span class="number">1 </span>&lt;&lt; bit);
+            <span class="kw">let </span>hash = hash.hash_one(Entity::from_raw(id)) &gt;&gt; <span class="number">57</span>;
+            <span class="macro">assert_ne!</span>(hash, first_hash);
+        }
     }
 }
 </code></pre></div></section></main></body></html>

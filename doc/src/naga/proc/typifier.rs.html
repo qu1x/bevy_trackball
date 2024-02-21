@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/naga-0.13.0/src/proc/typifier.rs`."><title>typifier.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="naga" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../naga/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/naga-0.19.0/src/proc/typifier.rs`."><title>typifier.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="naga" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -891,19 +892,18 @@
 <a href="#891" id="891">891</a>
 <a href="#892" id="892">892</a>
 <a href="#893" id="893">893</a>
-<a href="#894" id="894">894</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::arena::{Arena, Handle, UniqueArena};
 
 <span class="kw">use </span>thiserror::Error;
 
-<span class="doccomment">/// The result of computing an expression&#39;s type.
+<span class="doccomment">/// The result of computing an expression's type.
 ///
 /// This is the (Rust) type returned by [`ResolveContext::resolve`] to represent
 /// the (Naga) type it ascribes to some expression.
 ///
 /// You might expect such a function to simply return a `Handle&lt;Type&gt;`. However,
 /// we want type resolution to be a read-only process, and that would limit the
-/// possible results to types already present in the expression&#39;s associated
+/// possible results to types already present in the expression's associated
 /// `UniqueArena&lt;Type&gt;`. Naga IR does have certain expressions whose types are
 /// not certain to be present.
 ///
@@ -917,7 +917,7 @@
 /// -   An [`Access`] or [`AccessIndex`] expression applied to a [`Vector`] or
 ///     [`Matrix`] must have a [`Scalar`] or [`Vector`] type. But since `Vector`
 ///     and `Matrix` represent their element and column types implicitly, not
-///     via a handle, there may not be a suitable type in the expression&#39;s
+///     via a handle, there may not be a suitable type in the expression's
 ///     associated arena. Instead, resolving such an expression returns a
 ///     `TypeResolution::Value(TypeInner::X { ... })`, where `X` is `Scalar` or
 ///     `Vector`.
@@ -925,7 +925,7 @@
 /// -   Similarly, the type of an [`Access`] or [`AccessIndex`] expression
 ///     applied to a *pointer to* a vector or matrix must produce a *pointer to*
 ///     a scalar or vector type. These cannot be represented with a
-///     [`TypeInner::Pointer`], since the `Pointer`&#39;s `base` must point into the
+///     [`TypeInner::Pointer`], since the `Pointer`'s `base` must point into the
 ///     arena, and as before, we cannot assume that a suitable scalar or vector
 ///     type is there. So we take things one step further and provide
 ///     [`TypeInner::ValuePointer`], specifically for the case of pointers to
@@ -976,8 +976,8 @@
 /// [`TypeInner::Pointer`]: crate::TypeInner::Pointer
 /// [`TypeInner::ValuePointer`]: crate::TypeInner::ValuePointer
 </span><span class="attr">#[derive(Debug, PartialEq)]
-#[cfg_attr(feature = <span class="string">&quot;serialize&quot;</span>, derive(serde::Serialize))]
-#[cfg_attr(feature = <span class="string">&quot;deserialize&quot;</span>, derive(serde::Deserialize))]
+#[cfg_attr(feature = <span class="string">"serialize"</span>, derive(serde::Serialize))]
+#[cfg_attr(feature = <span class="string">"deserialize"</span>, derive(serde::Deserialize))]
 </span><span class="kw">pub enum </span>TypeResolution {
     <span class="doccomment">/// A type stored in the associated arena.
     </span>Handle(Handle&lt;<span class="kw">crate</span>::Type&gt;),
@@ -998,7 +998,7 @@
         }
     }
 
-    <span class="kw">pub fn </span>inner_with&lt;<span class="lifetime">&#39;a</span>&gt;(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>, arena: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>UniqueArena&lt;<span class="kw">crate</span>::Type&gt;) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw">crate</span>::TypeInner {
+    <span class="kw">pub fn </span>inner_with&lt;<span class="lifetime">'a</span>&gt;(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="self">self</span>, arena: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>UniqueArena&lt;<span class="kw">crate</span>::Type&gt;) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw">crate</span>::TypeInner {
         <span class="kw">match </span><span class="kw-2">*</span><span class="self">self </span>{
             <span class="self">Self</span>::Handle(handle) =&gt; <span class="kw-2">&amp;</span>arena[handle].inner,
             <span class="self">Self</span>::Value(<span class="kw-2">ref </span>inner) =&gt; inner,
@@ -1013,30 +1013,28 @@
         <span class="kw">match </span><span class="kw-2">*</span><span class="self">self </span>{
             <span class="self">Self</span>::Handle(handle) =&gt; <span class="self">Self</span>::Handle(handle),
             <span class="self">Self</span>::Value(<span class="kw-2">ref </span>v) =&gt; <span class="self">Self</span>::Value(<span class="kw">match </span><span class="kw-2">*</span>v {
-                Ti::Scalar { kind, width } =&gt; Ti::Scalar { kind, width },
-                Ti::Vector { size, kind, width } =&gt; Ti::Vector { size, kind, width },
+                Ti::Scalar(scalar) =&gt; Ti::Scalar(scalar),
+                Ti::Vector { size, scalar } =&gt; Ti::Vector { size, scalar },
                 Ti::Matrix {
                     rows,
                     columns,
-                    width,
+                    scalar,
                 } =&gt; Ti::Matrix {
                     rows,
                     columns,
-                    width,
+                    scalar,
                 },
                 Ti::Pointer { base, space } =&gt; Ti::Pointer { base, space },
                 Ti::ValuePointer {
                     size,
-                    kind,
-                    width,
+                    scalar,
                     space,
                 } =&gt; Ti::ValuePointer {
                     size,
-                    kind,
-                    width,
+                    scalar,
                     space,
                 },
-                <span class="kw">_ </span>=&gt; <span class="macro">unreachable!</span>(<span class="string">&quot;Unexpected clone type: {:?}&quot;</span>, v),
+                <span class="kw">_ </span>=&gt; <span class="macro">unreachable!</span>(<span class="string">"Unexpected clone type: {:?}"</span>, v),
             }),
         }
     }
@@ -1044,57 +1042,57 @@
 
 <span class="attr">#[derive(Clone, Debug, Error, PartialEq)]
 </span><span class="kw">pub enum </span>ResolveError {
-    <span class="attr">#[error(<span class="string">&quot;Index {index} is out of bounds for expression {expr:?}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Index {index} is out of bounds for expression {expr:?}"</span>)]
     </span>OutOfBoundsIndex {
         expr: Handle&lt;<span class="kw">crate</span>::Expression&gt;,
         index: u32,
     },
-    <span class="attr">#[error(<span class="string">&quot;Invalid access into expression {expr:?}, indexed: {indexed}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Invalid access into expression {expr:?}, indexed: {indexed}"</span>)]
     </span>InvalidAccess {
         expr: Handle&lt;<span class="kw">crate</span>::Expression&gt;,
         indexed: bool,
     },
-    <span class="attr">#[error(<span class="string">&quot;Invalid sub-access into type {ty:?}, indexed: {indexed}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Invalid sub-access into type {ty:?}, indexed: {indexed}"</span>)]
     </span>InvalidSubAccess {
         ty: Handle&lt;<span class="kw">crate</span>::Type&gt;,
         indexed: bool,
     },
-    <span class="attr">#[error(<span class="string">&quot;Invalid scalar {0:?}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Invalid scalar {0:?}"</span>)]
     </span>InvalidScalar(Handle&lt;<span class="kw">crate</span>::Expression&gt;),
-    <span class="attr">#[error(<span class="string">&quot;Invalid vector {0:?}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Invalid vector {0:?}"</span>)]
     </span>InvalidVector(Handle&lt;<span class="kw">crate</span>::Expression&gt;),
-    <span class="attr">#[error(<span class="string">&quot;Invalid pointer {0:?}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Invalid pointer {0:?}"</span>)]
     </span>InvalidPointer(Handle&lt;<span class="kw">crate</span>::Expression&gt;),
-    <span class="attr">#[error(<span class="string">&quot;Invalid image {0:?}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Invalid image {0:?}"</span>)]
     </span>InvalidImage(Handle&lt;<span class="kw">crate</span>::Expression&gt;),
-    <span class="attr">#[error(<span class="string">&quot;Function {name} not defined&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Function {name} not defined"</span>)]
     </span>FunctionNotDefined { name: String },
-    <span class="attr">#[error(<span class="string">&quot;Function without return type&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Function without return type"</span>)]
     </span>FunctionReturnsVoid,
-    <span class="attr">#[error(<span class="string">&quot;Incompatible operands: {0}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Incompatible operands: {0}"</span>)]
     </span>IncompatibleOperands(String),
-    <span class="attr">#[error(<span class="string">&quot;Function argument {0} doesn&#39;t exist&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Function argument {0} doesn't exist"</span>)]
     </span>FunctionArgumentNotFound(u32),
-    <span class="attr">#[error(<span class="string">&quot;Special type is not registered within the module&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Special type is not registered within the module"</span>)]
     </span>MissingSpecialType,
 }
 
-<span class="kw">pub struct </span>ResolveContext&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="kw">pub </span>constants: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Arena&lt;<span class="kw">crate</span>::Constant&gt;,
-    <span class="kw">pub </span>types: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>UniqueArena&lt;<span class="kw">crate</span>::Type&gt;,
-    <span class="kw">pub </span>special_types: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw">crate</span>::SpecialTypes,
-    <span class="kw">pub </span>global_vars: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Arena&lt;<span class="kw">crate</span>::GlobalVariable&gt;,
-    <span class="kw">pub </span>local_vars: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Arena&lt;<span class="kw">crate</span>::LocalVariable&gt;,
-    <span class="kw">pub </span>functions: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Arena&lt;<span class="kw">crate</span>::Function&gt;,
-    <span class="kw">pub </span>arguments: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[<span class="kw">crate</span>::FunctionArgument],
+<span class="kw">pub struct </span>ResolveContext&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="kw">pub </span>constants: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>Arena&lt;<span class="kw">crate</span>::Constant&gt;,
+    <span class="kw">pub </span>types: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>UniqueArena&lt;<span class="kw">crate</span>::Type&gt;,
+    <span class="kw">pub </span>special_types: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw">crate</span>::SpecialTypes,
+    <span class="kw">pub </span>global_vars: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>Arena&lt;<span class="kw">crate</span>::GlobalVariable&gt;,
+    <span class="kw">pub </span>local_vars: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>Arena&lt;<span class="kw">crate</span>::LocalVariable&gt;,
+    <span class="kw">pub </span>functions: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>Arena&lt;<span class="kw">crate</span>::Function&gt;,
+    <span class="kw">pub </span>arguments: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>[<span class="kw">crate</span>::FunctionArgument],
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; ResolveContext&lt;<span class="lifetime">&#39;a</span>&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; ResolveContext&lt;<span class="lifetime">'a</span>&gt; {
     <span class="doccomment">/// Initialize a resolve context from the module.
     </span><span class="kw">pub const fn </span>with_locals(
-        module: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw">crate</span>::Module,
-        local_vars: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Arena&lt;<span class="kw">crate</span>::LocalVariable&gt;,
-        arguments: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[<span class="kw">crate</span>::FunctionArgument],
+        module: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw">crate</span>::Module,
+        local_vars: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>Arena&lt;<span class="kw">crate</span>::LocalVariable&gt;,
+        arguments: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>[<span class="kw">crate</span>::FunctionArgument],
     ) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
             constants: <span class="kw-2">&amp;</span>module.constants,
@@ -1125,64 +1123,50 @@
     </span><span class="kw">pub fn </span>resolve(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         expr: <span class="kw-2">&amp;</span><span class="kw">crate</span>::Expression,
-        past: <span class="kw">impl </span>Fn(Handle&lt;<span class="kw">crate</span>::Expression&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>TypeResolution, ResolveError&gt;,
+        past: <span class="kw">impl </span>Fn(Handle&lt;<span class="kw">crate</span>::Expression&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>TypeResolution, ResolveError&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;TypeResolution, ResolveError&gt; {
         <span class="kw">use </span><span class="kw">crate</span>::TypeInner <span class="kw">as </span>Ti;
         <span class="kw">let </span>types = <span class="self">self</span>.types;
         <span class="prelude-val">Ok</span>(<span class="kw">match </span><span class="kw-2">*</span>expr {
             <span class="kw">crate</span>::Expression::Access { base, .. } =&gt; <span class="kw">match </span><span class="kw-2">*</span>past(base)<span class="question-mark">?</span>.inner_with(types) {
                 <span class="comment">// Arrays and matrices can only be indexed dynamically behind a
-                // pointer, but that&#39;s a validation error, not a type error, so
+                // pointer, but that's a validation error, not a type error, so
                 // go ahead provide a type here.
                 </span>Ti::Array { base, .. } =&gt; TypeResolution::Handle(base),
-                Ti::Matrix { rows, width, .. } =&gt; TypeResolution::Value(Ti::Vector {
-                    size: rows,
-                    kind: <span class="kw">crate</span>::ScalarKind::Float,
-                    width,
-                }),
-                Ti::Vector {
-                    size: <span class="kw">_</span>,
-                    kind,
-                    width,
-                } =&gt; TypeResolution::Value(Ti::Scalar { kind, width }),
+                Ti::Matrix { rows, scalar, .. } =&gt; {
+                    TypeResolution::Value(Ti::Vector { size: rows, scalar })
+                }
+                Ti::Vector { size: <span class="kw">_</span>, scalar } =&gt; TypeResolution::Value(Ti::Scalar(scalar)),
                 Ti::ValuePointer {
                     size: <span class="prelude-val">Some</span>(<span class="kw">_</span>),
-                    kind,
-                    width,
+                    scalar,
                     space,
                 } =&gt; TypeResolution::Value(Ti::ValuePointer {
                     size: <span class="prelude-val">None</span>,
-                    kind,
-                    width,
+                    scalar,
                     space,
                 }),
                 Ti::Pointer { base, space } =&gt; {
                     TypeResolution::Value(<span class="kw">match </span>types[base].inner {
                         Ti::Array { base, .. } =&gt; Ti::Pointer { base, space },
-                        Ti::Vector {
-                            size: <span class="kw">_</span>,
-                            kind,
-                            width,
-                        } =&gt; Ti::ValuePointer {
+                        Ti::Vector { size: <span class="kw">_</span>, scalar } =&gt; Ti::ValuePointer {
                             size: <span class="prelude-val">None</span>,
-                            kind,
-                            width,
+                            scalar,
                             space,
                         },
                         <span class="comment">// Matrices are only dynamically indexed behind a pointer
                         </span>Ti::Matrix {
                             columns: <span class="kw">_</span>,
                             rows,
-                            width,
+                            scalar,
                         } =&gt; Ti::ValuePointer {
-                            kind: <span class="kw">crate</span>::ScalarKind::Float,
                             size: <span class="prelude-val">Some</span>(rows),
-                            width,
+                            scalar,
                             space,
                         },
                         Ti::BindingArray { base, .. } =&gt; Ti::Pointer { base, space },
                         <span class="kw-2">ref </span>other =&gt; {
-                            <span class="macro">log::error!</span>(<span class="string">&quot;Access sub-type {:?}&quot;</span>, other);
+                            <span class="macro">log::error!</span>(<span class="string">"Access sub-type {:?}"</span>, other);
                             <span class="kw">return </span><span class="prelude-val">Err</span>(ResolveError::InvalidSubAccess {
                                 ty: base,
                                 indexed: <span class="bool-val">false</span>,
@@ -1192,7 +1176,7 @@
                 }
                 Ti::BindingArray { base, .. } =&gt; TypeResolution::Handle(base),
                 <span class="kw-2">ref </span>other =&gt; {
-                    <span class="macro">log::error!</span>(<span class="string">&quot;Access type {:?}&quot;</span>, other);
+                    <span class="macro">log::error!</span>(<span class="string">"Access type {:?}"</span>, other);
                     <span class="kw">return </span><span class="prelude-val">Err</span>(ResolveError::InvalidAccess {
                         expr: base,
                         indexed: <span class="bool-val">false</span>,
@@ -1201,25 +1185,21 @@
             },
             <span class="kw">crate</span>::Expression::AccessIndex { base, index } =&gt; {
                 <span class="kw">match </span><span class="kw-2">*</span>past(base)<span class="question-mark">?</span>.inner_with(types) {
-                    Ti::Vector { size, kind, width } =&gt; {
+                    Ti::Vector { size, scalar } =&gt; {
                         <span class="kw">if </span>index &gt;= size <span class="kw">as </span>u32 {
                             <span class="kw">return </span><span class="prelude-val">Err</span>(ResolveError::OutOfBoundsIndex { expr: base, index });
                         }
-                        TypeResolution::Value(Ti::Scalar { kind, width })
+                        TypeResolution::Value(Ti::Scalar(scalar))
                     }
                     Ti::Matrix {
                         columns,
                         rows,
-                        width,
+                        scalar,
                     } =&gt; {
                         <span class="kw">if </span>index &gt;= columns <span class="kw">as </span>u32 {
                             <span class="kw">return </span><span class="prelude-val">Err</span>(ResolveError::OutOfBoundsIndex { expr: base, index });
                         }
-                        TypeResolution::Value(<span class="kw">crate</span>::TypeInner::Vector {
-                            size: rows,
-                            kind: <span class="kw">crate</span>::ScalarKind::Float,
-                            width,
-                        })
+                        TypeResolution::Value(<span class="kw">crate</span>::TypeInner::Vector { size: rows, scalar })
                     }
                     Ti::Array { base, .. } =&gt; TypeResolution::Handle(base),
                     Ti::Struct { <span class="kw-2">ref </span>members, .. } =&gt; {
@@ -1230,8 +1210,7 @@
                     }
                     Ti::ValuePointer {
                         size: <span class="prelude-val">Some</span>(size),
-                        kind,
-                        width,
+                        scalar,
                         space,
                     } =&gt; {
                         <span class="kw">if </span>index &gt;= size <span class="kw">as </span>u32 {
@@ -1239,8 +1218,7 @@
                         }
                         TypeResolution::Value(Ti::ValuePointer {
                             size: <span class="prelude-val">None</span>,
-                            kind,
-                            width,
+                            scalar,
                             space,
                         })
                     }
@@ -1249,29 +1227,27 @@
                         space,
                     } =&gt; TypeResolution::Value(<span class="kw">match </span>types[ty_base].inner {
                         Ti::Array { base, .. } =&gt; Ti::Pointer { base, space },
-                        Ti::Vector { size, kind, width } =&gt; {
+                        Ti::Vector { size, scalar } =&gt; {
                             <span class="kw">if </span>index &gt;= size <span class="kw">as </span>u32 {
                                 <span class="kw">return </span><span class="prelude-val">Err</span>(ResolveError::OutOfBoundsIndex { expr: base, index });
                             }
                             Ti::ValuePointer {
                                 size: <span class="prelude-val">None</span>,
-                                kind,
-                                width,
+                                scalar,
                                 space,
                             }
                         }
                         Ti::Matrix {
                             rows,
                             columns,
-                            width,
+                            scalar,
                         } =&gt; {
                             <span class="kw">if </span>index &gt;= columns <span class="kw">as </span>u32 {
                                 <span class="kw">return </span><span class="prelude-val">Err</span>(ResolveError::OutOfBoundsIndex { expr: base, index });
                             }
                             Ti::ValuePointer {
                                 size: <span class="prelude-val">Some</span>(rows),
-                                kind: <span class="kw">crate</span>::ScalarKind::Float,
-                                width,
+                                scalar,
                                 space,
                             }
                         }
@@ -1286,7 +1262,7 @@
                         }
                         Ti::BindingArray { base, .. } =&gt; Ti::Pointer { base, space },
                         <span class="kw-2">ref </span>other =&gt; {
-                            <span class="macro">log::error!</span>(<span class="string">&quot;Access index sub-type {:?}&quot;</span>, other);
+                            <span class="macro">log::error!</span>(<span class="string">"Access index sub-type {:?}"</span>, other);
                             <span class="kw">return </span><span class="prelude-val">Err</span>(ResolveError::InvalidSubAccess {
                                 ty: ty_base,
                                 indexed: <span class="bool-val">true</span>,
@@ -1295,7 +1271,7 @@
                     }),
                     Ti::BindingArray { base, .. } =&gt; TypeResolution::Handle(base),
                     <span class="kw-2">ref </span>other =&gt; {
-                        <span class="macro">log::error!</span>(<span class="string">&quot;Access index type {:?}&quot;</span>, other);
+                        <span class="macro">log::error!</span>(<span class="string">"Access index type {:?}"</span>, other);
                         <span class="kw">return </span><span class="prelude-val">Err</span>(ResolveError::InvalidAccess {
                             expr: base,
                             indexed: <span class="bool-val">true</span>,
@@ -1304,11 +1280,9 @@
                 }
             }
             <span class="kw">crate</span>::Expression::Splat { size, value } =&gt; <span class="kw">match </span><span class="kw-2">*</span>past(value)<span class="question-mark">?</span>.inner_with(types) {
-                Ti::Scalar { kind, width } =&gt; {
-                    TypeResolution::Value(Ti::Vector { size, kind, width })
-                }
+                Ti::Scalar(scalar) =&gt; TypeResolution::Value(Ti::Vector { size, scalar }),
                 <span class="kw-2">ref </span>other =&gt; {
-                    <span class="macro">log::error!</span>(<span class="string">&quot;Scalar type {:?}&quot;</span>, other);
+                    <span class="macro">log::error!</span>(<span class="string">"Scalar type {:?}"</span>, other);
                     <span class="kw">return </span><span class="prelude-val">Err</span>(ResolveError::InvalidScalar(value));
                 }
             },
@@ -1317,13 +1291,11 @@
                 vector,
                 pattern: <span class="kw">_</span>,
             } =&gt; <span class="kw">match </span><span class="kw-2">*</span>past(vector)<span class="question-mark">?</span>.inner_with(types) {
-                Ti::Vector {
-                    size: <span class="kw">_</span>,
-                    kind,
-                    width,
-                } =&gt; TypeResolution::Value(Ti::Vector { size, kind, width }),
+                Ti::Vector { size: <span class="kw">_</span>, scalar } =&gt; {
+                    TypeResolution::Value(Ti::Vector { size, scalar })
+                }
                 <span class="kw-2">ref </span>other =&gt; {
-                    <span class="macro">log::error!</span>(<span class="string">&quot;Vector type {:?}&quot;</span>, other);
+                    <span class="macro">log::error!</span>(<span class="string">"Vector type {:?}"</span>, other);
                     <span class="kw">return </span><span class="prelude-val">Err</span>(ResolveError::InvalidVector(vector));
                 }
             },
@@ -1358,23 +1330,22 @@
             }
             <span class="kw">crate</span>::Expression::Load { pointer } =&gt; <span class="kw">match </span><span class="kw-2">*</span>past(pointer)<span class="question-mark">?</span>.inner_with(types) {
                 Ti::Pointer { base, space: <span class="kw">_ </span>} =&gt; {
-                    <span class="kw">if let </span>Ti::Atomic { kind, width } = types[base].inner {
-                        TypeResolution::Value(Ti::Scalar { kind, width })
+                    <span class="kw">if let </span>Ti::Atomic(scalar) = types[base].inner {
+                        TypeResolution::Value(Ti::Scalar(scalar))
                     } <span class="kw">else </span>{
                         TypeResolution::Handle(base)
                     }
                 }
                 Ti::ValuePointer {
                     size,
-                    kind,
-                    width,
+                    scalar,
                     space: <span class="kw">_</span>,
                 } =&gt; TypeResolution::Value(<span class="kw">match </span>size {
-                    <span class="prelude-val">Some</span>(size) =&gt; Ti::Vector { size, kind, width },
-                    <span class="prelude-val">None </span>=&gt; Ti::Scalar { kind, width },
+                    <span class="prelude-val">Some</span>(size) =&gt; Ti::Vector { size, scalar },
+                    <span class="prelude-val">None </span>=&gt; Ti::Scalar(scalar),
                 }),
                 <span class="kw-2">ref </span>other =&gt; {
-                    <span class="macro">log::error!</span>(<span class="string">&quot;Pointer type {:?}&quot;</span>, other);
+                    <span class="macro">log::error!</span>(<span class="string">"Pointer type {:?}"</span>, other);
                     <span class="kw">return </span><span class="prelude-val">Err</span>(ResolveError::InvalidPointer(pointer));
                 }
             },
@@ -1384,70 +1355,62 @@
                 ..
             } =&gt; <span class="kw">match </span><span class="kw-2">*</span>past(image)<span class="question-mark">?</span>.inner_with(types) {
                 Ti::Image { class, .. } =&gt; TypeResolution::Value(Ti::Vector {
-                    kind: <span class="kw">match </span>class {
-                        <span class="kw">crate</span>::ImageClass::Sampled { kind, multi: <span class="kw">_ </span>} =&gt; kind,
-                        <span class="kw">_ </span>=&gt; <span class="kw">crate</span>::ScalarKind::Float,
+                    scalar: <span class="kw">crate</span>::Scalar {
+                        kind: <span class="kw">match </span>class {
+                            <span class="kw">crate</span>::ImageClass::Sampled { kind, multi: <span class="kw">_ </span>} =&gt; kind,
+                            <span class="kw">_ </span>=&gt; <span class="kw">crate</span>::ScalarKind::Float,
+                        },
+                        width: <span class="number">4</span>,
                     },
-                    width: <span class="number">4</span>,
                     size: <span class="kw">crate</span>::VectorSize::Quad,
                 }),
                 <span class="kw-2">ref </span>other =&gt; {
-                    <span class="macro">log::error!</span>(<span class="string">&quot;Image type {:?}&quot;</span>, other);
+                    <span class="macro">log::error!</span>(<span class="string">"Image type {:?}"</span>, other);
                     <span class="kw">return </span><span class="prelude-val">Err</span>(ResolveError::InvalidImage(image));
                 }
             },
             <span class="kw">crate</span>::Expression::ImageSample { image, .. }
             | <span class="kw">crate</span>::Expression::ImageLoad { image, .. } =&gt; <span class="kw">match </span><span class="kw-2">*</span>past(image)<span class="question-mark">?</span>.inner_with(types) {
                 Ti::Image { class, .. } =&gt; TypeResolution::Value(<span class="kw">match </span>class {
-                    <span class="kw">crate</span>::ImageClass::Depth { multi: <span class="kw">_ </span>} =&gt; Ti::Scalar {
-                        kind: <span class="kw">crate</span>::ScalarKind::Float,
-                        width: <span class="number">4</span>,
-                    },
+                    <span class="kw">crate</span>::ImageClass::Depth { multi: <span class="kw">_ </span>} =&gt; Ti::Scalar(<span class="kw">crate</span>::Scalar::F32),
                     <span class="kw">crate</span>::ImageClass::Sampled { kind, multi: <span class="kw">_ </span>} =&gt; Ti::Vector {
-                        kind,
-                        width: <span class="number">4</span>,
+                        scalar: <span class="kw">crate</span>::Scalar { kind, width: <span class="number">4 </span>},
                         size: <span class="kw">crate</span>::VectorSize::Quad,
                     },
                     <span class="kw">crate</span>::ImageClass::Storage { format, .. } =&gt; Ti::Vector {
-                        kind: format.into(),
-                        width: <span class="number">4</span>,
+                        scalar: <span class="kw">crate</span>::Scalar {
+                            kind: format.into(),
+                            width: <span class="number">4</span>,
+                        },
                         size: <span class="kw">crate</span>::VectorSize::Quad,
                     },
                 }),
                 <span class="kw-2">ref </span>other =&gt; {
-                    <span class="macro">log::error!</span>(<span class="string">&quot;Image type {:?}&quot;</span>, other);
+                    <span class="macro">log::error!</span>(<span class="string">"Image type {:?}"</span>, other);
                     <span class="kw">return </span><span class="prelude-val">Err</span>(ResolveError::InvalidImage(image));
                 }
             },
             <span class="kw">crate</span>::Expression::ImageQuery { image, query } =&gt; TypeResolution::Value(<span class="kw">match </span>query {
                 <span class="kw">crate</span>::ImageQuery::Size { level: <span class="kw">_ </span>} =&gt; <span class="kw">match </span><span class="kw-2">*</span>past(image)<span class="question-mark">?</span>.inner_with(types) {
                     Ti::Image { dim, .. } =&gt; <span class="kw">match </span>dim {
-                        <span class="kw">crate</span>::ImageDimension::D1 =&gt; Ti::Scalar {
-                            kind: <span class="kw">crate</span>::ScalarKind::Uint,
-                            width: <span class="number">4</span>,
-                        },
+                        <span class="kw">crate</span>::ImageDimension::D1 =&gt; Ti::Scalar(<span class="kw">crate</span>::Scalar::U32),
                         <span class="kw">crate</span>::ImageDimension::D2 | <span class="kw">crate</span>::ImageDimension::Cube =&gt; Ti::Vector {
                             size: <span class="kw">crate</span>::VectorSize::Bi,
-                            kind: <span class="kw">crate</span>::ScalarKind::Uint,
-                            width: <span class="number">4</span>,
+                            scalar: <span class="kw">crate</span>::Scalar::U32,
                         },
                         <span class="kw">crate</span>::ImageDimension::D3 =&gt; Ti::Vector {
                             size: <span class="kw">crate</span>::VectorSize::Tri,
-                            kind: <span class="kw">crate</span>::ScalarKind::Uint,
-                            width: <span class="number">4</span>,
+                            scalar: <span class="kw">crate</span>::Scalar::U32,
                         },
                     },
                     <span class="kw-2">ref </span>other =&gt; {
-                        <span class="macro">log::error!</span>(<span class="string">&quot;Image type {:?}&quot;</span>, other);
+                        <span class="macro">log::error!</span>(<span class="string">"Image type {:?}"</span>, other);
                         <span class="kw">return </span><span class="prelude-val">Err</span>(ResolveError::InvalidImage(image));
                     }
                 },
                 <span class="kw">crate</span>::ImageQuery::NumLevels
                 | <span class="kw">crate</span>::ImageQuery::NumLayers
-                | <span class="kw">crate</span>::ImageQuery::NumSamples =&gt; Ti::Scalar {
-                    kind: <span class="kw">crate</span>::ScalarKind::Uint,
-                    width: <span class="number">4</span>,
-                },
+                | <span class="kw">crate</span>::ImageQuery::NumSamples =&gt; Ti::Scalar(<span class="kw">crate</span>::Scalar::U32),
             }),
             <span class="kw">crate</span>::Expression::Unary { expr, .. } =&gt; past(expr)<span class="question-mark">?</span>.clone(),
             <span class="kw">crate</span>::Expression::Binary { op, left, right } =&gt; <span class="kw">match </span>op {
@@ -1462,44 +1425,39 @@
                             <span class="kw-2">&amp;</span>Ti::Matrix {
                                 columns: <span class="kw">_</span>,
                                 rows,
-                                width,
+                                scalar,
                             },
                             <span class="kw-2">&amp;</span>Ti::Matrix { columns, .. },
                         ) =&gt; TypeResolution::Value(Ti::Matrix {
                             columns,
                             rows,
-                            width,
+                            scalar,
                         }),
                         (
                             <span class="kw-2">&amp;</span>Ti::Matrix {
                                 columns: <span class="kw">_</span>,
                                 rows,
-                                width,
+                                scalar,
                             },
                             <span class="kw-2">&amp;</span>Ti::Vector { .. },
-                        ) =&gt; TypeResolution::Value(Ti::Vector {
-                            size: rows,
-                            kind: <span class="kw">crate</span>::ScalarKind::Float,
-                            width,
-                        }),
+                        ) =&gt; TypeResolution::Value(Ti::Vector { size: rows, scalar }),
                         (
                             <span class="kw-2">&amp;</span>Ti::Vector { .. },
                             <span class="kw-2">&amp;</span>Ti::Matrix {
                                 columns,
                                 rows: <span class="kw">_</span>,
-                                width,
+                                scalar,
                             },
                         ) =&gt; TypeResolution::Value(Ti::Vector {
                             size: columns,
-                            kind: <span class="kw">crate</span>::ScalarKind::Float,
-                            width,
+                            scalar,
                         }),
                         (<span class="kw-2">&amp;</span>Ti::Scalar { .. }, <span class="kw">_</span>) =&gt; res_right.clone(),
                         (<span class="kw">_</span>, <span class="kw-2">&amp;</span>Ti::Scalar { .. }) =&gt; res_left.clone(),
                         (<span class="kw-2">&amp;</span>Ti::Vector { .. }, <span class="kw-2">&amp;</span>Ti::Vector { .. }) =&gt; res_left.clone(),
                         (tl, tr) =&gt; {
                             <span class="kw">return </span><span class="prelude-val">Err</span>(ResolveError::IncompatibleOperands(<span class="macro">format!</span>(
-                                <span class="string">&quot;{tl:?} * {tr:?}&quot;
+                                <span class="string">"{tl:?} * {tr:?}"
                             </span>)))
                         }
                     }
@@ -1512,14 +1470,13 @@
                 | <span class="kw">crate</span>::BinaryOperator::GreaterEqual
                 | <span class="kw">crate</span>::BinaryOperator::LogicalAnd
                 | <span class="kw">crate</span>::BinaryOperator::LogicalOr =&gt; {
-                    <span class="kw">let </span>kind = <span class="kw">crate</span>::ScalarKind::Bool;
-                    <span class="kw">let </span>width = <span class="kw">crate</span>::BOOL_WIDTH;
+                    <span class="kw">let </span>scalar = <span class="kw">crate</span>::Scalar::BOOL;
                     <span class="kw">let </span>inner = <span class="kw">match </span><span class="kw-2">*</span>past(left)<span class="question-mark">?</span>.inner_with(types) {
-                        Ti::Scalar { .. } =&gt; Ti::Scalar { kind, width },
-                        Ti::Vector { size, .. } =&gt; Ti::Vector { size, kind, width },
+                        Ti::Scalar { .. } =&gt; Ti::Scalar(scalar),
+                        Ti::Vector { size, .. } =&gt; Ti::Vector { size, scalar },
                         <span class="kw-2">ref </span>other =&gt; {
                             <span class="kw">return </span><span class="prelude-val">Err</span>(ResolveError::IncompatibleOperands(<span class="macro">format!</span>(
-                                <span class="string">&quot;{op:?}({other:?}, _)&quot;
+                                <span class="string">"{op:?}({other:?}, _)"
                             </span>)))
                         }
                     };
@@ -1537,30 +1494,22 @@
             <span class="kw">crate</span>::Expression::Derivative { expr, .. } =&gt; past(expr)<span class="question-mark">?</span>.clone(),
             <span class="kw">crate</span>::Expression::Relational { fun, argument } =&gt; <span class="kw">match </span>fun {
                 <span class="kw">crate</span>::RelationalFunction::All | <span class="kw">crate</span>::RelationalFunction::Any =&gt; {
-                    TypeResolution::Value(Ti::Scalar {
-                        kind: <span class="kw">crate</span>::ScalarKind::Bool,
-                        width: <span class="kw">crate</span>::BOOL_WIDTH,
-                    })
+                    TypeResolution::Value(Ti::Scalar(<span class="kw">crate</span>::Scalar::BOOL))
                 }
-                <span class="kw">crate</span>::RelationalFunction::IsNan
-                | <span class="kw">crate</span>::RelationalFunction::IsInf
-                | <span class="kw">crate</span>::RelationalFunction::IsFinite
-                | <span class="kw">crate</span>::RelationalFunction::IsNormal =&gt; <span class="kw">match </span><span class="kw-2">*</span>past(argument)<span class="question-mark">?</span>.inner_with(types) {
-                    Ti::Scalar { .. } =&gt; TypeResolution::Value(Ti::Scalar {
-                        kind: <span class="kw">crate</span>::ScalarKind::Bool,
-                        width: <span class="kw">crate</span>::BOOL_WIDTH,
-                    }),
-                    Ti::Vector { size, .. } =&gt; TypeResolution::Value(Ti::Vector {
-                        kind: <span class="kw">crate</span>::ScalarKind::Bool,
-                        width: <span class="kw">crate</span>::BOOL_WIDTH,
-                        size,
-                    }),
-                    <span class="kw-2">ref </span>other =&gt; {
-                        <span class="kw">return </span><span class="prelude-val">Err</span>(ResolveError::IncompatibleOperands(<span class="macro">format!</span>(
-                            <span class="string">&quot;{fun:?}({other:?})&quot;
-                        </span>)))
+                <span class="kw">crate</span>::RelationalFunction::IsNan | <span class="kw">crate</span>::RelationalFunction::IsInf =&gt; {
+                    <span class="kw">match </span><span class="kw-2">*</span>past(argument)<span class="question-mark">?</span>.inner_with(types) {
+                        Ti::Scalar { .. } =&gt; TypeResolution::Value(Ti::Scalar(<span class="kw">crate</span>::Scalar::BOOL)),
+                        Ti::Vector { size, .. } =&gt; TypeResolution::Value(Ti::Vector {
+                            scalar: <span class="kw">crate</span>::Scalar::BOOL,
+                            size,
+                        }),
+                        <span class="kw-2">ref </span>other =&gt; {
+                            <span class="kw">return </span><span class="prelude-val">Err</span>(ResolveError::IncompatibleOperands(<span class="macro">format!</span>(
+                                <span class="string">"{fun:?}({other:?})"
+                            </span>)))
+                        }
                     }
-                },
+                }
             },
             <span class="kw">crate</span>::Expression::Math {
                 fun,
@@ -1600,8 +1549,6 @@
                     Mf::Round |
                     Mf::Fract |
                     Mf::Trunc |
-                    Mf::Modf |
-                    Mf::Frexp |
                     Mf::Ldexp |
                     <span class="comment">// exponent
                     </span>Mf::Exp |
@@ -1609,37 +1556,70 @@
                     Mf::Log |
                     Mf::Log2 |
                     Mf::Pow =&gt; res_arg.clone(),
+                    Mf::Modf | Mf::Frexp =&gt; {
+                        <span class="kw">let </span>(size, width) = <span class="kw">match </span>res_arg.inner_with(types) {
+                            <span class="kw-2">&amp;</span>Ti::Scalar(<span class="kw">crate</span>::Scalar {
+                                kind: <span class="kw">crate</span>::ScalarKind::Float,
+                                width,
+                            }) =&gt; (<span class="prelude-val">None</span>, width),
+                            <span class="kw-2">&amp;</span>Ti::Vector {
+                                scalar: <span class="kw">crate</span>::Scalar {
+                                    kind: <span class="kw">crate</span>::ScalarKind::Float,
+                                    width,
+                                },
+                                size,
+                            } =&gt; (<span class="prelude-val">Some</span>(size), width),
+                            <span class="kw-2">ref </span>other =&gt;
+                                <span class="kw">return </span><span class="prelude-val">Err</span>(ResolveError::IncompatibleOperands(<span class="macro">format!</span>(<span class="string">"{fun:?}({other:?}, _)"</span>)))
+                        };
+                        <span class="kw">let </span>result = <span class="self">self
+                        </span>.special_types
+                        .predeclared_types
+                        .get(<span class="kw-2">&amp;</span><span class="kw">if </span>fun == Mf::Modf {
+                            <span class="kw">crate</span>::PredeclaredType::ModfResult { size, width }
+                    } <span class="kw">else </span>{
+                            <span class="kw">crate</span>::PredeclaredType::FrexpResult { size, width }
+                    })
+                        .ok_or(ResolveError::MissingSpecialType)<span class="question-mark">?</span>;
+                        TypeResolution::Handle(<span class="kw-2">*</span>result)
+                    },
                     <span class="comment">// geometry
                     </span>Mf::Dot =&gt; <span class="kw">match </span><span class="kw-2">*</span>res_arg.inner_with(types) {
                         Ti::Vector {
-                            kind,
                             size: <span class="kw">_</span>,
-                            width,
-                        } =&gt; TypeResolution::Value(Ti::Scalar { kind, width }),
+                            scalar,
+                        } =&gt; TypeResolution::Value(Ti::Scalar(scalar)),
                         <span class="kw-2">ref </span>other =&gt;
                             <span class="kw">return </span><span class="prelude-val">Err</span>(ResolveError::IncompatibleOperands(
-                                <span class="macro">format!</span>(<span class="string">&quot;{fun:?}({other:?}, _)&quot;</span>)
+                                <span class="macro">format!</span>(<span class="string">"{fun:?}({other:?}, _)"</span>)
                             )),
                     },
                     Mf::Outer =&gt; {
                         <span class="kw">let </span>arg1 = arg1.ok_or_else(|| ResolveError::IncompatibleOperands(
-                            <span class="macro">format!</span>(<span class="string">&quot;{fun:?}(_, None)&quot;</span>)
+                            <span class="macro">format!</span>(<span class="string">"{fun:?}(_, None)"</span>)
                         ))<span class="question-mark">?</span>;
                         <span class="kw">match </span>(res_arg.inner_with(types), past(arg1)<span class="question-mark">?</span>.inner_with(types)) {
-                            (<span class="kw-2">&amp;</span>Ti::Vector {kind: <span class="kw">_</span>, size: columns,width}, <span class="kw-2">&amp;</span>Ti::Vector{ size: rows, .. }) =&gt; TypeResolution::Value(Ti::Matrix { columns, rows, width }),
+                            (
+                                <span class="kw-2">&amp;</span>Ti::Vector { size: columns, scalar },
+                                <span class="kw-2">&amp;</span>Ti::Vector{ size: rows, .. }
+                            ) =&gt; TypeResolution::Value(Ti::Matrix {
+                                columns,
+                                rows,
+                                scalar,
+                            }),
                             (left, right) =&gt;
                                 <span class="kw">return </span><span class="prelude-val">Err</span>(ResolveError::IncompatibleOperands(
-                                    <span class="macro">format!</span>(<span class="string">&quot;{fun:?}({left:?}, {right:?})&quot;</span>)
+                                    <span class="macro">format!</span>(<span class="string">"{fun:?}({left:?}, {right:?})"</span>)
                                 )),
                         }
                     },
                     Mf::Cross =&gt; res_arg.clone(),
                     Mf::Distance |
                     Mf::Length =&gt; <span class="kw">match </span><span class="kw-2">*</span>res_arg.inner_with(types) {
-                        Ti::Scalar {width,kind} |
-                        Ti::Vector {width,kind,size:<span class="kw">_</span>} =&gt; TypeResolution::Value(Ti::Scalar { kind, width }),
+                        Ti::Scalar(scalar) |
+                        Ti::Vector {scalar,size:<span class="kw">_</span>} =&gt; TypeResolution::Value(Ti::Scalar(scalar)),
                         <span class="kw-2">ref </span>other =&gt; <span class="kw">return </span><span class="prelude-val">Err</span>(ResolveError::IncompatibleOperands(
-                                <span class="macro">format!</span>(<span class="string">&quot;{fun:?}({other:?})&quot;</span>)
+                                <span class="macro">format!</span>(<span class="string">"{fun:?}({other:?})"</span>)
                             )),
                     },
                     Mf::Normalize |
@@ -1658,37 +1638,37 @@
                         Ti::Matrix {
                             columns,
                             rows,
-                            width,
+                            scalar,
                         } =&gt; TypeResolution::Value(Ti::Matrix {
                             columns: rows,
                             rows: columns,
-                            width,
+                            scalar,
                         }),
                         <span class="kw-2">ref </span>other =&gt; <span class="kw">return </span><span class="prelude-val">Err</span>(ResolveError::IncompatibleOperands(
-                            <span class="macro">format!</span>(<span class="string">&quot;{fun:?}({other:?})&quot;</span>)
+                            <span class="macro">format!</span>(<span class="string">"{fun:?}({other:?})"</span>)
                         )),
                     },
                     Mf::Inverse =&gt; <span class="kw">match </span><span class="kw-2">*</span>res_arg.inner_with(types) {
                         Ti::Matrix {
                             columns,
                             rows,
-                            width,
+                            scalar,
                         } <span class="kw">if </span>columns == rows =&gt; TypeResolution::Value(Ti::Matrix {
                             columns,
                             rows,
-                            width,
+                            scalar,
                         }),
                         <span class="kw-2">ref </span>other =&gt; <span class="kw">return </span><span class="prelude-val">Err</span>(ResolveError::IncompatibleOperands(
-                            <span class="macro">format!</span>(<span class="string">&quot;{fun:?}({other:?})&quot;</span>)
+                            <span class="macro">format!</span>(<span class="string">"{fun:?}({other:?})"</span>)
                         )),
                     },
                     Mf::Determinant =&gt; <span class="kw">match </span><span class="kw-2">*</span>res_arg.inner_with(types) {
                         Ti::Matrix {
-                            width,
+                            scalar,
                             ..
-                        } =&gt; TypeResolution::Value(Ti::Scalar { kind: <span class="kw">crate</span>::ScalarKind::Float, width }),
+                        } =&gt; TypeResolution::Value(Ti::Scalar(scalar)),
                         <span class="kw-2">ref </span>other =&gt; <span class="kw">return </span><span class="prelude-val">Err</span>(ResolveError::IncompatibleOperands(
-                            <span class="macro">format!</span>(<span class="string">&quot;{fun:?}({other:?})&quot;</span>)
+                            <span class="macro">format!</span>(<span class="string">"{fun:?}({other:?})"</span>)
                         )),
                     },
                     <span class="comment">// bits
@@ -1700,12 +1680,19 @@
                     Mf::InsertBits |
                     Mf::FindLsb |
                     Mf::FindMsb =&gt; <span class="kw">match </span><span class="kw-2">*</span>res_arg.inner_with(types)  {
-                        Ti::Scalar { kind: kind @ (<span class="kw">crate</span>::ScalarKind::Sint | <span class="kw">crate</span>::ScalarKind::Uint), width } =&gt;
-                            TypeResolution::Value(Ti::Scalar { kind, width }),
-                        Ti::Vector { size, kind: kind @ (<span class="kw">crate</span>::ScalarKind::Sint | <span class="kw">crate</span>::ScalarKind::Uint), width } =&gt;
-                            TypeResolution::Value(Ti::Vector { size, kind, width }),
+                        Ti::Scalar(scalar @ <span class="kw">crate</span>::Scalar {
+                            kind: <span class="kw">crate</span>::ScalarKind::Sint | <span class="kw">crate</span>::ScalarKind::Uint,
+                            ..
+                        }) =&gt; TypeResolution::Value(Ti::Scalar(scalar)),
+                        Ti::Vector {
+                            size,
+                            scalar: scalar @ <span class="kw">crate</span>::Scalar {
+                                kind: <span class="kw">crate</span>::ScalarKind::Sint | <span class="kw">crate</span>::ScalarKind::Uint,
+                                ..
+                            }
+                        } =&gt; TypeResolution::Value(Ti::Vector { size, scalar }),
                         <span class="kw-2">ref </span>other =&gt; <span class="kw">return </span><span class="prelude-val">Err</span>(ResolveError::IncompatibleOperands(
-                                <span class="macro">format!</span>(<span class="string">&quot;{fun:?}({other:?})&quot;</span>)
+                                <span class="macro">format!</span>(<span class="string">"{fun:?}({other:?})"</span>)
                             )),
                     },
                     <span class="comment">// data packing
@@ -1713,13 +1700,19 @@
                     Mf::Pack4x8unorm |
                     Mf::Pack2x16snorm |
                     Mf::Pack2x16unorm |
-                    Mf::Pack2x16float =&gt; TypeResolution::Value(Ti::Scalar { kind: <span class="kw">crate</span>::ScalarKind::Uint, width: <span class="number">4 </span>}),
+                    Mf::Pack2x16float =&gt; TypeResolution::Value(Ti::Scalar(<span class="kw">crate</span>::Scalar::U32)),
                     <span class="comment">// data unpacking
                     </span>Mf::Unpack4x8snorm |
-                    Mf::Unpack4x8unorm =&gt; TypeResolution::Value(Ti::Vector { size: <span class="kw">crate</span>::VectorSize::Quad, kind: <span class="kw">crate</span>::ScalarKind::Float, width: <span class="number">4 </span>}),
+                    Mf::Unpack4x8unorm =&gt; TypeResolution::Value(Ti::Vector {
+                        size: <span class="kw">crate</span>::VectorSize::Quad,
+                        scalar: <span class="kw">crate</span>::Scalar::F32
+                    }),
                     Mf::Unpack2x16snorm |
                     Mf::Unpack2x16unorm |
-                    Mf::Unpack2x16float =&gt; TypeResolution::Value(Ti::Vector { size: <span class="kw">crate</span>::VectorSize::Bi, kind: <span class="kw">crate</span>::ScalarKind::Float, width: <span class="number">4 </span>}),
+                    Mf::Unpack2x16float =&gt; TypeResolution::Value(Ti::Vector {
+                        size: <span class="kw">crate</span>::VectorSize::Bi,
+                        scalar: <span class="kw">crate</span>::Scalar::F32
+                    }),
                 }
             }
             <span class="kw">crate</span>::Expression::As {
@@ -1727,31 +1720,39 @@
                 kind,
                 convert,
             } =&gt; <span class="kw">match </span><span class="kw-2">*</span>past(expr)<span class="question-mark">?</span>.inner_with(types) {
-                Ti::Scalar { kind: <span class="kw">_</span>, width } =&gt; TypeResolution::Value(Ti::Scalar {
-                    kind,
-                    width: convert.unwrap_or(width),
-                }),
+                Ti::Scalar(<span class="kw">crate</span>::Scalar { width, .. }) =&gt; {
+                    TypeResolution::Value(Ti::Scalar(<span class="kw">crate</span>::Scalar {
+                        kind,
+                        width: convert.unwrap_or(width),
+                    }))
+                }
                 Ti::Vector {
-                    kind: <span class="kw">_</span>,
                     size,
-                    width,
+                    scalar: <span class="kw">crate</span>::Scalar { kind: <span class="kw">_</span>, width },
                 } =&gt; TypeResolution::Value(Ti::Vector {
-                    kind,
                     size,
-                    width: convert.unwrap_or(width),
+                    scalar: <span class="kw">crate</span>::Scalar {
+                        kind,
+                        width: convert.unwrap_or(width),
+                    },
                 }),
                 Ti::Matrix {
                     columns,
                     rows,
-                    width,
-                } =&gt; TypeResolution::Value(Ti::Matrix {
-                    columns,
-                    rows,
-                    width: convert.unwrap_or(width),
-                }),
+                    <span class="kw-2">mut </span>scalar,
+                } =&gt; {
+                    <span class="kw">if let </span><span class="prelude-val">Some</span>(width) = convert {
+                        scalar.width = width;
+                    }
+                    TypeResolution::Value(Ti::Matrix {
+                        columns,
+                        rows,
+                        scalar,
+                    })
+                }
                 <span class="kw-2">ref </span>other =&gt; {
                     <span class="kw">return </span><span class="prelude-val">Err</span>(ResolveError::IncompatibleOperands(<span class="macro">format!</span>(
-                        <span class="string">&quot;{other:?} as {kind:?}&quot;
+                        <span class="string">"{other:?} as {kind:?}"
                     </span>)))
                 }
             },
@@ -1762,14 +1763,12 @@
                     .ok_or(ResolveError::FunctionReturnsVoid)<span class="question-mark">?</span>;
                 TypeResolution::Handle(result.ty)
             }
-            <span class="kw">crate</span>::Expression::ArrayLength(<span class="kw">_</span>) =&gt; TypeResolution::Value(Ti::Scalar {
-                kind: <span class="kw">crate</span>::ScalarKind::Uint,
-                width: <span class="number">4</span>,
-            }),
-            <span class="kw">crate</span>::Expression::RayQueryProceedResult =&gt; TypeResolution::Value(Ti::Scalar {
-                kind: <span class="kw">crate</span>::ScalarKind::Bool,
-                width: <span class="kw">crate</span>::BOOL_WIDTH,
-            }),
+            <span class="kw">crate</span>::Expression::ArrayLength(<span class="kw">_</span>) =&gt; {
+                TypeResolution::Value(Ti::Scalar(<span class="kw">crate</span>::Scalar::U32))
+            }
+            <span class="kw">crate</span>::Expression::RayQueryProceedResult =&gt; {
+                TypeResolution::Value(Ti::Scalar(<span class="kw">crate</span>::Scalar::BOOL))
+            }
             <span class="kw">crate</span>::Expression::RayQueryGetIntersection { .. } =&gt; {
                 <span class="kw">let </span>result = <span class="self">self
                     </span>.special_types

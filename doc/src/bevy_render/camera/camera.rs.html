@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_render-0.12.1/src/camera/camera.rs`."><title>camera.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="bevy_render" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../bevy_render/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_render-0.13.0/src/camera/camera.rs`."><title>camera.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="bevy_render" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -830,12 +831,188 @@
 <a href="#830" id="830">830</a>
 <a href="#831" id="831">831</a>
 <a href="#832" id="832">832</a>
+<a href="#833" id="833">833</a>
+<a href="#834" id="834">834</a>
+<a href="#835" id="835">835</a>
+<a href="#836" id="836">836</a>
+<a href="#837" id="837">837</a>
+<a href="#838" id="838">838</a>
+<a href="#839" id="839">839</a>
+<a href="#840" id="840">840</a>
+<a href="#841" id="841">841</a>
+<a href="#842" id="842">842</a>
+<a href="#843" id="843">843</a>
+<a href="#844" id="844">844</a>
+<a href="#845" id="845">845</a>
+<a href="#846" id="846">846</a>
+<a href="#847" id="847">847</a>
+<a href="#848" id="848">848</a>
+<a href="#849" id="849">849</a>
+<a href="#850" id="850">850</a>
+<a href="#851" id="851">851</a>
+<a href="#852" id="852">852</a>
+<a href="#853" id="853">853</a>
+<a href="#854" id="854">854</a>
+<a href="#855" id="855">855</a>
+<a href="#856" id="856">856</a>
+<a href="#857" id="857">857</a>
+<a href="#858" id="858">858</a>
+<a href="#859" id="859">859</a>
+<a href="#860" id="860">860</a>
+<a href="#861" id="861">861</a>
+<a href="#862" id="862">862</a>
+<a href="#863" id="863">863</a>
+<a href="#864" id="864">864</a>
+<a href="#865" id="865">865</a>
+<a href="#866" id="866">866</a>
+<a href="#867" id="867">867</a>
+<a href="#868" id="868">868</a>
+<a href="#869" id="869">869</a>
+<a href="#870" id="870">870</a>
+<a href="#871" id="871">871</a>
+<a href="#872" id="872">872</a>
+<a href="#873" id="873">873</a>
+<a href="#874" id="874">874</a>
+<a href="#875" id="875">875</a>
+<a href="#876" id="876">876</a>
+<a href="#877" id="877">877</a>
+<a href="#878" id="878">878</a>
+<a href="#879" id="879">879</a>
+<a href="#880" id="880">880</a>
+<a href="#881" id="881">881</a>
+<a href="#882" id="882">882</a>
+<a href="#883" id="883">883</a>
+<a href="#884" id="884">884</a>
+<a href="#885" id="885">885</a>
+<a href="#886" id="886">886</a>
+<a href="#887" id="887">887</a>
+<a href="#888" id="888">888</a>
+<a href="#889" id="889">889</a>
+<a href="#890" id="890">890</a>
+<a href="#891" id="891">891</a>
+<a href="#892" id="892">892</a>
+<a href="#893" id="893">893</a>
+<a href="#894" id="894">894</a>
+<a href="#895" id="895">895</a>
+<a href="#896" id="896">896</a>
+<a href="#897" id="897">897</a>
+<a href="#898" id="898">898</a>
+<a href="#899" id="899">899</a>
+<a href="#900" id="900">900</a>
+<a href="#901" id="901">901</a>
+<a href="#902" id="902">902</a>
+<a href="#903" id="903">903</a>
+<a href="#904" id="904">904</a>
+<a href="#905" id="905">905</a>
+<a href="#906" id="906">906</a>
+<a href="#907" id="907">907</a>
+<a href="#908" id="908">908</a>
+<a href="#909" id="909">909</a>
+<a href="#910" id="910">910</a>
+<a href="#911" id="911">911</a>
+<a href="#912" id="912">912</a>
+<a href="#913" id="913">913</a>
+<a href="#914" id="914">914</a>
+<a href="#915" id="915">915</a>
+<a href="#916" id="916">916</a>
+<a href="#917" id="917">917</a>
+<a href="#918" id="918">918</a>
+<a href="#919" id="919">919</a>
+<a href="#920" id="920">920</a>
+<a href="#921" id="921">921</a>
+<a href="#922" id="922">922</a>
+<a href="#923" id="923">923</a>
+<a href="#924" id="924">924</a>
+<a href="#925" id="925">925</a>
+<a href="#926" id="926">926</a>
+<a href="#927" id="927">927</a>
+<a href="#928" id="928">928</a>
+<a href="#929" id="929">929</a>
+<a href="#930" id="930">930</a>
+<a href="#931" id="931">931</a>
+<a href="#932" id="932">932</a>
+<a href="#933" id="933">933</a>
+<a href="#934" id="934">934</a>
+<a href="#935" id="935">935</a>
+<a href="#936" id="936">936</a>
+<a href="#937" id="937">937</a>
+<a href="#938" id="938">938</a>
+<a href="#939" id="939">939</a>
+<a href="#940" id="940">940</a>
+<a href="#941" id="941">941</a>
+<a href="#942" id="942">942</a>
+<a href="#943" id="943">943</a>
+<a href="#944" id="944">944</a>
+<a href="#945" id="945">945</a>
+<a href="#946" id="946">946</a>
+<a href="#947" id="947">947</a>
+<a href="#948" id="948">948</a>
+<a href="#949" id="949">949</a>
+<a href="#950" id="950">950</a>
+<a href="#951" id="951">951</a>
+<a href="#952" id="952">952</a>
+<a href="#953" id="953">953</a>
+<a href="#954" id="954">954</a>
+<a href="#955" id="955">955</a>
+<a href="#956" id="956">956</a>
+<a href="#957" id="957">957</a>
+<a href="#958" id="958">958</a>
+<a href="#959" id="959">959</a>
+<a href="#960" id="960">960</a>
+<a href="#961" id="961">961</a>
+<a href="#962" id="962">962</a>
+<a href="#963" id="963">963</a>
+<a href="#964" id="964">964</a>
+<a href="#965" id="965">965</a>
+<a href="#966" id="966">966</a>
+<a href="#967" id="967">967</a>
+<a href="#968" id="968">968</a>
+<a href="#969" id="969">969</a>
+<a href="#970" id="970">970</a>
+<a href="#971" id="971">971</a>
+<a href="#972" id="972">972</a>
+<a href="#973" id="973">973</a>
+<a href="#974" id="974">974</a>
+<a href="#975" id="975">975</a>
+<a href="#976" id="976">976</a>
+<a href="#977" id="977">977</a>
+<a href="#978" id="978">978</a>
+<a href="#979" id="979">979</a>
+<a href="#980" id="980">980</a>
+<a href="#981" id="981">981</a>
+<a href="#982" id="982">982</a>
+<a href="#983" id="983">983</a>
+<a href="#984" id="984">984</a>
+<a href="#985" id="985">985</a>
+<a href="#986" id="986">986</a>
+<a href="#987" id="987">987</a>
+<a href="#988" id="988">988</a>
+<a href="#989" id="989">989</a>
+<a href="#990" id="990">990</a>
+<a href="#991" id="991">991</a>
+<a href="#992" id="992">992</a>
+<a href="#993" id="993">993</a>
+<a href="#994" id="994">994</a>
+<a href="#995" id="995">995</a>
+<a href="#996" id="996">996</a>
+<a href="#997" id="997">997</a>
+<a href="#998" id="998">998</a>
+<a href="#999" id="999">999</a>
+<a href="#1000" id="1000">1000</a>
+<a href="#1001" id="1001">1001</a>
+<a href="#1002" id="1002">1002</a>
+<a href="#1003" id="1003">1003</a>
+<a href="#1004" id="1004">1004</a>
+<a href="#1005" id="1005">1005</a>
+<a href="#1006" id="1006">1006</a>
+<a href="#1007" id="1007">1007</a>
 </pre></div><pre class="rust"><code><span class="kw">use crate</span>::{
     camera::CameraProjection,
     camera::{ManualTextureViewHandle, ManualTextureViews},
     prelude::Image,
     primitives::Frustum,
     render_asset::RenderAssets,
+    render_graph::{InternedRenderSubGraph, RenderSubGraph},
     render_resource::TextureView,
     view::{ColorGrading, ExtractedView, ExtractedWindows, RenderLayers, VisibleEntities},
     Extract,
@@ -852,17 +1029,21 @@
     system::{Commands, Query, Res, ResMut, Resource},
 };
 <span class="kw">use </span>bevy_log::warn;
-<span class="kw">use </span>bevy_math::{vec2, Mat4, Ray, Rect, URect, UVec2, UVec4, Vec2, Vec3};
+<span class="kw">use </span>bevy_math::{
+    primitives::Direction3d, vec2, Mat4, Ray3d, Rect, URect, UVec2, UVec4, Vec2, Vec3,
+};
 <span class="kw">use </span>bevy_reflect::prelude::<span class="kw-2">*</span>;
+<span class="kw">use </span>bevy_render_macros::ExtractComponent;
 <span class="kw">use </span>bevy_transform::components::GlobalTransform;
 <span class="kw">use </span>bevy_utils::{HashMap, HashSet};
 <span class="kw">use </span>bevy_window::{
     NormalizedWindowRef, PrimaryWindow, Window, WindowCreated, WindowRef, WindowResized,
+    WindowScaleFactorChanged,
 };
-<span class="kw">use </span>std::{borrow::Cow, ops::Range};
-<span class="kw">use </span>wgpu::{BlendState, LoadOp, TextureFormat};
+<span class="kw">use </span>std::ops::Range;
+<span class="kw">use </span>wgpu::{BlendState, LoadOp, TextureFormat, TextureUsages};
 
-<span class="kw">use </span><span class="kw">super</span>::Projection;
+<span class="kw">use super</span>::{ClearColorConfig, Projection};
 
 <span class="doccomment">/// Render viewport configuration for the [`Camera`] component.
 ///
@@ -895,10 +1076,13 @@
 <span class="doccomment">/// Information about the current [`RenderTarget`].
 </span><span class="attr">#[derive(Default, Debug, Clone)]
 </span><span class="kw">pub struct </span>RenderTargetInfo {
-    <span class="doccomment">/// The physical size of this render target (ignores scale factor).
+    <span class="doccomment">/// The physical size of this render target (in physical pixels, ignoring scale factor).
     </span><span class="kw">pub </span>physical_size: UVec2,
     <span class="doccomment">/// The scale factor of this render target.
-    </span><span class="kw">pub </span>scale_factor: f64,
+    ///
+    /// When rendering to a window, typically it is a value greater or equal than 1.0,
+    /// representing the ratio between the size of the window in physical pixels and the logical size of the window.
+    </span><span class="kw">pub </span>scale_factor: f32,
 }
 
 <span class="doccomment">/// Holds internally computed [`Camera`] values.
@@ -906,8 +1090,97 @@
 </span><span class="kw">pub struct </span>ComputedCameraValues {
     projection_matrix: Mat4,
     target_info: <span class="prelude-ty">Option</span>&lt;RenderTargetInfo&gt;,
-    <span class="comment">// position and size of the `Viewport`
+    <span class="comment">// size of the `Viewport`
     </span>old_viewport_size: <span class="prelude-ty">Option</span>&lt;UVec2&gt;,
+}
+
+<span class="doccomment">/// How much energy a `Camera3d` absorbs from incoming light.
+///
+/// &lt;https://en.wikipedia.org/wiki/Exposure_(photography)&gt;
+</span><span class="attr">#[derive(Component, Clone, Copy, Reflect)]
+#[reflect_value(Component)]
+</span><span class="kw">pub struct </span>Exposure {
+    <span class="doccomment">/// &lt;https://en.wikipedia.org/wiki/Exposure_value#Tabulated_exposure_values&gt;
+    </span><span class="kw">pub </span>ev100: f32,
+}
+
+<span class="kw">impl </span>Exposure {
+    <span class="kw">pub const </span>SUNLIGHT: <span class="self">Self </span>= <span class="self">Self </span>{
+        ev100: <span class="self">Self</span>::EV100_SUNLIGHT,
+    };
+    <span class="kw">pub const </span>OVERCAST: <span class="self">Self </span>= <span class="self">Self </span>{
+        ev100: <span class="self">Self</span>::EV100_OVERCAST,
+    };
+    <span class="kw">pub const </span>INDOOR: <span class="self">Self </span>= <span class="self">Self </span>{
+        ev100: <span class="self">Self</span>::EV100_INDOOR,
+    };
+    <span class="doccomment">/// This value was calibrated to match Blender's implicit/default exposure as closely as possible.
+    /// It also happens to be a reasonable default.
+    ///
+    /// See &lt;https://github.com/bevyengine/bevy/issues/11577&gt; for details.
+    </span><span class="kw">pub const </span>BLENDER: <span class="self">Self </span>= <span class="self">Self </span>{
+        ev100: <span class="self">Self</span>::EV100_BLENDER,
+    };
+
+    <span class="kw">pub const </span>EV100_SUNLIGHT: f32 = <span class="number">15.0</span>;
+    <span class="kw">pub const </span>EV100_OVERCAST: f32 = <span class="number">12.0</span>;
+    <span class="kw">pub const </span>EV100_INDOOR: f32 = <span class="number">7.0</span>;
+
+    <span class="doccomment">/// This value was calibrated to match Blender's implicit/default exposure as closely as possible.
+    /// It also happens to be a reasonable default.
+    ///
+    /// See &lt;https://github.com/bevyengine/bevy/issues/11577&gt; for details.
+    </span><span class="kw">pub const </span>EV100_BLENDER: f32 = <span class="number">9.7</span>;
+
+    <span class="kw">pub fn </span>from_physical_camera(physical_camera_parameters: PhysicalCameraParameters) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            ev100: physical_camera_parameters.ev100(),
+        }
+    }
+
+    <span class="doccomment">/// Converts EV100 values to exposure values.
+    /// &lt;https://google.github.io/filament/Filament.md.html#imagingpipeline/physicallybasedcamera/exposure&gt;
+    </span><span class="attr">#[inline]
+    </span><span class="kw">pub fn </span>exposure(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; f32 {
+        (-<span class="self">self</span>.ev100).exp2() / <span class="number">1.2
+    </span>}
+}
+
+<span class="kw">impl </span>Default <span class="kw">for </span>Exposure {
+    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::BLENDER
+    }
+}
+
+<span class="doccomment">/// Parameters based on physical camera characteristics for calculating
+/// EV100 values for use with [`Exposure`].
+</span><span class="attr">#[derive(Clone, Copy)]
+</span><span class="kw">pub struct </span>PhysicalCameraParameters {
+    <span class="doccomment">/// &lt;https://en.wikipedia.org/wiki/F-number&gt;
+    </span><span class="kw">pub </span>aperture_f_stops: f32,
+    <span class="doccomment">/// &lt;https://en.wikipedia.org/wiki/Shutter_speed&gt;
+    </span><span class="kw">pub </span>shutter_speed_s: f32,
+    <span class="doccomment">/// &lt;https://en.wikipedia.org/wiki/Film_speed&gt;
+    </span><span class="kw">pub </span>sensitivity_iso: f32,
+}
+
+<span class="kw">impl </span>PhysicalCameraParameters {
+    <span class="doccomment">/// Calculate the [EV100](https://en.wikipedia.org/wiki/Exposure_value).
+    </span><span class="kw">pub fn </span>ev100(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; f32 {
+        (<span class="self">self</span>.aperture_f_stops * <span class="self">self</span>.aperture_f_stops * <span class="number">100.0
+            </span>/ (<span class="self">self</span>.shutter_speed_s * <span class="self">self</span>.sensitivity_iso))
+            .log2()
+    }
+}
+
+<span class="kw">impl </span>Default <span class="kw">for </span>PhysicalCameraParameters {
+    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            aperture_f_stops: <span class="number">1.0</span>,
+            shutter_speed_s: <span class="number">1.0 </span>/ <span class="number">125.0</span>,
+            sensitivity_iso: <span class="number">100.0</span>,
+        }
+    }
 }
 
 <span class="doccomment">/// The defining [`Component`] for camera entities,
@@ -933,21 +1206,23 @@
     <span class="doccomment">/// Computed values for this camera, such as the projection matrix and the render target size.
     </span><span class="attr">#[reflect(ignore)]
     </span><span class="kw">pub </span>computed: ComputedCameraValues,
-    <span class="doccomment">/// The &quot;target&quot; that this camera will render to.
+    <span class="doccomment">/// The "target" that this camera will render to.
     </span><span class="attr">#[reflect(ignore)]
     </span><span class="kw">pub </span>target: RenderTarget,
-    <span class="doccomment">/// If this is set to `true`, the camera will use an intermediate &quot;high dynamic range&quot; render texture.
+    <span class="doccomment">/// If this is set to `true`, the camera will use an intermediate "high dynamic range" render texture.
     /// This allows rendering with a wider range of lighting values.
     </span><span class="kw">pub </span>hdr: bool,
     <span class="comment">// todo: reflect this when #6042 lands
     </span><span class="doccomment">/// The [`CameraOutputMode`] for this camera.
     </span><span class="attr">#[reflect(ignore)]
     </span><span class="kw">pub </span>output_mode: CameraOutputMode,
-    <span class="doccomment">/// If this is enabled, a previous camera exists that shares this camera&#39;s render target, and this camera has MSAA enabled, then the previous camera&#39;s
+    <span class="doccomment">/// If this is enabled, a previous camera exists that shares this camera's render target, and this camera has MSAA enabled, then the previous camera's
     /// outputs will be written to the intermediate multi-sampled render target textures for this camera. This enables cameras with MSAA enabled to
-    /// &quot;write their results on top&quot; of previous camera results, and include them as a part of their render results. This is enabled by default to ensure
+    /// "write their results on top" of previous camera results, and include them as a part of their render results. This is enabled by default to ensure
     /// cameras with MSAA enabled layer their results in the same way as cameras without MSAA enabled by default.
     </span><span class="kw">pub </span>msaa_writeback: bool,
+    <span class="doccomment">/// The clear color operation to perform on the render target.
+    </span><span class="kw">pub </span>clear_color: ClearColorConfig,
 }
 
 <span class="kw">impl </span>Default <span class="kw">for </span>Camera {
@@ -961,6 +1236,7 @@
             output_mode: Default::default(),
             hdr: <span class="bool-val">false</span>,
             msaa_writeback: <span class="bool-val">true</span>,
+            clear_color: Default::default(),
         }
     }
 }
@@ -970,7 +1246,7 @@
     </span><span class="attr">#[inline]
     </span><span class="kw">pub fn </span>to_logical(<span class="kw-2">&amp;</span><span class="self">self</span>, physical_size: UVec2) -&gt; <span class="prelude-ty">Option</span>&lt;Vec2&gt; {
         <span class="kw">let </span>scale = <span class="self">self</span>.computed.target_info.as_ref()<span class="question-mark">?</span>.scale_factor;
-        <span class="prelude-val">Some</span>((physical_size.as_dvec2() / scale).as_vec2())
+        <span class="prelude-val">Some</span>(physical_size.as_vec2() / scale)
     }
 
     <span class="doccomment">/// The rendered physical bounds [`URect`] of the camera. If the `viewport` field is
@@ -999,7 +1275,7 @@
         })
     }
 
-    <span class="doccomment">/// The logical size of this camera&#39;s viewport. If the `viewport` field is set to [`Some`], this
+    <span class="doccomment">/// The logical size of this camera's viewport. If the `viewport` field is set to [`Some`], this
     /// will be the size of that custom viewport. Otherwise it will default to the full logical size
     /// of the current [`RenderTarget`].
     ///  For logic that requires the full logical size of the
@@ -1007,11 +1283,11 @@
     ///
     /// Returns `None` if either:
     /// - the function is called just after the `Camera` is created, before `camera_system` is executed,
-    /// - the [`RenderTarget`] isn&#39;t correctly set:
+    /// - the [`RenderTarget`] isn't correctly set:
     ///   - it references the [`PrimaryWindow`](RenderTarget::Window) when there is none,
-    ///   - it references a [`Window`](RenderTarget::Window) entity that doesn&#39;t exist or doesn&#39;t actually have a `Window` component,
-    ///   - it references an [`Image`](RenderTarget::Image) that doesn&#39;t exist (invalid handle),
-    ///   - it references a [`TextureView`](RenderTarget::TextureView) that doesn&#39;t exist (invalid handle).
+    ///   - it references a [`Window`](RenderTarget::Window) entity that doesn't exist or doesn't actually have a `Window` component,
+    ///   - it references an [`Image`](RenderTarget::Image) that doesn't exist (invalid handle),
+    ///   - it references a [`TextureView`](RenderTarget::TextureView) that doesn't exist (invalid handle).
     </span><span class="attr">#[inline]
     </span><span class="kw">pub fn </span>logical_viewport_size(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;Vec2&gt; {
         <span class="self">self</span>.viewport
@@ -1020,7 +1296,8 @@
             .or_else(|| <span class="self">self</span>.logical_target_size())
     }
 
-    <span class="doccomment">/// The physical size of this camera&#39;s viewport. If the `viewport` field is set to [`Some`], this
+    <span class="doccomment">/// The physical size of this camera's viewport (in physical pixels).
+    /// If the `viewport` field is set to [`Some`], this
     /// will be the size of that custom viewport. Otherwise it will default to the full physical size of
     /// the current [`RenderTarget`].
     /// For logic that requires the full physical size of the [`RenderTarget`], prefer [`Camera::physical_target_size`].
@@ -1032,7 +1309,7 @@
             .or_else(|| <span class="self">self</span>.physical_target_size())
     }
 
-    <span class="doccomment">/// The full logical size of this camera&#39;s [`RenderTarget`], ignoring custom `viewport` configuration.
+    <span class="doccomment">/// The full logical size of this camera's [`RenderTarget`], ignoring custom `viewport` configuration.
     /// Note that if the `viewport` field is [`Some`], this will not represent the size of the rendered area.
     /// For logic that requires the size of the actually rendered area, prefer [`Camera::logical_viewport_size`].
     </span><span class="attr">#[inline]
@@ -1043,7 +1320,8 @@
             .and_then(|t| <span class="self">self</span>.to_logical(t.physical_size))
     }
 
-    <span class="doccomment">/// The full physical size of this camera&#39;s [`RenderTarget`], ignoring custom `viewport` configuration.
+    <span class="doccomment">/// The full physical size of this camera's [`RenderTarget`] (in physical pixels),
+    /// ignoring custom `viewport` configuration.
     /// Note that if the `viewport` field is [`Some`], this will not represent the size of the rendered area.
     /// For logic that requires the size of the actually rendered area, prefer [`Camera::physical_viewport_size`].
     </span><span class="attr">#[inline]
@@ -1051,7 +1329,12 @@
         <span class="self">self</span>.computed.target_info.as_ref().map(|t| t.physical_size)
     }
 
-    <span class="doccomment">/// The projection matrix computed using this camera&#39;s [`CameraProjection`].
+    <span class="attr">#[inline]
+    </span><span class="kw">pub fn </span>target_scaling_factor(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;f32&gt; {
+        <span class="self">self</span>.computed.target_info.as_ref().map(|t| t.scale_factor)
+    }
+
+    <span class="doccomment">/// The projection matrix computed using this camera's [`CameraProjection`].
     </span><span class="attr">#[inline]
     </span><span class="kw">pub fn </span>projection_matrix(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Mat4 {
         <span class="self">self</span>.computed.projection_matrix
@@ -1067,7 +1350,7 @@
     /// - The logical viewport size cannot be computed. See [`logical_viewport_size`](Camera::logical_viewport_size)
     /// - The world coordinates cannot be mapped to the Normalized Device Coordinates. See [`world_to_ndc`](Camera::world_to_ndc)
     /// May also panic if `glam_assert` is enabled. See [`world_to_ndc`](Camera::world_to_ndc).
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;world_to_screen&quot;</span>)]
+    </span><span class="attr">#[doc(alias = <span class="string">"world_to_screen"</span>)]
     </span><span class="kw">pub fn </span>world_to_viewport(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         camera_transform: <span class="kw-2">&amp;</span>GlobalTransform,
@@ -1091,7 +1374,7 @@
     ///
     /// The resulting ray starts on the near plane of the camera.
     ///
-    /// If the camera&#39;s projection is orthographic the direction of the ray is always equal to `camera_transform.forward()`.
+    /// If the camera's projection is orthographic the direction of the ray is always equal to `camera_transform.forward()`.
     ///
     /// To get the world space coordinates with Normalized Device Coordinates, you should use
     /// [`ndc_to_world`](Self::ndc_to_world).
@@ -1104,7 +1387,7 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         camera_transform: <span class="kw-2">&amp;</span>GlobalTransform,
         <span class="kw-2">mut </span>viewport_position: Vec2,
-    ) -&gt; <span class="prelude-ty">Option</span>&lt;Ray&gt; {
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;Ray3d&gt; {
         <span class="kw">let </span>target_size = <span class="self">self</span>.logical_viewport_size()<span class="question-mark">?</span>;
         <span class="comment">// Flip the Y co-ordinate origin from the top to the bottom.
         </span>viewport_position.y = target_size.y - viewport_position.y;
@@ -1116,13 +1399,16 @@
         <span class="comment">// Using EPSILON because an ndc with Z = 0 returns NaNs.
         </span><span class="kw">let </span>world_far_plane = ndc_to_world.project_point3(ndc.extend(f32::EPSILON));
 
-        (!world_near_plane.is_nan() &amp;&amp; !world_far_plane.is_nan()).then_some(Ray {
-            origin: world_near_plane,
-            direction: (world_far_plane - world_near_plane).normalize(),
+        <span class="comment">// The fallible direction constructor ensures that world_near_plane and world_far_plane aren't NaN.
+        </span>Direction3d::new(world_far_plane - world_near_plane).map_or(<span class="prelude-val">None</span>, |direction| {
+            <span class="prelude-val">Some</span>(Ray3d {
+                origin: world_near_plane,
+                direction,
+            })
         })
     }
 
-    <span class="doccomment">/// Returns a 2D world position computed from a position on this [`Camera`]&#39;s viewport.
+    <span class="doccomment">/// Returns a 2D world position computed from a position on this [`Camera`]'s viewport.
     ///
     /// Useful for 2D cameras and other cameras with an orthographic projection pointing along the Z axis.
     ///
@@ -1148,11 +1434,11 @@
         <span class="prelude-val">Some</span>(world_near_plane.truncate())
     }
 
-    <span class="doccomment">/// Given a position in world space, use the camera&#39;s viewport to compute the Normalized Device Coordinates.
+    <span class="doccomment">/// Given a position in world space, use the camera's viewport to compute the Normalized Device Coordinates.
     ///
     /// When the position is within the viewport the values returned will be between -1.0 and 1.0 on the X and Y axes,
     /// and between 0.0 and 1.0 on the Z axis.
-    /// To get the coordinates in the render target&#39;s viewport dimensions, you should use
+    /// To get the coordinates in the render target's viewport dimensions, you should use
     /// [`world_to_viewport`](Self::world_to_viewport).
     ///
     /// Returns `None` if the `camera_transform`, the `world_position`, or the projection matrix defined by [`CameraProjection`] contain `NAN`.
@@ -1171,7 +1457,7 @@
     }
 
     <span class="doccomment">/// Given a position in Normalized Device Coordinates,
-    /// use the camera&#39;s viewport to compute the world space position.
+    /// use the camera's viewport to compute the world space position.
     ///
     /// When the position is within the viewport the values returned will be between -1.0 and 1.0 on the X and Y axes,
     /// and between 0.0 and 1.0 on the Z axis.
@@ -1200,11 +1486,11 @@
         </span>blend_state: <span class="prelude-ty">Option</span>&lt;BlendState&gt;,
         <span class="doccomment">/// The color attachment load operation that will be used by the pipeline that writes the intermediate render textures to the final render
         /// target texture.
-        </span>color_attachment_load_op: wgpu::LoadOp&lt;wgpu::Color&gt;,
+        </span>color_attachment_load_op: LoadOp&lt;wgpu::Color&gt;,
     },
     <span class="doccomment">/// Skips writing the camera output to the configured render target. The output will remain in the
-    /// Render Target&#39;s &quot;intermediate&quot; textures, which a camera with a higher order should write to the render target
-    /// using [`CameraOutputMode::Write`]. The &quot;skip&quot; mode can easily prevent render results from being displayed, or cause
+    /// Render Target's "intermediate" textures, which a camera with a higher order should write to the render target
+    /// using [`CameraOutputMode::Write`]. The "skip" mode can easily prevent render results from being displayed, or cause
     /// them to be lost. Only use this if you know what you are doing!
     /// In camera setups with multiple active cameras rendering to the same RenderTarget, the Skip mode can be used to remove
     /// unnecessary / redundant writes to the final output texture, removing unnecessary render passes.
@@ -1221,47 +1507,53 @@
 }
 
 <span class="doccomment">/// Configures the [`RenderGraph`](crate::render_graph::RenderGraph) name assigned to be run for a given [`Camera`] entity.
-</span><span class="attr">#[derive(Component, Deref, DerefMut, Reflect, Default)]
-#[reflect(Component)]
-</span><span class="kw">pub struct </span>CameraRenderGraph(Cow&lt;<span class="lifetime">&#39;static</span>, str&gt;);
+</span><span class="attr">#[derive(Component, Deref, DerefMut, Reflect, Clone)]
+#[reflect_value(Component)]
+</span><span class="kw">pub struct </span>CameraRenderGraph(InternedRenderSubGraph);
 
 <span class="kw">impl </span>CameraRenderGraph {
     <span class="doccomment">/// Creates a new [`CameraRenderGraph`] from any string-like type.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>new&lt;T: Into&lt;Cow&lt;<span class="lifetime">&#39;static</span>, str&gt;&gt;&gt;(name: T) -&gt; <span class="self">Self </span>{
-        <span class="self">Self</span>(name.into())
+    </span><span class="kw">pub fn </span>new&lt;T: RenderSubGraph&gt;(name: T) -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>(name.intern())
     }
 
     <span class="doccomment">/// Sets the graph name.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>set&lt;T: Into&lt;Cow&lt;<span class="lifetime">&#39;static</span>, str&gt;&gt;&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, name: T) {
-        <span class="self">self</span>.<span class="number">0 </span>= name.into();
+    </span><span class="kw">pub fn </span>set&lt;T: RenderSubGraph&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, name: T) {
+        <span class="self">self</span>.<span class="number">0 </span>= name.intern();
     }
 }
 
-<span class="doccomment">/// The &quot;target&quot; that a [`Camera`] will render to. For example, this could be a [`Window`]
+<span class="doccomment">/// The "target" that a [`Camera`] will render to. For example, this could be a [`Window`]
 /// swapchain or an [`Image`].
 </span><span class="attr">#[derive(Debug, Clone, Reflect)]
 </span><span class="kw">pub enum </span>RenderTarget {
-    <span class="doccomment">/// Window to which the camera&#39;s view is rendered.
+    <span class="doccomment">/// Window to which the camera's view is rendered.
     </span>Window(WindowRef),
-    <span class="doccomment">/// Image to which the camera&#39;s view is rendered.
+    <span class="doccomment">/// Image to which the camera's view is rendered.
     </span>Image(Handle&lt;Image&gt;),
-    <span class="doccomment">/// Texture View to which the camera&#39;s view is rendered.
+    <span class="doccomment">/// Texture View to which the camera's view is rendered.
     /// Useful when the texture view needs to be created outside of Bevy, for example OpenXR.
     </span>TextureView(ManualTextureViewHandle),
 }
 
+<span class="kw">impl </span>From&lt;Handle&lt;Image&gt;&gt; <span class="kw">for </span>RenderTarget {
+    <span class="kw">fn </span>from(handle: Handle&lt;Image&gt;) -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::Image(handle)
+    }
+}
+
 <span class="doccomment">/// Normalized version of the render target.
 ///
-/// Once we have this we shouldn&#39;t need to resolve it down anymore.
+/// Once we have this we shouldn't need to resolve it down anymore.
 </span><span class="attr">#[derive(Debug, Clone, Reflect, PartialEq, Eq, Hash, PartialOrd, Ord)]
 </span><span class="kw">pub enum </span>NormalizedRenderTarget {
-    <span class="doccomment">/// Window to which the camera&#39;s view is rendered.
+    <span class="doccomment">/// Window to which the camera's view is rendered.
     </span>Window(NormalizedWindowRef),
-    <span class="doccomment">/// Image to which the camera&#39;s view is rendered.
+    <span class="doccomment">/// Image to which the camera's view is rendered.
     </span>Image(Handle&lt;Image&gt;),
-    <span class="doccomment">/// Texture View to which the camera&#39;s view is rendered.
+    <span class="doccomment">/// Texture View to which the camera's view is rendered.
     /// Useful when the texture view needs to be created outside of Bevy, for example OpenXR.
     </span>TextureView(ManualTextureViewHandle),
 }
@@ -1283,15 +1575,25 @@
             RenderTarget::TextureView(id) =&gt; <span class="prelude-val">Some</span>(NormalizedRenderTarget::TextureView(<span class="kw-2">*</span>id)),
         }
     }
+
+    <span class="doccomment">/// Get a handle to the render target's image,
+    /// or `None` if the render target is another variant.
+    </span><span class="kw">pub fn </span>as_image(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Handle&lt;Image&gt;&gt; {
+        <span class="kw">if let </span><span class="self">Self</span>::Image(handle) = <span class="self">self </span>{
+            <span class="prelude-val">Some</span>(handle)
+        } <span class="kw">else </span>{
+            <span class="prelude-val">None
+        </span>}
+    }
 }
 
 <span class="kw">impl </span>NormalizedRenderTarget {
-    <span class="kw">pub fn </span>get_texture_view&lt;<span class="lifetime">&#39;a</span>&gt;(
+    <span class="kw">pub fn </span>get_texture_view&lt;<span class="lifetime">'a</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        windows: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>ExtractedWindows,
-        images: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>RenderAssets&lt;Image&gt;,
-        manual_texture_views: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>ManualTextureViews,
-    ) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>TextureView&gt; {
+        windows: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>ExtractedWindows,
+        images: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>RenderAssets&lt;Image&gt;,
+        manual_texture_views: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>ManualTextureViews,
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>TextureView&gt; {
         <span class="kw">match </span><span class="self">self </span>{
             NormalizedRenderTarget::Window(window_ref) =&gt; windows
                 .get(<span class="kw-2">&amp;</span>window_ref.entity())
@@ -1306,11 +1608,11 @@
     }
 
     <span class="doccomment">/// Retrieves the [`TextureFormat`] of this render target, if it exists.
-    </span><span class="kw">pub fn </span>get_texture_format&lt;<span class="lifetime">&#39;a</span>&gt;(
+    </span><span class="kw">pub fn </span>get_texture_format&lt;<span class="lifetime">'a</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        windows: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>ExtractedWindows,
-        images: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>RenderAssets&lt;Image&gt;,
-        manual_texture_views: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>ManualTextureViews,
+        windows: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>ExtractedWindows,
+        images: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>RenderAssets&lt;Image&gt;,
+        manual_texture_views: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>ManualTextureViews,
     ) -&gt; <span class="prelude-ty">Option</span>&lt;TextureFormat&gt; {
         <span class="kw">match </span><span class="self">self </span>{
             NormalizedRenderTarget::Window(window_ref) =&gt; windows
@@ -1325,9 +1627,9 @@
         }
     }
 
-    <span class="kw">pub fn </span>get_render_target_info&lt;<span class="lifetime">&#39;a</span>&gt;(
+    <span class="kw">pub fn </span>get_render_target_info&lt;<span class="lifetime">'a</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        resolutions: <span class="kw">impl </span>IntoIterator&lt;Item = (Entity, <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Window)&gt;,
+        resolutions: <span class="kw">impl </span>IntoIterator&lt;Item = (Entity, <span class="kw-2">&amp;</span><span class="lifetime">'a </span>Window)&gt;,
         images: <span class="kw-2">&amp;</span>Assets&lt;Image&gt;,
         manual_texture_views: <span class="kw-2">&amp;</span>ManualTextureViews,
     ) -&gt; <span class="prelude-ty">Option</span>&lt;RenderTargetInfo&gt; {
@@ -1378,9 +1680,9 @@
 
 <span class="doccomment">/// System in charge of updating a [`Camera`] when its window or projection changes.
 ///
-/// The system detects window creation and resize events to update the camera projection if
-/// needed. It also queries any [`CameraProjection`] component associated with the same entity
-/// as the [`Camera`] one, to automatically update the camera projection matrix.
+/// The system detects window creation, resize, and scale factor change events to update the camera
+/// projection if needed. It also queries any [`CameraProjection`] component associated with the same
+/// entity as the [`Camera`] one, to automatically update the camera projection matrix.
 ///
 /// The system function is generic over the camera projection type, and only instances of
 /// [`OrthographicProjection`] and [`PerspectiveProjection`] are automatically added to
@@ -1394,11 +1696,11 @@
 ///
 /// [`OrthographicProjection`]: crate::camera::OrthographicProjection
 /// [`PerspectiveProjection`]: crate::camera::PerspectiveProjection
-/// [`Projection`]: crate::camera::Projection
 </span><span class="attr">#[allow(clippy::too_many_arguments)]
 </span><span class="kw">pub fn </span>camera_system&lt;T: CameraProjection + Component&gt;(
     <span class="kw-2">mut </span>window_resized_events: EventReader&lt;WindowResized&gt;,
     <span class="kw-2">mut </span>window_created_events: EventReader&lt;WindowCreated&gt;,
+    <span class="kw-2">mut </span>window_scale_factor_changed_events: EventReader&lt;WindowScaleFactorChanged&gt;,
     <span class="kw-2">mut </span>image_asset_events: EventReader&lt;AssetEvent&lt;Image&gt;&gt;,
     primary_window: Query&lt;Entity, With&lt;PrimaryWindow&gt;&gt;,
     windows: Query&lt;(Entity, <span class="kw-2">&amp;</span>Window)&gt;,
@@ -1411,20 +1713,22 @@
     <span class="kw">let </span><span class="kw-2">mut </span>changed_window_ids = HashSet::new();
     changed_window_ids.extend(window_created_events.read().map(|event| event.window));
     changed_window_ids.extend(window_resized_events.read().map(|event| event.window));
+    <span class="kw">let </span>scale_factor_changed_window_ids: HashSet&lt;<span class="kw">_</span>&gt; = window_scale_factor_changed_events
+        .read()
+        .map(|event| event.window)
+        .collect();
+    changed_window_ids.extend(scale_factor_changed_window_ids.clone());
 
     <span class="kw">let </span>changed_image_handles: HashSet&lt;<span class="kw-2">&amp;</span>AssetId&lt;Image&gt;&gt; = image_asset_events
         .read()
-        .filter_map(|event| {
-            <span class="kw">if let </span>AssetEvent::Modified { id } = event {
-                <span class="prelude-val">Some</span>(id)
-            } <span class="kw">else </span>{
-                <span class="prelude-val">None
-            </span>}
+        .filter_map(|event| <span class="kw">match </span>event {
+            AssetEvent::Modified { id } | AssetEvent::Added { id } =&gt; <span class="prelude-val">Some</span>(id),
+            <span class="kw">_ </span>=&gt; <span class="prelude-val">None</span>,
         })
         .collect();
 
     <span class="kw">for </span>(<span class="kw-2">mut </span>camera, <span class="kw-2">mut </span>camera_projection) <span class="kw">in </span><span class="kw-2">&amp;mut </span>cameras {
-        <span class="kw">let </span>viewport_size = camera
+        <span class="kw">let </span><span class="kw-2">mut </span>viewport_size = camera
             .viewport
             .as_ref()
             .map(|viewport| viewport.physical_size);
@@ -1435,11 +1739,36 @@
                 || camera_projection.is_changed()
                 || camera.computed.old_viewport_size != viewport_size
             {
-                camera.computed.target_info = normalized_target.get_render_target_info(
+                <span class="kw">let </span>new_computed_target_info = normalized_target.get_render_target_info(
                     <span class="kw-2">&amp;</span>windows,
                     <span class="kw-2">&amp;</span>images,
                     <span class="kw-2">&amp;</span>manual_texture_views,
                 );
+                <span class="comment">// Check for the scale factor changing, and resize the viewport if needed.
+                // This can happen when the window is moved between monitors with different DPIs.
+                // Without this, the viewport will take a smaller portion of the window moved to
+                // a higher DPI monitor.
+                </span><span class="kw">if </span>normalized_target.is_changed(<span class="kw-2">&amp;</span>scale_factor_changed_window_ids, <span class="kw-2">&amp;</span>HashSet::new()) {
+                    <span class="kw">if let </span>(<span class="prelude-val">Some</span>(new_scale_factor), <span class="prelude-val">Some</span>(old_scale_factor)) = (
+                        new_computed_target_info
+                            .as_ref()
+                            .map(|info| info.scale_factor),
+                        camera
+                            .computed
+                            .target_info
+                            .as_ref()
+                            .map(|info| info.scale_factor),
+                    ) {
+                        <span class="kw">let </span>resize_factor = new_scale_factor / old_scale_factor;
+                        <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">ref mut </span>viewport) = camera.viewport {
+                            <span class="kw">let </span>resize = |vec: UVec2| (vec.as_vec2() * resize_factor).as_uvec2();
+                            viewport.physical_position = resize(viewport.physical_position);
+                            viewport.physical_size = resize(viewport.physical_size);
+                            viewport_size = <span class="prelude-val">Some</span>(viewport.physical_size);
+                        }
+                    }
+                }
+                camera.computed.target_info = new_computed_target_info;
                 <span class="kw">if let </span><span class="prelude-val">Some</span>(size) = camera.logical_viewport_size() {
                     camera_projection.update(size.x, size.y);
                     camera.computed.projection_matrix = camera_projection.get_projection_matrix();
@@ -1453,17 +1782,33 @@
     }
 }
 
+<span class="doccomment">/// This component lets you control the [`TextureUsages`] field of the main texture generated for the camera
+</span><span class="attr">#[derive(Component, ExtractComponent, Clone, Copy, Reflect)]
+#[reflect_value(Component)]
+</span><span class="kw">pub struct </span>CameraMainTextureUsages(<span class="kw">pub </span>TextureUsages);
+<span class="kw">impl </span>Default <span class="kw">for </span>CameraMainTextureUsages {
+    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>(
+            TextureUsages::RENDER_ATTACHMENT
+                | TextureUsages::TEXTURE_BINDING
+                | TextureUsages::COPY_SRC,
+        )
+    }
+}
+
 <span class="attr">#[derive(Component, Debug)]
 </span><span class="kw">pub struct </span>ExtractedCamera {
     <span class="kw">pub </span>target: <span class="prelude-ty">Option</span>&lt;NormalizedRenderTarget&gt;,
     <span class="kw">pub </span>physical_viewport_size: <span class="prelude-ty">Option</span>&lt;UVec2&gt;,
     <span class="kw">pub </span>physical_target_size: <span class="prelude-ty">Option</span>&lt;UVec2&gt;,
     <span class="kw">pub </span>viewport: <span class="prelude-ty">Option</span>&lt;Viewport&gt;,
-    <span class="kw">pub </span>render_graph: Cow&lt;<span class="lifetime">&#39;static</span>, str&gt;,
+    <span class="kw">pub </span>render_graph: InternedRenderSubGraph,
     <span class="kw">pub </span>order: isize,
     <span class="kw">pub </span>output_mode: CameraOutputMode,
     <span class="kw">pub </span>msaa_writeback: bool,
+    <span class="kw">pub </span>clear_color: ClearColorConfig,
     <span class="kw">pub </span>sorted_camera_index_for_target: usize,
+    <span class="kw">pub </span>exposure: f32,
 }
 
 <span class="kw">pub fn </span>extract_cameras(
@@ -1477,6 +1822,7 @@
             <span class="kw-2">&amp;</span>VisibleEntities,
             <span class="kw-2">&amp;</span>Frustum,
             <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>ColorGrading&gt;,
+            <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Exposure&gt;,
             <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>TemporalJitter&gt;,
             <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>RenderLayers&gt;,
             <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Projection&gt;,
@@ -1493,6 +1839,7 @@
         visible_entities,
         frustum,
         color_grading,
+        exposure,
         temporal_jitter,
         render_layers,
         projection,
@@ -1528,12 +1875,16 @@
                     viewport: camera.viewport.clone(),
                     physical_viewport_size: <span class="prelude-val">Some</span>(viewport_size),
                     physical_target_size: <span class="prelude-val">Some</span>(target_size),
-                    render_graph: camera_render_graph.<span class="number">0</span>.clone(),
+                    render_graph: camera_render_graph.<span class="number">0</span>,
                     order: camera.order,
                     output_mode: camera.output_mode,
                     msaa_writeback: camera.msaa_writeback,
+                    clear_color: camera.clear_color.clone(),
                     <span class="comment">// this will be set in sort_cameras
                     </span>sorted_camera_index_for_target: <span class="number">0</span>,
+                    exposure: exposure
+                        .map(|e| e.exposure())
+                        .unwrap_or_else(|| Exposure::default().exposure()),
                 },
                 ExtractedView {
                     projection: camera.projection_matrix(),
@@ -1617,17 +1968,17 @@
 
     <span class="kw">if </span>!ambiguities.is_empty() {
         <span class="macro">warn!</span>(
-            <span class="string">&quot;Camera order ambiguities detected for active cameras with the following priorities: {:?}. \
+            <span class="string">"Camera order ambiguities detected for active cameras with the following priorities: {:?}. \
             To fix this, ensure there is exactly one Camera entity spawned with a given order for a given RenderTarget. \
             Ambiguities should be resolved because either (1) multiple active cameras were spawned accidentally, which will \
             result in rendering multiple instances of the scene or (2) for cases where multiple active cameras is intentional, \
-            ambiguities could result in unpredictable render results.&quot;</span>,
+            ambiguities could result in unpredictable render results."</span>,
             ambiguities
         );
     }
 }
 
-<span class="doccomment">/// A subpixel offset to jitter a perspective camera&#39;s frustum by.
+<span class="doccomment">/// A subpixel offset to jitter a perspective camera's frustum by.
 ///
 /// Useful for temporal rendering techniques.
 ///
@@ -1644,7 +1995,7 @@
     <span class="kw">pub fn </span>jitter_projection(<span class="kw-2">&amp;</span><span class="self">self</span>, projection: <span class="kw-2">&amp;mut </span>Mat4, view_size: Vec2) {
         <span class="kw">if </span>projection.w_axis.w == <span class="number">1.0 </span>{
             <span class="macro">warn!</span>(
-                <span class="string">&quot;TemporalJitter not supported with OrthographicProjection. Use PerspectiveProjection instead.&quot;
+                <span class="string">"TemporalJitter not supported with OrthographicProjection. Use PerspectiveProjection instead."
             </span>);
             <span class="kw">return</span>;
         }

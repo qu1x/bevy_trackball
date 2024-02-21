@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/naga-0.13.0/src/front/wgsl/parse/number.rs`."><title>number.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../../../" data-static-root-path="../../../../../static.files/" data-current-crate="naga" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../../../src-files.js"></script><script defer src="../../../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../../../naga/index.html"><img class="rust-logo" src="../../../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/naga-0.19.0/src/front/wgsl/parse/number.rs`."><title>number.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../../../" data-static-root-path="../../../../../static.files/" data-current-crate="naga" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../../../src-files.js"></script><script defer src="../../../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -418,32 +419,7 @@
 <a href="#418" id="418">418</a>
 <a href="#419" id="419">419</a>
 <a href="#420" id="420">420</a>
-<a href="#421" id="421">421</a>
-<a href="#422" id="422">422</a>
-<a href="#423" id="423">423</a>
-<a href="#424" id="424">424</a>
-<a href="#425" id="425">425</a>
-<a href="#426" id="426">426</a>
-<a href="#427" id="427">427</a>
-<a href="#428" id="428">428</a>
-<a href="#429" id="429">429</a>
-<a href="#430" id="430">430</a>
-<a href="#431" id="431">431</a>
-<a href="#432" id="432">432</a>
-<a href="#433" id="433">433</a>
-<a href="#434" id="434">434</a>
-<a href="#435" id="435">435</a>
-<a href="#436" id="436">436</a>
-<a href="#437" id="437">437</a>
-<a href="#438" id="438">438</a>
-<a href="#439" id="439">439</a>
-<a href="#440" id="440">440</a>
-<a href="#441" id="441">441</a>
-<a href="#442" id="442">442</a>
-<a href="#443" id="443">443</a>
-</pre></div><pre class="rust"><code><span class="kw">use </span>std::borrow::Cow;
-
-<span class="kw">use </span><span class="kw">crate</span>::front::wgsl::error::NumberError;
+</pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::front::wgsl::error::NumberError;
 <span class="kw">use </span><span class="kw">crate</span>::front::wgsl::parse::lexer::Token;
 
 <span class="doccomment">/// When using this type assume no Abstract Int/Float for now
@@ -459,39 +435,13 @@
     </span>U32(u32),
     <span class="doccomment">/// Concrete f32
     </span>F32(f32),
+    <span class="doccomment">/// Concrete f64
+    </span>F64(f64),
 }
 
-<span class="kw">impl </span>Number {
-    <span class="doccomment">/// Convert abstract numbers to a plausible concrete counterpart.
-    ///
-    /// Return concrete numbers unchanged. If the conversion would be
-    /// lossy, return an error.
-    </span><span class="kw">fn </span>abstract_to_concrete(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;Number, NumberError&gt; {
-        <span class="kw">match </span><span class="self">self </span>{
-            Number::AbstractInt(num) =&gt; i32::try_from(num)
-                .map(Number::I32)
-                .map_err(|<span class="kw">_</span>| NumberError::NotRepresentable),
-            Number::AbstractFloat(num) =&gt; {
-                <span class="kw">let </span>num = num <span class="kw">as </span>f32;
-                <span class="kw">if </span>num.is_finite() {
-                    <span class="prelude-val">Ok</span>(Number::F32(num))
-                } <span class="kw">else </span>{
-                    <span class="prelude-val">Err</span>(NumberError::NotRepresentable)
-                }
-            }
-            num =&gt; <span class="prelude-val">Ok</span>(num),
-        }
-    }
-}
-
-<span class="comment">// TODO: when implementing Creation-Time Expressions, remove the ability to match the minus sign
-
-</span><span class="kw">pub</span>(<span class="kw">in </span><span class="kw">crate</span>::front::wgsl) <span class="kw">fn </span>consume_number(input: <span class="kw-2">&amp;</span>str) -&gt; (Token&lt;<span class="lifetime">&#39;_</span>&gt;, <span class="kw-2">&amp;</span>str) {
+<span class="kw">pub</span>(<span class="kw">in </span><span class="kw">crate</span>::front::wgsl) <span class="kw">fn </span>consume_number(input: <span class="kw-2">&amp;</span>str) -&gt; (Token&lt;<span class="lifetime">'_</span>&gt;, <span class="kw-2">&amp;</span>str) {
     <span class="kw">let </span>(result, rest) = parse(input);
-    (
-        Token::Number(result.and_then(Number::abstract_to_concrete)),
-        rest,
-    )
+    (Token::Number(result), rest)
 }
 
 <span class="kw">enum </span>Kind {
@@ -504,9 +454,11 @@
     U32,
 }
 
-<span class="kw">enum </span>FloatKind {
-    F32,
+<span class="attr">#[derive(Debug)]
+</span><span class="kw">enum </span>FloatKind {
     F16,
+    F32,
+    F64,
 }
 
 <span class="comment">// The following regexes (from the WGSL spec) will be matched:
@@ -529,7 +481,9 @@
 // | / 0[xX][0-9a-fA-F]+                         [pP][+-]?[0-9]+        [fh]?   /
 
 // You could visualize the regex below via https://debuggex.com to get a rough idea what `parse` is doing
-// -?(?:0[xX](?:([0-9a-fA-F]+\.[0-9a-fA-F]*|[0-9a-fA-F]*\.[0-9a-fA-F]+)(?:([pP][+-]?[0-9]+)([fh]?))?|([0-9a-fA-F]+)([pP][+-]?[0-9]+)([fh]?)|([0-9a-fA-F]+)([iu]?))|((?:[0-9]+[eE][+-]?[0-9]+|(?:[0-9]+\.[0-9]*|[0-9]*\.[0-9]+)(?:[eE][+-]?[0-9]+)?))([fh]?)|((?:[0-9]|[1-9][0-9]+))([iufh]?))
+// (?:0[xX](?:([0-9a-fA-F]+\.[0-9a-fA-F]*|[0-9a-fA-F]*\.[0-9a-fA-F]+)(?:([pP][+-]?[0-9]+)([fh]?))?|([0-9a-fA-F]+)([pP][+-]?[0-9]+)([fh]?)|([0-9a-fA-F]+)([iu]?))|((?:[0-9]+[eE][+-]?[0-9]+|(?:[0-9]+\.[0-9]*|[0-9]*\.[0-9]+)(?:[eE][+-]?[0-9]+)?))([fh]?)|((?:[0-9]|[1-9][0-9]+))([iufh]?))
+
+// Leading signs are handled as unary operators.
 
 </span><span class="kw">fn </span>parse(input: <span class="kw-2">&amp;</span>str) -&gt; (<span class="prelude-ty">Result</span>&lt;Number, NumberError&gt;, <span class="kw-2">&amp;</span>str) {
     <span class="doccomment">/// returns `true` and consumes `X` bytes from the given byte buffer
@@ -547,9 +501,9 @@
     /// if one of the given patterns are found at the start of the buffer
     /// returning the corresponding expr for the matched pattern
     </span><span class="macro">macro_rules! </span>consume_map {
-        (<span class="macro-nonterminal">$bytes</span>:ident, [$(<span class="macro-nonterminal">$pattern</span>:pat_param =&gt; <span class="macro-nonterminal">$to</span>:expr),<span class="kw-2">*</span>]) =&gt; {
+        (<span class="macro-nonterminal">$bytes</span>:ident, [$( $(<span class="macro-nonterminal">$pattern</span>:pat_param),* =&gt; <span class="macro-nonterminal">$to</span>:expr),* $(,)<span class="question-mark">?</span>]) =&gt; {
             <span class="kw">match </span><span class="macro-nonterminal">$bytes </span>{
-                $( <span class="kw-2">&amp;</span>[<span class="macro-nonterminal">$pattern</span>, <span class="kw-2">ref </span>rest @ ..] =&gt; { <span class="macro-nonterminal">$bytes </span>= rest; <span class="prelude-val">Some</span>(<span class="macro-nonterminal">$to</span>) }, )*
+                $( <span class="kw-2">&amp;</span>[ $(<span class="macro-nonterminal">$pattern</span>),<span class="kw-2">*</span>, <span class="kw-2">ref </span>rest @ ..] =&gt; { <span class="macro-nonterminal">$bytes </span>= rest; <span class="prelude-val">Some</span>(<span class="macro-nonterminal">$to</span>) }, )*
                 <span class="kw">_ </span>=&gt; <span class="prelude-val">None</span>,
             }
         };
@@ -560,7 +514,7 @@
     </span><span class="macro">macro_rules! </span>consume_dec_digits {
         (<span class="macro-nonterminal">$bytes</span>:ident) =&gt; {{
             <span class="kw">let </span>start_len = <span class="macro-nonterminal">$bytes</span>.len();
-            <span class="kw">while let </span><span class="kw-2">&amp;</span>[<span class="string">b&#39;0&#39;</span>..=<span class="string">b&#39;9&#39;</span>, <span class="kw-2">ref </span>rest @ ..] = <span class="macro-nonterminal">$bytes </span>{
+            <span class="kw">while let </span><span class="kw-2">&amp;</span>[<span class="string">b'0'</span>..=<span class="string">b'9'</span>, <span class="kw-2">ref </span>rest @ ..] = <span class="macro-nonterminal">$bytes </span>{
                 <span class="macro-nonterminal">$bytes </span>= rest;
             }
             start_len - <span class="macro-nonterminal">$bytes</span>.len()
@@ -572,11 +526,21 @@
     </span><span class="macro">macro_rules! </span>consume_hex_digits {
         (<span class="macro-nonterminal">$bytes</span>:ident) =&gt; {{
             <span class="kw">let </span>start_len = <span class="macro-nonterminal">$bytes</span>.len();
-            <span class="kw">while let </span><span class="kw-2">&amp;</span>[<span class="string">b&#39;0&#39;</span>..=<span class="string">b&#39;9&#39; </span>| <span class="string">b&#39;a&#39;</span>..=<span class="string">b&#39;f&#39; </span>| <span class="string">b&#39;A&#39;</span>..=<span class="string">b&#39;F&#39;</span>, <span class="kw-2">ref </span>rest @ ..] = <span class="macro-nonterminal">$bytes </span>{
+            <span class="kw">while let </span><span class="kw-2">&amp;</span>[<span class="string">b'0'</span>..=<span class="string">b'9' </span>| <span class="string">b'a'</span>..=<span class="string">b'f' </span>| <span class="string">b'A'</span>..=<span class="string">b'F'</span>, <span class="kw-2">ref </span>rest @ ..] = <span class="macro-nonterminal">$bytes </span>{
                 <span class="macro-nonterminal">$bytes </span>= rest;
             }
             start_len - <span class="macro-nonterminal">$bytes</span>.len()
         }};
+    }
+
+    <span class="macro">macro_rules! </span>consume_float_suffix {
+        (<span class="macro-nonterminal">$bytes</span>:ident) =&gt; {
+            <span class="macro">consume_map!</span>(<span class="macro-nonterminal">$bytes</span>, [
+                <span class="string">b'h' </span>=&gt; FloatKind::F16,
+                <span class="string">b'f' </span>=&gt; FloatKind::F32,
+                <span class="string">b'l'</span>, <span class="string">b'f' </span>=&gt; FloatKind::F64,
+            ])
+        };
     }
 
     <span class="doccomment">/// maps the given `&amp;[u8]` (tail of the initial `input: &amp;str`) to a `&amp;str`
@@ -586,18 +550,18 @@
         };
     }
 
-    <span class="kw">struct </span>ExtractSubStr&lt;<span class="lifetime">&#39;a</span>&gt;(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str);
+    <span class="kw">struct </span>ExtractSubStr&lt;<span class="lifetime">'a</span>&gt;(<span class="kw-2">&amp;</span><span class="lifetime">'a </span>str);
 
-    <span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; ExtractSubStr&lt;<span class="lifetime">&#39;a</span>&gt; {
+    <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; ExtractSubStr&lt;<span class="lifetime">'a</span>&gt; {
         <span class="doccomment">/// given an `input` and a `start` (tail of the `input`)
         /// creates a new [`ExtractSubStr`](`Self`)
-        </span><span class="kw">fn </span>start(input: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str, start: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[u8]) -&gt; <span class="self">Self </span>{
+        </span><span class="kw">fn </span>start(input: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>str, start: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>[u8]) -&gt; <span class="self">Self </span>{
             <span class="kw">let </span>start = input.len() - start.len();
             <span class="self">Self</span>(<span class="kw-2">&amp;</span>input[start..])
         }
         <span class="doccomment">/// given an `end` (tail of the initial `input`)
         /// returns a substring of `input`
-        </span><span class="kw">fn </span>end(<span class="kw-2">&amp;</span><span class="self">self</span>, end: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[u8]) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str {
+        </span><span class="kw">fn </span>end(<span class="kw-2">&amp;</span><span class="self">self</span>, end: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>[u8]) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'a </span>str {
             <span class="kw">let </span>end = <span class="self">self</span>.<span class="number">0</span>.len() - end.len();
             <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>[..end]
         }
@@ -607,14 +571,12 @@
 
     <span class="kw">let </span>general_extract = ExtractSubStr::start(input, bytes);
 
-    <span class="kw">let </span>is_negative = <span class="macro">consume!</span>(bytes, <span class="string">b&#39;-&#39;</span>);
-
-    <span class="kw">if </span><span class="macro">consume!</span>(bytes, <span class="string">b&#39;0&#39;</span>, <span class="string">b&#39;x&#39; </span>| <span class="string">b&#39;X&#39;</span>) {
+    <span class="kw">if </span><span class="macro">consume!</span>(bytes, <span class="string">b'0'</span>, <span class="string">b'x' </span>| <span class="string">b'X'</span>) {
         <span class="kw">let </span>digits_extract = ExtractSubStr::start(input, bytes);
 
         <span class="kw">let </span>consumed = <span class="macro">consume_hex_digits!</span>(bytes);
 
-        <span class="kw">if </span><span class="macro">consume!</span>(bytes, <span class="string">b&#39;.&#39;</span>) {
+        <span class="kw">if </span><span class="macro">consume!</span>(bytes, <span class="string">b'.'</span>) {
             <span class="kw">let </span>consumed_after_period = <span class="macro">consume_hex_digits!</span>(bytes);
 
             <span class="kw">if </span>consumed + consumed_after_period == <span class="number">0 </span>{
@@ -623,8 +585,8 @@
 
             <span class="kw">let </span>significand = general_extract.end(bytes);
 
-            <span class="kw">if </span><span class="macro">consume!</span>(bytes, <span class="string">b&#39;p&#39; </span>| <span class="string">b&#39;P&#39;</span>) {
-                <span class="macro">consume!</span>(bytes, <span class="string">b&#39;+&#39; </span>| <span class="string">b&#39;-&#39;</span>);
+            <span class="kw">if </span><span class="macro">consume!</span>(bytes, <span class="string">b'p' </span>| <span class="string">b'P'</span>) {
+                <span class="macro">consume!</span>(bytes, <span class="string">b'+' </span>| <span class="string">b'-'</span>);
                 <span class="kw">let </span>consumed = <span class="macro">consume_dec_digits!</span>(bytes);
 
                 <span class="kw">if </span>consumed == <span class="number">0 </span>{
@@ -633,7 +595,7 @@
 
                 <span class="kw">let </span>number = general_extract.end(bytes);
 
-                <span class="kw">let </span>kind = <span class="macro">consume_map!</span>(bytes, [<span class="string">b&#39;f&#39; </span>=&gt; FloatKind::F32, <span class="string">b&#39;h&#39; </span>=&gt; FloatKind::F16]);
+                <span class="kw">let </span>kind = <span class="macro">consume_float_suffix!</span>(bytes);
 
                 (parse_hex_float(number, kind), <span class="macro">rest_to_str!</span>(bytes))
             } <span class="kw">else </span>{
@@ -652,8 +614,8 @@
 
             <span class="kw">let </span>exp_extract = ExtractSubStr::start(input, bytes);
 
-            <span class="kw">if </span><span class="macro">consume!</span>(bytes, <span class="string">b&#39;p&#39; </span>| <span class="string">b&#39;P&#39;</span>) {
-                <span class="macro">consume!</span>(bytes, <span class="string">b&#39;+&#39; </span>| <span class="string">b&#39;-&#39;</span>);
+            <span class="kw">if </span><span class="macro">consume!</span>(bytes, <span class="string">b'p' </span>| <span class="string">b'P'</span>) {
+                <span class="macro">consume!</span>(bytes, <span class="string">b'+' </span>| <span class="string">b'-'</span>);
                 <span class="kw">let </span>consumed = <span class="macro">consume_dec_digits!</span>(bytes);
 
                 <span class="kw">if </span>consumed == <span class="number">0 </span>{
@@ -662,35 +624,32 @@
 
                 <span class="kw">let </span>exponent = exp_extract.end(bytes);
 
-                <span class="kw">let </span>kind = <span class="macro">consume_map!</span>(bytes, [<span class="string">b&#39;f&#39; </span>=&gt; FloatKind::F32, <span class="string">b&#39;h&#39; </span>=&gt; FloatKind::F16]);
+                <span class="kw">let </span>kind = <span class="macro">consume_float_suffix!</span>(bytes);
 
                 (
                     parse_hex_float_missing_period(significand, exponent, kind),
                     <span class="macro">rest_to_str!</span>(bytes),
                 )
             } <span class="kw">else </span>{
-                <span class="kw">let </span>kind = <span class="macro">consume_map!</span>(bytes, [<span class="string">b&#39;i&#39; </span>=&gt; IntKind::I32, <span class="string">b&#39;u&#39; </span>=&gt; IntKind::U32]);
+                <span class="kw">let </span>kind = <span class="macro">consume_map!</span>(bytes, [<span class="string">b'i' </span>=&gt; IntKind::I32, <span class="string">b'u' </span>=&gt; IntKind::U32]);
 
-                (
-                    parse_hex_int(is_negative, digits, kind),
-                    <span class="macro">rest_to_str!</span>(bytes),
-                )
+                (parse_hex_int(digits, kind), <span class="macro">rest_to_str!</span>(bytes))
             }
         }
     } <span class="kw">else </span>{
-        <span class="kw">let </span>is_first_zero = bytes.first() == <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="string">b&#39;0&#39;</span>);
+        <span class="kw">let </span>is_first_zero = bytes.first() == <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="string">b'0'</span>);
 
         <span class="kw">let </span>consumed = <span class="macro">consume_dec_digits!</span>(bytes);
 
-        <span class="kw">if </span><span class="macro">consume!</span>(bytes, <span class="string">b&#39;.&#39;</span>) {
+        <span class="kw">if </span><span class="macro">consume!</span>(bytes, <span class="string">b'.'</span>) {
             <span class="kw">let </span>consumed_after_period = <span class="macro">consume_dec_digits!</span>(bytes);
 
             <span class="kw">if </span>consumed + consumed_after_period == <span class="number">0 </span>{
                 <span class="kw">return </span>(<span class="prelude-val">Err</span>(NumberError::Invalid), <span class="macro">rest_to_str!</span>(bytes));
             }
 
-            <span class="kw">if </span><span class="macro">consume!</span>(bytes, <span class="string">b&#39;e&#39; </span>| <span class="string">b&#39;E&#39;</span>) {
-                <span class="macro">consume!</span>(bytes, <span class="string">b&#39;+&#39; </span>| <span class="string">b&#39;-&#39;</span>);
+            <span class="kw">if </span><span class="macro">consume!</span>(bytes, <span class="string">b'e' </span>| <span class="string">b'E'</span>) {
+                <span class="macro">consume!</span>(bytes, <span class="string">b'+' </span>| <span class="string">b'-'</span>);
                 <span class="kw">let </span>consumed = <span class="macro">consume_dec_digits!</span>(bytes);
 
                 <span class="kw">if </span>consumed == <span class="number">0 </span>{
@@ -700,7 +659,7 @@
 
             <span class="kw">let </span>number = general_extract.end(bytes);
 
-            <span class="kw">let </span>kind = <span class="macro">consume_map!</span>(bytes, [<span class="string">b&#39;f&#39; </span>=&gt; FloatKind::F32, <span class="string">b&#39;h&#39; </span>=&gt; FloatKind::F16]);
+            <span class="kw">let </span>kind = <span class="macro">consume_float_suffix!</span>(bytes);
 
             (parse_dec_float(number, kind), <span class="macro">rest_to_str!</span>(bytes))
         } <span class="kw">else </span>{
@@ -708,8 +667,8 @@
                 <span class="kw">return </span>(<span class="prelude-val">Err</span>(NumberError::Invalid), <span class="macro">rest_to_str!</span>(bytes));
             }
 
-            <span class="kw">if </span><span class="macro">consume!</span>(bytes, <span class="string">b&#39;e&#39; </span>| <span class="string">b&#39;E&#39;</span>) {
-                <span class="macro">consume!</span>(bytes, <span class="string">b&#39;+&#39; </span>| <span class="string">b&#39;-&#39;</span>);
+            <span class="kw">if </span><span class="macro">consume!</span>(bytes, <span class="string">b'e' </span>| <span class="string">b'E'</span>) {
+                <span class="macro">consume!</span>(bytes, <span class="string">b'+' </span>| <span class="string">b'-'</span>);
                 <span class="kw">let </span>consumed = <span class="macro">consume_dec_digits!</span>(bytes);
 
                 <span class="kw">if </span>consumed == <span class="number">0 </span>{
@@ -718,77 +677,68 @@
 
                 <span class="kw">let </span>number = general_extract.end(bytes);
 
-                <span class="kw">let </span>kind = <span class="macro">consume_map!</span>(bytes, [<span class="string">b&#39;f&#39; </span>=&gt; FloatKind::F32, <span class="string">b&#39;h&#39; </span>=&gt; FloatKind::F16]);
+                <span class="kw">let </span>kind = <span class="macro">consume_float_suffix!</span>(bytes);
 
                 (parse_dec_float(number, kind), <span class="macro">rest_to_str!</span>(bytes))
             } <span class="kw">else </span>{
-                <span class="comment">// make sure the multi-digit numbers don&#39;t start with zero
+                <span class="comment">// make sure the multi-digit numbers don't start with zero
                 </span><span class="kw">if </span>consumed &gt; <span class="number">1 </span>&amp;&amp; is_first_zero {
                     <span class="kw">return </span>(<span class="prelude-val">Err</span>(NumberError::Invalid), <span class="macro">rest_to_str!</span>(bytes));
                 }
 
-                <span class="kw">let </span>digits_with_sign = general_extract.end(bytes);
+                <span class="kw">let </span>digits = general_extract.end(bytes);
 
                 <span class="kw">let </span>kind = <span class="macro">consume_map!</span>(bytes, [
-                    <span class="string">b&#39;i&#39; </span>=&gt; Kind::Int(IntKind::I32),
-                    <span class="string">b&#39;u&#39; </span>=&gt; Kind::Int(IntKind::U32),
-                    <span class="string">b&#39;f&#39; </span>=&gt; Kind::Float(FloatKind::F32),
-                    <span class="string">b&#39;h&#39; </span>=&gt; Kind::Float(FloatKind::F16)
+                    <span class="string">b'i' </span>=&gt; Kind::Int(IntKind::I32),
+                    <span class="string">b'u' </span>=&gt; Kind::Int(IntKind::U32),
+                    <span class="string">b'h' </span>=&gt; Kind::Float(FloatKind::F16),
+                    <span class="string">b'f' </span>=&gt; Kind::Float(FloatKind::F32),
+                    <span class="string">b'l'</span>, <span class="string">b'f' </span>=&gt; Kind::Float(FloatKind::F64),
                 ]);
 
-                (
-                    parse_dec(is_negative, digits_with_sign, kind),
-                    <span class="macro">rest_to_str!</span>(bytes),
-                )
+                (parse_dec(digits, kind), <span class="macro">rest_to_str!</span>(bytes))
             }
         }
     }
 }
 
 <span class="kw">fn </span>parse_hex_float_missing_exponent(
-    <span class="comment">// format: -?0[xX] ( [0-9a-fA-F]+\.[0-9a-fA-F]* | [0-9a-fA-F]*\.[0-9a-fA-F]+ )
+    <span class="comment">// format: 0[xX] ( [0-9a-fA-F]+\.[0-9a-fA-F]* | [0-9a-fA-F]*\.[0-9a-fA-F]+ )
     </span>significand: <span class="kw-2">&amp;</span>str,
     kind: <span class="prelude-ty">Option</span>&lt;FloatKind&gt;,
 ) -&gt; <span class="prelude-ty">Result</span>&lt;Number, NumberError&gt; {
-    <span class="kw">let </span>hexf_input = <span class="macro">format!</span>(<span class="string">&quot;{}{}&quot;</span>, significand, <span class="string">&quot;p0&quot;</span>);
+    <span class="kw">let </span>hexf_input = <span class="macro">format!</span>(<span class="string">"{}{}"</span>, significand, <span class="string">"p0"</span>);
     parse_hex_float(<span class="kw-2">&amp;</span>hexf_input, kind)
 }
 
 <span class="kw">fn </span>parse_hex_float_missing_period(
-    <span class="comment">// format: -?0[xX] [0-9a-fA-F]+
+    <span class="comment">// format: 0[xX] [0-9a-fA-F]+
     </span>significand: <span class="kw-2">&amp;</span>str,
     <span class="comment">// format: [pP][+-]?[0-9]+
     </span>exponent: <span class="kw-2">&amp;</span>str,
     kind: <span class="prelude-ty">Option</span>&lt;FloatKind&gt;,
 ) -&gt; <span class="prelude-ty">Result</span>&lt;Number, NumberError&gt; {
-    <span class="kw">let </span>hexf_input = <span class="macro">format!</span>(<span class="string">&quot;{significand}.{exponent}&quot;</span>);
+    <span class="kw">let </span>hexf_input = <span class="macro">format!</span>(<span class="string">"{significand}.{exponent}"</span>);
     parse_hex_float(<span class="kw-2">&amp;</span>hexf_input, kind)
 }
 
 <span class="kw">fn </span>parse_hex_int(
-    is_negative: bool,
     <span class="comment">// format: [0-9a-fA-F]+
     </span>digits: <span class="kw-2">&amp;</span>str,
     kind: <span class="prelude-ty">Option</span>&lt;IntKind&gt;,
 ) -&gt; <span class="prelude-ty">Result</span>&lt;Number, NumberError&gt; {
-    <span class="kw">let </span>digits_with_sign = <span class="kw">if </span>is_negative {
-        Cow::Owned(<span class="macro">format!</span>(<span class="string">&quot;-{digits}&quot;</span>))
-    } <span class="kw">else </span>{
-        Cow::Borrowed(digits)
-    };
-    parse_int(<span class="kw-2">&amp;</span>digits_with_sign, kind, <span class="number">16</span>, is_negative)
+    parse_int(digits, kind, <span class="number">16</span>)
 }
 
 <span class="kw">fn </span>parse_dec(
-    is_negative: bool,
-    <span class="comment">// format: -? ( [0-9] | [1-9][0-9]+ )
-    </span>digits_with_sign: <span class="kw-2">&amp;</span>str,
+    <span class="comment">// format: ( [0-9] | [1-9][0-9]+ )
+    </span>digits: <span class="kw-2">&amp;</span>str,
     kind: <span class="prelude-ty">Option</span>&lt;Kind&gt;,
 ) -&gt; <span class="prelude-ty">Result</span>&lt;Number, NumberError&gt; {
     <span class="kw">match </span>kind {
-        <span class="prelude-val">None </span>=&gt; parse_int(digits_with_sign, <span class="prelude-val">None</span>, <span class="number">10</span>, is_negative),
-        <span class="prelude-val">Some</span>(Kind::Int(kind)) =&gt; parse_int(digits_with_sign, <span class="prelude-val">Some</span>(kind), <span class="number">10</span>, is_negative),
-        <span class="prelude-val">Some</span>(Kind::Float(kind)) =&gt; parse_dec_float(digits_with_sign, <span class="prelude-val">Some</span>(kind)),
+        <span class="prelude-val">None </span>=&gt; parse_int(digits, <span class="prelude-val">None</span>, <span class="number">10</span>),
+        <span class="prelude-val">Some</span>(Kind::Int(kind)) =&gt; parse_int(digits, <span class="prelude-val">Some</span>(kind), <span class="number">10</span>),
+        <span class="prelude-val">Some</span>(Kind::Float(kind)) =&gt; parse_dec_float(digits, <span class="prelude-val">Some</span>(kind)),
     }
 }
 
@@ -817,25 +767,30 @@
 
 // Therefore we only check for overflow manually for decimal floating point literals
 
-// input format: -?0[xX] ( [0-9a-fA-F]+\.[0-9a-fA-F]* | [0-9a-fA-F]*\.[0-9a-fA-F]+ ) [pP][+-]?[0-9]+
+// input format: 0[xX] ( [0-9a-fA-F]+\.[0-9a-fA-F]* | [0-9a-fA-F]*\.[0-9a-fA-F]+ ) [pP][+-]?[0-9]+
 </span><span class="kw">fn </span>parse_hex_float(input: <span class="kw-2">&amp;</span>str, kind: <span class="prelude-ty">Option</span>&lt;FloatKind&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Number, NumberError&gt; {
     <span class="kw">match </span>kind {
         <span class="prelude-val">None </span>=&gt; <span class="kw">match </span>hexf_parse::parse_hexf64(input, <span class="bool-val">false</span>) {
             <span class="prelude-val">Ok</span>(num) =&gt; <span class="prelude-val">Ok</span>(Number::AbstractFloat(num)),
-            <span class="comment">// can only be ParseHexfErrorKind::Inexact but we can&#39;t check since it&#39;s private
-            </span><span class="kw">_ </span>=&gt; <span class="prelude-val">Err</span>(NumberError::NotRepresentable),
-        },
-        <span class="prelude-val">Some</span>(FloatKind::F32) =&gt; <span class="kw">match </span>hexf_parse::parse_hexf32(input, <span class="bool-val">false</span>) {
-            <span class="prelude-val">Ok</span>(num) =&gt; <span class="prelude-val">Ok</span>(Number::F32(num)),
-            <span class="comment">// can only be ParseHexfErrorKind::Inexact but we can&#39;t check since it&#39;s private
+            <span class="comment">// can only be ParseHexfErrorKind::Inexact but we can't check since it's private
             </span><span class="kw">_ </span>=&gt; <span class="prelude-val">Err</span>(NumberError::NotRepresentable),
         },
         <span class="prelude-val">Some</span>(FloatKind::F16) =&gt; <span class="prelude-val">Err</span>(NumberError::UnimplementedF16),
+        <span class="prelude-val">Some</span>(FloatKind::F32) =&gt; <span class="kw">match </span>hexf_parse::parse_hexf32(input, <span class="bool-val">false</span>) {
+            <span class="prelude-val">Ok</span>(num) =&gt; <span class="prelude-val">Ok</span>(Number::F32(num)),
+            <span class="comment">// can only be ParseHexfErrorKind::Inexact but we can't check since it's private
+            </span><span class="kw">_ </span>=&gt; <span class="prelude-val">Err</span>(NumberError::NotRepresentable),
+        },
+        <span class="prelude-val">Some</span>(FloatKind::F64) =&gt; <span class="kw">match </span>hexf_parse::parse_hexf64(input, <span class="bool-val">false</span>) {
+            <span class="prelude-val">Ok</span>(num) =&gt; <span class="prelude-val">Ok</span>(Number::F64(num)),
+            <span class="comment">// can only be ParseHexfErrorKind::Inexact but we can't check since it's private
+            </span><span class="kw">_ </span>=&gt; <span class="prelude-val">Err</span>(NumberError::NotRepresentable),
+        },
     }
 }
 
-<span class="comment">// input format: -? ( [0-9]+\.[0-9]* | [0-9]*\.[0-9]+ ) ([eE][+-]?[0-9]+)?
-//             | -? [0-9]+ [eE][+-]?[0-9]+
+<span class="comment">// input format: ( [0-9]+\.[0-9]* | [0-9]*\.[0-9]+ ) ([eE][+-]?[0-9]+)?
+//             | [0-9]+ [eE][+-]?[0-9]+
 </span><span class="kw">fn </span>parse_dec_float(input: <span class="kw-2">&amp;</span>str, kind: <span class="prelude-ty">Option</span>&lt;FloatKind&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Number, NumberError&gt; {
     <span class="kw">match </span>kind {
         <span class="prelude-val">None </span>=&gt; {
@@ -850,16 +805,17 @@
                 .then_some(Number::F32(num))
                 .ok_or(NumberError::NotRepresentable)
         }
+        <span class="prelude-val">Some</span>(FloatKind::F64) =&gt; {
+            <span class="kw">let </span>num = input.parse::&lt;f64&gt;().unwrap(); <span class="comment">// will never fail
+            </span>num.is_finite()
+                .then_some(Number::F64(num))
+                .ok_or(NumberError::NotRepresentable)
+        }
         <span class="prelude-val">Some</span>(FloatKind::F16) =&gt; <span class="prelude-val">Err</span>(NumberError::UnimplementedF16),
     }
 }
 
-<span class="kw">fn </span>parse_int(
-    input: <span class="kw-2">&amp;</span>str,
-    kind: <span class="prelude-ty">Option</span>&lt;IntKind&gt;,
-    radix: u32,
-    is_negative: bool,
-) -&gt; <span class="prelude-ty">Result</span>&lt;Number, NumberError&gt; {
+<span class="kw">fn </span>parse_int(input: <span class="kw-2">&amp;</span>str, kind: <span class="prelude-ty">Option</span>&lt;IntKind&gt;, radix: u32) -&gt; <span class="prelude-ty">Result</span>&lt;Number, NumberError&gt; {
     <span class="kw">fn </span>map_err(e: core::num::ParseIntError) -&gt; NumberError {
         <span class="kw">match </span><span class="kw-2">*</span>e.kind() {
             core::num::IntErrorKind::PosOverflow | core::num::IntErrorKind::NegOverflow =&gt; {
@@ -877,7 +833,6 @@
             <span class="prelude-val">Ok</span>(num) =&gt; <span class="prelude-val">Ok</span>(Number::I32(num)),
             <span class="prelude-val">Err</span>(e) =&gt; <span class="prelude-val">Err</span>(map_err(e)),
         },
-        <span class="prelude-val">Some</span>(IntKind::U32) <span class="kw">if </span>is_negative =&gt; <span class="prelude-val">Err</span>(NumberError::NotRepresentable),
         <span class="prelude-val">Some</span>(IntKind::U32) =&gt; <span class="kw">match </span>u32::from_str_radix(input, radix) {
             <span class="prelude-val">Ok</span>(num) =&gt; <span class="prelude-val">Ok</span>(Number::U32(num)),
             <span class="prelude-val">Err</span>(e) =&gt; <span class="prelude-val">Err</span>(map_err(e)),

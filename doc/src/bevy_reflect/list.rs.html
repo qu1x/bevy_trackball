@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_reflect-0.12.1/src/list.rs`."><title>list.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="bevy_reflect" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../bevy_reflect/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_reflect-0.13.0/src/list.rs`."><title>list.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="bevy_reflect" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -519,6 +520,10 @@
 <a href="#519" id="519">519</a>
 <a href="#520" id="520">520</a>
 <a href="#521" id="521">521</a>
+<a href="#522" id="522">522</a>
+<a href="#523" id="523">523</a>
+<a href="#524" id="524">524</a>
+<a href="#525" id="525">525</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::any::{Any, TypeId};
 <span class="kw">use </span>std::fmt::{Debug, Formatter};
 <span class="kw">use </span>std::hash::{Hash, Hasher};
@@ -527,8 +532,8 @@
 
 <span class="kw">use </span><span class="kw">crate</span>::utility::reflect_hasher;
 <span class="kw">use crate</span>::{
-    <span class="self">self </span><span class="kw">as </span>bevy_reflect, FromReflect, Reflect, ReflectMut, ReflectOwned, ReflectRef, TypeInfo,
-    TypePath, TypePathTable,
+    <span class="self">self </span><span class="kw">as </span>bevy_reflect, FromReflect, Reflect, ReflectKind, ReflectMut, ReflectOwned, ReflectRef,
+    TypeInfo, TypePath, TypePathTable,
 };
 
 <span class="doccomment">/// A trait used to power [list-like] operations via [reflection].
@@ -550,7 +555,7 @@
 /// This contract above should be upheld by any manual implementors.
 ///
 /// Due to the [type-erasing] nature of the reflection API as a whole,
-/// this trait does not make any guarantees that the implementor&#39;s elements
+/// this trait does not make any guarantees that the implementor's elements
 /// are homogeneous (i.e. all the same type).
 ///
 /// # Example
@@ -567,7 +572,6 @@
 ///
 /// [list-like]: https://doc.rust-lang.org/book/ch08-01-vectors.html
 /// [reflection]: crate
-/// [`Vec`]: std::vec::Vec
 /// [type-erasing]: https://doc.rust-lang.org/book/ch17-02-trait-objects.html
 </span><span class="kw">pub trait </span>List: Reflect {
     <span class="doccomment">/// Returns a reference to the element at `index`, or `None` if out of bounds.
@@ -634,8 +638,8 @@
     type_id: TypeId,
     item_type_path: TypePathTable,
     item_type_id: TypeId,
-    <span class="attr">#[cfg(feature = <span class="string">&quot;documentation&quot;</span>)]
-    </span>docs: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str&gt;,
+    <span class="attr">#[cfg(feature = <span class="string">"documentation"</span>)]
+    </span>docs: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str&gt;,
 }
 
 <span class="kw">impl </span>ListInfo {
@@ -646,14 +650,14 @@
             type_id: TypeId::of::&lt;TList&gt;(),
             item_type_path: TypePathTable::of::&lt;TItem&gt;(),
             item_type_id: TypeId::of::&lt;TItem&gt;(),
-            <span class="attr">#[cfg(feature = <span class="string">&quot;documentation&quot;</span>)]
+            <span class="attr">#[cfg(feature = <span class="string">"documentation"</span>)]
             </span>docs: <span class="prelude-val">None</span>,
         }
     }
 
     <span class="doccomment">/// Sets the docstring for this list.
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;documentation&quot;</span>)]
-    </span><span class="kw">pub fn </span>with_docs(<span class="self">self</span>, docs: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str&gt;) -&gt; <span class="self">Self </span>{
+    </span><span class="attr">#[cfg(feature = <span class="string">"documentation"</span>)]
+    </span><span class="kw">pub fn </span>with_docs(<span class="self">self</span>, docs: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str&gt;) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{ docs, ..<span class="self">self </span>}
     }
 
@@ -670,7 +674,7 @@
     ///
     /// [stable, full type path]: TypePath
     /// [`type_path_table`]: Self::type_path_table
-    </span><span class="kw">pub fn </span>type_path(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str {
+    </span><span class="kw">pub fn </span>type_path(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str {
         <span class="self">self</span>.type_path_table().path()
     }
 
@@ -702,8 +706,8 @@
     }
 
     <span class="doccomment">/// The docstring of this list, if any.
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;documentation&quot;</span>)]
-    </span><span class="kw">pub fn </span>docs(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str&gt; {
+    </span><span class="attr">#[cfg(feature = <span class="string">"documentation"</span>)]
+    </span><span class="kw">pub fn </span>docs(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str&gt; {
         <span class="self">self</span>.docs
     }
 }
@@ -711,7 +715,7 @@
 <span class="doccomment">/// A list of reflected values.
 </span><span class="attr">#[derive(Default)]
 </span><span class="kw">pub struct </span>DynamicList {
-    represented_type: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>TypeInfo&gt;,
+    represented_type: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span>TypeInfo&gt;,
     values: Vec&lt;Box&lt;<span class="kw">dyn </span>Reflect&gt;&gt;,
 }
 
@@ -722,11 +726,11 @@
     /// Panics if the given [type] is not a [`TypeInfo::List`].
     ///
     /// [type]: TypeInfo
-    </span><span class="kw">pub fn </span>set_represented_type(<span class="kw-2">&amp;mut </span><span class="self">self</span>, represented_type: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>TypeInfo&gt;) {
+    </span><span class="kw">pub fn </span>set_represented_type(<span class="kw-2">&amp;mut </span><span class="self">self</span>, represented_type: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span>TypeInfo&gt;) {
         <span class="kw">if let </span><span class="prelude-val">Some</span>(represented_type) = represented_type {
             <span class="macro">assert!</span>(
                 <span class="macro">matches!</span>(represented_type, TypeInfo::List(<span class="kw">_</span>)),
-                <span class="string">&quot;expected TypeInfo::List but received: {:?}&quot;</span>,
+                <span class="string">"expected TypeInfo::List but received: {:?}"</span>,
                 represented_type
             );
         }
@@ -796,7 +800,7 @@
 
 <span class="kw">impl </span>Reflect <span class="kw">for </span>DynamicList {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>get_represented_type_info(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>TypeInfo&gt; {
+    </span><span class="kw">fn </span>get_represented_type_info(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span>TypeInfo&gt; {
         <span class="self">self</span>.represented_type
     }
 
@@ -841,6 +845,11 @@
     }
 
     <span class="attr">#[inline]
+    </span><span class="kw">fn </span>reflect_kind(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; ReflectKind {
+        ReflectKind::List
+    }
+
+    <span class="attr">#[inline]
     </span><span class="kw">fn </span>reflect_ref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; ReflectRef {
         ReflectRef::List(<span class="self">self</span>)
     }
@@ -869,10 +878,10 @@
         list_partial_eq(<span class="self">self</span>, value)
     }
 
-    <span class="kw">fn </span>debug(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; std::fmt::Result {
-        <span class="macro">write!</span>(f, <span class="string">&quot;DynamicList(&quot;</span>)<span class="question-mark">?</span>;
+    <span class="kw">fn </span>debug(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; std::fmt::Result {
+        <span class="macro">write!</span>(f, <span class="string">"DynamicList("</span>)<span class="question-mark">?</span>;
         list_debug(<span class="self">self</span>, f)<span class="question-mark">?</span>;
-        <span class="macro">write!</span>(f, <span class="string">&quot;)&quot;</span>)
+        <span class="macro">write!</span>(f, <span class="string">")"</span>)
     }
 
     <span class="attr">#[inline]
@@ -884,7 +893,7 @@
 <span class="macro">impl_type_path!</span>((<span class="kw">in </span>bevy_reflect) DynamicList);
 
 <span class="kw">impl </span>Debug <span class="kw">for </span>DynamicList {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; std::fmt::Result {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; std::fmt::Result {
         <span class="self">self</span>.debug(f)
     }
 }
@@ -899,21 +908,21 @@
 }
 
 <span class="doccomment">/// An iterator over an [`List`].
-</span><span class="kw">pub struct </span>ListIter&lt;<span class="lifetime">&#39;a</span>&gt; {
-    list: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw">dyn </span>List,
+</span><span class="kw">pub struct </span>ListIter&lt;<span class="lifetime">'a</span>&gt; {
+    list: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw">dyn </span>List,
     index: usize,
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; ListIter&lt;<span class="lifetime">&#39;a</span>&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; ListIter&lt;<span class="lifetime">'a</span>&gt; {
     <span class="doccomment">/// Creates a new [`ListIter`].
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub const fn </span>new(list: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw">dyn </span>List) -&gt; ListIter {
+    </span><span class="kw">pub const fn </span>new(list: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw">dyn </span>List) -&gt; ListIter {
         ListIter { list, index: <span class="number">0 </span>}
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; Iterator <span class="kw">for </span>ListIter&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="kw">type </span>Item = <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw">dyn </span>Reflect;
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; Iterator <span class="kw">for </span>ListIter&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="kw">type </span>Item = <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw">dyn </span>Reflect;
 
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>next(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::Item&gt; {
@@ -929,13 +938,13 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; ExactSizeIterator <span class="kw">for </span>ListIter&lt;<span class="lifetime">&#39;a</span>&gt; {}
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; ExactSizeIterator <span class="kw">for </span>ListIter&lt;<span class="lifetime">'a</span>&gt; {}
 
 <span class="doccomment">/// Returns the `u64` hash of the given [list](List).
 </span><span class="attr">#[inline]
 </span><span class="kw">pub fn </span>list_hash&lt;L: List&gt;(list: <span class="kw-2">&amp;</span>L) -&gt; <span class="prelude-ty">Option</span>&lt;u64&gt; {
     <span class="kw">let </span><span class="kw-2">mut </span>hasher = reflect_hasher();
-    std::any::Any::type_id(list).hash(<span class="kw-2">&amp;mut </span>hasher);
+    Any::type_id(list).hash(<span class="kw-2">&amp;mut </span>hasher);
     list.len().hash(<span class="kw-2">&amp;mut </span>hasher);
     <span class="kw">for </span>value <span class="kw">in </span>list.iter() {
         hasher.write_u64(value.reflect_hash()<span class="question-mark">?</span>);
@@ -964,7 +973,7 @@
             }
         }
     } <span class="kw">else </span>{
-        <span class="macro">panic!</span>(<span class="string">&quot;Attempted to apply a non-list type to a list type.&quot;</span>);
+        <span class="macro">panic!</span>(<span class="string">"Attempted to apply a non-list type to a list type."</span>);
     }
 }
 
@@ -975,7 +984,7 @@
 /// - `b` is the same length as `a`;
 /// - [`Reflect::reflect_partial_eq`] returns `Some(true)` for pairwise elements of `a` and `b`.
 ///
-/// Returns [`None`] if the comparison couldn&#39;t even be performed.
+/// Returns [`None`] if the comparison couldn't even be performed.
 </span><span class="attr">#[inline]
 </span><span class="kw">pub fn </span>list_partial_eq&lt;L: List&gt;(a: <span class="kw-2">&amp;</span>L, b: <span class="kw-2">&amp;</span><span class="kw">dyn </span>Reflect) -&gt; <span class="prelude-ty">Option</span>&lt;bool&gt; {
     <span class="kw">let </span>ReflectRef::List(list) = b.reflect_ref() <span class="kw">else </span>{
@@ -1003,7 +1012,7 @@
 /// use bevy_reflect::Reflect;
 ///
 /// let my_list: &amp;dyn Reflect = &amp;vec![1, 2, 3];
-/// println!(&quot;{:#?}&quot;, my_list);
+/// println!("{:#?}", my_list);
 ///
 /// // Output:
 ///
@@ -1014,7 +1023,7 @@
 /// // ]
 /// ```
 </span><span class="attr">#[inline]
-</span><span class="kw">pub fn </span>list_debug(dyn_list: <span class="kw-2">&amp;</span><span class="kw">dyn </span>List, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; std::fmt::Result {
+</span><span class="kw">pub fn </span>list_debug(dyn_list: <span class="kw-2">&amp;</span><span class="kw">dyn </span>List, f: <span class="kw-2">&amp;mut </span>Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; std::fmt::Result {
     <span class="kw">let </span><span class="kw-2">mut </span>debug = f.debug_list();
     <span class="kw">for </span>item <span class="kw">in </span>dyn_list.iter() {
         debug.entry(<span class="kw-2">&amp;</span>item <span class="kw">as </span><span class="kw-2">&amp;</span><span class="kw">dyn </span>Debug);
@@ -1035,7 +1044,7 @@
         list.push(<span class="number">2usize</span>);
         <span class="kw">let </span>items = list.into_iter();
         <span class="kw">for </span>(index, item) <span class="kw">in </span>items.into_iter().enumerate() {
-            <span class="kw">let </span>value = item.take::&lt;usize&gt;().expect(<span class="string">&quot;couldn&#39;t downcast to usize&quot;</span>);
+            <span class="kw">let </span>value = item.take::&lt;usize&gt;().expect(<span class="string">"couldn't downcast to usize"</span>);
             <span class="macro">assert_eq!</span>(index, value);
         }
     }

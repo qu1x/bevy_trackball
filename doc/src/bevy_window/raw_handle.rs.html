@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_window-0.12.1/src/raw_handle.rs`."><title>raw_handle.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="bevy_window" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../bevy_window/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_window-0.13.0/src/raw_handle.rs`."><title>raw_handle.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="bevy_window" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -68,9 +69,12 @@
 <a href="#68" id="68">68</a>
 <a href="#69" id="69">69</a>
 <a href="#70" id="70">70</a>
+<a href="#71" id="71">71</a>
+<a href="#72" id="72">72</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>bevy_ecs::prelude::Component;
 <span class="kw">use </span>raw_window_handle::{
-    HasRawDisplayHandle, HasRawWindowHandle, RawDisplayHandle, RawWindowHandle,
+    DisplayHandle, HandleError, HasDisplayHandle, HasWindowHandle, RawDisplayHandle,
+    RawWindowHandle, WindowHandle,
 };
 
 <span class="doccomment">/// A wrapper over [`RawWindowHandle`] and [`RawDisplayHandle`] that allows us to safely pass it across threads.
@@ -87,24 +91,25 @@
 }
 
 <span class="kw">impl </span>RawHandleWrapper {
-    <span class="doccomment">/// Returns a [`HasRawWindowHandle`] + [`HasRawDisplayHandle`] impl, which exposes [`RawWindowHandle`] and [`RawDisplayHandle`].
+    <span class="doccomment">/// Returns a [`HasWindowHandle`] + [`HasDisplayHandle`] impl, which exposes [`WindowHandle`] and [`DisplayHandle`].
     ///
     /// # Safety
     ///
-    /// Some platforms have constraints on where/how this handle can be used. For example, some platforms don&#39;t support doing window
+    /// Some platforms have constraints on where/how this handle can be used. For example, some platforms don't support doing window
     /// operations off of the main thread. The caller must ensure the [`RawHandleWrapper`] is only used in valid contexts.
     </span><span class="kw">pub unsafe fn </span>get_handle(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; ThreadLockedRawWindowHandleWrapper {
         ThreadLockedRawWindowHandleWrapper(<span class="self">self</span>.clone())
     }
 }
 
-<span class="comment">// SAFETY: [`RawHandleWrapper`] is just a normal &quot;raw pointer&quot;, which doesn&#39;t impl Send/Sync. However the pointer is only
-// exposed via an unsafe method that forces the user to make a call for a given platform. (ex: some platforms don&#39;t
+<span class="comment">// SAFETY: [`RawHandleWrapper`] is just a normal "raw pointer", which doesn't impl Send/Sync. However the pointer is only
+// exposed via an unsafe method that forces the user to make a call for a given platform. (ex: some platforms don't
 // support doing window operations off of the main thread).
 // A recommendation for this pattern (and more context) is available here:
 // https://github.com/rust-windowing/raw-window-handle/issues/59
 </span><span class="kw">unsafe impl </span>Send <span class="kw">for </span>RawHandleWrapper {}
-<span class="kw">unsafe impl </span>Sync <span class="kw">for </span>RawHandleWrapper {}
+<span class="comment">// SAFETY: This is safe for the same reasons as the Send impl above.
+</span><span class="kw">unsafe impl </span>Sync <span class="kw">for </span>RawHandleWrapper {}
 
 <span class="doccomment">/// A [`RawHandleWrapper`] that cannot be sent across threads.
 ///
@@ -115,27 +120,27 @@
 /// In many cases, this should only be constructed on the main thread.
 </span><span class="kw">pub struct </span>ThreadLockedRawWindowHandleWrapper(RawHandleWrapper);
 
-<span class="comment">// SAFETY: the caller has validated that this is a valid context to get [`RawHandleWrapper`]
-// as otherwise an instance of this type could not have been constructed
-// NOTE: we cannot simply impl HasRawWindowHandle for RawHandleWrapper,
-// as the `raw_window_handle` method is safe. We cannot guarantee that all calls
-// of this method are correct (as it may be off the main thread on an incompatible platform),
-// and so exposing a safe method to get a [`RawWindowHandle`] directly would be UB.
-</span><span class="kw">unsafe impl </span>HasRawWindowHandle <span class="kw">for </span>ThreadLockedRawWindowHandleWrapper {
-    <span class="kw">fn </span>raw_window_handle(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; RawWindowHandle {
-        <span class="self">self</span>.<span class="number">0</span>.window_handle
+<span class="kw">impl </span>HasWindowHandle <span class="kw">for </span>ThreadLockedRawWindowHandleWrapper {
+    <span class="kw">fn </span>window_handle(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;WindowHandle, HandleError&gt; {
+        <span class="comment">// SAFETY: the caller has validated that this is a valid context to get [`RawHandleWrapper`]
+        // as otherwise an instance of this type could not have been constructed
+        // NOTE: we cannot simply impl HasRawWindowHandle for RawHandleWrapper,
+        // as the `raw_window_handle` method is safe. We cannot guarantee that all calls
+        // of this method are correct (as it may be off the main thread on an incompatible platform),
+        // and so exposing a safe method to get a [`RawWindowHandle`] directly would be UB.
+        </span><span class="prelude-val">Ok</span>(<span class="kw">unsafe </span>{ WindowHandle::borrow_raw(<span class="self">self</span>.<span class="number">0</span>.window_handle) })
     }
 }
 
-<span class="comment">// SAFETY: the caller has validated that this is a valid context to get [`RawDisplayHandle`]
-// as otherwise an instance of this type could not have been constructed
-// NOTE: we cannot simply impl HasRawDisplayHandle for RawHandleWrapper,
-// as the `raw_display_handle` method is safe. We cannot guarantee that all calls
-// of this method are correct (as it may be off the main thread on an incompatible platform),
-// and so exposing a safe method to get a [`RawDisplayHandle`] directly would be UB.
-</span><span class="kw">unsafe impl </span>HasRawDisplayHandle <span class="kw">for </span>ThreadLockedRawWindowHandleWrapper {
-    <span class="kw">fn </span>raw_display_handle(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; RawDisplayHandle {
-        <span class="self">self</span>.<span class="number">0</span>.display_handle
+<span class="kw">impl </span>HasDisplayHandle <span class="kw">for </span>ThreadLockedRawWindowHandleWrapper {
+    <span class="kw">fn </span>display_handle(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;DisplayHandle, HandleError&gt; {
+        <span class="comment">// SAFETY: the caller has validated that this is a valid context to get [`RawDisplayHandle`]
+        // as otherwise an instance of this type could not have been constructed
+        // NOTE: we cannot simply impl HasRawDisplayHandle for RawHandleWrapper,
+        // as the `raw_display_handle` method is safe. We cannot guarantee that all calls
+        // of this method are correct (as it may be off the main thread on an incompatible platform),
+        // and so exposing a safe method to get a [`RawDisplayHandle`] directly would be UB.
+        </span><span class="prelude-val">Ok</span>(<span class="kw">unsafe </span>{ DisplayHandle::borrow_raw(<span class="self">self</span>.<span class="number">0</span>.display_handle) })
     }
 }
 </code></pre></div></section></main></body></html>

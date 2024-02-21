@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/toml_edit-0.20.7/src/parser/key.rs`."><title>key.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="toml_edit" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../toml_edit/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/toml_edit-0.21.1/src/parser/key.rs`."><title>key.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="toml_edit" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -110,6 +111,8 @@
 <a href="#110" id="110">110</a>
 <a href="#111" id="111">111</a>
 <a href="#112" id="112">112</a>
+<a href="#113" id="113">113</a>
+<a href="#114" id="114">114</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::ops::RangeInclusive;
 
 <span class="kw">use </span>winnow::combinator::peek;
@@ -119,7 +122,7 @@
 <span class="kw">use </span>winnow::trace::trace;
 
 <span class="kw">use </span><span class="kw">crate</span>::key::Key;
-<span class="kw">use </span><span class="kw">crate</span>::parser::errors::CustomError;
+<span class="kw">use </span><span class="kw">crate</span>::parser::error::CustomError;
 <span class="kw">use </span><span class="kw">crate</span>::parser::prelude::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::parser::strings::{basic_string, literal_string};
 <span class="kw">use </span><span class="kw">crate</span>::parser::trivia::{from_utf8_unchecked, ws};
@@ -129,9 +132,9 @@
 
 <span class="comment">// key = simple-key / dotted-key
 // dotted-key = simple-key 1*( dot-sep simple-key )
-</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>key(input: <span class="kw-2">&amp;mut </span>Input&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; PResult&lt;Vec&lt;Key&gt;&gt; {
+</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>key(input: <span class="kw-2">&amp;mut </span>Input&lt;<span class="lifetime">'_</span>&gt;) -&gt; PResult&lt;Vec&lt;Key&gt;&gt; {
     trace(
-        <span class="string">&quot;dotted-key&quot;</span>,
+        <span class="string">"dotted-key"</span>,
         separated1(
             (ws.span(), simple_key, ws.span()).map(|(pre, (raw, key), suffix)| {
                 Key::new(key)
@@ -143,7 +146,7 @@
             }),
             DOT_SEP,
         )
-        .context(StrContext::Label(<span class="string">&quot;key&quot;</span>))
+        .context(StrContext::Label(<span class="string">"key"</span>))
         .try_map(|k: Vec&lt;<span class="kw">_</span>&gt;| {
             <span class="comment">// Inserting the key will require recursion down the line
             </span>RecursionCheck::check_depth(k.len())<span class="question-mark">?</span>;
@@ -155,12 +158,12 @@
 
 <span class="comment">// simple-key = quoted-key / unquoted-key
 // quoted-key = basic-string / literal-string
-</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>simple_key(input: <span class="kw-2">&amp;mut </span>Input&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; PResult&lt;(RawString, InternalString)&gt; {
+</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>simple_key(input: <span class="kw-2">&amp;mut </span>Input&lt;<span class="lifetime">'_</span>&gt;) -&gt; PResult&lt;(RawString, InternalString)&gt; {
     trace(
-        <span class="string">&quot;simple-key&quot;</span>,
+        <span class="string">"simple-key"</span>,
         <span class="macro">dispatch! </span>{peek(any);
             <span class="kw">crate</span>::parser::strings::QUOTATION_MARK =&gt; basic_string
-                .map(|s: std::borrow::Cow&lt;<span class="lifetime">&#39;_</span>, str&gt;| s.as_ref().into()),
+                .map(|s: std::borrow::Cow&lt;<span class="lifetime">'_</span>, str&gt;| s.as_ref().into()),
             <span class="kw">crate</span>::parser::strings::APOSTROPHE =&gt; literal_string.map(|s: <span class="kw-2">&amp;</span>str| s.into()),
             <span class="kw">_ </span>=&gt; unquoted_key.map(|s: <span class="kw-2">&amp;</span>str| s.into()),
         }
@@ -174,11 +177,11 @@
 }
 
 <span class="comment">// unquoted-key = 1*( ALPHA / DIGIT / %x2D / %x5F ) ; A-Z / a-z / 0-9 / - / _
-</span><span class="kw">fn </span>unquoted_key&lt;<span class="lifetime">&#39;i</span>&gt;(input: <span class="kw-2">&amp;mut </span>Input&lt;<span class="lifetime">&#39;i</span>&gt;) -&gt; PResult&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;i </span>str&gt; {
+</span><span class="kw">fn </span>unquoted_key&lt;<span class="lifetime">'i</span>&gt;(input: <span class="kw-2">&amp;mut </span>Input&lt;<span class="lifetime">'i</span>&gt;) -&gt; PResult&lt;<span class="kw-2">&amp;</span><span class="lifetime">'i </span>str&gt; {
     trace(
-        <span class="string">&quot;unquoted-key&quot;</span>,
+        <span class="string">"unquoted-key"</span>,
         take_while(<span class="number">1</span>.., UNQUOTED_CHAR)
-            .map(|b| <span class="kw">unsafe </span>{ from_utf8_unchecked(b, <span class="string">&quot;`is_unquoted_char` filters out on-ASCII&quot;</span>) }),
+            .map(|b| <span class="kw">unsafe </span>{ from_utf8_unchecked(b, <span class="string">"`is_unquoted_char` filters out on-ASCII"</span>) }),
     )
     .parse_next(input)
 }
@@ -194,21 +197,23 @@
     RangeInclusive&lt;u8&gt;,
     u8,
     u8,
-) = (<span class="string">b&#39;A&#39;</span>..=<span class="string">b&#39;Z&#39;</span>, <span class="string">b&#39;a&#39;</span>..=<span class="string">b&#39;z&#39;</span>, <span class="string">b&#39;0&#39;</span>..=<span class="string">b&#39;9&#39;</span>, <span class="string">b&#39;-&#39;</span>, <span class="string">b&#39;_&#39;</span>);
+) = (<span class="string">b'A'</span>..=<span class="string">b'Z'</span>, <span class="string">b'a'</span>..=<span class="string">b'z'</span>, <span class="string">b'0'</span>..=<span class="string">b'9'</span>, <span class="string">b'-'</span>, <span class="string">b'_'</span>);
 
 <span class="comment">// dot-sep   = ws %x2E ws  ; . Period
-</span><span class="kw">const </span>DOT_SEP: u8 = <span class="string">b&#39;.&#39;</span>;
+</span><span class="kw">const </span>DOT_SEP: u8 = <span class="string">b'.'</span>;
 
 <span class="attr">#[cfg(test)]
+#[cfg(feature = <span class="string">"parse"</span>)]
+#[cfg(feature = <span class="string">"display"</span>)]
 </span><span class="kw">mod </span>test {
     <span class="kw">use super</span>::<span class="kw-2">*</span>;
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>keys() {
         <span class="kw">let </span>cases = [
-            (<span class="string">&quot;a&quot;</span>, <span class="string">&quot;a&quot;</span>),
-            (<span class="string">r#&quot;&quot;hello\n &quot;&quot;#</span>, <span class="string">&quot;hello\n &quot;</span>),
-            (<span class="string">r&quot;&#39;hello\n &#39;&quot;</span>, <span class="string">&quot;hello\\n &quot;</span>),
+            (<span class="string">"a"</span>, <span class="string">"a"</span>),
+            (<span class="string">r#""hello\n ""#</span>, <span class="string">"hello\n "</span>),
+            (<span class="string">r"'hello\n '"</span>, <span class="string">"hello\\n "</span>),
         ];
 
         <span class="kw">for </span>(input, expected) <span class="kw">in </span>cases {
@@ -217,7 +222,7 @@
             <span class="macro">assert_eq!</span>(
                 parsed,
                 <span class="prelude-val">Ok</span>((RawString::with_span(<span class="number">0</span>..(input.len())), expected.into())),
-                <span class="string">&quot;Parsing {input:?}&quot;
+                <span class="string">"Parsing {input:?}"
             </span>);
         }
     }

@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_render-0.12.1/src/texture/image.rs`."><title>image.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="bevy_render" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../bevy_render/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_render-0.13.0/src/texture/image.rs`."><title>image.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="bevy_render" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -940,15 +941,33 @@
 <a href="#940" id="940">940</a>
 <a href="#941" id="941">941</a>
 <a href="#942" id="942">942</a>
-</pre></div><pre class="rust"><code><span class="attr">#[cfg(feature = <span class="string">&quot;basis-universal&quot;</span>)]
+<a href="#943" id="943">943</a>
+<a href="#944" id="944">944</a>
+<a href="#945" id="945">945</a>
+<a href="#946" id="946">946</a>
+<a href="#947" id="947">947</a>
+<a href="#948" id="948">948</a>
+<a href="#949" id="949">949</a>
+<a href="#950" id="950">950</a>
+<a href="#951" id="951">951</a>
+<a href="#952" id="952">952</a>
+<a href="#953" id="953">953</a>
+<a href="#954" id="954">954</a>
+<a href="#955" id="955">955</a>
+<a href="#956" id="956">956</a>
+<a href="#957" id="957">957</a>
+<a href="#958" id="958">958</a>
+<a href="#959" id="959">959</a>
+<a href="#960" id="960">960</a>
+</pre></div><pre class="rust"><code><span class="attr">#[cfg(feature = <span class="string">"basis-universal"</span>)]
 </span><span class="kw">use </span><span class="kw">super</span>::basis::<span class="kw-2">*</span>;
-<span class="attr">#[cfg(feature = <span class="string">&quot;dds&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"dds"</span>)]
 </span><span class="kw">use </span><span class="kw">super</span>::dds::<span class="kw-2">*</span>;
-<span class="attr">#[cfg(feature = <span class="string">&quot;ktx2&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"ktx2"</span>)]
 </span><span class="kw">use </span><span class="kw">super</span>::ktx2::<span class="kw-2">*</span>;
 
 <span class="kw">use crate</span>::{
-    render_asset::{PrepareAssetError, RenderAsset},
+    render_asset::{PrepareAssetError, RenderAsset, RenderAssetUsages},
     render_resource::{Sampler, Texture, TextureView},
     renderer::{RenderDevice, RenderQueue},
     texture::BevyDefault,
@@ -956,7 +975,7 @@
 <span class="kw">use </span>bevy_asset::Asset;
 <span class="kw">use </span>bevy_derive::{Deref, DerefMut};
 <span class="kw">use </span>bevy_ecs::system::{lifetimeless::SRes, Resource, SystemParamItem};
-<span class="kw">use </span>bevy_math::{UVec2, Vec2};
+<span class="kw">use </span>bevy_math::{AspectRatio, UVec2, Vec2};
 <span class="kw">use </span>bevy_reflect::Reflect;
 <span class="kw">use </span>serde::{Deserialize, Serialize};
 <span class="kw">use </span>std::hash::Hash;
@@ -989,35 +1008,35 @@
 <span class="kw">impl </span>ImageFormat {
     <span class="kw">pub fn </span>from_mime_type(mime_type: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
         <span class="prelude-val">Some</span>(<span class="kw">match </span>mime_type.to_ascii_lowercase().as_str() {
-            <span class="string">&quot;image/bmp&quot; </span>| <span class="string">&quot;image/x-bmp&quot; </span>=&gt; ImageFormat::Bmp,
-            <span class="string">&quot;image/vnd-ms.dds&quot; </span>=&gt; ImageFormat::Dds,
-            <span class="string">&quot;image/jpeg&quot; </span>=&gt; ImageFormat::Jpeg,
-            <span class="string">&quot;image/ktx2&quot; </span>=&gt; ImageFormat::Ktx2,
-            <span class="string">&quot;image/png&quot; </span>=&gt; ImageFormat::Png,
-            <span class="string">&quot;image/x-exr&quot; </span>=&gt; ImageFormat::OpenExr,
-            <span class="string">&quot;image/x-targa&quot; </span>| <span class="string">&quot;image/x-tga&quot; </span>=&gt; ImageFormat::Tga,
+            <span class="string">"image/bmp" </span>| <span class="string">"image/x-bmp" </span>=&gt; ImageFormat::Bmp,
+            <span class="string">"image/vnd-ms.dds" </span>=&gt; ImageFormat::Dds,
+            <span class="string">"image/jpeg" </span>=&gt; ImageFormat::Jpeg,
+            <span class="string">"image/ktx2" </span>=&gt; ImageFormat::Ktx2,
+            <span class="string">"image/png" </span>=&gt; ImageFormat::Png,
+            <span class="string">"image/x-exr" </span>=&gt; ImageFormat::OpenExr,
+            <span class="string">"image/x-targa" </span>| <span class="string">"image/x-tga" </span>=&gt; ImageFormat::Tga,
             <span class="kw">_ </span>=&gt; <span class="kw">return </span><span class="prelude-val">None</span>,
         })
     }
 
     <span class="kw">pub fn </span>from_extension(extension: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
         <span class="prelude-val">Some</span>(<span class="kw">match </span>extension.to_ascii_lowercase().as_str() {
-            <span class="string">&quot;avif&quot; </span>=&gt; ImageFormat::Avif,
-            <span class="string">&quot;basis&quot; </span>=&gt; ImageFormat::Basis,
-            <span class="string">&quot;bmp&quot; </span>=&gt; ImageFormat::Bmp,
-            <span class="string">&quot;dds&quot; </span>=&gt; ImageFormat::Dds,
-            <span class="string">&quot;ff&quot; </span>| <span class="string">&quot;farbfeld&quot; </span>=&gt; ImageFormat::Farbfeld,
-            <span class="string">&quot;gif&quot; </span>=&gt; ImageFormat::Gif,
-            <span class="string">&quot;exr&quot; </span>=&gt; ImageFormat::OpenExr,
-            <span class="string">&quot;hdr&quot; </span>=&gt; ImageFormat::Hdr,
-            <span class="string">&quot;ico&quot; </span>=&gt; ImageFormat::Ico,
-            <span class="string">&quot;jpg&quot; </span>| <span class="string">&quot;jpeg&quot; </span>=&gt; ImageFormat::Jpeg,
-            <span class="string">&quot;ktx2&quot; </span>=&gt; ImageFormat::Ktx2,
-            <span class="string">&quot;pbm&quot; </span>| <span class="string">&quot;pam&quot; </span>| <span class="string">&quot;ppm&quot; </span>| <span class="string">&quot;pgm&quot; </span>=&gt; ImageFormat::Pnm,
-            <span class="string">&quot;png&quot; </span>=&gt; ImageFormat::Png,
-            <span class="string">&quot;tga&quot; </span>=&gt; ImageFormat::Tga,
-            <span class="string">&quot;tif&quot; </span>| <span class="string">&quot;tiff&quot; </span>=&gt; ImageFormat::Tiff,
-            <span class="string">&quot;webp&quot; </span>=&gt; ImageFormat::WebP,
+            <span class="string">"avif" </span>=&gt; ImageFormat::Avif,
+            <span class="string">"basis" </span>=&gt; ImageFormat::Basis,
+            <span class="string">"bmp" </span>=&gt; ImageFormat::Bmp,
+            <span class="string">"dds" </span>=&gt; ImageFormat::Dds,
+            <span class="string">"ff" </span>| <span class="string">"farbfeld" </span>=&gt; ImageFormat::Farbfeld,
+            <span class="string">"gif" </span>=&gt; ImageFormat::Gif,
+            <span class="string">"exr" </span>=&gt; ImageFormat::OpenExr,
+            <span class="string">"hdr" </span>=&gt; ImageFormat::Hdr,
+            <span class="string">"ico" </span>=&gt; ImageFormat::Ico,
+            <span class="string">"jpg" </span>| <span class="string">"jpeg" </span>=&gt; ImageFormat::Jpeg,
+            <span class="string">"ktx2" </span>=&gt; ImageFormat::Ktx2,
+            <span class="string">"pbm" </span>| <span class="string">"pam" </span>| <span class="string">"ppm" </span>| <span class="string">"pgm" </span>=&gt; ImageFormat::Pnm,
+            <span class="string">"png" </span>=&gt; ImageFormat::Png,
+            <span class="string">"tga" </span>=&gt; ImageFormat::Tga,
+            <span class="string">"tif" </span>| <span class="string">"tiff" </span>=&gt; ImageFormat::Tiff,
+            <span class="string">"webp" </span>=&gt; ImageFormat::WebP,
             <span class="kw">_ </span>=&gt; <span class="kw">return </span><span class="prelude-val">None</span>,
         })
     }
@@ -1048,10 +1067,11 @@
 </span><span class="kw">pub struct </span>Image {
     <span class="kw">pub </span>data: Vec&lt;u8&gt;,
     <span class="comment">// TODO: this nesting makes accessing Image metadata verbose. Either flatten out descriptor or add accessors
-    </span><span class="kw">pub </span>texture_descriptor: wgpu::TextureDescriptor&lt;<span class="lifetime">&#39;static</span>&gt;,
+    </span><span class="kw">pub </span>texture_descriptor: wgpu::TextureDescriptor&lt;<span class="lifetime">'static</span>&gt;,
     <span class="doccomment">/// The [`ImageSampler`] to use during rendering.
     </span><span class="kw">pub </span>sampler: ImageSampler,
-    <span class="kw">pub </span>texture_view_descriptor: <span class="prelude-ty">Option</span>&lt;wgpu::TextureViewDescriptor&lt;<span class="lifetime">&#39;static</span>&gt;&gt;,
+    <span class="kw">pub </span>texture_view_descriptor: <span class="prelude-ty">Option</span>&lt;TextureViewDescriptor&lt;<span class="lifetime">'static</span>&gt;&gt;,
+    <span class="kw">pub </span>asset_usage: RenderAssetUsages,
 }
 
 <span class="doccomment">/// Used in [`Image`], this determines what image sampler to use when rendering. The default setting,
@@ -1089,6 +1109,8 @@
 </span><span class="kw">pub struct </span>DefaultImageSampler(<span class="kw">pub</span>(<span class="kw">crate</span>) Sampler);
 
 <span class="doccomment">/// How edges should be handled in texture addressing.
+///
+/// See [`ImageSamplerDescriptor`] for information how to configure this.
 ///
 /// This type mirrors [`wgpu::AddressMode`].
 </span><span class="attr">#[derive(Clone, Copy, Debug, Default, Serialize, Deserialize)]
@@ -1143,7 +1165,7 @@
     <span class="doccomment">/// Function passes if new value less than existing value
     </span>Less,
     <span class="doccomment">/// Function passes if new value is equal to existing value. When using
-    /// this compare function, make sure to mark your Vertex Shader&#39;s `@builtin(position)`
+    /// this compare function, make sure to mark your Vertex Shader's `@builtin(position)`
     /// output as `@invariant` to prevent artifacting.
     </span>Equal,
     <span class="doccomment">/// Function passes if new value is less than or equal to existing value
@@ -1151,7 +1173,7 @@
     <span class="doccomment">/// Function passes if new value is greater than existing value
     </span>Greater,
     <span class="doccomment">/// Function passes if new value is not equal to existing value. When using
-    /// this compare function, make sure to mark your Vertex Shader&#39;s `@builtin(position)`
+    /// this compare function, make sure to mark your Vertex Shader's `@builtin(position)`
     /// output as `@invariant` to prevent artifacting.
     </span>NotEqual,
     <span class="doccomment">/// Function passes if new value is greater than or equal to existing value
@@ -1364,7 +1386,7 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; From&lt;wgpu::SamplerDescriptor&lt;<span class="lifetime">&#39;a</span>&gt;&gt; <span class="kw">for </span>ImageSamplerDescriptor {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; From&lt;wgpu::SamplerDescriptor&lt;<span class="lifetime">'a</span>&gt;&gt; <span class="kw">for </span>ImageSamplerDescriptor {
     <span class="kw">fn </span>from(value: wgpu::SamplerDescriptor) -&gt; <span class="self">Self </span>{
         ImageSamplerDescriptor {
             label: value.label.map(|l| l.to_string()),
@@ -1384,20 +1406,20 @@
 }
 
 <span class="kw">impl </span>Default <span class="kw">for </span>Image {
-    <span class="doccomment">/// default is a 1x1x1 all &#39;1.0&#39; texture
+    <span class="doccomment">/// default is a 1x1x1 all '1.0' texture
     </span><span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
-        <span class="kw">let </span>format = wgpu::TextureFormat::bevy_default();
+        <span class="kw">let </span>format = TextureFormat::bevy_default();
         <span class="kw">let </span>data = <span class="macro">vec!</span>[<span class="number">255</span>; format.pixel_size()];
         Image {
             data,
             texture_descriptor: wgpu::TextureDescriptor {
-                size: wgpu::Extent3d {
+                size: Extent3d {
                     width: <span class="number">1</span>,
                     height: <span class="number">1</span>,
                     depth_or_array_layers: <span class="number">1</span>,
                 },
                 format,
-                dimension: wgpu::TextureDimension::D2,
+                dimension: TextureDimension::D2,
                 label: <span class="prelude-val">None</span>,
                 mip_level_count: <span class="number">1</span>,
                 sample_count: <span class="number">1</span>,
@@ -1406,6 +1428,7 @@
             },
             sampler: ImageSampler::Default,
             texture_view_descriptor: <span class="prelude-val">None</span>,
+            asset_usage: RenderAssetUsages::default(),
         }
     }
 }
@@ -1421,11 +1444,12 @@
         dimension: TextureDimension,
         data: Vec&lt;u8&gt;,
         format: TextureFormat,
+        asset_usage: RenderAssetUsages,
     ) -&gt; <span class="self">Self </span>{
         <span class="macro">debug_assert_eq!</span>(
             size.volume() * format.pixel_size(),
             data.len(),
-            <span class="string">&quot;Pixel data, size and format have to match&quot;</span>,
+            <span class="string">"Pixel data, size and format have to match"</span>,
         );
         <span class="kw">let </span><span class="kw-2">mut </span>image = <span class="self">Self </span>{
             data,
@@ -1434,6 +1458,7 @@
         image.texture_descriptor.dimension = dimension;
         image.texture_descriptor.size = size;
         image.texture_descriptor.format = format;
+        image.asset_usage = asset_usage;
         image
     }
 
@@ -1447,20 +1472,22 @@
         dimension: TextureDimension,
         pixel: <span class="kw-2">&amp;</span>[u8],
         format: TextureFormat,
+        asset_usage: RenderAssetUsages,
     ) -&gt; <span class="self">Self </span>{
         <span class="kw">let </span><span class="kw-2">mut </span>value = Image::default();
         value.texture_descriptor.format = format;
         value.texture_descriptor.dimension = dimension;
+        value.asset_usage = asset_usage;
         value.resize(size);
 
         <span class="macro">debug_assert_eq!</span>(
             pixel.len() % format.pixel_size(),
             <span class="number">0</span>,
-            <span class="string">&quot;Must not have incomplete pixel data.&quot;
+            <span class="string">"Must not have incomplete pixel data."
         </span>);
         <span class="macro">debug_assert!</span>(
             pixel.len() &lt;= value.data.len(),
-            <span class="string">&quot;Fill data must fit within pixel buffer.&quot;
+            <span class="string">"Fill data must fit within pixel buffer."
         </span>);
 
         <span class="kw">for </span>current_pixel <span class="kw">in </span>value.data.chunks_exact_mut(pixel.len()) {
@@ -1481,10 +1508,10 @@
         <span class="self">self</span>.texture_descriptor.size.height
     }
 
-    <span class="doccomment">/// Returns the aspect ratio (height/width) of a 2D image.
+    <span class="doccomment">/// Returns the aspect ratio (width / height) of a 2D image.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>aspect_ratio(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; f32 {
-        <span class="self">self</span>.height() <span class="kw">as </span>f32 / <span class="self">self</span>.width() <span class="kw">as </span>f32
+    </span><span class="kw">pub fn </span>aspect_ratio(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; AspectRatio {
+        AspectRatio::from_pixels(<span class="self">self</span>.width(), <span class="self">self</span>.height())
     }
 
     <span class="doccomment">/// Returns the size of a 2D image as f32.
@@ -1515,9 +1542,10 @@
     /// # Panics
     /// Panics if the `new_size` does not have the same volume as to old one.
     </span><span class="kw">pub fn </span>reinterpret_size(<span class="kw-2">&amp;mut </span><span class="self">self</span>, new_size: Extent3d) {
-        <span class="macro">assert!</span>(
-            new_size.volume() == <span class="self">self</span>.texture_descriptor.size.volume(),
-            <span class="string">&quot;Incompatible sizes: old = {:?} new = {:?}&quot;</span>,
+        <span class="macro">assert_eq!</span>(
+            new_size.volume(),
+            <span class="self">self</span>.texture_descriptor.size.volume(),
+            <span class="string">"Incompatible sizes: old = {:?} new = {:?}"</span>,
             <span class="self">self</span>.texture_descriptor.size,
             new_size
         );
@@ -1534,8 +1562,8 @@
     /// the `layers`.
     </span><span class="kw">pub fn </span>reinterpret_stacked_2d_as_array(<span class="kw-2">&amp;mut </span><span class="self">self</span>, layers: u32) {
         <span class="comment">// Must be a stacked image, and the height must be divisible by layers.
-        </span><span class="macro">assert!</span>(<span class="self">self</span>.texture_descriptor.dimension == TextureDimension::D2);
-        <span class="macro">assert!</span>(<span class="self">self</span>.texture_descriptor.size.depth_or_array_layers == <span class="number">1</span>);
+        </span><span class="macro">assert_eq!</span>(<span class="self">self</span>.texture_descriptor.dimension, TextureDimension::D2);
+        <span class="macro">assert_eq!</span>(<span class="self">self</span>.texture_descriptor.size.depth_or_array_layers, <span class="number">1</span>);
         <span class="macro">assert_eq!</span>(<span class="self">self</span>.height() % layers, <span class="number">0</span>);
 
         <span class="self">self</span>.reinterpret_size(Extent3d {
@@ -1570,17 +1598,19 @@
                 }
                 <span class="kw">_ </span>=&gt; <span class="prelude-val">None</span>,
             })
-            .map(|(dyn_img, is_srgb)| <span class="self">Self</span>::from_dynamic(dyn_img, is_srgb))
+            .map(|(dyn_img, is_srgb)| <span class="self">Self</span>::from_dynamic(dyn_img, is_srgb, <span class="self">self</span>.asset_usage))
     }
 
     <span class="doccomment">/// Load a bytes buffer in a [`Image`], according to type `image_type`, using the `image`
     /// crate
     </span><span class="kw">pub fn </span>from_buffer(
+        <span class="attr">#[cfg(all(debug_assertions, feature = <span class="string">"dds"</span>))] </span>name: String,
         buffer: <span class="kw-2">&amp;</span>[u8],
         image_type: ImageType,
         <span class="attr">#[allow(unused_variables)] </span>supported_compressed_formats: CompressedImageFormats,
         is_srgb: bool,
         image_sampler: ImageSampler,
+        asset_usage: RenderAssetUsages,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Image, TextureError&gt; {
         <span class="kw">let </span>format = image_type.to_image_format()<span class="question-mark">?</span>;
 
@@ -1591,25 +1621,31 @@
         // cases.
 
         </span><span class="kw">let </span><span class="kw-2">mut </span>image = <span class="kw">match </span>format {
-            <span class="attr">#[cfg(feature = <span class="string">&quot;basis-universal&quot;</span>)]
+            <span class="attr">#[cfg(feature = <span class="string">"basis-universal"</span>)]
             </span>ImageFormat::Basis =&gt; {
                 basis_buffer_to_image(buffer, supported_compressed_formats, is_srgb)<span class="question-mark">?
             </span>}
-            <span class="attr">#[cfg(feature = <span class="string">&quot;dds&quot;</span>)]
-            </span>ImageFormat::Dds =&gt; dds_buffer_to_image(buffer, supported_compressed_formats, is_srgb)<span class="question-mark">?</span>,
-            <span class="attr">#[cfg(feature = <span class="string">&quot;ktx2&quot;</span>)]
+            <span class="attr">#[cfg(feature = <span class="string">"dds"</span>)]
+            </span>ImageFormat::Dds =&gt; dds_buffer_to_image(
+                <span class="attr">#[cfg(debug_assertions)]
+                </span>name,
+                buffer,
+                supported_compressed_formats,
+                is_srgb,
+            )<span class="question-mark">?</span>,
+            <span class="attr">#[cfg(feature = <span class="string">"ktx2"</span>)]
             </span>ImageFormat::Ktx2 =&gt; {
                 ktx2_buffer_to_image(buffer, supported_compressed_formats, is_srgb)<span class="question-mark">?
             </span>}
             <span class="kw">_ </span>=&gt; {
                 <span class="kw">let </span>image_crate_format = format
                     .as_image_crate_format()
-                    .ok_or_else(|| TextureError::UnsupportedTextureFormat(<span class="macro">format!</span>(<span class="string">&quot;{format:?}&quot;</span>)))<span class="question-mark">?</span>;
+                    .ok_or_else(|| TextureError::UnsupportedTextureFormat(<span class="macro">format!</span>(<span class="string">"{format:?}"</span>)))<span class="question-mark">?</span>;
                 <span class="kw">let </span><span class="kw-2">mut </span>reader = image::io::Reader::new(std::io::Cursor::new(buffer));
                 reader.set_format(image_crate_format);
                 reader.no_limits();
                 <span class="kw">let </span>dyn_img = reader.decode()<span class="question-mark">?</span>;
-                <span class="self">Self</span>::from_dynamic(dyn_img, is_srgb)
+                <span class="self">Self</span>::from_dynamic(dyn_img, is_srgb, asset_usage)
             }
         };
         image.sampler = image_sampler;
@@ -1655,41 +1691,41 @@
 <span class="doccomment">/// An error that occurs when loading a texture
 </span><span class="attr">#[derive(Error, Debug)]
 </span><span class="kw">pub enum </span>TextureError {
-    <span class="attr">#[error(<span class="string">&quot;invalid image mime type: {0}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"invalid image mime type: {0}"</span>)]
     </span>InvalidImageMimeType(String),
-    <span class="attr">#[error(<span class="string">&quot;invalid image extension: {0}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"invalid image extension: {0}"</span>)]
     </span>InvalidImageExtension(String),
-    <span class="attr">#[error(<span class="string">&quot;failed to load an image: {0}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"failed to load an image: {0}"</span>)]
     </span>ImageError(<span class="attr">#[from] </span>image::ImageError),
-    <span class="attr">#[error(<span class="string">&quot;unsupported texture format: {0}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"unsupported texture format: {0}"</span>)]
     </span>UnsupportedTextureFormat(String),
-    <span class="attr">#[error(<span class="string">&quot;supercompression not supported: {0}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"supercompression not supported: {0}"</span>)]
     </span>SuperCompressionNotSupported(String),
-    <span class="attr">#[error(<span class="string">&quot;failed to load an image: {0}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"failed to load an image: {0}"</span>)]
     </span>SuperDecompressionError(String),
-    <span class="attr">#[error(<span class="string">&quot;invalid data: {0}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"invalid data: {0}"</span>)]
     </span>InvalidData(String),
-    <span class="attr">#[error(<span class="string">&quot;transcode error: {0}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"transcode error: {0}"</span>)]
     </span>TranscodeError(String),
-    <span class="attr">#[error(<span class="string">&quot;format requires transcoding: {0:?}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"format requires transcoding: {0:?}"</span>)]
     </span>FormatRequiresTranscodingError(TranscodeFormat),
     <span class="doccomment">/// Only cubemaps with six faces are supported.
-    </span><span class="attr">#[error(<span class="string">&quot;only cubemaps with six faces are supported&quot;</span>)]
+    </span><span class="attr">#[error(<span class="string">"only cubemaps with six faces are supported"</span>)]
     </span>IncompleteCubemap,
 }
 
 <span class="doccomment">/// The type of a raw image buffer.
 </span><span class="attr">#[derive(Debug)]
-</span><span class="kw">pub enum </span>ImageType&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="doccomment">/// The mime type of an image, for example `&quot;image/png&quot;`.
-    </span>MimeType(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str),
-    <span class="doccomment">/// The extension of an image file, for example `&quot;png&quot;`.
-    </span>Extension(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str),
+</span><span class="kw">pub enum </span>ImageType&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="doccomment">/// The mime type of an image, for example `"image/png"`.
+    </span>MimeType(<span class="kw-2">&amp;</span><span class="lifetime">'a </span>str),
+    <span class="doccomment">/// The extension of an image file, for example `"png"`.
+    </span>Extension(<span class="kw-2">&amp;</span><span class="lifetime">'a </span>str),
     <span class="doccomment">/// The direct format of the image
     </span>Format(ImageFormat),
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; ImageType&lt;<span class="lifetime">&#39;a</span>&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; ImageType&lt;<span class="lifetime">'a</span>&gt; {
     <span class="kw">pub fn </span>to_image_format(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;ImageFormat, TextureError&gt; {
         <span class="kw">match </span><span class="self">self </span>{
             ImageType::MimeType(mime_type) =&gt; ImageFormat::from_mime_type(mime_type)
@@ -1723,14 +1759,14 @@
     <span class="kw">fn </span>pixel_size(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
         <span class="kw">let </span>info = <span class="self">self</span>;
         <span class="kw">match </span>info.block_dimensions() {
-            (<span class="number">1</span>, <span class="number">1</span>) =&gt; info.block_size(<span class="prelude-val">None</span>).unwrap() <span class="kw">as </span>usize,
-            <span class="kw">_ </span>=&gt; <span class="macro">panic!</span>(<span class="string">&quot;Using pixel_size for compressed textures is invalid&quot;</span>),
+            (<span class="number">1</span>, <span class="number">1</span>) =&gt; info.block_copy_size(<span class="prelude-val">None</span>).unwrap() <span class="kw">as </span>usize,
+            <span class="kw">_ </span>=&gt; <span class="macro">panic!</span>(<span class="string">"Using pixel_size for compressed textures is invalid"</span>),
         }
     }
 }
 
 <span class="doccomment">/// The GPU-representation of an [`Image`].
-/// Consists of the [`Texture`], its [`TextureView`] and the corresponding [`Sampler`], and the texture&#39;s size.
+/// Consists of the [`Texture`], its [`TextureView`] and the corresponding [`Sampler`], and the texture's size.
 </span><span class="attr">#[derive(Debug, Clone)]
 </span><span class="kw">pub struct </span>GpuImage {
     <span class="kw">pub </span>texture: Texture,
@@ -1742,7 +1778,6 @@
 }
 
 <span class="kw">impl </span>RenderAsset <span class="kw">for </span>Image {
-    <span class="kw">type </span>ExtractedAsset = Image;
     <span class="kw">type </span>PreparedAsset = GpuImage;
     <span class="kw">type </span>Param = (
         SRes&lt;RenderDevice&gt;,
@@ -1750,34 +1785,34 @@
         SRes&lt;DefaultImageSampler&gt;,
     );
 
-    <span class="doccomment">/// Clones the Image.
-    </span><span class="kw">fn </span>extract_asset(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self</span>::ExtractedAsset {
-        <span class="self">self</span>.clone()
+    <span class="kw">fn </span>asset_usage(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; RenderAssetUsages {
+        <span class="self">self</span>.asset_usage
     }
 
     <span class="doccomment">/// Converts the extracted image into a [`GpuImage`].
     </span><span class="kw">fn </span>prepare_asset(
-        image: <span class="self">Self</span>::ExtractedAsset,
+        <span class="self">self</span>,
         (render_device, render_queue, default_sampler): <span class="kw-2">&amp;mut </span>SystemParamItem&lt;<span class="self">Self</span>::Param&gt;,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::PreparedAsset, PrepareAssetError&lt;<span class="self">Self</span>::ExtractedAsset&gt;&gt; {
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::PreparedAsset, PrepareAssetError&lt;<span class="self">Self</span>&gt;&gt; {
         <span class="kw">let </span>texture = render_device.create_texture_with_data(
             render_queue,
-            <span class="kw-2">&amp;</span>image.texture_descriptor,
-            <span class="kw-2">&amp;</span>image.data,
+            <span class="kw-2">&amp;</span><span class="self">self</span>.texture_descriptor,
+            <span class="comment">// TODO: Is this correct? Do we need to use `MipMajor` if it's a ktx2 file?
+            </span>wgpu::util::TextureDataOrder::default(),
+            <span class="kw-2">&amp;</span><span class="self">self</span>.data,
         );
 
         <span class="kw">let </span>texture_view = texture.create_view(
-            image
-                .texture_view_descriptor
+            <span class="self">self</span>.texture_view_descriptor
                 .or_else(|| <span class="prelude-val">Some</span>(TextureViewDescriptor::default()))
                 .as_ref()
                 .unwrap(),
         );
         <span class="kw">let </span>size = Vec2::new(
-            image.texture_descriptor.size.width <span class="kw">as </span>f32,
-            image.texture_descriptor.size.height <span class="kw">as </span>f32,
+            <span class="self">self</span>.texture_descriptor.size.width <span class="kw">as </span>f32,
+            <span class="self">self</span>.texture_descriptor.size.height <span class="kw">as </span>f32,
         );
-        <span class="kw">let </span>sampler = <span class="kw">match </span>image.sampler {
+        <span class="kw">let </span>sampler = <span class="kw">match </span><span class="self">self</span>.sampler {
             ImageSampler::Default =&gt; (<span class="kw-2">***</span>default_sampler).clone(),
             ImageSampler::Descriptor(descriptor) =&gt; {
                 render_device.create_sampler(<span class="kw-2">&amp;</span>descriptor.as_wgpu())
@@ -1787,10 +1822,10 @@
         <span class="prelude-val">Ok</span>(GpuImage {
             texture,
             texture_view,
-            texture_format: image.texture_descriptor.format,
+            texture_format: <span class="self">self</span>.texture_descriptor.format,
             sampler,
             size,
-            mip_level_count: image.texture_descriptor.mip_level_count,
+            mip_level_count: <span class="self">self</span>.texture_descriptor.mip_level_count,
         })
     }
 }
@@ -1800,9 +1835,9 @@
     #[repr(transparent)]
     </span><span class="kw">pub struct </span>CompressedImageFormats: u32 {
         <span class="kw">const </span>NONE     = <span class="number">0</span>;
-        <span class="kw">const </span>ASTC_LDR = (<span class="number">1 </span>&lt;&lt; <span class="number">0</span>);
-        <span class="kw">const </span>BC       = (<span class="number">1 </span>&lt;&lt; <span class="number">1</span>);
-        <span class="kw">const </span>ETC2     = (<span class="number">1 </span>&lt;&lt; <span class="number">2</span>);
+        <span class="kw">const </span>ASTC_LDR = <span class="number">1 </span>&lt;&lt; <span class="number">0</span>;
+        <span class="kw">const </span>BC       = <span class="number">1 </span>&lt;&lt; <span class="number">1</span>;
+        <span class="kw">const </span>ETC2     = <span class="number">1 </span>&lt;&lt; <span class="number">2</span>;
     }
 }
 
@@ -1857,6 +1892,7 @@
 </span><span class="kw">mod </span>test {
 
     <span class="kw">use super</span>::<span class="kw-2">*</span>;
+    <span class="kw">use </span><span class="kw">crate</span>::render_asset::RenderAssetUsages;
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>image_size() {
@@ -1870,6 +1906,7 @@
             TextureDimension::D2,
             <span class="kw-2">&amp;</span>[<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">255</span>],
             TextureFormat::Rgba8Unorm,
+            RenderAssetUsages::MAIN_WORLD,
         );
         <span class="macro">assert_eq!</span>(
             Vec2::new(size.width <span class="kw">as </span>f32, size.height <span class="kw">as </span>f32),

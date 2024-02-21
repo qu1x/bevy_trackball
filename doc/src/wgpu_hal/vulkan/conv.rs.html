@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/wgpu-hal-0.17.2/src/vulkan/conv.rs`."><title>conv.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="wgpu_hal" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../wgpu_hal/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/wgpu-hal-0.19.1/src/vulkan/conv.rs`."><title>conv.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="wgpu_hal" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -837,6 +838,132 @@
 <a href="#837" id="837">837</a>
 <a href="#838" id="838">838</a>
 <a href="#839" id="839">839</a>
+<a href="#840" id="840">840</a>
+<a href="#841" id="841">841</a>
+<a href="#842" id="842">842</a>
+<a href="#843" id="843">843</a>
+<a href="#844" id="844">844</a>
+<a href="#845" id="845">845</a>
+<a href="#846" id="846">846</a>
+<a href="#847" id="847">847</a>
+<a href="#848" id="848">848</a>
+<a href="#849" id="849">849</a>
+<a href="#850" id="850">850</a>
+<a href="#851" id="851">851</a>
+<a href="#852" id="852">852</a>
+<a href="#853" id="853">853</a>
+<a href="#854" id="854">854</a>
+<a href="#855" id="855">855</a>
+<a href="#856" id="856">856</a>
+<a href="#857" id="857">857</a>
+<a href="#858" id="858">858</a>
+<a href="#859" id="859">859</a>
+<a href="#860" id="860">860</a>
+<a href="#861" id="861">861</a>
+<a href="#862" id="862">862</a>
+<a href="#863" id="863">863</a>
+<a href="#864" id="864">864</a>
+<a href="#865" id="865">865</a>
+<a href="#866" id="866">866</a>
+<a href="#867" id="867">867</a>
+<a href="#868" id="868">868</a>
+<a href="#869" id="869">869</a>
+<a href="#870" id="870">870</a>
+<a href="#871" id="871">871</a>
+<a href="#872" id="872">872</a>
+<a href="#873" id="873">873</a>
+<a href="#874" id="874">874</a>
+<a href="#875" id="875">875</a>
+<a href="#876" id="876">876</a>
+<a href="#877" id="877">877</a>
+<a href="#878" id="878">878</a>
+<a href="#879" id="879">879</a>
+<a href="#880" id="880">880</a>
+<a href="#881" id="881">881</a>
+<a href="#882" id="882">882</a>
+<a href="#883" id="883">883</a>
+<a href="#884" id="884">884</a>
+<a href="#885" id="885">885</a>
+<a href="#886" id="886">886</a>
+<a href="#887" id="887">887</a>
+<a href="#888" id="888">888</a>
+<a href="#889" id="889">889</a>
+<a href="#890" id="890">890</a>
+<a href="#891" id="891">891</a>
+<a href="#892" id="892">892</a>
+<a href="#893" id="893">893</a>
+<a href="#894" id="894">894</a>
+<a href="#895" id="895">895</a>
+<a href="#896" id="896">896</a>
+<a href="#897" id="897">897</a>
+<a href="#898" id="898">898</a>
+<a href="#899" id="899">899</a>
+<a href="#900" id="900">900</a>
+<a href="#901" id="901">901</a>
+<a href="#902" id="902">902</a>
+<a href="#903" id="903">903</a>
+<a href="#904" id="904">904</a>
+<a href="#905" id="905">905</a>
+<a href="#906" id="906">906</a>
+<a href="#907" id="907">907</a>
+<a href="#908" id="908">908</a>
+<a href="#909" id="909">909</a>
+<a href="#910" id="910">910</a>
+<a href="#911" id="911">911</a>
+<a href="#912" id="912">912</a>
+<a href="#913" id="913">913</a>
+<a href="#914" id="914">914</a>
+<a href="#915" id="915">915</a>
+<a href="#916" id="916">916</a>
+<a href="#917" id="917">917</a>
+<a href="#918" id="918">918</a>
+<a href="#919" id="919">919</a>
+<a href="#920" id="920">920</a>
+<a href="#921" id="921">921</a>
+<a href="#922" id="922">922</a>
+<a href="#923" id="923">923</a>
+<a href="#924" id="924">924</a>
+<a href="#925" id="925">925</a>
+<a href="#926" id="926">926</a>
+<a href="#927" id="927">927</a>
+<a href="#928" id="928">928</a>
+<a href="#929" id="929">929</a>
+<a href="#930" id="930">930</a>
+<a href="#931" id="931">931</a>
+<a href="#932" id="932">932</a>
+<a href="#933" id="933">933</a>
+<a href="#934" id="934">934</a>
+<a href="#935" id="935">935</a>
+<a href="#936" id="936">936</a>
+<a href="#937" id="937">937</a>
+<a href="#938" id="938">938</a>
+<a href="#939" id="939">939</a>
+<a href="#940" id="940">940</a>
+<a href="#941" id="941">941</a>
+<a href="#942" id="942">942</a>
+<a href="#943" id="943">943</a>
+<a href="#944" id="944">944</a>
+<a href="#945" id="945">945</a>
+<a href="#946" id="946">946</a>
+<a href="#947" id="947">947</a>
+<a href="#948" id="948">948</a>
+<a href="#949" id="949">949</a>
+<a href="#950" id="950">950</a>
+<a href="#951" id="951">951</a>
+<a href="#952" id="952">952</a>
+<a href="#953" id="953">953</a>
+<a href="#954" id="954">954</a>
+<a href="#955" id="955">955</a>
+<a href="#956" id="956">956</a>
+<a href="#957" id="957">957</a>
+<a href="#958" id="958">958</a>
+<a href="#959" id="959">959</a>
+<a href="#960" id="960">960</a>
+<a href="#961" id="961">961</a>
+<a href="#962" id="962">962</a>
+<a href="#963" id="963">963</a>
+<a href="#964" id="964">964</a>
+<a href="#965" id="965">965</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>ash::vk;
 
 <span class="kw">impl </span><span class="kw">super</span>::PrivateCapabilities {
@@ -873,6 +1000,7 @@
             Tf::Bgra8Unorm =&gt; F::B8G8R8A8_UNORM,
             Tf::Rgba8Uint =&gt; F::R8G8B8A8_UINT,
             Tf::Rgba8Sint =&gt; F::R8G8B8A8_SINT,
+            Tf::Rgb10a2Uint =&gt; F::A2B10G10R10_UINT_PACK32,
             Tf::Rgb10a2Unorm =&gt; F::A2B10G10R10_UNORM_PACK32,
             Tf::Rg11b10Float =&gt; F::B10G11R11_UFLOAT_PACK32,
             Tf::Rg32Uint =&gt; F::R32G32_UINT,
@@ -912,6 +1040,7 @@
                 }
             }
             Tf::Depth16Unorm =&gt; F::D16_UNORM,
+            Tf::NV12 =&gt; F::G8_B8R8_2PLANE_420_UNORM,
             Tf::Rgb9e5Ufloat =&gt; F::E5B9G9R9_UFLOAT_PACK32,
             Tf::Bc1RgbaUnorm =&gt; F::BC1_RGBA_UNORM_BLOCK,
             Tf::Bc1RgbaUnormSrgb =&gt; F::BC1_RGBA_SRGB_BLOCK,
@@ -1015,7 +1144,7 @@
     })
 }
 
-<span class="kw">impl </span><span class="kw">crate</span>::Attachment&lt;<span class="lifetime">&#39;_</span>, <span class="kw">super</span>::Api&gt; {
+<span class="kw">impl </span><span class="kw">crate</span>::Attachment&lt;<span class="lifetime">'_</span>, <span class="kw">super</span>::Api&gt; {
     <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>make_attachment_key(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         ops: <span class="kw">crate</span>::AttachmentOps,
@@ -1029,7 +1158,7 @@
     }
 }
 
-<span class="kw">impl </span><span class="kw">crate</span>::ColorAttachment&lt;<span class="lifetime">&#39;_</span>, <span class="kw">super</span>::Api&gt; {
+<span class="kw">impl </span><span class="kw">crate</span>::ColorAttachment&lt;<span class="lifetime">'_</span>, <span class="kw">super</span>::Api&gt; {
     <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">unsafe fn </span>make_vk_clear_color(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; vk::ClearColorValue {
         <span class="kw">let </span>cv = <span class="kw-2">&amp;</span><span class="self">self</span>.clear_value;
         <span class="kw">match </span><span class="self">self
@@ -1037,7 +1166,7 @@
             .view
             .attachment
             .view_format
-            .sample_type(<span class="prelude-val">None</span>)
+            .sample_type(<span class="prelude-val">None</span>, <span class="prelude-val">None</span>)
             .unwrap()
         {
             wgt::TextureSampleType::Float { .. } =&gt; vk::ClearColorValue {
@@ -1059,7 +1188,7 @@
     format: wgt::TextureFormat,
 ) -&gt; vk::ImageLayout {
     <span class="comment">// Note: depth textures are always sampled with RODS layout
-    </span><span class="kw">let </span>is_color = <span class="kw">crate</span>::FormatAspects::from(format).contains(<span class="kw">crate</span>::FormatAspects::COLOR);
+    </span><span class="kw">let </span>is_color = !format.is_depth_stencil_format();
     <span class="kw">match </span>usage {
         <span class="kw">crate</span>::TextureUses::UNINITIALIZED =&gt; vk::ImageLayout::UNDEFINED,
         <span class="kw">crate</span>::TextureUses::COPY_SRC =&gt; vk::ImageLayout::TRANSFER_SRC_OPTIMAL,
@@ -1250,6 +1379,15 @@
     <span class="kw">if </span>aspects.contains(<span class="kw">crate</span>::FormatAspects::STENCIL) {
         flags |= vk::ImageAspectFlags::STENCIL;
     }
+    <span class="kw">if </span>aspects.contains(<span class="kw">crate</span>::FormatAspects::PLANE_0) {
+        flags |= vk::ImageAspectFlags::PLANE_0;
+    }
+    <span class="kw">if </span>aspects.contains(<span class="kw">crate</span>::FormatAspects::PLANE_1) {
+        flags |= vk::ImageAspectFlags::PLANE_1;
+    }
+    <span class="kw">if </span>aspects.contains(<span class="kw">crate</span>::FormatAspects::PLANE_2) {
+        flags |= vk::ImageAspectFlags::PLANE_2;
+    }
     flags
 }
 
@@ -1276,7 +1414,7 @@
         wgt::PresentMode::Fifo =&gt; vk::PresentModeKHR::FIFO,
         wgt::PresentMode::FifoRelaxed =&gt; vk::PresentModeKHR::FIFO_RELAXED,
         wgt::PresentMode::AutoNoVsync | wgt::PresentMode::AutoVsync =&gt; {
-            <span class="macro">unreachable!</span>(<span class="string">&quot;Cannot create swapchain with Auto PresentationMode&quot;</span>)
+            <span class="macro">unreachable!</span>(<span class="string">"Cannot create swapchain with Auto PresentationMode"</span>)
         }
     }
 }
@@ -1289,10 +1427,9 @@
     } <span class="kw">else if </span>mode == vk::PresentModeKHR::FIFO {
         <span class="prelude-val">Some</span>(wgt::PresentMode::Fifo)
     } <span class="kw">else if </span>mode == vk::PresentModeKHR::FIFO_RELAXED {
-        <span class="comment">//Some(wgt::PresentMode::Relaxed)
-        </span><span class="prelude-val">None
-    </span>} <span class="kw">else </span>{
-        <span class="macro">log::warn!</span>(<span class="string">&quot;Unrecognized present mode {:?}&quot;</span>, mode);
+        <span class="prelude-val">Some</span>(wgt::PresentMode::FifoRelaxed)
+    } <span class="kw">else </span>{
+        <span class="macro">log::warn!</span>(<span class="string">"Unrecognized present mode {:?}"</span>, mode);
         <span class="prelude-val">None
     </span>}
 }
@@ -1347,6 +1484,16 @@
     <span class="kw">if </span>usage.contains(<span class="kw">crate</span>::BufferUses::INDIRECT) {
         flags |= vk::BufferUsageFlags::INDIRECT_BUFFER;
     }
+    <span class="kw">if </span>usage.contains(<span class="kw">crate</span>::BufferUses::ACCELERATION_STRUCTURE_SCRATCH) {
+        flags |= vk::BufferUsageFlags::STORAGE_BUFFER | vk::BufferUsageFlags::SHADER_DEVICE_ADDRESS;
+    }
+    <span class="kw">if </span>usage.intersects(
+        <span class="kw">crate</span>::BufferUses::BOTTOM_LEVEL_ACCELERATION_STRUCTURE_INPUT
+            | <span class="kw">crate</span>::BufferUses::TOP_LEVEL_ACCELERATION_STRUCTURE_INPUT,
+    ) {
+        flags |= vk::BufferUsageFlags::ACCELERATION_STRUCTURE_BUILD_INPUT_READ_ONLY_KHR
+            | vk::BufferUsageFlags::SHADER_DEVICE_ADDRESS;
+    }
     flags
 }
 
@@ -1399,6 +1546,15 @@
         stages |= vk::PipelineStageFlags::DRAW_INDIRECT;
         access |= vk::AccessFlags::INDIRECT_COMMAND_READ;
     }
+    <span class="kw">if </span>usage.intersects(
+        <span class="kw">crate</span>::BufferUses::BOTTOM_LEVEL_ACCELERATION_STRUCTURE_INPUT
+            | <span class="kw">crate</span>::BufferUses::TOP_LEVEL_ACCELERATION_STRUCTURE_INPUT
+            | <span class="kw">crate</span>::BufferUses::ACCELERATION_STRUCTURE_SCRATCH,
+    ) {
+        stages |= vk::PipelineStageFlags::ACCELERATION_STRUCTURE_BUILD_KHR;
+        access |= vk::AccessFlags::ACCELERATION_STRUCTURE_READ_KHR
+            | vk::AccessFlags::ACCELERATION_STRUCTURE_WRITE_KHR;
+    }
 
     (stages, access)
 }
@@ -1438,7 +1594,7 @@
 }
 
 <span class="comment">// Special subresource range mapping for dealing with barriers
-// so that we account for the &quot;hidden&quot; depth aspect in emulated Stencil8.
+// so that we account for the "hidden" depth aspect in emulated Stencil8.
 </span><span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>map_subresource_range_combined_aspect(
     range: <span class="kw-2">&amp;</span>wgt::ImageSubresourceRange,
     format: wgt::TextureFormat,
@@ -1549,6 +1705,7 @@
         wgt::BindingType::Sampler { .. } =&gt; vk::DescriptorType::SAMPLER,
         wgt::BindingType::Texture { .. } =&gt; vk::DescriptorType::SAMPLED_IMAGE,
         wgt::BindingType::StorageTexture { .. } =&gt; vk::DescriptorType::STORAGE_IMAGE,
+        wgt::BindingType::AccelerationStructure =&gt; vk::DescriptorType::ACCELERATION_STRUCTURE_KHR,
     }
 }
 
@@ -1631,6 +1788,10 @@
         Bf::SrcAlphaSaturated =&gt; vk::BlendFactor::SRC_ALPHA_SATURATE,
         Bf::Constant =&gt; vk::BlendFactor::CONSTANT_COLOR,
         Bf::OneMinusConstant =&gt; vk::BlendFactor::ONE_MINUS_CONSTANT_COLOR,
+        Bf::Src1 =&gt; vk::BlendFactor::SRC1_COLOR,
+        Bf::OneMinusSrc1 =&gt; vk::BlendFactor::ONE_MINUS_SRC1_COLOR,
+        Bf::Src1Alpha =&gt; vk::BlendFactor::SRC1_ALPHA,
+        Bf::OneMinusSrc1Alpha =&gt; vk::BlendFactor::ONE_MINUS_SRC1_ALPHA,
     }
 }
 
@@ -1675,5 +1836,97 @@
         flags |= vk::QueryPipelineStatisticFlags::COMPUTE_SHADER_INVOCATIONS;
     }
     flags
+}
+
+<span class="kw">pub fn </span>map_acceleration_structure_format(
+    format: <span class="kw">crate</span>::AccelerationStructureFormat,
+) -&gt; vk::AccelerationStructureTypeKHR {
+    <span class="kw">match </span>format {
+        <span class="kw">crate</span>::AccelerationStructureFormat::TopLevel =&gt; vk::AccelerationStructureTypeKHR::TOP_LEVEL,
+        <span class="kw">crate</span>::AccelerationStructureFormat::BottomLevel =&gt; {
+            vk::AccelerationStructureTypeKHR::BOTTOM_LEVEL
+        }
+    }
+}
+
+<span class="kw">pub fn </span>map_acceleration_structure_build_mode(
+    format: <span class="kw">crate</span>::AccelerationStructureBuildMode,
+) -&gt; vk::BuildAccelerationStructureModeKHR {
+    <span class="kw">match </span>format {
+        <span class="kw">crate</span>::AccelerationStructureBuildMode::Build =&gt; {
+            vk::BuildAccelerationStructureModeKHR::BUILD
+        }
+        <span class="kw">crate</span>::AccelerationStructureBuildMode::Update =&gt; {
+            vk::BuildAccelerationStructureModeKHR::UPDATE
+        }
+    }
+}
+
+<span class="kw">pub fn </span>map_acceleration_structure_flags(
+    flags: <span class="kw">crate</span>::AccelerationStructureBuildFlags,
+) -&gt; vk::BuildAccelerationStructureFlagsKHR {
+    <span class="kw">let </span><span class="kw-2">mut </span>vk_flags = vk::BuildAccelerationStructureFlagsKHR::empty();
+
+    <span class="kw">if </span>flags.contains(<span class="kw">crate</span>::AccelerationStructureBuildFlags::PREFER_FAST_TRACE) {
+        vk_flags |= vk::BuildAccelerationStructureFlagsKHR::PREFER_FAST_TRACE;
+    }
+
+    <span class="kw">if </span>flags.contains(<span class="kw">crate</span>::AccelerationStructureBuildFlags::PREFER_FAST_BUILD) {
+        vk_flags |= vk::BuildAccelerationStructureFlagsKHR::PREFER_FAST_BUILD;
+    }
+
+    <span class="kw">if </span>flags.contains(<span class="kw">crate</span>::AccelerationStructureBuildFlags::ALLOW_UPDATE) {
+        vk_flags |= vk::BuildAccelerationStructureFlagsKHR::ALLOW_UPDATE;
+    }
+
+    <span class="kw">if </span>flags.contains(<span class="kw">crate</span>::AccelerationStructureBuildFlags::LOW_MEMORY) {
+        vk_flags |= vk::BuildAccelerationStructureFlagsKHR::LOW_MEMORY;
+    }
+
+    <span class="kw">if </span>flags.contains(<span class="kw">crate</span>::AccelerationStructureBuildFlags::ALLOW_COMPACTION) {
+        vk_flags |= vk::BuildAccelerationStructureFlagsKHR::ALLOW_COMPACTION
+    }
+
+    vk_flags
+}
+
+<span class="kw">pub fn </span>map_acceleration_structure_geomety_flags(
+    flags: <span class="kw">crate</span>::AccelerationStructureGeometryFlags,
+) -&gt; vk::GeometryFlagsKHR {
+    <span class="kw">let </span><span class="kw-2">mut </span>vk_flags = vk::GeometryFlagsKHR::empty();
+
+    <span class="kw">if </span>flags.contains(<span class="kw">crate</span>::AccelerationStructureGeometryFlags::OPAQUE) {
+        vk_flags |= vk::GeometryFlagsKHR::OPAQUE;
+    }
+
+    <span class="kw">if </span>flags.contains(<span class="kw">crate</span>::AccelerationStructureGeometryFlags::NO_DUPLICATE_ANY_HIT_INVOCATION) {
+        vk_flags |= vk::GeometryFlagsKHR::NO_DUPLICATE_ANY_HIT_INVOCATION;
+    }
+
+    vk_flags
+}
+
+<span class="kw">pub fn </span>map_acceleration_structure_usage_to_barrier(
+    usage: <span class="kw">crate</span>::AccelerationStructureUses,
+) -&gt; (vk::PipelineStageFlags, vk::AccessFlags) {
+    <span class="kw">let </span><span class="kw-2">mut </span>stages = vk::PipelineStageFlags::empty();
+    <span class="kw">let </span><span class="kw-2">mut </span>access = vk::AccessFlags::empty();
+
+    <span class="kw">if </span>usage.contains(<span class="kw">crate</span>::AccelerationStructureUses::BUILD_INPUT) {
+        stages |= vk::PipelineStageFlags::ACCELERATION_STRUCTURE_BUILD_KHR;
+        access |= vk::AccessFlags::ACCELERATION_STRUCTURE_READ_KHR;
+    }
+    <span class="kw">if </span>usage.contains(<span class="kw">crate</span>::AccelerationStructureUses::BUILD_OUTPUT) {
+        stages |= vk::PipelineStageFlags::ACCELERATION_STRUCTURE_BUILD_KHR;
+        access |= vk::AccessFlags::ACCELERATION_STRUCTURE_WRITE_KHR;
+    }
+    <span class="kw">if </span>usage.contains(<span class="kw">crate</span>::AccelerationStructureUses::SHADER_INPUT) {
+        stages |= vk::PipelineStageFlags::VERTEX_SHADER
+            | vk::PipelineStageFlags::FRAGMENT_SHADER
+            | vk::PipelineStageFlags::COMPUTE_SHADER;
+        access |= vk::AccessFlags::ACCELERATION_STRUCTURE_READ_KHR;
+    }
+
+    (stages, access)
 }
 </code></pre></div></section></main></body></html>

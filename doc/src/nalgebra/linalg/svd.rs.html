@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/nalgebra-0.32.3/src/linalg/svd.rs`."><title>svd.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="nalgebra" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="icon" href="https://nalgebra.org/img/favicon.ico"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../nalgebra/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/nalgebra-0.32.4/src/linalg/svd.rs`."><title>svd.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="nalgebra" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="icon" href="https://nalgebra.org/img/favicon.ico"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -901,7 +902,7 @@
 <a href="#901" id="901">901</a>
 <a href="#902" id="902">902</a>
 <a href="#903" id="903">903</a>
-</pre></div><pre class="rust"><code><span class="attr">#[cfg(feature = <span class="string">&quot;serde-serialize-no-std&quot;</span>)]
+</pre></div><pre class="rust"><code><span class="attr">#[cfg(feature = <span class="string">"serde-serialize-no-std"</span>)]
 </span><span class="kw">use </span>serde::{Deserialize, Serialize};
 <span class="kw">use </span>std::any::TypeId;
 
@@ -921,27 +922,27 @@
 <span class="kw">use </span><span class="kw">crate</span>::linalg::Bidiagonal;
 
 <span class="doccomment">/// Singular Value Decomposition of a general matrix.
-</span><span class="attr">#[cfg_attr(feature = <span class="string">&quot;serde-serialize-no-std&quot;</span>, derive(Serialize, Deserialize))]
+</span><span class="attr">#[cfg_attr(feature = <span class="string">"serde-serialize-no-std"</span>, derive(Serialize, Deserialize))]
 #[cfg_attr(
-    feature = <span class="string">&quot;serde-serialize-no-std&quot;</span>,
+    feature = <span class="string">"serde-serialize-no-std"</span>,
     serde(bound(
-        serialize = <span class="string">&quot;DefaultAllocator: Allocator&lt;T::RealField, DimMinimum&lt;R, C&gt;&gt;    +
+        serialize = <span class="string">"DefaultAllocator: Allocator&lt;T::RealField, DimMinimum&lt;R, C&gt;&gt;    +
                            Allocator&lt;T, DimMinimum&lt;R, C&gt;, C&gt; +
                            Allocator&lt;T, R, DimMinimum&lt;R, C&gt;&gt;,
          OMatrix&lt;T, R, DimMinimum&lt;R, C&gt;&gt;: Serialize,
          OMatrix&lt;T, DimMinimum&lt;R, C&gt;, C&gt;: Serialize,
-         OVector&lt;T::RealField, DimMinimum&lt;R, C&gt;&gt;: Serialize&quot;
+         OVector&lt;T::RealField, DimMinimum&lt;R, C&gt;&gt;: Serialize"
     </span>))
 )]
 #[cfg_attr(
-    feature = <span class="string">&quot;serde-serialize-no-std&quot;</span>,
+    feature = <span class="string">"serde-serialize-no-std"</span>,
     serde(bound(
-        deserialize = <span class="string">&quot;DefaultAllocator: Allocator&lt;T::RealField, DimMinimum&lt;R, C&gt;&gt;    +
+        deserialize = <span class="string">"DefaultAllocator: Allocator&lt;T::RealField, DimMinimum&lt;R, C&gt;&gt;    +
                            Allocator&lt;T, DimMinimum&lt;R, C&gt;, C&gt; +
                            Allocator&lt;T, R, DimMinimum&lt;R, C&gt;&gt;,
-         OMatrix&lt;T, R, DimMinimum&lt;R, C&gt;&gt;: Deserialize&lt;&#39;de&gt;,
-         OMatrix&lt;T, DimMinimum&lt;R, C&gt;, C&gt;: Deserialize&lt;&#39;de&gt;,
-         OVector&lt;T::RealField, DimMinimum&lt;R, C&gt;&gt;: Deserialize&lt;&#39;de&gt;&quot;
+         OMatrix&lt;T, R, DimMinimum&lt;R, C&gt;&gt;: Deserialize&lt;'de&gt;,
+         OMatrix&lt;T, DimMinimum&lt;R, C&gt;, C&gt;: Deserialize&lt;'de&gt;,
+         OVector&lt;T::RealField, DimMinimum&lt;R, C&gt;&gt;: Deserialize&lt;'de&gt;"
     </span>))
 )]
 #[derive(Clone, Debug)]
@@ -1028,7 +1029,7 @@
     ) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
         <span class="macro">assert!</span>(
             !matrix.is_empty(),
-            <span class="string">&quot;Cannot compute the SVD of an empty matrix.&quot;
+            <span class="string">"Cannot compute the SVD of an empty matrix."
         </span>);
         <span class="kw">let </span>(nrows, ncols) = matrix.shape_generic();
         <span class="kw">let </span>min_nrows_ncols = nrows.min(ncols);
@@ -1254,14 +1255,14 @@
     fn display_bidiag(b: &amp;Bidiagonal&lt;T, R, C&gt;, begin: usize, end: usize) {
         for i in begin .. end {
             for k in begin .. i {
-                print!(&quot;    &quot;);
+                print!("    ");
             }
-            println!(&quot;{}  {}&quot;, b.diagonal[i], b.off_diagonal[i]);
+            println!("{}  {}", b.diagonal[i], b.off_diagonal[i]);
         }
         for k in begin .. end {
-            print!(&quot;    &quot;);
+            print!("    ");
         }
-        println!(&quot;{}&quot;, b.diagonal[end]);
+        println!("{}", b.diagonal[end]);
     }
     */
 
@@ -1450,7 +1451,7 @@
     </span><span class="kw">pub fn </span>rank(<span class="kw-2">&amp;</span><span class="self">self</span>, eps: T::RealField) -&gt; usize {
         <span class="macro">assert!</span>(
             eps &gt;= T::RealField::zero(),
-            <span class="string">&quot;SVD rank: the epsilon must be non-negative.&quot;
+            <span class="string">"SVD rank: the epsilon must be non-negative."
         </span>);
         <span class="self">self</span>.singular_values.iter().filter(|e| <span class="kw-2">**</span>e &gt; eps).count()
     }
@@ -1460,7 +1461,7 @@
     /// This is useful if some of the singular values have been manually modified.
     /// Returns `Err` if the right- and left- singular vectors have not been
     /// computed at construction-time.
-    </span><span class="kw">pub fn </span>recompose(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;OMatrix&lt;T, R, C&gt;, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str&gt; {
+    </span><span class="kw">pub fn </span>recompose(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;OMatrix&lt;T, R, C&gt;, <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str&gt; {
         <span class="kw">match </span>(<span class="self">self</span>.u, <span class="self">self</span>.v_t) {
             (<span class="prelude-val">Some</span>(<span class="kw-2">mut </span>u), <span class="prelude-val">Some</span>(v_t)) =&gt; {
                 <span class="kw">for </span>i <span class="kw">in </span><span class="number">0</span>..<span class="self">self</span>.singular_values.len() {
@@ -1469,9 +1470,9 @@
                 }
                 <span class="prelude-val">Ok</span>(u * v_t)
             }
-            (<span class="prelude-val">None</span>, <span class="prelude-val">None</span>) =&gt; <span class="prelude-val">Err</span>(<span class="string">&quot;SVD recomposition: U and V^t have not been computed.&quot;</span>),
-            (<span class="prelude-val">None</span>, <span class="kw">_</span>) =&gt; <span class="prelude-val">Err</span>(<span class="string">&quot;SVD recomposition: U has not been computed.&quot;</span>),
-            (<span class="kw">_</span>, <span class="prelude-val">None</span>) =&gt; <span class="prelude-val">Err</span>(<span class="string">&quot;SVD recomposition: V^t has not been computed.&quot;</span>),
+            (<span class="prelude-val">None</span>, <span class="prelude-val">None</span>) =&gt; <span class="prelude-val">Err</span>(<span class="string">"SVD recomposition: U and V^t have not been computed."</span>),
+            (<span class="prelude-val">None</span>, <span class="kw">_</span>) =&gt; <span class="prelude-val">Err</span>(<span class="string">"SVD recomposition: U has not been computed."</span>),
+            (<span class="kw">_</span>, <span class="prelude-val">None</span>) =&gt; <span class="prelude-val">Err</span>(<span class="string">"SVD recomposition: V^t has not been computed."</span>),
         }
     }
 
@@ -1480,12 +1481,12 @@
     /// Any singular value smaller than `eps` is assumed to be zero.
     /// Returns `Err` if the right- and left- singular vectors have not
     /// been computed at construction-time.
-    </span><span class="kw">pub fn </span>pseudo_inverse(<span class="kw-2">mut </span><span class="self">self</span>, eps: T::RealField) -&gt; <span class="prelude-ty">Result</span>&lt;OMatrix&lt;T, C, R&gt;, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str&gt;
+    </span><span class="kw">pub fn </span>pseudo_inverse(<span class="kw-2">mut </span><span class="self">self</span>, eps: T::RealField) -&gt; <span class="prelude-ty">Result</span>&lt;OMatrix&lt;T, C, R&gt;, <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str&gt;
     <span class="kw">where
         </span>DefaultAllocator: Allocator&lt;T, C, R&gt;,
     {
         <span class="kw">if </span>eps &lt; T::RealField::zero() {
-            <span class="prelude-val">Err</span>(<span class="string">&quot;SVD pseudo inverse: the epsilon must be non-negative.&quot;</span>)
+            <span class="prelude-val">Err</span>(<span class="string">"SVD pseudo inverse: the epsilon must be non-negative."</span>)
         } <span class="kw">else </span>{
             <span class="kw">for </span>i <span class="kw">in </span><span class="number">0</span>..<span class="self">self</span>.singular_values.len() {
                 <span class="kw">let </span>val = <span class="self">self</span>.singular_values[i].clone();
@@ -1510,14 +1511,14 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         b: <span class="kw-2">&amp;</span>Matrix&lt;T, R2, C2, S2&gt;,
         eps: T::RealField,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;OMatrix&lt;T, C, C2&gt;, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str&gt;
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;OMatrix&lt;T, C, C2&gt;, <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str&gt;
     <span class="kw">where
         </span>S2: Storage&lt;T, R2, C2&gt;,
         DefaultAllocator: Allocator&lt;T, C, C2&gt; + Allocator&lt;T, DimMinimum&lt;R, C&gt;, C2&gt;,
         ShapeConstraint: SameNumberOfRows&lt;R, R2&gt;,
     {
         <span class="kw">if </span>eps &lt; T::RealField::zero() {
-            <span class="prelude-val">Err</span>(<span class="string">&quot;SVD solve: the epsilon must be non-negative.&quot;</span>)
+            <span class="prelude-val">Err</span>(<span class="string">"SVD solve: the epsilon must be non-negative."</span>)
         } <span class="kw">else </span>{
             <span class="kw">match </span>(<span class="kw-2">&amp;</span><span class="self">self</span>.u, <span class="kw-2">&amp;</span><span class="self">self</span>.v_t) {
                 (<span class="prelude-val">Some</span>(u), <span class="prelude-val">Some</span>(v_t)) =&gt; {
@@ -1538,17 +1539,17 @@
 
                     <span class="prelude-val">Ok</span>(v_t.ad_mul(<span class="kw-2">&amp;</span>ut_b))
                 }
-                (<span class="prelude-val">None</span>, <span class="prelude-val">None</span>) =&gt; <span class="prelude-val">Err</span>(<span class="string">&quot;SVD solve: U and V^t have not been computed.&quot;</span>),
-                (<span class="prelude-val">None</span>, <span class="kw">_</span>) =&gt; <span class="prelude-val">Err</span>(<span class="string">&quot;SVD solve: U has not been computed.&quot;</span>),
-                (<span class="kw">_</span>, <span class="prelude-val">None</span>) =&gt; <span class="prelude-val">Err</span>(<span class="string">&quot;SVD solve: V^t has not been computed.&quot;</span>),
+                (<span class="prelude-val">None</span>, <span class="prelude-val">None</span>) =&gt; <span class="prelude-val">Err</span>(<span class="string">"SVD solve: U and V^t have not been computed."</span>),
+                (<span class="prelude-val">None</span>, <span class="kw">_</span>) =&gt; <span class="prelude-val">Err</span>(<span class="string">"SVD solve: U has not been computed."</span>),
+                (<span class="kw">_</span>, <span class="prelude-val">None</span>) =&gt; <span class="prelude-val">Err</span>(<span class="string">"SVD solve: V^t has not been computed."</span>),
             }
         }
     }
 
-    <span class="doccomment">/// converts SVD results to Polar decomposition form of the original Matrix: `A = P&#39; * U`.
+    <span class="doccomment">/// converts SVD results to Polar decomposition form of the original Matrix: `A = P' * U`.
     ///
     /// The polar decomposition used here is Left Polar Decomposition (or Reverse Polar Decomposition)
-    /// Returns None if the singular vectors of the SVD haven&#39;t been calculated
+    /// Returns None if the singular vectors of the SVD haven't been calculated
     </span><span class="kw">pub fn </span>to_polar(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;(OMatrix&lt;T, R, R&gt;, OMatrix&lt;T, R, C&gt;)&gt;
     <span class="kw">where
         </span>DefaultAllocator: Allocator&lt;T, R, C&gt; <span class="comment">//result
@@ -1636,13 +1637,13 @@
         <span class="macro">assert_ne!</span>(
             singular_values.data.shape().<span class="number">0</span>.value(),
             VALUE_PROCESSED,
-            <span class="string">&quot;Too many singular values&quot;
+            <span class="string">"Too many singular values"
         </span>);
 
         <span class="comment">// ... sort the singular values, ...
         </span>singular_values
             .as_mut_slice()
-            .sort_unstable_by(|(a, <span class="kw">_</span>), (b, <span class="kw">_</span>)| b.partial_cmp(a).expect(<span class="string">&quot;Singular value was NaN&quot;</span>));
+            .sort_unstable_by(|(a, <span class="kw">_</span>), (b, <span class="kw">_</span>)| b.partial_cmp(a).expect(<span class="string">"Singular value was NaN"</span>));
 
         <span class="comment">// ... and store them.
         </span><span class="self">self</span>.singular_values
@@ -1660,7 +1661,7 @@
             <span class="kw">let </span><span class="kw-2">mut </span>index_2 = singular_values[i].<span class="number">1</span>;
 
             <span class="comment">// Check whether the value was already visited ...
-            </span><span class="kw">while </span>index_2 != VALUE_PROCESSED <span class="comment">// ... or a &quot;double swap&quot; must be avoided.
+            </span><span class="kw">while </span>index_2 != VALUE_PROCESSED <span class="comment">// ... or a "double swap" must be avoided.
                 </span>&amp;&amp; singular_values[index_2].<span class="number">1 </span>!= VALUE_PROCESSED
             {
                 <span class="comment">// Add the permutation ...
@@ -1717,7 +1718,7 @@
     <span class="doccomment">/// Computes the pseudo-inverse of this matrix.
     ///
     /// All singular values below `eps` are considered equal to 0.
-    </span><span class="kw">pub fn </span>pseudo_inverse(<span class="self">self</span>, eps: T::RealField) -&gt; <span class="prelude-ty">Result</span>&lt;OMatrix&lt;T, C, R&gt;, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str&gt;
+    </span><span class="kw">pub fn </span>pseudo_inverse(<span class="self">self</span>, eps: T::RealField) -&gt; <span class="prelude-ty">Result</span>&lt;OMatrix&lt;T, C, R&gt;, <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str&gt;
     <span class="kw">where
         </span>DefaultAllocator: Allocator&lt;T, C, R&gt;,
     {
@@ -1749,8 +1750,8 @@
     }
 }
 
-<span class="comment">// Explicit formulae inspired from the paper &quot;Computing the Singular Values of 2-by-2 Complex
-// Matrices&quot;, Sanzheng Qiao and Xiaohong Wang.
+<span class="comment">// Explicit formulae inspired from the paper "Computing the Singular Values of 2-by-2 Complex
+// Matrices", Sanzheng Qiao and Xiaohong Wang.
 // http://www.cas.mcmaster.ca/sqrl/papers/sqrl5.pdf
 </span><span class="kw">fn </span>compute_2x2_uptrig_svd&lt;T: RealField&gt;(
     m11: T,

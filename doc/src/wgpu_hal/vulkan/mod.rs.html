@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/wgpu-hal-0.17.2/src/vulkan/mod.rs`."><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="wgpu_hal" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../wgpu_hal/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/wgpu-hal-0.19.1/src/vulkan/mod.rs`."><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="wgpu_hal" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -671,12 +672,59 @@
 <a href="#671" id="671">671</a>
 <a href="#672" id="672">672</a>
 <a href="#673" id="673">673</a>
+<a href="#674" id="674">674</a>
+<a href="#675" id="675">675</a>
+<a href="#676" id="676">676</a>
+<a href="#677" id="677">677</a>
+<a href="#678" id="678">678</a>
+<a href="#679" id="679">679</a>
+<a href="#680" id="680">680</a>
+<a href="#681" id="681">681</a>
+<a href="#682" id="682">682</a>
+<a href="#683" id="683">683</a>
+<a href="#684" id="684">684</a>
+<a href="#685" id="685">685</a>
+<a href="#686" id="686">686</a>
+<a href="#687" id="687">687</a>
+<a href="#688" id="688">688</a>
+<a href="#689" id="689">689</a>
+<a href="#690" id="690">690</a>
+<a href="#691" id="691">691</a>
+<a href="#692" id="692">692</a>
+<a href="#693" id="693">693</a>
+<a href="#694" id="694">694</a>
+<a href="#695" id="695">695</a>
+<a href="#696" id="696">696</a>
+<a href="#697" id="697">697</a>
+<a href="#698" id="698">698</a>
+<a href="#699" id="699">699</a>
+<a href="#700" id="700">700</a>
+<a href="#701" id="701">701</a>
+<a href="#702" id="702">702</a>
+<a href="#703" id="703">703</a>
+<a href="#704" id="704">704</a>
+<a href="#705" id="705">705</a>
+<a href="#706" id="706">706</a>
+<a href="#707" id="707">707</a>
+<a href="#708" id="708">708</a>
+<a href="#709" id="709">709</a>
+<a href="#710" id="710">710</a>
+<a href="#711" id="711">711</a>
+<a href="#712" id="712">712</a>
+<a href="#713" id="713">713</a>
+<a href="#714" id="714">714</a>
+<a href="#715" id="715">715</a>
+<a href="#716" id="716">716</a>
+<a href="#717" id="717">717</a>
+<a href="#718" id="718">718</a>
+<a href="#719" id="719">719</a>
+<a href="#720" id="720">720</a>
 </pre></div><pre class="rust"><code><span class="doccomment">/*!
 # Vulkan API internals.
 
 ## Stack memory
 
-Ash expects slices, which we don&#39;t generally have available.
+Ash expects slices, which we don't generally have available.
 We cope with this requirement by the combination of the following ways:
   - temporarily allocating `Vec` on heap, where overhead is permitted
   - growing temporary local storage
@@ -704,19 +752,28 @@ Otherwise, we manage a pool of `VkFence` objects behind each `hal::Fence`.
 <span class="kw">mod </span>device;
 <span class="kw">mod </span>instance;
 
-<span class="kw">use </span>std::{borrow::Borrow, ffi::CStr, fmt, num::NonZeroU32, sync::Arc};
+<span class="kw">use </span>std::{
+    borrow::Borrow,
+    ffi::CStr,
+    fmt,
+    num::NonZeroU32,
+    sync::{
+        atomic::{AtomicIsize, Ordering},
+        Arc,
+    },
+};
 
 <span class="kw">use </span>arrayvec::ArrayVec;
 <span class="kw">use </span>ash::{
     extensions::{ext, khr},
     vk,
 };
-<span class="kw">use </span>parking_lot::Mutex;
+<span class="kw">use </span>parking_lot::{Mutex, RwLock};
 
 <span class="kw">const </span>MILLIS_TO_NANOS: u64 = <span class="number">1_000_000</span>;
 <span class="kw">const </span>MAX_TOTAL_ATTACHMENTS: usize = <span class="kw">crate</span>::MAX_COLOR_ATTACHMENTS * <span class="number">2 </span>+ <span class="number">1</span>;
 
-<span class="attr">#[derive(Clone)]
+<span class="attr">#[derive(Clone, Debug)]
 </span><span class="kw">pub struct </span>Api;
 
 <span class="kw">impl </span><span class="kw">crate</span>::Api <span class="kw">for </span>Api {
@@ -736,6 +793,7 @@ Otherwise, we manage a pool of `VkFence` objects behind each `hal::Fence`.
     <span class="kw">type </span>Sampler = Sampler;
     <span class="kw">type </span>QuerySet = QuerySet;
     <span class="kw">type </span>Fence = Fence;
+    <span class="kw">type </span>AccelerationStructure = AccelerationStructure;
 
     <span class="kw">type </span>BindGroupLayout = BindGroupLayout;
     <span class="kw">type </span>BindGroup = BindGroup;
@@ -758,6 +816,12 @@ Otherwise, we manage a pool of `VkFence` objects behind each `hal::Fence`.
     </span>callback_data: Box&lt;DebugUtilsMessengerUserData&gt;,
 }
 
+<span class="kw">pub struct </span>DebugUtilsCreateInfo {
+    severity: vk::DebugUtilsMessageSeverityFlagsEXT,
+    message_type: vk::DebugUtilsMessageTypeFlagsEXT,
+    callback_data: Box&lt;DebugUtilsMessengerUserData&gt;,
+}
+
 <span class="doccomment">/// User data needed by `instance::debug_utils_messenger_callback`.
 ///
 /// When we create the [`vk::DebugUtilsMessengerEXT`], the `pUserData`
@@ -771,21 +835,27 @@ Otherwise, we manage a pool of `VkFence` objects behind each `hal::Fence`.
     </span>validation_layer_spec_version: u32,
 
     <span class="doccomment">/// If the OBS layer is present. OBS never increments the version of their layer,
-    /// so there&#39;s no reason to have the version.
+    /// so there's no reason to have the version.
     </span>has_obs_layer: bool,
 }
 
 <span class="kw">pub struct </span>InstanceShared {
     raw: ash::Instance,
-    extensions: Vec&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>CStr&gt;,
+    extensions: Vec&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span>CStr&gt;,
     drop_guard: <span class="prelude-ty">Option</span>&lt;<span class="kw">crate</span>::DropGuard&gt;,
-    flags: <span class="kw">crate</span>::InstanceFlags,
+    flags: wgt::InstanceFlags,
     debug_utils: <span class="prelude-ty">Option</span>&lt;DebugUtils&gt;,
     get_physical_device_properties: <span class="prelude-ty">Option</span>&lt;khr::GetPhysicalDeviceProperties2&gt;,
     entry: ash::Entry,
     has_nv_optimus: bool,
     android_sdk_version: u32,
-    driver_api_version: u32,
+    <span class="doccomment">/// The instance API version.
+    ///
+    /// Which is the version of Vulkan supported for instance-level functionality.
+    ///
+    /// It is associated with a `VkInstance` and its children,
+    /// except for a `VkPhysicalDevice` and its children.
+    </span>instance_api_version: u32,
 }
 
 <span class="kw">pub struct </span>Instance {
@@ -807,7 +877,7 @@ Otherwise, we manage a pool of `VkFence` objects behind each `hal::Fence`.
     raw: vk::SurfaceKHR,
     functor: khr::Surface,
     instance: Arc&lt;InstanceShared&gt;,
-    swapchain: <span class="prelude-ty">Option</span>&lt;Swapchain&gt;,
+    swapchain: RwLock&lt;<span class="prelude-ty">Option</span>&lt;Swapchain&gt;&gt;,
 }
 
 <span class="attr">#[derive(Debug)]
@@ -834,20 +904,26 @@ Otherwise, we manage a pool of `VkFence` objects behind each `hal::Fence`.
     workarounds: Workarounds,
 }
 
-<span class="comment">// TODO there&#39;s no reason why this can&#39;t be unified--the function pointers should all be the same--it&#39;s not clear how to do this with `ash`.
+<span class="comment">// TODO there's no reason why this can't be unified--the function pointers should all be the same--it's not clear how to do this with `ash`.
 </span><span class="kw">enum </span>ExtensionFn&lt;T&gt; {
     <span class="doccomment">/// The loaded function pointer struct for an extension.
     </span>Extension(T),
-    <span class="doccomment">/// The extension was promoted to a core version of Vulkan and the functions on `ash`&#39;s `DeviceV1_x` traits should be used.
+    <span class="doccomment">/// The extension was promoted to a core version of Vulkan and the functions on `ash`'s `DeviceV1_x` traits should be used.
     </span>Promoted,
 }
 
 <span class="kw">struct </span>DeviceExtensionFunctions {
     draw_indirect_count: <span class="prelude-ty">Option</span>&lt;khr::DrawIndirectCount&gt;,
     timeline_semaphore: <span class="prelude-ty">Option</span>&lt;ExtensionFn&lt;khr::TimelineSemaphore&gt;&gt;,
+    ray_tracing: <span class="prelude-ty">Option</span>&lt;RayTracingDeviceExtensionFunctions&gt;,
 }
 
-<span class="doccomment">/// Set of internal capabilities, which don&#39;t show up in the exposed
+<span class="kw">struct </span>RayTracingDeviceExtensionFunctions {
+    acceleration_structure: khr::AccelerationStructure,
+    buffer_device_address: khr::BufferDeviceAddress,
+}
+
+<span class="doccomment">/// Set of internal capabilities, which don't show up in the exposed
 /// device geometry, but affect the code paths taken internally.
 </span><span class="attr">#[derive(Clone, Debug)]
 </span><span class="kw">struct </span>PrivateCapabilities {
@@ -866,7 +942,10 @@ Otherwise, we manage a pool of `VkFence` objects behind each `hal::Fence`.
     non_coherent_map_mask: wgt::BufferAddress,
     robust_buffer_access: bool,
     robust_image_access: bool,
+    robust_buffer_access2: bool,
+    robust_image_access2: bool,
     zero_initialize_workgroup_memory: bool,
+    image_format_list: bool,
 }
 
 <span class="macro">bitflags::bitflags!</span>(
@@ -966,7 +1045,7 @@ Otherwise, we manage a pool of `VkFence` objects behind each `hal::Fence`.
     handle_is_owned: bool,
     instance: Arc&lt;InstanceShared&gt;,
     physical_device: ash::vk::PhysicalDevice,
-    enabled_extensions: Vec&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>CStr&gt;,
+    enabled_extensions: Vec&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span>CStr&gt;,
     extension_fns: DeviceExtensionFunctions,
     vendor_id: u32,
     timestamp_period: f32,
@@ -982,8 +1061,8 @@ Otherwise, we manage a pool of `VkFence` objects behind each `hal::Fence`.
     desc_allocator:
         Mutex&lt;gpu_descriptor::DescriptorAllocator&lt;vk::DescriptorPool, vk::DescriptorSet&gt;&gt;,
     valid_ash_memory_types: u32,
-    naga_options: naga::back::spv::Options&lt;<span class="lifetime">&#39;static</span>&gt;,
-    <span class="attr">#[cfg(feature = <span class="string">&quot;renderdoc&quot;</span>)]
+    naga_options: naga::back::spv::Options&lt;<span class="lifetime">'static</span>&gt;,
+    <span class="attr">#[cfg(feature = <span class="string">"renderdoc"</span>)]
     </span>render_doc: <span class="kw">crate</span>::auxil::renderdoc::RenderDoc,
 }
 
@@ -993,18 +1072,25 @@ Otherwise, we manage a pool of `VkFence` objects behind each `hal::Fence`.
     device: Arc&lt;DeviceShared&gt;,
     family_index: u32,
     <span class="doccomment">/// We use a redundant chain of semaphores to pass on the signal
-    /// from submissions to the last present, since it&#39;s required by the
+    /// from submissions to the last present, since it's required by the
     /// specification.
     /// It would be correct to use a single semaphore there, but
     /// [Intel hangs in `anv_queue_finish`](https://gitlab.freedesktop.org/mesa/mesa/-/issues/5508).
     </span>relay_semaphores: [vk::Semaphore; <span class="number">2</span>],
-    relay_index: <span class="prelude-ty">Option</span>&lt;usize&gt;,
+    relay_index: AtomicIsize,
 }
 
 <span class="attr">#[derive(Debug)]
 </span><span class="kw">pub struct </span>Buffer {
     raw: vk::Buffer,
     block: <span class="prelude-ty">Option</span>&lt;Mutex&lt;gpu_alloc::MemoryBlock&lt;vk::DeviceMemory&gt;&gt;&gt;,
+}
+
+<span class="attr">#[derive(Debug)]
+</span><span class="kw">pub struct </span>AccelerationStructure {
+    raw: vk::AccelerationStructureKHR,
+    buffer: vk::Buffer,
+    block: Mutex&lt;gpu_alloc::MemoryBlock&lt;vk::DeviceMemory&gt;&gt;,
 }
 
 <span class="attr">#[derive(Debug)]
@@ -1097,12 +1183,16 @@ Otherwise, we manage a pool of `VkFence` objects behind each `hal::Fence`.
     <span class="doccomment">/// If this is true, the active renderpass enabled a debug span,
     /// and needs to be disabled on renderpass close.
     </span>rpass_debug_marker_active: bool,
+
+    <span class="doccomment">/// If set, the end of the next render/compute pass will write a timestamp at
+    /// the given pool &amp; location.
+    </span>end_of_pass_timer_query: <span class="prelude-ty">Option</span>&lt;(vk::QueryPool, u32)&gt;,
 }
 
 <span class="kw">impl </span>fmt::Debug <span class="kw">for </span>CommandEncoder {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
-        f.debug_struct(<span class="string">&quot;CommandEncoder&quot;</span>)
-            .field(<span class="string">&quot;raw&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.raw)
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
+        f.debug_struct(<span class="string">"CommandEncoder"</span>)
+            .field(<span class="string">"raw"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.raw)
             .finish()
     }
 }
@@ -1214,7 +1304,7 @@ Otherwise, we manage a pool of `VkFence` objects behind each `hal::Fence`.
 
 <span class="kw">impl </span><span class="kw">crate</span>::Queue&lt;Api&gt; <span class="kw">for </span>Queue {
     <span class="kw">unsafe fn </span>submit(
-        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
         command_buffers: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span>CommandBuffer],
         signal_fence: <span class="prelude-ty">Option</span>&lt;(<span class="kw-2">&amp;mut </span>Fence, <span class="kw">crate</span>::FenceValue)&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;(), <span class="kw">crate</span>::DeviceError&gt; {
@@ -1259,16 +1349,17 @@ Otherwise, we manage a pool of `VkFence` objects behind each `hal::Fence`.
         }
 
         <span class="kw">let </span>wait_stage_mask = [vk::PipelineStageFlags::TOP_OF_PIPE];
-        <span class="kw">let </span>sem_index = <span class="kw">match </span><span class="self">self</span>.relay_index {
-            <span class="prelude-val">Some</span>(old_index) =&gt; {
-                vk_info = vk_info
-                    .wait_semaphores(<span class="kw-2">&amp;</span><span class="self">self</span>.relay_semaphores[old_index..old_index + <span class="number">1</span>])
-                    .wait_dst_stage_mask(<span class="kw-2">&amp;</span>wait_stage_mask);
-                (old_index + <span class="number">1</span>) % <span class="self">self</span>.relay_semaphores.len()
-            }
-            <span class="prelude-val">None </span>=&gt; <span class="number">0</span>,
-        };
-        <span class="self">self</span>.relay_index = <span class="prelude-val">Some</span>(sem_index);
+        <span class="kw">let </span>old_index = <span class="self">self</span>.relay_index.load(Ordering::Relaxed);
+        <span class="kw">let </span>sem_index = <span class="kw">if </span>old_index &gt;= <span class="number">0 </span>{
+            vk_info = vk_info
+                .wait_semaphores(<span class="kw-2">&amp;</span><span class="self">self</span>.relay_semaphores[old_index <span class="kw">as </span>usize..old_index <span class="kw">as </span>usize + <span class="number">1</span>])
+                .wait_dst_stage_mask(<span class="kw-2">&amp;</span>wait_stage_mask);
+            (old_index <span class="kw">as </span>usize + <span class="number">1</span>) % <span class="self">self</span>.relay_semaphores.len()
+        } <span class="kw">else </span>{
+            <span class="number">0
+        </span>};
+        <span class="self">self</span>.relay_index
+            .store(sem_index <span class="kw">as </span>isize, Ordering::Relaxed);
         signal_semaphores[<span class="number">0</span>] = <span class="self">self</span>.relay_semaphores[sem_index];
 
         <span class="kw">let </span>signal_count = <span class="kw">if </span>signal_semaphores[<span class="number">1</span>] == vk::Semaphore::null() {
@@ -1278,7 +1369,7 @@ Otherwise, we manage a pool of `VkFence` objects behind each `hal::Fence`.
         </span>};
         vk_info = vk_info.signal_semaphores(<span class="kw-2">&amp;</span>signal_semaphores[..signal_count]);
 
-        <span class="macro">profiling::scope!</span>(<span class="string">&quot;vkQueueSubmit&quot;</span>);
+        <span class="macro">profiling::scope!</span>(<span class="string">"vkQueueSubmit"</span>);
         <span class="kw">unsafe </span>{
             <span class="self">self</span>.device
                 .raw
@@ -1288,11 +1379,12 @@ Otherwise, we manage a pool of `VkFence` objects behind each `hal::Fence`.
     }
 
     <span class="kw">unsafe fn </span>present(
-        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        surface: <span class="kw-2">&amp;mut </span>Surface,
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        surface: <span class="kw-2">&amp;</span>Surface,
         texture: SurfaceTexture,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;(), <span class="kw">crate</span>::SurfaceError&gt; {
-        <span class="kw">let </span>ssc = surface.swapchain.as_ref().unwrap();
+        <span class="kw">let </span><span class="kw-2">mut </span>swapchain = surface.swapchain.write();
+        <span class="kw">let </span>ssc = swapchain.as_mut().unwrap();
 
         <span class="kw">let </span>swapchains = [ssc.raw];
         <span class="kw">let </span>image_indices = [texture.index];
@@ -1300,12 +1392,15 @@ Otherwise, we manage a pool of `VkFence` objects behind each `hal::Fence`.
             .swapchains(<span class="kw-2">&amp;</span>swapchains)
             .image_indices(<span class="kw-2">&amp;</span>image_indices);
 
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(old_index) = <span class="self">self</span>.relay_index.take() {
-            vk_info = vk_info.wait_semaphores(<span class="kw-2">&amp;</span><span class="self">self</span>.relay_semaphores[old_index..old_index + <span class="number">1</span>]);
+        <span class="kw">let </span>old_index = <span class="self">self</span>.relay_index.swap(-<span class="number">1</span>, Ordering::Relaxed);
+        <span class="kw">if </span>old_index &gt;= <span class="number">0 </span>{
+            vk_info = vk_info.wait_semaphores(
+                <span class="kw-2">&amp;</span><span class="self">self</span>.relay_semaphores[old_index <span class="kw">as </span>usize..old_index <span class="kw">as </span>usize + <span class="number">1</span>],
+            );
         }
 
         <span class="kw">let </span>suboptimal = {
-            <span class="macro">profiling::scope!</span>(<span class="string">&quot;vkQueuePresentKHR&quot;</span>);
+            <span class="macro">profiling::scope!</span>(<span class="string">"vkQueuePresentKHR"</span>);
             <span class="kw">unsafe </span>{ <span class="self">self</span>.swapchain_fn.queue_present(<span class="self">self</span>.raw, <span class="kw-2">&amp;</span>vk_info) }.map_err(|error| {
                 <span class="kw">match </span>error {
                     vk::Result::ERROR_OUT_OF_DATE_KHR =&gt; <span class="kw">crate</span>::SurfaceError::Outdated,
@@ -1316,11 +1411,11 @@ Otherwise, we manage a pool of `VkFence` objects behind each `hal::Fence`.
         </span>};
         <span class="kw">if </span>suboptimal {
             <span class="comment">// We treat `VK_SUBOPTIMAL_KHR` as `VK_SUCCESS` on Android.
-            // On Android 10+, libvulkan&#39;s `vkQueuePresentKHR` implementation returns `VK_SUBOPTIMAL_KHR` if not doing pre-rotation
+            // On Android 10+, libvulkan's `vkQueuePresentKHR` implementation returns `VK_SUBOPTIMAL_KHR` if not doing pre-rotation
             // (i.e `VkSwapchainCreateInfoKHR::preTransform` not being equal to the current device orientation).
             // This is always the case when the device orientation is anything other than the identity one, as we unconditionally use `VK_SURFACE_TRANSFORM_IDENTITY_BIT_KHR`.
-            </span><span class="attr">#[cfg(not(target_os = <span class="string">&quot;android&quot;</span>))]
-            </span><span class="macro">log::warn!</span>(<span class="string">&quot;Suboptimal present of frame {}&quot;</span>, texture.index);
+            </span><span class="attr">#[cfg(not(target_os = <span class="string">"android"</span>))]
+            </span><span class="macro">log::warn!</span>(<span class="string">"Suboptimal present of frame {}"</span>, texture.index);
         }
         <span class="prelude-val">Ok</span>(())
     }
@@ -1338,7 +1433,7 @@ Otherwise, we manage a pool of `VkFence` objects behind each `hal::Fence`.
             }
             vk::Result::ERROR_DEVICE_LOST =&gt; <span class="self">Self</span>::Lost,
             <span class="kw">_ </span>=&gt; {
-                <span class="macro">log::warn!</span>(<span class="string">&quot;Unrecognized device error {:?}&quot;</span>, result);
+                <span class="macro">log::warn!</span>(<span class="string">"Unrecognized device error {:?}"</span>, result);
                 <span class="self">Self</span>::Lost
             }
         }

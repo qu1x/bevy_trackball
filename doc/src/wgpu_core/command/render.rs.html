@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/wgpu-core-0.17.1/src/command/render.rs`."><title>render.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="wgpu_core" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../wgpu_core/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/wgpu-core-0.19.0/src/command/render.rs`."><title>render.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="wgpu_core" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -2586,36 +2587,282 @@
 <a href="#2586" id="2586">2586</a>
 <a href="#2587" id="2587">2587</a>
 <a href="#2588" id="2588">2588</a>
-</pre></div><pre class="rust"><code><span class="kw">use crate</span>::{
+<a href="#2589" id="2589">2589</a>
+<a href="#2590" id="2590">2590</a>
+<a href="#2591" id="2591">2591</a>
+<a href="#2592" id="2592">2592</a>
+<a href="#2593" id="2593">2593</a>
+<a href="#2594" id="2594">2594</a>
+<a href="#2595" id="2595">2595</a>
+<a href="#2596" id="2596">2596</a>
+<a href="#2597" id="2597">2597</a>
+<a href="#2598" id="2598">2598</a>
+<a href="#2599" id="2599">2599</a>
+<a href="#2600" id="2600">2600</a>
+<a href="#2601" id="2601">2601</a>
+<a href="#2602" id="2602">2602</a>
+<a href="#2603" id="2603">2603</a>
+<a href="#2604" id="2604">2604</a>
+<a href="#2605" id="2605">2605</a>
+<a href="#2606" id="2606">2606</a>
+<a href="#2607" id="2607">2607</a>
+<a href="#2608" id="2608">2608</a>
+<a href="#2609" id="2609">2609</a>
+<a href="#2610" id="2610">2610</a>
+<a href="#2611" id="2611">2611</a>
+<a href="#2612" id="2612">2612</a>
+<a href="#2613" id="2613">2613</a>
+<a href="#2614" id="2614">2614</a>
+<a href="#2615" id="2615">2615</a>
+<a href="#2616" id="2616">2616</a>
+<a href="#2617" id="2617">2617</a>
+<a href="#2618" id="2618">2618</a>
+<a href="#2619" id="2619">2619</a>
+<a href="#2620" id="2620">2620</a>
+<a href="#2621" id="2621">2621</a>
+<a href="#2622" id="2622">2622</a>
+<a href="#2623" id="2623">2623</a>
+<a href="#2624" id="2624">2624</a>
+<a href="#2625" id="2625">2625</a>
+<a href="#2626" id="2626">2626</a>
+<a href="#2627" id="2627">2627</a>
+<a href="#2628" id="2628">2628</a>
+<a href="#2629" id="2629">2629</a>
+<a href="#2630" id="2630">2630</a>
+<a href="#2631" id="2631">2631</a>
+<a href="#2632" id="2632">2632</a>
+<a href="#2633" id="2633">2633</a>
+<a href="#2634" id="2634">2634</a>
+<a href="#2635" id="2635">2635</a>
+<a href="#2636" id="2636">2636</a>
+<a href="#2637" id="2637">2637</a>
+<a href="#2638" id="2638">2638</a>
+<a href="#2639" id="2639">2639</a>
+<a href="#2640" id="2640">2640</a>
+<a href="#2641" id="2641">2641</a>
+<a href="#2642" id="2642">2642</a>
+<a href="#2643" id="2643">2643</a>
+<a href="#2644" id="2644">2644</a>
+<a href="#2645" id="2645">2645</a>
+<a href="#2646" id="2646">2646</a>
+<a href="#2647" id="2647">2647</a>
+<a href="#2648" id="2648">2648</a>
+<a href="#2649" id="2649">2649</a>
+<a href="#2650" id="2650">2650</a>
+<a href="#2651" id="2651">2651</a>
+<a href="#2652" id="2652">2652</a>
+<a href="#2653" id="2653">2653</a>
+<a href="#2654" id="2654">2654</a>
+<a href="#2655" id="2655">2655</a>
+<a href="#2656" id="2656">2656</a>
+<a href="#2657" id="2657">2657</a>
+<a href="#2658" id="2658">2658</a>
+<a href="#2659" id="2659">2659</a>
+<a href="#2660" id="2660">2660</a>
+<a href="#2661" id="2661">2661</a>
+<a href="#2662" id="2662">2662</a>
+<a href="#2663" id="2663">2663</a>
+<a href="#2664" id="2664">2664</a>
+<a href="#2665" id="2665">2665</a>
+<a href="#2666" id="2666">2666</a>
+<a href="#2667" id="2667">2667</a>
+<a href="#2668" id="2668">2668</a>
+<a href="#2669" id="2669">2669</a>
+<a href="#2670" id="2670">2670</a>
+<a href="#2671" id="2671">2671</a>
+<a href="#2672" id="2672">2672</a>
+<a href="#2673" id="2673">2673</a>
+<a href="#2674" id="2674">2674</a>
+<a href="#2675" id="2675">2675</a>
+<a href="#2676" id="2676">2676</a>
+<a href="#2677" id="2677">2677</a>
+<a href="#2678" id="2678">2678</a>
+<a href="#2679" id="2679">2679</a>
+<a href="#2680" id="2680">2680</a>
+<a href="#2681" id="2681">2681</a>
+<a href="#2682" id="2682">2682</a>
+<a href="#2683" id="2683">2683</a>
+<a href="#2684" id="2684">2684</a>
+<a href="#2685" id="2685">2685</a>
+<a href="#2686" id="2686">2686</a>
+<a href="#2687" id="2687">2687</a>
+<a href="#2688" id="2688">2688</a>
+<a href="#2689" id="2689">2689</a>
+<a href="#2690" id="2690">2690</a>
+<a href="#2691" id="2691">2691</a>
+<a href="#2692" id="2692">2692</a>
+<a href="#2693" id="2693">2693</a>
+<a href="#2694" id="2694">2694</a>
+<a href="#2695" id="2695">2695</a>
+<a href="#2696" id="2696">2696</a>
+<a href="#2697" id="2697">2697</a>
+<a href="#2698" id="2698">2698</a>
+<a href="#2699" id="2699">2699</a>
+<a href="#2700" id="2700">2700</a>
+<a href="#2701" id="2701">2701</a>
+<a href="#2702" id="2702">2702</a>
+<a href="#2703" id="2703">2703</a>
+<a href="#2704" id="2704">2704</a>
+<a href="#2705" id="2705">2705</a>
+<a href="#2706" id="2706">2706</a>
+<a href="#2707" id="2707">2707</a>
+<a href="#2708" id="2708">2708</a>
+<a href="#2709" id="2709">2709</a>
+<a href="#2710" id="2710">2710</a>
+<a href="#2711" id="2711">2711</a>
+<a href="#2712" id="2712">2712</a>
+<a href="#2713" id="2713">2713</a>
+<a href="#2714" id="2714">2714</a>
+<a href="#2715" id="2715">2715</a>
+<a href="#2716" id="2716">2716</a>
+<a href="#2717" id="2717">2717</a>
+<a href="#2718" id="2718">2718</a>
+<a href="#2719" id="2719">2719</a>
+<a href="#2720" id="2720">2720</a>
+<a href="#2721" id="2721">2721</a>
+<a href="#2722" id="2722">2722</a>
+<a href="#2723" id="2723">2723</a>
+<a href="#2724" id="2724">2724</a>
+<a href="#2725" id="2725">2725</a>
+<a href="#2726" id="2726">2726</a>
+<a href="#2727" id="2727">2727</a>
+<a href="#2728" id="2728">2728</a>
+<a href="#2729" id="2729">2729</a>
+<a href="#2730" id="2730">2730</a>
+<a href="#2731" id="2731">2731</a>
+<a href="#2732" id="2732">2732</a>
+<a href="#2733" id="2733">2733</a>
+<a href="#2734" id="2734">2734</a>
+<a href="#2735" id="2735">2735</a>
+<a href="#2736" id="2736">2736</a>
+<a href="#2737" id="2737">2737</a>
+<a href="#2738" id="2738">2738</a>
+<a href="#2739" id="2739">2739</a>
+<a href="#2740" id="2740">2740</a>
+<a href="#2741" id="2741">2741</a>
+<a href="#2742" id="2742">2742</a>
+<a href="#2743" id="2743">2743</a>
+<a href="#2744" id="2744">2744</a>
+<a href="#2745" id="2745">2745</a>
+<a href="#2746" id="2746">2746</a>
+<a href="#2747" id="2747">2747</a>
+<a href="#2748" id="2748">2748</a>
+<a href="#2749" id="2749">2749</a>
+<a href="#2750" id="2750">2750</a>
+<a href="#2751" id="2751">2751</a>
+<a href="#2752" id="2752">2752</a>
+<a href="#2753" id="2753">2753</a>
+<a href="#2754" id="2754">2754</a>
+<a href="#2755" id="2755">2755</a>
+<a href="#2756" id="2756">2756</a>
+<a href="#2757" id="2757">2757</a>
+<a href="#2758" id="2758">2758</a>
+<a href="#2759" id="2759">2759</a>
+<a href="#2760" id="2760">2760</a>
+<a href="#2761" id="2761">2761</a>
+<a href="#2762" id="2762">2762</a>
+<a href="#2763" id="2763">2763</a>
+<a href="#2764" id="2764">2764</a>
+<a href="#2765" id="2765">2765</a>
+<a href="#2766" id="2766">2766</a>
+<a href="#2767" id="2767">2767</a>
+<a href="#2768" id="2768">2768</a>
+<a href="#2769" id="2769">2769</a>
+<a href="#2770" id="2770">2770</a>
+<a href="#2771" id="2771">2771</a>
+<a href="#2772" id="2772">2772</a>
+<a href="#2773" id="2773">2773</a>
+<a href="#2774" id="2774">2774</a>
+<a href="#2775" id="2775">2775</a>
+<a href="#2776" id="2776">2776</a>
+<a href="#2777" id="2777">2777</a>
+<a href="#2778" id="2778">2778</a>
+<a href="#2779" id="2779">2779</a>
+<a href="#2780" id="2780">2780</a>
+<a href="#2781" id="2781">2781</a>
+<a href="#2782" id="2782">2782</a>
+<a href="#2783" id="2783">2783</a>
+<a href="#2784" id="2784">2784</a>
+<a href="#2785" id="2785">2785</a>
+<a href="#2786" id="2786">2786</a>
+<a href="#2787" id="2787">2787</a>
+<a href="#2788" id="2788">2788</a>
+<a href="#2789" id="2789">2789</a>
+<a href="#2790" id="2790">2790</a>
+<a href="#2791" id="2791">2791</a>
+<a href="#2792" id="2792">2792</a>
+<a href="#2793" id="2793">2793</a>
+<a href="#2794" id="2794">2794</a>
+<a href="#2795" id="2795">2795</a>
+<a href="#2796" id="2796">2796</a>
+<a href="#2797" id="2797">2797</a>
+<a href="#2798" id="2798">2798</a>
+<a href="#2799" id="2799">2799</a>
+<a href="#2800" id="2800">2800</a>
+<a href="#2801" id="2801">2801</a>
+<a href="#2802" id="2802">2802</a>
+<a href="#2803" id="2803">2803</a>
+<a href="#2804" id="2804">2804</a>
+<a href="#2805" id="2805">2805</a>
+<a href="#2806" id="2806">2806</a>
+<a href="#2807" id="2807">2807</a>
+<a href="#2808" id="2808">2808</a>
+<a href="#2809" id="2809">2809</a>
+<a href="#2810" id="2810">2810</a>
+<a href="#2811" id="2811">2811</a>
+<a href="#2812" id="2812">2812</a>
+<a href="#2813" id="2813">2813</a>
+<a href="#2814" id="2814">2814</a>
+<a href="#2815" id="2815">2815</a>
+<a href="#2816" id="2816">2816</a>
+<a href="#2817" id="2817">2817</a>
+<a href="#2818" id="2818">2818</a>
+<a href="#2819" id="2819">2819</a>
+<a href="#2820" id="2820">2820</a>
+<a href="#2821" id="2821">2821</a>
+<a href="#2822" id="2822">2822</a>
+<a href="#2823" id="2823">2823</a>
+<a href="#2824" id="2824">2824</a>
+<a href="#2825" id="2825">2825</a>
+<a href="#2826" id="2826">2826</a>
+<a href="#2827" id="2827">2827</a>
+<a href="#2828" id="2828">2828</a>
+<a href="#2829" id="2829">2829</a>
+<a href="#2830" id="2830">2830</a>
+<a href="#2831" id="2831">2831</a>
+<a href="#2832" id="2832">2832</a>
+<a href="#2833" id="2833">2833</a>
+</pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::resource::Resource;
+<span class="kw">use crate</span>::{
+    api_log,
     binding_model::BindError,
     command::{
         <span class="self">self</span>,
         bind::Binder,
-        end_pipeline_statistics_query,
+        end_occlusion_query, end_pipeline_statistics_query,
         memory_init::{fixup_discarded_surfaces, SurfacesInDiscardState},
         BasePass, BasePassRef, BindGroupStateChange, CommandBuffer, CommandEncoderError,
-        CommandEncoderStatus, DrawError, ExecutionError, MapPassErr, PassErrorScope, QueryResetMap,
-        QueryUseError, RenderCommand, RenderCommandError, StateChange,
+        CommandEncoderStatus, DrawError, ExecutionError, MapPassErr, PassErrorScope, QueryUseError,
+        RenderCommand, RenderCommandError, StateChange,
     },
     device::{
-        AttachmentData, Device, MissingDownlevelFlags, MissingFeatures,
+        AttachmentData, Device, DeviceError, MissingDownlevelFlags, MissingFeatures,
         RenderPassCompatibilityCheckType, RenderPassCompatibilityError, RenderPassContext,
     },
     error::{ErrorFormatter, PrettyError},
     global::Global,
     hal_api::HalApi,
-    hub::Token,
-    id,
+    hal_label, id,
     identity::GlobalIdentityHandlerFactory,
     init_tracker::{MemoryInitKind, TextureInitRange, TextureInitTrackerAction},
     pipeline::{<span class="self">self</span>, PipelineFlags},
-    resource::{<span class="self">self</span>, Buffer, Texture, TextureView, TextureViewNotRenderableReason},
+    resource::{Buffer, QuerySet, Texture, TextureView, TextureViewNotRenderableReason},
     storage::Storage,
-    track::{TextureSelector, UsageConflict, UsageScope},
+    track::{TextureSelector, Tracker, UsageConflict, UsageScope},
     validation::{
         check_buffer_usage, check_texture_usage, MissingBufferUsageError, MissingTextureUsageError,
     },
-    Label, Stored,
+    Label,
 };
 
 <span class="kw">use </span>arrayvec::ArrayVec;
@@ -2626,21 +2873,25 @@
     TextureViewDimension, VertexStepMode,
 };
 
-<span class="attr">#[cfg(any(feature = <span class="string">&quot;serial-pass&quot;</span>, feature = <span class="string">&quot;replay&quot;</span>))]
+<span class="attr">#[cfg(any(feature = <span class="string">"serial-pass"</span>, feature = <span class="string">"replay"</span>))]
 </span><span class="kw">use </span>serde::Deserialize;
-<span class="attr">#[cfg(any(feature = <span class="string">&quot;serial-pass&quot;</span>, feature = <span class="string">&quot;trace&quot;</span>))]
+<span class="attr">#[cfg(any(feature = <span class="string">"serial-pass"</span>, feature = <span class="string">"trace"</span>))]
 </span><span class="kw">use </span>serde::Serialize;
 
+<span class="kw">use </span>std::sync::Arc;
 <span class="kw">use </span>std::{borrow::Cow, fmt, iter, marker::PhantomData, mem, num::NonZeroU32, ops::Range, str};
 
-<span class="kw">use super</span>::{memory_init::TextureSurfaceDiscard, CommandBufferTextureMemoryActions};
+<span class="kw">use super</span>::{
+    memory_init::TextureSurfaceDiscard, CommandBufferTextureMemoryActions, CommandEncoder,
+    QueryResetMap,
+};
 
 <span class="doccomment">/// Operation to perform to the output attachment at the start of a renderpass.
 </span><span class="attr">#[repr(C)]
 #[derive(Copy, Clone, Debug, Hash, Eq, PartialEq)]
-#[cfg_attr(any(feature = <span class="string">&quot;serial-pass&quot;</span>, feature = <span class="string">&quot;trace&quot;</span>), derive(Serialize))]
-#[cfg_attr(any(feature = <span class="string">&quot;serial-pass&quot;</span>, feature = <span class="string">&quot;replay&quot;</span>), derive(Deserialize))]
-#[cfg_attr(feature = <span class="string">&quot;serde&quot;</span>, serde(rename_all = <span class="string">&quot;kebab-case&quot;</span>))]
+#[cfg_attr(any(feature = <span class="string">"serial-pass"</span>, feature = <span class="string">"trace"</span>), derive(Serialize))]
+#[cfg_attr(any(feature = <span class="string">"serial-pass"</span>, feature = <span class="string">"replay"</span>), derive(Deserialize))]
+#[cfg_attr(feature = <span class="string">"serde"</span>, serde(rename_all = <span class="string">"kebab-case"</span>))]
 </span><span class="kw">pub enum </span>LoadOp {
     <span class="doccomment">/// Clear the output attachment with the clear color. Clearing is faster than loading.
     </span>Clear = <span class="number">0</span>,
@@ -2651,13 +2902,13 @@
 <span class="doccomment">/// Operation to perform to the output attachment at the end of a renderpass.
 </span><span class="attr">#[repr(C)]
 #[derive(Copy, Clone, Debug, Hash, Eq, PartialEq)]
-#[cfg_attr(any(feature = <span class="string">&quot;serial-pass&quot;</span>, feature = <span class="string">&quot;trace&quot;</span>), derive(Serialize))]
-#[cfg_attr(any(feature = <span class="string">&quot;serial-pass&quot;</span>, feature = <span class="string">&quot;replay&quot;</span>), derive(Deserialize))]
-#[cfg_attr(feature = <span class="string">&quot;serde&quot;</span>, serde(rename_all = <span class="string">&quot;kebab-case&quot;</span>))]
+#[cfg_attr(any(feature = <span class="string">"serial-pass"</span>, feature = <span class="string">"trace"</span>), derive(Serialize))]
+#[cfg_attr(any(feature = <span class="string">"serial-pass"</span>, feature = <span class="string">"replay"</span>), derive(Deserialize))]
+#[cfg_attr(feature = <span class="string">"serde"</span>, serde(rename_all = <span class="string">"kebab-case"</span>))]
 </span><span class="kw">pub enum </span>StoreOp {
     <span class="doccomment">/// Discards the content of the render target.
     ///
-    /// If you don&#39;t care about the contents of the target, this can be faster.
+    /// If you don't care about the contents of the target, this can be faster.
     </span>Discard = <span class="number">0</span>,
     <span class="doccomment">/// Store the result of the renderpass.
     </span>Store = <span class="number">1</span>,
@@ -2666,8 +2917,8 @@
 <span class="doccomment">/// Describes an individual channel within a render pass, such as color, depth, or stencil.
 </span><span class="attr">#[repr(C)]
 #[derive(Clone, Debug, Eq, PartialEq)]
-#[cfg_attr(any(feature = <span class="string">&quot;serial-pass&quot;</span>, feature = <span class="string">&quot;trace&quot;</span>), derive(Serialize))]
-#[cfg_attr(any(feature = <span class="string">&quot;serial-pass&quot;</span>, feature = <span class="string">&quot;replay&quot;</span>), derive(Deserialize))]
+#[cfg_attr(any(feature = <span class="string">"serial-pass"</span>, feature = <span class="string">"trace"</span>), derive(Serialize))]
+#[cfg_attr(any(feature = <span class="string">"serial-pass"</span>, feature = <span class="string">"replay"</span>), derive(Deserialize))]
 </span><span class="kw">pub struct </span>PassChannel&lt;V&gt; {
     <span class="doccomment">/// Operation to perform to the output attachment at the start of a
     /// renderpass.
@@ -2704,8 +2955,8 @@
 <span class="doccomment">/// Describes a color attachment to a render pass.
 </span><span class="attr">#[repr(C)]
 #[derive(Clone, Debug, PartialEq)]
-#[cfg_attr(any(feature = <span class="string">&quot;serial-pass&quot;</span>, feature = <span class="string">&quot;trace&quot;</span>), derive(Serialize))]
-#[cfg_attr(any(feature = <span class="string">&quot;serial-pass&quot;</span>, feature = <span class="string">&quot;replay&quot;</span>), derive(Deserialize))]
+#[cfg_attr(any(feature = <span class="string">"serial-pass"</span>, feature = <span class="string">"trace"</span>), derive(Serialize))]
+#[cfg_attr(any(feature = <span class="string">"serial-pass"</span>, feature = <span class="string">"replay"</span>), derive(Deserialize))]
 </span><span class="kw">pub struct </span>RenderPassColorAttachment {
     <span class="doccomment">/// The view to use as an attachment.
     </span><span class="kw">pub </span>view: id::TextureViewId,
@@ -2718,8 +2969,8 @@
 <span class="doccomment">/// Describes a depth/stencil attachment to a render pass.
 </span><span class="attr">#[repr(C)]
 #[derive(Clone, Debug, PartialEq)]
-#[cfg_attr(any(feature = <span class="string">&quot;serial-pass&quot;</span>, feature = <span class="string">&quot;trace&quot;</span>), derive(Serialize))]
-#[cfg_attr(any(feature = <span class="string">&quot;serial-pass&quot;</span>, feature = <span class="string">&quot;replay&quot;</span>), derive(Deserialize))]
+#[cfg_attr(any(feature = <span class="string">"serial-pass"</span>, feature = <span class="string">"trace"</span>), derive(Serialize))]
+#[cfg_attr(any(feature = <span class="string">"serial-pass"</span>, feature = <span class="string">"replay"</span>), derive(Deserialize))]
 </span><span class="kw">pub struct </span>RenderPassDepthStencilAttachment {
     <span class="doccomment">/// The view to use as an attachment.
     </span><span class="kw">pub </span>view: id::TextureViewId,
@@ -2730,7 +2981,7 @@
 }
 
 <span class="kw">impl </span>RenderPassDepthStencilAttachment {
-    <span class="doccomment">/// Validate the given aspects&#39; read-only flags against their load
+    <span class="doccomment">/// Validate the given aspects' read-only flags against their load
     /// and store ops.
     ///
     /// When an aspect is read-only, its load and store ops must be
@@ -2767,27 +3018,58 @@
     }
 }
 
-<span class="doccomment">/// Describes the attachments of a render pass.
-</span><span class="attr">#[derive(Clone, Debug, Default, PartialEq)]
-</span><span class="kw">pub struct </span>RenderPassDescriptor&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="kw">pub </span>label: Label&lt;<span class="lifetime">&#39;a</span>&gt;,
-    <span class="doccomment">/// The color attachments of the render pass.
-    </span><span class="kw">pub </span>color_attachments: Cow&lt;<span class="lifetime">&#39;a</span>, [<span class="prelude-ty">Option</span>&lt;RenderPassColorAttachment&gt;]&gt;,
-    <span class="doccomment">/// The depth and stencil attachment of the render pass, if any.
-    </span><span class="kw">pub </span>depth_stencil_attachment: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>RenderPassDepthStencilAttachment&gt;,
+<span class="doccomment">/// Location to write a timestamp to (beginning or end of the pass).
+</span><span class="attr">#[repr(C)]
+#[derive(Copy, Clone, Debug, Hash, Eq, PartialEq)]
+#[cfg_attr(any(feature = <span class="string">"serial-pass"</span>, feature = <span class="string">"trace"</span>), derive(Serialize))]
+#[cfg_attr(any(feature = <span class="string">"serial-pass"</span>, feature = <span class="string">"replay"</span>), derive(Deserialize))]
+#[cfg_attr(feature = <span class="string">"serde"</span>, serde(rename_all = <span class="string">"kebab-case"</span>))]
+</span><span class="kw">pub enum </span>RenderPassTimestampLocation {
+    Beginning = <span class="number">0</span>,
+    End = <span class="number">1</span>,
 }
 
-<span class="attr">#[cfg_attr(feature = <span class="string">&quot;serial-pass&quot;</span>, derive(Deserialize, Serialize))]
+<span class="doccomment">/// Describes the writing of timestamp values in a render pass.
+</span><span class="attr">#[repr(C)]
+#[derive(Clone, Debug, PartialEq, Eq)]
+#[cfg_attr(any(feature = <span class="string">"serial-pass"</span>, feature = <span class="string">"trace"</span>), derive(Serialize))]
+#[cfg_attr(any(feature = <span class="string">"serial-pass"</span>, feature = <span class="string">"replay"</span>), derive(Deserialize))]
+</span><span class="kw">pub struct </span>RenderPassTimestampWrites {
+    <span class="doccomment">/// The query set to write the timestamp to.
+    </span><span class="kw">pub </span>query_set: id::QuerySetId,
+    <span class="doccomment">/// The index of the query set at which a start timestamp of this pass is written, if any.
+    </span><span class="kw">pub </span>beginning_of_pass_write_index: <span class="prelude-ty">Option</span>&lt;u32&gt;,
+    <span class="doccomment">/// The index of the query set at which an end timestamp of this pass is written, if any.
+    </span><span class="kw">pub </span>end_of_pass_write_index: <span class="prelude-ty">Option</span>&lt;u32&gt;,
+}
+
+<span class="doccomment">/// Describes the attachments of a render pass.
+</span><span class="attr">#[derive(Clone, Debug, Default, PartialEq)]
+</span><span class="kw">pub struct </span>RenderPassDescriptor&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="kw">pub </span>label: Label&lt;<span class="lifetime">'a</span>&gt;,
+    <span class="doccomment">/// The color attachments of the render pass.
+    </span><span class="kw">pub </span>color_attachments: Cow&lt;<span class="lifetime">'a</span>, [<span class="prelude-ty">Option</span>&lt;RenderPassColorAttachment&gt;]&gt;,
+    <span class="doccomment">/// The depth and stencil attachment of the render pass, if any.
+    </span><span class="kw">pub </span>depth_stencil_attachment: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>RenderPassDepthStencilAttachment&gt;,
+    <span class="doccomment">/// Defines where and when timestamp values will be written for this pass.
+    </span><span class="kw">pub </span>timestamp_writes: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>RenderPassTimestampWrites&gt;,
+    <span class="doccomment">/// Defines where the occlusion query results will be stored for this pass.
+    </span><span class="kw">pub </span>occlusion_query_set: <span class="prelude-ty">Option</span>&lt;id::QuerySetId&gt;,
+}
+
+<span class="attr">#[cfg_attr(feature = <span class="string">"serial-pass"</span>, derive(Deserialize, Serialize))]
 </span><span class="kw">pub struct </span>RenderPass {
     base: BasePass&lt;RenderCommand&gt;,
     parent_id: id::CommandEncoderId,
     color_targets: ArrayVec&lt;<span class="prelude-ty">Option</span>&lt;RenderPassColorAttachment&gt;, { hal::MAX_COLOR_ATTACHMENTS }&gt;,
     depth_stencil_target: <span class="prelude-ty">Option</span>&lt;RenderPassDepthStencilAttachment&gt;,
+    timestamp_writes: <span class="prelude-ty">Option</span>&lt;RenderPassTimestampWrites&gt;,
+    occlusion_query_set_id: <span class="prelude-ty">Option</span>&lt;id::QuerySetId&gt;,
 
     <span class="comment">// Resource binding dedupe state.
-    </span><span class="attr">#[cfg_attr(feature = <span class="string">&quot;serial-pass&quot;</span>, serde(skip))]
+    </span><span class="attr">#[cfg_attr(feature = <span class="string">"serial-pass"</span>, serde(skip))]
     </span>current_bind_groups: BindGroupStateChange,
-    <span class="attr">#[cfg_attr(feature = <span class="string">&quot;serial-pass&quot;</span>, serde(skip))]
+    <span class="attr">#[cfg_attr(feature = <span class="string">"serial-pass"</span>, serde(skip))]
     </span>current_pipeline: StateChange&lt;id::RenderPipelineId&gt;,
 }
 
@@ -2798,6 +3080,8 @@
             parent_id,
             color_targets: desc.color_attachments.iter().cloned().collect(),
             depth_stencil_target: desc.depth_stencil_attachment.cloned(),
+            timestamp_writes: desc.timestamp_writes.cloned(),
+            occlusion_query_set_id: desc.occlusion_query_set,
 
             current_bind_groups: BindGroupStateChange::new(),
             current_pipeline: StateChange::new(),
@@ -2808,12 +3092,14 @@
         <span class="self">self</span>.parent_id
     }
 
-    <span class="attr">#[cfg(feature = <span class="string">&quot;trace&quot;</span>)]
+    <span class="attr">#[cfg(feature = <span class="string">"trace"</span>)]
     </span><span class="kw">pub fn </span>into_command(<span class="self">self</span>) -&gt; <span class="kw">crate</span>::device::trace::Command {
         <span class="kw">crate</span>::device::trace::Command::RunRenderPass {
             base: <span class="self">self</span>.base,
             target_colors: <span class="self">self</span>.color_targets.into_iter().collect(),
             target_depth_stencil: <span class="self">self</span>.depth_stencil_target,
+            timestamp_writes: <span class="self">self</span>.timestamp_writes,
+            occlusion_query_set_id: <span class="self">self</span>.occlusion_query_set_id,
         }
     }
 
@@ -2834,15 +3120,15 @@
 }
 
 <span class="kw">impl </span>fmt::Debug <span class="kw">for </span>RenderPass {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
-        f.debug_struct(<span class="string">&quot;RenderPass&quot;</span>)
-            .field(<span class="string">&quot;encoder_id&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.parent_id)
-            .field(<span class="string">&quot;color_targets&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.color_targets)
-            .field(<span class="string">&quot;depth_stencil_target&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.depth_stencil_target)
-            .field(<span class="string">&quot;command count&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.base.commands.len())
-            .field(<span class="string">&quot;dynamic offset count&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.base.dynamic_offsets.len())
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
+        f.debug_struct(<span class="string">"RenderPass"</span>)
+            .field(<span class="string">"encoder_id"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.parent_id)
+            .field(<span class="string">"color_targets"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.color_targets)
+            .field(<span class="string">"depth_stencil_target"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.depth_stencil_target)
+            .field(<span class="string">"command count"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.base.commands.len())
+            .field(<span class="string">"dynamic offset count"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.base.dynamic_offsets.len())
             .field(
-                <span class="string">&quot;push constant u32 count&quot;</span>,
+                <span class="string">"push constant u32 count"</span>,
                 <span class="kw-2">&amp;</span><span class="self">self</span>.base.push_constant_data.len(),
             )
             .finish()
@@ -2866,10 +3152,10 @@
 
 <span class="attr">#[derive(Debug, Default)]
 </span><span class="kw">struct </span>IndexState {
-    bound_buffer_view: <span class="prelude-ty">Option</span>&lt;(id::Valid&lt;id::BufferId&gt;, Range&lt;BufferAddress&gt;)&gt;,
+    bound_buffer_view: <span class="prelude-ty">Option</span>&lt;(id::BufferId, Range&lt;BufferAddress&gt;)&gt;,
     format: <span class="prelude-ty">Option</span>&lt;IndexFormat&gt;,
     pipeline_format: <span class="prelude-ty">Option</span>&lt;IndexFormat&gt;,
-    limit: u32,
+    limit: u64,
 }
 
 <span class="kw">impl </span>IndexState {
@@ -2878,12 +3164,13 @@
             <span class="prelude-val">Some</span>((<span class="kw">_</span>, <span class="kw-2">ref </span>range)) =&gt; {
                 <span class="kw">let </span>format = <span class="self">self
                     </span>.format
-                    .expect(<span class="string">&quot;IndexState::update_limit must be called after a index buffer is set&quot;</span>);
+                    .expect(<span class="string">"IndexState::update_limit must be called after a index buffer is set"</span>);
                 <span class="kw">let </span>shift = <span class="kw">match </span>format {
                     IndexFormat::Uint16 =&gt; <span class="number">1</span>,
                     IndexFormat::Uint32 =&gt; <span class="number">2</span>,
                 };
-                ((range.end - range.start) &gt;&gt; shift) <span class="kw">as </span>u32
+
+                (range.end - range.start) &gt;&gt; shift
             }
             <span class="prelude-val">None </span>=&gt; <span class="number">0</span>,
         }
@@ -2917,11 +3204,11 @@
 </span><span class="kw">struct </span>VertexState {
     inputs: ArrayVec&lt;VertexBufferState, { hal::MAX_VERTEX_BUFFERS }&gt;,
     <span class="doccomment">/// Length of the shortest vertex rate vertex buffer
-    </span>vertex_limit: u32,
+    </span>vertex_limit: u64,
     <span class="doccomment">/// Buffer slot which the shortest vertex rate vertex buffer is bound to
     </span>vertex_limit_slot: u32,
     <span class="doccomment">/// Length of the shortest instance rate vertex buffer
-    </span>instance_limit: u32,
+    </span>instance_limit: u64,
     <span class="doccomment">/// Buffer slot which the shortest instance rate vertex buffer is bound to
     </span>instance_limit_slot: u32,
     <span class="doccomment">/// Total amount of buffers required by the pipeline.
@@ -2930,13 +3217,16 @@
 
 <span class="kw">impl </span>VertexState {
     <span class="kw">fn </span>update_limits(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
-        <span class="self">self</span>.vertex_limit = u32::MAX;
-        <span class="self">self</span>.instance_limit = u32::MAX;
+        <span class="comment">// Ensure that the limits are always smaller than u32::MAX so that
+        // interger overlows can be prevented via saturating additions.
+        </span><span class="kw">let </span>max = u32::MAX <span class="kw">as </span>u64;
+        <span class="self">self</span>.vertex_limit = max;
+        <span class="self">self</span>.instance_limit = max;
         <span class="kw">for </span>(idx, vbs) <span class="kw">in </span><span class="self">self</span>.inputs.iter().enumerate() {
             <span class="kw">if </span>vbs.step.stride == <span class="number">0 </span>|| !vbs.bound {
                 <span class="kw">continue</span>;
             }
-            <span class="kw">let </span>limit = (vbs.total_size / vbs.step.stride) <span class="kw">as </span>u32;
+            <span class="kw">let </span>limit = vbs.total_size / vbs.step.stride;
             <span class="kw">match </span>vbs.step.mode {
                 VertexStepMode::Vertex =&gt; {
                     <span class="kw">if </span>limit &lt; <span class="self">self</span>.vertex_limit {
@@ -2962,9 +3252,9 @@
 }
 
 <span class="attr">#[derive(Debug)]
-</span><span class="kw">struct </span>State {
+</span><span class="kw">struct </span>State&lt;A: HalApi&gt; {
     pipeline_flags: PipelineFlags,
-    binder: Binder,
+    binder: Binder&lt;A&gt;,
     blend_constant: OptionalState,
     stencil_reference: u32,
     pipeline: <span class="prelude-ty">Option</span>&lt;id::RenderPipelineId&gt;,
@@ -2973,7 +3263,7 @@
     debug_scope_depth: u32,
 }
 
-<span class="kw">impl </span>State {
+<span class="kw">impl</span>&lt;A: HalApi&gt; State&lt;A&gt; {
     <span class="kw">fn </span>is_ready(<span class="kw-2">&amp;</span><span class="self">self</span>, indexed: bool) -&gt; <span class="prelude-ty">Result</span>&lt;(), DrawError&gt; {
         <span class="comment">// Determine how many vertex buffers have already been bound
         </span><span class="kw">let </span>vertex_buffer_count = <span class="self">self</span>.vertex.inputs.iter().take_while(|v| v.bound).count() <span class="kw">as </span>u32;
@@ -2989,6 +3279,7 @@
             <span class="comment">//let (expected, provided) = self.binder.entries[index as usize].info();
             </span><span class="kw">return </span><span class="prelude-val">Err</span>(DrawError::IncompatibleBindGroup {
                 index: bind_mask.trailing_zeros(),
+                diff: <span class="self">self</span>.binder.bgl_diff(),
             });
         }
         <span class="kw">if </span><span class="self">self</span>.pipeline.is_none() {
@@ -3030,7 +3321,7 @@
 
 <span class="doccomment">/// Describes an attachment location in words.
 ///
-/// Can be used as &quot;the {loc} has...&quot; or &quot;{loc} has...&quot;
+/// Can be used as "the {loc} has..." or "{loc} has..."
 </span><span class="attr">#[derive(Debug, Copy, Clone)]
 </span><span class="kw">pub enum </span>AttachmentErrorLocation {
     Color { index: usize, resolve: bool },
@@ -3038,20 +3329,20 @@
 }
 
 <span class="kw">impl </span>fmt::Display <span class="kw">for </span>AttachmentErrorLocation {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
         <span class="kw">match </span><span class="kw-2">*</span><span class="self">self </span>{
             AttachmentErrorLocation::Color {
                 index,
                 resolve: <span class="bool-val">false</span>,
-            } =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;color attachment at index {index}&#39;s texture view&quot;</span>),
+            } =&gt; <span class="macro">write!</span>(f, <span class="string">"color attachment at index {index}'s texture view"</span>),
             AttachmentErrorLocation::Color {
                 index,
                 resolve: <span class="bool-val">true</span>,
             } =&gt; <span class="macro">write!</span>(
                 f,
-                <span class="string">&quot;color attachment at index {index}&#39;s resolve texture view&quot;
+                <span class="string">"color attachment at index {index}'s resolve texture view"
             </span>),
-            AttachmentErrorLocation::Depth =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;depth attachment&#39;s texture view&quot;</span>),
+            AttachmentErrorLocation::Depth =&gt; <span class="macro">write!</span>(f, <span class="string">"depth attachment's texture view"</span>),
         }
     }
 }
@@ -3059,9 +3350,9 @@
 <span class="attr">#[derive(Clone, Debug, Error)]
 #[non_exhaustive]
 </span><span class="kw">pub enum </span>ColorAttachmentError {
-    <span class="attr">#[error(<span class="string">&quot;Attachment format {0:?} is not a color format&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Attachment format {0:?} is not a color format"</span>)]
     </span>InvalidFormat(wgt::TextureFormat),
-    <span class="attr">#[error(<span class="string">&quot;The number of color attachments {given} exceeds the limit {limit}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"The number of color attachments {given} exceeds the limit {limit}"</span>)]
     </span>TooMany { given: usize, limit: usize },
 }
 
@@ -3069,93 +3360,97 @@
 </span><span class="attr">#[derive(Clone, Debug, Error)]
 </span><span class="kw">pub enum </span>RenderPassErrorInner {
     <span class="attr">#[error(transparent)]
+    </span>Device(DeviceError),
+    <span class="attr">#[error(transparent)]
     </span>ColorAttachment(<span class="attr">#[from] </span>ColorAttachmentError),
     <span class="attr">#[error(transparent)]
     </span>Encoder(<span class="attr">#[from] </span>CommandEncoderError),
-    <span class="attr">#[error(<span class="string">&quot;Attachment texture view {0:?} is invalid&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Attachment texture view {0:?} is invalid"</span>)]
     </span>InvalidAttachment(id::TextureViewId),
-    <span class="attr">#[error(<span class="string">&quot;The format of the depth-stencil attachment ({0:?}) is not a depth-stencil format&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"The format of the depth-stencil attachment ({0:?}) is not a depth-stencil format"</span>)]
     </span>InvalidDepthStencilAttachmentFormat(wgt::TextureFormat),
-    <span class="attr">#[error(<span class="string">&quot;The format of the {location} ({format:?}) is not resolvable&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"The format of the {location} ({format:?}) is not resolvable"</span>)]
     </span>UnsupportedResolveTargetFormat {
         location: AttachmentErrorLocation,
         format: wgt::TextureFormat,
     },
-    <span class="attr">#[error(<span class="string">&quot;No color attachments or depth attachments were provided, at least one attachment of any kind must be provided&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"No color attachments or depth attachments were provided, at least one attachment of any kind must be provided"</span>)]
     </span>MissingAttachments,
-    <span class="attr">#[error(<span class="string">&quot;The {location} is not renderable:&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"The {location} is not renderable:"</span>)]
     </span>TextureViewIsNotRenderable {
         location: AttachmentErrorLocation,
         <span class="attr">#[source]
         </span>reason: TextureViewNotRenderableReason,
     },
-    <span class="attr">#[error(<span class="string">&quot;Attachments have differing sizes: the {expected_location} has extent {expected_extent:?} but is followed by the {actual_location} which has {actual_extent:?}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Attachments have differing sizes: the {expected_location} has extent {expected_extent:?} but is followed by the {actual_location} which has {actual_extent:?}"</span>)]
     </span>AttachmentsDimensionMismatch {
         expected_location: AttachmentErrorLocation,
         expected_extent: wgt::Extent3d,
         actual_location: AttachmentErrorLocation,
         actual_extent: wgt::Extent3d,
     },
-    <span class="attr">#[error(<span class="string">&quot;Attachments have differing sample counts: the {expected_location} has count {expected_samples:?} but is followed by the {actual_location} which has count {actual_samples:?}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Attachments have differing sample counts: the {expected_location} has count {expected_samples:?} but is followed by the {actual_location} which has count {actual_samples:?}"</span>)]
     </span>AttachmentSampleCountMismatch {
         expected_location: AttachmentErrorLocation,
         expected_samples: u32,
         actual_location: AttachmentErrorLocation,
         actual_samples: u32,
     },
-    <span class="attr">#[error(<span class="string">&quot;The resolve source, {location}, must be multi-sampled (has {src} samples) while the resolve destination must not be multisampled (has {dst} samples)&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"The resolve source, {location}, must be multi-sampled (has {src} samples) while the resolve destination must not be multisampled (has {dst} samples)"</span>)]
     </span>InvalidResolveSampleCounts {
         location: AttachmentErrorLocation,
         src: u32,
         dst: u32,
     },
     <span class="attr">#[error(
-        <span class="string">&quot;Resource source, {location}, format ({src:?}) must match the resolve destination format ({dst:?})&quot;
+        <span class="string">"Resource source, {location}, format ({src:?}) must match the resolve destination format ({dst:?})"
     </span>)]
     </span>MismatchedResolveTextureFormat {
         location: AttachmentErrorLocation,
         src: wgt::TextureFormat,
         dst: wgt::TextureFormat,
     },
-    <span class="attr">#[error(<span class="string">&quot;Surface texture is dropped before the render pass is finished&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Surface texture is dropped before the render pass is finished"</span>)]
     </span>SurfaceTextureDropped,
-    <span class="attr">#[error(<span class="string">&quot;Not enough memory left&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Not enough memory left for render pass"</span>)]
     </span>OutOfMemory,
-    <span class="attr">#[error(<span class="string">&quot;Unable to clear non-present/read-only depth&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"The bind group at index {0:?} is invalid"</span>)]
+    </span>InvalidBindGroup(usize),
+    <span class="attr">#[error(<span class="string">"Unable to clear non-present/read-only depth"</span>)]
     </span>InvalidDepthOps,
-    <span class="attr">#[error(<span class="string">&quot;Unable to clear non-present/read-only stencil&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Unable to clear non-present/read-only stencil"</span>)]
     </span>InvalidStencilOps,
-    <span class="attr">#[error(<span class="string">&quot;Setting `values_offset` to be `None` is only for internal use in render bundles&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Setting `values_offset` to be `None` is only for internal use in render bundles"</span>)]
     </span>InvalidValuesOffset,
     <span class="attr">#[error(transparent)]
     </span>MissingFeatures(<span class="attr">#[from] </span>MissingFeatures),
     <span class="attr">#[error(transparent)]
     </span>MissingDownlevelFlags(<span class="attr">#[from] </span>MissingDownlevelFlags),
-    <span class="attr">#[error(<span class="string">&quot;Indirect draw uses bytes {offset}..{end_offset} {} which overruns indirect buffer of size {buffer_size}&quot;</span>,
-        count.map_or_else(String::new, |v| <span class="macro">format!</span>(<span class="string">&quot;(using count {v})&quot;</span>)))]
+    <span class="attr">#[error(<span class="string">"Indirect draw uses bytes {offset}..{end_offset} {} which overruns indirect buffer of size {buffer_size}"</span>,
+        count.map_or_else(String::new, |v| <span class="macro">format!</span>(<span class="string">"(using count {v})"</span>)))]
     </span>IndirectBufferOverrun {
         count: <span class="prelude-ty">Option</span>&lt;NonZeroU32&gt;,
         offset: u64,
         end_offset: u64,
         buffer_size: u64,
     },
-    <span class="attr">#[error(<span class="string">&quot;Indirect draw uses bytes {begin_count_offset}..{end_count_offset} which overruns indirect buffer of size {count_buffer_size}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Indirect draw uses bytes {begin_count_offset}..{end_count_offset} which overruns indirect buffer of size {count_buffer_size}"</span>)]
     </span>IndirectCountBufferOverrun {
         begin_count_offset: u64,
         end_count_offset: u64,
         count_buffer_size: u64,
     },
-    <span class="attr">#[error(<span class="string">&quot;Cannot pop debug group, because number of pushed debug groups is zero&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Cannot pop debug group, because number of pushed debug groups is zero"</span>)]
     </span>InvalidPopDebugGroup,
     <span class="attr">#[error(transparent)]
     </span>ResourceUsageConflict(<span class="attr">#[from] </span>UsageConflict),
-    <span class="attr">#[error(<span class="string">&quot;Render bundle has incompatible targets, {0}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Render bundle has incompatible targets, {0}"</span>)]
     </span>IncompatibleBundleTargets(<span class="attr">#[from] </span>RenderPassCompatibilityError),
     <span class="attr">#[error(
-        <span class="string">&quot;Render bundle has incompatible read-only flags: \
+        <span class="string">"Render bundle has incompatible read-only flags: \
              bundle has flags depth = {bundle_depth} and stencil = {bundle_stencil}, \
              while the pass has flags depth = {pass_depth} and stencil = {pass_stencil}. \
-             Read-only renderpasses are only compatible with read-only bundles for that aspect.&quot;
+             Read-only renderpasses are only compatible with read-only bundles for that aspect."
     </span>)]
     </span>IncompatibleBundleReadOnlyDepthStencil {
         pass_depth: bool,
@@ -3171,19 +3466,28 @@
     </span>Bind(<span class="attr">#[from] </span>BindError),
     <span class="attr">#[error(transparent)]
     </span>QueryUse(<span class="attr">#[from] </span>QueryUseError),
-    <span class="attr">#[error(<span class="string">&quot;Multiview layer count must match&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Multiview layer count must match"</span>)]
     </span>MultiViewMismatch,
     <span class="attr">#[error(
-        <span class="string">&quot;Multiview pass texture views with more than one array layer must have D2Array dimension&quot;
+        <span class="string">"Multiview pass texture views with more than one array layer must have D2Array dimension"
     </span>)]
     </span>MultiViewDimensionMismatch,
+    <span class="attr">#[error(<span class="string">"QuerySet {0:?} is invalid"</span>)]
+    </span>InvalidQuerySet(id::QuerySetId),
+    <span class="attr">#[error(<span class="string">"missing occlusion query set"</span>)]
+    </span>MissingOcclusionQuerySet,
 }
 
 <span class="kw">impl </span>PrettyError <span class="kw">for </span>RenderPassErrorInner {
     <span class="kw">fn </span>fmt_pretty(<span class="kw-2">&amp;</span><span class="self">self</span>, fmt: <span class="kw-2">&amp;mut </span>ErrorFormatter) {
         fmt.error(<span class="self">self</span>);
         <span class="kw">if let </span><span class="self">Self</span>::InvalidAttachment(id) = <span class="kw-2">*</span><span class="self">self </span>{
-            fmt.texture_view_label_with_key(<span class="kw-2">&amp;</span>id, <span class="string">&quot;attachment&quot;</span>);
+            fmt.texture_view_label_with_key(<span class="kw-2">&amp;</span>id, <span class="string">"attachment"</span>);
+        };
+        <span class="kw">if let </span><span class="self">Self</span>::Draw(DrawError::IncompatibleBindGroup { diff, .. }) = <span class="self">self </span>{
+            <span class="kw">for </span>d <span class="kw">in </span>diff {
+                fmt.note(<span class="kw-2">&amp;</span>d);
+            }
         };
     }
 }
@@ -3200,9 +3504,15 @@
     }
 }
 
+<span class="kw">impl </span>From&lt;DeviceError&gt; <span class="kw">for </span>RenderPassErrorInner {
+    <span class="kw">fn </span>from(error: DeviceError) -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::Device(error)
+    }
+}
+
 <span class="doccomment">/// Error encountered when performing a render pass.
 </span><span class="attr">#[derive(Clone, Debug, Error)]
-#[error(<span class="string">&quot;{scope}&quot;</span>)]
+#[error(<span class="string">"{scope}"</span>)]
 </span><span class="kw">pub struct </span>RenderPassError {
     <span class="kw">pub </span>scope: PassErrorScope,
     <span class="attr">#[source]
@@ -3229,16 +3539,16 @@
     }
 }
 
-<span class="kw">struct </span>RenderAttachment&lt;<span class="lifetime">&#39;a</span>&gt; {
-    texture_id: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Stored&lt;id::TextureId&gt;,
-    selector: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>TextureSelector,
+<span class="kw">struct </span>RenderAttachment&lt;<span class="lifetime">'a</span>, A: HalApi&gt; {
+    texture: Arc&lt;Texture&lt;A&gt;&gt;,
+    selector: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>TextureSelector,
     usage: hal::TextureUses,
 }
 
-<span class="kw">impl</span>&lt;A: hal::Api&gt; TextureView&lt;A&gt; {
-    <span class="kw">fn </span>to_render_attachment(<span class="kw-2">&amp;</span><span class="self">self</span>, usage: hal::TextureUses) -&gt; RenderAttachment {
+<span class="kw">impl</span>&lt;A: HalApi&gt; TextureView&lt;A&gt; {
+    <span class="kw">fn </span>to_render_attachment(<span class="kw-2">&amp;</span><span class="self">self</span>, usage: hal::TextureUses) -&gt; RenderAttachment&lt;A&gt; {
         RenderAttachment {
-            texture_id: <span class="kw-2">&amp;</span><span class="self">self</span>.parent_id,
+            texture: <span class="self">self</span>.parent.read().as_ref().unwrap().clone(),
             selector: <span class="kw-2">&amp;</span><span class="self">self</span>.selector,
             usage,
         }
@@ -3248,53 +3558,50 @@
 <span class="kw">const </span>MAX_TOTAL_ATTACHMENTS: usize = hal::MAX_COLOR_ATTACHMENTS + hal::MAX_COLOR_ATTACHMENTS + <span class="number">1</span>;
 <span class="kw">type </span>AttachmentDataVec&lt;T&gt; = ArrayVec&lt;T, MAX_TOTAL_ATTACHMENTS&gt;;
 
-<span class="kw">struct </span>RenderPassInfo&lt;<span class="lifetime">&#39;a</span>, A: HalApi&gt; {
+<span class="kw">struct </span>RenderPassInfo&lt;<span class="lifetime">'a</span>, A: HalApi&gt; {
     context: RenderPassContext,
     usage_scope: UsageScope&lt;A&gt;,
     <span class="doccomment">/// All render attachments, including depth/stencil
-    </span>render_attachments: AttachmentDataVec&lt;RenderAttachment&lt;<span class="lifetime">&#39;a</span>&gt;&gt;,
+    </span>render_attachments: AttachmentDataVec&lt;RenderAttachment&lt;<span class="lifetime">'a</span>, A&gt;&gt;,
     is_depth_read_only: bool,
     is_stencil_read_only: bool,
     extent: wgt::Extent3d,
     _phantom: PhantomData&lt;A&gt;,
 
-    pending_discard_init_fixups: SurfacesInDiscardState,
-    divergent_discarded_depth_stencil_aspect: <span class="prelude-ty">Option</span>&lt;(wgt::TextureAspect, <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>TextureView&lt;A&gt;)&gt;,
+    pending_discard_init_fixups: SurfacesInDiscardState&lt;A&gt;,
+    divergent_discarded_depth_stencil_aspect: <span class="prelude-ty">Option</span>&lt;(wgt::TextureAspect, <span class="kw-2">&amp;</span><span class="lifetime">'a </span>TextureView&lt;A&gt;)&gt;,
     multiview: <span class="prelude-ty">Option</span>&lt;NonZeroU32&gt;,
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, A: HalApi&gt; RenderPassInfo&lt;<span class="lifetime">&#39;a</span>, A&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, A: HalApi&gt; RenderPassInfo&lt;<span class="lifetime">'a</span>, A&gt; {
     <span class="kw">fn </span>add_pass_texture_init_actions&lt;V&gt;(
         channel: <span class="kw-2">&amp;</span>PassChannel&lt;V&gt;,
-        texture_memory_actions: <span class="kw-2">&amp;mut </span>CommandBufferTextureMemoryActions,
+        texture_memory_actions: <span class="kw-2">&amp;mut </span>CommandBufferTextureMemoryActions&lt;A&gt;,
         view: <span class="kw-2">&amp;</span>TextureView&lt;A&gt;,
-        texture_guard: <span class="kw-2">&amp;</span>Storage&lt;Texture&lt;A&gt;, id::TextureId&gt;,
-        pending_discard_init_fixups: <span class="kw-2">&amp;mut </span>SurfacesInDiscardState,
+        pending_discard_init_fixups: <span class="kw-2">&amp;mut </span>SurfacesInDiscardState&lt;A&gt;,
     ) {
         <span class="kw">if </span>channel.load_op == LoadOp::Load {
             pending_discard_init_fixups.extend(texture_memory_actions.register_init_action(
                 <span class="kw-2">&amp;</span>TextureInitTrackerAction {
-                    id: view.parent_id.value.<span class="number">0</span>,
+                    texture: view.parent.read().as_ref().unwrap().clone(),
                     range: TextureInitRange::from(view.selector.clone()),
                     <span class="comment">// Note that this is needed even if the target is discarded,
                     </span>kind: MemoryInitKind::NeedsInitializedMemory,
                 },
-                texture_guard,
             ));
         } <span class="kw">else if </span>channel.store_op == StoreOp::Store {
             <span class="comment">// Clear + Store
             </span>texture_memory_actions.register_implicit_init(
-                view.parent_id.value,
+                view.parent.read().as_ref().unwrap(),
                 TextureInitRange::from(view.selector.clone()),
-                texture_guard,
             );
         }
         <span class="kw">if </span>channel.store_op == StoreOp::Discard {
             <span class="comment">// the discard happens at the *end* of a pass, but recording the
-            // discard right away be alright since the texture can&#39;t be used
+            // discard right away be alright since the texture can't be used
             // during the pass anyways
             </span>texture_memory_actions.discard(TextureSurfaceDiscard {
-                texture: view.parent_id.value.<span class="number">0</span>,
+                texture: view.parent.read().as_ref().unwrap().clone(),
                 mip_level: view.selector.mips.start,
                 layer: view.selector.layers.start,
             });
@@ -3306,20 +3613,26 @@
         label: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;,
         color_attachments: <span class="kw-2">&amp;</span>[<span class="prelude-ty">Option</span>&lt;RenderPassColorAttachment&gt;],
         depth_stencil_attachment: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>RenderPassDepthStencilAttachment&gt;,
-        cmd_buf: <span class="kw-2">&amp;mut </span>CommandBuffer&lt;A&gt;,
-        view_guard: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Storage&lt;TextureView&lt;A&gt;, id::TextureViewId&gt;,
-        buffer_guard: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Storage&lt;Buffer&lt;A&gt;, id::BufferId&gt;,
-        texture_guard: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Storage&lt;Texture&lt;A&gt;, id::TextureId&gt;,
+        timestamp_writes: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>RenderPassTimestampWrites&gt;,
+        occlusion_query_set: <span class="prelude-ty">Option</span>&lt;id::QuerySetId&gt;,
+        encoder: <span class="kw-2">&amp;mut </span>CommandEncoder&lt;A&gt;,
+        trackers: <span class="kw-2">&amp;mut </span>Tracker&lt;A&gt;,
+        texture_memory_actions: <span class="kw-2">&amp;mut </span>CommandBufferTextureMemoryActions&lt;A&gt;,
+        pending_query_resets: <span class="kw-2">&amp;mut </span>QueryResetMap&lt;A&gt;,
+        view_guard: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>Storage&lt;TextureView&lt;A&gt;, id::TextureViewId&gt;,
+        buffer_guard: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>Storage&lt;Buffer&lt;A&gt;, id::BufferId&gt;,
+        texture_guard: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>Storage&lt;Texture&lt;A&gt;, id::TextureId&gt;,
+        query_set_guard: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>Storage&lt;QuerySet&lt;A&gt;, id::QuerySetId&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, RenderPassErrorInner&gt; {
-        <span class="macro">profiling::scope!</span>(<span class="string">&quot;RenderPassInfo::start&quot;</span>);
+        <span class="macro">profiling::scope!</span>(<span class="string">"RenderPassInfo::start"</span>);
 
-        <span class="comment">// We default to false intentionally, even if depth-stencil isn&#39;t used at all.
+        <span class="comment">// We default to false intentionally, even if depth-stencil isn't used at all.
         // This allows us to use the primary raw pipeline in `RenderPipeline`,
         // instead of the special read-only one, which would be `None`.
         </span><span class="kw">let </span><span class="kw-2">mut </span>is_depth_read_only = <span class="bool-val">false</span>;
         <span class="kw">let </span><span class="kw-2">mut </span>is_stencil_read_only = <span class="bool-val">false</span>;
 
-        <span class="kw">let </span><span class="kw-2">mut </span>render_attachments = AttachmentDataVec::&lt;RenderAttachment&gt;::new();
+        <span class="kw">let </span><span class="kw-2">mut </span>render_attachments = AttachmentDataVec::&lt;RenderAttachment&lt;A&gt;&gt;::new();
         <span class="kw">let </span><span class="kw-2">mut </span>discarded_surfaces = AttachmentDataVec::new();
         <span class="kw">let </span><span class="kw-2">mut </span>pending_discard_init_fixups = SurfacesInDiscardState::new();
         <span class="kw">let </span><span class="kw-2">mut </span>divergent_discarded_depth_stencil_aspect = <span class="prelude-val">None</span>;
@@ -3399,8 +3712,7 @@
         <span class="kw">let </span><span class="kw-2">mut </span>depth_stencil = <span class="prelude-val">None</span>;
 
         <span class="kw">if let </span><span class="prelude-val">Some</span>(at) = depth_stencil_attachment {
-            <span class="kw">let </span>view: <span class="kw-2">&amp;</span>TextureView&lt;A&gt; = cmd_buf
-                .trackers
+            <span class="kw">let </span>view: <span class="kw-2">&amp;</span>TextureView&lt;A&gt; = trackers
                 .views
                 .add_single(view_guard, at.view)
                 .ok_or(RenderPassErrorInner::InvalidAttachment(at.view))<span class="question-mark">?</span>;
@@ -3420,17 +3732,15 @@
             {
                 <span class="self">Self</span>::add_pass_texture_init_actions(
                     <span class="kw-2">&amp;</span>at.depth,
-                    <span class="kw-2">&amp;mut </span>cmd_buf.texture_memory_actions,
+                    texture_memory_actions,
                     view,
-                    texture_guard,
                     <span class="kw-2">&amp;mut </span>pending_discard_init_fixups,
                 );
             } <span class="kw">else if </span>!ds_aspects.contains(hal::FormatAspects::DEPTH) {
                 <span class="self">Self</span>::add_pass_texture_init_actions(
                     <span class="kw-2">&amp;</span>at.stencil,
-                    <span class="kw-2">&amp;mut </span>cmd_buf.texture_memory_actions,
+                    texture_memory_actions,
                     view,
-                    texture_guard,
                     <span class="kw-2">&amp;mut </span>pending_discard_init_fixups,
                 );
             } <span class="kw">else </span>{
@@ -3438,7 +3748,7 @@
                 // Depth init state can diverge.
                 //
                 // To safe us the overhead of tracking init state of texture
-                // aspects everywhere, we&#39;re going to cheat a little bit in
+                // aspects everywhere, we're going to cheat a little bit in
                 // order to keep the init state of both Stencil and Depth
                 // aspects in sync. The expectation is that we hit this path
                 // extremely rarely!
@@ -3449,41 +3759,37 @@
                 // surface, a bit wasteful on unit but no negative effect!
                 //
                 // Rationale: If the loaded channel is uninitialized it needs
-                // clearing, the cleared channel doesn&#39;t care. (If everything is
+                // clearing, the cleared channel doesn't care. (If everything is
                 // already initialized nothing special happens)
                 //
                 // (possible minor optimization: Clear caused by
-                // NeedsInitializedMemory should know that it doesn&#39;t need to
+                // NeedsInitializedMemory should know that it doesn't need to
                 // clear the aspect that was set to C)
                 </span><span class="kw">let </span>need_init_beforehand =
                     at.depth.load_op == LoadOp::Load || at.stencil.load_op == LoadOp::Load;
                 <span class="kw">if </span>need_init_beforehand {
                     pending_discard_init_fixups.extend(
-                        cmd_buf.texture_memory_actions.register_init_action(
-                            <span class="kw-2">&amp;</span>TextureInitTrackerAction {
-                                id: view.parent_id.value.<span class="number">0</span>,
-                                range: TextureInitRange::from(view.selector.clone()),
-                                kind: MemoryInitKind::NeedsInitializedMemory,
-                            },
-                            texture_guard,
-                        ),
+                        texture_memory_actions.register_init_action(<span class="kw-2">&amp;</span>TextureInitTrackerAction {
+                            texture: view.parent.read().as_ref().unwrap().clone(),
+                            range: TextureInitRange::from(view.selector.clone()),
+                            kind: MemoryInitKind::NeedsInitializedMemory,
+                        }),
                     );
                 }
 
                 <span class="comment">// Diverging Store, i.e. Discard + Store:
                 //
                 // Immediately zero out channel that is set to discard after
-                // we&#39;re done with the render pass. This allows us to set the
+                // we're done with the render pass. This allows us to set the
                 // entire surface to MemoryInitKind::ImplicitlyInitialized (if
-                // it isn&#39;t already set to NeedsInitializedMemory).
+                // it isn't already set to NeedsInitializedMemory).
                 //
                 // (possible optimization: Delay and potentially drop this zeroing)
                 </span><span class="kw">if </span>at.depth.store_op != at.stencil.store_op {
                     <span class="kw">if </span>!need_init_beforehand {
-                        cmd_buf.texture_memory_actions.register_implicit_init(
-                            view.parent_id.value,
+                        texture_memory_actions.register_implicit_init(
+                            view.parent.read().as_ref().unwrap(),
                             TextureInitRange::from(view.selector.clone()),
-                            texture_guard,
                         );
                     }
                     divergent_discarded_depth_stencil_aspect = <span class="prelude-val">Some</span>((
@@ -3497,7 +3803,7 @@
                 } <span class="kw">else if </span>at.depth.store_op == StoreOp::Discard {
                     <span class="comment">// Both are discarded using the regular path.
                     </span>discarded_surfaces.push(TextureSurfaceDiscard {
-                        texture: view.parent_id.value.<span class="number">0</span>,
+                        texture: view.parent.read().as_ref().unwrap().clone(),
                         mip_level: view.selector.mips.start,
                         layer: view.selector.layers.start,
                     });
@@ -3506,7 +3812,13 @@
 
             (is_depth_read_only, is_stencil_read_only) = at.depth_stencil_read_only(ds_aspects)<span class="question-mark">?</span>;
 
-            <span class="kw">let </span>usage = <span class="kw">if </span>is_depth_read_only &amp;&amp; is_stencil_read_only {
+            <span class="kw">let </span>usage = <span class="kw">if </span>is_depth_read_only
+                &amp;&amp; is_stencil_read_only
+                &amp;&amp; device
+                    .downlevel
+                    .flags
+                    .contains(wgt::DownlevelFlags::READ_ONLY_DEPTH_STENCIL)
+            {
                 hal::TextureUses::DEPTH_STENCIL_READ | hal::TextureUses::RESOURCE
             } <span class="kw">else </span>{
                 hal::TextureUses::DEPTH_STENCIL_WRITE
@@ -3515,7 +3827,7 @@
 
             depth_stencil = <span class="prelude-val">Some</span>(hal::DepthStencilAttachment {
                 target: hal::Attachment {
-                    view: <span class="kw-2">&amp;</span>view.raw,
+                    view: view.raw(),
                     usage,
                 },
                 depth_ops: at.depth.hal_ops(),
@@ -3531,8 +3843,7 @@
                 colors.push(<span class="prelude-val">None</span>);
                 <span class="kw">continue</span>;
             };
-            <span class="kw">let </span>color_view: <span class="kw-2">&amp;</span>TextureView&lt;A&gt; = cmd_buf
-                .trackers
+            <span class="kw">let </span>color_view: <span class="kw-2">&amp;</span>TextureView&lt;A&gt; = trackers
                 .views
                 .add_single(view_guard, at.view)
                 .ok_or(RenderPassErrorInner::InvalidAttachment(at.view))<span class="question-mark">?</span>;
@@ -3557,9 +3868,8 @@
 
             <span class="self">Self</span>::add_pass_texture_init_actions(
                 <span class="kw-2">&amp;</span>at.channel,
-                <span class="kw-2">&amp;mut </span>cmd_buf.texture_memory_actions,
+                texture_memory_actions,
                 color_view,
-                texture_guard,
                 <span class="kw-2">&amp;mut </span>pending_discard_init_fixups,
             );
             render_attachments
@@ -3567,8 +3877,7 @@
 
             <span class="kw">let </span><span class="kw-2">mut </span>hal_resolve_target = <span class="prelude-val">None</span>;
             <span class="kw">if let </span><span class="prelude-val">Some</span>(resolve_target) = at.resolve_target {
-                <span class="kw">let </span>resolve_view: <span class="kw-2">&amp;</span>TextureView&lt;A&gt; = cmd_buf
-                    .trackers
+                <span class="kw">let </span>resolve_view: <span class="kw-2">&amp;</span>TextureView&lt;A&gt; = trackers
                     .views
                     .add_single(view_guard, resolve_target)
                     .ok_or(RenderPassErrorInner::InvalidAttachment(resolve_target))<span class="question-mark">?</span>;
@@ -3619,23 +3928,22 @@
                     });
                 }
 
-                cmd_buf.texture_memory_actions.register_implicit_init(
-                    resolve_view.parent_id.value,
+                texture_memory_actions.register_implicit_init(
+                    resolve_view.parent.read().as_ref().unwrap(),
                     TextureInitRange::from(resolve_view.selector.clone()),
-                    texture_guard,
                 );
                 render_attachments
                     .push(resolve_view.to_render_attachment(hal::TextureUses::COLOR_TARGET));
 
                 hal_resolve_target = <span class="prelude-val">Some</span>(hal::Attachment {
-                    view: <span class="kw-2">&amp;</span>resolve_view.raw,
+                    view: resolve_view.raw(),
                     usage: hal::TextureUses::COLOR_TARGET,
                 });
             }
 
             colors.push(<span class="prelude-val">Some</span>(hal::ColorAttachment {
                 target: hal::Attachment {
-                    view: <span class="kw-2">&amp;</span>color_view.raw,
+                    view: color_view.raw(),
                     usage: hal::TextureUses::COLOR_TARGET,
                 },
                 resolve_target: hal_resolve_target,
@@ -3645,7 +3953,7 @@
         }
 
         <span class="kw">let </span>extent = extent.ok_or(RenderPassErrorInner::MissingAttachments)<span class="question-mark">?</span>;
-        <span class="kw">let </span>multiview = detected_multiview.expect(<span class="string">&quot;Multiview was not detected, no attachments&quot;</span>);
+        <span class="kw">let </span>multiview = detected_multiview.expect(<span class="string">"Multiview was not detected, no attachments"</span>);
 
         <span class="kw">let </span>view_data = AttachmentData {
             colors: color_attachments
@@ -3671,16 +3979,51 @@
             multiview,
         };
 
+        <span class="kw">let </span>timestamp_writes = <span class="kw">if let </span><span class="prelude-val">Some</span>(tw) = timestamp_writes {
+            <span class="kw">let </span>query_set = trackers
+                .query_sets
+                .add_single(query_set_guard, tw.query_set)
+                .ok_or(RenderPassErrorInner::InvalidQuerySet(tw.query_set))<span class="question-mark">?</span>;
+
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(index) = tw.beginning_of_pass_write_index {
+                pending_query_resets.use_query_set(tw.query_set, query_set, index);
+            }
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(index) = tw.end_of_pass_write_index {
+                pending_query_resets.use_query_set(tw.query_set, query_set, index);
+            }
+
+            <span class="prelude-val">Some</span>(hal::RenderPassTimestampWrites {
+                query_set: query_set.raw.as_ref().unwrap(),
+                beginning_of_pass_write_index: tw.beginning_of_pass_write_index,
+                end_of_pass_write_index: tw.end_of_pass_write_index,
+            })
+        } <span class="kw">else </span>{
+            <span class="prelude-val">None
+        </span>};
+
+        <span class="kw">let </span>occlusion_query_set = <span class="kw">if let </span><span class="prelude-val">Some</span>(occlusion_query_set) = occlusion_query_set {
+            <span class="kw">let </span>query_set = trackers
+                .query_sets
+                .add_single(query_set_guard, occlusion_query_set)
+                .ok_or(RenderPassErrorInner::InvalidQuerySet(occlusion_query_set))<span class="question-mark">?</span>;
+
+            <span class="prelude-val">Some</span>(query_set.raw.as_ref().unwrap())
+        } <span class="kw">else </span>{
+            <span class="prelude-val">None
+        </span>};
+
         <span class="kw">let </span>hal_desc = hal::RenderPassDescriptor {
-            label,
+            label: hal_label(label, device.instance_flags),
             extent,
             sample_count,
             color_attachments: <span class="kw-2">&amp;</span>colors,
             depth_stencil_attachment: depth_stencil,
             multiview,
+            timestamp_writes,
+            occlusion_query_set,
         };
         <span class="kw">unsafe </span>{
-            cmd_buf.encoder.raw.begin_render_pass(<span class="kw-2">&amp;</span>hal_desc);
+            encoder.raw.begin_render_pass(<span class="kw-2">&amp;</span>hal_desc);
         };
 
         <span class="prelude-val">Ok</span>(<span class="self">Self </span>{
@@ -3700,41 +4043,31 @@
     <span class="kw">fn </span>finish(
         <span class="kw-2">mut </span><span class="self">self</span>,
         raw: <span class="kw-2">&amp;mut </span>A::CommandEncoder,
-        texture_guard: <span class="kw-2">&amp;</span>Storage&lt;Texture&lt;A&gt;, id::TextureId&gt;,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;(UsageScope&lt;A&gt;, SurfacesInDiscardState), RenderPassErrorInner&gt; {
-        <span class="macro">profiling::scope!</span>(<span class="string">&quot;RenderPassInfo::finish&quot;</span>);
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;(UsageScope&lt;A&gt;, SurfacesInDiscardState&lt;A&gt;), RenderPassErrorInner&gt; {
+        <span class="macro">profiling::scope!</span>(<span class="string">"RenderPassInfo::finish"</span>);
         <span class="kw">unsafe </span>{
             raw.end_render_pass();
         }
 
         <span class="kw">for </span>ra <span class="kw">in </span><span class="self">self</span>.render_attachments {
-            <span class="kw">if </span>!texture_guard.contains(ra.texture_id.value.<span class="number">0</span>) {
-                <span class="kw">return </span><span class="prelude-val">Err</span>(RenderPassErrorInner::SurfaceTextureDropped);
-            }
-            <span class="kw">let </span>texture = <span class="kw-2">&amp;</span>texture_guard[ra.texture_id.value];
+            <span class="kw">let </span>texture = <span class="kw-2">&amp;</span>ra.texture;
             check_texture_usage(texture.desc.usage, TextureUsages::RENDER_ATTACHMENT)<span class="question-mark">?</span>;
 
-            <span class="comment">// the tracker set of the pass is always in &quot;extend&quot; mode
+            <span class="comment">// the tracker set of the pass is always in "extend" mode
             </span><span class="kw">unsafe </span>{
                 <span class="self">self</span>.usage_scope
                     .textures
-                    .merge_single(
-                        texture_guard,
-                        ra.texture_id.value,
-                        <span class="prelude-val">Some</span>(ra.selector.clone()),
-                        <span class="kw-2">&amp;</span>ra.texture_id.ref_count,
-                        ra.usage,
-                    )
+                    .merge_single(texture, <span class="prelude-val">Some</span>(ra.selector.clone()), ra.usage)
                     .map_err(UsageConflict::from)<span class="question-mark">?
             </span>};
         }
 
         <span class="comment">// If either only stencil or depth was discarded, we put in a special
         // clear pass to keep the init status of the aspects in sync. We do this
-        // so we don&#39;t need to track init state for depth/stencil aspects
+        // so we don't need to track init state for depth/stencil aspects
         // individually.
         //
-        // Note that we don&#39;t go the usual route of &quot;brute force&quot; initializing
+        // Note that we don't go the usual route of "brute force" initializing
         // the texture when need arises here, since this path is actually
         // something a user may genuinely want (where as the other cases are
         // more seen along the lines as gracefully handling a user error).
@@ -3751,13 +4084,13 @@
                 </span>)
             };
             <span class="kw">let </span>desc = hal::RenderPassDescriptor {
-                label: <span class="prelude-val">Some</span>(<span class="string">&quot;(wgpu internal) Zero init discarded depth/stencil aspect&quot;</span>),
+                label: <span class="prelude-val">Some</span>(<span class="string">"(wgpu internal) Zero init discarded depth/stencil aspect"</span>),
                 extent: view.render_extent.unwrap(),
                 sample_count: view.samples,
                 color_attachments: <span class="kw-2">&amp;</span>[],
                 depth_stencil_attachment: <span class="prelude-val">Some</span>(hal::DepthStencilAttachment {
                     target: hal::Attachment {
-                        view: <span class="kw-2">&amp;</span>view.raw,
+                        view: view.raw(),
                         usage: hal::TextureUses::DEPTH_STENCIL_WRITE,
                     },
                     depth_ops,
@@ -3765,6 +4098,8 @@
                     clear_value: (<span class="number">0.0</span>, <span class="number">0</span>),
                 }),
                 multiview: <span class="self">self</span>.multiview,
+                timestamp_writes: <span class="prelude-val">None</span>,
+                occlusion_query_set: <span class="prelude-val">None</span>,
             };
             <span class="kw">unsafe </span>{
                 raw.begin_render_pass(<span class="kw-2">&amp;</span>desc);
@@ -3789,6 +4124,8 @@
             pass.base.as_ref(),
             <span class="kw-2">&amp;</span>pass.color_targets,
             pass.depth_stencil_target.as_ref(),
+            pass.timestamp_writes.as_ref(),
+            pass.occlusion_query_set_id,
         )
     }
 
@@ -3799,69 +4136,94 @@
         base: BasePassRef&lt;RenderCommand&gt;,
         color_attachments: <span class="kw-2">&amp;</span>[<span class="prelude-ty">Option</span>&lt;RenderPassColorAttachment&gt;],
         depth_stencil_attachment: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>RenderPassDepthStencilAttachment&gt;,
+        timestamp_writes: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>RenderPassTimestampWrites&gt;,
+        occlusion_query_set_id: <span class="prelude-ty">Option</span>&lt;id::QuerySetId&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;(), RenderPassError&gt; {
-        <span class="macro">profiling::scope!</span>(<span class="string">&quot;CommandEncoder::run_render_pass&quot;</span>);
-        <span class="kw">let </span>init_scope = PassErrorScope::Pass(encoder_id);
+        <span class="macro">profiling::scope!</span>(
+            <span class="string">"CommandEncoder::run_render_pass {}"</span>,
+            base.label.unwrap_or(<span class="string">""</span>)
+        );
+
+        <span class="kw">let </span>discard_hal_labels = <span class="self">self
+            </span>.instance
+            .flags
+            .contains(wgt::InstanceFlags::DISCARD_HAL_LABELS);
+        <span class="kw">let </span>label = hal_label(base.label, <span class="self">self</span>.instance.flags);
+
+        <span class="kw">let </span>pass_scope = PassErrorScope::Pass(encoder_id);
 
         <span class="kw">let </span>hub = A::hub(<span class="self">self</span>);
-        <span class="kw">let </span><span class="kw-2">mut </span>token = Token::root();
-        <span class="kw">let </span>(device_guard, <span class="kw-2">mut </span>token) = hub.devices.read(<span class="kw-2">&amp;mut </span>token);
 
-        <span class="kw">let </span>(scope, query_reset_state, pending_discard_init_fixups) = {
-            <span class="kw">let </span>(<span class="kw-2">mut </span>cmb_guard, <span class="kw-2">mut </span>token) = hub.command_buffers.write(<span class="kw-2">&amp;mut </span>token);
+        <span class="kw">let </span>cmd_buf = CommandBuffer::get_encoder(hub, encoder_id).map_pass_err(pass_scope)<span class="question-mark">?</span>;
+        <span class="kw">let </span>device = <span class="kw-2">&amp;</span>cmd_buf.device;
+        <span class="kw">let </span>snatch_guard = device.snatchable_lock.read();
 
-            <span class="comment">// Spell out the type, to placate rust-analyzer.
-            // https://github.com/rust-lang/rust-analyzer/issues/12247
-            </span><span class="kw">let </span>cmd_buf: <span class="kw-2">&amp;mut </span>CommandBuffer&lt;A&gt; =
-                CommandBuffer::get_encoder_mut(<span class="kw-2">&amp;mut *</span>cmb_guard, encoder_id)
-                    .map_pass_err(init_scope)<span class="question-mark">?</span>;
+        <span class="kw">let </span>(scope, pending_discard_init_fixups) = {
+            <span class="kw">let </span><span class="kw-2">mut </span>cmd_buf_data = cmd_buf.data.lock();
+            <span class="kw">let </span>cmd_buf_data = cmd_buf_data.as_mut().unwrap();
 
-            <span class="comment">// We automatically keep extending command buffers over time, and because
-            // we want to insert a command buffer _before_ what we&#39;re about to record,
-            // we need to make sure to close the previous one.
-            </span>cmd_buf.encoder.close();
-            <span class="comment">// We will reset this to `Recording` if we succeed, acts as a fail-safe.
-            </span>cmd_buf.status = CommandEncoderStatus::Error;
-
-            <span class="attr">#[cfg(feature = <span class="string">&quot;trace&quot;</span>)]
-            </span><span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">ref mut </span>list) = cmd_buf.commands {
+            <span class="attr">#[cfg(feature = <span class="string">"trace"</span>)]
+            </span><span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">ref mut </span>list) = cmd_buf_data.commands {
                 list.push(<span class="kw">crate</span>::device::trace::Command::RunRenderPass {
                     base: BasePass::from_ref(base),
                     target_colors: color_attachments.to_vec(),
                     target_depth_stencil: depth_stencil_attachment.cloned(),
+                    timestamp_writes: timestamp_writes.cloned(),
+                    occlusion_query_set_id,
                 });
             }
 
-            <span class="kw">let </span>device = <span class="kw-2">&amp;</span>device_guard[cmd_buf.device_id.value];
-            cmd_buf.encoder.open_pass(base.label);
+            <span class="kw">if </span>!device.is_valid() {
+                <span class="kw">return </span><span class="prelude-val">Err</span>(DeviceError::Lost).map_pass_err(pass_scope);
+            }
 
-            <span class="kw">let </span>(bundle_guard, <span class="kw-2">mut </span>token) = hub.render_bundles.read(<span class="kw-2">&amp;mut </span>token);
-            <span class="kw">let </span>(pipeline_layout_guard, <span class="kw-2">mut </span>token) = hub.pipeline_layouts.read(<span class="kw-2">&amp;mut </span>token);
-            <span class="kw">let </span>(bind_group_guard, <span class="kw-2">mut </span>token) = hub.bind_groups.read(<span class="kw-2">&amp;mut </span>token);
-            <span class="kw">let </span>(render_pipeline_guard, <span class="kw-2">mut </span>token) = hub.render_pipelines.read(<span class="kw-2">&amp;mut </span>token);
-            <span class="kw">let </span>(query_set_guard, <span class="kw-2">mut </span>token) = hub.query_sets.read(<span class="kw-2">&amp;mut </span>token);
-            <span class="kw">let </span>(buffer_guard, <span class="kw-2">mut </span>token) = hub.buffers.read(<span class="kw-2">&amp;mut </span>token);
-            <span class="kw">let </span>(texture_guard, <span class="kw-2">mut </span>token) = hub.textures.read(<span class="kw-2">&amp;mut </span>token);
-            <span class="kw">let </span>(view_guard, <span class="kw">_</span>) = hub.texture_views.read(<span class="kw-2">&amp;mut </span>token);
+            <span class="kw">let </span>encoder = <span class="kw-2">&amp;mut </span>cmd_buf_data.encoder;
+            <span class="kw">let </span>status = <span class="kw-2">&amp;mut </span>cmd_buf_data.status;
+            <span class="kw">let </span>tracker = <span class="kw-2">&amp;mut </span>cmd_buf_data.trackers;
+            <span class="kw">let </span>buffer_memory_init_actions = <span class="kw-2">&amp;mut </span>cmd_buf_data.buffer_memory_init_actions;
+            <span class="kw">let </span>texture_memory_actions = <span class="kw-2">&amp;mut </span>cmd_buf_data.texture_memory_actions;
+            <span class="kw">let </span>pending_query_resets = <span class="kw-2">&amp;mut </span>cmd_buf_data.pending_query_resets;
+
+            <span class="comment">// We automatically keep extending command buffers over time, and because
+            // we want to insert a command buffer _before_ what we're about to record,
+            // we need to make sure to close the previous one.
+            </span>encoder.close().map_pass_err(pass_scope)<span class="question-mark">?</span>;
+            <span class="comment">// We will reset this to `Recording` if we succeed, acts as a fail-safe.
+            </span><span class="kw-2">*</span>status = CommandEncoderStatus::Error;
+            encoder.open_pass(label).map_pass_err(pass_scope)<span class="question-mark">?</span>;
+
+            <span class="kw">let </span>bundle_guard = hub.render_bundles.read();
+            <span class="kw">let </span>bind_group_guard = hub.bind_groups.read();
+            <span class="kw">let </span>render_pipeline_guard = hub.render_pipelines.read();
+            <span class="kw">let </span>query_set_guard = hub.query_sets.read();
+            <span class="kw">let </span>buffer_guard = hub.buffers.read();
+            <span class="kw">let </span>texture_guard = hub.textures.read();
+            <span class="kw">let </span>view_guard = hub.texture_views.read();
 
             <span class="macro">log::trace!</span>(
-                <span class="string">&quot;Encoding render pass begin in command buffer {:?}&quot;</span>,
+                <span class="string">"Encoding render pass begin in command buffer {:?}"</span>,
                 encoder_id
             );
 
             <span class="kw">let </span><span class="kw-2">mut </span>info = RenderPassInfo::start(
                 device,
-                base.label,
+                label,
                 color_attachments,
                 depth_stencil_attachment,
-                cmd_buf,
+                timestamp_writes,
+                occlusion_query_set_id,
+                encoder,
+                tracker,
+                texture_memory_actions,
+                pending_query_resets,
                 <span class="kw-2">&amp;*</span>view_guard,
                 <span class="kw-2">&amp;*</span>buffer_guard,
                 <span class="kw-2">&amp;*</span>texture_guard,
+                <span class="kw-2">&amp;*</span>query_set_guard,
             )
-            .map_pass_err(init_scope)<span class="question-mark">?</span>;
+            .map_pass_err(pass_scope)<span class="question-mark">?</span>;
 
-            cmd_buf.trackers.set_size(
+            tracker.set_size(
                 <span class="prelude-val">Some</span>(<span class="kw-2">&amp;*</span>buffer_guard),
                 <span class="prelude-val">Some</span>(<span class="kw-2">&amp;*</span>texture_guard),
                 <span class="prelude-val">Some</span>(<span class="kw-2">&amp;*</span>view_guard),
@@ -3873,7 +4235,7 @@
                 <span class="prelude-val">Some</span>(<span class="kw-2">&amp;*</span>query_set_guard),
             );
 
-            <span class="kw">let </span>raw = <span class="kw-2">&amp;mut </span>cmd_buf.encoder.raw;
+            <span class="kw">let </span>raw = <span class="kw-2">&amp;mut </span>encoder.raw;
 
             <span class="kw">let </span><span class="kw-2">mut </span>state = State {
                 pipeline_flags: PipelineFlags::empty(),
@@ -3889,7 +4251,6 @@
             <span class="kw">let </span><span class="kw-2">mut </span>dynamic_offset_count = <span class="number">0</span>;
             <span class="kw">let </span><span class="kw-2">mut </span>string_offset = <span class="number">0</span>;
             <span class="kw">let </span><span class="kw-2">mut </span>active_query = <span class="prelude-val">None</span>;
-            <span class="kw">let </span><span class="kw-2">mut </span>query_reset_state = QueryResetMap::new();
 
             <span class="kw">for </span>command <span class="kw">in </span>base.commands {
                 <span class="kw">match </span><span class="kw-2">*</span>command {
@@ -3898,6 +4259,8 @@
                         num_dynamic_offsets,
                         bind_group_id,
                     } =&gt; {
+                        <span class="macro">api_log!</span>(<span class="string">"RenderPass::set_bind_group {index} {bind_group_id:?}"</span>);
+
                         <span class="kw">let </span>scope = PassErrorScope::SetBindGroup(bind_group_id);
                         <span class="kw">let </span>max_bind_groups = device.limits.max_bind_groups;
                         <span class="kw">if </span>index &gt;= max_bind_groups {
@@ -3910,17 +4273,21 @@
 
                         temp_offsets.clear();
                         temp_offsets.extend_from_slice(
-                            <span class="kw-2">&amp;</span>base.dynamic_offsets[dynamic_offset_count
-                                ..dynamic_offset_count + (num_dynamic_offsets <span class="kw">as </span>usize)],
+                            <span class="kw-2">&amp;</span>base.dynamic_offsets
+                                [dynamic_offset_count..dynamic_offset_count + num_dynamic_offsets],
                         );
-                        dynamic_offset_count += num_dynamic_offsets <span class="kw">as </span>usize;
+                        dynamic_offset_count += num_dynamic_offsets;
 
-                        <span class="kw">let </span>bind_group: <span class="kw-2">&amp;</span><span class="kw">crate</span>::binding_model::BindGroup&lt;A&gt; = cmd_buf
-                            .trackers
+                        <span class="kw">let </span>bind_group = tracker
                             .bind_groups
                             .add_single(<span class="kw-2">&amp;*</span>bind_group_guard, bind_group_id)
                             .ok_or(RenderCommandError::InvalidBindGroup(bind_group_id))
                             .map_pass_err(scope)<span class="question-mark">?</span>;
+
+                        <span class="kw">if </span>bind_group.device.as_info().id() != device.as_info().id() {
+                            <span class="kw">return </span><span class="prelude-val">Err</span>(DeviceError::WrongDevice).map_pass_err(scope);
+                        }
+
                         bind_group
                             .validate_dynamic_bindings(index, <span class="kw-2">&amp;</span>temp_offsets, <span class="kw-2">&amp;</span>cmd_buf.limits)
                             .map_pass_err(scope)<span class="question-mark">?</span>;
@@ -3928,63 +4295,66 @@
                         <span class="comment">// merge the resource tracker in
                         </span><span class="kw">unsafe </span>{
                             info.usage_scope
-                                .merge_bind_group(<span class="kw-2">&amp;*</span>texture_guard, <span class="kw-2">&amp;</span>bind_group.used)
+                                .merge_bind_group(<span class="kw-2">&amp;</span>bind_group.used)
                                 .map_pass_err(scope)<span class="question-mark">?</span>;
                         }
                         <span class="comment">//Note: stateless trackers are not merged: the lifetime reference
                         // is held to the bind group itself.
 
-                        </span>cmd_buf.buffer_memory_init_actions.extend(
+                        </span>buffer_memory_init_actions.extend(
                             bind_group.used_buffer_ranges.iter().filter_map(|action| {
-                                <span class="kw">match </span>buffer_guard.get(action.id) {
-                                    <span class="prelude-val">Ok</span>(buffer) =&gt; buffer.initialization_status.check_action(action),
-                                    <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; <span class="prelude-val">None</span>,
-                                }
+                                action
+                                    .buffer
+                                    .initialization_status
+                                    .read()
+                                    .check_action(action)
                             }),
                         );
                         <span class="kw">for </span>action <span class="kw">in </span>bind_group.used_texture_ranges.iter() {
-                            info.pending_discard_init_fixups.extend(
-                                cmd_buf
-                                    .texture_memory_actions
-                                    .register_init_action(action, <span class="kw-2">&amp;</span>texture_guard),
-                            );
+                            info.pending_discard_init_fixups
+                                .extend(texture_memory_actions.register_init_action(action));
                         }
 
-                        <span class="kw">let </span>pipeline_layout_id = state.binder.pipeline_layout_id;
-                        <span class="kw">let </span>entries = state.binder.assign_group(
-                            index <span class="kw">as </span>usize,
-                            id::Valid(bind_group_id),
-                            bind_group,
-                            <span class="kw-2">&amp;</span>temp_offsets,
-                        );
-                        <span class="kw">if </span>!entries.is_empty() {
-                            <span class="kw">let </span>pipeline_layout =
-                                <span class="kw-2">&amp;</span>pipeline_layout_guard[pipeline_layout_id.unwrap()].raw;
+                        <span class="kw">let </span>pipeline_layout = state.binder.pipeline_layout.clone();
+                        <span class="kw">let </span>entries =
+                            state
+                                .binder
+                                .assign_group(index <span class="kw">as </span>usize, bind_group, <span class="kw-2">&amp;</span>temp_offsets);
+                        <span class="kw">if </span>!entries.is_empty() &amp;&amp; pipeline_layout.is_some() {
+                            <span class="kw">let </span>pipeline_layout = pipeline_layout.as_ref().unwrap().raw();
                             <span class="kw">for </span>(i, e) <span class="kw">in </span>entries.iter().enumerate() {
-                                <span class="kw">let </span>raw_bg =
-                                    <span class="kw-2">&amp;</span>bind_group_guard[e.group_id.as_ref().unwrap().value].raw;
-
-                                <span class="kw">unsafe </span>{
-                                    raw.set_bind_group(
-                                        pipeline_layout,
-                                        index + i <span class="kw">as </span>u32,
-                                        raw_bg,
-                                        <span class="kw-2">&amp;</span>e.dynamic_offsets,
-                                    );
+                                <span class="kw">if let </span><span class="prelude-val">Some</span>(group) = e.group.as_ref() {
+                                    <span class="kw">let </span>raw_bg = group
+                                        .raw(<span class="kw-2">&amp;</span>snatch_guard)
+                                        .ok_or(RenderPassErrorInner::InvalidBindGroup(i))
+                                        .map_pass_err(scope)<span class="question-mark">?</span>;
+                                    <span class="kw">unsafe </span>{
+                                        raw.set_bind_group(
+                                            pipeline_layout,
+                                            index + i <span class="kw">as </span>u32,
+                                            raw_bg,
+                                            <span class="kw-2">&amp;</span>e.dynamic_offsets,
+                                        );
+                                    }
                                 }
                             }
                         }
                     }
                     RenderCommand::SetPipeline(pipeline_id) =&gt; {
+                        <span class="macro">api_log!</span>(<span class="string">"RenderPass::set_pipeline {pipeline_id:?}"</span>);
+
                         <span class="kw">let </span>scope = PassErrorScope::SetPipelineRender(pipeline_id);
                         state.pipeline = <span class="prelude-val">Some</span>(pipeline_id);
 
-                        <span class="kw">let </span>pipeline: <span class="kw-2">&amp;</span>pipeline::RenderPipeline&lt;A&gt; = cmd_buf
-                            .trackers
+                        <span class="kw">let </span>pipeline: <span class="kw-2">&amp;</span>pipeline::RenderPipeline&lt;A&gt; = tracker
                             .render_pipelines
                             .add_single(<span class="kw-2">&amp;*</span>render_pipeline_guard, pipeline_id)
                             .ok_or(RenderCommandError::InvalidPipeline(pipeline_id))
                             .map_pass_err(scope)<span class="question-mark">?</span>;
+
+                        <span class="kw">if </span>pipeline.device.as_info().id() != device.as_info().id() {
+                            <span class="kw">return </span><span class="prelude-val">Err</span>(DeviceError::WrongDevice).map_pass_err(scope);
+                        }
 
                         info.context
                             .check_compatible(
@@ -4010,7 +4380,7 @@
                             .require(pipeline.flags.contains(PipelineFlags::BLEND_CONSTANT));
 
                         <span class="kw">unsafe </span>{
-                            raw.set_render_pipeline(<span class="kw-2">&amp;</span>pipeline.raw);
+                            raw.set_render_pipeline(pipeline.raw());
                         }
 
                         <span class="kw">if </span>pipeline.flags.contains(PipelineFlags::STENCIL_REFERENCE) {
@@ -4020,33 +4390,40 @@
                         }
 
                         <span class="comment">// Rebind resource
-                        </span><span class="kw">if </span>state.binder.pipeline_layout_id != <span class="prelude-val">Some</span>(pipeline.layout_id.value) {
-                            <span class="kw">let </span>pipeline_layout = <span class="kw-2">&amp;</span>pipeline_layout_guard[pipeline.layout_id.value];
-
+                        </span><span class="kw">if </span>state.binder.pipeline_layout.is_none()
+                            || !state
+                                .binder
+                                .pipeline_layout
+                                .as_ref()
+                                .unwrap()
+                                .is_equal(<span class="kw-2">&amp;</span>pipeline.layout)
+                        {
                             <span class="kw">let </span>(start_index, entries) = state.binder.change_pipeline_layout(
-                                <span class="kw-2">&amp;*</span>pipeline_layout_guard,
-                                pipeline.layout_id.value,
+                                <span class="kw-2">&amp;</span>pipeline.layout,
                                 <span class="kw-2">&amp;</span>pipeline.late_sized_buffer_groups,
                             );
                             <span class="kw">if </span>!entries.is_empty() {
                                 <span class="kw">for </span>(i, e) <span class="kw">in </span>entries.iter().enumerate() {
-                                    <span class="kw">let </span>raw_bg =
-                                        <span class="kw-2">&amp;</span>bind_group_guard[e.group_id.as_ref().unwrap().value].raw;
-
-                                    <span class="kw">unsafe </span>{
-                                        raw.set_bind_group(
-                                            <span class="kw-2">&amp;</span>pipeline_layout.raw,
-                                            start_index <span class="kw">as </span>u32 + i <span class="kw">as </span>u32,
-                                            raw_bg,
-                                            <span class="kw-2">&amp;</span>e.dynamic_offsets,
-                                        );
+                                    <span class="kw">if let </span><span class="prelude-val">Some</span>(group) = e.group.as_ref() {
+                                        <span class="kw">let </span>raw_bg = group
+                                            .raw(<span class="kw-2">&amp;</span>snatch_guard)
+                                            .ok_or(RenderPassErrorInner::InvalidBindGroup(i))
+                                            .map_pass_err(scope)<span class="question-mark">?</span>;
+                                        <span class="kw">unsafe </span>{
+                                            raw.set_bind_group(
+                                                pipeline.layout.raw(),
+                                                start_index <span class="kw">as </span>u32 + i <span class="kw">as </span>u32,
+                                                raw_bg,
+                                                <span class="kw-2">&amp;</span>e.dynamic_offsets,
+                                            );
+                                        }
                                     }
                                 }
                             }
 
                             <span class="comment">// Clear push constant ranges
                             </span><span class="kw">let </span>non_overlapping = <span class="kw">super</span>::bind::compute_nonoverlapping_ranges(
-                                <span class="kw-2">&amp;</span>pipeline_layout.push_constant_ranges,
+                                <span class="kw-2">&amp;</span>pipeline.layout.push_constant_ranges,
                             );
                             <span class="kw">for </span>range <span class="kw">in </span>non_overlapping {
                                 <span class="kw">let </span>offset = range.range.start;
@@ -4056,7 +4433,7 @@
                                     size_bytes,
                                     |clear_offset, clear_data| <span class="kw">unsafe </span>{
                                         raw.set_push_constants(
-                                            <span class="kw-2">&amp;</span>pipeline_layout.raw,
+                                            pipeline.layout.raw(),
                                             range.stages,
                                             clear_offset,
                                             clear_data,
@@ -4080,7 +4457,7 @@
                             state.vertex.inputs.push(VertexBufferState::EMPTY);
                         }
 
-                        <span class="comment">// This is worse as a `zip`, but it&#39;s close.
+                        <span class="comment">// This is worse as a `zip`, but it's close.
                         </span><span class="kw">let </span><span class="kw-2">mut </span>steps = pipeline.vertex_steps.iter();
                         <span class="kw">for </span>input <span class="kw">in </span>state.vertex.inputs.iter_mut() {
                             input.step = steps.next().cloned().unwrap_or_default();
@@ -4095,17 +4472,24 @@
                         offset,
                         size,
                     } =&gt; {
+                        <span class="macro">api_log!</span>(<span class="string">"RenderPass::set_index_buffer {buffer_id:?}"</span>);
+
                         <span class="kw">let </span>scope = PassErrorScope::SetIndexBuffer(buffer_id);
-                        <span class="kw">let </span>buffer: <span class="kw-2">&amp;</span>Buffer&lt;A&gt; = info
+                        <span class="kw">let </span>buffer = info
                             .usage_scope
                             .buffers
                             .merge_single(<span class="kw-2">&amp;*</span>buffer_guard, buffer_id, hal::BufferUses::INDEX)
                             .map_pass_err(scope)<span class="question-mark">?</span>;
+
+                        <span class="kw">if </span>buffer.device.as_info().id() != device.as_info().id() {
+                            <span class="kw">return </span><span class="prelude-val">Err</span>(DeviceError::WrongDevice).map_pass_err(scope);
+                        }
+
                         check_buffer_usage(buffer.usage, BufferUsages::INDEX)
                             .map_pass_err(scope)<span class="question-mark">?</span>;
                         <span class="kw">let </span>buf_raw = buffer
                             .raw
-                            .as_ref()
+                            .get(<span class="kw-2">&amp;</span>snatch_guard)
                             .ok_or(RenderCommandError::DestroyedBuffer(buffer_id))
                             .map_pass_err(scope)<span class="question-mark">?</span>;
 
@@ -4113,14 +4497,14 @@
                             <span class="prelude-val">Some</span>(s) =&gt; offset + s.get(),
                             <span class="prelude-val">None </span>=&gt; buffer.size,
                         };
-                        state.index.bound_buffer_view = <span class="prelude-val">Some</span>((id::Valid(buffer_id), offset..end));
+                        state.index.bound_buffer_view = <span class="prelude-val">Some</span>((buffer_id, offset..end));
 
                         state.index.format = <span class="prelude-val">Some</span>(index_format);
                         state.index.update_limit();
 
-                        cmd_buf.buffer_memory_init_actions.extend(
-                            buffer.initialization_status.create_action(
-                                buffer_id,
+                        buffer_memory_init_actions.extend(
+                            buffer.initialization_status.read().create_action(
+                                buffer,
                                 offset..end,
                                 MemoryInitKind::NeedsInitializedMemory,
                             ),
@@ -4141,17 +4525,33 @@
                         offset,
                         size,
                     } =&gt; {
+                        <span class="macro">api_log!</span>(<span class="string">"RenderPass::set_vertex_buffer {slot} {buffer_id:?}"</span>);
+
                         <span class="kw">let </span>scope = PassErrorScope::SetVertexBuffer(buffer_id);
-                        <span class="kw">let </span>buffer: <span class="kw-2">&amp;</span>Buffer&lt;A&gt; = info
+                        <span class="kw">let </span>buffer = info
                             .usage_scope
                             .buffers
                             .merge_single(<span class="kw-2">&amp;*</span>buffer_guard, buffer_id, hal::BufferUses::VERTEX)
                             .map_pass_err(scope)<span class="question-mark">?</span>;
+
+                        <span class="kw">if </span>buffer.device.as_info().id() != device.as_info().id() {
+                            <span class="kw">return </span><span class="prelude-val">Err</span>(DeviceError::WrongDevice).map_pass_err(scope);
+                        }
+
+                        <span class="kw">let </span>max_vertex_buffers = device.limits.max_vertex_buffers;
+                        <span class="kw">if </span>slot &gt;= max_vertex_buffers {
+                            <span class="kw">return </span><span class="prelude-val">Err</span>(RenderCommandError::VertexBufferIndexOutOfRange {
+                                index: slot,
+                                max: max_vertex_buffers,
+                            })
+                            .map_pass_err(scope);
+                        }
+
                         check_buffer_usage(buffer.usage, BufferUsages::VERTEX)
                             .map_pass_err(scope)<span class="question-mark">?</span>;
                         <span class="kw">let </span>buf_raw = buffer
                             .raw
-                            .as_ref()
+                            .get(<span class="kw-2">&amp;</span>snatch_guard)
                             .ok_or(RenderCommandError::DestroyedBuffer(buffer_id))
                             .map_pass_err(scope)<span class="question-mark">?</span>;
 
@@ -4169,9 +4569,9 @@
                         };
                         vertex_state.bound = <span class="bool-val">true</span>;
 
-                        cmd_buf.buffer_memory_init_actions.extend(
-                            buffer.initialization_status.create_action(
-                                buffer_id,
+                        buffer_memory_init_actions.extend(
+                            buffer.initialization_status.read().create_action(
+                                buffer,
                                 offset..(offset + vertex_state.total_size),
                                 MemoryInitKind::NeedsInitializedMemory,
                             ),
@@ -4188,6 +4588,8 @@
                         state.vertex.update_limits();
                     }
                     RenderCommand::SetBlendConstant(<span class="kw-2">ref </span>color) =&gt; {
+                        <span class="macro">api_log!</span>(<span class="string">"RenderPass::set_blend_constant"</span>);
+
                         state.blend_constant = OptionalState::Set;
                         <span class="kw">let </span>array = [
                             color.r <span class="kw">as </span>f32,
@@ -4200,6 +4602,8 @@
                         }
                     }
                     RenderCommand::SetStencilReference(value) =&gt; {
+                        <span class="macro">api_log!</span>(<span class="string">"RenderPass::set_stencil_reference {value}"</span>);
+
                         state.stencil_reference = value;
                         <span class="kw">if </span>state
                             .pipeline_flags
@@ -4215,10 +4619,19 @@
                         depth_min,
                         depth_max,
                     } =&gt; {
+                        <span class="macro">api_log!</span>(<span class="string">"RenderPass::set_viewport {rect:?}"</span>);
+
                         <span class="kw">let </span>scope = PassErrorScope::SetViewport;
-                        <span class="kw">if </span>rect.w &lt;= <span class="number">0.0 </span>|| rect.h &lt;= <span class="number">0.0 </span>{
-                            <span class="kw">return </span><span class="prelude-val">Err</span>(RenderCommandError::InvalidViewportDimension(
-                                rect.w, rect.h,
+                        <span class="kw">if </span>rect.x &lt; <span class="number">0.0
+                            </span>|| rect.y &lt; <span class="number">0.0
+                            </span>|| rect.w &lt;= <span class="number">0.0
+                            </span>|| rect.h &lt;= <span class="number">0.0
+                            </span>|| rect.x + rect.w &gt; info.extent.width <span class="kw">as </span>f32
+                            || rect.y + rect.h &gt; info.extent.height <span class="kw">as </span>f32
+                        {
+                            <span class="kw">return </span><span class="prelude-val">Err</span>(RenderCommandError::InvalidViewportRect(
+                                <span class="kw-2">*</span>rect,
+                                info.extent,
                             ))
                             .map_pass_err(scope);
                         }
@@ -4244,6 +4657,8 @@
                         size_bytes,
                         values_offset,
                     } =&gt; {
+                        <span class="macro">api_log!</span>(<span class="string">"RenderPass::set_push_constants"</span>);
+
                         <span class="kw">let </span>scope = PassErrorScope::SetPushConstant;
                         <span class="kw">let </span>values_offset = values_offset
                             .ok_or(RenderPassErrorInner::InvalidValuesOffset)
@@ -4255,12 +4670,12 @@
                         <span class="kw">let </span>data_slice =
                             <span class="kw-2">&amp;</span>base.push_constant_data[(values_offset <span class="kw">as </span>usize)..values_end_offset];
 
-                        <span class="kw">let </span>pipeline_layout_id = state
+                        <span class="kw">let </span>pipeline_layout = state
                             .binder
-                            .pipeline_layout_id
+                            .pipeline_layout
+                            .as_ref()
                             .ok_or(DrawError::MissingPipeline)
                             .map_pass_err(scope)<span class="question-mark">?</span>;
-                        <span class="kw">let </span>pipeline_layout = <span class="kw-2">&amp;</span>pipeline_layout_guard[pipeline_layout_id];
 
                         pipeline_layout
                             .validate_push_constant_ranges(stages, offset, end_offset_bytes)
@@ -4268,10 +4683,17 @@
                             .map_pass_err(scope)<span class="question-mark">?</span>;
 
                         <span class="kw">unsafe </span>{
-                            raw.set_push_constants(<span class="kw-2">&amp;</span>pipeline_layout.raw, stages, offset, data_slice)
+                            raw.set_push_constants(
+                                pipeline_layout.raw(),
+                                stages,
+                                offset,
+                                data_slice,
+                            )
                         }
                     }
                     RenderCommand::SetScissor(<span class="kw-2">ref </span>rect) =&gt; {
+                        <span class="macro">api_log!</span>(<span class="string">"RenderPass::set_scissor_rect {rect:?}"</span>);
+
                         <span class="kw">let </span>scope = PassErrorScope::SetScissorRect;
                         <span class="kw">if </span>rect.x + rect.w &gt; info.extent.width
                             || rect.y + rect.h &gt; info.extent.height
@@ -4295,6 +4717,10 @@
                         first_vertex,
                         first_instance,
                     } =&gt; {
+                        <span class="macro">api_log!</span>(
+                            <span class="string">"RenderPass::draw {vertex_count} {instance_count} {first_vertex} {first_instance}"
+                        </span>);
+
                         <span class="kw">let </span>indexed = <span class="bool-val">false</span>;
                         <span class="kw">let </span>scope = PassErrorScope::Draw {
                             indexed,
@@ -4303,7 +4729,7 @@
                         };
                         state.is_ready(indexed).map_pass_err(scope)<span class="question-mark">?</span>;
 
-                        <span class="kw">let </span>last_vertex = first_vertex + vertex_count;
+                        <span class="kw">let </span>last_vertex = first_vertex <span class="kw">as </span>u64 + vertex_count <span class="kw">as </span>u64;
                         <span class="kw">let </span>vertex_limit = state.vertex.vertex_limit;
                         <span class="kw">if </span>last_vertex &gt; vertex_limit {
                             <span class="kw">return </span><span class="prelude-val">Err</span>(DrawError::VertexBeyondLimit {
@@ -4313,7 +4739,7 @@
                             })
                             .map_pass_err(scope);
                         }
-                        <span class="kw">let </span>last_instance = first_instance + instance_count;
+                        <span class="kw">let </span>last_instance = first_instance <span class="kw">as </span>u64 + instance_count <span class="kw">as </span>u64;
                         <span class="kw">let </span>instance_limit = state.vertex.instance_limit;
                         <span class="kw">if </span>last_instance &gt; instance_limit {
                             <span class="kw">return </span><span class="prelude-val">Err</span>(DrawError::InstanceBeyondLimit {
@@ -4335,6 +4761,8 @@
                         base_vertex,
                         first_instance,
                     } =&gt; {
+                        <span class="macro">api_log!</span>(<span class="string">"RenderPass::draw_indexed {index_count} {instance_count} {first_index} {base_vertex} {first_instance}"</span>);
+
                         <span class="kw">let </span>indexed = <span class="bool-val">true</span>;
                         <span class="kw">let </span>scope = PassErrorScope::Draw {
                             indexed,
@@ -4343,9 +4771,7 @@
                         };
                         state.is_ready(indexed).map_pass_err(scope)<span class="question-mark">?</span>;
 
-                        <span class="comment">//TODO: validate that base_vertex + max_index() is
-                        // within the provided range
-                        </span><span class="kw">let </span>last_index = first_index + index_count;
+                        <span class="kw">let </span>last_index = first_index <span class="kw">as </span>u64 + index_count <span class="kw">as </span>u64;
                         <span class="kw">let </span>index_limit = state.index.limit;
                         <span class="kw">if </span>last_index &gt; index_limit {
                             <span class="kw">return </span><span class="prelude-val">Err</span>(DrawError::IndexBeyondLimit {
@@ -4354,7 +4780,7 @@
                             })
                             .map_pass_err(scope);
                         }
-                        <span class="kw">let </span>last_instance = first_instance + instance_count;
+                        <span class="kw">let </span>last_instance = first_instance <span class="kw">as </span>u64 + instance_count <span class="kw">as </span>u64;
                         <span class="kw">let </span>instance_limit = state.vertex.instance_limit;
                         <span class="kw">if </span>last_instance &gt; instance_limit {
                             <span class="kw">return </span><span class="prelude-val">Err</span>(DrawError::InstanceBeyondLimit {
@@ -4381,6 +4807,8 @@
                         count,
                         indexed,
                     } =&gt; {
+                        <span class="macro">api_log!</span>(<span class="string">"RenderPass::draw_indirect (indexed:{indexed}) {buffer_id:?} {offset} {count:?}"</span>);
+
                         <span class="kw">let </span>scope = PassErrorScope::Draw {
                             indexed,
                             indirect: <span class="bool-val">true</span>,
@@ -4402,7 +4830,7 @@
                             .require_downlevel_flags(wgt::DownlevelFlags::INDIRECT_EXECUTION)
                             .map_pass_err(scope)<span class="question-mark">?</span>;
 
-                        <span class="kw">let </span>indirect_buffer: <span class="kw-2">&amp;</span>Buffer&lt;A&gt; = info
+                        <span class="kw">let </span>indirect_buffer = info
                             .usage_scope
                             .buffers
                             .merge_single(<span class="kw-2">&amp;*</span>buffer_guard, buffer_id, hal::BufferUses::INDIRECT)
@@ -4411,7 +4839,7 @@
                             .map_pass_err(scope)<span class="question-mark">?</span>;
                         <span class="kw">let </span>indirect_raw = indirect_buffer
                             .raw
-                            .as_ref()
+                            .get(<span class="kw-2">&amp;</span>snatch_guard)
                             .ok_or(RenderCommandError::DestroyedBuffer(buffer_id))
                             .map_pass_err(scope)<span class="question-mark">?</span>;
 
@@ -4428,9 +4856,9 @@
                             .map_pass_err(scope);
                         }
 
-                        cmd_buf.buffer_memory_init_actions.extend(
-                            indirect_buffer.initialization_status.create_action(
-                                buffer_id,
+                        buffer_memory_init_actions.extend(
+                            indirect_buffer.initialization_status.read().create_action(
+                                indirect_buffer,
                                 offset..end_offset,
                                 MemoryInitKind::NeedsInitializedMemory,
                             ),
@@ -4453,6 +4881,8 @@
                         max_count,
                         indexed,
                     } =&gt; {
+                        <span class="macro">api_log!</span>(<span class="string">"RenderPass::multi_draw_indirect_count (indexed:{indexed}) {buffer_id:?} {offset} {count_buffer_id:?} {count_buffer_offset:?} {max_count:?}"</span>);
+
                         <span class="kw">let </span>scope = PassErrorScope::Draw {
                             indexed,
                             indirect: <span class="bool-val">true</span>,
@@ -4472,7 +4902,7 @@
                             .require_downlevel_flags(wgt::DownlevelFlags::INDIRECT_EXECUTION)
                             .map_pass_err(scope)<span class="question-mark">?</span>;
 
-                        <span class="kw">let </span>indirect_buffer: <span class="kw-2">&amp;</span>Buffer&lt;A&gt; = info
+                        <span class="kw">let </span>indirect_buffer = info
                             .usage_scope
                             .buffers
                             .merge_single(<span class="kw-2">&amp;*</span>buffer_guard, buffer_id, hal::BufferUses::INDIRECT)
@@ -4481,11 +4911,11 @@
                             .map_pass_err(scope)<span class="question-mark">?</span>;
                         <span class="kw">let </span>indirect_raw = indirect_buffer
                             .raw
-                            .as_ref()
+                            .get(<span class="kw-2">&amp;</span>snatch_guard)
                             .ok_or(RenderCommandError::DestroyedBuffer(buffer_id))
                             .map_pass_err(scope)<span class="question-mark">?</span>;
 
-                        <span class="kw">let </span>count_buffer: <span class="kw-2">&amp;</span>Buffer&lt;A&gt; = info
+                        <span class="kw">let </span>count_buffer = info
                             .usage_scope
                             .buffers
                             .merge_single(
@@ -4498,7 +4928,7 @@
                             .map_pass_err(scope)<span class="question-mark">?</span>;
                         <span class="kw">let </span>count_raw = count_buffer
                             .raw
-                            .as_ref()
+                            .get(<span class="kw-2">&amp;</span>snatch_guard)
                             .ok_or(RenderCommandError::DestroyedBuffer(count_buffer_id))
                             .map_pass_err(scope)<span class="question-mark">?</span>;
 
@@ -4512,9 +4942,9 @@
                             })
                             .map_pass_err(scope);
                         }
-                        cmd_buf.buffer_memory_init_actions.extend(
-                            indirect_buffer.initialization_status.create_action(
-                                buffer_id,
+                        buffer_memory_init_actions.extend(
+                            indirect_buffer.initialization_status.read().create_action(
+                                indirect_buffer,
                                 offset..end_offset,
                                 MemoryInitKind::NeedsInitializedMemory,
                             ),
@@ -4530,9 +4960,9 @@
                             })
                             .map_pass_err(scope);
                         }
-                        cmd_buf.buffer_memory_init_actions.extend(
-                            count_buffer.initialization_status.create_action(
-                                count_buffer_id,
+                        buffer_memory_init_actions.extend(
+                            count_buffer.initialization_status.read().create_action(
+                                count_buffer,
                                 count_buffer_offset..end_count_offset,
                                 MemoryInitKind::NeedsInitializedMemory,
                             ),
@@ -4561,46 +4991,59 @@
                     }
                     RenderCommand::PushDebugGroup { color: <span class="kw">_</span>, len } =&gt; {
                         state.debug_scope_depth += <span class="number">1</span>;
-                        <span class="kw">let </span>label =
-                            str::from_utf8(<span class="kw-2">&amp;</span>base.string_data[string_offset..string_offset + len])
-                                .unwrap();
-                        string_offset += len;
-                        <span class="kw">unsafe </span>{
-                            raw.begin_debug_marker(label);
+                        <span class="kw">if </span>!discard_hal_labels {
+                            <span class="kw">let </span>label = str::from_utf8(
+                                <span class="kw-2">&amp;</span>base.string_data[string_offset..string_offset + len],
+                            )
+                            .unwrap();
+
+                            <span class="macro">api_log!</span>(<span class="string">"RenderPass::push_debug_group {label:?}"</span>);
+                            <span class="kw">unsafe </span>{
+                                raw.begin_debug_marker(label);
+                            }
                         }
+                        string_offset += len;
                     }
                     RenderCommand::PopDebugGroup =&gt; {
+                        <span class="macro">api_log!</span>(<span class="string">"RenderPass::pop_debug_group"</span>);
+
                         <span class="kw">let </span>scope = PassErrorScope::PopDebugGroup;
                         <span class="kw">if </span>state.debug_scope_depth == <span class="number">0 </span>{
                             <span class="kw">return </span><span class="prelude-val">Err</span>(RenderPassErrorInner::InvalidPopDebugGroup)
                                 .map_pass_err(scope);
                         }
                         state.debug_scope_depth -= <span class="number">1</span>;
-                        <span class="kw">unsafe </span>{
-                            raw.end_debug_marker();
+                        <span class="kw">if </span>!discard_hal_labels {
+                            <span class="kw">unsafe </span>{
+                                raw.end_debug_marker();
+                            }
                         }
                     }
                     RenderCommand::InsertDebugMarker { color: <span class="kw">_</span>, len } =&gt; {
-                        <span class="kw">let </span>label =
-                            str::from_utf8(<span class="kw-2">&amp;</span>base.string_data[string_offset..string_offset + len])
-                                .unwrap();
-                        string_offset += len;
-                        <span class="kw">unsafe </span>{
-                            raw.insert_debug_marker(label);
+                        <span class="kw">if </span>!discard_hal_labels {
+                            <span class="kw">let </span>label = str::from_utf8(
+                                <span class="kw-2">&amp;</span>base.string_data[string_offset..string_offset + len],
+                            )
+                            .unwrap();
+                            <span class="macro">api_log!</span>(<span class="string">"RenderPass::insert_debug_marker {label:?}"</span>);
+                            <span class="kw">unsafe </span>{
+                                raw.insert_debug_marker(label);
+                            }
                         }
+                        string_offset += len;
                     }
                     RenderCommand::WriteTimestamp {
                         query_set_id,
                         query_index,
                     } =&gt; {
+                        <span class="macro">api_log!</span>(<span class="string">"RenderPass::write_timestamps {query_set_id:?} {query_index}"</span>);
                         <span class="kw">let </span>scope = PassErrorScope::WriteTimestamp;
 
                         device
                             .require_features(wgt::Features::TIMESTAMP_QUERY_INSIDE_PASSES)
                             .map_pass_err(scope)<span class="question-mark">?</span>;
 
-                        <span class="kw">let </span>query_set: <span class="kw-2">&amp;</span>resource::QuerySet&lt;A&gt; = cmd_buf
-                            .trackers
+                        <span class="kw">let </span>query_set = tracker
                             .query_sets
                             .add_single(<span class="kw-2">&amp;*</span>query_set_guard, query_set_id)
                             .ok_or(RenderCommandError::InvalidQuerySet(query_set_id))
@@ -4611,18 +5054,49 @@
                                 raw,
                                 query_set_id,
                                 query_index,
-                                <span class="prelude-val">Some</span>(<span class="kw-2">&amp;mut </span>query_reset_state),
+                                <span class="prelude-val">Some</span>(<span class="kw-2">&amp;mut </span>cmd_buf_data.pending_query_resets),
                             )
+                            .map_pass_err(scope)<span class="question-mark">?</span>;
+                    }
+                    RenderCommand::BeginOcclusionQuery { query_index } =&gt; {
+                        <span class="macro">api_log!</span>(<span class="string">"RenderPass::begin_occlusion_query {query_index}"</span>);
+                        <span class="kw">let </span>scope = PassErrorScope::BeginOcclusionQuery;
+
+                        <span class="kw">let </span>query_set_id = occlusion_query_set_id
+                            .ok_or(RenderPassErrorInner::MissingOcclusionQuerySet)
+                            .map_pass_err(scope)<span class="question-mark">?</span>;
+
+                        <span class="kw">let </span>query_set = tracker
+                            .query_sets
+                            .add_single(<span class="kw-2">&amp;*</span>query_set_guard, query_set_id)
+                            .ok_or(RenderCommandError::InvalidQuerySet(query_set_id))
+                            .map_pass_err(scope)<span class="question-mark">?</span>;
+
+                        query_set
+                            .validate_and_begin_occlusion_query(
+                                raw,
+                                query_set_id,
+                                query_index,
+                                <span class="prelude-val">Some</span>(<span class="kw-2">&amp;mut </span>cmd_buf_data.pending_query_resets),
+                                <span class="kw-2">&amp;mut </span>active_query,
+                            )
+                            .map_pass_err(scope)<span class="question-mark">?</span>;
+                    }
+                    RenderCommand::EndOcclusionQuery =&gt; {
+                        <span class="macro">api_log!</span>(<span class="string">"RenderPass::end_occlusion_query"</span>);
+                        <span class="kw">let </span>scope = PassErrorScope::EndOcclusionQuery;
+
+                        end_occlusion_query(raw, <span class="kw-2">&amp;*</span>query_set_guard, <span class="kw-2">&amp;mut </span>active_query)
                             .map_pass_err(scope)<span class="question-mark">?</span>;
                     }
                     RenderCommand::BeginPipelineStatisticsQuery {
                         query_set_id,
                         query_index,
                     } =&gt; {
+                        <span class="macro">api_log!</span>(<span class="string">"RenderPass::begin_pipeline_statistics_query {query_set_id:?} {query_index}"</span>);
                         <span class="kw">let </span>scope = PassErrorScope::BeginPipelineStatisticsQuery;
 
-                        <span class="kw">let </span>query_set: <span class="kw-2">&amp;</span>resource::QuerySet&lt;A&gt; = cmd_buf
-                            .trackers
+                        <span class="kw">let </span>query_set = tracker
                             .query_sets
                             .add_single(<span class="kw-2">&amp;*</span>query_set_guard, query_set_id)
                             .ok_or(RenderCommandError::InvalidQuerySet(query_set_id))
@@ -4633,25 +5107,30 @@
                                 raw,
                                 query_set_id,
                                 query_index,
-                                <span class="prelude-val">Some</span>(<span class="kw-2">&amp;mut </span>query_reset_state),
+                                <span class="prelude-val">Some</span>(<span class="kw-2">&amp;mut </span>cmd_buf_data.pending_query_resets),
                                 <span class="kw-2">&amp;mut </span>active_query,
                             )
                             .map_pass_err(scope)<span class="question-mark">?</span>;
                     }
                     RenderCommand::EndPipelineStatisticsQuery =&gt; {
+                        <span class="macro">api_log!</span>(<span class="string">"RenderPass::end_pipeline_statistics_query"</span>);
                         <span class="kw">let </span>scope = PassErrorScope::EndPipelineStatisticsQuery;
 
                         end_pipeline_statistics_query(raw, <span class="kw-2">&amp;*</span>query_set_guard, <span class="kw-2">&amp;mut </span>active_query)
                             .map_pass_err(scope)<span class="question-mark">?</span>;
                     }
                     RenderCommand::ExecuteBundle(bundle_id) =&gt; {
+                        <span class="macro">api_log!</span>(<span class="string">"RenderPass::execute_bundle {bundle_id:?}"</span>);
                         <span class="kw">let </span>scope = PassErrorScope::ExecuteBundle;
-                        <span class="kw">let </span>bundle: <span class="kw-2">&amp;</span>command::RenderBundle&lt;A&gt; = cmd_buf
-                            .trackers
+                        <span class="kw">let </span>bundle: <span class="kw-2">&amp;</span>command::RenderBundle&lt;A&gt; = tracker
                             .bundles
                             .add_single(<span class="kw-2">&amp;*</span>bundle_guard, bundle_id)
                             .ok_or(RenderCommandError::InvalidRenderBundle(bundle_id))
                             .map_pass_err(scope)<span class="question-mark">?</span>;
+
+                        <span class="kw">if </span>bundle.device.as_info().id() != device.as_info().id() {
+                            <span class="kw">return </span><span class="prelude-val">Err</span>(DeviceError::WrongDevice).map_pass_err(scope);
+                        }
 
                         info.context
                             .check_compatible(
@@ -4675,48 +5154,42 @@
                             .map_pass_err(scope);
                         }
 
-                        cmd_buf.buffer_memory_init_actions.extend(
+                        buffer_memory_init_actions.extend(
                             bundle
                                 .buffer_memory_init_actions
                                 .iter()
-                                .filter_map(|action| <span class="kw">match </span>buffer_guard.get(action.id) {
-                                    <span class="prelude-val">Ok</span>(buffer) =&gt; buffer.initialization_status.check_action(action),
-                                    <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; <span class="prelude-val">None</span>,
+                                .filter_map(|action| {
+                                    action
+                                        .buffer
+                                        .initialization_status
+                                        .read()
+                                        .check_action(action)
                                 }),
                         );
                         <span class="kw">for </span>action <span class="kw">in </span>bundle.texture_memory_init_actions.iter() {
-                            info.pending_discard_init_fixups.extend(
-                                cmd_buf
-                                    .texture_memory_actions
-                                    .register_init_action(action, <span class="kw-2">&amp;</span>texture_guard),
-                            );
+                            info.pending_discard_init_fixups
+                                .extend(texture_memory_actions.register_init_action(action));
                         }
 
-                        <span class="kw">unsafe </span>{
-                            bundle.execute(
-                                raw,
-                                <span class="kw-2">&amp;*</span>pipeline_layout_guard,
-                                <span class="kw-2">&amp;*</span>bind_group_guard,
-                                <span class="kw-2">&amp;*</span>render_pipeline_guard,
-                                <span class="kw-2">&amp;*</span>buffer_guard,
-                            )
-                        }
-                        .map_err(|e| <span class="kw">match </span>e {
-                            ExecutionError::DestroyedBuffer(id) =&gt; {
-                                RenderCommandError::DestroyedBuffer(id)
-                            }
-                            ExecutionError::Unimplemented(what) =&gt; {
-                                RenderCommandError::Unimplemented(what)
-                            }
-                        })
-                        .map_pass_err(scope)<span class="question-mark">?</span>;
+                        <span class="kw">unsafe </span>{ bundle.execute(raw) }
+                            .map_err(|e| <span class="kw">match </span>e {
+                                ExecutionError::DestroyedBuffer(id) =&gt; {
+                                    RenderCommandError::DestroyedBuffer(id)
+                                }
+                                ExecutionError::InvalidBindGroup(id) =&gt; {
+                                    RenderCommandError::InvalidBindGroup(id)
+                                }
+                                ExecutionError::Unimplemented(what) =&gt; {
+                                    RenderCommandError::Unimplemented(what)
+                                }
+                            })
+                            .map_pass_err(scope)<span class="question-mark">?</span>;
 
                         <span class="kw">unsafe </span>{
                             info.usage_scope
-                                .merge_render_bundle(<span class="kw-2">&amp;*</span>texture_guard, <span class="kw-2">&amp;</span>bundle.used)
+                                .merge_render_bundle(<span class="kw-2">&amp;</span>bundle.used)
                                 .map_pass_err(scope)<span class="question-mark">?</span>;
-                            cmd_buf
-                                .trackers
+                            tracker
                                 .add_from_render_bundle(<span class="kw-2">&amp;</span>bundle.used)
                                 .map_pass_err(scope)<span class="question-mark">?</span>;
                         };
@@ -4725,51 +5198,54 @@
                 }
             }
 
-            <span class="macro">log::trace!</span>(<span class="string">&quot;Merging renderpass into cmd_buf {:?}&quot;</span>, encoder_id);
+            <span class="macro">log::trace!</span>(<span class="string">"Merging renderpass into cmd_buf {:?}"</span>, encoder_id);
             <span class="kw">let </span>(trackers, pending_discard_init_fixups) =
-                info.finish(raw, <span class="kw-2">&amp;*</span>texture_guard).map_pass_err(init_scope)<span class="question-mark">?</span>;
+                info.finish(raw).map_pass_err(pass_scope)<span class="question-mark">?</span>;
 
-            cmd_buf.encoder.close();
-            (trackers, query_reset_state, pending_discard_init_fixups)
+            encoder.close().map_pass_err(pass_scope)<span class="question-mark">?</span>;
+            (trackers, pending_discard_init_fixups)
         };
 
-        <span class="kw">let </span>(<span class="kw-2">mut </span>cmb_guard, <span class="kw-2">mut </span>token) = hub.command_buffers.write(<span class="kw-2">&amp;mut </span>token);
-        <span class="kw">let </span>(query_set_guard, <span class="kw-2">mut </span>token) = hub.query_sets.read(<span class="kw-2">&amp;mut </span>token);
-        <span class="kw">let </span>(buffer_guard, <span class="kw-2">mut </span>token) = hub.buffers.read(<span class="kw-2">&amp;mut </span>token);
-        <span class="kw">let </span>(texture_guard, <span class="kw">_</span>) = hub.textures.read(<span class="kw-2">&amp;mut </span>token);
+        <span class="kw">let </span>cmd_buf = hub.command_buffers.get(encoder_id).unwrap();
+        <span class="kw">let </span><span class="kw-2">mut </span>cmd_buf_data = cmd_buf.data.lock();
+        <span class="kw">let </span>cmd_buf_data = cmd_buf_data.as_mut().unwrap();
 
-        <span class="kw">let </span>cmd_buf = cmb_guard.get_mut(encoder_id).unwrap();
+        <span class="kw">let </span>query_set_guard = hub.query_sets.read();
+
+        <span class="kw">let </span>encoder = <span class="kw-2">&amp;mut </span>cmd_buf_data.encoder;
+        <span class="kw">let </span>status = <span class="kw-2">&amp;mut </span>cmd_buf_data.status;
+        <span class="kw">let </span>tracker = <span class="kw-2">&amp;mut </span>cmd_buf_data.trackers;
+
         {
-            <span class="kw">let </span>transit = cmd_buf.encoder.open();
+            <span class="kw">let </span>transit = encoder.open().map_pass_err(pass_scope)<span class="question-mark">?</span>;
 
             fixup_discarded_surfaces(
                 pending_discard_init_fixups.into_iter(),
                 transit,
-                <span class="kw-2">&amp;</span>texture_guard,
-                <span class="kw-2">&amp;mut </span>cmd_buf.trackers.textures,
-                <span class="kw-2">&amp;</span>device_guard[cmd_buf.device_id.value],
+                <span class="kw-2">&amp;mut </span>tracker.textures,
+                <span class="kw-2">&amp;</span>cmd_buf.device,
             );
 
-            query_reset_state
+            cmd_buf_data
+                .pending_query_resets
                 .reset_queries(
                     transit,
                     <span class="kw-2">&amp;</span>query_set_guard,
-                    cmd_buf.device_id.value.<span class="number">0</span>.backend(),
+                    cmd_buf.device.info.id().backend(),
                 )
                 .map_err(RenderCommandError::InvalidQuerySet)
                 .map_pass_err(PassErrorScope::QueryReset)<span class="question-mark">?</span>;
 
             <span class="kw">super</span>::CommandBuffer::insert_barriers_from_scope(
                 transit,
-                <span class="kw-2">&amp;mut </span>cmd_buf.trackers,
+                tracker,
                 <span class="kw-2">&amp;</span>scope,
-                <span class="kw-2">&amp;*</span>buffer_guard,
-                <span class="kw-2">&amp;*</span>texture_guard,
+                <span class="kw-2">&amp;</span>snatch_guard,
             );
         }
 
-        cmd_buf.status = CommandEncoderStatus::Recording;
-        cmd_buf.encoder.close_and_swap();
+        <span class="kw-2">*</span>status = CommandEncoderStatus::Recording;
+        encoder.close_and_swap().map_pass_err(pass_scope)<span class="question-mark">?</span>;
 
         <span class="prelude-val">Ok</span>(())
     }
@@ -4789,7 +5265,7 @@
     /// This function is unsafe as there is no guarantee that the given pointer is
     /// valid for `offset_length` elements.
     </span><span class="attr">#[no_mangle]
-    </span><span class="kw">pub unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>wgpu_render_pass_set_bind_group(
+    </span><span class="kw">pub unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>wgpu_render_pass_set_bind_group(
         pass: <span class="kw-2">&amp;mut </span>RenderPass,
         index: u32,
         bind_group_id: id::BindGroupId,
@@ -4812,13 +5288,13 @@
 
         pass.base.commands.push(RenderCommand::SetBindGroup {
             index,
-            num_dynamic_offsets: offset_length.try_into().unwrap(),
+            num_dynamic_offsets: offset_length,
             bind_group_id,
         });
     }
 
     <span class="attr">#[no_mangle]
-    </span><span class="kw">pub extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>wgpu_render_pass_set_pipeline(
+    </span><span class="kw">pub extern </span><span class="string">"C" </span><span class="kw">fn </span>wgpu_render_pass_set_pipeline(
         pass: <span class="kw-2">&amp;mut </span>RenderPass,
         pipeline_id: id::RenderPipelineId,
     ) {
@@ -4832,7 +5308,7 @@
     }
 
     <span class="attr">#[no_mangle]
-    </span><span class="kw">pub extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>wgpu_render_pass_set_vertex_buffer(
+    </span><span class="kw">pub extern </span><span class="string">"C" </span><span class="kw">fn </span>wgpu_render_pass_set_vertex_buffer(
         pass: <span class="kw-2">&amp;mut </span>RenderPass,
         slot: u32,
         buffer_id: id::BufferId,
@@ -4848,7 +5324,7 @@
     }
 
     <span class="attr">#[no_mangle]
-    </span><span class="kw">pub extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>wgpu_render_pass_set_index_buffer(
+    </span><span class="kw">pub extern </span><span class="string">"C" </span><span class="kw">fn </span>wgpu_render_pass_set_index_buffer(
         pass: <span class="kw-2">&amp;mut </span>RenderPass,
         buffer: id::BufferId,
         index_format: IndexFormat,
@@ -4859,21 +5335,21 @@
     }
 
     <span class="attr">#[no_mangle]
-    </span><span class="kw">pub extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>wgpu_render_pass_set_blend_constant(pass: <span class="kw-2">&amp;mut </span>RenderPass, color: <span class="kw-2">&amp;</span>Color) {
+    </span><span class="kw">pub extern </span><span class="string">"C" </span><span class="kw">fn </span>wgpu_render_pass_set_blend_constant(pass: <span class="kw-2">&amp;mut </span>RenderPass, color: <span class="kw-2">&amp;</span>Color) {
         pass.base
             .commands
             .push(RenderCommand::SetBlendConstant(<span class="kw-2">*</span>color));
     }
 
     <span class="attr">#[no_mangle]
-    </span><span class="kw">pub extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>wgpu_render_pass_set_stencil_reference(pass: <span class="kw-2">&amp;mut </span>RenderPass, value: u32) {
+    </span><span class="kw">pub extern </span><span class="string">"C" </span><span class="kw">fn </span>wgpu_render_pass_set_stencil_reference(pass: <span class="kw-2">&amp;mut </span>RenderPass, value: u32) {
         pass.base
             .commands
             .push(RenderCommand::SetStencilReference(value));
     }
 
     <span class="attr">#[no_mangle]
-    </span><span class="kw">pub extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>wgpu_render_pass_set_viewport(
+    </span><span class="kw">pub extern </span><span class="string">"C" </span><span class="kw">fn </span>wgpu_render_pass_set_viewport(
         pass: <span class="kw-2">&amp;mut </span>RenderPass,
         x: f32,
         y: f32,
@@ -4890,7 +5366,7 @@
     }
 
     <span class="attr">#[no_mangle]
-    </span><span class="kw">pub extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>wgpu_render_pass_set_scissor_rect(
+    </span><span class="kw">pub extern </span><span class="string">"C" </span><span class="kw">fn </span>wgpu_render_pass_set_scissor_rect(
         pass: <span class="kw-2">&amp;mut </span>RenderPass,
         x: u32,
         y: u32,
@@ -4907,7 +5383,7 @@
     /// This function is unsafe as there is no guarantee that the given pointer is
     /// valid for `size_bytes` bytes.
     </span><span class="attr">#[no_mangle]
-    </span><span class="kw">pub unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>wgpu_render_pass_set_push_constants(
+    </span><span class="kw">pub unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>wgpu_render_pass_set_push_constants(
         pass: <span class="kw-2">&amp;mut </span>RenderPass,
         stages: wgt::ShaderStages,
         offset: u32,
@@ -4917,16 +5393,16 @@
         <span class="macro">assert_eq!</span>(
             offset &amp; (wgt::PUSH_CONSTANT_ALIGNMENT - <span class="number">1</span>),
             <span class="number">0</span>,
-            <span class="string">&quot;Push constant offset must be aligned to 4 bytes.&quot;
+            <span class="string">"Push constant offset must be aligned to 4 bytes."
         </span>);
         <span class="macro">assert_eq!</span>(
             size_bytes &amp; (wgt::PUSH_CONSTANT_ALIGNMENT - <span class="number">1</span>),
             <span class="number">0</span>,
-            <span class="string">&quot;Push constant size must be aligned to 4 bytes.&quot;
+            <span class="string">"Push constant size must be aligned to 4 bytes."
         </span>);
         <span class="kw">let </span>data_slice = <span class="kw">unsafe </span>{ slice::from_raw_parts(data, size_bytes <span class="kw">as </span>usize) };
         <span class="kw">let </span>value_offset = pass.base.push_constant_data.len().try_into().expect(
-            <span class="string">&quot;Ran out of push constant space. Don&#39;t set 4gb of push constants per RenderPass.&quot;</span>,
+            <span class="string">"Ran out of push constant space. Don't set 4gb of push constants per RenderPass."</span>,
         );
 
         pass.base.push_constant_data.extend(
@@ -4944,7 +5420,7 @@
     }
 
     <span class="attr">#[no_mangle]
-    </span><span class="kw">pub extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>wgpu_render_pass_draw(
+    </span><span class="kw">pub extern </span><span class="string">"C" </span><span class="kw">fn </span>wgpu_render_pass_draw(
         pass: <span class="kw-2">&amp;mut </span>RenderPass,
         vertex_count: u32,
         instance_count: u32,
@@ -4960,7 +5436,7 @@
     }
 
     <span class="attr">#[no_mangle]
-    </span><span class="kw">pub extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>wgpu_render_pass_draw_indexed(
+    </span><span class="kw">pub extern </span><span class="string">"C" </span><span class="kw">fn </span>wgpu_render_pass_draw_indexed(
         pass: <span class="kw-2">&amp;mut </span>RenderPass,
         index_count: u32,
         instance_count: u32,
@@ -4978,7 +5454,7 @@
     }
 
     <span class="attr">#[no_mangle]
-    </span><span class="kw">pub extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>wgpu_render_pass_draw_indirect(
+    </span><span class="kw">pub extern </span><span class="string">"C" </span><span class="kw">fn </span>wgpu_render_pass_draw_indirect(
         pass: <span class="kw-2">&amp;mut </span>RenderPass,
         buffer_id: id::BufferId,
         offset: BufferAddress,
@@ -4992,7 +5468,7 @@
     }
 
     <span class="attr">#[no_mangle]
-    </span><span class="kw">pub extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>wgpu_render_pass_draw_indexed_indirect(
+    </span><span class="kw">pub extern </span><span class="string">"C" </span><span class="kw">fn </span>wgpu_render_pass_draw_indexed_indirect(
         pass: <span class="kw-2">&amp;mut </span>RenderPass,
         buffer_id: id::BufferId,
         offset: BufferAddress,
@@ -5006,7 +5482,7 @@
     }
 
     <span class="attr">#[no_mangle]
-    </span><span class="kw">pub extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>wgpu_render_pass_multi_draw_indirect(
+    </span><span class="kw">pub extern </span><span class="string">"C" </span><span class="kw">fn </span>wgpu_render_pass_multi_draw_indirect(
         pass: <span class="kw-2">&amp;mut </span>RenderPass,
         buffer_id: id::BufferId,
         offset: BufferAddress,
@@ -5021,7 +5497,7 @@
     }
 
     <span class="attr">#[no_mangle]
-    </span><span class="kw">pub extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>wgpu_render_pass_multi_draw_indexed_indirect(
+    </span><span class="kw">pub extern </span><span class="string">"C" </span><span class="kw">fn </span>wgpu_render_pass_multi_draw_indexed_indirect(
         pass: <span class="kw-2">&amp;mut </span>RenderPass,
         buffer_id: id::BufferId,
         offset: BufferAddress,
@@ -5036,7 +5512,7 @@
     }
 
     <span class="attr">#[no_mangle]
-    </span><span class="kw">pub extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>wgpu_render_pass_multi_draw_indirect_count(
+    </span><span class="kw">pub extern </span><span class="string">"C" </span><span class="kw">fn </span>wgpu_render_pass_multi_draw_indirect_count(
         pass: <span class="kw-2">&amp;mut </span>RenderPass,
         buffer_id: id::BufferId,
         offset: BufferAddress,
@@ -5057,7 +5533,7 @@
     }
 
     <span class="attr">#[no_mangle]
-    </span><span class="kw">pub extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>wgpu_render_pass_multi_draw_indexed_indirect_count(
+    </span><span class="kw">pub extern </span><span class="string">"C" </span><span class="kw">fn </span>wgpu_render_pass_multi_draw_indexed_indirect_count(
         pass: <span class="kw-2">&amp;mut </span>RenderPass,
         buffer_id: id::BufferId,
         offset: BufferAddress,
@@ -5082,7 +5558,7 @@
     /// This function is unsafe as there is no guarantee that the given `label`
     /// is a valid null-terminated string.
     </span><span class="attr">#[no_mangle]
-    </span><span class="kw">pub unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>wgpu_render_pass_push_debug_group(
+    </span><span class="kw">pub unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>wgpu_render_pass_push_debug_group(
         pass: <span class="kw-2">&amp;mut </span>RenderPass,
         label: RawString,
         color: u32,
@@ -5097,7 +5573,7 @@
     }
 
     <span class="attr">#[no_mangle]
-    </span><span class="kw">pub extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>wgpu_render_pass_pop_debug_group(pass: <span class="kw-2">&amp;mut </span>RenderPass) {
+    </span><span class="kw">pub extern </span><span class="string">"C" </span><span class="kw">fn </span>wgpu_render_pass_pop_debug_group(pass: <span class="kw-2">&amp;mut </span>RenderPass) {
         pass.base.commands.push(RenderCommand::PopDebugGroup);
     }
 
@@ -5106,7 +5582,7 @@
     /// This function is unsafe as there is no guarantee that the given `label`
     /// is a valid null-terminated string.
     </span><span class="attr">#[no_mangle]
-    </span><span class="kw">pub unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>wgpu_render_pass_insert_debug_marker(
+    </span><span class="kw">pub unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>wgpu_render_pass_insert_debug_marker(
         pass: <span class="kw-2">&amp;mut </span>RenderPass,
         label: RawString,
         color: u32,
@@ -5121,7 +5597,7 @@
     }
 
     <span class="attr">#[no_mangle]
-    </span><span class="kw">pub extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>wgpu_render_pass_write_timestamp(
+    </span><span class="kw">pub extern </span><span class="string">"C" </span><span class="kw">fn </span>wgpu_render_pass_write_timestamp(
         pass: <span class="kw-2">&amp;mut </span>RenderPass,
         query_set_id: id::QuerySetId,
         query_index: u32,
@@ -5133,7 +5609,22 @@
     }
 
     <span class="attr">#[no_mangle]
-    </span><span class="kw">pub extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>wgpu_render_pass_begin_pipeline_statistics_query(
+    </span><span class="kw">pub extern </span><span class="string">"C" </span><span class="kw">fn </span>wgpu_render_pass_begin_occlusion_query(
+        pass: <span class="kw-2">&amp;mut </span>RenderPass,
+        query_index: u32,
+    ) {
+        pass.base
+            .commands
+            .push(RenderCommand::BeginOcclusionQuery { query_index });
+    }
+
+    <span class="attr">#[no_mangle]
+    </span><span class="kw">pub extern </span><span class="string">"C" </span><span class="kw">fn </span>wgpu_render_pass_end_occlusion_query(pass: <span class="kw-2">&amp;mut </span>RenderPass) {
+        pass.base.commands.push(RenderCommand::EndOcclusionQuery);
+    }
+
+    <span class="attr">#[no_mangle]
+    </span><span class="kw">pub extern </span><span class="string">"C" </span><span class="kw">fn </span>wgpu_render_pass_begin_pipeline_statistics_query(
         pass: <span class="kw-2">&amp;mut </span>RenderPass,
         query_set_id: id::QuerySetId,
         query_index: u32,
@@ -5147,7 +5638,7 @@
     }
 
     <span class="attr">#[no_mangle]
-    </span><span class="kw">pub extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>wgpu_render_pass_end_pipeline_statistics_query(pass: <span class="kw-2">&amp;mut </span>RenderPass) {
+    </span><span class="kw">pub extern </span><span class="string">"C" </span><span class="kw">fn </span>wgpu_render_pass_end_pipeline_statistics_query(pass: <span class="kw-2">&amp;mut </span>RenderPass) {
         pass.base
             .commands
             .push(RenderCommand::EndPipelineStatisticsQuery);
@@ -5158,7 +5649,7 @@
     /// This function is unsafe as there is no guarantee that the given pointer is
     /// valid for `render_bundle_ids_length` elements.
     </span><span class="attr">#[no_mangle]
-    </span><span class="kw">pub unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>wgpu_render_pass_execute_bundles(
+    </span><span class="kw">pub unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>wgpu_render_pass_execute_bundles(
         pass: <span class="kw-2">&amp;mut </span>RenderPass,
         render_bundle_ids: <span class="kw-2">*const </span>id::RenderBundleId,
         render_bundle_ids_length: usize,

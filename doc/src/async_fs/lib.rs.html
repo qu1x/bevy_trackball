@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/async-fs-1.6.0/src/lib.rs`."><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="async_fs" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../async_fs/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/async-fs-2.1.1/src/lib.rs`."><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="async_fs" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/smol-rs/smol/master/assets/images/logo_fullsize_transparent.png"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><a class="sub-logo-container" href="../../async_fs/index.html"><img src="https://raw.githubusercontent.com/smol-rs/smol/master/assets/images/logo_fullsize_transparent.png" alt="async_fs"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1810,6 +1811,12 @@
 <a href="#1810" id="1810">1810</a>
 <a href="#1811" id="1811">1811</a>
 <a href="#1812" id="1812">1812</a>
+<a href="#1813" id="1813">1813</a>
+<a href="#1814" id="1814">1814</a>
+<a href="#1815" id="1815">1815</a>
+<a href="#1816" id="1816">1816</a>
+<a href="#1817" id="1817">1817</a>
+<a href="#1818" id="1818">1818</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Async filesystem primitives.
 //!
 //! This crate is an async version of [`std::fs`].
@@ -1829,13 +1836,20 @@
 //! use futures_lite::io::AsyncWriteExt;
 //!
 //! # futures_lite::future::block_on(async {
-//! let mut file = File::create(&quot;a.txt&quot;).await?;
-//! file.write_all(b&quot;Hello, world!&quot;).await?;
+//! let mut file = File::create("a.txt").await?;
+//! file.write_all(b"Hello, world!").await?;
 //! file.flush().await?;
 //! # std::io::Result::Ok(()) });
 //! ```
 
-</span><span class="attr">#![warn(missing_docs, missing_debug_implementations, rust_2018_idioms)]
+</span><span class="attr">#![forbid(unsafe_code)]
+#![warn(missing_docs, missing_debug_implementations, rust_2018_idioms)]
+#![doc(
+    html_favicon_url = <span class="string">"https://raw.githubusercontent.com/smol-rs/smol/master/assets/images/logo_fullsize_transparent.png"
+</span>)]
+#![doc(
+    html_logo_url = <span class="string">"https://raw.githubusercontent.com/smol-rs/smol/master/assets/images/logo_fullsize_transparent.png"
+</span>)]
 
 </span><span class="kw">use </span>std::ffi::OsString;
 <span class="kw">use </span>std::fmt;
@@ -1854,9 +1868,10 @@
 
 <span class="kw">use </span>async_lock::Mutex;
 <span class="kw">use </span>blocking::{unblock, Unblock};
+<span class="kw">use </span>futures_lite::future::FutureExt;
 <span class="kw">use </span>futures_lite::io::{AsyncRead, AsyncSeek, AsyncWrite, AsyncWriteExt};
+<span class="kw">use </span>futures_lite::ready;
 <span class="kw">use </span>futures_lite::stream::Stream;
-<span class="kw">use </span>futures_lite::{future, ready};
 
 <span class="attr">#[doc(no_inline)]
 </span><span class="kw">pub use </span>std::fs::{FileType, Metadata, Permissions};
@@ -1878,12 +1893,12 @@
 ///
 /// ```no_run
 /// # futures_lite::future::block_on(async {
-/// let path = async_fs::canonicalize(&quot;.&quot;).await?;
+/// let path = async_fs::canonicalize(".").await?;
 /// # std::io::Result::Ok(()) });
 /// ```
 </span><span class="kw">pub async fn </span>canonicalize&lt;P: AsRef&lt;Path&gt;&gt;(path: P) -&gt; io::Result&lt;PathBuf&gt; {
     <span class="kw">let </span>path = path.as_ref().to_owned();
-    unblock(<span class="kw">move </span>|| std::fs::canonicalize(<span class="kw-2">&amp;</span>path)).<span class="kw">await
+    unblock(<span class="kw">move </span>|| std::fs::canonicalize(path)).<span class="kw">await
 </span>}
 
 <span class="doccomment">/// Copies a file to a new location.
@@ -1894,7 +1909,7 @@
 /// The old contents of `dst` will be overwritten. If `src` and `dst` both point to the same
 /// file, then the file will likely get truncated as a result of this operation.
 ///
-/// If you&#39;re working with open [`File`]s and want to copy contents through those types, use
+/// If you're working with open [`File`]s and want to copy contents through those types, use
 /// [`futures_lite::io::copy()`] instead.
 ///
 /// # Errors
@@ -1909,7 +1924,7 @@
 ///
 /// ```no_run
 /// # futures_lite::future::block_on(async {
-/// let num_bytes = async_fs::copy(&quot;a.txt&quot;, &quot;b.txt&quot;).await?;
+/// let num_bytes = async_fs::copy("a.txt", "b.txt").await?;
 /// # std::io::Result::Ok(()) });
 /// ```
 </span><span class="kw">pub async fn </span>copy&lt;P: AsRef&lt;Path&gt;, Q: AsRef&lt;Path&gt;&gt;(src: P, dst: Q) -&gt; io::Result&lt;u64&gt; {
@@ -1936,12 +1951,12 @@
 ///
 /// ```no_run
 /// # futures_lite::future::block_on(async {
-/// async_fs::create_dir(&quot;./some/directory&quot;).await?;
+/// async_fs::create_dir("./some/directory").await?;
 /// # std::io::Result::Ok(()) });
 /// ```
 </span><span class="kw">pub async fn </span>create_dir&lt;P: AsRef&lt;Path&gt;&gt;(path: P) -&gt; io::Result&lt;()&gt; {
     <span class="kw">let </span>path = path.as_ref().to_owned();
-    unblock(<span class="kw">move </span>|| std::fs::create_dir(<span class="kw-2">&amp;</span>path)).<span class="kw">await
+    unblock(<span class="kw">move </span>|| std::fs::create_dir(path)).<span class="kw">await
 </span>}
 
 <span class="doccomment">/// Creates a directory and its parent directories if they are missing.
@@ -1958,12 +1973,12 @@
 ///
 /// ```no_run
 /// # futures_lite::future::block_on(async {
-/// async_fs::create_dir_all(&quot;./some/directory&quot;).await?;
+/// async_fs::create_dir_all("./some/directory").await?;
 /// # std::io::Result::Ok(()) });
 /// ```
 </span><span class="kw">pub async fn </span>create_dir_all&lt;P: AsRef&lt;Path&gt;&gt;(path: P) -&gt; io::Result&lt;()&gt; {
     <span class="kw">let </span>path = path.as_ref().to_owned();
-    unblock(<span class="kw">move </span>|| std::fs::create_dir_all(<span class="kw-2">&amp;</span>path)).<span class="kw">await
+    unblock(<span class="kw">move </span>|| std::fs::create_dir_all(path)).<span class="kw">await
 </span>}
 
 <span class="doccomment">/// Creates a hard link on the filesystem.
@@ -1982,7 +1997,7 @@
 ///
 /// ```no_run
 /// # futures_lite::future::block_on(async {
-/// async_fs::hard_link(&quot;a.txt&quot;, &quot;b.txt&quot;).await?;
+/// async_fs::hard_link("a.txt", "b.txt").await?;
 /// # std::io::Result::Ok(()) });
 /// ```
 </span><span class="kw">pub async fn </span>hard_link&lt;P: AsRef&lt;Path&gt;, Q: AsRef&lt;Path&gt;&gt;(src: P, dst: Q) -&gt; io::Result&lt;()&gt; {
@@ -2009,7 +2024,7 @@
 ///
 /// ```no_run
 /// # futures_lite::future::block_on(async {
-/// let perm = async_fs::metadata(&quot;a.txt&quot;).await?.permissions();
+/// let perm = async_fs::metadata("a.txt").await?.permissions();
 /// # std::io::Result::Ok(()) });
 /// ```
 </span><span class="kw">pub async fn </span>metadata&lt;P: AsRef&lt;Path&gt;&gt;(path: P) -&gt; io::Result&lt;Metadata&gt; {
@@ -2037,12 +2052,12 @@
 ///
 /// ```no_run
 /// # futures_lite::future::block_on(async {
-/// let contents = async_fs::read(&quot;a.txt&quot;).await?;
+/// let contents = async_fs::read("a.txt").await?;
 /// # std::io::Result::Ok(()) });
 /// ```
 </span><span class="kw">pub async fn </span>read&lt;P: AsRef&lt;Path&gt;&gt;(path: P) -&gt; io::Result&lt;Vec&lt;u8&gt;&gt; {
     <span class="kw">let </span>path = path.as_ref().to_owned();
-    unblock(<span class="kw">move </span>|| std::fs::read(<span class="kw-2">&amp;</span>path)).<span class="kw">await
+    unblock(<span class="kw">move </span>|| std::fs::read(path)).<span class="kw">await
 </span>}
 
 <span class="doccomment">/// Returns a stream of entries in a directory.
@@ -2064,22 +2079,22 @@
 /// # futures_lite::future::block_on(async {
 /// use futures_lite::stream::StreamExt;
 ///
-/// let mut entries = async_fs::read_dir(&quot;.&quot;).await?;
+/// let mut entries = async_fs::read_dir(".").await?;
 ///
 /// while let Some(entry) = entries.try_next().await? {
-///     println!(&quot;{}&quot;, entry.file_name().to_string_lossy());
+///     println!("{}", entry.file_name().to_string_lossy());
 /// }
 /// # std::io::Result::Ok(()) });
 /// ```
 </span><span class="kw">pub async fn </span>read_dir&lt;P: AsRef&lt;Path&gt;&gt;(path: P) -&gt; io::Result&lt;ReadDir&gt; {
     <span class="kw">let </span>path = path.as_ref().to_owned();
-    unblock(<span class="kw">move </span>|| std::fs::read_dir(<span class="kw-2">&amp;</span>path).map(|inner| ReadDir(State::Idle(<span class="prelude-val">Some</span>(inner))))).<span class="kw">await
+    unblock(<span class="kw">move </span>|| std::fs::read_dir(path).map(|inner| ReadDir(State::Idle(<span class="prelude-val">Some</span>(inner))))).<span class="kw">await
 </span>}
 
 <span class="doccomment">/// A stream of entries in a directory.
 ///
 /// This stream is returned by [`read_dir()`] and yields items of type
-/// [`io::Result`]`&lt;`[`DirEntry`]`&gt;`. Each [`DirEntry`] can then retrieve information like entry&#39;s
+/// [`io::Result`]`&lt;`[`DirEntry`]`&gt;`. Each [`DirEntry`] can then retrieve information like entry's
 /// path or metadata.
 </span><span class="kw">pub struct </span>ReadDir(State);
 
@@ -2088,33 +2103,33 @@
 /// The `ReadDir` can be either idle or busy performing an asynchronous operation.
 </span><span class="kw">enum </span>State {
     Idle(<span class="prelude-ty">Option</span>&lt;std::fs::ReadDir&gt;),
-    Busy(future::Boxed&lt;(std::fs::ReadDir, <span class="prelude-ty">Option</span>&lt;io::Result&lt;std::fs::DirEntry&gt;&gt;)&gt;),
+    Busy(blocking::Task&lt;(std::fs::ReadDir, <span class="prelude-ty">Option</span>&lt;io::Result&lt;std::fs::DirEntry&gt;&gt;)&gt;),
 }
 
 <span class="kw">impl </span>fmt::Debug <span class="kw">for </span>ReadDir {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
-        f.debug_struct(<span class="string">&quot;ReadDir&quot;</span>).finish()
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
+        f.debug_struct(<span class="string">"ReadDir"</span>).finish()
     }
 }
 
 <span class="kw">impl </span>Stream <span class="kw">for </span>ReadDir {
     <span class="kw">type </span>Item = io::Result&lt;DirEntry&gt;;
 
-    <span class="kw">fn </span>poll_next(<span class="kw-2">mut </span><span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; Poll&lt;<span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::Item&gt;&gt; {
+    <span class="kw">fn </span>poll_next(<span class="kw-2">mut </span><span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">'_</span>&gt;) -&gt; Poll&lt;<span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::Item&gt;&gt; {
         <span class="kw">loop </span>{
             <span class="kw">match </span><span class="kw-2">&amp;mut </span><span class="self">self</span>.<span class="number">0 </span>{
                 State::Idle(opt) =&gt; {
                     <span class="kw">let </span><span class="kw-2">mut </span>inner = opt.take().unwrap();
 
                     <span class="comment">// Start the operation asynchronously.
-                    </span><span class="self">self</span>.<span class="number">0 </span>= State::Busy(Box::pin(unblock(<span class="kw">move </span>|| {
+                    </span><span class="self">self</span>.<span class="number">0 </span>= State::Busy(unblock(<span class="kw">move </span>|| {
                         <span class="kw">let </span>next = inner.next();
                         (inner, next)
-                    })));
+                    }));
                 }
                 <span class="comment">// Poll the asynchronous operation the file is currently blocked on.
                 </span>State::Busy(task) =&gt; {
-                    <span class="kw">let </span>(inner, opt) = <span class="macro">ready!</span>(task.as_mut().poll(cx));
+                    <span class="kw">let </span>(inner, opt) = <span class="macro">ready!</span>(task.poll(cx));
                     <span class="self">self</span>.<span class="number">0 </span>= State::Idle(<span class="prelude-val">Some</span>(inner));
                     <span class="kw">return </span>Poll::Ready(opt.map(|res| res.map(|inner| DirEntry(Arc::new(inner)))));
                 }
@@ -2142,10 +2157,10 @@
     /// use futures_lite::stream::StreamExt;
     ///
     /// # futures_lite::future::block_on(async {
-    /// let mut dir = async_fs::read_dir(&quot;.&quot;).await?;
+    /// let mut dir = async_fs::read_dir(".").await?;
     ///
     /// while let Some(entry) = dir.try_next().await? {
-    ///     println!(&quot;{:?}&quot;, entry.path());
+    ///     println!("{:?}", entry.path());
     /// }
     /// # std::io::Result::Ok(()) });
     /// ```
@@ -2174,10 +2189,10 @@
     /// use futures_lite::stream::StreamExt;
     ///
     /// # futures_lite::future::block_on(async {
-    /// let mut dir = async_fs::read_dir(&quot;.&quot;).await?;
+    /// let mut dir = async_fs::read_dir(".").await?;
     ///
     /// while let Some(entry) = dir.try_next().await? {
-    ///     println!(&quot;{:?}&quot;, entry.metadata().await?);
+    ///     println!("{:?}", entry.metadata().await?);
     /// }
     /// # std::io::Result::Ok(()) });
     /// ```
@@ -2197,7 +2212,7 @@
     /// An error will be returned in the following situations:
     ///
     /// * This entry does not point to an existing file or directory anymore.
-    /// * The current process lacks permissions to read this entry&#39;s metadata.
+    /// * The current process lacks permissions to read this entry's metadata.
     /// * Some other I/O error occurred.
     ///
     /// # Examples
@@ -2206,10 +2221,10 @@
     /// use futures_lite::stream::StreamExt;
     ///
     /// # futures_lite::future::block_on(async {
-    /// let mut dir = async_fs::read_dir(&quot;.&quot;).await?;
+    /// let mut dir = async_fs::read_dir(".").await?;
     ///
     /// while let Some(entry) = dir.try_next().await? {
-    ///     println!(&quot;{:?}&quot;, entry.file_type().await?);
+    ///     println!("{:?}", entry.file_type().await?);
     /// }
     /// # std::io::Result::Ok(()) });
     /// ```
@@ -2226,10 +2241,10 @@
     /// use futures_lite::stream::StreamExt;
     ///
     /// # futures_lite::future::block_on(async {
-    /// let mut dir = async_fs::read_dir(&quot;.&quot;).await?;
+    /// let mut dir = async_fs::read_dir(".").await?;
     ///
     /// while let Some(entry) = dir.try_next().await? {
-    ///     println!(&quot;{}&quot;, entry.file_name().to_string_lossy());
+    ///     println!("{}", entry.file_name().to_string_lossy());
     /// }
     /// # std::io::Result::Ok(()) });
     /// ```
@@ -2239,8 +2254,8 @@
 }
 
 <span class="kw">impl </span>fmt::Debug <span class="kw">for </span>DirEntry {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
-        f.debug_tuple(<span class="string">&quot;DirEntry&quot;</span>).field(<span class="kw-2">&amp;</span><span class="self">self</span>.path()).finish()
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
+        f.debug_tuple(<span class="string">"DirEntry"</span>).field(<span class="kw-2">&amp;</span><span class="self">self</span>.path()).finish()
     }
 }
 
@@ -2270,12 +2285,12 @@
 ///
 /// ```no_run
 /// # futures_lite::future::block_on(async {
-/// let path = async_fs::read_link(&quot;a.txt&quot;).await?;
+/// let path = async_fs::read_link("a.txt").await?;
 /// # std::io::Result::Ok(()) });
 /// ```
 </span><span class="kw">pub async fn </span>read_link&lt;P: AsRef&lt;Path&gt;&gt;(path: P) -&gt; io::Result&lt;PathBuf&gt; {
     <span class="kw">let </span>path = path.as_ref().to_owned();
-    unblock(<span class="kw">move </span>|| std::fs::read_link(<span class="kw-2">&amp;</span>path)).<span class="kw">await
+    unblock(<span class="kw">move </span>|| std::fs::read_link(path)).<span class="kw">await
 </span>}
 
 <span class="doccomment">/// Reads the entire contents of a file as a string.
@@ -2299,12 +2314,12 @@
 ///
 /// ```no_run
 /// # futures_lite::future::block_on(async {
-/// let contents = async_fs::read_to_string(&quot;a.txt&quot;).await?;
+/// let contents = async_fs::read_to_string("a.txt").await?;
 /// # std::io::Result::Ok(()) });
 /// ```
 </span><span class="kw">pub async fn </span>read_to_string&lt;P: AsRef&lt;Path&gt;&gt;(path: P) -&gt; io::Result&lt;String&gt; {
     <span class="kw">let </span>path = path.as_ref().to_owned();
-    unblock(<span class="kw">move </span>|| std::fs::read_to_string(<span class="kw-2">&amp;</span>path)).<span class="kw">await
+    unblock(<span class="kw">move </span>|| std::fs::read_to_string(path)).<span class="kw">await
 </span>}
 
 <span class="doccomment">/// Removes an empty directory.
@@ -2324,12 +2339,12 @@
 ///
 /// ```no_run
 /// # futures_lite::future::block_on(async {
-/// async_fs::remove_dir(&quot;./some/directory&quot;).await?;
+/// async_fs::remove_dir("./some/directory").await?;
 /// # std::io::Result::Ok(()) });
 /// ```
 </span><span class="kw">pub async fn </span>remove_dir&lt;P: AsRef&lt;Path&gt;&gt;(path: P) -&gt; io::Result&lt;()&gt; {
     <span class="kw">let </span>path = path.as_ref().to_owned();
-    unblock(<span class="kw">move </span>|| std::fs::remove_dir(<span class="kw-2">&amp;</span>path)).<span class="kw">await
+    unblock(<span class="kw">move </span>|| std::fs::remove_dir(path)).<span class="kw">await
 </span>}
 
 <span class="doccomment">/// Removes a directory and all of its contents.
@@ -2338,7 +2353,7 @@
 ///
 /// An error will be returned in the following situations:
 ///
-/// * `path` is not an existing and empty directory.
+/// * `path` is not an existing directory.
 /// * The current process lacks permissions to remove the directory.
 /// * Some other I/O error occurred.
 ///
@@ -2346,12 +2361,12 @@
 ///
 /// ```no_run
 /// # futures_lite::future::block_on(async {
-/// async_fs::remove_dir_all(&quot;./some/directory&quot;).await?;
+/// async_fs::remove_dir_all("./some/directory").await?;
 /// # std::io::Result::Ok(()) });
 /// ```
 </span><span class="kw">pub async fn </span>remove_dir_all&lt;P: AsRef&lt;Path&gt;&gt;(path: P) -&gt; io::Result&lt;()&gt; {
     <span class="kw">let </span>path = path.as_ref().to_owned();
-    unblock(<span class="kw">move </span>|| std::fs::remove_dir_all(<span class="kw-2">&amp;</span>path)).<span class="kw">await
+    unblock(<span class="kw">move </span>|| std::fs::remove_dir_all(path)).<span class="kw">await
 </span>}
 
 <span class="doccomment">/// Removes a file.
@@ -2368,12 +2383,12 @@
 ///
 /// ```no_run
 /// # futures_lite::future::block_on(async {
-/// async_fs::remove_file(&quot;a.txt&quot;).await?;
+/// async_fs::remove_file("a.txt").await?;
 /// # std::io::Result::Ok(()) });
 /// ```
 </span><span class="kw">pub async fn </span>remove_file&lt;P: AsRef&lt;Path&gt;&gt;(path: P) -&gt; io::Result&lt;()&gt; {
     <span class="kw">let </span>path = path.as_ref().to_owned();
-    unblock(<span class="kw">move </span>|| std::fs::remove_file(<span class="kw-2">&amp;</span>path)).<span class="kw">await
+    unblock(<span class="kw">move </span>|| std::fs::remove_file(path)).<span class="kw">await
 </span>}
 
 <span class="doccomment">/// Renames a file or directory to a new location.
@@ -2394,7 +2409,7 @@
 ///
 /// ```no_run
 /// # futures_lite::future::block_on(async {
-/// async_fs::rename(&quot;a.txt&quot;, &quot;b.txt&quot;).await?;
+/// async_fs::rename("a.txt", "b.txt").await?;
 /// # std::io::Result::Ok(()) });
 /// ```
 </span><span class="kw">pub async fn </span>rename&lt;P: AsRef&lt;Path&gt;, Q: AsRef&lt;Path&gt;&gt;(src: P, dst: Q) -&gt; io::Result&lt;()&gt; {
@@ -2417,9 +2432,9 @@
 ///
 /// ```no_run
 /// # futures_lite::future::block_on(async {
-/// let mut perm = async_fs::metadata(&quot;a.txt&quot;).await?.permissions();
+/// let mut perm = async_fs::metadata("a.txt").await?.permissions();
 /// perm.set_readonly(true);
-/// async_fs::set_permissions(&quot;a.txt&quot;, perm).await?;
+/// async_fs::set_permissions("a.txt", perm).await?;
 /// # std::io::Result::Ok(()) });
 /// ```
 </span><span class="kw">pub async fn </span>set_permissions&lt;P: AsRef&lt;Path&gt;&gt;(path: P, perm: Permissions) -&gt; io::Result&lt;()&gt; {
@@ -2444,7 +2459,7 @@
 ///
 /// ```no_run
 /// # futures_lite::future::block_on(async {
-/// let perm = async_fs::symlink_metadata(&quot;a.txt&quot;).await?.permissions();
+/// let perm = async_fs::symlink_metadata("a.txt").await?.permissions();
 /// # std::io::Result::Ok(()) });
 /// ```
 </span><span class="kw">pub async fn </span>symlink_metadata&lt;P: AsRef&lt;Path&gt;&gt;(path: P) -&gt; io::Result&lt;Metadata&gt; {
@@ -2461,7 +2476,7 @@
 ///
 /// An error will be returned in the following situations:
 ///
-/// * The file&#39;s parent directory does not exist.
+/// * The file's parent directory does not exist.
 /// * The current process lacks permissions to write to the file.
 /// * Some other I/O error occurred.
 ///
@@ -2469,7 +2484,7 @@
 ///
 /// ```no_run
 /// # futures_lite::future::block_on(async {
-/// async_fs::write(&quot;a.txt&quot;, b&quot;Hello world!&quot;).await?;
+/// async_fs::write("a.txt", b"Hello world!").await?;
 /// # std::io::Result::Ok(()) });
 /// ```
 </span><span class="kw">pub async fn </span>write&lt;P: AsRef&lt;Path&gt;, C: AsRef&lt;[u8]&gt;&gt;(path: P, contents: C) -&gt; io::Result&lt;()&gt; {
@@ -2520,7 +2535,7 @@
     <span class="doccomment">/// Sets the option for recursive mode.
     ///
     /// When set to `true`, this option means all parent directories should be created recursively
-    /// if they don&#39;t exist. Parents are created with the same permissions as the final directory.
+    /// if they don't exist. Parents are created with the same permissions as the final directory.
     ///
     /// This option is initially set to `false`.
     ///
@@ -2557,7 +2572,7 @@
     /// # futures_lite::future::block_on(async {
     /// DirBuilder::new()
     ///     .recursive(true)
-    ///     .create(&quot;./some/directory&quot;)
+    ///     .create("./some/directory")
     ///     .await?;
     /// # std::io::Result::Ok(()) });
     /// ```
@@ -2608,9 +2623,9 @@
 /// use futures_lite::io::AsyncWriteExt;
 ///
 /// # futures_lite::future::block_on(async {
-/// let mut file = File::create(&quot;a.txt&quot;).await?;
+/// let mut file = File::create("a.txt").await?;
 ///
-/// file.write_all(b&quot;Hello, world!&quot;).await?;
+/// file.write_all(b"Hello, world!").await?;
 /// file.flush().await?;
 /// # std::io::Result::Ok(()) });
 /// ```
@@ -2622,7 +2637,7 @@
 /// use futures_lite::io::AsyncReadExt;
 ///
 /// # futures_lite::future::block_on(async {
-/// let mut file = File::open(&quot;a.txt&quot;).await?;
+/// let mut file = File::open("a.txt").await?;
 ///
 /// let mut contents = Vec::new();
 /// file.read_to_end(&amp;mut contents).await?;
@@ -2678,12 +2693,12 @@
     /// use async_fs::File;
     ///
     /// # futures_lite::future::block_on(async {
-    /// let file = File::open(&quot;a.txt&quot;).await?;
+    /// let file = File::open("a.txt").await?;
     /// # std::io::Result::Ok(()) });
     /// ```
     </span><span class="kw">pub async fn </span>open&lt;P: AsRef&lt;Path&gt;&gt;(path: P) -&gt; io::Result&lt;File&gt; {
         <span class="kw">let </span>path = path.as_ref().to_owned();
-        <span class="kw">let </span>file = unblock(<span class="kw">move </span>|| std::fs::File::open(<span class="kw-2">&amp;</span>path)).<span class="kw">await</span><span class="question-mark">?</span>;
+        <span class="kw">let </span>file = unblock(<span class="kw">move </span>|| std::fs::File::open(path)).<span class="kw">await</span><span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(File::new(file, <span class="bool-val">false</span>))
     }
 
@@ -2697,7 +2712,7 @@
     ///
     /// An error will be returned in the following situations:
     ///
-    /// * The file&#39;s parent directory does not exist.
+    /// * The file's parent directory does not exist.
     /// * The current process lacks permissions to write to the file.
     /// * Some other I/O error occurred.
     ///
@@ -2709,12 +2724,12 @@
     /// use async_fs::File;
     ///
     /// # futures_lite::future::block_on(async {
-    /// let file = File::create(&quot;a.txt&quot;).await?;
+    /// let file = File::create("a.txt").await?;
     /// # std::io::Result::Ok(()) });
     /// ```
     </span><span class="kw">pub async fn </span>create&lt;P: AsRef&lt;Path&gt;&gt;(path: P) -&gt; io::Result&lt;File&gt; {
         <span class="kw">let </span>path = path.as_ref().to_owned();
-        <span class="kw">let </span>file = unblock(<span class="kw">move </span>|| std::fs::File::create(<span class="kw-2">&amp;</span>path)).<span class="kw">await</span><span class="question-mark">?</span>;
+        <span class="kw">let </span>file = unblock(<span class="kw">move </span>|| std::fs::File::create(path)).<span class="kw">await</span><span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(File::new(file, <span class="bool-val">false</span>))
     }
 
@@ -2732,9 +2747,9 @@
     /// use futures_lite::io::AsyncWriteExt;
     ///
     /// # futures_lite::future::block_on(async {
-    /// let mut file = File::create(&quot;a.txt&quot;).await?;
+    /// let mut file = File::create("a.txt").await?;
     ///
-    /// file.write_all(b&quot;Hello, world!&quot;).await?;
+    /// file.write_all(b"Hello, world!").await?;
     /// file.sync_all().await?;
     /// # std::io::Result::Ok(()) });
     /// ```
@@ -2750,7 +2765,7 @@
     /// This is similar to [`sync_all()`][`File::sync_data()`], except that file metadata may not
     /// be synchronized.
     ///
-    /// This is intended for use cases that must synchronize the contents of the file, but don&#39;t
+    /// This is intended for use cases that must synchronize the contents of the file, but don't
     /// need the file metadata synchronized to disk.
     ///
     /// Note that some platforms may simply implement this in terms of
@@ -2763,9 +2778,9 @@
     /// use futures_lite::io::AsyncWriteExt;
     ///
     /// # futures_lite::future::block_on(async {
-    /// let mut file = File::create(&quot;a.txt&quot;).await?;
+    /// let mut file = File::create("a.txt").await?;
     ///
-    /// file.write_all(b&quot;Hello, world!&quot;).await?;
+    /// file.write_all(b"Hello, world!").await?;
     /// file.sync_data().await?;
     /// # std::io::Result::Ok(()) });
     /// ```
@@ -2782,7 +2797,7 @@
     /// greater than the current file size, then the file will be extended to `size` and have all
     /// intermediate data filled with zeros.
     ///
-    /// The file&#39;s cursor stays at the same position, even if the cursor ends up being past the end
+    /// The file's cursor stays at the same position, even if the cursor ends up being past the end
     /// of the file after this operation.
     ///
     /// # Examples
@@ -2791,7 +2806,7 @@
     /// use async_fs::File;
     ///
     /// # futures_lite::future::block_on(async {
-    /// let mut file = File::create(&quot;a.txt&quot;).await?;
+    /// let mut file = File::create("a.txt").await?;
     /// file.set_len(10).await?;
     /// # std::io::Result::Ok(()) });
     /// ```
@@ -2802,7 +2817,7 @@
         unblock(<span class="kw">move </span>|| file.set_len(size)).<span class="kw">await
     </span>}
 
-    <span class="doccomment">/// Reads the file&#39;s metadata.
+    <span class="doccomment">/// Reads the file's metadata.
     ///
     /// # Examples
     ///
@@ -2810,7 +2825,7 @@
     /// use async_fs::File;
     ///
     /// # futures_lite::future::block_on(async {
-    /// let file = File::open(&quot;a.txt&quot;).await?;
+    /// let file = File::open("a.txt").await?;
     /// let metadata = file.metadata().await?;
     /// # std::io::Result::Ok(()) });
     /// ```
@@ -2834,7 +2849,7 @@
     /// use async_fs::File;
     ///
     /// # futures_lite::future::block_on(async {
-    /// let file = File::create(&quot;a.txt&quot;).await?;
+    /// let file = File::create("a.txt").await?;
     ///
     /// let mut perms = file.metadata().await?.permissions();
     /// perms.set_readonly(true);
@@ -2854,7 +2869,7 @@
     ///
     /// After reading ends, if we decide to perform a write or a seek operation, the real file
     /// cursor must first be repositioned back to the correct logical position.
-    </span><span class="kw">fn </span>poll_reposition(<span class="kw-2">&amp;mut </span><span class="self">self</span>, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; Poll&lt;io::Result&lt;()&gt;&gt; {
+    </span><span class="kw">fn </span>poll_reposition(<span class="kw-2">&amp;mut </span><span class="self">self</span>, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">'_</span>&gt;) -&gt; Poll&lt;io::Result&lt;()&gt;&gt; {
         <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="prelude-val">Ok</span>(read_pos)) = <span class="self">self</span>.read_pos {
             <span class="macro">ready!</span>(Pin::new(<span class="self">self</span>.unblock.get_mut()).poll_seek(cx, SeekFrom::Start(read_pos)))<span class="question-mark">?</span>;
         }
@@ -2864,7 +2879,7 @@
 }
 
 <span class="kw">impl </span>fmt::Debug <span class="kw">for </span>File {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
         <span class="self">self</span>.file.fmt(f)
     }
 }
@@ -2872,20 +2887,6 @@
 <span class="kw">impl </span>From&lt;std::fs::File&gt; <span class="kw">for </span>File {
     <span class="kw">fn </span>from(inner: std::fs::File) -&gt; File {
         File::new(inner, <span class="bool-val">true</span>)
-    }
-}
-
-<span class="attr">#[cfg(unix)]
-</span><span class="kw">impl </span>std::os::unix::io::FromRawFd <span class="kw">for </span>File {
-    <span class="kw">unsafe fn </span>from_raw_fd(raw: std::os::unix::io::RawFd) -&gt; File {
-        File::from(std::fs::File::from_raw_fd(raw))
-    }
-}
-
-<span class="attr">#[cfg(windows)]
-</span><span class="kw">impl </span>std::os::windows::io::FromRawHandle <span class="kw">for </span>File {
-    <span class="kw">unsafe fn </span>from_raw_handle(raw: std::os::windows::io::RawHandle) -&gt; File {
-        File::from(std::fs::File::from_raw_handle(raw))
     }
 }
 
@@ -2903,30 +2904,30 @@
     }
 }
 
-<span class="attr">#[cfg(all(not(async_fs_no_io_safety), unix))]
+<span class="attr">#[cfg(unix)]
 </span><span class="kw">impl </span>From&lt;std::os::unix::io::OwnedFd&gt; <span class="kw">for </span>File {
     <span class="kw">fn </span>from(fd: std::os::unix::io::OwnedFd) -&gt; <span class="self">Self </span>{
         File::from(std::fs::File::from(fd))
     }
 }
 
-<span class="attr">#[cfg(all(not(async_fs_no_io_safety), windows))]
+<span class="attr">#[cfg(windows)]
 </span><span class="kw">impl </span>From&lt;std::os::windows::io::OwnedHandle&gt; <span class="kw">for </span>File {
     <span class="kw">fn </span>from(fd: std::os::windows::io::OwnedHandle) -&gt; <span class="self">Self </span>{
         File::from(std::fs::File::from(fd))
     }
 }
 
-<span class="attr">#[cfg(all(not(async_fs_no_io_safety), unix))]
+<span class="attr">#[cfg(unix)]
 </span><span class="kw">impl </span>std::os::unix::io::AsFd <span class="kw">for </span>File {
-    <span class="kw">fn </span>as_fd(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; std::os::unix::io::BorrowedFd&lt;<span class="lifetime">&#39;_</span>&gt; {
+    <span class="kw">fn </span>as_fd(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; std::os::unix::io::BorrowedFd&lt;<span class="lifetime">'_</span>&gt; {
         <span class="self">self</span>.file.as_fd()
     }
 }
 
-<span class="attr">#[cfg(all(not(async_fs_no_io_safety), windows))]
+<span class="attr">#[cfg(windows)]
 </span><span class="kw">impl </span>std::os::windows::io::AsHandle <span class="kw">for </span>File {
-    <span class="kw">fn </span>as_handle(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; std::os::windows::io::BorrowedHandle&lt;<span class="lifetime">&#39;_</span>&gt; {
+    <span class="kw">fn </span>as_handle(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; std::os::windows::io::BorrowedHandle&lt;<span class="lifetime">'_</span>&gt; {
         <span class="self">self</span>.file.as_handle()
     }
 }
@@ -2934,7 +2935,7 @@
 <span class="kw">impl </span>AsyncRead <span class="kw">for </span>File {
     <span class="kw">fn </span>poll_read(
         <span class="kw-2">mut </span><span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;,
-        cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;,
+        cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">'_</span>&gt;,
         buf: <span class="kw-2">&amp;mut </span>[u8],
     ) -&gt; Poll&lt;io::Result&lt;usize&gt;&gt; {
         <span class="comment">// Before reading begins, remember the current cursor position.
@@ -2957,7 +2958,7 @@
 <span class="kw">impl </span>AsyncWrite <span class="kw">for </span>File {
     <span class="kw">fn </span>poll_write(
         <span class="kw-2">mut </span><span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;,
-        cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;,
+        cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">'_</span>&gt;,
         buf: <span class="kw-2">&amp;</span>[u8],
     ) -&gt; Poll&lt;io::Result&lt;usize&gt;&gt; {
         <span class="macro">ready!</span>(<span class="self">self</span>.poll_reposition(cx))<span class="question-mark">?</span>;
@@ -2965,7 +2966,7 @@
         Pin::new(<span class="self">self</span>.unblock.get_mut()).poll_write(cx, buf)
     }
 
-    <span class="kw">fn </span>poll_flush(<span class="kw-2">mut </span><span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; Poll&lt;io::Result&lt;()&gt;&gt; {
+    <span class="kw">fn </span>poll_flush(<span class="kw-2">mut </span><span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">'_</span>&gt;) -&gt; Poll&lt;io::Result&lt;()&gt;&gt; {
         <span class="kw">if </span><span class="self">self</span>.is_dirty {
             <span class="macro">ready!</span>(Pin::new(<span class="self">self</span>.unblock.get_mut()).poll_flush(cx))<span class="question-mark">?</span>;
             <span class="self">self</span>.is_dirty = <span class="bool-val">false</span>;
@@ -2973,7 +2974,7 @@
         Poll::Ready(<span class="prelude-val">Ok</span>(()))
     }
 
-    <span class="kw">fn </span>poll_close(<span class="kw-2">mut </span><span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; Poll&lt;io::Result&lt;()&gt;&gt; {
+    <span class="kw">fn </span>poll_close(<span class="kw-2">mut </span><span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">'_</span>&gt;) -&gt; Poll&lt;io::Result&lt;()&gt;&gt; {
         Pin::new(<span class="self">self</span>.unblock.get_mut()).poll_close(cx)
     }
 }
@@ -2981,7 +2982,7 @@
 <span class="kw">impl </span>AsyncSeek <span class="kw">for </span>File {
     <span class="kw">fn </span>poll_seek(
         <span class="kw-2">mut </span><span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;,
-        cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;,
+        cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">'_</span>&gt;,
         pos: SeekFrom,
     ) -&gt; Poll&lt;io::Result&lt;u64&gt;&gt; {
         <span class="macro">ready!</span>(<span class="self">self</span>.poll_reposition(cx))<span class="question-mark">?</span>;
@@ -3023,7 +3024,7 @@
 /// moves the file cursor to the end of file before every write operation.
 ///
 /// It is also possible to [`truncate`][`OpenOptions::truncate()`] the file right after opening,
-/// to [`create`][`OpenOptions::create()`] a file if it doesn&#39;t exist yet, or to always create a
+/// to [`create`][`OpenOptions::create()`] a file if it doesn't exist yet, or to always create a
 /// new file with [`create_new`][`OpenOptions::create_new()`].
 ///
 /// # Examples
@@ -3036,12 +3037,12 @@
 /// # futures_lite::future::block_on(async {
 /// let file = OpenOptions::new()
 ///     .read(true)
-///     .open(&quot;a.txt&quot;)
+///     .open("a.txt")
 ///     .await?;
 /// # std::io::Result::Ok(()) });
 /// ```
 ///
-/// Open a file for both reading and writing, and create it if it doesn&#39;t exist yet:
+/// Open a file for both reading and writing, and create it if it doesn't exist yet:
 ///
 /// ```no_run
 /// use async_fs::OpenOptions;
@@ -3051,7 +3052,7 @@
 ///     .read(true)
 ///     .write(true)
 ///     .create(true)
-///     .open(&quot;a.txt&quot;)
+///     .open("a.txt")
 ///     .await?;
 /// # std::io::Result::Ok(()) });
 /// ```
@@ -3071,7 +3072,7 @@
     /// # futures_lite::future::block_on(async {
     /// let file = OpenOptions::new()
     ///     .read(true)
-    ///     .open(&quot;a.txt&quot;)
+    ///     .open("a.txt")
     ///     .await?;
     /// # std::io::Result::Ok(()) });
     /// ```
@@ -3091,7 +3092,7 @@
     /// # futures_lite::future::block_on(async {
     /// let file = OpenOptions::new()
     ///     .read(true)
-    ///     .open(&quot;a.txt&quot;)
+    ///     .open("a.txt")
     ///     .await?;
     /// # std::io::Result::Ok(()) });
     /// ```
@@ -3115,7 +3116,7 @@
     /// # futures_lite::future::block_on(async {
     /// let file = OpenOptions::new()
     ///     .write(true)
-    ///     .open(&quot;a.txt&quot;)
+    ///     .open("a.txt")
     ///     .await?;
     /// # std::io::Result::Ok(()) });
     /// ```
@@ -3137,7 +3138,7 @@
     /// # futures_lite::future::block_on(async {
     /// let file = OpenOptions::new()
     ///     .append(true)
-    ///     .open(&quot;a.txt&quot;)
+    ///     .open("a.txt")
     ///     .await?;
     /// # std::io::Result::Ok(()) });
     /// ```
@@ -3162,7 +3163,7 @@
     /// let file = OpenOptions::new()
     ///     .write(true)
     ///     .truncate(true)
-    ///     .open(&quot;a.txt&quot;)
+    ///     .open("a.txt")
     ///     .await?;
     /// # std::io::Result::Ok(()) });
     /// ```
@@ -3171,9 +3172,9 @@
         <span class="self">self
     </span>}
 
-    <span class="doccomment">/// Configures the option for creating a new file if it doesn&#39;t exist.
+    <span class="doccomment">/// Configures the option for creating a new file if it doesn't exist.
     ///
-    /// When set to `true`, this option means a new file will be created if it doesn&#39;t exist.
+    /// When set to `true`, this option means a new file will be created if it doesn't exist.
     ///
     /// The file must be opened in [`write`][`OpenOptions::write()`] or
     /// [`append`][`OpenOptions::append()`] mode for file creation to work.
@@ -3187,7 +3188,7 @@
     /// let file = OpenOptions::new()
     ///     .write(true)
     ///     .create(true)
-    ///     .open(&quot;a.txt&quot;)
+    ///     .open("a.txt")
     ///     .await?;
     /// # std::io::Result::Ok(()) });
     /// ```
@@ -3213,7 +3214,7 @@
     /// let file = OpenOptions::new()
     ///     .write(true)
     ///     .create_new(true)
-    ///     .open(&quot;a.txt&quot;)
+    ///     .open("a.txt")
     ///     .await?;
     /// # std::io::Result::Ok(()) });
     /// ```
@@ -3229,10 +3230,10 @@
     /// An error will be returned in the following situations:
     ///
     /// * The file does not exist and neither [`create`] nor [`create_new`] were set.
-    /// * The file&#39;s parent directory does not exist.
+    /// * The file's parent directory does not exist.
     /// * The current process lacks permissions to open the file in the configured mode.
     /// * The file already exists and [`create_new`] was set.
-    /// * Invalid combination of options was used, like [`truncate`] was set but [`write`] wasn&#39;t,
+    /// * Invalid combination of options was used, like [`truncate`] was set but [`write`] wasn't,
     ///   or none of [`read`], [`write`], and [`append`] modes was set.
     /// * An OS-level occurred, like too many files are open or the file name is too long.
     /// * Some other I/O error occurred.
@@ -3252,7 +3253,7 @@
     /// # futures_lite::future::block_on(async {
     /// let file = OpenOptions::new()
     ///     .read(true)
-    ///     .open(&quot;a.txt&quot;)
+    ///     .open("a.txt")
     ///     .await?;
     /// # std::io::Result::Ok(()) });
     /// ```
@@ -3313,9 +3314,20 @@
     </span>}
 }
 
+<span class="kw">mod </span>__private {
+    <span class="attr">#[doc(hidden)]
+    </span><span class="kw">pub trait </span>Sealed {}
+
+    <span class="kw">impl </span>Sealed <span class="kw">for </span><span class="kw">super</span>::OpenOptions {}
+    <span class="kw">impl </span>Sealed <span class="kw">for </span><span class="kw">super</span>::File {}
+    <span class="kw">impl </span>Sealed <span class="kw">for </span><span class="kw">super</span>::DirBuilder {}
+    <span class="kw">impl </span>Sealed <span class="kw">for </span><span class="kw">super</span>::DirEntry {}
+}
+
 <span class="doccomment">/// Unix-specific extensions.
 </span><span class="attr">#[cfg(unix)]
 </span><span class="kw">pub mod </span>unix {
+    <span class="kw">use </span><span class="kw">super</span>::__private::Sealed;
     <span class="kw">use super</span>::<span class="kw-2">*</span>;
 
     <span class="attr">#[doc(no_inline)]
@@ -3329,7 +3341,7 @@
     ///
     /// ```no_run
     /// # futures_lite::future::block_on(async {
-    /// async_fs::unix::symlink(&quot;a.txt&quot;, &quot;b.txt&quot;).await?;
+    /// async_fs::unix::symlink("a.txt", "b.txt").await?;
     /// # std::io::Result::Ok(()) });
     /// ```
     </span><span class="kw">pub async fn </span>symlink&lt;P: AsRef&lt;Path&gt;, Q: AsRef&lt;Path&gt;&gt;(src: P, dst: Q) -&gt; io::Result&lt;()&gt; {
@@ -3339,7 +3351,7 @@
     </span>}
 
     <span class="doccomment">/// Unix-specific extensions to [`DirBuilder`].
-    </span><span class="kw">pub trait </span>DirBuilderExt {
+    </span><span class="kw">pub trait </span>DirBuilderExt: Sealed {
         <span class="doccomment">/// Sets the mode to create new directories with.
         ///
         /// This option defaults to `0o777`.
@@ -3356,7 +3368,7 @@
     }
 
     <span class="doccomment">/// Unix-specific extension methods for [`DirEntry`].
-    </span><span class="kw">pub trait </span>DirEntryExt {
+    </span><span class="kw">pub trait </span>DirEntryExt: Sealed {
         <span class="doccomment">/// Returns the underlying `d_ino` field in the contained `dirent` structure.
         ///
         /// # Examples
@@ -3366,10 +3378,10 @@
         /// use futures_lite::stream::StreamExt;
         ///
         /// # futures_lite::future::block_on(async {
-        /// let mut entries = async_fs::read_dir(&quot;.&quot;).await?;
+        /// let mut entries = async_fs::read_dir(".").await?;
         ///
         /// while let Some(entry) = entries.try_next().await? {
-        ///     println!(&quot;{:?}: {}&quot;, entry.file_name(), entry.ino());
+        ///     println!("{:?}: {}", entry.file_name(), entry.ino());
         /// }
         /// # std::io::Result::Ok(()) });
         /// ```
@@ -3377,14 +3389,14 @@
     }
 
     <span class="doccomment">/// Unix-specific extensions to [`OpenOptions`].
-    </span><span class="kw">pub trait </span>OpenOptionsExt {
+    </span><span class="kw">pub trait </span>OpenOptionsExt: Sealed {
         <span class="doccomment">/// Sets the mode bits that a new file will be created with.
         ///
         /// If a new file is created as part of an [`OpenOptions::open()`] call then this
         /// specified `mode` will be used as the permission bits for the new file.
         ///
         /// If no `mode` is set, the default of `0o666` will be used.
-        /// The operating system masks out bits with the system&#39;s `umask`, to produce
+        /// The operating system masks out bits with the system's `umask`, to produce
         /// the final permissions.
         ///
         /// # Examples
@@ -3396,7 +3408,7 @@
         /// let mut options = OpenOptions::new();
         /// // Read/write permissions for owner and read permissions for others.
         /// options.mode(0o644);
-        /// let file = options.open(&quot;foo.txt&quot;).await?;
+        /// let file = options.open("foo.txt").await?;
         /// # std::io::Result::Ok(()) });
         /// ```
         </span><span class="kw">fn </span>mode(<span class="kw-2">&amp;mut </span><span class="self">self</span>, mode: u32) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self</span>;
@@ -3404,9 +3416,9 @@
         <span class="doccomment">/// Passes custom flags to the `flags` argument of `open`.
         ///
         /// The bits that define the access mode are masked out with `O_ACCMODE`, to
-        /// ensure they do not interfere with the access mode set by Rust&#39;s options.
+        /// ensure they do not interfere with the access mode set by Rust's options.
         ///
-        /// Custom flags can only set flags, not remove flags set by Rust&#39;s options.
+        /// Custom flags can only set flags, not remove flags set by Rust's options.
         /// This options overwrites any previously set custom flags.
         ///
         /// # Examples
@@ -3418,7 +3430,7 @@
         /// let mut options = OpenOptions::new();
         /// options.write(true);
         /// options.custom_flags(libc::O_NOFOLLOW);
-        /// let file = options.open(&quot;foo.txt&quot;).await?;
+        /// let file = options.open("foo.txt").await?;
         /// # std::io::Result::Ok(()) });
         /// ```
         </span><span class="kw">fn </span>custom_flags(<span class="kw-2">&amp;mut </span><span class="self">self</span>, flags: i32) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self</span>;
@@ -3428,6 +3440,7 @@
 <span class="doccomment">/// Windows-specific extensions.
 </span><span class="attr">#[cfg(windows)]
 </span><span class="kw">pub mod </span>windows {
+    <span class="kw">use </span><span class="kw">super</span>::__private::Sealed;
     <span class="kw">use super</span>::<span class="kw-2">*</span>;
 
     <span class="attr">#[doc(no_inline)]
@@ -3441,7 +3454,7 @@
     ///
     /// ```no_run
     /// # futures_lite::future::block_on(async {
-    /// async_fs::windows::symlink_dir(&quot;a&quot;, &quot;b&quot;).await?;
+    /// async_fs::windows::symlink_dir("a", "b").await?;
     /// # std::io::Result::Ok(()) });
     /// ```
     </span><span class="kw">pub async fn </span>symlink_dir&lt;P: AsRef&lt;Path&gt;, Q: AsRef&lt;Path&gt;&gt;(src: P, dst: Q) -&gt; io::Result&lt;()&gt; {
@@ -3458,7 +3471,7 @@
     ///
     /// ```no_run
     /// # futures_lite::future::block_on(async {
-    /// async_fs::windows::symlink_file(&quot;a.txt&quot;, &quot;b.txt&quot;).await?;
+    /// async_fs::windows::symlink_file("a.txt", "b.txt").await?;
     /// # std::io::Result::Ok(()) });
     /// ```
     </span><span class="kw">pub async fn </span>symlink_file&lt;P: AsRef&lt;Path&gt;, Q: AsRef&lt;Path&gt;&gt;(src: P, dst: Q) -&gt; io::Result&lt;()&gt; {
@@ -3468,7 +3481,7 @@
     </span>}
 
     <span class="doccomment">/// Windows-specific extensions to [`OpenOptions`].
-    </span><span class="kw">pub trait </span>OpenOptionsExt {
+    </span><span class="kw">pub trait </span>OpenOptionsExt: Sealed {
         <span class="doccomment">/// Overrides the `dwDesiredAccess` argument to the call to [`CreateFile`]
         /// with the specified value.
         ///
@@ -3485,7 +3498,7 @@
         /// # futures_lite::future::block_on(async {
         /// // Open without read and write permission, for example if you only need
         /// // to call `stat` on the file
-        /// let file = OpenOptions::new().access_mode(0).open(&quot;foo.txt&quot;).await?;
+        /// let file = OpenOptions::new().access_mode(0).open("foo.txt").await?;
         /// # std::io::Result::Ok(()) });
         /// ```
         ///
@@ -3513,7 +3526,7 @@
         /// let file = OpenOptions::new()
         ///     .write(true)
         ///     .share_mode(0)
-        ///     .open(&quot;foo.txt&quot;)
+        ///     .open("foo.txt")
         ///     .await?;
         /// # std::io::Result::Ok(()) });
         /// ```
@@ -3526,7 +3539,7 @@
         /// `attributes` and `security_qos_flags` to set the `dwFlagsAndAttributes`
         /// for [`CreateFile`]).
         ///
-        /// Custom flags can only set flags, not remove flags set by Rust&#39;s options.
+        /// Custom flags can only set flags, not remove flags set by Rust's options.
         /// This option overwrites any previously set custom flags.
         ///
         /// # Examples
@@ -3538,8 +3551,8 @@
         /// let file = OpenOptions::new()
         ///     .create(true)
         ///     .write(true)
-        ///     .custom_flags(winapi::um::winbase::FILE_FLAG_DELETE_ON_CLOSE)
-        ///     .open(&quot;foo.txt&quot;)
+        ///     .custom_flags(windows_sys::Win32::Storage::FileSystem::FILE_FLAG_DELETE_ON_CLOSE)
+        ///     .open("foo.txt")
         ///     .await?;
         /// # std::io::Result::Ok(()) });
         /// ```
@@ -3572,8 +3585,8 @@
         /// let file = OpenOptions::new()
         ///     .write(true)
         ///     .create(true)
-        ///     .attributes(winapi::um::winnt::FILE_ATTRIBUTE_HIDDEN)
-        ///     .open(&quot;foo.txt&quot;)
+        ///     .attributes(windows_sys::Win32::Storage::FileSystem::FILE_ATTRIBUTE_HIDDEN)
+        ///     .open("foo.txt")
         ///     .await?;
         /// # std::io::Result::Ok(()) });
         /// ```
@@ -3610,8 +3623,8 @@
         /// let file = OpenOptions::new()
         ///     .write(true)
         ///     .create(true)
-        ///     .security_qos_flags(winapi::um::winbase::SECURITY_IDENTIFICATION)
-        ///     .open(r&quot;\\.\pipe\MyPipe&quot;)
+        ///     .security_qos_flags(windows_sys::Win32::Storage::FileSystem::SECURITY_IDENTIFICATION)
+        ///     .open(r"\\.\pipe\MyPipe")
         ///     .await?;
         /// # std::io::Result::Ok(()) });
         /// ```

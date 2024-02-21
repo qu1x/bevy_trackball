@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/fixed-1.24.0/src/f128.rs`."><title>f128.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="fixed" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../fixed/index.html"><img src="data:image/svg+xml;base64,
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/fixed-1.25.1/src/f128.rs`."><title>f128.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="fixed" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><a class="sub-logo-container" href="../../fixed/index.html"><img src="data:image/svg+xml;base64,
 PHN2ZyB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgMzMuODY3IDMzLjg2NyIgeG1s
 bnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48Y2xpcFBhdGggaWQ9ImIiPjxjaXJjbGUgY3g9IjE2LjkzMyIg
 Y3k9IjI4MC4wNyIgcj0iMTYuOTMzIiBmaWxsPSIjMDA3MmIyIi8+PC9jbGlwUGF0aD48Y2xpcFBhdGggaWQ9ImEiPjxjaXJjbGUg
@@ -35,7 +36,7 @@ NTM3MnMxLjU0MDkgNS42MjE5IDMuODQzOSA1LjYyMTl6bTAtMS45MzA0Yy0wLjgyOTczIDAtMS40OTAx
 LjY5MTUgMC0yLjk0NjQgMC42NjA0LTMuNjA2OCAxLjQ5MDEtMy42MDY4IDAuODQ2NjcgMCAxLjQ5MDEgMC42NjA0IDEuNDkwMSAz
 LjYwNjggMCAyLjkyOTUtMC42NDM0NyAzLjY5MTUtMS40OTAxIDMuNjkxNXoiIGNsaXAtcGF0aD0idXJsKCNhKSIvPjwvZz48L2c+
 PC9zdmc+Cg==
-" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+" alt="fixed"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1865,7 +1866,7 @@ PC9zdmc+Cg==
     </span><span class="kw">pub const fn </span>clamp(<span class="kw-2">mut </span><span class="self">self</span>, min: F128, max: F128) -&gt; F128 {
         <span class="kw">match </span>partial_cmp(<span class="kw-2">&amp;</span>min, <span class="kw-2">&amp;</span>max) {
             <span class="prelude-val">Some</span>(Ordering::Less | Ordering::Equal) =&gt; {}
-            <span class="kw">_ </span>=&gt; <span class="macro">panic!</span>(<span class="string">&quot;need min &lt;= max&quot;</span>),
+            <span class="kw">_ </span>=&gt; <span class="macro">panic!</span>(<span class="string">"need min &lt;= max"</span>),
         }
         <span class="kw">if </span><span class="macro">matches!</span>(partial_cmp(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">&amp;</span>min), <span class="prelude-val">Some</span>(Ordering::Less)) {
             <span class="self">self </span>= min;
@@ -2079,24 +2080,24 @@ fn decimal_string(val: &amp;Float, prec: i32) -&gt; String {
     let shift = u32::try_from(prec - 1 - floor_log10).unwrap();
     let val = val.clone() * Integer::from(Integer::u_pow_u(10, shift));
     let int = val.to_integer_round(Round::Down).unwrap().0;
-    let padding = &quot;0&quot;.repeat(usize::try_from(-floor_log10.min(0)).unwrap());
-    let mut s = format!(&quot;{padding}{int}&quot;);
-    s.insert(1, &#39;.&#39;);
+    let padding = "0".repeat(usize::try_from(-floor_log10.min(0)).unwrap());
+    let mut s = format!("{padding}{int}");
+    s.insert(1, '.');
     s
 }
 
 fn hex_bits(bits: u128) -&gt; String {
-    let mut s = format!(&quot;0x{bits:016X}&quot;);
+    let mut s = format!("0x{bits:016X}");
     for i in 0..7 {
-        s.insert(6 + 5 * i, &#39;_&#39;);
+        s.insert(6 + 5 * i, '_');
     }
     s
 }
 
 fn print(doc: &amp;str, name: &amp;str, val: Float) {
     println!();
-    println!(&quot;    /// {} = {}…&quot;, doc, decimal_string(&amp;val, 6));
-    println!(&quot;    // {} = {}...&quot;, name, decimal_string(&amp;val, 40));
+    println!("    /// {} = {}…", doc, decimal_string(&amp;val, 6));
+    println!("    // {} = {}...", name, decimal_string(&amp;val, 40));
     let round = Float::with_val(113, &amp;val);
 
     let sign_bit = if round.is_sign_negative() {
@@ -2116,7 +2117,7 @@ fn print(doc: &amp;str, name: &amp;str, val: Float) {
     let mant_bits = mant_128 &amp; ((1 &lt;&lt; 112) - 1);
 
     println!(
-        &quot;    pub const {name}: F128 = F128::from_bits({});&quot;,
+        "    pub const {name}: F128 = F128::from_bits({});",
         hex_bits(sign_bit | exp_bits | mant_bits)
     );
 }
@@ -2129,29 +2130,29 @@ where
 }
 
 fn main() {
-    println!(&quot;/// Basic mathematical constants.&quot;);
-    println!(&quot;pub mod consts {{&quot;);
-    println!(&quot;    use crate::F128;&quot;);
-    print(&quot;Archimedes’ constant, π&quot;, &quot;PI&quot;, float(Constant::Pi));
-    print(&quot;A turn, τ&quot;, &quot;TAU&quot;, float(Constant::Pi) * 2);
-    print(&quot;π/2&quot;, &quot;FRAC_PI_2&quot;, float(Constant::Pi) / 2);
-    print(&quot;π/3&quot;, &quot;FRAC_PI_3&quot;, float(Constant::Pi) / 3);
-    print(&quot;π/4&quot;, &quot;FRAC_PI_4&quot;, float(Constant::Pi) / 4);
-    print(&quot;π/6&quot;, &quot;FRAC_PI_6&quot;, float(Constant::Pi) / 6);
-    print(&quot;π/8&quot;, &quot;FRAC_PI_8&quot;, float(Constant::Pi) / 8);
-    print(&quot;1/π&quot;, &quot;FRAC_1_PI&quot;, 1 / float(Constant::Pi));
-    print(&quot;2/π&quot;, &quot;FRAC_2_PI&quot;, 2 / float(Constant::Pi));
-    print(&quot;2/√π&quot;, &quot;FRAC_2_SQRT_PI&quot;, 2 / float(Constant::Pi).sqrt());
-    print(&quot;√2&quot;, &quot;SQRT_2&quot;, float(2).sqrt());
-    print(&quot;1/√2&quot;, &quot;FRAC_1_SQRT_2&quot;, float(0.5).sqrt());
-    print(&quot;Euler’s number, e&quot;, &quot;E&quot;, float(1).exp());
-    print(&quot;log&lt;sub&gt;2&lt;/sub&gt; 10&quot;, &quot;LOG2_10&quot;, float(10).log2());
-    print(&quot;log&lt;sub&gt;2&lt;/sub&gt; e&quot;, &quot;LOG2_E&quot;, float(1).exp().log2());
-    print(&quot;log&lt;sub&gt;10&lt;/sub&gt; 2&quot;, &quot;LOG10_2&quot;, float(2).log10());
-    print(&quot;log&lt;sub&gt;10&lt;/sub&gt; e&quot;, &quot;LOG10_E&quot;, float(1).exp().log10());
-    print(&quot;ln 2&quot;, &quot;LN_2&quot;, float(2).ln());
-    print(&quot;ln 10&quot;, &quot;LN_10&quot;, float(10).ln());
-    println!(&quot;}}&quot;);
+    println!("/// Basic mathematical constants.");
+    println!("pub mod consts {{");
+    println!("    use crate::F128;");
+    print("Archimedes’ constant, π", "PI", float(Constant::Pi));
+    print("A turn, τ", "TAU", float(Constant::Pi) * 2);
+    print("π/2", "FRAC_PI_2", float(Constant::Pi) / 2);
+    print("π/3", "FRAC_PI_3", float(Constant::Pi) / 3);
+    print("π/4", "FRAC_PI_4", float(Constant::Pi) / 4);
+    print("π/6", "FRAC_PI_6", float(Constant::Pi) / 6);
+    print("π/8", "FRAC_PI_8", float(Constant::Pi) / 8);
+    print("1/π", "FRAC_1_PI", 1 / float(Constant::Pi));
+    print("2/π", "FRAC_2_PI", 2 / float(Constant::Pi));
+    print("2/√π", "FRAC_2_SQRT_PI", 2 / float(Constant::Pi).sqrt());
+    print("√2", "SQRT_2", float(2).sqrt());
+    print("1/√2", "FRAC_1_SQRT_2", float(0.5).sqrt());
+    print("Euler’s number, e", "E", float(1).exp());
+    print("log&lt;sub&gt;2&lt;/sub&gt; 10", "LOG2_10", float(10).log2());
+    print("log&lt;sub&gt;2&lt;/sub&gt; e", "LOG2_E", float(1).exp().log2());
+    print("log&lt;sub&gt;10&lt;/sub&gt; 2", "LOG10_2", float(2).log10());
+    print("log&lt;sub&gt;10&lt;/sub&gt; e", "LOG10_E", float(1).exp().log10());
+    print("ln 2", "LN_2", float(2).ln());
+    print("ln 10", "LN_10", float(10).ln());
+    println!("}}");
 }
 ```
 */

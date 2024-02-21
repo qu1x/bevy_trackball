@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ron-0.8.1/src/value.rs`."><title>value.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="ron" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../ron/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ron-0.8.1/src/value.rs`."><title>value.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="ron" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -745,7 +746,7 @@
 
 <span class="kw">impl </span>IndexMut&lt;<span class="kw-2">&amp;</span>Value&gt; <span class="kw">for </span>Map {
     <span class="kw">fn </span>index_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>, index: <span class="kw-2">&amp;</span>Value) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Output {
-        <span class="self">self</span>.<span class="number">0</span>.get_mut(index).expect(<span class="string">&quot;no entry found for key&quot;</span>)
+        <span class="self">self</span>.<span class="number">0</span>.get_mut(index).expect(<span class="string">"no entry found for key"</span>)
     }
 }
 
@@ -768,9 +769,9 @@
     }
 }
 
-<span class="attr">#[cfg(not(feature = <span class="string">&quot;indexmap&quot;</span>))]
+<span class="attr">#[cfg(not(feature = <span class="string">"indexmap"</span>))]
 </span><span class="kw">type </span>MapInner = std::collections::BTreeMap&lt;Value, Value&gt;;
-<span class="attr">#[cfg(feature = <span class="string">&quot;indexmap&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"indexmap"</span>)]
 </span><span class="kw">type </span>MapInner = indexmap::IndexMap&lt;Value, Value&gt;;
 
 <span class="doccomment">/// A wrapper for a number, which can be either [`f64`] or [`i64`].
@@ -955,7 +956,7 @@
 /// See the [`PartialEq`] implementation.
 </span><span class="kw">impl </span>Ord <span class="kw">for </span>Float {
     <span class="kw">fn </span>cmp(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; Ordering {
-        <span class="self">self</span>.partial_cmp(other).expect(<span class="string">&quot;Bug: Contract violation&quot;</span>)
+        <span class="self">self</span>.partial_cmp(other).expect(<span class="string">"Bug: Contract violation"</span>)
     }
 }
 
@@ -983,7 +984,7 @@
 
 <span class="doccomment">/// Deserializer implementation for RON [`Value`].
 /// This does not support enums (because [`Value`] does not store them).
-</span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;de</span>&gt; Deserializer&lt;<span class="lifetime">&#39;de</span>&gt; <span class="kw">for </span>Value {
+</span><span class="kw">impl</span>&lt;<span class="lifetime">'de</span>&gt; Deserializer&lt;<span class="lifetime">'de</span>&gt; <span class="kw">for </span>Value {
     <span class="kw">type </span>Error = Error;
 
     <span class="macro">forward_to_deserialize_any! </span>{
@@ -994,7 +995,7 @@
 
     <span class="kw">fn </span>deserialize_any&lt;V&gt;(<span class="self">self</span>, visitor: V) -&gt; <span class="prelude-ty">Result</span>&lt;V::Value&gt;
     <span class="kw">where
-        </span>V: Visitor&lt;<span class="lifetime">&#39;de</span>&gt;,
+        </span>V: Visitor&lt;<span class="lifetime">'de</span>&gt;,
     {
         <span class="kw">match </span><span class="self">self </span>{
             Value::Bool(b) =&gt; visitor.visit_bool(b),
@@ -1014,7 +1015,7 @@
                     <span class="prelude-val">Ok</span>(value)
                 } <span class="kw">else </span>{
                     <span class="prelude-val">Err</span>(Error::ExpectedDifferentLength {
-                        expected: <span class="macro">format!</span>(<span class="string">&quot;a map of length {}&quot;</span>, old_len - items.len()),
+                        expected: <span class="macro">format!</span>(<span class="string">"a map of length {}"</span>, old_len - items.len()),
                         found: old_len,
                     })
                 }
@@ -1034,7 +1035,7 @@
                     <span class="prelude-val">Ok</span>(value)
                 } <span class="kw">else </span>{
                     <span class="prelude-val">Err</span>(Error::ExpectedDifferentLength {
-                        expected: <span class="macro">format!</span>(<span class="string">&quot;a sequence of length {}&quot;</span>, old_len - seq.len()),
+                        expected: <span class="macro">format!</span>(<span class="string">"a sequence of length {}"</span>, old_len - seq.len()),
                         found: old_len,
                     })
                 }
@@ -1045,78 +1046,78 @@
 
     <span class="kw">fn </span>deserialize_i8&lt;V&gt;(<span class="self">self</span>, visitor: V) -&gt; <span class="prelude-ty">Result</span>&lt;V::Value&gt;
     <span class="kw">where
-        </span>V: Visitor&lt;<span class="lifetime">&#39;de</span>&gt;,
+        </span>V: Visitor&lt;<span class="lifetime">'de</span>&gt;,
     {
         <span class="self">self</span>.deserialize_i64(visitor)
     }
 
     <span class="kw">fn </span>deserialize_i16&lt;V&gt;(<span class="self">self</span>, visitor: V) -&gt; <span class="prelude-ty">Result</span>&lt;V::Value&gt;
     <span class="kw">where
-        </span>V: Visitor&lt;<span class="lifetime">&#39;de</span>&gt;,
+        </span>V: Visitor&lt;<span class="lifetime">'de</span>&gt;,
     {
         <span class="self">self</span>.deserialize_i64(visitor)
     }
 
     <span class="kw">fn </span>deserialize_i32&lt;V&gt;(<span class="self">self</span>, visitor: V) -&gt; <span class="prelude-ty">Result</span>&lt;V::Value&gt;
     <span class="kw">where
-        </span>V: Visitor&lt;<span class="lifetime">&#39;de</span>&gt;,
+        </span>V: Visitor&lt;<span class="lifetime">'de</span>&gt;,
     {
         <span class="self">self</span>.deserialize_i64(visitor)
     }
 
     <span class="kw">fn </span>deserialize_i64&lt;V&gt;(<span class="self">self</span>, visitor: V) -&gt; <span class="prelude-ty">Result</span>&lt;V::Value&gt;
     <span class="kw">where
-        </span>V: Visitor&lt;<span class="lifetime">&#39;de</span>&gt;,
+        </span>V: Visitor&lt;<span class="lifetime">'de</span>&gt;,
     {
         <span class="kw">match </span><span class="self">self </span>{
             Value::Number(Number::Integer(i)) =&gt; visitor.visit_i64(i),
-            v =&gt; <span class="prelude-val">Err</span>(Error::Message(<span class="macro">format!</span>(<span class="string">&quot;Expected a number, got {:?}&quot;</span>, v))),
+            v =&gt; <span class="prelude-val">Err</span>(Error::Message(<span class="macro">format!</span>(<span class="string">"Expected a number, got {:?}"</span>, v))),
         }
     }
 
     <span class="kw">fn </span>deserialize_u8&lt;V&gt;(<span class="self">self</span>, visitor: V) -&gt; <span class="prelude-ty">Result</span>&lt;V::Value&gt;
     <span class="kw">where
-        </span>V: Visitor&lt;<span class="lifetime">&#39;de</span>&gt;,
+        </span>V: Visitor&lt;<span class="lifetime">'de</span>&gt;,
     {
         <span class="self">self</span>.deserialize_u64(visitor)
     }
 
     <span class="kw">fn </span>deserialize_u16&lt;V&gt;(<span class="self">self</span>, visitor: V) -&gt; <span class="prelude-ty">Result</span>&lt;V::Value&gt;
     <span class="kw">where
-        </span>V: Visitor&lt;<span class="lifetime">&#39;de</span>&gt;,
+        </span>V: Visitor&lt;<span class="lifetime">'de</span>&gt;,
     {
         <span class="self">self</span>.deserialize_u64(visitor)
     }
 
     <span class="kw">fn </span>deserialize_u32&lt;V&gt;(<span class="self">self</span>, visitor: V) -&gt; <span class="prelude-ty">Result</span>&lt;V::Value&gt;
     <span class="kw">where
-        </span>V: Visitor&lt;<span class="lifetime">&#39;de</span>&gt;,
+        </span>V: Visitor&lt;<span class="lifetime">'de</span>&gt;,
     {
         <span class="self">self</span>.deserialize_u64(visitor)
     }
 
     <span class="kw">fn </span>deserialize_u64&lt;V&gt;(<span class="self">self</span>, visitor: V) -&gt; <span class="prelude-ty">Result</span>&lt;V::Value&gt;
     <span class="kw">where
-        </span>V: Visitor&lt;<span class="lifetime">&#39;de</span>&gt;,
+        </span>V: Visitor&lt;<span class="lifetime">'de</span>&gt;,
     {
         <span class="kw">match </span><span class="self">self </span>{
             Value::Number(Number::Integer(i)) =&gt; visitor.visit_u64(i <span class="kw">as </span>u64),
-            v =&gt; <span class="prelude-val">Err</span>(Error::Message(<span class="macro">format!</span>(<span class="string">&quot;Expected a number, got {:?}&quot;</span>, v))),
+            v =&gt; <span class="prelude-val">Err</span>(Error::Message(<span class="macro">format!</span>(<span class="string">"Expected a number, got {:?}"</span>, v))),
         }
     }
 }
 
-<span class="kw">struct </span>MapAccessor&lt;<span class="lifetime">&#39;a</span>&gt; {
-    items: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>Vec&lt;(Value, Value)&gt;,
+<span class="kw">struct </span>MapAccessor&lt;<span class="lifetime">'a</span>&gt; {
+    items: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>Vec&lt;(Value, Value)&gt;,
     value: <span class="prelude-ty">Option</span>&lt;Value&gt;,
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;de</span>&gt; MapAccess&lt;<span class="lifetime">&#39;de</span>&gt; <span class="kw">for </span>MapAccessor&lt;<span class="lifetime">&#39;a</span>&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, <span class="lifetime">'de</span>&gt; MapAccess&lt;<span class="lifetime">'de</span>&gt; <span class="kw">for </span>MapAccessor&lt;<span class="lifetime">'a</span>&gt; {
     <span class="kw">type </span>Error = Error;
 
     <span class="kw">fn </span>next_key_seed&lt;K&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, seed: K) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;K::Value&gt;&gt;
     <span class="kw">where
-        </span>K: DeserializeSeed&lt;<span class="lifetime">&#39;de</span>&gt;,
+        </span>K: DeserializeSeed&lt;<span class="lifetime">'de</span>&gt;,
     {
         <span class="comment">// The `Vec` is reversed, so we can pop to get the originally first element
         </span><span class="kw">match </span><span class="self">self</span>.items.pop() {
@@ -1130,11 +1131,11 @@
 
     <span class="kw">fn </span>next_value_seed&lt;V&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, seed: V) -&gt; <span class="prelude-ty">Result</span>&lt;V::Value&gt;
     <span class="kw">where
-        </span>V: DeserializeSeed&lt;<span class="lifetime">&#39;de</span>&gt;,
+        </span>V: DeserializeSeed&lt;<span class="lifetime">'de</span>&gt;,
     {
         <span class="kw">match </span><span class="self">self</span>.value.take() {
             <span class="prelude-val">Some</span>(value) =&gt; seed.deserialize(value),
-            <span class="prelude-val">None </span>=&gt; <span class="macro">panic!</span>(<span class="string">&quot;Contract violation: value before key&quot;</span>),
+            <span class="prelude-val">None </span>=&gt; <span class="macro">panic!</span>(<span class="string">"Contract violation: value before key"</span>),
         }
     }
 
@@ -1143,16 +1144,16 @@
     }
 }
 
-<span class="kw">struct </span>Seq&lt;<span class="lifetime">&#39;a</span>&gt; {
-    seq: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>Vec&lt;Value&gt;,
+<span class="kw">struct </span>Seq&lt;<span class="lifetime">'a</span>&gt; {
+    seq: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>Vec&lt;Value&gt;,
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;de</span>&gt; SeqAccess&lt;<span class="lifetime">&#39;de</span>&gt; <span class="kw">for </span>Seq&lt;<span class="lifetime">&#39;a</span>&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, <span class="lifetime">'de</span>&gt; SeqAccess&lt;<span class="lifetime">'de</span>&gt; <span class="kw">for </span>Seq&lt;<span class="lifetime">'a</span>&gt; {
     <span class="kw">type </span>Error = Error;
 
     <span class="kw">fn </span>next_element_seed&lt;T&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, seed: T) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;T::Value&gt;&gt;
     <span class="kw">where
-        </span>T: DeserializeSeed&lt;<span class="lifetime">&#39;de</span>&gt;,
+        </span>T: DeserializeSeed&lt;<span class="lifetime">'de</span>&gt;,
     {
         <span class="comment">// The `Vec` is reversed, so we can pop to get the originally first element
         </span><span class="self">self</span>.seq
@@ -1173,9 +1174,9 @@
 
     <span class="kw">use super</span>::<span class="kw-2">*</span>;
 
-    <span class="kw">fn </span>assert_same&lt;<span class="lifetime">&#39;de</span>, T&gt;(s: <span class="kw-2">&amp;</span><span class="lifetime">&#39;de </span>str)
+    <span class="kw">fn </span>assert_same&lt;<span class="lifetime">'de</span>, T&gt;(s: <span class="kw-2">&amp;</span><span class="lifetime">'de </span>str)
     <span class="kw">where
-        </span>T: Debug + Deserialize&lt;<span class="lifetime">&#39;de</span>&gt; + PartialEq,
+        </span>T: Debug + Deserialize&lt;<span class="lifetime">'de</span>&gt; + PartialEq,
     {
         <span class="kw">use </span><span class="kw">crate</span>::de::from_str;
 
@@ -1183,57 +1184,57 @@
         <span class="kw">let </span>value: Value = from_str(s).unwrap();
         <span class="kw">let </span>value = T::deserialize(value).unwrap();
 
-        <span class="macro">assert_eq!</span>(direct, value, <span class="string">&quot;Deserialization for {:?} is not the same&quot;</span>, s);
+        <span class="macro">assert_eq!</span>(direct, value, <span class="string">"Deserialization for {:?} is not the same"</span>, s);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>boolean() {
-        assert_same::&lt;bool&gt;(<span class="string">&quot;true&quot;</span>);
-        assert_same::&lt;bool&gt;(<span class="string">&quot;false&quot;</span>);
+        assert_same::&lt;bool&gt;(<span class="string">"true"</span>);
+        assert_same::&lt;bool&gt;(<span class="string">"false"</span>);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>float() {
-        assert_same::&lt;f64&gt;(<span class="string">&quot;0.123&quot;</span>);
-        assert_same::&lt;f64&gt;(<span class="string">&quot;-4.19&quot;</span>);
+        assert_same::&lt;f64&gt;(<span class="string">"0.123"</span>);
+        assert_same::&lt;f64&gt;(<span class="string">"-4.19"</span>);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>int() {
-        assert_same::&lt;u32&gt;(<span class="string">&quot;626&quot;</span>);
-        assert_same::&lt;i32&gt;(<span class="string">&quot;-50&quot;</span>);
+        assert_same::&lt;u32&gt;(<span class="string">"626"</span>);
+        assert_same::&lt;i32&gt;(<span class="string">"-50"</span>);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>char() {
-        assert_same::&lt;char&gt;(<span class="string">&quot;&#39;4&#39;&quot;</span>);
-        assert_same::&lt;char&gt;(<span class="string">&quot;&#39;c&#39;&quot;</span>);
+        assert_same::&lt;char&gt;(<span class="string">"'4'"</span>);
+        assert_same::&lt;char&gt;(<span class="string">"'c'"</span>);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>map() {
         assert_same::&lt;BTreeMap&lt;char, String&gt;&gt;(
-            <span class="string">&quot;{
-&#39;a&#39;: \&quot;Hello\&quot;,
-&#39;b&#39;: \&quot;Bye\&quot;,
-        }&quot;</span>,
+            <span class="string">"{
+'a': \"Hello\",
+'b': \"Bye\",
+        }"</span>,
         );
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>option() {
-        assert_same::&lt;<span class="prelude-ty">Option</span>&lt;char&gt;&gt;(<span class="string">&quot;Some(&#39;a&#39;)&quot;</span>);
-        assert_same::&lt;<span class="prelude-ty">Option</span>&lt;char&gt;&gt;(<span class="string">&quot;None&quot;</span>);
+        assert_same::&lt;<span class="prelude-ty">Option</span>&lt;char&gt;&gt;(<span class="string">"Some('a')"</span>);
+        assert_same::&lt;<span class="prelude-ty">Option</span>&lt;char&gt;&gt;(<span class="string">"None"</span>);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>seq() {
-        assert_same::&lt;Vec&lt;f64&gt;&gt;(<span class="string">&quot;[1.0, 2.0, 3.0, 4.0]&quot;</span>);
+        assert_same::&lt;Vec&lt;f64&gt;&gt;(<span class="string">"[1.0, 2.0, 3.0, 4.0]"</span>);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>unit() {
-        assert_same::&lt;()&gt;(<span class="string">&quot;()&quot;</span>);
+        assert_same::&lt;()&gt;(<span class="string">"()"</span>);
     }
 }
 </code></pre></div></section></main></body></html>

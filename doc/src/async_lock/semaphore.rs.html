@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/async-lock-3.2.0/src/semaphore.rs`."><title>semaphore.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="async_lock" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/smol-rs/smol/master/assets/images/logo_fullsize_transparent.png"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../async_lock/index.html"><img src="https://raw.githubusercontent.com/smol-rs/smol/master/assets/images/logo_fullsize_transparent.png" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/async-lock-3.3.0/src/semaphore.rs`."><title>semaphore.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="async_lock" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/smol-rs/smol/master/assets/images/logo_fullsize_transparent.png"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><a class="sub-logo-container" href="../../async_lock/index.html"><img src="https://raw.githubusercontent.com/smol-rs/smol/master/assets/images/logo_fullsize_transparent.png" alt="async_lock"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -355,7 +356,30 @@
 <a href="#355" id="355">355</a>
 <a href="#356" id="356">356</a>
 <a href="#357" id="357">357</a>
+<a href="#358" id="358">358</a>
+<a href="#359" id="359">359</a>
+<a href="#360" id="360">360</a>
+<a href="#361" id="361">361</a>
+<a href="#362" id="362">362</a>
+<a href="#363" id="363">363</a>
+<a href="#364" id="364">364</a>
+<a href="#365" id="365">365</a>
+<a href="#366" id="366">366</a>
+<a href="#367" id="367">367</a>
+<a href="#368" id="368">368</a>
+<a href="#369" id="369">369</a>
+<a href="#370" id="370">370</a>
+<a href="#371" id="371">371</a>
+<a href="#372" id="372">372</a>
+<a href="#373" id="373">373</a>
+<a href="#374" id="374">374</a>
+<a href="#375" id="375">375</a>
+<a href="#376" id="376">376</a>
+<a href="#377" id="377">377</a>
+<a href="#378" id="378">378</a>
+<a href="#379" id="379">379</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>core::fmt;
+<span class="kw">use </span>core::mem;
 <span class="kw">use </span>core::pin::Pin;
 <span class="kw">use </span>core::sync::atomic::{AtomicUsize, Ordering};
 <span class="kw">use </span>core::task::Poll;
@@ -408,7 +432,7 @@
     /// drop(g2);
     /// assert!(s.try_acquire().is_some());
     /// ```
-    </span><span class="kw">pub fn </span>try_acquire(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;SemaphoreGuard&lt;<span class="lifetime">&#39;_</span>&gt;&gt; {
+    </span><span class="kw">pub fn </span>try_acquire(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;SemaphoreGuard&lt;<span class="lifetime">'_</span>&gt;&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>count = <span class="self">self</span>.count.load(Ordering::Acquire);
         <span class="kw">loop </span>{
             <span class="kw">if </span>count == <span class="number">0 </span>{
@@ -441,7 +465,7 @@
     /// let guard = s.acquire().await;
     /// # });
     /// ```
-    </span><span class="kw">pub fn </span>acquire(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Acquire&lt;<span class="lifetime">&#39;_</span>&gt; {
+    </span><span class="kw">pub fn </span>acquire(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Acquire&lt;<span class="lifetime">'_</span>&gt; {
         Acquire::_new(AcquireInner {
             semaphore: <span class="self">self</span>,
             listener: EventListener::new(),
@@ -469,9 +493,9 @@
     /// let s = Semaphore::new(2);
     /// let guard = s.acquire_blocking();
     /// ```
-    </span><span class="attr">#[cfg(all(feature = <span class="string">&quot;std&quot;</span>, not(target_family = <span class="string">&quot;wasm&quot;</span>)))]
+    </span><span class="attr">#[cfg(all(feature = <span class="string">"std"</span>, not(target_family = <span class="string">"wasm"</span>)))]
     #[inline]
-    </span><span class="kw">pub fn </span>acquire_blocking(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; SemaphoreGuard&lt;<span class="lifetime">&#39;_</span>&gt; {
+    </span><span class="kw">pub fn </span>acquire_blocking(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; SemaphoreGuard&lt;<span class="lifetime">'_</span>&gt; {
         <span class="self">self</span>.acquire().wait()
     }
 
@@ -508,7 +532,7 @@
                 Ordering::AcqRel,
                 Ordering::Acquire,
             ) {
-                <span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; <span class="kw">return </span><span class="prelude-val">Some</span>(SemaphoreGuardArc(<span class="self">self</span>.clone())),
+                <span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; <span class="kw">return </span><span class="prelude-val">Some</span>(SemaphoreGuardArc(<span class="prelude-val">Some</span>(<span class="self">self</span>.clone()))),
                 <span class="prelude-val">Err</span>(c) =&gt; count = c,
             }
         }
@@ -558,7 +582,7 @@
     /// let s = Arc::new(Semaphore::new(2));
     /// let guard = s.acquire_arc_blocking();
     /// ```
-    </span><span class="attr">#[cfg(all(feature = <span class="string">&quot;std&quot;</span>, not(target_family = <span class="string">&quot;wasm&quot;</span>)))]
+    </span><span class="attr">#[cfg(all(feature = <span class="string">"std"</span>, not(target_family = <span class="string">"wasm"</span>)))]
     #[inline]
     </span><span class="kw">pub fn </span>acquire_arc_blocking(<span class="self">self</span>: <span class="kw-2">&amp;</span>Arc&lt;<span class="self">Self</span>&gt;) -&gt; SemaphoreGuardArc {
         <span class="self">self</span>.acquire_arc().wait()
@@ -591,15 +615,15 @@
 
 <span class="macro">easy_wrapper! </span>{
     <span class="doccomment">/// The future returned by [`Semaphore::acquire`].
-    </span><span class="kw">pub struct </span>Acquire&lt;<span class="lifetime">&#39;a</span>&gt;(AcquireInner&lt;<span class="lifetime">&#39;a</span>&gt; =&gt; SemaphoreGuard&lt;<span class="lifetime">&#39;a</span>&gt;);
-    <span class="attr">#[cfg(all(feature = <span class="string">&quot;std&quot;</span>, not(target_family = <span class="string">&quot;wasm&quot;</span>)))]
+    </span><span class="kw">pub struct </span>Acquire&lt;<span class="lifetime">'a</span>&gt;(AcquireInner&lt;<span class="lifetime">'a</span>&gt; =&gt; SemaphoreGuard&lt;<span class="lifetime">'a</span>&gt;);
+    <span class="attr">#[cfg(all(feature = <span class="string">"std"</span>, not(target_family = <span class="string">"wasm"</span>)))]
     </span><span class="kw">pub</span>(<span class="kw">crate</span>) wait();
 }
 
 <span class="macro">pin_project_lite::pin_project! </span>{
-    <span class="kw">struct </span>AcquireInner&lt;<span class="lifetime">&#39;a</span>&gt; {
+    <span class="kw">struct </span>AcquireInner&lt;<span class="lifetime">'a</span>&gt; {
         <span class="comment">// The semaphore being acquired.
-        </span>semaphore: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Semaphore,
+        </span>semaphore: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>Semaphore,
 
         <span class="comment">// The listener waiting on the semaphore.
         </span><span class="attr">#[pin]
@@ -607,16 +631,16 @@
     }
 }
 
-<span class="kw">impl </span>fmt::Debug <span class="kw">for </span>Acquire&lt;<span class="lifetime">&#39;_</span>&gt; {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
-        f.write_str(<span class="string">&quot;Acquire { .. }&quot;</span>)
+<span class="kw">impl </span>fmt::Debug <span class="kw">for </span>Acquire&lt;<span class="lifetime">'_</span>&gt; {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
+        f.write_str(<span class="string">"Acquire { .. }"</span>)
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; EventListenerFuture <span class="kw">for </span>AcquireInner&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="kw">type </span>Output = SemaphoreGuard&lt;<span class="lifetime">&#39;a</span>&gt;;
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; EventListenerFuture <span class="kw">for </span>AcquireInner&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="kw">type </span>Output = SemaphoreGuard&lt;<span class="lifetime">'a</span>&gt;;
 
-    <span class="kw">fn </span>poll_with_strategy&lt;<span class="lifetime">&#39;x</span>, S: Strategy&lt;<span class="lifetime">&#39;x</span>&gt;&gt;(
+    <span class="kw">fn </span>poll_with_strategy&lt;<span class="lifetime">'x</span>, S: Strategy&lt;<span class="lifetime">'x</span>&gt;&gt;(
         <span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;,
         strategy: <span class="kw-2">&amp;mut </span>S,
         cx: <span class="kw-2">&amp;mut </span>S::Context,
@@ -642,7 +666,7 @@
 <span class="macro">easy_wrapper! </span>{
     <span class="doccomment">/// The future returned by [`Semaphore::acquire_arc`].
     </span><span class="kw">pub struct </span>AcquireArc(AcquireArcInner =&gt; SemaphoreGuardArc);
-    <span class="attr">#[cfg(all(feature = <span class="string">&quot;std&quot;</span>, not(target_family = <span class="string">&quot;wasm&quot;</span>)))]
+    <span class="attr">#[cfg(all(feature = <span class="string">"std"</span>, not(target_family = <span class="string">"wasm"</span>)))]
     </span><span class="kw">pub</span>(<span class="kw">crate</span>) wait();
 }
 
@@ -658,15 +682,15 @@
 }
 
 <span class="kw">impl </span>fmt::Debug <span class="kw">for </span>AcquireArc {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
-        f.write_str(<span class="string">&quot;AcquireArc { .. }&quot;</span>)
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
+        f.write_str(<span class="string">"AcquireArc { .. }"</span>)
     }
 }
 
 <span class="kw">impl </span>EventListenerFuture <span class="kw">for </span>AcquireArcInner {
     <span class="kw">type </span>Output = SemaphoreGuardArc;
 
-    <span class="kw">fn </span>poll_with_strategy&lt;<span class="lifetime">&#39;x</span>, S: Strategy&lt;<span class="lifetime">&#39;x</span>&gt;&gt;(
+    <span class="kw">fn </span>poll_with_strategy&lt;<span class="lifetime">'x</span>, S: Strategy&lt;<span class="lifetime">'x</span>&gt;&gt;(
         <span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;,
         strategy: <span class="kw-2">&amp;mut </span>S,
         cx: <span class="kw-2">&amp;mut </span>S::Context,
@@ -692,9 +716,17 @@
 <span class="doccomment">/// A guard that releases the acquired permit.
 </span><span class="attr">#[clippy::has_significant_drop]
 #[derive(Debug)]
-</span><span class="kw">pub struct </span>SemaphoreGuard&lt;<span class="lifetime">&#39;a</span>&gt;(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Semaphore);
+</span><span class="kw">pub struct </span>SemaphoreGuard&lt;<span class="lifetime">'a</span>&gt;(<span class="kw-2">&amp;</span><span class="lifetime">'a </span>Semaphore);
 
-<span class="kw">impl </span>Drop <span class="kw">for </span>SemaphoreGuard&lt;<span class="lifetime">&#39;_</span>&gt; {
+<span class="kw">impl </span>SemaphoreGuard&lt;<span class="lifetime">'_</span>&gt; {
+    <span class="doccomment">/// Drops the guard _without_ releasing the acquired permit.
+    </span><span class="attr">#[inline]
+    </span><span class="kw">pub fn </span>forget(<span class="self">self</span>) {
+        mem::forget(<span class="self">self</span>);
+    }
+}
+
+<span class="kw">impl </span>Drop <span class="kw">for </span>SemaphoreGuard&lt;<span class="lifetime">'_</span>&gt; {
     <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
         <span class="self">self</span>.<span class="number">0</span>.count.fetch_add(<span class="number">1</span>, Ordering::AcqRel);
         <span class="self">self</span>.<span class="number">0</span>.event.notify(<span class="number">1</span>);
@@ -704,12 +736,25 @@
 <span class="doccomment">/// An owned guard that releases the acquired permit.
 </span><span class="attr">#[clippy::has_significant_drop]
 #[derive(Debug)]
-</span><span class="kw">pub struct </span>SemaphoreGuardArc(Arc&lt;Semaphore&gt;);
+</span><span class="kw">pub struct </span>SemaphoreGuardArc(<span class="prelude-ty">Option</span>&lt;Arc&lt;Semaphore&gt;&gt;);
+
+<span class="kw">impl </span>SemaphoreGuardArc {
+    <span class="doccomment">/// Drops the guard _without_ releasing the acquired permit.
+    /// (Will still decrement the `Arc` reference count.)
+    </span><span class="attr">#[inline]
+    </span><span class="kw">pub fn </span>forget(<span class="kw-2">mut </span><span class="self">self</span>) {
+        <span class="comment">// Drop the inner `Arc` in order to decrement the reference count.
+        // FIXME: get rid of the `Option` once RFC 3466 or equivalent becomes available.
+        </span>drop(<span class="self">self</span>.<span class="number">0</span>.take());
+        mem::forget(<span class="self">self</span>);
+    }
+}
 
 <span class="kw">impl </span>Drop <span class="kw">for </span>SemaphoreGuardArc {
     <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
-        <span class="self">self</span>.<span class="number">0</span>.count.fetch_add(<span class="number">1</span>, Ordering::AcqRel);
-        <span class="self">self</span>.<span class="number">0</span>.event.notify(<span class="number">1</span>);
+        <span class="kw">let </span>opt = <span class="self">self</span>.<span class="number">0</span>.take().unwrap();
+        opt.count.fetch_add(<span class="number">1</span>, Ordering::AcqRel);
+        opt.event.notify(<span class="number">1</span>);
     }
 }
 </code></pre></div></section></main></body></html>

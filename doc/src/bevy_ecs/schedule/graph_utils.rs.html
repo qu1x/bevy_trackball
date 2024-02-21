@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ecs-0.12.1/src/schedule/graph_utils.rs`."><title>graph_utils.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="bevy_ecs" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../bevy_ecs/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ecs-0.13.0/src/schedule/graph_utils.rs`."><title>graph_utils.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="bevy_ecs" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -351,6 +352,10 @@
 <a href="#351" id="351">351</a>
 <a href="#352" id="352">352</a>
 <a href="#353" id="353">353</a>
+<a href="#354" id="354">354</a>
+<a href="#355" id="355">355</a>
+<a href="#356" id="356">356</a>
+<a href="#357" id="357">357</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::fmt::Debug;
 
 <span class="kw">use </span>bevy_utils::{
@@ -398,6 +403,10 @@
     </span>Before,
     <span class="doccomment">/// A node that should be succeeded.
     </span>After,
+    <span class="doccomment">/// A node that should be preceded and will **not** automatically insert an instance of `apply_deferred` on the edge.
+    </span>BeforeNoSync,
+    <span class="doccomment">/// A node that should be succeeded and will **not** automatically insert an instance of `apply_deferred` on the edge.
+    </span>AfterNoSync,
 }
 
 <span class="doccomment">/// An edge to be added to the dependency graph.
@@ -448,14 +457,14 @@
     </span><span class="kw">pub</span>(<span class="kw">crate</span>) reachable: FixedBitSet,
     <span class="doccomment">/// Pairs of nodes that have a path connecting them.
     </span><span class="kw">pub</span>(<span class="kw">crate</span>) connected: HashSet&lt;(V, V)&gt;,
-    <span class="doccomment">/// Pairs of nodes that don&#39;t have a path connecting them.
+    <span class="doccomment">/// Pairs of nodes that don't have a path connecting them.
     </span><span class="kw">pub</span>(<span class="kw">crate</span>) disconnected: Vec&lt;(V, V)&gt;,
     <span class="doccomment">/// Edges that are redundant because a longer path exists.
     </span><span class="kw">pub</span>(<span class="kw">crate</span>) transitive_edges: Vec&lt;(V, V)&gt;,
     <span class="doccomment">/// Variant of the graph with no transitive edges.
     </span><span class="kw">pub</span>(<span class="kw">crate</span>) transitive_reduction: DiGraphMap&lt;V, ()&gt;,
     <span class="doccomment">/// Variant of the graph with all possible transitive edges.
-    </span><span class="comment">// TODO: this will very likely be used by &quot;if-needed&quot; ordering
+    </span><span class="comment">// TODO: this will very likely be used by "if-needed" ordering
     </span><span class="attr">#[allow(dead_code)]
     </span><span class="kw">pub</span>(<span class="kw">crate</span>) transitive_closure: DiGraphMap&lt;V, ()&gt;,
 }
@@ -481,7 +490,7 @@
 /// - pairs of nodes not connected by a path
 ///
 /// The algorithm implemented comes from
-/// [&quot;On the calculation of transitive reduction-closure of orders&quot;][1] by Habib, Morvan and Rampon.
+/// ["On the calculation of transitive reduction-closure of orders"][1] by Habib, Morvan and Rampon.
 ///
 /// [1]: https://doi.org/10.1016/0012-365X(93)90164-O
 </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>check_graph&lt;V&gt;(
@@ -505,7 +514,7 @@
         map.insert(node, i);
         topsorted.add_node(node);
         <span class="comment">// insert nodes as successors to their predecessors
-        </span><span class="kw">for </span>pred <span class="kw">in </span>graph.neighbors_directed(node, Direction::Incoming) {
+        </span><span class="kw">for </span>pred <span class="kw">in </span>graph.neighbors_directed(node, Incoming) {
             topsorted.add_edge(pred, node, ());
         }
     }
@@ -530,7 +539,7 @@
     </span><span class="kw">for </span>a <span class="kw">in </span>topsorted.nodes().rev() {
         <span class="kw">let </span>index_a = <span class="kw-2">*</span>map.get(<span class="kw-2">&amp;</span>a).unwrap();
         <span class="comment">// iterate their successors in topological order
-        </span><span class="kw">for </span>b <span class="kw">in </span>topsorted.neighbors_directed(a, Direction::Outgoing) {
+        </span><span class="kw">for </span>b <span class="kw">in </span>topsorted.neighbors_directed(a, Outgoing) {
             <span class="kw">let </span>index_b = <span class="kw-2">*</span>map.get(<span class="kw-2">&amp;</span>b).unwrap();
             <span class="macro">debug_assert!</span>(index_a &lt; index_b);
             <span class="kw">if </span>!visited[index_b] {
@@ -540,7 +549,7 @@
                 reachable.insert(index(index_a, index_b, n));
 
                 <span class="kw">let </span>successors = transitive_closure
-                    .neighbors_directed(b, Direction::Outgoing)
+                    .neighbors_directed(b, Outgoing)
                     .collect::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;();
                 <span class="kw">for </span>c <span class="kw">in </span>successors {
                     <span class="kw">let </span>index_c = <span class="kw-2">*</span>map.get(<span class="kw-2">&amp;</span>c).unwrap();
@@ -560,7 +569,7 @@
         visited.clear();
     }
 
-    <span class="comment">// partition pairs of nodes into &quot;connected by path&quot; and &quot;not connected by path&quot;
+    <span class="comment">// partition pairs of nodes into "connected by path" and "not connected by path"
     </span><span class="kw">for </span>i <span class="kw">in </span><span class="number">0</span>..(n - <span class="number">1</span>) {
         <span class="comment">// reachable is upper triangular because the nodes were topsorted
         </span><span class="kw">for </span>index <span class="kw">in </span>index(i, i + <span class="number">1</span>, n)..=index(i, n - <span class="number">1</span>, n) {
@@ -592,7 +601,7 @@
 <span class="doccomment">/// Returns the simple cycles in a strongly-connected component of a directed graph.
 ///
 /// The algorithm implemented comes from
-/// [&quot;Finding all the elementary circuits of a directed graph&quot;][1] by D. B. Johnson.
+/// ["Finding all the elementary circuits of a directed graph"][1] by D. B. Johnson.
 ///
 /// [1]: https://doi.org/10.1137/0204007
 </span><span class="kw">pub fn </span>simple_cycles_in_component&lt;N&gt;(graph: <span class="kw-2">&amp;</span>DiGraphMap&lt;N, ()&gt;, scc: <span class="kw-2">&amp;</span>[N]) -&gt; Vec&lt;Vec&lt;N&gt;&gt;
@@ -619,9 +628,9 @@
 
         <span class="comment">// path of nodes that may form a cycle
         </span><span class="kw">let </span><span class="kw-2">mut </span>path = Vec::with_capacity(subgraph.node_count());
-        <span class="comment">// we mark nodes as &quot;blocked&quot; to avoid finding permutations of the same cycles
+        <span class="comment">// we mark nodes as "blocked" to avoid finding permutations of the same cycles
         </span><span class="kw">let </span><span class="kw-2">mut </span>blocked = HashSet::with_capacity(subgraph.node_count());
-        <span class="comment">// connects nodes along path segments that can&#39;t be part of a cycle (given current root)
+        <span class="comment">// connects nodes along path segments that can't be part of a cycle (given current root)
         // those nodes can be unblocked at the same time
         </span><span class="kw">let </span><span class="kw-2">mut </span>unblock_together: HashMap&lt;N, HashSet&lt;N&gt;&gt; =
             HashMap::with_capacity(subgraph.node_count());
@@ -632,7 +641,7 @@
         <span class="comment">// stack for DFS
         </span><span class="kw">let </span><span class="kw-2">mut </span>stack = Vec::with_capacity(subgraph.node_count());
 
-        <span class="comment">// we&#39;re going to look for all cycles that begin and end at this node
+        <span class="comment">// we're going to look for all cycles that begin and end at this node
         </span><span class="kw">let </span>root = scc.pop().unwrap();
         <span class="comment">// start a path at the root
         </span>path.clear();
@@ -665,7 +674,7 @@
             <span class="kw">if </span>successors.peekable().peek().is_none() {
                 <span class="kw">if </span>maybe_in_more_cycles.contains(node) {
                     unblock_stack.push(<span class="kw-2">*</span>node);
-                    <span class="comment">// unblock this node&#39;s ancestors
+                    <span class="comment">// unblock this node's ancestors
                     </span><span class="kw">while let </span><span class="prelude-val">Some</span>(n) = unblock_stack.pop() {
                         <span class="kw">if </span>blocked.remove(<span class="kw-2">&amp;</span>n) {
                             <span class="kw">let </span>unblock_predecessors =

@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_input-0.12.1/src/gamepad.rs`."><title>gamepad.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="bevy_input" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../bevy_input/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_input-0.13.0/src/gamepad.rs`."><title>gamepad.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="bevy_input" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1761,9 +1762,13 @@
 <a href="#1761" id="1761">1761</a>
 <a href="#1762" id="1762">1762</a>
 <a href="#1763" id="1763">1763</a>
+<a href="#1764" id="1764">1764</a>
+<a href="#1765" id="1765">1765</a>
+<a href="#1766" id="1766">1766</a>
+<a href="#1767" id="1767">1767</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! The gamepad input functionality.
 
-</span><span class="kw">use crate</span>::{Axis, ButtonState, Input};
+</span><span class="kw">use crate</span>::{Axis, ButtonInput, ButtonState};
 <span class="kw">use </span>bevy_ecs::event::{Event, EventReader, EventWriter};
 <span class="kw">use </span>bevy_ecs::{
     change_detection::DetectChangesMut,
@@ -1778,19 +1783,19 @@
 </span><span class="attr">#[derive(Error, Debug, PartialEq)]
 </span><span class="kw">pub enum </span>AxisSettingsError {
     <span class="doccomment">/// The given parameter `livezone_lowerbound` was not in range -1.0..=0.0.
-    </span><span class="attr">#[error(<span class="string">&quot;invalid livezone_lowerbound {0}, expected value [-1.0..=0.0]&quot;</span>)]
+    </span><span class="attr">#[error(<span class="string">"invalid livezone_lowerbound {0}, expected value [-1.0..=0.0]"</span>)]
     </span>LiveZoneLowerBoundOutOfRange(f32),
     <span class="doccomment">/// The given parameter `deadzone_lowerbound` was not in range -1.0..=0.0.
-    </span><span class="attr">#[error(<span class="string">&quot;invalid deadzone_lowerbound {0}, expected value [-1.0..=0.0]&quot;</span>)]
+    </span><span class="attr">#[error(<span class="string">"invalid deadzone_lowerbound {0}, expected value [-1.0..=0.0]"</span>)]
     </span>DeadZoneLowerBoundOutOfRange(f32),
     <span class="doccomment">/// The given parameter `deadzone_lowerbound` was not in range -1.0..=0.0.
-    </span><span class="attr">#[error(<span class="string">&quot;invalid deadzone_upperbound {0}, expected value [0.0..=1.0]&quot;</span>)]
+    </span><span class="attr">#[error(<span class="string">"invalid deadzone_upperbound {0}, expected value [0.0..=1.0]"</span>)]
     </span>DeadZoneUpperBoundOutOfRange(f32),
     <span class="doccomment">/// The given parameter `deadzone_lowerbound` was not in range -1.0..=0.0.
-    </span><span class="attr">#[error(<span class="string">&quot;invalid livezone_upperbound {0}, expected value [0.0..=1.0]&quot;</span>)]
+    </span><span class="attr">#[error(<span class="string">"invalid livezone_upperbound {0}, expected value [0.0..=1.0]"</span>)]
     </span>LiveZoneUpperBoundOutOfRange(f32),
     <span class="doccomment">/// Parameter `livezone_lowerbound` was not less than or equal to parameter `deadzone_lowerbound`.
-    </span><span class="attr">#[error(<span class="string">&quot;invalid parameter values livezone_lowerbound {} deadzone_lowerbound {}, expected livezone_lowerbound &lt;= deadzone_lowerbound&quot;</span>, .livezone_lowerbound, .deadzone_lowerbound)]
+    </span><span class="attr">#[error(<span class="string">"invalid parameter values livezone_lowerbound {} deadzone_lowerbound {}, expected livezone_lowerbound &lt;= deadzone_lowerbound"</span>, .livezone_lowerbound, .deadzone_lowerbound)]
     </span>LiveZoneLowerBoundGreaterThanDeadZoneLowerBound {
         <span class="doccomment">/// The value of the `livezone_lowerbound` parameter.
         </span>livezone_lowerbound: f32,
@@ -1798,7 +1803,7 @@
         </span>deadzone_lowerbound: f32,
     },
     <span class="doccomment">///  Parameter `deadzone_upperbound` was not less than or equal to parameter `livezone_upperbound`.
-    </span><span class="attr">#[error(<span class="string">&quot;invalid parameter values livezone_upperbound {} deadzone_upperbound {}, expected deadzone_upperbound &lt;= livezone_upperbound&quot;</span>, .livezone_upperbound, .deadzone_upperbound)]
+    </span><span class="attr">#[error(<span class="string">"invalid parameter values livezone_upperbound {} deadzone_upperbound {}, expected deadzone_upperbound &lt;= livezone_upperbound"</span>, .livezone_upperbound, .deadzone_upperbound)]
     </span>DeadZoneUpperBoundGreaterThanLiveZoneUpperBound {
         <span class="doccomment">/// The value of the `livezone_upperbound` parameter.
         </span>livezone_upperbound: f32,
@@ -1806,7 +1811,7 @@
         </span>deadzone_upperbound: f32,
     },
     <span class="doccomment">/// The given parameter was not in range 0.0..=2.0.
-    </span><span class="attr">#[error(<span class="string">&quot;invalid threshold {0}, expected 0.0 &lt;= threshold &lt;= 2.0&quot;</span>)]
+    </span><span class="attr">#[error(<span class="string">"invalid threshold {0}, expected 0.0 &lt;= threshold &lt;= 2.0"</span>)]
     </span>Threshold(f32),
 }
 
@@ -1814,13 +1819,13 @@
 </span><span class="attr">#[derive(Error, Debug, PartialEq)]
 </span><span class="kw">pub enum </span>ButtonSettingsError {
     <span class="doccomment">/// The given parameter was not in range 0.0..=1.0.
-    </span><span class="attr">#[error(<span class="string">&quot;invalid release_threshold {0}, expected value [0.0..=1.0]&quot;</span>)]
+    </span><span class="attr">#[error(<span class="string">"invalid release_threshold {0}, expected value [0.0..=1.0]"</span>)]
     </span>ReleaseThresholdOutOfRange(f32),
     <span class="doccomment">/// The given parameter was not in range 0.0..=1.0.
-    </span><span class="attr">#[error(<span class="string">&quot;invalid press_threshold {0}, expected [0.0..=1.0]&quot;</span>)]
+    </span><span class="attr">#[error(<span class="string">"invalid press_threshold {0}, expected [0.0..=1.0]"</span>)]
     </span>PressThresholdOutOfRange(f32),
     <span class="doccomment">/// Parameter `release_threshold` was not less than or equal to `press_threshold`.
-    </span><span class="attr">#[error(<span class="string">&quot;invalid parameter values release_threshold {} press_threshold {}, expected release_threshold &lt;= press_threshold&quot;</span>, .release_threshold, .press_threshold)]
+    </span><span class="attr">#[error(<span class="string">"invalid parameter values release_threshold {} press_threshold {}, expected release_threshold &lt;= press_threshold"</span>, .release_threshold, .press_threshold)]
     </span>ReleaseThresholdGreaterThanPressThreshold {
         <span class="doccomment">/// The value of the `press_threshold` parameter.
         </span>press_threshold: f32,
@@ -1829,7 +1834,7 @@
     },
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;serialize&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"serialize"</span>)]
 </span><span class="kw">use </span>bevy_reflect::{ReflectDeserialize, ReflectSerialize};
 
 <span class="doccomment">/// A gamepad with an associated `ID`.
@@ -1846,7 +1851,7 @@
 </span><span class="attr">#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, Reflect)]
 #[reflect(Debug, Hash, PartialEq)]
 #[cfg_attr(
-    feature = <span class="string">&quot;serialize&quot;</span>,
+    feature = <span class="string">"serialize"</span>,
     derive(serde::Serialize, serde::Deserialize),
     reflect(Serialize, Deserialize)
 )]
@@ -1866,7 +1871,7 @@
 </span><span class="attr">#[derive(Debug, Clone, PartialEq, Eq, Reflect)]
 #[reflect(Debug, PartialEq)]
 #[cfg_attr(
-    feature = <span class="string">&quot;serialize&quot;</span>,
+    feature = <span class="string">"serialize"</span>,
     derive(serde::Serialize, serde::Deserialize),
     reflect(Serialize, Deserialize)
 )]
@@ -1875,7 +1880,7 @@
     ///
     /// This name is generally defined by the OS.
     ///
-    /// For example on Windows the name may be &quot;HID-compliant game controller&quot;.
+    /// For example on Windows the name may be "HID-compliant game controller".
     </span><span class="kw">pub </span>name: String,
 }
 
@@ -1902,7 +1907,7 @@
     }
 
     <span class="doccomment">/// Returns an iterator over registered [`Gamepad`]s in an arbitrary order.
-    </span><span class="kw">pub fn </span>iter(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw">impl </span>Iterator&lt;Item = Gamepad&gt; + <span class="lifetime">&#39;_ </span>{
+    </span><span class="kw">pub fn </span>iter(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw">impl </span>Iterator&lt;Item = Gamepad&gt; + <span class="lifetime">'_ </span>{
         <span class="self">self</span>.gamepads.keys().copied()
     }
 
@@ -1928,12 +1933,12 @@
 ///
 /// This is used to determine which button has changed its value when receiving a
 /// [`GamepadButtonChangedEvent`]. It is also used in the [`GamepadButton`]
-/// which in turn is used to create the [`Input&lt;GamepadButton&gt;`] or
+/// which in turn is used to create the [`ButtonInput&lt;GamepadButton&gt;`] or
 /// [`Axis&lt;GamepadButton&gt;`] `bevy` resources.
-</span><span class="attr">#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, Reflect)]
+</span><span class="attr">#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, Reflect, PartialOrd, Ord)]
 #[reflect(Debug, Hash, PartialEq)]
 #[cfg_attr(
-    feature = <span class="string">&quot;serialize&quot;</span>,
+    feature = <span class="string">"serialize"</span>,
     derive(serde::Serialize, serde::Deserialize),
     reflect(Serialize, Deserialize)
 )]
@@ -1989,7 +1994,7 @@
 ///
 /// ## Usage
 ///
-/// It is used as the generic `T` value of an [`Input`] and [`Axis`] to create `bevy` resources. These
+/// It is used as the generic `T` value of an [`ButtonInput`] and [`Axis`] to create `bevy` resources. These
 /// resources store the data of the buttons of a gamepad and can be accessed inside of a system.
 ///
 /// ## Updating
@@ -1998,7 +2003,7 @@
 </span><span class="attr">#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, Reflect)]
 #[reflect(Debug, Hash, PartialEq)]
 #[cfg_attr(
-    feature = <span class="string">&quot;serialize&quot;</span>,
+    feature = <span class="string">"serialize"</span>,
     derive(serde::Serialize, serde::Deserialize),
     reflect(Serialize, Deserialize)
 )]
@@ -2034,7 +2039,7 @@
 </span><span class="attr">#[derive(Event, Debug, Clone, Copy, PartialEq, Eq, Reflect)]
 #[reflect(Debug, PartialEq)]
 #[cfg_attr(
-    feature = <span class="string">&quot;serialize&quot;</span>,
+    feature = <span class="string">"serialize"</span>,
     derive(serde::Serialize, serde::Deserialize),
     reflect(Serialize, Deserialize)
 )]
@@ -2055,7 +2060,7 @@
 </span><span class="attr">#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, Reflect)]
 #[reflect(Debug, Hash, PartialEq)]
 #[cfg_attr(
-    feature = <span class="string">&quot;serialize&quot;</span>,
+    feature = <span class="string">"serialize"</span>,
     derive(serde::Serialize, serde::Deserialize),
     reflect(Serialize, Deserialize)
 )]
@@ -2091,7 +2096,7 @@
 </span><span class="attr">#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, Reflect)]
 #[reflect(Debug, Hash, PartialEq)]
 #[cfg_attr(
-    feature = <span class="string">&quot;serialize&quot;</span>,
+    feature = <span class="string">"serialize"</span>,
     derive(serde::Serialize, serde::Deserialize),
     reflect(Serialize, Deserialize)
 )]
@@ -2131,7 +2136,7 @@
 /// ## Note
 ///
 /// The [`GamepadSettings`] are used inside of `bevy_gilrs` to determine when raw gamepad events from `gilrs`,
-/// should register as a [`GamepadEvent`]. Events that don&#39;t meet the change thresholds defined in [`GamepadSettings`]
+/// should register as a [`GamepadEvent`]. Events that don't meet the change thresholds defined in [`GamepadSettings`]
 /// will not register. To modify these settings, mutate the corresponding resource.
 </span><span class="attr">#[derive(Resource, Default, Debug, Reflect)]
 #[reflect(Debug, Default)]
@@ -2279,14 +2284,14 @@
     <span class="doccomment">/// Returns `true` if the button is pressed.
     ///
     /// A button is considered pressed if the `value` passed is greater than or equal to the press threshold.
-    </span><span class="kw">fn </span>is_pressed(<span class="kw-2">&amp;</span><span class="self">self</span>, value: f32) -&gt; bool {
+    </span><span class="kw">pub fn </span>is_pressed(<span class="kw-2">&amp;</span><span class="self">self</span>, value: f32) -&gt; bool {
         value &gt;= <span class="self">self</span>.press_threshold
     }
 
     <span class="doccomment">/// Returns `true` if the button is released.
     ///
     /// A button is considered released if the `value` passed is lower than or equal to the release threshold.
-    </span><span class="kw">fn </span>is_released(<span class="kw-2">&amp;</span><span class="self">self</span>, value: f32) -&gt; bool {
+    </span><span class="kw">pub fn </span>is_released(<span class="kw-2">&amp;</span><span class="self">self</span>, value: f32) -&gt; bool {
         value &lt;= <span class="self">self</span>.release_threshold
     }
 
@@ -2774,7 +2779,7 @@
 <span class="doccomment">/// Handles [`GamepadConnectionEvent`]s and updates gamepad resources.
 ///
 /// Updates the [`Gamepads`] resource and resets and/or initializes
-/// the [`Axis&lt;GamepadButton&gt;`] and [`Input&lt;GamepadButton&gt;`] resources.
+/// the [`Axis&lt;GamepadButton&gt;`] and [`ButtonInput&lt;GamepadButton&gt;`] resources.
 ///
 /// ## Note
 ///
@@ -2784,14 +2789,14 @@
     <span class="kw-2">mut </span>connection_events: EventReader&lt;GamepadConnectionEvent&gt;,
     <span class="kw-2">mut </span>axis: ResMut&lt;Axis&lt;GamepadAxis&gt;&gt;,
     <span class="kw-2">mut </span>button_axis: ResMut&lt;Axis&lt;GamepadButton&gt;&gt;,
-    <span class="kw-2">mut </span>button_input: ResMut&lt;Input&lt;GamepadButton&gt;&gt;,
+    <span class="kw-2">mut </span>button_input: ResMut&lt;ButtonInput&lt;GamepadButton&gt;&gt;,
 ) {
     <span class="kw">for </span>connection_event <span class="kw">in </span>connection_events.read() {
         <span class="kw">let </span>gamepad = connection_event.gamepad;
 
         <span class="kw">if let </span>GamepadConnection::Connected(info) = <span class="kw-2">&amp;</span>connection_event.connection {
             gamepads.register(gamepad, info.clone());
-            <span class="macro">info!</span>(<span class="string">&quot;{:?} Connected&quot;</span>, gamepad);
+            <span class="macro">info!</span>(<span class="string">"{:?} Connected"</span>, gamepad);
 
             <span class="kw">for </span>button_type <span class="kw">in </span><span class="kw-2">&amp;</span>ALL_BUTTON_TYPES {
                 <span class="kw">let </span>gamepad_button = GamepadButton::new(gamepad, <span class="kw-2">*</span>button_type);
@@ -2803,7 +2808,7 @@
             }
         } <span class="kw">else </span>{
             gamepads.deregister(gamepad);
-            <span class="macro">info!</span>(<span class="string">&quot;{:?} Disconnected&quot;</span>, gamepad);
+            <span class="macro">info!</span>(<span class="string">"{:?} Disconnected"</span>, gamepad);
 
             <span class="kw">for </span>button_type <span class="kw">in </span><span class="kw-2">&amp;</span>ALL_BUTTON_TYPES {
                 <span class="kw">let </span>gamepad_button = GamepadButton::new(gamepad, <span class="kw-2">*</span>button_type);
@@ -2821,7 +2826,7 @@
 </span><span class="attr">#[derive(Debug, Clone, PartialEq, Reflect)]
 #[reflect(Debug, PartialEq)]
 #[cfg_attr(
-    feature = <span class="string">&quot;serialize&quot;</span>,
+    feature = <span class="string">"serialize"</span>,
     derive(serde::Serialize, serde::Deserialize),
     reflect(Serialize, Deserialize)
 )]
@@ -2837,7 +2842,7 @@
 </span><span class="attr">#[derive(Event, Debug, Clone, PartialEq, Reflect)]
 #[reflect(Debug, PartialEq)]
 #[cfg_attr(
-    feature = <span class="string">&quot;serialize&quot;</span>,
+    feature = <span class="string">"serialize"</span>,
     derive(serde::Serialize, serde::Deserialize),
     reflect(Serialize, Deserialize)
 )]
@@ -2868,12 +2873,12 @@
     }
 }
 
-<span class="doccomment">/// Gamepad event for when the &quot;value&quot; on the axis changes
+<span class="doccomment">/// Gamepad event for when the "value" on the axis changes
 /// by an amount larger than the threshold defined in [`GamepadSettings`].
 </span><span class="attr">#[derive(Event, Debug, Clone, PartialEq, Reflect)]
 #[reflect(Debug, PartialEq)]
 #[cfg_attr(
-    feature = <span class="string">&quot;serialize&quot;</span>,
+    feature = <span class="string">"serialize"</span>,
     derive(serde::Serialize, serde::Deserialize),
     reflect(Serialize, Deserialize)
 )]
@@ -2897,12 +2902,12 @@
     }
 }
 
-<span class="doccomment">/// Gamepad event for when the &quot;value&quot; (amount of pressure) on the button
+<span class="doccomment">/// Gamepad event for when the "value" (amount of pressure) on the button
 /// changes by an amount larger than the threshold defined in [`GamepadSettings`].
 </span><span class="attr">#[derive(Event, Debug, Clone, PartialEq, Reflect)]
 #[reflect(Debug, PartialEq)]
 #[cfg_attr(
-    feature = <span class="string">&quot;serialize&quot;</span>,
+    feature = <span class="string">"serialize"</span>,
     derive(serde::Serialize, serde::Deserialize),
     reflect(Serialize, Deserialize)
 )]
@@ -2926,7 +2931,7 @@
     }
 }
 
-<span class="doccomment">/// Uses [`GamepadAxisChangedEvent`]s to update the relevant [`Input`] and [`Axis`] values.
+<span class="doccomment">/// Uses [`GamepadAxisChangedEvent`]s to update the relevant [`ButtonInput`] and [`Axis`] values.
 </span><span class="kw">pub fn </span>gamepad_axis_event_system(
     <span class="kw-2">mut </span>gamepad_axis: ResMut&lt;Axis&lt;GamepadAxis&gt;&gt;,
     <span class="kw-2">mut </span>axis_events: EventReader&lt;GamepadAxisChangedEvent&gt;,
@@ -2937,10 +2942,10 @@
     }
 }
 
-<span class="doccomment">/// Uses [`GamepadButtonChangedEvent`]s to update the relevant [`Input`] and [`Axis`] values.
+<span class="doccomment">/// Uses [`GamepadButtonChangedEvent`]s to update the relevant [`ButtonInput`] and [`Axis`] values.
 </span><span class="kw">pub fn </span>gamepad_button_event_system(
     <span class="kw-2">mut </span>button_changed_events: EventReader&lt;GamepadButtonChangedEvent&gt;,
-    <span class="kw-2">mut </span>button_input: ResMut&lt;Input&lt;GamepadButton&gt;&gt;,
+    <span class="kw-2">mut </span>button_input: ResMut&lt;ButtonInput&lt;GamepadButton&gt;&gt;,
     <span class="kw-2">mut </span>button_input_events: EventWriter&lt;GamepadButtonInput&gt;,
     settings: Res&lt;GamepadSettings&gt;,
 ) {
@@ -2957,7 +2962,7 @@
                     state: ButtonState::Released,
                 });
             }
-            <span class="comment">// We don&#39;t have to check if the button was previously pressed here
+            <span class="comment">// We don't have to check if the button was previously pressed here
             // because that check is performed within Input&lt;T&gt;::release()
             </span>button_input.release(button);
         } <span class="kw">else if </span>button_property.is_pressed(value) {
@@ -2981,7 +2986,7 @@
 </span><span class="attr">#[derive(Event, Debug, Clone, PartialEq, Reflect)]
 #[reflect(Debug, PartialEq)]
 #[cfg_attr(
-    feature = <span class="string">&quot;serialize&quot;</span>,
+    feature = <span class="string">"serialize"</span>,
     derive(serde::Serialize, serde::Deserialize),
     reflect(Serialize, Deserialize)
 )]
@@ -3012,13 +3017,13 @@
     }
 }
 
-<span class="doccomment">/// Splits the [`GamepadEvent`] event stream into it&#39;s component events.
+<span class="doccomment">/// Splits the [`GamepadEvent`] event stream into it's component events.
 </span><span class="kw">pub fn </span>gamepad_event_system(
     <span class="kw-2">mut </span>gamepad_events: EventReader&lt;GamepadEvent&gt;,
     <span class="kw-2">mut </span>connection_events: EventWriter&lt;GamepadConnectionEvent&gt;,
     <span class="kw-2">mut </span>button_events: EventWriter&lt;GamepadButtonChangedEvent&gt;,
     <span class="kw-2">mut </span>axis_events: EventWriter&lt;GamepadAxisChangedEvent&gt;,
-    <span class="kw-2">mut </span>button_input: ResMut&lt;Input&lt;GamepadButton&gt;&gt;,
+    <span class="kw-2">mut </span>button_input: ResMut&lt;ButtonInput&lt;GamepadButton&gt;&gt;,
 ) {
     button_input.bypass_change_detection().clear();
     <span class="kw">for </span>gamepad_event <span class="kw">in </span>gamepad_events.read() {
@@ -3026,8 +3031,12 @@
             GamepadEvent::Connection(connection_event) =&gt; {
                 connection_events.send(connection_event.clone());
             }
-            GamepadEvent::Button(button_event) =&gt; button_events.send(button_event.clone()),
-            GamepadEvent::Axis(axis_event) =&gt; axis_events.send(axis_event.clone()),
+            GamepadEvent::Button(button_event) =&gt; {
+                button_events.send(button_event.clone());
+            }
+            GamepadEvent::Axis(axis_event) =&gt; {
+                axis_events.send(axis_event.clone());
+            }
         }
     }
 }
@@ -3065,7 +3074,7 @@
     GamepadAxisType::RightZ,
 ];
 
-<span class="doccomment">/// The intensity at which a gamepad&#39;s force-feedback motors may rumble.
+<span class="doccomment">/// The intensity at which a gamepad's force-feedback motors may rumble.
 </span><span class="attr">#[derive(Clone, Copy, Debug, PartialEq)]
 </span><span class="kw">pub struct </span>GamepadRumbleIntensity {
     <span class="doccomment">/// The rumble intensity of the strong gamepad motor.
@@ -3149,10 +3158,10 @@
 ///     }
 /// }
 /// ```
-</span><span class="attr">#[doc(alias = <span class="string">&quot;haptic feedback&quot;</span>)]
-#[doc(alias = <span class="string">&quot;force feedback&quot;</span>)]
-#[doc(alias = <span class="string">&quot;vibration&quot;</span>)]
-#[doc(alias = <span class="string">&quot;vibrate&quot;</span>)]
+</span><span class="attr">#[doc(alias = <span class="string">"haptic feedback"</span>)]
+#[doc(alias = <span class="string">"force feedback"</span>)]
+#[doc(alias = <span class="string">"vibration"</span>)]
+#[doc(alias = <span class="string">"vibrate"</span>)]
 #[derive(Event, Clone)]
 </span><span class="kw">pub enum </span>GamepadRumbleRequest {
     <span class="doccomment">/// Add a rumble to the given gamepad.
@@ -3204,7 +3213,7 @@
         <span class="kw">let </span>actual = settings.filter(new_value, old_value);
         <span class="macro">assert_eq!</span>(
             expected, actual,
-            <span class="string">&quot;Testing filtering for {settings:?} with new_value = {new_value:?}, old_value = {old_value:?}&quot;</span>,
+            <span class="string">"Testing filtering for {settings:?} with new_value = {new_value:?}, old_value = {old_value:?}"</span>,
         );
     }
 
@@ -3259,7 +3268,7 @@
         <span class="kw">let </span>actual = settings.filter(new_value, old_value);
         <span class="macro">assert_eq!</span>(
             expected, actual,
-            <span class="string">&quot;Testing filtering for {settings:?} with new_value = {new_value:?}, old_value = {old_value:?}&quot;</span>,
+            <span class="string">"Testing filtering for {settings:?} with new_value = {new_value:?}, old_value = {old_value:?}"</span>,
         );
     }
 
@@ -3344,7 +3353,7 @@
 
             <span class="macro">assert_eq!</span>(
                 expected, actual,
-                <span class="string">&quot;testing ButtonSettings::is_pressed() for value: {value}&quot;</span>,
+                <span class="string">"testing ButtonSettings::is_pressed() for value: {value}"</span>,
             );
         }
     }
@@ -3369,7 +3378,7 @@
 
             <span class="macro">assert_eq!</span>(
                 expected, actual,
-                <span class="string">&quot;testing ButtonSettings::is_released() for value: {value}&quot;</span>,
+                <span class="string">"testing ButtonSettings::is_released() for value: {value}"</span>,
             );
         }
     }
@@ -3394,7 +3403,7 @@
                 }
                 <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; {
                     <span class="macro">panic!</span>(
-                        <span class="string">&quot;ButtonSettings::new({press_threshold}, {release_threshold}) should be valid&quot;
+                        <span class="string">"ButtonSettings::new({press_threshold}, {release_threshold}) should be valid"
                     </span>);
                 }
             }
@@ -3419,7 +3428,7 @@
             <span class="kw">match </span>bs {
                 <span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; {
                     <span class="macro">panic!</span>(
-                        <span class="string">&quot;ButtonSettings::new({press_threshold}, {release_threshold}) should be invalid&quot;
+                        <span class="string">"ButtonSettings::new({press_threshold}, {release_threshold}) should be invalid"
                     </span>);
                 }
                 <span class="prelude-val">Err</span>(err_code) =&gt; <span class="kw">match </span>err_code {

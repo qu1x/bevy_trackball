@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/erased-serde-0.3.31/src/de.rs`."><title>de.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="erased_serde" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../erased_serde/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/erased-serde-0.4.3/src/de.rs`."><title>de.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="erased_serde" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1626,11 +1627,48 @@
 <a href="#1626" id="1626">1626</a>
 <a href="#1627" id="1627">1627</a>
 <a href="#1628" id="1628">1628</a>
-</pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::alloc::<span class="kw-2">*</span>;
-<span class="kw">use </span><span class="kw">crate</span>::any::Any;
-<span class="kw">use </span><span class="kw">crate</span>::error::Error;
+<a href="#1629" id="1629">1629</a>
+<a href="#1630" id="1630">1630</a>
+<a href="#1631" id="1631">1631</a>
+<a href="#1632" id="1632">1632</a>
+<a href="#1633" id="1633">1633</a>
+<a href="#1634" id="1634">1634</a>
+<a href="#1635" id="1635">1635</a>
+<a href="#1636" id="1636">1636</a>
+<a href="#1637" id="1637">1637</a>
+<a href="#1638" id="1638">1638</a>
+<a href="#1639" id="1639">1639</a>
+<a href="#1640" id="1640">1640</a>
+<a href="#1641" id="1641">1641</a>
+<a href="#1642" id="1642">1642</a>
+<a href="#1643" id="1643">1643</a>
+<a href="#1644" id="1644">1644</a>
+<a href="#1645" id="1645">1645</a>
+<a href="#1646" id="1646">1646</a>
+<a href="#1647" id="1647">1647</a>
+<a href="#1648" id="1648">1648</a>
+<a href="#1649" id="1649">1649</a>
+<a href="#1650" id="1650">1650</a>
+<a href="#1651" id="1651">1651</a>
+<a href="#1652" id="1652">1652</a>
+<a href="#1653" id="1653">1653</a>
+<a href="#1654" id="1654">1654</a>
+<a href="#1655" id="1655">1655</a>
+<a href="#1656" id="1656">1656</a>
+<a href="#1657" id="1657">1657</a>
+<a href="#1658" id="1658">1658</a>
+<a href="#1659" id="1659">1659</a>
+<a href="#1660" id="1660">1660</a>
+</pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::any::Any;
+<span class="kw">use </span><span class="kw">crate</span>::error::{erase_de <span class="kw">as </span>erase, unerase_de <span class="kw">as </span>unerase, Error};
 <span class="kw">use </span><span class="kw">crate</span>::map::{OptionExt, ResultExt};
-<span class="kw">use </span>core::fmt::{<span class="self">self</span>, Display};
+<span class="kw">use </span><span class="kw">crate</span>::sealed::deserializer::Sealed;
+<span class="kw">use </span>alloc::boxed::Box;
+<span class="attr">#[cfg(feature = <span class="string">"alloc"</span>)]
+</span><span class="kw">use </span>alloc::string::String;
+<span class="attr">#[cfg(feature = <span class="string">"alloc"</span>)]
+</span><span class="kw">use </span>alloc::vec::Vec;
+<span class="kw">use </span>core::fmt;
 
 <span class="doccomment">/// Deserialize a value of type `T` from the given trait object.
 ///
@@ -1639,8 +1677,8 @@
 /// use std::collections::BTreeMap as Map;
 ///
 /// fn main() {
-///     static JSON: &amp;&#39;static [u8] = br#&quot;{&quot;A&quot;: 65, &quot;B&quot;: 66}&quot;#;
-///     static CBOR: &amp;&#39;static [u8] = &amp;[162, 97, 65, 24, 65, 97, 66, 24, 66];
+///     static JSON: &amp;'static [u8] = br#"{"A": 65, "B": 66}"#;
+///     static CBOR: &amp;'static [u8] = &amp;[162, 97, 65, 24, 65, 97, 66, 24, 66];
 ///
 ///     // Construct some deserializers.
 ///     let json = &amp;mut serde_json::Deserializer::from_slice(JSON);
@@ -1649,33 +1687,36 @@
 ///     // The values in this map are boxed trait objects, which is not possible
 ///     // with the normal serde::Deserializer because of object safety.
 ///     let mut formats: Map&lt;&amp;str, Box&lt;dyn Deserializer&gt;&gt; = Map::new();
-///     formats.insert(&quot;json&quot;, Box::new(&lt;dyn Deserializer&gt;::erase(json)));
-///     formats.insert(&quot;cbor&quot;, Box::new(&lt;dyn Deserializer&gt;::erase(cbor)));
+///     formats.insert("json", Box::new(&lt;dyn Deserializer&gt;::erase(json)));
+///     formats.insert("cbor", Box::new(&lt;dyn Deserializer&gt;::erase(cbor)));
 ///
 ///     // Pick a Deserializer out of the formats map.
-///     let format = formats.get_mut(&quot;json&quot;).unwrap();
+///     let format = formats.get_mut("json").unwrap();
 ///
 ///     let data: Map&lt;String, usize&gt; = erased_serde::deserialize(format).unwrap();
 ///
-///     println!(&quot;{}&quot;, data[&quot;A&quot;] + data[&quot;B&quot;]);
+///     println!("{}", data["A"] + data["B"]);
 /// }
 /// ```
-</span><span class="kw">pub fn </span>deserialize&lt;<span class="lifetime">&#39;de</span>, T&gt;(deserializer: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Deserializer&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;T, Error&gt;
+</span><span class="kw">pub fn </span>deserialize&lt;<span class="lifetime">'de</span>, T&gt;(deserializer: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Deserializer&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;T, Error&gt;
 <span class="kw">where
-    </span>T: serde::Deserialize&lt;<span class="lifetime">&#39;de</span>&gt;,
+    </span>T: serde::Deserialize&lt;<span class="lifetime">'de</span>&gt;,
 {
     serde::Deserialize::deserialize(deserializer)
 }
 
 <span class="comment">// TRAITS //////////////////////////////////////////////////////////////////////
 
-</span><span class="kw">pub trait </span>DeserializeSeed&lt;<span class="lifetime">&#39;de</span>&gt; {
-    <span class="kw">fn </span>erased_deserialize_seed(<span class="kw-2">&amp;mut </span><span class="self">self</span>, d: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Deserializer&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
+</span><span class="kw">pub trait </span>DeserializeSeed&lt;<span class="lifetime">'de</span>&gt; {
+    <span class="kw">fn </span>erased_deserialize_seed(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        deserializer: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Deserializer&lt;<span class="lifetime">'de</span>&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
 }
 
-<span class="doccomment">/// An object-safe equivalent of Serde&#39;s `Deserializer` trait.
+<span class="doccomment">/// An object-safe equivalent of Serde's `Deserializer` trait.
 ///
-/// Any implementation of Serde&#39;s `Deserializer` can be converted to an
+/// Any implementation of Serde's `Deserializer` can be converted to an
 /// `&amp;erased_serde::Deserializer` or `Box&lt;erased_serde::Deserializer&gt;` trait
 /// object using `erased_serde::Deserializer::erase`.
 ///
@@ -1684,8 +1725,8 @@
 /// use std::collections::BTreeMap as Map;
 ///
 /// fn main() {
-///     static JSON: &amp;&#39;static [u8] = br#&quot;{&quot;A&quot;: 65, &quot;B&quot;: 66}&quot;#;
-///     static CBOR: &amp;&#39;static [u8] = &amp;[162, 97, 65, 24, 65, 97, 66, 24, 66];
+///     static JSON: &amp;'static [u8] = br#"{"A": 65, "B": 66}"#;
+///     static CBOR: &amp;'static [u8] = &amp;[162, 97, 65, 24, 65, 97, 66, 24, 66];
 ///
 ///     // Construct some deserializers.
 ///     let json = &amp;mut serde_json::Deserializer::from_slice(JSON);
@@ -1694,80 +1735,90 @@
 ///     // The values in this map are boxed trait objects, which is not possible
 ///     // with the normal serde::Deserializer because of object safety.
 ///     let mut formats: Map&lt;&amp;str, Box&lt;dyn Deserializer&gt;&gt; = Map::new();
-///     formats.insert(&quot;json&quot;, Box::new(&lt;dyn Deserializer&gt;::erase(json)));
-///     formats.insert(&quot;cbor&quot;, Box::new(&lt;dyn Deserializer&gt;::erase(cbor)));
+///     formats.insert("json", Box::new(&lt;dyn Deserializer&gt;::erase(json)));
+///     formats.insert("cbor", Box::new(&lt;dyn Deserializer&gt;::erase(cbor)));
 ///
 ///     // Pick a Deserializer out of the formats map.
-///     let format = formats.get_mut(&quot;json&quot;).unwrap();
+///     let format = formats.get_mut("json").unwrap();
 ///
 ///     let data: Map&lt;String, usize&gt; = erased_serde::deserialize(format).unwrap();
 ///
-///     println!(&quot;{}&quot;, data[&quot;A&quot;] + data[&quot;B&quot;]);
+///     println!("{}", data["A"] + data["B"]);
 /// }
 /// ```
-</span><span class="kw">pub trait </span>Deserializer&lt;<span class="lifetime">&#39;de</span>&gt; {
-    <span class="kw">fn </span>erased_deserialize_any(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
-    <span class="kw">fn </span>erased_deserialize_bool(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
-    <span class="kw">fn </span>erased_deserialize_i8(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
-    <span class="kw">fn </span>erased_deserialize_i16(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
-    <span class="kw">fn </span>erased_deserialize_i32(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
-    <span class="kw">fn </span>erased_deserialize_i64(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
-    <span class="kw">fn </span>erased_deserialize_i128(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
-    <span class="kw">fn </span>erased_deserialize_u8(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
-    <span class="kw">fn </span>erased_deserialize_u16(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
-    <span class="kw">fn </span>erased_deserialize_u32(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
-    <span class="kw">fn </span>erased_deserialize_u64(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
-    <span class="kw">fn </span>erased_deserialize_u128(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
-    <span class="kw">fn </span>erased_deserialize_f32(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
-    <span class="kw">fn </span>erased_deserialize_f64(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
-    <span class="kw">fn </span>erased_deserialize_char(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
-    <span class="kw">fn </span>erased_deserialize_str(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
-    <span class="kw">fn </span>erased_deserialize_string(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
-    <span class="kw">fn </span>erased_deserialize_bytes(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
-    <span class="kw">fn </span>erased_deserialize_byte_buf(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
-    <span class="kw">fn </span>erased_deserialize_option(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
-    <span class="kw">fn </span>erased_deserialize_unit(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
+///
+/// This trait is sealed and can only be implemented via a
+/// `serde::Deserializer&lt;'de&gt;` impl.
+</span><span class="kw">pub trait </span>Deserializer&lt;<span class="lifetime">'de</span>&gt;: Sealed {
+    <span class="kw">fn </span>erased_deserialize_any(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
+    <span class="kw">fn </span>erased_deserialize_bool(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
+    <span class="kw">fn </span>erased_deserialize_i8(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
+    <span class="kw">fn </span>erased_deserialize_i16(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
+    <span class="kw">fn </span>erased_deserialize_i32(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
+    <span class="kw">fn </span>erased_deserialize_i64(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
+    <span class="kw">fn </span>erased_deserialize_i128(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
+    <span class="kw">fn </span>erased_deserialize_u8(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
+    <span class="kw">fn </span>erased_deserialize_u16(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
+    <span class="kw">fn </span>erased_deserialize_u32(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
+    <span class="kw">fn </span>erased_deserialize_u64(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
+    <span class="kw">fn </span>erased_deserialize_u128(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
+    <span class="kw">fn </span>erased_deserialize_f32(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
+    <span class="kw">fn </span>erased_deserialize_f64(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
+    <span class="kw">fn </span>erased_deserialize_char(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
+    <span class="kw">fn </span>erased_deserialize_str(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
+    <span class="kw">fn </span>erased_deserialize_string(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
+    <span class="kw">fn </span>erased_deserialize_bytes(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
+    <span class="kw">fn </span>erased_deserialize_byte_buf(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;)
+        -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
+    <span class="kw">fn </span>erased_deserialize_option(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
+    <span class="kw">fn </span>erased_deserialize_unit(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
     <span class="kw">fn </span>erased_deserialize_unit_struct(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
-        v: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;,
+        name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
+        visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
     <span class="kw">fn </span>erased_deserialize_newtype_struct(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
-        v: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;,
+        name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
+        visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
-    <span class="kw">fn </span>erased_deserialize_seq(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
+    <span class="kw">fn </span>erased_deserialize_seq(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
     <span class="kw">fn </span>erased_deserialize_tuple(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
         len: usize,
-        v: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;,
+        visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
     <span class="kw">fn </span>erased_deserialize_tuple_struct(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
         len: usize,
-        v: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;,
+        visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
-    <span class="kw">fn </span>erased_deserialize_map(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
+    <span class="kw">fn </span>erased_deserialize_map(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
     <span class="kw">fn </span>erased_deserialize_struct(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
-        fields: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>[<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str],
-        v: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;,
+        name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
+        fields: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>[<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str],
+        visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
-    <span class="kw">fn </span>erased_deserialize_identifier(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
+    <span class="kw">fn </span>erased_deserialize_identifier(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
     <span class="kw">fn </span>erased_deserialize_enum(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
-        variants: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>[<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str],
-        v: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;,
+        name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
+        variants: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>[<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str],
+        visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
-    <span class="kw">fn </span>erased_deserialize_ignored_any(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
+    <span class="kw">fn </span>erased_deserialize_ignored_any(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
     <span class="kw">fn </span>erased_is_human_readable(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool;
 }
 
-<span class="kw">pub trait </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt; {
+<span class="kw">pub trait </span>Visitor&lt;<span class="lifetime">'de</span>&gt; {
     <span class="kw">fn </span>erased_expecting(<span class="kw-2">&amp;</span><span class="self">self</span>, formatter: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result;
     <span class="kw">fn </span>erased_visit_bool(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: bool) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
     <span class="kw">fn </span>erased_visit_i8(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: i8) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
@@ -1784,49 +1835,56 @@
     <span class="kw">fn </span>erased_visit_f64(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: f64) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
     <span class="kw">fn </span>erased_visit_char(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: char) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
     <span class="kw">fn </span>erased_visit_str(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
-    <span class="kw">fn </span>erased_visit_borrowed_str(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: <span class="kw-2">&amp;</span><span class="lifetime">&#39;de </span>str) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
-    <span class="attr">#[cfg(any(feature = <span class="string">&quot;std&quot;</span>, feature = <span class="string">&quot;alloc&quot;</span>))]
+    <span class="kw">fn </span>erased_visit_borrowed_str(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: <span class="kw-2">&amp;</span><span class="lifetime">'de </span>str) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
+    <span class="attr">#[cfg(feature = <span class="string">"alloc"</span>)]
     </span><span class="kw">fn </span>erased_visit_string(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: String) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
     <span class="kw">fn </span>erased_visit_bytes(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: <span class="kw-2">&amp;</span>[u8]) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
-    <span class="kw">fn </span>erased_visit_borrowed_bytes(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: <span class="kw-2">&amp;</span><span class="lifetime">&#39;de </span>[u8]) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
-    <span class="attr">#[cfg(any(feature = <span class="string">&quot;std&quot;</span>, feature = <span class="string">&quot;alloc&quot;</span>))]
+    <span class="kw">fn </span>erased_visit_borrowed_bytes(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: <span class="kw-2">&amp;</span><span class="lifetime">'de </span>[u8]) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
+    <span class="attr">#[cfg(feature = <span class="string">"alloc"</span>)]
     </span><span class="kw">fn </span>erased_visit_byte_buf(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: Vec&lt;u8&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
     <span class="kw">fn </span>erased_visit_none(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
-    <span class="kw">fn </span>erased_visit_some(<span class="kw-2">&amp;mut </span><span class="self">self</span>, d: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Deserializer&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
+    <span class="kw">fn </span>erased_visit_some(<span class="kw-2">&amp;mut </span><span class="self">self</span>, deserializer: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Deserializer&lt;<span class="lifetime">'de</span>&gt;)
+        -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
     <span class="kw">fn </span>erased_visit_unit(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
-    <span class="kw">fn </span>erased_visit_newtype_struct(<span class="kw-2">&amp;mut </span><span class="self">self</span>, d: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Deserializer&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
-    <span class="kw">fn </span>erased_visit_seq(<span class="kw-2">&amp;mut </span><span class="self">self</span>, s: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>SeqAccess&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
-    <span class="kw">fn </span>erased_visit_map(<span class="kw-2">&amp;mut </span><span class="self">self</span>, m: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>MapAccess&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
-    <span class="kw">fn </span>erased_visit_enum(<span class="kw-2">&amp;mut </span><span class="self">self</span>, e: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>EnumAccess&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
+    <span class="kw">fn </span>erased_visit_newtype_struct(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        deserializer: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Deserializer&lt;<span class="lifetime">'de</span>&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
+    <span class="kw">fn </span>erased_visit_seq(<span class="kw-2">&amp;mut </span><span class="self">self</span>, seq: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>SeqAccess&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
+    <span class="kw">fn </span>erased_visit_map(<span class="kw-2">&amp;mut </span><span class="self">self</span>, map: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>MapAccess&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
+    <span class="kw">fn </span>erased_visit_enum(<span class="kw-2">&amp;mut </span><span class="self">self</span>, data: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>EnumAccess&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
 }
 
-<span class="kw">pub trait </span>SeqAccess&lt;<span class="lifetime">&#39;de</span>&gt; {
+<span class="kw">pub trait </span>SeqAccess&lt;<span class="lifetime">'de</span>&gt; {
     <span class="kw">fn </span>erased_next_element(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        d: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>DeserializeSeed&lt;<span class="lifetime">&#39;de</span>&gt;,
+        seed: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>DeserializeSeed&lt;<span class="lifetime">'de</span>&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;Out&gt;, Error&gt;;
     <span class="kw">fn </span>erased_size_hint(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;usize&gt;;
 }
 
-<span class="kw">pub trait </span>MapAccess&lt;<span class="lifetime">&#39;de</span>&gt; {
-    <span class="kw">fn </span>erased_next_key(<span class="kw-2">&amp;mut </span><span class="self">self</span>, d: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>DeserializeSeed&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;Out&gt;, Error&gt;;
-    <span class="kw">fn </span>erased_next_value(<span class="kw-2">&amp;mut </span><span class="self">self</span>, d: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>DeserializeSeed&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
+<span class="kw">pub trait </span>MapAccess&lt;<span class="lifetime">'de</span>&gt; {
+    <span class="kw">fn </span>erased_next_key(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        seed: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>DeserializeSeed&lt;<span class="lifetime">'de</span>&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;Out&gt;, Error&gt;;
+    <span class="kw">fn </span>erased_next_value(<span class="kw-2">&amp;mut </span><span class="self">self</span>, seed: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>DeserializeSeed&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;;
     <span class="kw">fn </span>erased_next_entry(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        key: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>DeserializeSeed&lt;<span class="lifetime">&#39;de</span>&gt;,
-        value: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>DeserializeSeed&lt;<span class="lifetime">&#39;de</span>&gt;,
+        key: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>DeserializeSeed&lt;<span class="lifetime">'de</span>&gt;,
+        value: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>DeserializeSeed&lt;<span class="lifetime">'de</span>&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;(Out, Out)&gt;, Error&gt;;
     <span class="kw">fn </span>erased_size_hint(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;usize&gt;;
 }
 
-<span class="kw">pub trait </span>EnumAccess&lt;<span class="lifetime">&#39;de</span>&gt; {
+<span class="kw">pub trait </span>EnumAccess&lt;<span class="lifetime">'de</span>&gt; {
     <span class="kw">fn </span>erased_variant_seed(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        d: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>DeserializeSeed&lt;<span class="lifetime">&#39;de</span>&gt;,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;(Out, Variant&lt;<span class="lifetime">&#39;de</span>&gt;), Error&gt;;
+        seed: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>DeserializeSeed&lt;<span class="lifetime">'de</span>&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;(Out, Variant&lt;<span class="lifetime">'de</span>&gt;), Error&gt;;
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;de</span>&gt; <span class="kw">dyn </span>Deserializer&lt;<span class="lifetime">&#39;de</span>&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'de</span>&gt; <span class="kw">dyn </span>Deserializer&lt;<span class="lifetime">'de</span>&gt; {
     <span class="doccomment">/// Convert any Serde `Deserializer` to a trait object.
     ///
     /// ```rust
@@ -1834,8 +1892,8 @@
     /// use std::collections::BTreeMap as Map;
     ///
     /// fn main() {
-    ///     static JSON: &amp;&#39;static [u8] = br#&quot;{&quot;A&quot;: 65, &quot;B&quot;: 66}&quot;#;
-    ///     static CBOR: &amp;&#39;static [u8] = &amp;[162, 97, 65, 24, 65, 97, 66, 24, 66];
+    ///     static JSON: &amp;'static [u8] = br#"{"A": 65, "B": 66}"#;
+    ///     static CBOR: &amp;'static [u8] = &amp;[162, 97, 65, 24, 65, 97, 66, 24, 66];
     ///
     ///     // Construct some deserializers.
     ///     let json = &amp;mut serde_json::Deserializer::from_slice(JSON);
@@ -1844,24 +1902,22 @@
     ///     // The values in this map are boxed trait objects, which is not possible
     ///     // with the normal serde::Deserializer because of object safety.
     ///     let mut formats: Map&lt;&amp;str, Box&lt;dyn Deserializer&gt;&gt; = Map::new();
-    ///     formats.insert(&quot;json&quot;, Box::new(&lt;dyn Deserializer&gt;::erase(json)));
-    ///     formats.insert(&quot;cbor&quot;, Box::new(&lt;dyn Deserializer&gt;::erase(cbor)));
+    ///     formats.insert("json", Box::new(&lt;dyn Deserializer&gt;::erase(json)));
+    ///     formats.insert("cbor", Box::new(&lt;dyn Deserializer&gt;::erase(cbor)));
     ///
     ///     // Pick a Deserializer out of the formats map.
-    ///     let format = formats.get_mut(&quot;json&quot;).unwrap();
+    ///     let format = formats.get_mut("json").unwrap();
     ///
     ///     let data: Map&lt;String, usize&gt; = erased_serde::deserialize(format).unwrap();
     ///
-    ///     println!(&quot;{}&quot;, data[&quot;A&quot;] + data[&quot;B&quot;]);
+    ///     println!("{}", data["A"] + data["B"]);
     /// }
     /// ```
-    </span><span class="kw">pub fn </span>erase&lt;D&gt;(deserializer: D) -&gt; erase::Deserializer&lt;D&gt;
+    </span><span class="kw">pub fn </span>erase&lt;D&gt;(deserializer: D) -&gt; <span class="kw">impl </span>Deserializer&lt;<span class="lifetime">'de</span>&gt;
     <span class="kw">where
-        </span>D: serde::Deserializer&lt;<span class="lifetime">&#39;de</span>&gt;,
+        </span>D: serde::Deserializer&lt;<span class="lifetime">'de</span>&gt;,
     {
-        erase::Deserializer {
-            state: <span class="prelude-val">Some</span>(deserializer),
-        }
+        erase::Deserializer::new(deserializer)
     }
 }
 
@@ -1883,185 +1939,219 @@
 
 </span><span class="kw">mod </span>erase {
     <span class="kw">pub struct </span>DeserializeSeed&lt;D&gt; {
-        <span class="kw">pub</span>(<span class="kw">crate</span>) state: <span class="prelude-ty">Option</span>&lt;D&gt;,
+        state: <span class="prelude-ty">Option</span>&lt;D&gt;,
     }
 
     <span class="kw">impl</span>&lt;D&gt; DeserializeSeed&lt;D&gt; {
+        <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>new(seed: D) -&gt; <span class="self">Self </span>{
+            DeserializeSeed { state: <span class="prelude-val">Some</span>(seed) }
+        }
+
         <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>take(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; D {
             <span class="self">self</span>.state.take().unwrap()
         }
     }
 
     <span class="kw">pub struct </span>Deserializer&lt;D&gt; {
-        <span class="kw">pub</span>(<span class="kw">crate</span>) state: <span class="prelude-ty">Option</span>&lt;D&gt;,
+        state: <span class="prelude-ty">Option</span>&lt;D&gt;,
     }
 
     <span class="kw">impl</span>&lt;D&gt; Deserializer&lt;D&gt; {
+        <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>new(deserializer: D) -&gt; <span class="self">Self </span>{
+            Deserializer {
+                state: <span class="prelude-val">Some</span>(deserializer),
+            }
+        }
+
         <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>take(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; D {
             <span class="self">self</span>.state.take().unwrap()
         }
+
         <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>as_ref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>D {
             <span class="self">self</span>.state.as_ref().unwrap()
         }
     }
 
     <span class="kw">pub struct </span>Visitor&lt;D&gt; {
-        <span class="kw">pub</span>(<span class="kw">crate</span>) state: <span class="prelude-ty">Option</span>&lt;D&gt;,
+        state: <span class="prelude-ty">Option</span>&lt;D&gt;,
     }
 
     <span class="kw">impl</span>&lt;D&gt; Visitor&lt;D&gt; {
+        <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>new(visitor: D) -&gt; <span class="self">Self </span>{
+            Visitor {
+                state: <span class="prelude-val">Some</span>(visitor),
+            }
+        }
+
         <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>take(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; D {
             <span class="self">self</span>.state.take().unwrap()
         }
+
         <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>as_ref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>D {
             <span class="self">self</span>.state.as_ref().unwrap()
         }
     }
 
     <span class="kw">pub struct </span>SeqAccess&lt;D&gt; {
-        <span class="kw">pub</span>(<span class="kw">crate</span>) state: D,
+        state: D,
     }
 
     <span class="kw">impl</span>&lt;D&gt; SeqAccess&lt;D&gt; {
+        <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>new(seq_access: D) -&gt; <span class="self">Self </span>{
+            SeqAccess { state: seq_access }
+        }
+
         <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>as_ref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>D {
             <span class="kw-2">&amp;</span><span class="self">self</span>.state
         }
+
         <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>as_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>D {
             <span class="kw-2">&amp;mut </span><span class="self">self</span>.state
         }
     }
 
     <span class="kw">pub struct </span>MapAccess&lt;D&gt; {
-        <span class="kw">pub</span>(<span class="kw">crate</span>) state: D,
+        state: D,
     }
 
     <span class="kw">impl</span>&lt;D&gt; MapAccess&lt;D&gt; {
+        <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>new(map_access: D) -&gt; <span class="self">Self </span>{
+            MapAccess { state: map_access }
+        }
+
         <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>as_ref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>D {
             <span class="kw-2">&amp;</span><span class="self">self</span>.state
         }
+
         <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>as_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>D {
             <span class="kw-2">&amp;mut </span><span class="self">self</span>.state
         }
     }
 
     <span class="kw">pub struct </span>EnumAccess&lt;D&gt; {
-        <span class="kw">pub</span>(<span class="kw">crate</span>) state: <span class="prelude-ty">Option</span>&lt;D&gt;,
+        state: <span class="prelude-ty">Option</span>&lt;D&gt;,
     }
 
     <span class="kw">impl</span>&lt;D&gt; EnumAccess&lt;D&gt; {
+        <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>new(enum_access: D) -&gt; <span class="self">Self </span>{
+            EnumAccess {
+                state: <span class="prelude-val">Some</span>(enum_access),
+            }
+        }
+
         <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>take(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; D {
             <span class="self">self</span>.state.take().unwrap()
         }
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;de</span>, T&gt; DeserializeSeed&lt;<span class="lifetime">&#39;de</span>&gt; <span class="kw">for </span>erase::DeserializeSeed&lt;T&gt;
+<span class="kw">impl</span>&lt;<span class="lifetime">'de</span>, T&gt; DeserializeSeed&lt;<span class="lifetime">'de</span>&gt; <span class="kw">for </span>erase::DeserializeSeed&lt;T&gt;
 <span class="kw">where
-    </span>T: serde::de::DeserializeSeed&lt;<span class="lifetime">&#39;de</span>&gt;,
+    </span>T: serde::de::DeserializeSeed&lt;<span class="lifetime">'de</span>&gt;,
 {
     <span class="kw">fn </span>erased_deserialize_seed(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        deserializer: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Deserializer&lt;<span class="lifetime">&#39;de</span>&gt;,
+        deserializer: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Deserializer&lt;<span class="lifetime">'de</span>&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
         <span class="kw">unsafe </span>{ <span class="self">self</span>.take().deserialize(deserializer).unsafe_map(Out::new) }
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;de</span>, T&gt; Deserializer&lt;<span class="lifetime">&#39;de</span>&gt; <span class="kw">for </span>erase::Deserializer&lt;T&gt;
+<span class="kw">impl</span>&lt;<span class="lifetime">'de</span>, T&gt; Deserializer&lt;<span class="lifetime">'de</span>&gt; <span class="kw">for </span>erase::Deserializer&lt;T&gt;
 <span class="kw">where
-    </span>T: serde::Deserializer&lt;<span class="lifetime">&#39;de</span>&gt;,
+    </span>T: serde::Deserializer&lt;<span class="lifetime">'de</span>&gt;,
 {
-    <span class="kw">fn </span>erased_deserialize_any(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
+    <span class="kw">fn </span>erased_deserialize_any(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
         <span class="self">self</span>.take().deserialize_any(visitor).map_err(erase)
     }
 
-    <span class="kw">fn </span>erased_deserialize_bool(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
+    <span class="kw">fn </span>erased_deserialize_bool(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
         <span class="self">self</span>.take().deserialize_bool(visitor).map_err(erase)
     }
 
-    <span class="kw">fn </span>erased_deserialize_i8(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
+    <span class="kw">fn </span>erased_deserialize_i8(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
         <span class="self">self</span>.take().deserialize_i8(visitor).map_err(erase)
     }
 
-    <span class="kw">fn </span>erased_deserialize_i16(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
+    <span class="kw">fn </span>erased_deserialize_i16(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
         <span class="self">self</span>.take().deserialize_i16(visitor).map_err(erase)
     }
 
-    <span class="kw">fn </span>erased_deserialize_i32(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
+    <span class="kw">fn </span>erased_deserialize_i32(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
         <span class="self">self</span>.take().deserialize_i32(visitor).map_err(erase)
     }
 
-    <span class="kw">fn </span>erased_deserialize_i64(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
+    <span class="kw">fn </span>erased_deserialize_i64(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
         <span class="self">self</span>.take().deserialize_i64(visitor).map_err(erase)
     }
 
-    <span class="kw">fn </span>erased_deserialize_i128(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
+    <span class="kw">fn </span>erased_deserialize_i128(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
         <span class="self">self</span>.take().deserialize_i128(visitor).map_err(erase)
     }
 
-    <span class="kw">fn </span>erased_deserialize_u8(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
+    <span class="kw">fn </span>erased_deserialize_u8(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
         <span class="self">self</span>.take().deserialize_u8(visitor).map_err(erase)
     }
 
-    <span class="kw">fn </span>erased_deserialize_u16(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
+    <span class="kw">fn </span>erased_deserialize_u16(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
         <span class="self">self</span>.take().deserialize_u16(visitor).map_err(erase)
     }
 
-    <span class="kw">fn </span>erased_deserialize_u32(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
+    <span class="kw">fn </span>erased_deserialize_u32(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
         <span class="self">self</span>.take().deserialize_u32(visitor).map_err(erase)
     }
 
-    <span class="kw">fn </span>erased_deserialize_u64(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
+    <span class="kw">fn </span>erased_deserialize_u64(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
         <span class="self">self</span>.take().deserialize_u64(visitor).map_err(erase)
     }
 
-    <span class="kw">fn </span>erased_deserialize_u128(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
+    <span class="kw">fn </span>erased_deserialize_u128(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
         <span class="self">self</span>.take().deserialize_u128(visitor).map_err(erase)
     }
 
-    <span class="kw">fn </span>erased_deserialize_f32(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
+    <span class="kw">fn </span>erased_deserialize_f32(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
         <span class="self">self</span>.take().deserialize_f32(visitor).map_err(erase)
     }
 
-    <span class="kw">fn </span>erased_deserialize_f64(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
+    <span class="kw">fn </span>erased_deserialize_f64(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
         <span class="self">self</span>.take().deserialize_f64(visitor).map_err(erase)
     }
 
-    <span class="kw">fn </span>erased_deserialize_char(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
+    <span class="kw">fn </span>erased_deserialize_char(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
         <span class="self">self</span>.take().deserialize_char(visitor).map_err(erase)
     }
 
-    <span class="kw">fn </span>erased_deserialize_str(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
+    <span class="kw">fn </span>erased_deserialize_str(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
         <span class="self">self</span>.take().deserialize_str(visitor).map_err(erase)
     }
 
-    <span class="kw">fn </span>erased_deserialize_string(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
+    <span class="kw">fn </span>erased_deserialize_string(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
         <span class="self">self</span>.take().deserialize_string(visitor).map_err(erase)
     }
 
-    <span class="kw">fn </span>erased_deserialize_bytes(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
+    <span class="kw">fn </span>erased_deserialize_bytes(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
         <span class="self">self</span>.take().deserialize_bytes(visitor).map_err(erase)
     }
 
     <span class="kw">fn </span>erased_deserialize_byte_buf(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;,
+        visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
         <span class="self">self</span>.take().deserialize_byte_buf(visitor).map_err(erase)
     }
 
-    <span class="kw">fn </span>erased_deserialize_option(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
+    <span class="kw">fn </span>erased_deserialize_option(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
         <span class="self">self</span>.take().deserialize_option(visitor).map_err(erase)
     }
 
-    <span class="kw">fn </span>erased_deserialize_unit(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
+    <span class="kw">fn </span>erased_deserialize_unit(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
         <span class="self">self</span>.take().deserialize_unit(visitor).map_err(erase)
     }
 
     <span class="kw">fn </span>erased_deserialize_unit_struct(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
-        visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;,
+        name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
+        visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
         <span class="self">self</span>.take()
             .deserialize_unit_struct(name, visitor)
@@ -2070,46 +2160,46 @@
 
     <span class="kw">fn </span>erased_deserialize_newtype_struct(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
-        visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;,
+        name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
+        visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
         <span class="self">self</span>.take()
             .deserialize_newtype_struct(name, visitor)
             .map_err(erase)
     }
 
-    <span class="kw">fn </span>erased_deserialize_seq(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
+    <span class="kw">fn </span>erased_deserialize_seq(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
         <span class="self">self</span>.take().deserialize_seq(visitor).map_err(erase)
     }
 
     <span class="kw">fn </span>erased_deserialize_tuple(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
         len: usize,
-        visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;,
+        visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
         <span class="self">self</span>.take().deserialize_tuple(len, visitor).map_err(erase)
     }
 
     <span class="kw">fn </span>erased_deserialize_tuple_struct(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
         len: usize,
-        visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;,
+        visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
         <span class="self">self</span>.take()
             .deserialize_tuple_struct(name, len, visitor)
             .map_err(erase)
     }
 
-    <span class="kw">fn </span>erased_deserialize_map(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
+    <span class="kw">fn </span>erased_deserialize_map(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
         <span class="self">self</span>.take().deserialize_map(visitor).map_err(erase)
     }
 
     <span class="kw">fn </span>erased_deserialize_struct(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
-        fields: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>[<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str],
-        visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;,
+        name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
+        fields: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>[<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str],
+        visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
         <span class="self">self</span>.take()
             .deserialize_struct(name, fields, visitor)
@@ -2118,16 +2208,16 @@
 
     <span class="kw">fn </span>erased_deserialize_identifier(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;,
+        visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
         <span class="self">self</span>.take().deserialize_identifier(visitor).map_err(erase)
     }
 
     <span class="kw">fn </span>erased_deserialize_enum(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
-        variants: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>[<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str],
-        visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;,
+        name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
+        variants: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>[<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str],
+        visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
         <span class="self">self</span>.take()
             .deserialize_enum(name, variants, visitor)
@@ -2136,7 +2226,7 @@
 
     <span class="kw">fn </span>erased_deserialize_ignored_any(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;,
+        visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
         <span class="self">self</span>.take().deserialize_ignored_any(visitor).map_err(erase)
     }
@@ -2146,9 +2236,11 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;de</span>, T&gt; Visitor&lt;<span class="lifetime">&#39;de</span>&gt; <span class="kw">for </span>erase::Visitor&lt;T&gt;
+<span class="kw">impl</span>&lt;<span class="lifetime">'de</span>, T&gt; Sealed <span class="kw">for </span>erase::Deserializer&lt;T&gt; <span class="kw">where </span>T: serde::Deserializer&lt;<span class="lifetime">'de</span>&gt; {}
+
+<span class="kw">impl</span>&lt;<span class="lifetime">'de</span>, T&gt; Visitor&lt;<span class="lifetime">'de</span>&gt; <span class="kw">for </span>erase::Visitor&lt;T&gt;
 <span class="kw">where
-    </span>T: serde::de::Visitor&lt;<span class="lifetime">&#39;de</span>&gt;,
+    </span>T: serde::de::Visitor&lt;<span class="lifetime">'de</span>&gt;,
 {
     <span class="kw">fn </span>erased_expecting(<span class="kw-2">&amp;</span><span class="self">self</span>, formatter: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
         <span class="self">self</span>.as_ref().expecting(formatter)
@@ -2214,11 +2306,11 @@
         <span class="kw">unsafe </span>{ <span class="self">self</span>.take().visit_str(v).unsafe_map(Out::new) }
     }
 
-    <span class="kw">fn </span>erased_visit_borrowed_str(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: <span class="kw-2">&amp;</span><span class="lifetime">&#39;de </span>str) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
+    <span class="kw">fn </span>erased_visit_borrowed_str(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: <span class="kw-2">&amp;</span><span class="lifetime">'de </span>str) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
         <span class="kw">unsafe </span>{ <span class="self">self</span>.take().visit_borrowed_str(v).unsafe_map(Out::new) }
     }
 
-    <span class="attr">#[cfg(any(feature = <span class="string">&quot;std&quot;</span>, feature = <span class="string">&quot;alloc&quot;</span>))]
+    <span class="attr">#[cfg(feature = <span class="string">"alloc"</span>)]
     </span><span class="kw">fn </span>erased_visit_string(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: String) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
         <span class="kw">unsafe </span>{ <span class="self">self</span>.take().visit_string(v).unsafe_map(Out::new) }
     }
@@ -2227,11 +2319,11 @@
         <span class="kw">unsafe </span>{ <span class="self">self</span>.take().visit_bytes(v).unsafe_map(Out::new) }
     }
 
-    <span class="kw">fn </span>erased_visit_borrowed_bytes(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: <span class="kw-2">&amp;</span><span class="lifetime">&#39;de </span>[u8]) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
+    <span class="kw">fn </span>erased_visit_borrowed_bytes(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: <span class="kw-2">&amp;</span><span class="lifetime">'de </span>[u8]) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
         <span class="kw">unsafe </span>{ <span class="self">self</span>.take().visit_borrowed_bytes(v).unsafe_map(Out::new) }
     }
 
-    <span class="attr">#[cfg(any(feature = <span class="string">&quot;std&quot;</span>, feature = <span class="string">&quot;alloc&quot;</span>))]
+    <span class="attr">#[cfg(feature = <span class="string">"alloc"</span>)]
     </span><span class="kw">fn </span>erased_visit_byte_buf(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: Vec&lt;u8&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
         <span class="kw">unsafe </span>{ <span class="self">self</span>.take().visit_byte_buf(v).unsafe_map(Out::new) }
     }
@@ -2242,7 +2334,7 @@
 
     <span class="kw">fn </span>erased_visit_some(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        deserializer: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Deserializer&lt;<span class="lifetime">&#39;de</span>&gt;,
+        deserializer: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Deserializer&lt;<span class="lifetime">'de</span>&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
         <span class="kw">unsafe </span>{ <span class="self">self</span>.take().visit_some(deserializer).unsafe_map(Out::new) }
     }
@@ -2253,7 +2345,7 @@
 
     <span class="kw">fn </span>erased_visit_newtype_struct(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        deserializer: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Deserializer&lt;<span class="lifetime">&#39;de</span>&gt;,
+        deserializer: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Deserializer&lt;<span class="lifetime">'de</span>&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
         <span class="kw">unsafe </span>{
             <span class="self">self</span>.take()
@@ -2262,26 +2354,26 @@
         }
     }
 
-    <span class="kw">fn </span>erased_visit_seq(<span class="kw-2">&amp;mut </span><span class="self">self</span>, seq: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>SeqAccess&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
+    <span class="kw">fn </span>erased_visit_seq(<span class="kw-2">&amp;mut </span><span class="self">self</span>, seq: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>SeqAccess&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
         <span class="kw">unsafe </span>{ <span class="self">self</span>.take().visit_seq(seq).unsafe_map(Out::new) }
     }
 
-    <span class="kw">fn </span>erased_visit_map(<span class="kw-2">&amp;mut </span><span class="self">self</span>, map: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>MapAccess&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
+    <span class="kw">fn </span>erased_visit_map(<span class="kw-2">&amp;mut </span><span class="self">self</span>, map: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>MapAccess&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
         <span class="kw">unsafe </span>{ <span class="self">self</span>.take().visit_map(map).unsafe_map(Out::new) }
     }
 
-    <span class="kw">fn </span>erased_visit_enum(<span class="kw-2">&amp;mut </span><span class="self">self</span>, data: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>EnumAccess&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
+    <span class="kw">fn </span>erased_visit_enum(<span class="kw-2">&amp;mut </span><span class="self">self</span>, data: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>EnumAccess&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
         <span class="kw">unsafe </span>{ <span class="self">self</span>.take().visit_enum(data).unsafe_map(Out::new) }
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;de</span>, T&gt; SeqAccess&lt;<span class="lifetime">&#39;de</span>&gt; <span class="kw">for </span>erase::SeqAccess&lt;T&gt;
+<span class="kw">impl</span>&lt;<span class="lifetime">'de</span>, T&gt; SeqAccess&lt;<span class="lifetime">'de</span>&gt; <span class="kw">for </span>erase::SeqAccess&lt;T&gt;
 <span class="kw">where
-    </span>T: serde::de::SeqAccess&lt;<span class="lifetime">&#39;de</span>&gt;,
+    </span>T: serde::de::SeqAccess&lt;<span class="lifetime">'de</span>&gt;,
 {
     <span class="kw">fn </span>erased_next_element(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        seed: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>DeserializeSeed&lt;<span class="lifetime">&#39;de</span>&gt;,
+        seed: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>DeserializeSeed&lt;<span class="lifetime">'de</span>&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;Out&gt;, Error&gt; {
         <span class="self">self</span>.as_mut().next_element_seed(seed).map_err(erase)
     }
@@ -2291,27 +2383,27 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;de</span>, T&gt; MapAccess&lt;<span class="lifetime">&#39;de</span>&gt; <span class="kw">for </span>erase::MapAccess&lt;T&gt;
+<span class="kw">impl</span>&lt;<span class="lifetime">'de</span>, T&gt; MapAccess&lt;<span class="lifetime">'de</span>&gt; <span class="kw">for </span>erase::MapAccess&lt;T&gt;
 <span class="kw">where
-    </span>T: serde::de::MapAccess&lt;<span class="lifetime">&#39;de</span>&gt;,
+    </span>T: serde::de::MapAccess&lt;<span class="lifetime">'de</span>&gt;,
 {
     <span class="kw">fn </span>erased_next_key(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        seed: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>DeserializeSeed&lt;<span class="lifetime">&#39;de</span>&gt;,
+        seed: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>DeserializeSeed&lt;<span class="lifetime">'de</span>&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;Out&gt;, Error&gt; {
         <span class="self">self</span>.as_mut().next_key_seed(seed).map_err(erase)
     }
 
-    <span class="kw">fn </span>erased_next_value(<span class="kw-2">&amp;mut </span><span class="self">self</span>, seed: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>DeserializeSeed&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
+    <span class="kw">fn </span>erased_next_value(<span class="kw-2">&amp;mut </span><span class="self">self</span>, seed: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>DeserializeSeed&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
         <span class="self">self</span>.as_mut().next_value_seed(seed).map_err(erase)
     }
 
     <span class="kw">fn </span>erased_next_entry(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        k: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>DeserializeSeed&lt;<span class="lifetime">&#39;de</span>&gt;,
-        v: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>DeserializeSeed&lt;<span class="lifetime">&#39;de</span>&gt;,
+        kseed: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>DeserializeSeed&lt;<span class="lifetime">'de</span>&gt;,
+        vseed: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>DeserializeSeed&lt;<span class="lifetime">'de</span>&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;(Out, Out)&gt;, Error&gt; {
-        <span class="self">self</span>.as_mut().next_entry_seed(k, v).map_err(erase)
+        <span class="self">self</span>.as_mut().next_entry_seed(kseed, vseed).map_err(erase)
     }
 
     <span class="kw">fn </span>erased_size_hint(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;usize&gt; {
@@ -2319,14 +2411,14 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;de</span>, T&gt; EnumAccess&lt;<span class="lifetime">&#39;de</span>&gt; <span class="kw">for </span>erase::EnumAccess&lt;T&gt;
+<span class="kw">impl</span>&lt;<span class="lifetime">'de</span>, T&gt; EnumAccess&lt;<span class="lifetime">'de</span>&gt; <span class="kw">for </span>erase::EnumAccess&lt;T&gt;
 <span class="kw">where
-    </span>T: serde::de::EnumAccess&lt;<span class="lifetime">&#39;de</span>&gt;,
+    </span>T: serde::de::EnumAccess&lt;<span class="lifetime">'de</span>&gt;,
 {
     <span class="kw">fn </span>erased_variant_seed(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        seed: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>DeserializeSeed&lt;<span class="lifetime">&#39;de</span>&gt;,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;(Out, Variant&lt;<span class="lifetime">&#39;de</span>&gt;), Error&gt; {
+        seed: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>DeserializeSeed&lt;<span class="lifetime">'de</span>&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;(Out, Variant&lt;<span class="lifetime">'de</span>&gt;), Error&gt; {
         <span class="self">self</span>.take()
             .variant_seed(seed)
             .map(|(out, variant)| {
@@ -2334,21 +2426,21 @@
                 <span class="kw">let </span>erased = Variant {
                     data: <span class="kw">unsafe </span>{ Any::new(variant) },
                     unit_variant: {
-                        <span class="kw">unsafe fn </span>unit_variant&lt;<span class="lifetime">&#39;de</span>, T&gt;(a: Any) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt;
+                        <span class="kw">unsafe fn </span>unit_variant&lt;<span class="lifetime">'de</span>, T&gt;(a: Any) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt;
                         <span class="kw">where
-                            </span>T: serde::de::EnumAccess&lt;<span class="lifetime">&#39;de</span>&gt;,
+                            </span>T: serde::de::EnumAccess&lt;<span class="lifetime">'de</span>&gt;,
                         {
                             <span class="kw">unsafe </span>{ a.take::&lt;T::Variant&gt;().unit_variant().map_err(erase) }
                         }
                         unit_variant::&lt;T&gt;
                     },
                     visit_newtype: {
-                        <span class="kw">unsafe fn </span>visit_newtype&lt;<span class="lifetime">&#39;de</span>, T&gt;(
+                        <span class="kw">unsafe fn </span>visit_newtype&lt;<span class="lifetime">'de</span>, T&gt;(
                             a: Any,
-                            seed: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>DeserializeSeed&lt;<span class="lifetime">&#39;de</span>&gt;,
+                            seed: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>DeserializeSeed&lt;<span class="lifetime">'de</span>&gt;,
                         ) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;
                         <span class="kw">where
-                            </span>T: serde::de::EnumAccess&lt;<span class="lifetime">&#39;de</span>&gt;,
+                            </span>T: serde::de::EnumAccess&lt;<span class="lifetime">'de</span>&gt;,
                         {
                             <span class="kw">unsafe </span>{
                                 a.take::&lt;T::Variant&gt;()
@@ -2359,13 +2451,13 @@
                         visit_newtype::&lt;T&gt;
                     },
                     tuple_variant: {
-                        <span class="kw">unsafe fn </span>tuple_variant&lt;<span class="lifetime">&#39;de</span>, T&gt;(
+                        <span class="kw">unsafe fn </span>tuple_variant&lt;<span class="lifetime">'de</span>, T&gt;(
                             a: Any,
                             len: usize,
-                            visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;,
+                            visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;,
                         ) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;
                         <span class="kw">where
-                            </span>T: serde::de::EnumAccess&lt;<span class="lifetime">&#39;de</span>&gt;,
+                            </span>T: serde::de::EnumAccess&lt;<span class="lifetime">'de</span>&gt;,
                         {
                             <span class="kw">unsafe </span>{
                                 a.take::&lt;T::Variant&gt;()
@@ -2376,13 +2468,13 @@
                         tuple_variant::&lt;T&gt;
                     },
                     struct_variant: {
-                        <span class="kw">unsafe fn </span>struct_variant&lt;<span class="lifetime">&#39;de</span>, T&gt;(
+                        <span class="kw">unsafe fn </span>struct_variant&lt;<span class="lifetime">'de</span>, T&gt;(
                             a: Any,
-                            fields: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>[<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str],
-                            visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;,
+                            fields: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>[<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str],
+                            visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;,
                         ) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;
                         <span class="kw">where
-                            </span>T: serde::de::EnumAccess&lt;<span class="lifetime">&#39;de</span>&gt;,
+                            </span>T: serde::de::EnumAccess&lt;<span class="lifetime">'de</span>&gt;,
                         {
                             <span class="kw">unsafe </span>{
                                 a.take::&lt;T::Variant&gt;()
@@ -2401,269 +2493,267 @@
 
 <span class="comment">// IMPL SERDE FOR ERASED SERDE /////////////////////////////////////////////////
 
-</span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;de</span>&gt; serde::de::DeserializeSeed&lt;<span class="lifetime">&#39;de</span>&gt; <span class="kw">for </span><span class="kw-2">&amp;mut </span>(<span class="kw">dyn </span>DeserializeSeed&lt;<span class="lifetime">&#39;de</span>&gt; + <span class="lifetime">&#39;_</span>) {
+</span><span class="kw">impl</span>&lt;<span class="lifetime">'de</span>&gt; serde::de::DeserializeSeed&lt;<span class="lifetime">'de</span>&gt; <span class="kw">for </span><span class="kw-2">&amp;mut </span>(<span class="kw">dyn </span>DeserializeSeed&lt;<span class="lifetime">'de</span>&gt; + <span class="lifetime">'_</span>) {
     <span class="kw">type </span>Value = Out;
     <span class="kw">fn </span>deserialize&lt;D&gt;(<span class="self">self</span>, deserializer: D) -&gt; <span class="prelude-ty">Result</span>&lt;Out, D::Error&gt;
     <span class="kw">where
-        </span>D: serde::Deserializer&lt;<span class="lifetime">&#39;de</span>&gt;,
+        </span>D: serde::Deserializer&lt;<span class="lifetime">'de</span>&gt;,
     {
-        <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Deserializer {
-            state: <span class="prelude-val">Some</span>(deserializer),
-        };
+        <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Deserializer::new(deserializer);
         <span class="self">self</span>.erased_deserialize_seed(<span class="kw-2">&amp;mut </span>erased).map_err(unerase)
     }
 }
 
 <span class="macro">macro_rules! </span>impl_deserializer_for_trait_object {
     ({$(<span class="macro-nonterminal">$</span><span class="kw-2">mut</span>:<span class="macro-nonterminal">tt</span>)<span class="kw-2">*</span>} <span class="macro-nonterminal">$ty</span>:ty) =&gt; {
-        <span class="kw">impl</span>&lt;<span class="lifetime">&#39;de</span>&gt; serde::Deserializer&lt;<span class="lifetime">&#39;de</span>&gt; <span class="kw">for </span><span class="macro-nonterminal">$ty </span>{
+        <span class="kw">impl</span>&lt;<span class="lifetime">'de</span>&gt; serde::Deserializer&lt;<span class="lifetime">'de</span>&gt; <span class="kw">for </span><span class="macro-nonterminal">$ty </span>{
             <span class="kw">type </span>Error = Error;
 
             <span class="kw">fn </span>deserialize_any&lt;V&gt;($(<span class="macro-nonterminal">$</span><span class="kw-2">mut</span>)* <span class="macro-nonterminal">self</span>, visitor: V) -&gt; <span class="prelude-ty">Result</span>&lt;V::Value, Error&gt;
             <span class="kw">where
-                </span>V: serde::de::Visitor&lt;<span class="lifetime">&#39;de</span>&gt;,
+                </span>V: serde::de::Visitor&lt;<span class="lifetime">'de</span>&gt;,
             {
-                <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Visitor { state: <span class="prelude-val">Some</span>(visitor) };
+                <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Visitor::new(visitor);
                 <span class="kw">unsafe </span>{ <span class="self">self</span>.erased_deserialize_any(<span class="kw-2">&amp;mut </span>erased).unsafe_map(Out::take) }
             }
 
             <span class="kw">fn </span>deserialize_bool&lt;V&gt;($(<span class="macro-nonterminal">$</span><span class="kw-2">mut</span>)* <span class="macro-nonterminal">self</span>, visitor: V) -&gt; <span class="prelude-ty">Result</span>&lt;V::Value, Error&gt;
             <span class="kw">where
-                </span>V: serde::de::Visitor&lt;<span class="lifetime">&#39;de</span>&gt;,
+                </span>V: serde::de::Visitor&lt;<span class="lifetime">'de</span>&gt;,
             {
-                <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Visitor { state: <span class="prelude-val">Some</span>(visitor) };
+                <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Visitor::new(visitor);
                 <span class="kw">unsafe </span>{ <span class="self">self</span>.erased_deserialize_bool(<span class="kw-2">&amp;mut </span>erased).unsafe_map(Out::take) }
             }
 
             <span class="kw">fn </span>deserialize_i8&lt;V&gt;($(<span class="macro-nonterminal">$</span><span class="kw-2">mut</span>)* <span class="macro-nonterminal">self</span>, visitor: V) -&gt; <span class="prelude-ty">Result</span>&lt;V::Value, Error&gt;
             <span class="kw">where
-                </span>V: serde::de::Visitor&lt;<span class="lifetime">&#39;de</span>&gt;,
+                </span>V: serde::de::Visitor&lt;<span class="lifetime">'de</span>&gt;,
             {
-                <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Visitor { state: <span class="prelude-val">Some</span>(visitor) };
+                <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Visitor::new(visitor);
                 <span class="kw">unsafe </span>{ <span class="self">self</span>.erased_deserialize_i8(<span class="kw-2">&amp;mut </span>erased).unsafe_map(Out::take) }
             }
 
             <span class="kw">fn </span>deserialize_i16&lt;V&gt;($(<span class="macro-nonterminal">$</span><span class="kw-2">mut</span>)* <span class="macro-nonterminal">self</span>, visitor: V) -&gt; <span class="prelude-ty">Result</span>&lt;V::Value, Error&gt;
             <span class="kw">where
-                </span>V: serde::de::Visitor&lt;<span class="lifetime">&#39;de</span>&gt;,
+                </span>V: serde::de::Visitor&lt;<span class="lifetime">'de</span>&gt;,
             {
-                <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Visitor { state: <span class="prelude-val">Some</span>(visitor) };
+                <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Visitor::new(visitor);
                 <span class="kw">unsafe </span>{ <span class="self">self</span>.erased_deserialize_i16(<span class="kw-2">&amp;mut </span>erased).unsafe_map(Out::take) }
             }
 
             <span class="kw">fn </span>deserialize_i32&lt;V&gt;($(<span class="macro-nonterminal">$</span><span class="kw-2">mut</span>)* <span class="macro-nonterminal">self</span>, visitor: V) -&gt; <span class="prelude-ty">Result</span>&lt;V::Value, Error&gt;
             <span class="kw">where
-                </span>V: serde::de::Visitor&lt;<span class="lifetime">&#39;de</span>&gt;,
+                </span>V: serde::de::Visitor&lt;<span class="lifetime">'de</span>&gt;,
             {
-                <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Visitor { state: <span class="prelude-val">Some</span>(visitor) };
+                <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Visitor::new(visitor);
                 <span class="kw">unsafe </span>{ <span class="self">self</span>.erased_deserialize_i32(<span class="kw-2">&amp;mut </span>erased).unsafe_map(Out::take) }
             }
 
             <span class="kw">fn </span>deserialize_i64&lt;V&gt;($(<span class="macro-nonterminal">$</span><span class="kw-2">mut</span>)* <span class="macro-nonterminal">self</span>, visitor: V) -&gt; <span class="prelude-ty">Result</span>&lt;V::Value, Error&gt;
             <span class="kw">where
-                </span>V: serde::de::Visitor&lt;<span class="lifetime">&#39;de</span>&gt;,
+                </span>V: serde::de::Visitor&lt;<span class="lifetime">'de</span>&gt;,
             {
-                <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Visitor { state: <span class="prelude-val">Some</span>(visitor) };
+                <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Visitor::new(visitor);
                 <span class="kw">unsafe </span>{ <span class="self">self</span>.erased_deserialize_i64(<span class="kw-2">&amp;mut </span>erased).unsafe_map(Out::take) }
             }
 
             <span class="kw">fn </span>deserialize_i128&lt;V&gt;($(<span class="macro-nonterminal">$</span><span class="kw-2">mut</span>)* <span class="macro-nonterminal">self</span>, visitor: V) -&gt; <span class="prelude-ty">Result</span>&lt;V::Value, Error&gt;
             <span class="kw">where
-                </span>V: serde::de::Visitor&lt;<span class="lifetime">&#39;de</span>&gt;,
+                </span>V: serde::de::Visitor&lt;<span class="lifetime">'de</span>&gt;,
             {
-                <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Visitor { state: <span class="prelude-val">Some</span>(visitor) };
+                <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Visitor::new(visitor);
                 <span class="kw">unsafe </span>{ <span class="self">self</span>.erased_deserialize_i128(<span class="kw-2">&amp;mut </span>erased).unsafe_map(Out::take) }
             }
 
             <span class="kw">fn </span>deserialize_u8&lt;V&gt;($(<span class="macro-nonterminal">$</span><span class="kw-2">mut</span>)* <span class="macro-nonterminal">self</span>, visitor: V) -&gt; <span class="prelude-ty">Result</span>&lt;V::Value, Error&gt;
             <span class="kw">where
-                </span>V: serde::de::Visitor&lt;<span class="lifetime">&#39;de</span>&gt;,
+                </span>V: serde::de::Visitor&lt;<span class="lifetime">'de</span>&gt;,
             {
-                <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Visitor { state: <span class="prelude-val">Some</span>(visitor) };
+                <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Visitor::new(visitor);
                 <span class="kw">unsafe </span>{ <span class="self">self</span>.erased_deserialize_u8(<span class="kw-2">&amp;mut </span>erased).unsafe_map(Out::take) }
             }
 
             <span class="kw">fn </span>deserialize_u16&lt;V&gt;($(<span class="macro-nonterminal">$</span><span class="kw-2">mut</span>)* <span class="macro-nonterminal">self</span>, visitor: V) -&gt; <span class="prelude-ty">Result</span>&lt;V::Value, Error&gt;
             <span class="kw">where
-                </span>V: serde::de::Visitor&lt;<span class="lifetime">&#39;de</span>&gt;,
+                </span>V: serde::de::Visitor&lt;<span class="lifetime">'de</span>&gt;,
             {
-                <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Visitor { state: <span class="prelude-val">Some</span>(visitor) };
+                <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Visitor::new(visitor);
                 <span class="kw">unsafe </span>{ <span class="self">self</span>.erased_deserialize_u16(<span class="kw-2">&amp;mut </span>erased).unsafe_map(Out::take) }
             }
 
             <span class="kw">fn </span>deserialize_u32&lt;V&gt;($(<span class="macro-nonterminal">$</span><span class="kw-2">mut</span>)* <span class="macro-nonterminal">self</span>, visitor: V) -&gt; <span class="prelude-ty">Result</span>&lt;V::Value, Error&gt;
             <span class="kw">where
-                </span>V: serde::de::Visitor&lt;<span class="lifetime">&#39;de</span>&gt;,
+                </span>V: serde::de::Visitor&lt;<span class="lifetime">'de</span>&gt;,
             {
-                <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Visitor { state: <span class="prelude-val">Some</span>(visitor) };
+                <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Visitor::new(visitor);
                 <span class="kw">unsafe </span>{ <span class="self">self</span>.erased_deserialize_u32(<span class="kw-2">&amp;mut </span>erased).unsafe_map(Out::take) }
             }
 
             <span class="kw">fn </span>deserialize_u64&lt;V&gt;($(<span class="macro-nonterminal">$</span><span class="kw-2">mut</span>)* <span class="macro-nonterminal">self</span>, visitor: V) -&gt; <span class="prelude-ty">Result</span>&lt;V::Value, Error&gt;
             <span class="kw">where
-                </span>V: serde::de::Visitor&lt;<span class="lifetime">&#39;de</span>&gt;,
+                </span>V: serde::de::Visitor&lt;<span class="lifetime">'de</span>&gt;,
             {
-                <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Visitor { state: <span class="prelude-val">Some</span>(visitor) };
+                <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Visitor::new(visitor);
                 <span class="kw">unsafe </span>{ <span class="self">self</span>.erased_deserialize_u64(<span class="kw-2">&amp;mut </span>erased).unsafe_map(Out::take) }
             }
 
             <span class="kw">fn </span>deserialize_u128&lt;V&gt;($(<span class="macro-nonterminal">$</span><span class="kw-2">mut</span>)* <span class="macro-nonterminal">self</span>, visitor: V) -&gt; <span class="prelude-ty">Result</span>&lt;V::Value, Error&gt;
             <span class="kw">where
-                </span>V: serde::de::Visitor&lt;<span class="lifetime">&#39;de</span>&gt;,
+                </span>V: serde::de::Visitor&lt;<span class="lifetime">'de</span>&gt;,
             {
-                <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Visitor { state: <span class="prelude-val">Some</span>(visitor) };
+                <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Visitor::new(visitor);
                 <span class="kw">unsafe </span>{ <span class="self">self</span>.erased_deserialize_u128(<span class="kw-2">&amp;mut </span>erased).unsafe_map(Out::take) }
             }
 
             <span class="kw">fn </span>deserialize_f32&lt;V&gt;($(<span class="macro-nonterminal">$</span><span class="kw-2">mut</span>)* <span class="macro-nonterminal">self</span>, visitor: V) -&gt; <span class="prelude-ty">Result</span>&lt;V::Value, Error&gt;
             <span class="kw">where
-                </span>V: serde::de::Visitor&lt;<span class="lifetime">&#39;de</span>&gt;,
+                </span>V: serde::de::Visitor&lt;<span class="lifetime">'de</span>&gt;,
             {
-                <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Visitor { state: <span class="prelude-val">Some</span>(visitor) };
+                <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Visitor::new(visitor);
                 <span class="kw">unsafe </span>{ <span class="self">self</span>.erased_deserialize_f32(<span class="kw-2">&amp;mut </span>erased).unsafe_map(Out::take) }
             }
 
             <span class="kw">fn </span>deserialize_f64&lt;V&gt;($(<span class="macro-nonterminal">$</span><span class="kw-2">mut</span>)* <span class="macro-nonterminal">self</span>, visitor: V) -&gt; <span class="prelude-ty">Result</span>&lt;V::Value, Error&gt;
             <span class="kw">where
-                </span>V: serde::de::Visitor&lt;<span class="lifetime">&#39;de</span>&gt;,
+                </span>V: serde::de::Visitor&lt;<span class="lifetime">'de</span>&gt;,
             {
-                <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Visitor { state: <span class="prelude-val">Some</span>(visitor) };
+                <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Visitor::new(visitor);
                 <span class="kw">unsafe </span>{ <span class="self">self</span>.erased_deserialize_f64(<span class="kw-2">&amp;mut </span>erased).unsafe_map(Out::take) }
             }
 
             <span class="kw">fn </span>deserialize_char&lt;V&gt;($(<span class="macro-nonterminal">$</span><span class="kw-2">mut</span>)* <span class="macro-nonterminal">self</span>, visitor: V) -&gt; <span class="prelude-ty">Result</span>&lt;V::Value, Error&gt;
             <span class="kw">where
-                </span>V: serde::de::Visitor&lt;<span class="lifetime">&#39;de</span>&gt;,
+                </span>V: serde::de::Visitor&lt;<span class="lifetime">'de</span>&gt;,
             {
-                <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Visitor { state: <span class="prelude-val">Some</span>(visitor) };
+                <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Visitor::new(visitor);
                 <span class="kw">unsafe </span>{ <span class="self">self</span>.erased_deserialize_char(<span class="kw-2">&amp;mut </span>erased).unsafe_map(Out::take) }
             }
 
             <span class="kw">fn </span>deserialize_str&lt;V&gt;($(<span class="macro-nonterminal">$</span><span class="kw-2">mut</span>)* <span class="macro-nonterminal">self</span>, visitor: V) -&gt; <span class="prelude-ty">Result</span>&lt;V::Value, Error&gt;
             <span class="kw">where
-                </span>V: serde::de::Visitor&lt;<span class="lifetime">&#39;de</span>&gt;,
+                </span>V: serde::de::Visitor&lt;<span class="lifetime">'de</span>&gt;,
             {
-                <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Visitor { state: <span class="prelude-val">Some</span>(visitor) };
+                <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Visitor::new(visitor);
                 <span class="kw">unsafe </span>{ <span class="self">self</span>.erased_deserialize_str(<span class="kw-2">&amp;mut </span>erased).unsafe_map(Out::take) }
             }
 
             <span class="kw">fn </span>deserialize_string&lt;V&gt;($(<span class="macro-nonterminal">$</span><span class="kw-2">mut</span>)* <span class="macro-nonterminal">self</span>, visitor: V) -&gt; <span class="prelude-ty">Result</span>&lt;V::Value, Error&gt;
             <span class="kw">where
-                </span>V: serde::de::Visitor&lt;<span class="lifetime">&#39;de</span>&gt;,
+                </span>V: serde::de::Visitor&lt;<span class="lifetime">'de</span>&gt;,
             {
-                <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Visitor { state: <span class="prelude-val">Some</span>(visitor) };
+                <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Visitor::new(visitor);
                 <span class="kw">unsafe </span>{ <span class="self">self</span>.erased_deserialize_string(<span class="kw-2">&amp;mut </span>erased).unsafe_map(Out::take) }
             }
 
             <span class="kw">fn </span>deserialize_bytes&lt;V&gt;($(<span class="macro-nonterminal">$</span><span class="kw-2">mut</span>)* <span class="macro-nonterminal">self</span>, visitor: V) -&gt; <span class="prelude-ty">Result</span>&lt;V::Value, Error&gt;
             <span class="kw">where
-                </span>V: serde::de::Visitor&lt;<span class="lifetime">&#39;de</span>&gt;,
+                </span>V: serde::de::Visitor&lt;<span class="lifetime">'de</span>&gt;,
             {
-                <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Visitor { state: <span class="prelude-val">Some</span>(visitor) };
+                <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Visitor::new(visitor);
                 <span class="kw">unsafe </span>{ <span class="self">self</span>.erased_deserialize_bytes(<span class="kw-2">&amp;mut </span>erased).unsafe_map(Out::take) }
             }
 
             <span class="kw">fn </span>deserialize_byte_buf&lt;V&gt;($(<span class="macro-nonterminal">$</span><span class="kw-2">mut</span>)* <span class="macro-nonterminal">self</span>, visitor: V) -&gt; <span class="prelude-ty">Result</span>&lt;V::Value, Error&gt;
             <span class="kw">where
-                </span>V: serde::de::Visitor&lt;<span class="lifetime">&#39;de</span>&gt;,
+                </span>V: serde::de::Visitor&lt;<span class="lifetime">'de</span>&gt;,
             {
-                <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Visitor { state: <span class="prelude-val">Some</span>(visitor) };
+                <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Visitor::new(visitor);
                 <span class="kw">unsafe </span>{ <span class="self">self</span>.erased_deserialize_byte_buf(<span class="kw-2">&amp;mut </span>erased).unsafe_map(Out::take) }
             }
 
             <span class="kw">fn </span>deserialize_option&lt;V&gt;($(<span class="macro-nonterminal">$</span><span class="kw-2">mut</span>)* <span class="macro-nonterminal">self</span>, visitor: V) -&gt; <span class="prelude-ty">Result</span>&lt;V::Value, Error&gt;
             <span class="kw">where
-                </span>V: serde::de::Visitor&lt;<span class="lifetime">&#39;de</span>&gt;,
+                </span>V: serde::de::Visitor&lt;<span class="lifetime">'de</span>&gt;,
             {
-                <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Visitor { state: <span class="prelude-val">Some</span>(visitor) };
+                <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Visitor::new(visitor);
                 <span class="kw">unsafe </span>{ <span class="self">self</span>.erased_deserialize_option(<span class="kw-2">&amp;mut </span>erased).unsafe_map(Out::take) }
             }
 
             <span class="kw">fn </span>deserialize_unit&lt;V&gt;($(<span class="macro-nonterminal">$</span><span class="kw-2">mut</span>)* <span class="macro-nonterminal">self</span>, visitor: V) -&gt; <span class="prelude-ty">Result</span>&lt;V::Value, Error&gt;
             <span class="kw">where
-                </span>V: serde::de::Visitor&lt;<span class="lifetime">&#39;de</span>&gt;,
+                </span>V: serde::de::Visitor&lt;<span class="lifetime">'de</span>&gt;,
             {
-                <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Visitor { state: <span class="prelude-val">Some</span>(visitor) };
+                <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Visitor::new(visitor);
                 <span class="kw">unsafe </span>{ <span class="self">self</span>.erased_deserialize_unit(<span class="kw-2">&amp;mut </span>erased).unsafe_map(Out::take) }
             }
 
-            <span class="kw">fn </span>deserialize_unit_struct&lt;V&gt;($(<span class="macro-nonterminal">$</span><span class="kw-2">mut</span>)* <span class="macro-nonterminal">self</span>, name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str, visitor: V) -&gt; <span class="prelude-ty">Result</span>&lt;V::Value, Error&gt;
+            <span class="kw">fn </span>deserialize_unit_struct&lt;V&gt;($(<span class="macro-nonterminal">$</span><span class="kw-2">mut</span>)* <span class="macro-nonterminal">self</span>, name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str, visitor: V) -&gt; <span class="prelude-ty">Result</span>&lt;V::Value, Error&gt;
             <span class="kw">where
-                </span>V: serde::de::Visitor&lt;<span class="lifetime">&#39;de</span>&gt;,
+                </span>V: serde::de::Visitor&lt;<span class="lifetime">'de</span>&gt;,
             {
-                <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Visitor { state: <span class="prelude-val">Some</span>(visitor) };
+                <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Visitor::new(visitor);
                 <span class="kw">unsafe </span>{ <span class="self">self</span>.erased_deserialize_unit_struct(name, <span class="kw-2">&amp;mut </span>erased).unsafe_map(Out::take) }
             }
 
-            <span class="kw">fn </span>deserialize_newtype_struct&lt;V&gt;($(<span class="macro-nonterminal">$</span><span class="kw-2">mut</span>)* <span class="macro-nonterminal">self</span>, name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str, visitor: V) -&gt; <span class="prelude-ty">Result</span>&lt;V::Value, Error&gt;
+            <span class="kw">fn </span>deserialize_newtype_struct&lt;V&gt;($(<span class="macro-nonterminal">$</span><span class="kw-2">mut</span>)* <span class="macro-nonterminal">self</span>, name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str, visitor: V) -&gt; <span class="prelude-ty">Result</span>&lt;V::Value, Error&gt;
             <span class="kw">where
-                </span>V: serde::de::Visitor&lt;<span class="lifetime">&#39;de</span>&gt;,
+                </span>V: serde::de::Visitor&lt;<span class="lifetime">'de</span>&gt;,
             {
-                <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Visitor { state: <span class="prelude-val">Some</span>(visitor) };
+                <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Visitor::new(visitor);
                 <span class="kw">unsafe </span>{ <span class="self">self</span>.erased_deserialize_newtype_struct(name, <span class="kw-2">&amp;mut </span>erased).unsafe_map(Out::take) }
             }
 
             <span class="kw">fn </span>deserialize_seq&lt;V&gt;($(<span class="macro-nonterminal">$</span><span class="kw-2">mut</span>)* <span class="macro-nonterminal">self</span>, visitor: V) -&gt; <span class="prelude-ty">Result</span>&lt;V::Value, Error&gt;
             <span class="kw">where
-                </span>V: serde::de::Visitor&lt;<span class="lifetime">&#39;de</span>&gt;,
+                </span>V: serde::de::Visitor&lt;<span class="lifetime">'de</span>&gt;,
             {
-                <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Visitor { state: <span class="prelude-val">Some</span>(visitor) };
+                <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Visitor::new(visitor);
                 <span class="kw">unsafe </span>{ <span class="self">self</span>.erased_deserialize_seq(<span class="kw-2">&amp;mut </span>erased).unsafe_map(Out::take) }
             }
 
             <span class="kw">fn </span>deserialize_tuple&lt;V&gt;($(<span class="macro-nonterminal">$</span><span class="kw-2">mut</span>)* <span class="macro-nonterminal">self</span>, len: usize, visitor: V) -&gt; <span class="prelude-ty">Result</span>&lt;V::Value, Error&gt;
             <span class="kw">where
-                </span>V: serde::de::Visitor&lt;<span class="lifetime">&#39;de</span>&gt;,
+                </span>V: serde::de::Visitor&lt;<span class="lifetime">'de</span>&gt;,
             {
-                <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Visitor { state: <span class="prelude-val">Some</span>(visitor) };
+                <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Visitor::new(visitor);
                 <span class="kw">unsafe </span>{ <span class="self">self</span>.erased_deserialize_tuple(len, <span class="kw-2">&amp;mut </span>erased).unsafe_map(Out::take) }
             }
 
-            <span class="kw">fn </span>deserialize_tuple_struct&lt;V&gt;($(<span class="macro-nonterminal">$</span><span class="kw-2">mut</span>)* <span class="macro-nonterminal">self</span>, name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str, len: usize, visitor: V) -&gt; <span class="prelude-ty">Result</span>&lt;V::Value, Error&gt;
+            <span class="kw">fn </span>deserialize_tuple_struct&lt;V&gt;($(<span class="macro-nonterminal">$</span><span class="kw-2">mut</span>)* <span class="macro-nonterminal">self</span>, name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str, len: usize, visitor: V) -&gt; <span class="prelude-ty">Result</span>&lt;V::Value, Error&gt;
             <span class="kw">where
-                </span>V: serde::de::Visitor&lt;<span class="lifetime">&#39;de</span>&gt;,
+                </span>V: serde::de::Visitor&lt;<span class="lifetime">'de</span>&gt;,
             {
-                <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Visitor { state: <span class="prelude-val">Some</span>(visitor) };
+                <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Visitor::new(visitor);
                 <span class="kw">unsafe </span>{ <span class="self">self</span>.erased_deserialize_tuple_struct(name, len, <span class="kw-2">&amp;mut </span>erased).unsafe_map(Out::take) }
             }
 
             <span class="kw">fn </span>deserialize_map&lt;V&gt;($(<span class="macro-nonterminal">$</span><span class="kw-2">mut</span>)* <span class="macro-nonterminal">self</span>, visitor: V) -&gt; <span class="prelude-ty">Result</span>&lt;V::Value, Error&gt;
             <span class="kw">where
-                </span>V: serde::de::Visitor&lt;<span class="lifetime">&#39;de</span>&gt;,
+                </span>V: serde::de::Visitor&lt;<span class="lifetime">'de</span>&gt;,
             {
-                <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Visitor { state: <span class="prelude-val">Some</span>(visitor) };
+                <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Visitor::new(visitor);
                 <span class="kw">unsafe </span>{ <span class="self">self</span>.erased_deserialize_map(<span class="kw-2">&amp;mut </span>erased).unsafe_map(Out::take) }
             }
 
-            <span class="kw">fn </span>deserialize_struct&lt;V&gt;($(<span class="macro-nonterminal">$</span><span class="kw-2">mut</span>)* <span class="macro-nonterminal">self</span>, name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str, fields: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>[<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str], visitor: V) -&gt; <span class="prelude-ty">Result</span>&lt;V::Value, Error&gt;
+            <span class="kw">fn </span>deserialize_struct&lt;V&gt;($(<span class="macro-nonterminal">$</span><span class="kw-2">mut</span>)* <span class="macro-nonterminal">self</span>, name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str, fields: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>[<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str], visitor: V) -&gt; <span class="prelude-ty">Result</span>&lt;V::Value, Error&gt;
             <span class="kw">where
-                </span>V: serde::de::Visitor&lt;<span class="lifetime">&#39;de</span>&gt;,
+                </span>V: serde::de::Visitor&lt;<span class="lifetime">'de</span>&gt;,
             {
-                <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Visitor { state: <span class="prelude-val">Some</span>(visitor) };
+                <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Visitor::new(visitor);
                 <span class="kw">unsafe </span>{ <span class="self">self</span>.erased_deserialize_struct(name, fields, <span class="kw-2">&amp;mut </span>erased).unsafe_map(Out::take) }
             }
 
             <span class="kw">fn </span>deserialize_identifier&lt;V&gt;($(<span class="macro-nonterminal">$</span><span class="kw-2">mut</span>)* <span class="macro-nonterminal">self</span>, visitor: V) -&gt; <span class="prelude-ty">Result</span>&lt;V::Value, Error&gt;
             <span class="kw">where
-                </span>V: serde::de::Visitor&lt;<span class="lifetime">&#39;de</span>&gt;,
+                </span>V: serde::de::Visitor&lt;<span class="lifetime">'de</span>&gt;,
             {
-                <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Visitor { state: <span class="prelude-val">Some</span>(visitor) };
+                <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Visitor::new(visitor);
                 <span class="kw">unsafe </span>{ <span class="self">self</span>.erased_deserialize_identifier(<span class="kw-2">&amp;mut </span>erased).unsafe_map(Out::take) }
             }
 
-            <span class="kw">fn </span>deserialize_enum&lt;V&gt;($(<span class="macro-nonterminal">$</span><span class="kw-2">mut</span>)* <span class="macro-nonterminal">self</span>, name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str, variants: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>[<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str], visitor: V) -&gt; <span class="prelude-ty">Result</span>&lt;V::Value, Error&gt;
+            <span class="kw">fn </span>deserialize_enum&lt;V&gt;($(<span class="macro-nonterminal">$</span><span class="kw-2">mut</span>)* <span class="macro-nonterminal">self</span>, name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str, variants: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>[<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str], visitor: V) -&gt; <span class="prelude-ty">Result</span>&lt;V::Value, Error&gt;
             <span class="kw">where
-                </span>V: serde::de::Visitor&lt;<span class="lifetime">&#39;de</span>&gt;,
+                </span>V: serde::de::Visitor&lt;<span class="lifetime">'de</span>&gt;,
             {
-                <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Visitor { state: <span class="prelude-val">Some</span>(visitor) };
+                <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Visitor::new(visitor);
                 <span class="kw">unsafe </span>{ <span class="self">self</span>.erased_deserialize_enum(name, variants, <span class="kw-2">&amp;mut </span>erased).unsafe_map(Out::take) }
             }
 
             <span class="kw">fn </span>deserialize_ignored_any&lt;V&gt;($(<span class="macro-nonterminal">$</span><span class="kw-2">mut</span>)* <span class="macro-nonterminal">self</span>, visitor: V) -&gt; <span class="prelude-ty">Result</span>&lt;V::Value, Error&gt;
             <span class="kw">where
-                </span>V: serde::de::Visitor&lt;<span class="lifetime">&#39;de</span>&gt;,
+                </span>V: serde::de::Visitor&lt;<span class="lifetime">'de</span>&gt;,
             {
-                <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Visitor { state: <span class="prelude-val">Some</span>(visitor) };
+                <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Visitor::new(visitor);
                 <span class="kw">unsafe </span>{ <span class="self">self</span>.erased_deserialize_ignored_any(<span class="kw-2">&amp;mut </span>erased).unsafe_map(Out::take) }
             }
 
@@ -2674,16 +2764,16 @@
     };
 }
 
-<span class="macro">impl_deserializer_for_trait_object!</span>({} <span class="kw-2">&amp;mut </span>(<span class="kw">dyn </span>Deserializer&lt;<span class="lifetime">&#39;de</span>&gt; + <span class="lifetime">&#39;_</span>));
-<span class="macro">impl_deserializer_for_trait_object!</span>({} <span class="kw-2">&amp;mut </span>(<span class="kw">dyn </span>Deserializer&lt;<span class="lifetime">&#39;de</span>&gt; + Send + <span class="lifetime">&#39;_</span>));
-<span class="macro">impl_deserializer_for_trait_object!</span>({} <span class="kw-2">&amp;mut </span>(<span class="kw">dyn </span>Deserializer&lt;<span class="lifetime">&#39;de</span>&gt; + Sync + <span class="lifetime">&#39;_</span>));
-<span class="macro">impl_deserializer_for_trait_object!</span>({} <span class="kw-2">&amp;mut </span>(<span class="kw">dyn </span>Deserializer&lt;<span class="lifetime">&#39;de</span>&gt; + Send + Sync + <span class="lifetime">&#39;_</span>));
-<span class="macro">impl_deserializer_for_trait_object!</span>({<span class="kw-2">mut</span>} Box&lt;<span class="kw">dyn </span>Deserializer&lt;<span class="lifetime">&#39;de</span>&gt; + <span class="lifetime">&#39;_</span>&gt;);
-<span class="macro">impl_deserializer_for_trait_object!</span>({<span class="kw-2">mut</span>} Box&lt;<span class="kw">dyn </span>Deserializer&lt;<span class="lifetime">&#39;de</span>&gt; + Send + <span class="lifetime">&#39;_</span>&gt;);
-<span class="macro">impl_deserializer_for_trait_object!</span>({<span class="kw-2">mut</span>} Box&lt;<span class="kw">dyn </span>Deserializer&lt;<span class="lifetime">&#39;de</span>&gt; + Sync + <span class="lifetime">&#39;_</span>&gt;);
-<span class="macro">impl_deserializer_for_trait_object!</span>({<span class="kw-2">mut</span>} Box&lt;<span class="kw">dyn </span>Deserializer&lt;<span class="lifetime">&#39;de</span>&gt; + Send + Sync + <span class="lifetime">&#39;_</span>&gt;);
+<span class="macro">impl_deserializer_for_trait_object!</span>({} <span class="kw-2">&amp;mut </span>(<span class="kw">dyn </span>Deserializer&lt;<span class="lifetime">'de</span>&gt; + <span class="lifetime">'_</span>));
+<span class="macro">impl_deserializer_for_trait_object!</span>({} <span class="kw-2">&amp;mut </span>(<span class="kw">dyn </span>Deserializer&lt;<span class="lifetime">'de</span>&gt; + Send + <span class="lifetime">'_</span>));
+<span class="macro">impl_deserializer_for_trait_object!</span>({} <span class="kw-2">&amp;mut </span>(<span class="kw">dyn </span>Deserializer&lt;<span class="lifetime">'de</span>&gt; + Sync + <span class="lifetime">'_</span>));
+<span class="macro">impl_deserializer_for_trait_object!</span>({} <span class="kw-2">&amp;mut </span>(<span class="kw">dyn </span>Deserializer&lt;<span class="lifetime">'de</span>&gt; + Send + Sync + <span class="lifetime">'_</span>));
+<span class="macro">impl_deserializer_for_trait_object!</span>({<span class="kw-2">mut</span>} Box&lt;<span class="kw">dyn </span>Deserializer&lt;<span class="lifetime">'de</span>&gt; + <span class="lifetime">'_</span>&gt;);
+<span class="macro">impl_deserializer_for_trait_object!</span>({<span class="kw-2">mut</span>} Box&lt;<span class="kw">dyn </span>Deserializer&lt;<span class="lifetime">'de</span>&gt; + Send + <span class="lifetime">'_</span>&gt;);
+<span class="macro">impl_deserializer_for_trait_object!</span>({<span class="kw-2">mut</span>} Box&lt;<span class="kw">dyn </span>Deserializer&lt;<span class="lifetime">'de</span>&gt; + Sync + <span class="lifetime">'_</span>&gt;);
+<span class="macro">impl_deserializer_for_trait_object!</span>({<span class="kw-2">mut</span>} Box&lt;<span class="kw">dyn </span>Deserializer&lt;<span class="lifetime">'de</span>&gt; + Send + Sync + <span class="lifetime">'_</span>&gt;);
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;de</span>&gt; serde::de::Visitor&lt;<span class="lifetime">&#39;de</span>&gt; <span class="kw">for </span><span class="kw-2">&amp;mut </span>(<span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt; + <span class="lifetime">&#39;_</span>) {
+<span class="kw">impl</span>&lt;<span class="lifetime">'de</span>&gt; serde::de::Visitor&lt;<span class="lifetime">'de</span>&gt; <span class="kw">for </span><span class="kw-2">&amp;mut </span>(<span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt; + <span class="lifetime">'_</span>) {
     <span class="kw">type </span>Value = Out;
 
     <span class="kw">fn </span>expecting(<span class="kw-2">&amp;</span><span class="self">self</span>, formatter: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
@@ -2795,14 +2885,14 @@
         <span class="self">self</span>.erased_visit_str(v).map_err(unerase)
     }
 
-    <span class="kw">fn </span>visit_borrowed_str&lt;E&gt;(<span class="self">self</span>, v: <span class="kw-2">&amp;</span><span class="lifetime">&#39;de </span>str) -&gt; <span class="prelude-ty">Result</span>&lt;Out, E&gt;
+    <span class="kw">fn </span>visit_borrowed_str&lt;E&gt;(<span class="self">self</span>, v: <span class="kw-2">&amp;</span><span class="lifetime">'de </span>str) -&gt; <span class="prelude-ty">Result</span>&lt;Out, E&gt;
     <span class="kw">where
         </span>E: serde::de::Error,
     {
         <span class="self">self</span>.erased_visit_borrowed_str(v).map_err(unerase)
     }
 
-    <span class="attr">#[cfg(any(feature = <span class="string">&quot;std&quot;</span>, feature = <span class="string">&quot;alloc&quot;</span>))]
+    <span class="attr">#[cfg(feature = <span class="string">"alloc"</span>)]
     </span><span class="kw">fn </span>visit_string&lt;E&gt;(<span class="self">self</span>, v: String) -&gt; <span class="prelude-ty">Result</span>&lt;Out, E&gt;
     <span class="kw">where
         </span>E: serde::de::Error,
@@ -2817,14 +2907,14 @@
         <span class="self">self</span>.erased_visit_bytes(v).map_err(unerase)
     }
 
-    <span class="kw">fn </span>visit_borrowed_bytes&lt;E&gt;(<span class="self">self</span>, v: <span class="kw-2">&amp;</span><span class="lifetime">&#39;de </span>[u8]) -&gt; <span class="prelude-ty">Result</span>&lt;Out, E&gt;
+    <span class="kw">fn </span>visit_borrowed_bytes&lt;E&gt;(<span class="self">self</span>, v: <span class="kw-2">&amp;</span><span class="lifetime">'de </span>[u8]) -&gt; <span class="prelude-ty">Result</span>&lt;Out, E&gt;
     <span class="kw">where
         </span>E: serde::de::Error,
     {
         <span class="self">self</span>.erased_visit_borrowed_bytes(v).map_err(unerase)
     }
 
-    <span class="attr">#[cfg(any(feature = <span class="string">&quot;std&quot;</span>, feature = <span class="string">&quot;alloc&quot;</span>))]
+    <span class="attr">#[cfg(feature = <span class="string">"alloc"</span>)]
     </span><span class="kw">fn </span>visit_byte_buf&lt;E&gt;(<span class="self">self</span>, v: Vec&lt;u8&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, E&gt;
     <span class="kw">where
         </span>E: serde::de::Error,
@@ -2841,11 +2931,9 @@
 
     <span class="kw">fn </span>visit_some&lt;D&gt;(<span class="self">self</span>, deserializer: D) -&gt; <span class="prelude-ty">Result</span>&lt;Out, D::Error&gt;
     <span class="kw">where
-        </span>D: serde::Deserializer&lt;<span class="lifetime">&#39;de</span>&gt;,
+        </span>D: serde::Deserializer&lt;<span class="lifetime">'de</span>&gt;,
     {
-        <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Deserializer {
-            state: <span class="prelude-val">Some</span>(deserializer),
-        };
+        <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Deserializer::new(deserializer);
         <span class="self">self</span>.erased_visit_some(<span class="kw-2">&amp;mut </span>erased).map_err(unerase)
     }
 
@@ -2858,48 +2946,46 @@
 
     <span class="kw">fn </span>visit_newtype_struct&lt;D&gt;(<span class="self">self</span>, deserializer: D) -&gt; <span class="prelude-ty">Result</span>&lt;Out, D::Error&gt;
     <span class="kw">where
-        </span>D: serde::Deserializer&lt;<span class="lifetime">&#39;de</span>&gt;,
+        </span>D: serde::Deserializer&lt;<span class="lifetime">'de</span>&gt;,
     {
-        <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Deserializer {
-            state: <span class="prelude-val">Some</span>(deserializer),
-        };
+        <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Deserializer::new(deserializer);
         <span class="self">self</span>.erased_visit_newtype_struct(<span class="kw-2">&amp;mut </span>erased)
             .map_err(unerase)
     }
 
     <span class="kw">fn </span>visit_seq&lt;V&gt;(<span class="self">self</span>, seq: V) -&gt; <span class="prelude-ty">Result</span>&lt;Out, V::Error&gt;
     <span class="kw">where
-        </span>V: serde::de::SeqAccess&lt;<span class="lifetime">&#39;de</span>&gt;,
+        </span>V: serde::de::SeqAccess&lt;<span class="lifetime">'de</span>&gt;,
     {
-        <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::SeqAccess { state: seq };
+        <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::SeqAccess::new(seq);
         <span class="self">self</span>.erased_visit_seq(<span class="kw-2">&amp;mut </span>erased).map_err(unerase)
     }
 
     <span class="kw">fn </span>visit_map&lt;V&gt;(<span class="self">self</span>, map: V) -&gt; <span class="prelude-ty">Result</span>&lt;Out, V::Error&gt;
     <span class="kw">where
-        </span>V: serde::de::MapAccess&lt;<span class="lifetime">&#39;de</span>&gt;,
+        </span>V: serde::de::MapAccess&lt;<span class="lifetime">'de</span>&gt;,
     {
-        <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::MapAccess { state: map };
+        <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::MapAccess::new(map);
         <span class="self">self</span>.erased_visit_map(<span class="kw-2">&amp;mut </span>erased).map_err(unerase)
     }
 
     <span class="kw">fn </span>visit_enum&lt;V&gt;(<span class="self">self</span>, data: V) -&gt; <span class="prelude-ty">Result</span>&lt;Out, V::Error&gt;
     <span class="kw">where
-        </span>V: serde::de::EnumAccess&lt;<span class="lifetime">&#39;de</span>&gt;,
+        </span>V: serde::de::EnumAccess&lt;<span class="lifetime">'de</span>&gt;,
     {
-        <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::EnumAccess { state: <span class="prelude-val">Some</span>(data) };
+        <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::EnumAccess::new(data);
         <span class="self">self</span>.erased_visit_enum(<span class="kw-2">&amp;mut </span>erased).map_err(unerase)
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;de</span>&gt; serde::de::SeqAccess&lt;<span class="lifetime">&#39;de</span>&gt; <span class="kw">for </span><span class="kw-2">&amp;mut </span>(<span class="kw">dyn </span>SeqAccess&lt;<span class="lifetime">&#39;de</span>&gt; + <span class="lifetime">&#39;_</span>) {
+<span class="kw">impl</span>&lt;<span class="lifetime">'de</span>&gt; serde::de::SeqAccess&lt;<span class="lifetime">'de</span>&gt; <span class="kw">for </span><span class="kw-2">&amp;mut </span>(<span class="kw">dyn </span>SeqAccess&lt;<span class="lifetime">'de</span>&gt; + <span class="lifetime">'_</span>) {
     <span class="kw">type </span>Error = Error;
 
     <span class="kw">fn </span>next_element_seed&lt;T&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, seed: T) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;T::Value&gt;, Error&gt;
     <span class="kw">where
-        </span>T: serde::de::DeserializeSeed&lt;<span class="lifetime">&#39;de</span>&gt;,
+        </span>T: serde::de::DeserializeSeed&lt;<span class="lifetime">'de</span>&gt;,
     {
-        <span class="kw">let </span><span class="kw-2">mut </span>seed = erase::DeserializeSeed { state: <span class="prelude-val">Some</span>(seed) };
+        <span class="kw">let </span><span class="kw-2">mut </span>seed = erase::DeserializeSeed::new(seed);
         <span class="kw">unsafe </span>{
             (<span class="kw-2">**</span><span class="self">self</span>)
                 .erased_next_element(<span class="kw-2">&amp;mut </span>seed)
@@ -2912,14 +2998,14 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;de</span>&gt; serde::de::MapAccess&lt;<span class="lifetime">&#39;de</span>&gt; <span class="kw">for </span><span class="kw-2">&amp;mut </span>(<span class="kw">dyn </span>MapAccess&lt;<span class="lifetime">&#39;de</span>&gt; + <span class="lifetime">&#39;_</span>) {
+<span class="kw">impl</span>&lt;<span class="lifetime">'de</span>&gt; serde::de::MapAccess&lt;<span class="lifetime">'de</span>&gt; <span class="kw">for </span><span class="kw-2">&amp;mut </span>(<span class="kw">dyn </span>MapAccess&lt;<span class="lifetime">'de</span>&gt; + <span class="lifetime">'_</span>) {
     <span class="kw">type </span>Error = Error;
 
     <span class="kw">fn </span>next_key_seed&lt;K&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, seed: K) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;K::Value&gt;, Error&gt;
     <span class="kw">where
-        </span>K: serde::de::DeserializeSeed&lt;<span class="lifetime">&#39;de</span>&gt;,
+        </span>K: serde::de::DeserializeSeed&lt;<span class="lifetime">'de</span>&gt;,
     {
-        <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::DeserializeSeed { state: <span class="prelude-val">Some</span>(seed) };
+        <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::DeserializeSeed::new(seed);
         <span class="kw">unsafe </span>{
             (<span class="kw-2">**</span><span class="self">self</span>)
                 .erased_next_key(<span class="kw-2">&amp;mut </span>erased)
@@ -2929,9 +3015,9 @@
 
     <span class="kw">fn </span>next_value_seed&lt;V&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, seed: V) -&gt; <span class="prelude-ty">Result</span>&lt;V::Value, Error&gt;
     <span class="kw">where
-        </span>V: serde::de::DeserializeSeed&lt;<span class="lifetime">&#39;de</span>&gt;,
+        </span>V: serde::de::DeserializeSeed&lt;<span class="lifetime">'de</span>&gt;,
     {
-        <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::DeserializeSeed { state: <span class="prelude-val">Some</span>(seed) };
+        <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::DeserializeSeed::new(seed);
         <span class="kw">unsafe </span>{
             (<span class="kw-2">**</span><span class="self">self</span>)
                 .erased_next_value(<span class="kw-2">&amp;mut </span>erased)
@@ -2944,15 +3030,15 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;de</span>&gt; serde::de::EnumAccess&lt;<span class="lifetime">&#39;de</span>&gt; <span class="kw">for </span><span class="kw-2">&amp;mut </span>(<span class="kw">dyn </span>EnumAccess&lt;<span class="lifetime">&#39;de</span>&gt; + <span class="lifetime">&#39;_</span>) {
+<span class="kw">impl</span>&lt;<span class="lifetime">'de</span>&gt; serde::de::EnumAccess&lt;<span class="lifetime">'de</span>&gt; <span class="kw">for </span><span class="kw-2">&amp;mut </span>(<span class="kw">dyn </span>EnumAccess&lt;<span class="lifetime">'de</span>&gt; + <span class="lifetime">'_</span>) {
     <span class="kw">type </span>Error = Error;
-    <span class="kw">type </span>Variant = Variant&lt;<span class="lifetime">&#39;de</span>&gt;;
+    <span class="kw">type </span>Variant = Variant&lt;<span class="lifetime">'de</span>&gt;;
 
     <span class="kw">fn </span>variant_seed&lt;V&gt;(<span class="self">self</span>, seed: V) -&gt; <span class="prelude-ty">Result</span>&lt;(V::Value, <span class="self">Self</span>::Variant), <span class="self">Self</span>::Error&gt;
     <span class="kw">where
-        </span>V: serde::de::DeserializeSeed&lt;<span class="lifetime">&#39;de</span>&gt;,
+        </span>V: serde::de::DeserializeSeed&lt;<span class="lifetime">'de</span>&gt;,
     {
-        <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::DeserializeSeed { state: <span class="prelude-val">Some</span>(seed) };
+        <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::DeserializeSeed::new(seed);
         <span class="kw">match </span><span class="self">self</span>.erased_variant_seed(<span class="kw-2">&amp;mut </span>erased) {
             <span class="prelude-val">Ok</span>((out, variant)) =&gt; <span class="prelude-val">Ok</span>((<span class="kw">unsafe </span>{ out.take() }, variant)),
             <span class="prelude-val">Err</span>(err) =&gt; <span class="prelude-val">Err</span>(err),
@@ -2960,19 +3046,19 @@
     }
 }
 
-<span class="kw">pub struct </span>Variant&lt;<span class="lifetime">&#39;de</span>&gt; {
+<span class="kw">pub struct </span>Variant&lt;<span class="lifetime">'de</span>&gt; {
     data: Any,
     unit_variant: <span class="kw">unsafe fn</span>(Any) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt;,
-    visit_newtype: <span class="kw">unsafe fn</span>(Any, seed: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>DeserializeSeed&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;,
-    tuple_variant: <span class="kw">unsafe fn</span>(Any, len: usize, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;,
+    visit_newtype: <span class="kw">unsafe fn</span>(Any, seed: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>DeserializeSeed&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;,
+    tuple_variant: <span class="kw">unsafe fn</span>(Any, len: usize, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;,
     struct_variant: <span class="kw">unsafe fn</span>(
         Any,
-        fields: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>[<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str],
-        visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;,
+        fields: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>[<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str],
+        visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt;,
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;de</span>&gt; serde::de::VariantAccess&lt;<span class="lifetime">&#39;de</span>&gt; <span class="kw">for </span>Variant&lt;<span class="lifetime">&#39;de</span>&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'de</span>&gt; serde::de::VariantAccess&lt;<span class="lifetime">'de</span>&gt; <span class="kw">for </span>Variant&lt;<span class="lifetime">'de</span>&gt; {
     <span class="kw">type </span>Error = Error;
 
     <span class="kw">fn </span>unit_variant(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt; {
@@ -2981,33 +3067,29 @@
 
     <span class="kw">fn </span>newtype_variant_seed&lt;T&gt;(<span class="self">self</span>, seed: T) -&gt; <span class="prelude-ty">Result</span>&lt;T::Value, Error&gt;
     <span class="kw">where
-        </span>T: serde::de::DeserializeSeed&lt;<span class="lifetime">&#39;de</span>&gt;,
+        </span>T: serde::de::DeserializeSeed&lt;<span class="lifetime">'de</span>&gt;,
     {
-        <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::DeserializeSeed { state: <span class="prelude-val">Some</span>(seed) };
+        <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::DeserializeSeed::new(seed);
         <span class="kw">unsafe </span>{ (<span class="self">self</span>.visit_newtype)(<span class="self">self</span>.data, <span class="kw-2">&amp;mut </span>erased).unsafe_map(Out::take) }
     }
 
     <span class="kw">fn </span>tuple_variant&lt;V&gt;(<span class="self">self</span>, len: usize, visitor: V) -&gt; <span class="prelude-ty">Result</span>&lt;V::Value, Error&gt;
     <span class="kw">where
-        </span>V: serde::de::Visitor&lt;<span class="lifetime">&#39;de</span>&gt;,
+        </span>V: serde::de::Visitor&lt;<span class="lifetime">'de</span>&gt;,
     {
-        <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Visitor {
-            state: <span class="prelude-val">Some</span>(visitor),
-        };
+        <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Visitor::new(visitor);
         <span class="kw">unsafe </span>{ (<span class="self">self</span>.tuple_variant)(<span class="self">self</span>.data, len, <span class="kw-2">&amp;mut </span>erased).unsafe_map(Out::take) }
     }
 
     <span class="kw">fn </span>struct_variant&lt;V&gt;(
         <span class="self">self</span>,
-        fields: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>[<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str],
+        fields: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>[<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str],
         visitor: V,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;V::Value, Error&gt;
     <span class="kw">where
-        </span>V: serde::de::Visitor&lt;<span class="lifetime">&#39;de</span>&gt;,
+        </span>V: serde::de::Visitor&lt;<span class="lifetime">'de</span>&gt;,
     {
-        <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Visitor {
-            state: <span class="prelude-val">Some</span>(visitor),
-        };
+        <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Visitor::new(visitor);
         <span class="kw">unsafe </span>{ (<span class="self">self</span>.struct_variant)(<span class="self">self</span>.data, fields, <span class="kw-2">&amp;mut </span>erased).unsafe_map(Out::take) }
     }
 }
@@ -3015,129 +3097,129 @@
 <span class="comment">// IMPL ERASED SERDE FOR ERASED SERDE //////////////////////////////////////////
 
 </span><span class="macro">macro_rules! </span>deref_erased_deserializer {
-    ($(<span class="macro-nonterminal">$imp</span>:tt)+) =&gt; {
-        <span class="kw">impl </span>$(<span class="macro-nonterminal">$imp</span>)+ {
-            <span class="kw">fn </span>erased_deserialize_any(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
+    (&lt;<span class="lifetime">'de </span>$(, <span class="macro-nonterminal">$T</span>:ident)<span class="kw-2">*</span>&gt; Deserializer&lt;<span class="lifetime">'de</span>&gt; <span class="kw">for </span><span class="macro-nonterminal">$ty</span>:ty $(<span class="kw">where </span>$(<span class="macro-nonterminal">$</span><span class="kw">where</span>:<span class="macro-nonterminal">tt</span>)<span class="kw-2">*</span>)<span class="question-mark">?</span>) =&gt; {
+        <span class="kw">impl</span>&lt;<span class="lifetime">'de </span>$(, <span class="macro-nonterminal">$T</span>)<span class="kw-2">*</span>&gt; Deserializer&lt;<span class="lifetime">'de</span>&gt; <span class="kw">for </span><span class="macro-nonterminal">$ty </span>$(<span class="kw">where </span>$(<span class="macro-nonterminal">$</span><span class="kw">where</span>)<span class="kw-2">*</span>)<span class="question-mark">? </span>{
+            <span class="kw">fn </span><span class="macro-nonterminal">erased_deserialize_any</span>(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
                 (<span class="kw-2">**</span><span class="self">self</span>).erased_deserialize_any(visitor)
             }
 
-            <span class="kw">fn </span>erased_deserialize_bool(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
+            <span class="kw">fn </span>erased_deserialize_bool(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
                 (<span class="kw-2">**</span><span class="self">self</span>).erased_deserialize_bool(visitor)
             }
 
-            <span class="kw">fn </span>erased_deserialize_i8(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
+            <span class="kw">fn </span>erased_deserialize_i8(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
                 (<span class="kw-2">**</span><span class="self">self</span>).erased_deserialize_i8(visitor)
             }
 
-            <span class="kw">fn </span>erased_deserialize_i16(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
+            <span class="kw">fn </span>erased_deserialize_i16(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
                 (<span class="kw-2">**</span><span class="self">self</span>).erased_deserialize_i16(visitor)
             }
 
-            <span class="kw">fn </span>erased_deserialize_i32(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
+            <span class="kw">fn </span>erased_deserialize_i32(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
                 (<span class="kw-2">**</span><span class="self">self</span>).erased_deserialize_i32(visitor)
             }
 
-            <span class="kw">fn </span>erased_deserialize_i64(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
+            <span class="kw">fn </span>erased_deserialize_i64(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
                 (<span class="kw-2">**</span><span class="self">self</span>).erased_deserialize_i64(visitor)
             }
 
-            <span class="kw">fn </span>erased_deserialize_i128(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
+            <span class="kw">fn </span>erased_deserialize_i128(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
                 (<span class="kw-2">**</span><span class="self">self</span>).erased_deserialize_i128(visitor)
             }
 
-            <span class="kw">fn </span>erased_deserialize_u8(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
+            <span class="kw">fn </span>erased_deserialize_u8(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
                 (<span class="kw-2">**</span><span class="self">self</span>).erased_deserialize_u8(visitor)
             }
 
-            <span class="kw">fn </span>erased_deserialize_u16(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
+            <span class="kw">fn </span>erased_deserialize_u16(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
                 (<span class="kw-2">**</span><span class="self">self</span>).erased_deserialize_u16(visitor)
             }
 
-            <span class="kw">fn </span>erased_deserialize_u32(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
+            <span class="kw">fn </span>erased_deserialize_u32(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
                 (<span class="kw-2">**</span><span class="self">self</span>).erased_deserialize_u32(visitor)
             }
 
-            <span class="kw">fn </span>erased_deserialize_u64(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
+            <span class="kw">fn </span>erased_deserialize_u64(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
                 (<span class="kw-2">**</span><span class="self">self</span>).erased_deserialize_u64(visitor)
             }
 
-            <span class="kw">fn </span>erased_deserialize_u128(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
+            <span class="kw">fn </span>erased_deserialize_u128(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
                 (<span class="kw-2">**</span><span class="self">self</span>).erased_deserialize_u128(visitor)
             }
 
-            <span class="kw">fn </span>erased_deserialize_f32(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
+            <span class="kw">fn </span>erased_deserialize_f32(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
                 (<span class="kw-2">**</span><span class="self">self</span>).erased_deserialize_f32(visitor)
             }
 
-            <span class="kw">fn </span>erased_deserialize_f64(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
+            <span class="kw">fn </span>erased_deserialize_f64(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
                 (<span class="kw-2">**</span><span class="self">self</span>).erased_deserialize_f64(visitor)
             }
 
-            <span class="kw">fn </span>erased_deserialize_char(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
+            <span class="kw">fn </span>erased_deserialize_char(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
                 (<span class="kw-2">**</span><span class="self">self</span>).erased_deserialize_char(visitor)
             }
 
-            <span class="kw">fn </span>erased_deserialize_str(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
+            <span class="kw">fn </span>erased_deserialize_str(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
                 (<span class="kw-2">**</span><span class="self">self</span>).erased_deserialize_str(visitor)
             }
 
-            <span class="kw">fn </span>erased_deserialize_string(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
+            <span class="kw">fn </span>erased_deserialize_string(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
                 (<span class="kw-2">**</span><span class="self">self</span>).erased_deserialize_string(visitor)
             }
 
-            <span class="kw">fn </span>erased_deserialize_bytes(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
+            <span class="kw">fn </span>erased_deserialize_bytes(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
                 (<span class="kw-2">**</span><span class="self">self</span>).erased_deserialize_bytes(visitor)
             }
 
-            <span class="kw">fn </span>erased_deserialize_byte_buf(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
+            <span class="kw">fn </span>erased_deserialize_byte_buf(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
                 (<span class="kw-2">**</span><span class="self">self</span>).erased_deserialize_byte_buf(visitor)
             }
 
-            <span class="kw">fn </span>erased_deserialize_option(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
+            <span class="kw">fn </span>erased_deserialize_option(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
                 (<span class="kw-2">**</span><span class="self">self</span>).erased_deserialize_option(visitor)
             }
 
-            <span class="kw">fn </span>erased_deserialize_unit(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
+            <span class="kw">fn </span>erased_deserialize_unit(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
                 (<span class="kw-2">**</span><span class="self">self</span>).erased_deserialize_unit(visitor)
             }
 
-            <span class="kw">fn </span>erased_deserialize_unit_struct(<span class="kw-2">&amp;mut </span><span class="self">self</span>, name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
+            <span class="kw">fn </span>erased_deserialize_unit_struct(<span class="kw-2">&amp;mut </span><span class="self">self</span>, name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
                 (<span class="kw-2">**</span><span class="self">self</span>).erased_deserialize_unit_struct(name, visitor)
             }
 
-            <span class="kw">fn </span>erased_deserialize_newtype_struct(<span class="kw-2">&amp;mut </span><span class="self">self</span>, name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
+            <span class="kw">fn </span>erased_deserialize_newtype_struct(<span class="kw-2">&amp;mut </span><span class="self">self</span>, name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
                 (<span class="kw-2">**</span><span class="self">self</span>).erased_deserialize_newtype_struct(name, visitor)
             }
 
-            <span class="kw">fn </span>erased_deserialize_seq(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
+            <span class="kw">fn </span>erased_deserialize_seq(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
                 (<span class="kw-2">**</span><span class="self">self</span>).erased_deserialize_seq(visitor)
             }
 
-            <span class="kw">fn </span>erased_deserialize_tuple(<span class="kw-2">&amp;mut </span><span class="self">self</span>, len: usize, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
+            <span class="kw">fn </span>erased_deserialize_tuple(<span class="kw-2">&amp;mut </span><span class="self">self</span>, len: usize, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
                 (<span class="kw-2">**</span><span class="self">self</span>).erased_deserialize_tuple(len, visitor)
             }
 
-            <span class="kw">fn </span>erased_deserialize_tuple_struct(<span class="kw-2">&amp;mut </span><span class="self">self</span>, name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str, len: usize, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
+            <span class="kw">fn </span>erased_deserialize_tuple_struct(<span class="kw-2">&amp;mut </span><span class="self">self</span>, name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str, len: usize, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
                 (<span class="kw-2">**</span><span class="self">self</span>).erased_deserialize_tuple_struct(name, len, visitor)
             }
 
-            <span class="kw">fn </span>erased_deserialize_map(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
+            <span class="kw">fn </span>erased_deserialize_map(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
                 (<span class="kw-2">**</span><span class="self">self</span>).erased_deserialize_map(visitor)
             }
 
-            <span class="kw">fn </span>erased_deserialize_struct(<span class="kw-2">&amp;mut </span><span class="self">self</span>, name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str, fields: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>[<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str], visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
+            <span class="kw">fn </span>erased_deserialize_struct(<span class="kw-2">&amp;mut </span><span class="self">self</span>, name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str, fields: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>[<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str], visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
                 (<span class="kw-2">**</span><span class="self">self</span>).erased_deserialize_struct(name, fields, visitor)
             }
 
-            <span class="kw">fn </span>erased_deserialize_identifier(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
+            <span class="kw">fn </span>erased_deserialize_identifier(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
                 (<span class="kw-2">**</span><span class="self">self</span>).erased_deserialize_identifier(visitor)
             }
 
-            <span class="kw">fn </span>erased_deserialize_enum(<span class="kw-2">&amp;mut </span><span class="self">self</span>, name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str, variants: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>[<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str], visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
+            <span class="kw">fn </span>erased_deserialize_enum(<span class="kw-2">&amp;mut </span><span class="self">self</span>, name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str, variants: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>[<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str], visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
                 (<span class="kw-2">**</span><span class="self">self</span>).erased_deserialize_enum(name, variants, visitor)
             }
 
-            <span class="kw">fn </span>erased_deserialize_ignored_any(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">&#39;de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
+            <span class="kw">fn </span>erased_deserialize_ignored_any(<span class="kw-2">&amp;mut </span><span class="self">self</span>, visitor: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Visitor&lt;<span class="lifetime">'de</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Out, Error&gt; {
                 (<span class="kw-2">**</span><span class="self">self</span>).erased_deserialize_ignored_any(visitor)
             }
 
@@ -3145,43 +3227,26 @@
                 (<span class="kw-2">**</span><span class="self">self</span>).erased_is_human_readable()
             }
         }
+
+        <span class="kw">impl</span>&lt;<span class="lifetime">'de </span>$(, <span class="macro-nonterminal">$T</span>)<span class="kw-2">*</span>&gt; Sealed <span class="kw">for </span><span class="macro-nonterminal">$ty </span>$(<span class="kw">where </span>$(<span class="macro-nonterminal">$</span><span class="kw">where</span>)<span class="kw-2">*</span>)<span class="question-mark">? </span>{}
     };
 }
 
-<span class="macro">deref_erased_deserializer!</span>(&lt;<span class="lifetime">&#39;de</span>&gt; Deserializer&lt;<span class="lifetime">&#39;de</span>&gt; <span class="kw">for </span>Box&lt;<span class="kw">dyn </span>Deserializer&lt;<span class="lifetime">&#39;de</span>&gt; + <span class="lifetime">&#39;_</span>&gt;);
-<span class="macro">deref_erased_deserializer!</span>(&lt;<span class="lifetime">&#39;de</span>&gt; Deserializer&lt;<span class="lifetime">&#39;de</span>&gt; <span class="kw">for </span>Box&lt;<span class="kw">dyn </span>Deserializer&lt;<span class="lifetime">&#39;de</span>&gt; + Send + <span class="lifetime">&#39;_</span>&gt;);
-<span class="macro">deref_erased_deserializer!</span>(&lt;<span class="lifetime">&#39;de</span>&gt; Deserializer&lt;<span class="lifetime">&#39;de</span>&gt; <span class="kw">for </span>Box&lt;<span class="kw">dyn </span>Deserializer&lt;<span class="lifetime">&#39;de</span>&gt; + Sync + <span class="lifetime">&#39;_</span>&gt;);
-<span class="macro">deref_erased_deserializer!</span>(&lt;<span class="lifetime">&#39;de</span>&gt; Deserializer&lt;<span class="lifetime">&#39;de</span>&gt; <span class="kw">for </span>Box&lt;<span class="kw">dyn </span>Deserializer&lt;<span class="lifetime">&#39;de</span>&gt; + Send + Sync + <span class="lifetime">&#39;_</span>&gt;);
-<span class="macro">deref_erased_deserializer!</span>(&lt;<span class="lifetime">&#39;de</span>, T: <span class="question-mark">?</span>Sized + Deserializer&lt;<span class="lifetime">&#39;de</span>&gt;&gt; Deserializer&lt;<span class="lifetime">&#39;de</span>&gt; <span class="kw">for </span><span class="kw-2">&amp;mut </span>T);
-
-<span class="comment">// ERROR ///////////////////////////////////////////////////////////////////////
-
-</span><span class="kw">fn </span>erase&lt;E&gt;(e: E) -&gt; Error
-<span class="kw">where
-    </span>E: Display,
-{
-    serde::de::Error::custom(e)
-}
-
-<span class="kw">fn </span>unerase&lt;E&gt;(e: Error) -&gt; E
-<span class="kw">where
-    </span>E: serde::de::Error,
-{
-    E::custom(e)
-}
+<span class="macro">deref_erased_deserializer!</span>(&lt;<span class="lifetime">'de</span>, <span class="macro-nonterminal">T</span>&gt; Deserializer&lt;<span class="lifetime">'de</span>&gt; <span class="kw">for </span><span class="kw-2">&amp;mut </span>T <span class="kw">where </span>T: <span class="question-mark">?</span>Sized + Deserializer&lt;<span class="lifetime">'de</span>&gt;);
+<span class="macro">deref_erased_deserializer!</span>(&lt;<span class="lifetime">'de</span>, T&gt; Deserializer&lt;<span class="lifetime">'de</span>&gt; <span class="kw">for </span>Box&lt;T&gt; <span class="kw">where </span>T: <span class="question-mark">?</span>Sized + Deserializer&lt;<span class="lifetime">'de</span>&gt;);
 
 <span class="comment">// TEST ////////////////////////////////////////////////////////////////////////
 
 </span><span class="attr">#[cfg(test)]
 </span><span class="kw">mod </span>tests {
     <span class="kw">use super</span>::<span class="kw-2">*</span>;
-    <span class="kw">use </span><span class="kw">crate</span>::alloc::ToOwned;
+    <span class="kw">use </span>alloc::borrow::ToOwned;
     <span class="kw">use </span>core::fmt::Debug;
     <span class="kw">use </span>serde_derive::Deserialize;
 
-    <span class="kw">fn </span>test_json&lt;<span class="lifetime">&#39;de</span>, T&gt;(json: <span class="kw-2">&amp;</span><span class="lifetime">&#39;de </span>[u8])
+    <span class="kw">fn </span>test_json&lt;<span class="lifetime">'de</span>, T&gt;(json: <span class="kw-2">&amp;</span><span class="lifetime">'de </span>[u8])
     <span class="kw">where
-        </span>T: serde::Deserialize&lt;<span class="lifetime">&#39;de</span>&gt; + PartialEq + Debug,
+        </span>T: serde::Deserialize&lt;<span class="lifetime">'de</span>&gt; + PartialEq + Debug,
     {
         <span class="kw">let </span>expected: T = serde_json::from_slice(json).unwrap();
 
@@ -3202,7 +3267,7 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_value() {
-        test_json::&lt;serde_json::Value&gt;(<span class="string">br#&quot;[&quot;a&quot;, 1, [true], {&quot;a&quot;: 1}]&quot;#</span>);
+        test_json::&lt;serde_json::Value&gt;(<span class="string">br#"["a", 1, [true], {"a": 1}]"#</span>);
     }
 
     <span class="attr">#[test]
@@ -3212,7 +3277,7 @@
             f: usize,
         }
 
-        test_json::&lt;S&gt;(<span class="string">br#&quot;{&quot;f&quot;:256}&quot;#</span>);
+        test_json::&lt;S&gt;(<span class="string">br#"{"f":256}"#</span>);
     }
 
     <span class="attr">#[test]
@@ -3225,21 +3290,21 @@
             Struct { t: bool, f: bool },
         }
 
-        test_json::&lt;E&gt;(<span class="string">br#&quot;&quot;Unit&quot;&quot;#</span>);
-        test_json::&lt;E&gt;(<span class="string">br#&quot;{&quot;Newtype&quot;:true}&quot;#</span>);
-        test_json::&lt;E&gt;(<span class="string">br#&quot;{&quot;Tuple&quot;:[true,false]}&quot;#</span>);
-        test_json::&lt;E&gt;(<span class="string">br#&quot;{&quot;Struct&quot;:{&quot;t&quot;:true,&quot;f&quot;:false}}&quot;#</span>);
+        test_json::&lt;E&gt;(<span class="string">br#""Unit""#</span>);
+        test_json::&lt;E&gt;(<span class="string">br#"{"Newtype":true}"#</span>);
+        test_json::&lt;E&gt;(<span class="string">br#"{"Tuple":[true,false]}"#</span>);
+        test_json::&lt;E&gt;(<span class="string">br#"{"Struct":{"t":true,"f":false}}"#</span>);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_borrowed() {
-        <span class="kw">let </span>bytes = <span class="string">br#&quot;&quot;borrowed&quot;&quot;#</span>.to_owned();
+        <span class="kw">let </span>bytes = <span class="string">br#""borrowed""#</span>.to_owned();
         test_json::&lt;<span class="kw-2">&amp;</span>str&gt;(<span class="kw-2">&amp;</span>bytes);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>assert_deserializer() {
-        <span class="kw">fn </span>assert&lt;<span class="lifetime">&#39;de</span>, T: serde::Deserializer&lt;<span class="lifetime">&#39;de</span>&gt;&gt;() {}
+        <span class="kw">fn </span>assert&lt;<span class="lifetime">'de</span>, T: serde::Deserializer&lt;<span class="lifetime">'de</span>&gt;&gt;() {}
 
         assert::&lt;<span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Deserializer&gt;();
         assert::&lt;<span class="kw-2">&amp;mut </span>(<span class="kw">dyn </span>Deserializer + Send)&gt;();

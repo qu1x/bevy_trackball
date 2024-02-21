@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/nalgebra-0.32.3/src/base/iter.rs`."><title>iter.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="nalgebra" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="icon" href="https://nalgebra.org/img/favicon.ico"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../nalgebra/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/nalgebra-0.32.4/src/base/iter.rs`."><title>iter.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="nalgebra" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="icon" href="https://nalgebra.org/img/favicon.ico"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -498,39 +499,39 @@
     (<span class="kw">struct </span><span class="macro-nonterminal">$Name</span>:ident <span class="kw">for </span><span class="macro-nonterminal">$Storage</span>:ident.<span class="macro-nonterminal">$ptr</span>: ident -&gt; <span class="macro-nonterminal">$Ptr</span>:ty, <span class="macro-nonterminal">$Ref</span>:ty, <span class="macro-nonterminal">$SRef</span>: ty, $(<span class="macro-nonterminal">$derives</span>:ident),* $(,)<span class="question-mark">?</span>) =&gt; {
         <span class="doccomment">/// An iterator through a dense matrix with arbitrary strides matrix.
         </span><span class="attr">#[derive($(<span class="macro-nonterminal">$derives</span>),<span class="kw-2">*</span>)]
-        </span><span class="kw">pub struct </span><span class="macro-nonterminal">$Name</span>&lt;<span class="lifetime">&#39;a</span>, T, R: Dim, C: Dim, S: <span class="lifetime">&#39;a </span>+ <span class="macro-nonterminal">$Storage</span>&lt;T, R, C&gt;&gt; {
+        </span><span class="kw">pub struct </span><span class="macro-nonterminal">$Name</span>&lt;<span class="lifetime">'a</span>, T, R: Dim, C: Dim, S: <span class="lifetime">'a </span>+ <span class="macro-nonterminal">$Storage</span>&lt;T, R, C&gt;&gt; {
             ptr: <span class="macro-nonterminal">$Ptr</span>,
             inner_ptr: <span class="macro-nonterminal">$Ptr</span>,
             inner_end: <span class="macro-nonterminal">$Ptr</span>,
-            size: usize, <span class="comment">// We can&#39;t use an end pointer here because a stride might be zero.
+            size: usize, <span class="comment">// We can't use an end pointer here because a stride might be zero.
             </span>strides: (S::RStride, S::CStride),
             _phantoms: PhantomData&lt;(<span class="macro-nonterminal">$Ref</span>, R, C, S)&gt;,
         }
 
         <span class="comment">// TODO: we need to specialize for the case where the matrix storage is owned (in which
         // case the iterator is trivial because it does not have any stride).
-        </span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, T, R: Dim, C: Dim, S: <span class="lifetime">&#39;a </span>+ <span class="macro-nonterminal">$Storage</span>&lt;T, R, C&gt;&gt; <span class="macro-nonterminal">$Name</span>&lt;<span class="lifetime">&#39;a</span>, T, R, C, S&gt; {
+        </span><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T, R: Dim, C: Dim, S: <span class="lifetime">'a </span>+ <span class="macro-nonterminal">$Storage</span>&lt;T, R, C&gt;&gt; <span class="macro-nonterminal">$Name</span>&lt;<span class="lifetime">'a</span>, T, R, C, S&gt; {
             <span class="doccomment">/// Creates a new iterator for the given matrix storage.
-            </span><span class="kw">pub fn </span>new(storage: <span class="macro-nonterminal">$SRef</span>) -&gt; <span class="macro-nonterminal">$Name</span>&lt;<span class="lifetime">&#39;a</span>, T, R, C, S&gt; {
+            </span><span class="kw">pub fn </span>new(storage: <span class="macro-nonterminal">$SRef</span>) -&gt; <span class="macro-nonterminal">$Name</span>&lt;<span class="lifetime">'a</span>, T, R, C, S&gt; {
                 <span class="kw">let </span>shape = storage.shape();
                 <span class="kw">let </span>strides = storage.strides();
                 <span class="kw">let </span>inner_offset = shape.<span class="number">0</span>.value() * strides.<span class="number">0</span>.value();
                 <span class="kw">let </span>size = shape.<span class="number">0</span>.value() * shape.<span class="number">1</span>.value();
                 <span class="kw">let </span>ptr = storage.<span class="macro-nonterminal">$ptr</span>();
 
-                <span class="comment">// If we have a size of 0, &#39;ptr&#39; must be
-                // dangling. However, &#39;inner_offset&#39; might
+                <span class="comment">// If we have a size of 0, 'ptr' must be
+                // dangling. However, 'inner_offset' might
                 // not be zero if only one dimension is zero, so
-                // we don&#39;t want to call &#39;offset&#39;.
+                // we don't want to call 'offset'.
                 // This pointer will never actually get used
-                // if our size is &#39;0&#39;, so it&#39;s fine to use
-                // &#39;ptr&#39; for both the start and end.
+                // if our size is '0', so it's fine to use
+                // 'ptr' for both the start and end.
                 </span><span class="kw">let </span>inner_end = <span class="kw">if </span>size == <span class="number">0 </span>{
                     ptr
                 } <span class="kw">else </span>{
                     <span class="comment">// Safety:
-                    // If &#39;size&#39; is non-zero, we know that &#39;ptr&#39;
-                    // is not dangling, and &#39;inner_offset&#39; must lie
+                    // If 'size' is non-zero, we know that 'ptr'
+                    // is not dangling, and 'inner_offset' must lie
                     // within the allocation
                     </span><span class="kw">unsafe </span>{ ptr.add(inner_offset) }
                 };
@@ -546,7 +547,7 @@
             }
         }
 
-        <span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, T, R: Dim, C: Dim, S: <span class="lifetime">&#39;a </span>+ <span class="macro-nonterminal">$Storage</span>&lt;T, R, C&gt;&gt; Iterator <span class="kw">for </span><span class="macro-nonterminal">$Name</span>&lt;<span class="lifetime">&#39;a</span>, T, R, C, S&gt; {
+        <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T, R: Dim, C: Dim, S: <span class="lifetime">'a </span>+ <span class="macro-nonterminal">$Storage</span>&lt;T, R, C&gt;&gt; Iterator <span class="kw">for </span><span class="macro-nonterminal">$Name</span>&lt;<span class="lifetime">'a</span>, T, R, C, S&gt; {
             <span class="kw">type </span>Item = <span class="macro-nonterminal">$Ref</span>;
 
             <span class="attr">#[inline]
@@ -561,11 +562,11 @@
                         </span><span class="kw">if </span><span class="self">self</span>.ptr == <span class="self">self</span>.inner_end {
                             <span class="kw">let </span>stride = <span class="self">self</span>.strides.<span class="number">1</span>.value() <span class="kw">as </span>isize;
                             <span class="comment">// This might go past the end of the allocation,
-                            // depending on the value of &#39;size&#39;. We use
+                            // depending on the value of 'size'. We use
                             // `wrapping_offset` to avoid UB
                             </span><span class="self">self</span>.inner_end = <span class="self">self</span>.ptr.wrapping_offset(stride);
                             <span class="comment">// This will always be in bounds, since
-                            // we&#39;re going to dereference it
+                            // we're going to dereference it
                             </span><span class="self">self</span>.ptr = <span class="self">self</span>.inner_ptr.offset(stride);
                             <span class="self">self</span>.inner_ptr = <span class="self">self</span>.ptr;
                         }
@@ -573,7 +574,7 @@
                         <span class="comment">// Go to the next element.
                         </span><span class="kw">let </span>old = <span class="self">self</span>.ptr;
 
-                        <span class="comment">// Don&#39;t offset `self.ptr` for the last element,
+                        <span class="comment">// Don't offset `self.ptr` for the last element,
                         // as this will be out of bounds. Iteration is done
                         // at this point (the next call to `next` will return `None`)
                         // so this is not observable.
@@ -601,8 +602,8 @@
             </span>}
         }
 
-        <span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, T, R: Dim, C: Dim, S: <span class="lifetime">&#39;a </span>+ <span class="macro-nonterminal">$Storage</span>&lt;T, R, C&gt;&gt; DoubleEndedIterator
-            <span class="kw">for </span><span class="macro-nonterminal">$Name</span>&lt;<span class="lifetime">&#39;a</span>, T, R, C, S&gt;
+        <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T, R: Dim, C: Dim, S: <span class="lifetime">'a </span>+ <span class="macro-nonterminal">$Storage</span>&lt;T, R, C&gt;&gt; DoubleEndedIterator
+            <span class="kw">for </span><span class="macro-nonterminal">$Name</span>&lt;<span class="lifetime">'a</span>, T, R, C, S&gt;
         {
             <span class="attr">#[inline]
             </span><span class="kw">fn </span>next_back(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="macro-nonterminal">$Ref</span>&gt; {
@@ -641,8 +642,8 @@
             }
         }
 
-        <span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, T, R: Dim, C: Dim, S: <span class="lifetime">&#39;a </span>+ <span class="macro-nonterminal">$Storage</span>&lt;T, R, C&gt;&gt; ExactSizeIterator
-            <span class="kw">for </span><span class="macro-nonterminal">$Name</span>&lt;<span class="lifetime">&#39;a</span>, T, R, C, S&gt;
+        <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T, R: Dim, C: Dim, S: <span class="lifetime">'a </span>+ <span class="macro-nonterminal">$Storage</span>&lt;T, R, C&gt;&gt; ExactSizeIterator
+            <span class="kw">for </span><span class="macro-nonterminal">$Name</span>&lt;<span class="lifetime">'a</span>, T, R, C, S&gt;
         {
             <span class="attr">#[inline]
             </span><span class="kw">fn </span>len(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
@@ -650,15 +651,15 @@
             }
         }
 
-        <span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, T, R: Dim, C: Dim, S: <span class="lifetime">&#39;a </span>+ <span class="macro-nonterminal">$Storage</span>&lt;T, R, C&gt;&gt; FusedIterator
-            <span class="kw">for </span><span class="macro-nonterminal">$Name</span>&lt;<span class="lifetime">&#39;a</span>, T, R, C, S&gt;
+        <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T, R: Dim, C: Dim, S: <span class="lifetime">'a </span>+ <span class="macro-nonterminal">$Storage</span>&lt;T, R, C&gt;&gt; FusedIterator
+            <span class="kw">for </span><span class="macro-nonterminal">$Name</span>&lt;<span class="lifetime">'a</span>, T, R, C, S&gt;
         {
         }
     };
 }
 
-<span class="macro">iterator!</span>(<span class="kw">struct </span>MatrixIter <span class="kw">for </span>RawStorage.ptr -&gt; <span class="kw-2">*const </span>T, <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>T, <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>S, Clone, Debug);
-<span class="macro">iterator!</span>(<span class="kw">struct </span>MatrixIterMut <span class="kw">for </span>RawStorageMut.ptr_mut -&gt; <span class="kw-2">*mut </span>T, <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>T, <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>S, Debug);
+<span class="macro">iterator!</span>(<span class="kw">struct </span>MatrixIter <span class="kw">for </span>RawStorage.ptr -&gt; <span class="kw-2">*const </span>T, <span class="kw-2">&amp;</span><span class="lifetime">'a </span>T, <span class="kw-2">&amp;</span><span class="lifetime">'a </span>S, Clone, Debug);
+<span class="macro">iterator!</span>(<span class="kw">struct </span>MatrixIterMut <span class="kw">for </span>RawStorageMut.ptr_mut -&gt; <span class="kw-2">*mut </span>T, <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>T, <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>S, Debug);
 
 <span class="comment">/*
  *
@@ -667,19 +668,19 @@
  */
 </span><span class="attr">#[derive(Clone, Debug)]
 </span><span class="doccomment">/// An iterator through the rows of a matrix.
-</span><span class="kw">pub struct </span>RowIter&lt;<span class="lifetime">&#39;a</span>, T, R: Dim, C: Dim, S: RawStorage&lt;T, R, C&gt;&gt; {
-    mat: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Matrix&lt;T, R, C, S&gt;,
+</span><span class="kw">pub struct </span>RowIter&lt;<span class="lifetime">'a</span>, T, R: Dim, C: Dim, S: RawStorage&lt;T, R, C&gt;&gt; {
+    mat: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>Matrix&lt;T, R, C, S&gt;,
     curr: usize,
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, T, R: Dim, C: Dim, S: <span class="lifetime">&#39;a </span>+ RawStorage&lt;T, R, C&gt;&gt; RowIter&lt;<span class="lifetime">&#39;a</span>, T, R, C, S&gt; {
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>new(mat: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Matrix&lt;T, R, C, S&gt;) -&gt; <span class="self">Self </span>{
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T, R: Dim, C: Dim, S: <span class="lifetime">'a </span>+ RawStorage&lt;T, R, C&gt;&gt; RowIter&lt;<span class="lifetime">'a</span>, T, R, C, S&gt; {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>new(mat: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>Matrix&lt;T, R, C, S&gt;) -&gt; <span class="self">Self </span>{
         RowIter { mat, curr: <span class="number">0 </span>}
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, T, R: Dim, C: Dim, S: <span class="lifetime">&#39;a </span>+ RawStorage&lt;T, R, C&gt;&gt; Iterator <span class="kw">for </span>RowIter&lt;<span class="lifetime">&#39;a</span>, T, R, C, S&gt; {
-    <span class="kw">type </span>Item = MatrixView&lt;<span class="lifetime">&#39;a</span>, T, U1, C, S::RStride, S::CStride&gt;;
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T, R: Dim, C: Dim, S: <span class="lifetime">'a </span>+ RawStorage&lt;T, R, C&gt;&gt; Iterator <span class="kw">for </span>RowIter&lt;<span class="lifetime">'a</span>, T, R, C, S&gt; {
+    <span class="kw">type </span>Item = MatrixView&lt;<span class="lifetime">'a</span>, T, U1, C, S::RStride, S::CStride&gt;;
 
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>next(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::Item&gt; {
@@ -706,8 +707,8 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, T: Scalar, R: Dim, C: Dim, S: <span class="lifetime">&#39;a </span>+ RawStorage&lt;T, R, C&gt;&gt; ExactSizeIterator
-    <span class="kw">for </span>RowIter&lt;<span class="lifetime">&#39;a</span>, T, R, C, S&gt;
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T: Scalar, R: Dim, C: Dim, S: <span class="lifetime">'a </span>+ RawStorage&lt;T, R, C&gt;&gt; ExactSizeIterator
+    <span class="kw">for </span>RowIter&lt;<span class="lifetime">'a</span>, T, R, C, S&gt;
 {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>len(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
@@ -717,14 +718,14 @@
 
 <span class="doccomment">/// An iterator through the mutable rows of a matrix.
 </span><span class="attr">#[derive(Debug)]
-</span><span class="kw">pub struct </span>RowIterMut&lt;<span class="lifetime">&#39;a</span>, T, R: Dim, C: Dim, S: RawStorageMut&lt;T, R, C&gt;&gt; {
+</span><span class="kw">pub struct </span>RowIterMut&lt;<span class="lifetime">'a</span>, T, R: Dim, C: Dim, S: RawStorageMut&lt;T, R, C&gt;&gt; {
     mat: <span class="kw-2">*mut </span>Matrix&lt;T, R, C, S&gt;,
     curr: usize,
-    phantom: PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>Matrix&lt;T, R, C, S&gt;&gt;,
+    phantom: PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>Matrix&lt;T, R, C, S&gt;&gt;,
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, T, R: Dim, C: Dim, S: <span class="lifetime">&#39;a </span>+ RawStorageMut&lt;T, R, C&gt;&gt; RowIterMut&lt;<span class="lifetime">&#39;a</span>, T, R, C, S&gt; {
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>new(mat: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>Matrix&lt;T, R, C, S&gt;) -&gt; <span class="self">Self </span>{
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T, R: Dim, C: Dim, S: <span class="lifetime">'a </span>+ RawStorageMut&lt;T, R, C&gt;&gt; RowIterMut&lt;<span class="lifetime">'a</span>, T, R, C, S&gt; {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>new(mat: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>Matrix&lt;T, R, C, S&gt;) -&gt; <span class="self">Self </span>{
         RowIterMut {
             mat,
             curr: <span class="number">0</span>,
@@ -737,10 +738,10 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, T, R: Dim, C: Dim, S: <span class="lifetime">&#39;a </span>+ RawStorageMut&lt;T, R, C&gt;&gt; Iterator
-    <span class="kw">for </span>RowIterMut&lt;<span class="lifetime">&#39;a</span>, T, R, C, S&gt;
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T, R: Dim, C: Dim, S: <span class="lifetime">'a </span>+ RawStorageMut&lt;T, R, C&gt;&gt; Iterator
+    <span class="kw">for </span>RowIterMut&lt;<span class="lifetime">'a</span>, T, R, C, S&gt;
 {
-    <span class="kw">type </span>Item = MatrixViewMut&lt;<span class="lifetime">&#39;a</span>, T, U1, C, S::RStride, S::CStride&gt;;
+    <span class="kw">type </span>Item = MatrixViewMut&lt;<span class="lifetime">'a</span>, T, U1, C, S::RStride, S::CStride&gt;;
 
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>next(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::Item&gt; {
@@ -764,8 +765,8 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, T: Scalar, R: Dim, C: Dim, S: <span class="lifetime">&#39;a </span>+ RawStorageMut&lt;T, R, C&gt;&gt; ExactSizeIterator
-    <span class="kw">for </span>RowIterMut&lt;<span class="lifetime">&#39;a</span>, T, R, C, S&gt;
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T: Scalar, R: Dim, C: Dim, S: <span class="lifetime">'a </span>+ RawStorageMut&lt;T, R, C&gt;&gt; ExactSizeIterator
+    <span class="kw">for </span>RowIterMut&lt;<span class="lifetime">'a</span>, T, R, C, S&gt;
 {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>len(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
@@ -779,14 +780,14 @@
  */
 </span><span class="attr">#[derive(Clone, Debug)]
 </span><span class="doccomment">/// An iterator through the columns of a matrix.
-</span><span class="kw">pub struct </span>ColumnIter&lt;<span class="lifetime">&#39;a</span>, T, R: Dim, C: Dim, S: RawStorage&lt;T, R, C&gt;&gt; {
-    mat: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Matrix&lt;T, R, C, S&gt;,
+</span><span class="kw">pub struct </span>ColumnIter&lt;<span class="lifetime">'a</span>, T, R: Dim, C: Dim, S: RawStorage&lt;T, R, C&gt;&gt; {
+    mat: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>Matrix&lt;T, R, C, S&gt;,
     range: Range&lt;usize&gt;,
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, T, R: Dim, C: Dim, S: <span class="lifetime">&#39;a </span>+ RawStorage&lt;T, R, C&gt;&gt; ColumnIter&lt;<span class="lifetime">&#39;a</span>, T, R, C, S&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T, R: Dim, C: Dim, S: <span class="lifetime">'a </span>+ RawStorage&lt;T, R, C&gt;&gt; ColumnIter&lt;<span class="lifetime">'a</span>, T, R, C, S&gt; {
     <span class="doccomment">/// a new column iterator covering all columns of the matrix
-    </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>new(mat: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Matrix&lt;T, R, C, S&gt;) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>new(mat: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>Matrix&lt;T, R, C, S&gt;) -&gt; <span class="self">Self </span>{
         ColumnIter {
             mat,
             range: <span class="number">0</span>..mat.ncols(),
@@ -811,8 +812,8 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, T, R: Dim, C: Dim, S: <span class="lifetime">&#39;a </span>+ RawStorage&lt;T, R, C&gt;&gt; Iterator <span class="kw">for </span>ColumnIter&lt;<span class="lifetime">&#39;a</span>, T, R, C, S&gt; {
-    <span class="kw">type </span>Item = MatrixView&lt;<span class="lifetime">&#39;a</span>, T, R, U1, S::RStride, S::CStride&gt;;
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T, R: Dim, C: Dim, S: <span class="lifetime">'a </span>+ RawStorage&lt;T, R, C&gt;&gt; Iterator <span class="kw">for </span>ColumnIter&lt;<span class="lifetime">'a</span>, T, R, C, S&gt; {
+    <span class="kw">type </span>Item = MatrixView&lt;<span class="lifetime">'a</span>, T, R, U1, S::RStride, S::CStride&gt;;
 
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>next(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::Item&gt; {
@@ -838,8 +839,8 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, T, R: Dim, C: Dim, S: <span class="lifetime">&#39;a </span>+ RawStorage&lt;T, R, C&gt;&gt; DoubleEndedIterator
-    <span class="kw">for </span>ColumnIter&lt;<span class="lifetime">&#39;a</span>, T, R, C, S&gt;
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T, R: Dim, C: Dim, S: <span class="lifetime">'a </span>+ RawStorage&lt;T, R, C&gt;&gt; DoubleEndedIterator
+    <span class="kw">for </span>ColumnIter&lt;<span class="lifetime">'a</span>, T, R, C, S&gt;
 {
     <span class="kw">fn </span>next_back(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::Item&gt; {
         <span class="macro">debug_assert!</span>(<span class="self">self</span>.range.start &lt;= <span class="self">self</span>.range.end);
@@ -854,8 +855,8 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, T: Scalar, R: Dim, C: Dim, S: <span class="lifetime">&#39;a </span>+ RawStorage&lt;T, R, C&gt;&gt; ExactSizeIterator
-    <span class="kw">for </span>ColumnIter&lt;<span class="lifetime">&#39;a</span>, T, R, C, S&gt;
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T: Scalar, R: Dim, C: Dim, S: <span class="lifetime">'a </span>+ RawStorage&lt;T, R, C&gt;&gt; ExactSizeIterator
+    <span class="kw">for </span>ColumnIter&lt;<span class="lifetime">'a</span>, T, R, C, S&gt;
 {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>len(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
@@ -865,14 +866,14 @@
 
 <span class="doccomment">/// An iterator through the mutable columns of a matrix.
 </span><span class="attr">#[derive(Debug)]
-</span><span class="kw">pub struct </span>ColumnIterMut&lt;<span class="lifetime">&#39;a</span>, T, R: Dim, C: Dim, S: RawStorageMut&lt;T, R, C&gt;&gt; {
+</span><span class="kw">pub struct </span>ColumnIterMut&lt;<span class="lifetime">'a</span>, T, R: Dim, C: Dim, S: RawStorageMut&lt;T, R, C&gt;&gt; {
     mat: <span class="kw-2">*mut </span>Matrix&lt;T, R, C, S&gt;,
     range: Range&lt;usize&gt;,
-    phantom: PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>Matrix&lt;T, R, C, S&gt;&gt;,
+    phantom: PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>Matrix&lt;T, R, C, S&gt;&gt;,
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, T, R: Dim, C: Dim, S: <span class="lifetime">&#39;a </span>+ RawStorageMut&lt;T, R, C&gt;&gt; ColumnIterMut&lt;<span class="lifetime">&#39;a</span>, T, R, C, S&gt; {
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>new(mat: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>Matrix&lt;T, R, C, S&gt;) -&gt; <span class="self">Self </span>{
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T, R: Dim, C: Dim, S: <span class="lifetime">'a </span>+ RawStorageMut&lt;T, R, C&gt;&gt; ColumnIterMut&lt;<span class="lifetime">'a</span>, T, R, C, S&gt; {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>new(mat: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>Matrix&lt;T, R, C, S&gt;) -&gt; <span class="self">Self </span>{
         <span class="kw">let </span>range = <span class="number">0</span>..mat.ncols();
         ColumnIterMut {
             mat,
@@ -905,13 +906,13 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, T, R: Dim, C: Dim, S: <span class="lifetime">&#39;a </span>+ RawStorageMut&lt;T, R, C&gt;&gt; Iterator
-    <span class="kw">for </span>ColumnIterMut&lt;<span class="lifetime">&#39;a</span>, T, R, C, S&gt;
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T, R: Dim, C: Dim, S: <span class="lifetime">'a </span>+ RawStorageMut&lt;T, R, C&gt;&gt; Iterator
+    <span class="kw">for </span>ColumnIterMut&lt;<span class="lifetime">'a</span>, T, R, C, S&gt;
 {
-    <span class="kw">type </span>Item = MatrixViewMut&lt;<span class="lifetime">&#39;a</span>, T, R, U1, S::RStride, S::CStride&gt;;
+    <span class="kw">type </span>Item = MatrixViewMut&lt;<span class="lifetime">'a</span>, T, R, U1, S::RStride, S::CStride&gt;;
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>next(<span class="kw-2">&amp;</span><span class="lifetime">&#39;_ </span><span class="kw-2">mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::Item&gt; {
+    </span><span class="kw">fn </span>next(<span class="kw-2">&amp;</span><span class="lifetime">'_ </span><span class="kw-2">mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::Item&gt; {
         <span class="macro">debug_assert!</span>(<span class="self">self</span>.range.start &lt;= <span class="self">self</span>.range.end);
         <span class="kw">if </span><span class="self">self</span>.range.start &lt; <span class="self">self</span>.range.end {
             <span class="kw">let </span>res = <span class="kw">unsafe </span>{ (<span class="kw-2">*</span><span class="self">self</span>.mat).column_mut(<span class="self">self</span>.range.start) };
@@ -934,8 +935,8 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, T: Scalar, R: Dim, C: Dim, S: <span class="lifetime">&#39;a </span>+ RawStorageMut&lt;T, R, C&gt;&gt; ExactSizeIterator
-    <span class="kw">for </span>ColumnIterMut&lt;<span class="lifetime">&#39;a</span>, T, R, C, S&gt;
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T: Scalar, R: Dim, C: Dim, S: <span class="lifetime">'a </span>+ RawStorageMut&lt;T, R, C&gt;&gt; ExactSizeIterator
+    <span class="kw">for </span>ColumnIterMut&lt;<span class="lifetime">'a</span>, T, R, C, S&gt;
 {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>len(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
@@ -943,8 +944,8 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, T: Scalar, R: Dim, C: Dim, S: <span class="lifetime">&#39;a </span>+ RawStorageMut&lt;T, R, C&gt;&gt; DoubleEndedIterator
-    <span class="kw">for </span>ColumnIterMut&lt;<span class="lifetime">&#39;a</span>, T, R, C, S&gt;
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T: Scalar, R: Dim, C: Dim, S: <span class="lifetime">'a </span>+ RawStorageMut&lt;T, R, C&gt;&gt; DoubleEndedIterator
+    <span class="kw">for </span>ColumnIterMut&lt;<span class="lifetime">'a</span>, T, R, C, S&gt;
 {
     <span class="kw">fn </span>next_back(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::Item&gt; {
         <span class="macro">debug_assert!</span>(<span class="self">self</span>.range.start &lt;= <span class="self">self</span>.range.end);

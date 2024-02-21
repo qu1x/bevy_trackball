@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/nalgebra-0.32.3/src/base/construction.rs`."><title>construction.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="nalgebra" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="icon" href="https://nalgebra.org/img/favicon.ico"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../nalgebra/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/nalgebra-0.32.4/src/base/construction.rs`."><title>construction.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="nalgebra" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="icon" href="https://nalgebra.org/img/favicon.ico"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1265,16 +1266,16 @@
 <a href="#1265" id="1265">1265</a>
 <a href="#1266" id="1266">1266</a>
 <a href="#1267" id="1267">1267</a>
-</pre></div><pre class="rust"><code><span class="attr">#[cfg(all(feature = <span class="string">&quot;alloc&quot;</span>, not(feature = <span class="string">&quot;std&quot;</span>)))]
+</pre></div><pre class="rust"><code><span class="attr">#[cfg(all(feature = <span class="string">"alloc"</span>, not(feature = <span class="string">"std"</span>)))]
 </span><span class="kw">use </span>alloc::vec::Vec;
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;arbitrary&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"arbitrary"</span>)]
 </span><span class="kw">use </span><span class="kw">crate</span>::base::storage::Owned;
-<span class="attr">#[cfg(feature = <span class="string">&quot;arbitrary&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"arbitrary"</span>)]
 </span><span class="kw">use </span>quickcheck::{Arbitrary, Gen};
 
 <span class="kw">use </span>num::{Bounded, One, Zero};
-<span class="attr">#[cfg(feature = <span class="string">&quot;rand-no-std&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"rand-no-std"</span>)]
 </span><span class="kw">use </span>rand::{
     distributions::{Distribution, Standard},
     Rng,
@@ -1373,7 +1374,7 @@
     </span><span class="kw">pub fn </span>from_row_slice_generic(nrows: R, ncols: C, slice: <span class="kw-2">&amp;</span>[T]) -&gt; <span class="self">Self </span>{
         <span class="macro">assert!</span>(
             slice.len() == nrows.value() * ncols.value(),
-            <span class="string">&quot;Matrix init. error: the slice did not contain the right number of elements.&quot;
+            <span class="string">"Matrix init. error: the slice did not contain the right number of elements."
         </span>);
 
         <span class="kw">let </span><span class="kw-2">mut </span>res = Matrix::uninit(nrows, ncols);
@@ -1461,7 +1462,7 @@
         <span class="kw">let </span><span class="kw-2">mut </span>res = <span class="self">Self</span>::zeros_generic(nrows, ncols);
         <span class="macro">assert!</span>(
             elts.len() &lt;= <span class="kw">crate</span>::min(nrows.value(), ncols.value()),
-            <span class="string">&quot;Too many diagonal elements provided.&quot;
+            <span class="string">"Too many diagonal elements provided."
         </span>);
 
         <span class="kw">for </span>(i, elt) <span class="kw">in </span>elts.iter().enumerate() {
@@ -1492,18 +1493,18 @@
     </span><span class="kw">where
         </span>SB: RawStorage&lt;T, Const&lt;<span class="number">1</span>&gt;, C&gt;,
     {
-        <span class="macro">assert!</span>(!rows.is_empty(), <span class="string">&quot;At least one row must be given.&quot;</span>);
+        <span class="macro">assert!</span>(!rows.is_empty(), <span class="string">"At least one row must be given."</span>);
         <span class="kw">let </span>nrows = R::try_to_usize().unwrap_or_else(|| rows.len());
         <span class="kw">let </span>ncols = rows[<span class="number">0</span>].len();
         <span class="macro">assert!</span>(
             rows.len() == nrows,
-            <span class="string">&quot;Invalid number of rows provided to build this matrix.&quot;
+            <span class="string">"Invalid number of rows provided to build this matrix."
         </span>);
 
         <span class="kw">if </span>C::try_to_usize().is_none() {
             <span class="macro">assert!</span>(
                 rows.iter().all(|r| r.len() == ncols),
-                <span class="string">&quot;The provided rows must all have the same dimension.&quot;
+                <span class="string">"The provided rows must all have the same dimension."
             </span>);
         }
 
@@ -1534,18 +1535,18 @@
     </span><span class="kw">where
         </span>SB: RawStorage&lt;T, R&gt;,
     {
-        <span class="macro">assert!</span>(!columns.is_empty(), <span class="string">&quot;At least one column must be given.&quot;</span>);
+        <span class="macro">assert!</span>(!columns.is_empty(), <span class="string">"At least one column must be given."</span>);
         <span class="kw">let </span>ncols = C::try_to_usize().unwrap_or_else(|| columns.len());
         <span class="kw">let </span>nrows = columns[<span class="number">0</span>].len();
         <span class="macro">assert!</span>(
             columns.len() == ncols,
-            <span class="string">&quot;Invalid number of columns provided to build this matrix.&quot;
+            <span class="string">"Invalid number of columns provided to build this matrix."
         </span>);
 
         <span class="kw">if </span>R::try_to_usize().is_none() {
             <span class="macro">assert!</span>(
                 columns.iter().all(|r| r.len() == nrows),
-                <span class="string">&quot;The columns provided must all have the same dimension.&quot;
+                <span class="string">"The columns provided must all have the same dimension."
             </span>);
         }
 
@@ -1557,7 +1558,7 @@
 
     <span class="doccomment">/// Creates a matrix filled with random values.
     </span><span class="attr">#[inline]
-    #[cfg(feature = <span class="string">&quot;rand&quot;</span>)]
+    #[cfg(feature = <span class="string">"rand"</span>)]
     </span><span class="kw">pub fn </span>new_random_generic(nrows: R, ncols: C) -&gt; <span class="self">Self
     </span><span class="kw">where
         </span>Standard: Distribution&lt;T&gt;,
@@ -1568,7 +1569,7 @@
 
     <span class="doccomment">/// Creates a matrix filled with random values from the given distribution.
     </span><span class="attr">#[inline]
-    #[cfg(feature = <span class="string">&quot;rand-no-std&quot;</span>)]
+    #[cfg(feature = <span class="string">"rand-no-std"</span>)]
     </span><span class="kw">pub fn </span>from_distribution_generic&lt;Distr: Distribution&lt;T&gt; + <span class="question-mark">?</span>Sized, G: Rng + <span class="question-mark">?</span>Sized&gt;(
         nrows: R,
         ncols: C,
@@ -1596,7 +1597,7 @@
     /// assert_eq!(matrix_storage_ptr, vec_ptr);
     /// ```
     </span><span class="attr">#[inline]
-    #[cfg(any(feature = <span class="string">&quot;std&quot;</span>, feature = <span class="string">&quot;alloc&quot;</span>))]
+    #[cfg(any(feature = <span class="string">"std"</span>, feature = <span class="string">"alloc"</span>))]
     </span><span class="kw">pub fn </span>from_vec_generic(nrows: R, ncols: C, data: Vec&lt;T&gt;) -&gt; <span class="self">Self </span>{
         <span class="self">Self</span>::from_iterator_generic(nrows, ncols, data)
     }
@@ -1891,7 +1892,7 @@
 
         <span class="doccomment">/// Creates a matrix or vector filled with random values from the given distribution.
         </span><span class="attr">#[inline]
-        #[cfg(feature = <span class="string">&quot;rand-no-std&quot;</span>)]
+        #[cfg(feature = <span class="string">"rand-no-std"</span>)]
         </span><span class="kw">pub fn </span>from_distribution&lt;Distr: Distribution&lt;T&gt; + <span class="question-mark">?</span>Sized, G: Rng + <span class="question-mark">?</span>Sized&gt;(
             $(<span class="macro-nonterminal">$args</span>: usize,)*
             distribution: <span class="kw-2">&amp;</span>Distr,
@@ -1902,7 +1903,7 @@
 
         <span class="doccomment">/// Creates a matrix filled with random values.
         </span><span class="attr">#[inline]
-        #[cfg(feature = <span class="string">&quot;rand&quot;</span>)]
+        #[cfg(feature = <span class="string">"rand"</span>)]
         </span><span class="kw">pub fn </span>new_random($(<span class="macro-nonterminal">$args</span>: usize),<span class="kw-2">*</span>) -&gt; <span class="self">Self
             </span><span class="kw">where </span>Standard: Distribution&lt;T&gt; {
             <span class="self">Self</span>::new_random_generic($(<span class="macro-nonterminal">$gargs</span>),<span class="kw-2">*</span>)
@@ -1957,7 +1958,7 @@
 
 <span class="comment">/*
  *
- * Constructors that don&#39;t necessarily require all dimensions
+ * Constructors that don't necessarily require all dimensions
  * to be specified when one dimension is already known.
  *
  */
@@ -2043,7 +2044,7 @@
             ///         dm[(1, 0)] == 1 &amp;&amp; dm[(1, 1)] == 3 &amp;&amp; dm[(1, 2)] == 5);
             /// ```
             </span><span class="attr">#[inline]
-            #[cfg(any(feature = <span class="string">&quot;std&quot;</span>, feature = <span class="string">&quot;alloc&quot;</span>))]
+            #[cfg(any(feature = <span class="string">"std"</span>, feature = <span class="string">"alloc"</span>))]
             </span><span class="kw">pub fn </span>from_vec($(<span class="macro-nonterminal">$args</span>: usize,)* <span class="macro-nonterminal">$data</span>: Vec&lt;T&gt;) -&gt; <span class="self">Self </span>{
                 <span class="self">Self</span>::from_vec_generic($(<span class="macro-nonterminal">$gargs</span>, )* <span class="macro-nonterminal">$data</span>)
             }
@@ -2120,7 +2121,7 @@ Dyn(data.len() / C::dim()), C::name();
     }
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;rand-no-std&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"rand-no-std"</span>)]
 </span><span class="kw">impl</span>&lt;T: Scalar, R: Dim, C: Dim&gt; Distribution&lt;OMatrix&lt;T, R, C&gt;&gt; <span class="kw">for </span>Standard
 <span class="kw">where
     </span>DefaultAllocator: Allocator&lt;T, R, C&gt;,
@@ -2135,7 +2136,7 @@ Dyn(data.len() / C::dim()), C::name();
     }
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;arbitrary&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"arbitrary"</span>)]
 </span><span class="kw">impl</span>&lt;T, R, C&gt; Arbitrary <span class="kw">for </span>OMatrix&lt;T, R, C&gt;
 <span class="kw">where
     </span>R: Dim,
@@ -2156,7 +2157,7 @@ Dyn(data.len() / C::dim()), C::name();
 }
 
 <span class="comment">// TODO(specialization): faster impls possible for D≤4 (see rand_distr::{UnitCircle, UnitSphere})
-</span><span class="attr">#[cfg(feature = <span class="string">&quot;rand&quot;</span>)]
+</span><span class="attr">#[cfg(feature = <span class="string">"rand"</span>)]
 </span><span class="kw">impl</span>&lt;T: <span class="kw">crate</span>::RealField, D: DimName&gt; Distribution&lt;Unit&lt;OVector&lt;T, D&gt;&gt;&gt; <span class="kw">for </span>Standard
 <span class="kw">where
     </span>DefaultAllocator: Allocator&lt;T, D&gt;,

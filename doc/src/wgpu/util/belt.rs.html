@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/wgpu-0.17.2/src/util/belt.rs`."><title>belt.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="wgpu" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../wgpu/index.html"><img src="https://raw.githubusercontent.com/gfx-rs/wgpu/master/logo.png" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/wgpu-0.19.1/src/util/belt.rs`."><title>belt.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="wgpu" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><a class="sub-logo-container" href="../../../wgpu/index.html"><img src="https://raw.githubusercontent.com/gfx-rs/wgpu/trunk/logo.png" alt="wgpu"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -181,6 +182,22 @@
 <a href="#181" id="181">181</a>
 <a href="#182" id="182">182</a>
 <a href="#183" id="183">183</a>
+<a href="#184" id="184">184</a>
+<a href="#185" id="185">185</a>
+<a href="#186" id="186">186</a>
+<a href="#187" id="187">187</a>
+<a href="#188" id="188">188</a>
+<a href="#189" id="189">189</a>
+<a href="#190" id="190">190</a>
+<a href="#191" id="191">191</a>
+<a href="#192" id="192">192</a>
+<a href="#193" id="193">193</a>
+<a href="#194" id="194">194</a>
+<a href="#195" id="195">195</a>
+<a href="#196" id="196">196</a>
+<a href="#197" id="197">197</a>
+<a href="#198" id="198">198</a>
+<a href="#199" id="199">199</a>
 </pre></div><pre class="rust"><code><span class="kw">use crate</span>::{
     util::align_to, Buffer, BufferAddress, BufferDescriptor, BufferSize, BufferUsages,
     BufferViewMut, CommandEncoder, Device, MapMode,
@@ -192,6 +209,23 @@
     buffer: Arc&lt;Buffer&gt;,
     size: BufferAddress,
     offset: BufferAddress,
+}
+
+<span class="doccomment">/// `Sync` wrapper that works by providing only exclusive access.
+///
+/// See https://doc.rust-lang.org/nightly/std/sync/struct.Exclusive.html
+</span><span class="kw">struct </span>Exclusive&lt;T&gt;(T);
+
+<span class="kw">unsafe impl</span>&lt;T&gt; Sync <span class="kw">for </span>Exclusive&lt;T&gt; {}
+
+<span class="kw">impl</span>&lt;T&gt; Exclusive&lt;T&gt; {
+    <span class="kw">fn </span>new(value: T) -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>(value)
+    }
+
+    <span class="kw">fn </span>get_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>T {
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>.<span class="number">0
+    </span>}
 }
 
 <span class="doccomment">/// Efficiently performs many buffer writes by sharing and reusing temporary buffers.
@@ -219,9 +253,9 @@
     /// into `active_chunks`.
     </span>free_chunks: Vec&lt;Chunk&gt;,
     <span class="doccomment">/// When closed chunks are mapped again, the map callback sends them here.
-    </span>sender: mpsc::Sender&lt;Chunk&gt;,
+    </span>sender: Exclusive&lt;mpsc::Sender&lt;Chunk&gt;&gt;,
     <span class="doccomment">/// Free chunks are received here to be put on `self.free_chunks`.
-    </span>receiver: mpsc::Receiver&lt;Chunk&gt;,
+    </span>receiver: Exclusive&lt;mpsc::Receiver&lt;Chunk&gt;&gt;,
 }
 
 <span class="kw">impl </span>StagingBelt {
@@ -236,14 +270,14 @@
     ///   (per [`StagingBelt::finish()`]); and
     /// * bigger is better, within these bounds.
     </span><span class="kw">pub fn </span>new(chunk_size: BufferAddress) -&gt; <span class="self">Self </span>{
-        <span class="kw">let </span>(sender, receiver) = mpsc::channel();
+        <span class="kw">let </span>(sender, receiver) = std::sync::mpsc::channel();
         StagingBelt {
             chunk_size,
             active_chunks: Vec::new(),
             closed_chunks: Vec::new(),
             free_chunks: Vec::new(),
-            sender,
-            receiver,
+            sender: Exclusive::new(sender),
+            receiver: Exclusive::new(receiver),
         }
     }
 
@@ -264,7 +298,7 @@
         offset: BufferAddress,
         size: BufferSize,
         device: <span class="kw-2">&amp;</span>Device,
-    ) -&gt; BufferViewMut {
+    ) -&gt; BufferViewMut&lt;<span class="lifetime">'_</span>&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>chunk = <span class="kw">if let </span><span class="prelude-val">Some</span>(index) = <span class="self">self
             </span>.active_chunks
             .iter()
@@ -284,7 +318,7 @@
                 <span class="kw">let </span>size = <span class="self">self</span>.chunk_size.max(size.get());
                 Chunk {
                     buffer: Arc::new(device.create_buffer(<span class="kw-2">&amp;</span>BufferDescriptor {
-                        label: <span class="prelude-val">Some</span>(<span class="string">&quot;(wgpu internal) StagingBelt staging buffer&quot;</span>),
+                        label: <span class="prelude-val">Some</span>(<span class="string">"(wgpu internal) StagingBelt staging buffer"</span>),
                         size,
                         usage: BufferUsages::MAP_WRITE | BufferUsages::COPY_SRC,
                         mapped_at_creation: <span class="bool-val">true</span>,
@@ -331,9 +365,8 @@
     </span><span class="kw">pub fn </span>recall(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
         <span class="self">self</span>.receive_chunks();
 
-        <span class="kw">let </span>sender = <span class="kw-2">&amp;</span><span class="self">self</span>.sender;
         <span class="kw">for </span>chunk <span class="kw">in </span><span class="self">self</span>.closed_chunks.drain(..) {
-            <span class="kw">let </span>sender = sender.clone();
+            <span class="kw">let </span>sender = <span class="self">self</span>.sender.get_mut().clone();
             chunk
                 .buffer
                 .clone()
@@ -347,7 +380,7 @@
     <span class="doccomment">/// Move all chunks that the GPU is done with (and are now mapped again)
     /// from `self.receiver` to `self.free_chunks`.
     </span><span class="kw">fn </span>receive_chunks(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
-        <span class="kw">while let </span><span class="prelude-val">Ok</span>(<span class="kw-2">mut </span>chunk) = <span class="self">self</span>.receiver.try_recv() {
+        <span class="kw">while let </span><span class="prelude-val">Ok</span>(<span class="kw-2">mut </span>chunk) = <span class="self">self</span>.receiver.get_mut().try_recv() {
             chunk.offset = <span class="number">0</span>;
             <span class="self">self</span>.free_chunks.push(chunk);
         }
@@ -355,12 +388,12 @@
 }
 
 <span class="kw">impl </span>fmt::Debug <span class="kw">for </span>StagingBelt {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
-        f.debug_struct(<span class="string">&quot;StagingBelt&quot;</span>)
-            .field(<span class="string">&quot;chunk_size&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.chunk_size)
-            .field(<span class="string">&quot;active_chunks&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.active_chunks.len())
-            .field(<span class="string">&quot;closed_chunks&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.closed_chunks.len())
-            .field(<span class="string">&quot;free_chunks&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.free_chunks.len())
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
+        f.debug_struct(<span class="string">"StagingBelt"</span>)
+            .field(<span class="string">"chunk_size"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.chunk_size)
+            .field(<span class="string">"active_chunks"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.active_chunks.len())
+            .field(<span class="string">"closed_chunks"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.closed_chunks.len())
+            .field(<span class="string">"free_chunks"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.free_chunks.len())
             .finish_non_exhaustive()
     }
 }

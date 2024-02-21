@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_app-0.12.1/src/app.rs`."><title>app.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="bevy_app" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../bevy_app/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_app-0.13.0/src/app.rs`."><title>app.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="bevy_app" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1206,6 +1207,96 @@
 <a href="#1206" id="1206">1206</a>
 <a href="#1207" id="1207">1207</a>
 <a href="#1208" id="1208">1208</a>
+<a href="#1209" id="1209">1209</a>
+<a href="#1210" id="1210">1210</a>
+<a href="#1211" id="1211">1211</a>
+<a href="#1212" id="1212">1212</a>
+<a href="#1213" id="1213">1213</a>
+<a href="#1214" id="1214">1214</a>
+<a href="#1215" id="1215">1215</a>
+<a href="#1216" id="1216">1216</a>
+<a href="#1217" id="1217">1217</a>
+<a href="#1218" id="1218">1218</a>
+<a href="#1219" id="1219">1219</a>
+<a href="#1220" id="1220">1220</a>
+<a href="#1221" id="1221">1221</a>
+<a href="#1222" id="1222">1222</a>
+<a href="#1223" id="1223">1223</a>
+<a href="#1224" id="1224">1224</a>
+<a href="#1225" id="1225">1225</a>
+<a href="#1226" id="1226">1226</a>
+<a href="#1227" id="1227">1227</a>
+<a href="#1228" id="1228">1228</a>
+<a href="#1229" id="1229">1229</a>
+<a href="#1230" id="1230">1230</a>
+<a href="#1231" id="1231">1231</a>
+<a href="#1232" id="1232">1232</a>
+<a href="#1233" id="1233">1233</a>
+<a href="#1234" id="1234">1234</a>
+<a href="#1235" id="1235">1235</a>
+<a href="#1236" id="1236">1236</a>
+<a href="#1237" id="1237">1237</a>
+<a href="#1238" id="1238">1238</a>
+<a href="#1239" id="1239">1239</a>
+<a href="#1240" id="1240">1240</a>
+<a href="#1241" id="1241">1241</a>
+<a href="#1242" id="1242">1242</a>
+<a href="#1243" id="1243">1243</a>
+<a href="#1244" id="1244">1244</a>
+<a href="#1245" id="1245">1245</a>
+<a href="#1246" id="1246">1246</a>
+<a href="#1247" id="1247">1247</a>
+<a href="#1248" id="1248">1248</a>
+<a href="#1249" id="1249">1249</a>
+<a href="#1250" id="1250">1250</a>
+<a href="#1251" id="1251">1251</a>
+<a href="#1252" id="1252">1252</a>
+<a href="#1253" id="1253">1253</a>
+<a href="#1254" id="1254">1254</a>
+<a href="#1255" id="1255">1255</a>
+<a href="#1256" id="1256">1256</a>
+<a href="#1257" id="1257">1257</a>
+<a href="#1258" id="1258">1258</a>
+<a href="#1259" id="1259">1259</a>
+<a href="#1260" id="1260">1260</a>
+<a href="#1261" id="1261">1261</a>
+<a href="#1262" id="1262">1262</a>
+<a href="#1263" id="1263">1263</a>
+<a href="#1264" id="1264">1264</a>
+<a href="#1265" id="1265">1265</a>
+<a href="#1266" id="1266">1266</a>
+<a href="#1267" id="1267">1267</a>
+<a href="#1268" id="1268">1268</a>
+<a href="#1269" id="1269">1269</a>
+<a href="#1270" id="1270">1270</a>
+<a href="#1271" id="1271">1271</a>
+<a href="#1272" id="1272">1272</a>
+<a href="#1273" id="1273">1273</a>
+<a href="#1274" id="1274">1274</a>
+<a href="#1275" id="1275">1275</a>
+<a href="#1276" id="1276">1276</a>
+<a href="#1277" id="1277">1277</a>
+<a href="#1278" id="1278">1278</a>
+<a href="#1279" id="1279">1279</a>
+<a href="#1280" id="1280">1280</a>
+<a href="#1281" id="1281">1281</a>
+<a href="#1282" id="1282">1282</a>
+<a href="#1283" id="1283">1283</a>
+<a href="#1284" id="1284">1284</a>
+<a href="#1285" id="1285">1285</a>
+<a href="#1286" id="1286">1286</a>
+<a href="#1287" id="1287">1287</a>
+<a href="#1288" id="1288">1288</a>
+<a href="#1289" id="1289">1289</a>
+<a href="#1290" id="1290">1290</a>
+<a href="#1291" id="1291">1291</a>
+<a href="#1292" id="1292">1292</a>
+<a href="#1293" id="1293">1293</a>
+<a href="#1294" id="1294">1294</a>
+<a href="#1295" id="1295">1295</a>
+<a href="#1296" id="1296">1296</a>
+<a href="#1297" id="1297">1297</a>
+<a href="#1298" id="1298">1298</a>
 </pre></div><pre class="rust"><code><span class="kw">use crate</span>::{First, Main, MainSchedulePlugin, Plugin, Plugins, StateTransition};
 <span class="kw">pub use </span>bevy_derive::AppLabel;
 <span class="kw">use </span>bevy_ecs::{
@@ -1213,7 +1304,7 @@
     schedule::{
         apply_state_transition, common_conditions::run_once <span class="kw">as </span>run_once_condition,
         run_enter_schedule, InternedScheduleLabel, IntoSystemConfigs, IntoSystemSetConfigs,
-        ScheduleBuildSettings, ScheduleLabel,
+        ScheduleBuildSettings, ScheduleLabel, StateTransitionEvent,
     },
 };
 <span class="kw">use </span>bevy_utils::{intern::Interned, thiserror::Error, tracing::debug, HashMap, HashSet};
@@ -1222,7 +1313,7 @@
     panic::{catch_unwind, resume_unwind, AssertUnwindSafe},
 };
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;trace&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"trace"</span>)]
 </span><span class="kw">use </span>bevy_utils::tracing::info_span;
 
 <span class="macro">bevy_utils::define_label!</span>(
@@ -1238,7 +1329,7 @@
 
 <span class="attr">#[derive(Debug, Error)]
 </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">enum </span>AppError {
-    <span class="attr">#[error(<span class="string">&quot;duplicate plugin {plugin_name:?}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"duplicate plugin {plugin_name:?}"</span>)]
     </span>DuplicatePlugin { plugin_name: String },
 }
 
@@ -1247,12 +1338,12 @@
 ///
 /// Bundles together the necessary elements like [`World`] and [`Schedule`] to create
 /// an ECS-based application. It also stores a pointer to a [runner function](Self::set_runner).
-/// The runner is responsible for managing the application&#39;s event loop and applying the
+/// The runner is responsible for managing the application's event loop and applying the
 /// [`Schedule`] to the [`World`] to drive application logic.
 ///
 /// # Examples
 ///
-/// Here is a simple &quot;Hello World&quot; Bevy app:
+/// Here is a simple "Hello World" Bevy app:
 ///
 /// ```
 /// # use bevy_app::prelude::*;
@@ -1265,7 +1356,7 @@
 /// }
 ///
 /// fn hello_world_system() {
-///    println!(&quot;hello world&quot;);
+///    println!("hello world");
 /// }
 /// ```
 </span><span class="kw">pub struct </span>App {
@@ -1275,8 +1366,8 @@
     /// If additional separate [`World`]-[`Schedule`] pairs are needed, you can use [`sub_app`](App::insert_sub_app)s.
     </span><span class="kw">pub </span>world: World,
     <span class="doccomment">/// The [runner function](Self::set_runner) is primarily responsible for managing
-    /// the application&#39;s event loop and advancing the [`Schedule`].
-    /// Typically, it is not configured manually, but set by one of Bevy&#39;s built-in plugins.
+    /// the application's event loop and advancing the [`Schedule`].
+    /// Typically, it is not configured manually, but set by one of Bevy's built-in plugins.
     /// See `bevy::winit::WinitPlugin` and [`ScheduleRunnerPlugin`](crate::schedule_runner::ScheduleRunnerPlugin).
     </span><span class="kw">pub </span>runner: Box&lt;<span class="kw">dyn </span>FnOnce(App) + Send&gt;, <span class="comment">// Send bound is required to make App Send
     </span><span class="doccomment">/// The schedule that systems are added to by default.
@@ -1294,12 +1385,10 @@
 }
 
 <span class="kw">impl </span>Debug <span class="kw">for </span>App {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; std::fmt::Result {
-        <span class="macro">write!</span>(f, <span class="string">&quot;App {{ sub_apps: &quot;</span>)<span class="question-mark">?</span>;
-        f.debug_map()
-            .entries(<span class="self">self</span>.sub_apps.iter().map(|(k, v)| (k, v)))
-            .finish()<span class="question-mark">?</span>;
-        <span class="macro">write!</span>(f, <span class="string">&quot;}}&quot;</span>)
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; std::fmt::Result {
+        <span class="macro">write!</span>(f, <span class="string">"App {{ sub_apps: "</span>)<span class="question-mark">?</span>;
+        f.debug_map().entries(<span class="self">self</span>.sub_apps.iter()).finish()<span class="question-mark">?</span>;
+        <span class="macro">write!</span>(f, <span class="string">"}}"</span>)
     }
 }
 
@@ -1309,7 +1398,7 @@
 ///
 /// # Example
 ///
-/// ```rust
+/// ```
 /// # use bevy_app::{App, AppLabel, SubApp, Main};
 /// # use bevy_ecs::prelude::*;
 /// # use bevy_ecs::schedule::ScheduleLabel;
@@ -1343,11 +1432,11 @@
 ///     sub_app.world.resource_mut::&lt;Val&gt;().0 = main_world.resource::&lt;Val&gt;().0;
 /// }));
 ///
-/// // This will run the schedules once, since we&#39;re using the default runner
+/// // This will run the schedules once, since we're using the default runner
 /// app.run();
 /// ```
 </span><span class="kw">pub struct </span>SubApp {
-    <span class="doccomment">/// The [`SubApp`]&#39;s instance of [`App`]
+    <span class="doccomment">/// The [`SubApp`]'s instance of [`App`]
     </span><span class="kw">pub </span>app: App,
 
     <span class="doccomment">/// A function that allows access to both the main [`App`] [`World`] and the [`SubApp`]. This is
@@ -1362,14 +1451,14 @@
     /// After extract is called, the [`Schedule`] of the sub app is run. The [`World`]
     /// parameter represents the main app world, while the [`App`] parameter is just a mutable
     /// reference to the `SubApp` itself.
-    </span><span class="kw">pub fn </span>new(app: App, extract: <span class="kw">impl </span>Fn(<span class="kw-2">&amp;mut </span>World, <span class="kw-2">&amp;mut </span>App) + Send + <span class="lifetime">&#39;static</span>) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>new(app: App, extract: <span class="kw">impl </span>Fn(<span class="kw-2">&amp;mut </span>World, <span class="kw-2">&amp;mut </span>App) + Send + <span class="lifetime">'static</span>) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
             app,
             extract: Box::new(extract),
         }
     }
 
-    <span class="doccomment">/// Runs the [`SubApp`]&#39;s default schedule.
+    <span class="doccomment">/// Runs the [`SubApp`]'s default schedule.
     </span><span class="kw">pub fn </span>run(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
         <span class="self">self</span>.app.world.run_schedule(<span class="self">self</span>.app.main_schedule_label);
         <span class="self">self</span>.app.world.clear_trackers();
@@ -1382,26 +1471,24 @@
 }
 
 <span class="kw">impl </span>Debug <span class="kw">for </span>SubApp {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; std::fmt::Result {
-        <span class="macro">write!</span>(f, <span class="string">&quot;SubApp {{ app: &quot;</span>)<span class="question-mark">?</span>;
-        f.debug_map()
-            .entries(<span class="self">self</span>.app.sub_apps.iter().map(|(k, v)| (k, v)))
-            .finish()<span class="question-mark">?</span>;
-        <span class="macro">write!</span>(f, <span class="string">&quot;}}&quot;</span>)
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; std::fmt::Result {
+        <span class="macro">write!</span>(f, <span class="string">"SubApp {{ app: "</span>)<span class="question-mark">?</span>;
+        f.debug_map().entries(<span class="self">self</span>.app.sub_apps.iter()).finish()<span class="question-mark">?</span>;
+        <span class="macro">write!</span>(f, <span class="string">"}}"</span>)
     }
 }
 
 <span class="kw">impl </span>Default <span class="kw">for </span>App {
     <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
         <span class="kw">let </span><span class="kw-2">mut </span>app = App::empty();
-        <span class="attr">#[cfg(feature = <span class="string">&quot;bevy_reflect&quot;</span>)]
+        <span class="attr">#[cfg(feature = <span class="string">"bevy_reflect"</span>)]
         </span>app.init_resource::&lt;AppTypeRegistry&gt;();
 
         app.add_plugins(MainSchedulePlugin);
 
         app.add_event::&lt;AppExit&gt;();
 
-        <span class="attr">#[cfg(feature = <span class="string">&quot;bevy_ci_testing&quot;</span>)]
+        <span class="attr">#[cfg(feature = <span class="string">"bevy_ci_testing"</span>)]
         </span>{
             <span class="kw">crate</span>::ci_testing::setup_app(<span class="kw-2">&amp;mut </span>app);
         }
@@ -1425,6 +1512,7 @@
 
 <span class="comment">// Dummy plugin used to temporary hold the place in the plugin registry
 </span><span class="kw">struct </span>PlaceholderPlugin;
+
 <span class="kw">impl </span>Plugin <span class="kw">for </span>PlaceholderPlugin {
     <span class="kw">fn </span>build(<span class="kw-2">&amp;</span><span class="self">self</span>, _app: <span class="kw-2">&amp;mut </span>App) {}
 }
@@ -1466,16 +1554,16 @@
     ///
     /// The active schedule of the app must be set before this method is called.
     </span><span class="kw">pub fn </span>update(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
-        <span class="attr">#[cfg(feature = <span class="string">&quot;trace&quot;</span>)]
-        </span><span class="kw">let </span>_bevy_update_span = <span class="macro">info_span!</span>(<span class="string">&quot;update&quot;</span>).entered();
+        <span class="attr">#[cfg(feature = <span class="string">"trace"</span>)]
+        </span><span class="kw">let </span>_bevy_update_span = <span class="macro">info_span!</span>(<span class="string">"update"</span>).entered();
         {
-            <span class="attr">#[cfg(feature = <span class="string">&quot;trace&quot;</span>)]
-            </span><span class="kw">let </span>_bevy_main_update_span = <span class="macro">info_span!</span>(<span class="string">&quot;main app&quot;</span>).entered();
+            <span class="attr">#[cfg(feature = <span class="string">"trace"</span>)]
+            </span><span class="kw">let </span>_bevy_main_update_span = <span class="macro">info_span!</span>(<span class="string">"main app"</span>).entered();
             <span class="self">self</span>.world.run_schedule(<span class="self">self</span>.main_schedule_label);
         }
         <span class="kw">for </span>(_label, sub_app) <span class="kw">in </span><span class="kw-2">&amp;mut </span><span class="self">self</span>.sub_apps {
-            <span class="attr">#[cfg(feature = <span class="string">&quot;trace&quot;</span>)]
-            </span><span class="kw">let </span>_sub_app_span = <span class="macro">info_span!</span>(<span class="string">&quot;sub app&quot;</span>, name = <span class="question-mark">?</span>_label).entered();
+            <span class="attr">#[cfg(feature = <span class="string">"trace"</span>)]
+            </span><span class="kw">let </span>_sub_app_span = <span class="macro">info_span!</span>(<span class="string">"sub app"</span>, name = <span class="question-mark">?</span>_label).entered();
             sub_app.extract(<span class="kw-2">&amp;mut </span><span class="self">self</span>.world);
             sub_app.run();
         }
@@ -1483,14 +1571,14 @@
         <span class="self">self</span>.world.clear_trackers();
     }
 
-    <span class="doccomment">/// Starts the application by calling the app&#39;s [runner function](Self::set_runner).
+    <span class="doccomment">/// Starts the application by calling the app's [runner function](Self::set_runner).
     ///
     /// Finalizes the [`App`] configuration. For general usage, see the example on the item
     /// level documentation.
     ///
     /// # `run()` might not return
     ///
-    /// Calls to [`App::run()`] might never return.
+    /// Calls to [`App::run()`] will never return on iOS and Web.
     ///
     /// In simple and *headless* applications, one can expect that execution will
     /// proceed, normally, after calling [`run()`](App::run()) but this is not the case for
@@ -1501,25 +1589,22 @@
     /// window is closed and that event loop terminates – behavior of processes that
     /// do not is often platform dependent or undocumented.
     ///
-    /// By default, *Bevy* uses the `winit` crate for window creation. See
-    /// [`WinitSettings::return_from_run`](https://docs.rs/bevy/latest/bevy/winit/struct.WinitSettings.html#structfield.return_from_run)
-    /// for further discussion of this topic and for a mechanism to require that [`App::run()`]
-    /// *does* return – albeit one that carries its own caveats and disclaimers.
+    /// By default, *Bevy* uses the `winit` crate for window creation.
     ///
     /// # Panics
     ///
     /// Panics if called from `Plugin::build()`, because it would prevent other plugins to properly build.
     </span><span class="kw">pub fn </span>run(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
-        <span class="attr">#[cfg(feature = <span class="string">&quot;trace&quot;</span>)]
-        </span><span class="kw">let </span>_bevy_app_run_span = <span class="macro">info_span!</span>(<span class="string">&quot;bevy_app&quot;</span>).entered();
+        <span class="attr">#[cfg(feature = <span class="string">"trace"</span>)]
+        </span><span class="kw">let </span>_bevy_app_run_span = <span class="macro">info_span!</span>(<span class="string">"bevy_app"</span>).entered();
 
         <span class="kw">let </span><span class="kw-2">mut </span>app = std::mem::replace(<span class="self">self</span>, App::empty());
         <span class="kw">if </span>app.building_plugin_depth &gt; <span class="number">0 </span>{
-            <span class="macro">panic!</span>(<span class="string">&quot;App::run() was called from within Plugin::build(), which is not allowed.&quot;</span>);
+            <span class="macro">panic!</span>(<span class="string">"App::run() was called from within Plugin::build(), which is not allowed."</span>);
         }
 
         <span class="kw">let </span>runner = std::mem::replace(<span class="kw-2">&amp;mut </span>app.runner, Box::new(run_once));
-        (runner)(app);
+        runner(app);
     }
 
     <span class="doccomment">/// Check the state of all plugins already added to this app. This is usually called by the
@@ -1542,7 +1627,7 @@
     <span class="doccomment">/// Run [`Plugin::finish`] for each plugin. This is usually called by the event loop once all
     /// plugins are ready, but can be useful for situations where you want to use [`App::update`].
     </span><span class="kw">pub fn </span>finish(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
-        <span class="comment">// temporarily remove the plugin registry to run each plugin&#39;s setup function on app.
+        <span class="comment">// temporarily remove the plugin registry to run each plugin's setup function on app.
         </span><span class="kw">let </span>plugin_registry = std::mem::take(<span class="kw-2">&amp;mut </span><span class="self">self</span>.plugin_registry);
         <span class="kw">for </span>plugin <span class="kw">in </span><span class="kw-2">&amp;</span>plugin_registry {
             plugin.finish(<span class="self">self</span>);
@@ -1554,7 +1639,7 @@
     <span class="doccomment">/// Run [`Plugin::cleanup`] for each plugin. This is usually called by the event loop after
     /// [`App::finish`], but can be useful for situations where you want to use [`App::update`].
     </span><span class="kw">pub fn </span>cleanup(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
-        <span class="comment">// temporarily remove the plugin registry to run each plugin&#39;s setup function on app.
+        <span class="comment">// temporarily remove the plugin registry to run each plugin's setup function on app.
         </span><span class="kw">let </span>plugin_registry = std::mem::take(<span class="kw-2">&amp;mut </span><span class="self">self</span>.plugin_registry);
         <span class="kw">for </span>plugin <span class="kw">in </span><span class="kw-2">&amp;</span>plugin_registry {
             plugin.cleanup(<span class="self">self</span>);
@@ -1563,8 +1648,12 @@
         <span class="self">self</span>.plugins_state = PluginsState::Cleaned;
     }
 
-    <span class="doccomment">/// Adds [`State&lt;S&gt;`] and [`NextState&lt;S&gt;`] resources, [`OnEnter`] and [`OnExit`] schedules
-    /// for each state variant (if they don&#39;t already exist), an instance of [`apply_state_transition::&lt;S&gt;`] in
+    <span class="doccomment">/// Initializes a [`State`] with standard starting values.
+    ///
+    /// If the [`State`] already exists, nothing happens.
+    ///
+    /// Adds [`State&lt;S&gt;`] and [`NextState&lt;S&gt;`] resources, [`OnEnter`] and [`OnExit`] schedules
+    /// for each state variant (if they don't already exist), an instance of [`apply_state_transition::&lt;S&gt;`] in
     /// [`StateTransition`] so that transitions happen before [`Update`](crate::Update) and
     /// a instance of [`run_enter_schedule::&lt;S&gt;`] in [`StateTransition`] with a
     /// [`run_once`](`run_once_condition`) condition to run the on enter schedule of the
@@ -1575,9 +1664,47 @@
     ///
     /// Note that you can also apply state transitions at other points in the schedule
     /// by adding the [`apply_state_transition`] system manually.
-    </span><span class="kw">pub fn </span>add_state&lt;S: States&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
-        <span class="self">self</span>.init_resource::&lt;State&lt;S&gt;&gt;()
+    </span><span class="kw">pub fn </span>init_state&lt;S: States + FromWorld&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">if </span>!<span class="self">self</span>.world.contains_resource::&lt;State&lt;S&gt;&gt;() {
+            <span class="self">self</span>.init_resource::&lt;State&lt;S&gt;&gt;()
+                .init_resource::&lt;NextState&lt;S&gt;&gt;()
+                .add_event::&lt;StateTransitionEvent&lt;S&gt;&gt;()
+                .add_systems(
+                    StateTransition,
+                    (
+                        run_enter_schedule::&lt;S&gt;.run_if(run_once_condition()),
+                        apply_state_transition::&lt;S&gt;,
+                    )
+                        .chain(),
+                );
+        }
+
+        <span class="comment">// The OnEnter, OnExit, and OnTransition schedules are lazily initialized
+        // (i.e. when the first system is added to them), and World::try_run_schedule is used to fail
+        // gracefully if they aren't present.
+
+        </span><span class="self">self
+    </span>}
+
+    <span class="doccomment">/// Inserts a specific [`State`] to the current [`App`] and
+    /// overrides any [`State`] previously added of the same type.
+    ///
+    /// Adds [`State&lt;S&gt;`] and [`NextState&lt;S&gt;`] resources, [`OnEnter`] and [`OnExit`] schedules
+    /// for each state variant (if they don't already exist), an instance of [`apply_state_transition::&lt;S&gt;`] in
+    /// [`StateTransition`] so that transitions happen before [`Update`](crate::Update) and
+    /// a instance of [`run_enter_schedule::&lt;S&gt;`] in [`StateTransition`] with a
+    /// [`run_once`](`run_once_condition`) condition to run the on enter schedule of the
+    /// initial state.
+    ///
+    /// If you would like to control how other systems run based on the current state,
+    /// you can emulate this behavior using the [`in_state`] [`Condition`].
+    ///
+    /// Note that you can also apply state transitions at other points in the schedule
+    /// by adding the [`apply_state_transition`] system manually.
+    </span><span class="kw">pub fn </span>insert_state&lt;S: States&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, state: S) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="self">self</span>.insert_resource(State::new(state))
             .init_resource::&lt;NextState&lt;S&gt;&gt;()
+            .add_event::&lt;StateTransitionEvent&lt;S&gt;&gt;()
             .add_systems(
                 StateTransition,
                 (
@@ -1589,12 +1716,12 @@
 
         <span class="comment">// The OnEnter, OnExit, and OnTransition schedules are lazily initialized
         // (i.e. when the first system is added to them), and World::try_run_schedule is used to fail
-        // gracefully if they aren&#39;t present.
+        // gracefully if they aren't present.
 
         </span><span class="self">self
     </span>}
 
-    <span class="doccomment">/// Adds a system to the given schedule in this app&#39;s [`Schedules`].
+    <span class="doccomment">/// Adds a system to the given schedule in this app's [`Schedules`].
     ///
     /// # Examples
     ///
@@ -1630,18 +1757,7 @@
         <span class="self">self
     </span>}
 
-    <span class="doccomment">/// Configures a system set in the default schedule, adding the set if it does not exist.
-    </span><span class="attr">#[deprecated(since = <span class="string">&quot;0.12.0&quot;</span>, note = <span class="string">&quot;Please use `configure_sets` instead.&quot;</span>)]
-    #[track_caller]
-    </span><span class="kw">pub fn </span>configure_set(
-        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        schedule: <span class="kw">impl </span>ScheduleLabel,
-        set: <span class="kw">impl </span>IntoSystemSetConfigs,
-    ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
-        <span class="self">self</span>.configure_sets(schedule, set)
-    }
-
-    <span class="doccomment">/// Configures a collection of system sets in the default schedule, adding any sets that do not exist.
+    <span class="doccomment">/// Configures a collection of system sets in the provided schedule, adding any sets that do not exist.
     </span><span class="attr">#[track_caller]
     </span><span class="kw">pub fn </span>configure_sets(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
@@ -1689,6 +1805,7 @@
             <span class="self">self</span>.init_resource::&lt;Events&lt;T&gt;&gt;().add_systems(
                 First,
                 bevy_ecs::event::event_update_system::&lt;T&gt;
+                    .in_set(bevy_ecs::event::EventUpdates)
                     .run_if(bevy_ecs::event::event_update_condition::&lt;T&gt;),
             );
         }
@@ -1739,7 +1856,7 @@
     /// App::new()
     ///     .insert_non_send_resource(MyCounter { counter: 0 });
     /// ```
-    </span><span class="kw">pub fn </span>insert_non_send_resource&lt;R: <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, resource: R) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>insert_non_send_resource&lt;R: <span class="lifetime">'static</span>&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, resource: R) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
         <span class="self">self</span>.world.insert_non_send_resource(resource);
         <span class="self">self
     </span>}
@@ -1784,7 +1901,7 @@
     /// The [`Resource`] must implement the [`FromWorld`] trait.
     /// If the [`Default`] trait is implemented, the [`FromWorld`] trait will use
     /// the [`Default::default`] method to initialize the [`Resource`].
-    </span><span class="kw">pub fn </span>init_non_send_resource&lt;R: <span class="lifetime">&#39;static </span>+ FromWorld&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>init_non_send_resource&lt;R: <span class="lifetime">'static </span>+ FromWorld&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
         <span class="self">self</span>.world.init_non_send_resource::&lt;R&gt;();
         <span class="self">self
     </span>}
@@ -1805,7 +1922,7 @@
     /// #
     /// fn my_runner(mut app: App) {
     ///     loop {
-    ///         println!(&quot;In main loop&quot;);
+    ///         println!("In main loop");
     ///         app.update();
     ///     }
     /// }
@@ -1813,7 +1930,7 @@
     /// App::new()
     ///     .set_runner(my_runner);
     /// ```
-    </span><span class="kw">pub fn </span>set_runner(<span class="kw-2">&amp;mut </span><span class="self">self</span>, run_fn: <span class="kw">impl </span>FnOnce(App) + <span class="lifetime">&#39;static </span>+ Send) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>set_runner(<span class="kw-2">&amp;mut </span><span class="self">self</span>, run_fn: <span class="kw">impl </span>FnOnce(App) + <span class="lifetime">'static </span>+ Send) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
         <span class="self">self</span>.runner = Box::new(run_fn);
         <span class="self">self
     </span>}
@@ -1824,7 +1941,7 @@
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
         plugin: Box&lt;<span class="kw">dyn </span>Plugin&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>, AppError&gt; {
-        <span class="macro">debug!</span>(<span class="string">&quot;added plugin: {}&quot;</span>, plugin.name());
+        <span class="macro">debug!</span>(<span class="string">"added plugin: {}"</span>, plugin.name());
         <span class="kw">if </span>plugin.is_unique() &amp;&amp; !<span class="self">self</span>.plugin_name_added.insert(plugin.name().to_string()) {
             <span class="prelude-val">Err</span>(AppError::DuplicatePlugin {
                 plugin_name: plugin.name().to_string(),
@@ -1864,7 +1981,7 @@
     /// This vector will be length zero if no plugins of that type have been added.
     /// If multiple copies of the same plugin are added to the [`App`], they will be listed in insertion order in this vector.
     ///
-    /// ```rust
+    /// ```
     /// # use bevy_app::prelude::*;
     /// # #[derive(Default)]
     /// # struct ImagePlugin {
@@ -1889,7 +2006,7 @@
 
     <span class="doccomment">/// Adds one or more [`Plugin`]s.
     ///
-    /// One of Bevy&#39;s core principles is modularity. All Bevy engine features are implemented
+    /// One of Bevy's core principles is modularity. All Bevy engine features are implemented
     /// as [`Plugin`]s. This includes internal features like the renderer.
     ///
     /// [`Plugin`]s can be grouped into a set by using a [`PluginGroup`].
@@ -1932,7 +2049,7 @@
             PluginsState::Cleaned | PluginsState::Finished
         ) {
             <span class="macro">panic!</span>(
-                <span class="string">&quot;Plugins cannot be added after App::cleanup() or App::finish() has been called.&quot;
+                <span class="string">"Plugins cannot be added after App::cleanup() or App::finish() has been called."
             </span>);
         }
         plugins.add_to_app(<span class="self">self</span>);
@@ -1941,13 +2058,13 @@
 
     <span class="doccomment">/// Registers the type `T` in the [`TypeRegistry`](bevy_reflect::TypeRegistry) resource,
     /// adding reflect data as specified in the [`Reflect`](bevy_reflect::Reflect) derive:
-    /// ```rust,ignore
-    /// #[derive(Reflect)]
+    /// ```ignore (No serde "derive" feature)
+    /// #[derive(Component, Serialize, Deserialize, Reflect)]
     /// #[reflect(Component, Serialize, Deserialize)] // will register ReflectComponent, ReflectSerialize, ReflectDeserialize
     /// ```
     ///
     /// See [`bevy_reflect::TypeRegistry::register`].
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;bevy_reflect&quot;</span>)]
+    </span><span class="attr">#[cfg(feature = <span class="string">"bevy_reflect"</span>)]
     </span><span class="kw">pub fn </span>register_type&lt;T: bevy_reflect::GetTypeRegistration&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
         <span class="kw">let </span>registry = <span class="self">self</span>.world.resource_mut::&lt;AppTypeRegistry&gt;();
         registry.write().register::&lt;T&gt;();
@@ -1962,7 +2079,7 @@
     /// this method can be used to insert additional type data.
     ///
     /// # Example
-    /// ```rust
+    /// ```
     /// use bevy_app::App;
     /// use bevy_reflect::{ReflectSerialize, ReflectDeserialize};
     ///
@@ -1973,7 +2090,7 @@
     /// ```
     ///
     /// See [`bevy_reflect::TypeRegistry::register_type_data`].
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;bevy_reflect&quot;</span>)]
+    </span><span class="attr">#[cfg(feature = <span class="string">"bevy_reflect"</span>)]
     </span><span class="kw">pub fn </span>register_type_data&lt;
         T: bevy_reflect::Reflect + bevy_reflect::TypePath,
         D: bevy_reflect::TypeData + bevy_reflect::FromType&lt;T&gt;,
@@ -1989,11 +2106,11 @@
     ///
     /// # Panics
     ///
-    /// Panics if the `SubApp` doesn&#39;t exist.
+    /// Panics if the `SubApp` doesn't exist.
     </span><span class="kw">pub fn </span>sub_app_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>, label: <span class="kw">impl </span>AppLabel) -&gt; <span class="kw-2">&amp;mut </span>App {
         <span class="kw">match </span><span class="self">self</span>.get_sub_app_mut(label) {
             <span class="prelude-val">Ok</span>(app) =&gt; app,
-            <span class="prelude-val">Err</span>(label) =&gt; <span class="macro">panic!</span>(<span class="string">&quot;Sub-App with label &#39;{:?}&#39; does not exist&quot;</span>, label),
+            <span class="prelude-val">Err</span>(label) =&gt; <span class="macro">panic!</span>(<span class="string">"Sub-App with label '{:?}' does not exist"</span>, label),
         }
     }
 
@@ -2010,11 +2127,11 @@
     ///
     /// # Panics
     ///
-    /// Panics if the `SubApp` doesn&#39;t exist.
+    /// Panics if the `SubApp` doesn't exist.
     </span><span class="kw">pub fn </span>sub_app(<span class="kw-2">&amp;</span><span class="self">self</span>, label: <span class="kw">impl </span>AppLabel) -&gt; <span class="kw-2">&amp;</span>App {
         <span class="kw">match </span><span class="self">self</span>.get_sub_app(label) {
             <span class="prelude-val">Ok</span>(app) =&gt; app,
-            <span class="prelude-val">Err</span>(label) =&gt; <span class="macro">panic!</span>(<span class="string">&quot;Sub-App with label &#39;{:?}&#39; does not exist&quot;</span>, label),
+            <span class="prelude-val">Err</span>(label) =&gt; <span class="macro">panic!</span>(<span class="string">"Sub-App with label '{:?}' does not exist"</span>, label),
         }
     }
 
@@ -2023,7 +2140,7 @@
         <span class="self">self</span>.sub_apps.insert(label.intern(), sub_app);
     }
 
-    <span class="doccomment">/// Removes a sub app from the app. Returns [`None`] if the label doesn&#39;t exist.
+    <span class="doccomment">/// Removes a sub app from the app. Returns [`None`] if the label doesn't exist.
     </span><span class="kw">pub fn </span>remove_sub_app(<span class="kw-2">&amp;mut </span><span class="self">self</span>, label: <span class="kw">impl </span>AppLabel) -&gt; <span class="prelude-ty">Option</span>&lt;SubApp&gt; {
         <span class="self">self</span>.sub_apps.remove(<span class="kw-2">&amp;</span>label.intern())
     }
@@ -2037,10 +2154,10 @@
             .ok_or(label)
     }
 
-    <span class="doccomment">/// Adds a new `schedule` to the [`App`] under the provided `label`.
+    <span class="doccomment">/// Adds a new `schedule` to the [`App`].
     ///
     /// # Warning
-    /// This method will overwrite any existing schedule at that label.
+    /// This method will overwrite any existing schedule with the same label.
     /// To avoid this behavior, use the `init_schedule` method instead.
     </span><span class="kw">pub fn </span>add_schedule(<span class="kw-2">&amp;mut </span><span class="self">self</span>, schedule: Schedule) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
         <span class="kw">let </span><span class="kw-2">mut </span>schedules = <span class="self">self</span>.world.resource_mut::&lt;Schedules&gt;();
@@ -2108,7 +2225,7 @@
         <span class="self">self
     </span>}
 
-    <span class="doccomment">/// When doing [ambiguity checking](bevy_ecs::schedule::ScheduleBuildSettings) this
+    <span class="doccomment">/// When doing [ambiguity checking](ScheduleBuildSettings) this
     /// ignores systems that are ambiguous on [`Component`] T.
     ///
     /// This settings only applies to the main world. To apply this to other worlds call the
@@ -2116,7 +2233,7 @@
     ///
     /// ## Example
     ///
-    /// ```rust
+    /// ```
     /// # use bevy_app::prelude::*;
     /// # use bevy_ecs::prelude::*;
     /// # use bevy_ecs::schedule::{LogLevel, ScheduleBuildSettings};
@@ -2146,7 +2263,7 @@
         <span class="self">self
     </span>}
 
-    <span class="doccomment">/// When doing [ambiguity checking](bevy_ecs::schedule::ScheduleBuildSettings) this
+    <span class="doccomment">/// When doing [ambiguity checking](ScheduleBuildSettings) this
     /// ignores systems that are ambiguous on [`Resource`] T.
     ///
     /// This settings only applies to the main world. To apply this to other worlds call the
@@ -2154,7 +2271,7 @@
     ///
     /// ## Example
     ///
-    /// ```rust
+    /// ```
     /// # use bevy_app::prelude::*;
     /// # use bevy_ecs::prelude::*;
     /// # use bevy_ecs::schedule::{LogLevel, ScheduleBuildSettings};
@@ -2184,11 +2301,43 @@
         <span class="self">self</span>.world.allow_ambiguous_resource::&lt;T&gt;();
         <span class="self">self
     </span>}
+
+    <span class="doccomment">/// Suppress warnings and errors that would result from systems in these sets having ambiguities
+    /// (conflicting access but indeterminate order) with systems in `set`.
+    ///
+    /// When possible, do this directly in the `.add_systems(Update, a.ambiguous_with(b))` call.
+    /// However, sometimes two independant plugins `A` and `B` are reported as ambiguous, which you
+    /// can only supress as the consumer of both.
+    </span><span class="attr">#[track_caller]
+    </span><span class="kw">pub fn </span>ignore_ambiguity&lt;M1, M2, S1, S2&gt;(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        schedule: <span class="kw">impl </span>ScheduleLabel,
+        a: S1,
+        b: S2,
+    ) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self
+    </span><span class="kw">where
+        </span>S1: IntoSystemSet&lt;M1&gt;,
+        S2: IntoSystemSet&lt;M2&gt;,
+    {
+        <span class="kw">let </span>schedule = schedule.intern();
+        <span class="kw">let </span><span class="kw-2">mut </span>schedules = <span class="self">self</span>.world.resource_mut::&lt;Schedules&gt;();
+
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(schedule) = schedules.get_mut(schedule) {
+            <span class="kw">let </span>schedule: <span class="kw-2">&amp;mut </span>Schedule = schedule;
+            schedule.ignore_ambiguity(a, b);
+        } <span class="kw">else </span>{
+            <span class="kw">let </span><span class="kw-2">mut </span>new_schedule = Schedule::new(schedule);
+            new_schedule.ignore_ambiguity(a, b);
+            schedules.insert(new_schedule);
+        }
+
+        <span class="self">self
+    </span>}
 }
 
 <span class="kw">fn </span>run_once(<span class="kw-2">mut </span>app: App) {
     <span class="kw">while </span>app.plugins_state() == PluginsState::Adding {
-        <span class="attr">#[cfg(not(target_arch = <span class="string">&quot;wasm32&quot;</span>))]
+        <span class="attr">#[cfg(not(target_arch = <span class="string">"wasm32"</span>))]
         </span>bevy_tasks::tick_global_task_pools_on_main_thread();
     }
     app.finish();
@@ -2204,7 +2353,7 @@
 /// subscribing to this event should run after it was emitted and before the schedule of the same
 /// frame is over. This is important since [`App::run()`] might never return.
 ///
-/// If you don&#39;t require access to other components or resources, consider implementing the [`Drop`]
+/// If you don't require access to other components or resources, consider implementing the [`Drop`]
 /// trait on components/resources for code that runs on exit. That saves you from worrying about
 /// system schedule ordering, and is idiomatic Rust.
 </span><span class="attr">#[derive(Event, Debug, Clone, Default)]
@@ -2223,19 +2372,19 @@
 
     <span class="kw">struct </span>PluginA;
     <span class="kw">impl </span>Plugin <span class="kw">for </span>PluginA {
-        <span class="kw">fn </span>build(<span class="kw-2">&amp;</span><span class="self">self</span>, _app: <span class="kw-2">&amp;mut </span><span class="kw">crate</span>::App) {}
+        <span class="kw">fn </span>build(<span class="kw-2">&amp;</span><span class="self">self</span>, _app: <span class="kw-2">&amp;mut </span>App) {}
     }
     <span class="kw">struct </span>PluginB;
     <span class="kw">impl </span>Plugin <span class="kw">for </span>PluginB {
-        <span class="kw">fn </span>build(<span class="kw-2">&amp;</span><span class="self">self</span>, _app: <span class="kw-2">&amp;mut </span><span class="kw">crate</span>::App) {}
+        <span class="kw">fn </span>build(<span class="kw-2">&amp;</span><span class="self">self</span>, _app: <span class="kw-2">&amp;mut </span>App) {}
     }
     <span class="kw">struct </span>PluginC&lt;T&gt;(T);
-    <span class="kw">impl</span>&lt;T: Send + Sync + <span class="lifetime">&#39;static</span>&gt; Plugin <span class="kw">for </span>PluginC&lt;T&gt; {
-        <span class="kw">fn </span>build(<span class="kw-2">&amp;</span><span class="self">self</span>, _app: <span class="kw-2">&amp;mut </span><span class="kw">crate</span>::App) {}
+    <span class="kw">impl</span>&lt;T: Send + Sync + <span class="lifetime">'static</span>&gt; Plugin <span class="kw">for </span>PluginC&lt;T&gt; {
+        <span class="kw">fn </span>build(<span class="kw-2">&amp;</span><span class="self">self</span>, _app: <span class="kw-2">&amp;mut </span>App) {}
     }
     <span class="kw">struct </span>PluginD;
     <span class="kw">impl </span>Plugin <span class="kw">for </span>PluginD {
-        <span class="kw">fn </span>build(<span class="kw-2">&amp;</span><span class="self">self</span>, _app: <span class="kw-2">&amp;mut </span><span class="kw">crate</span>::App) {}
+        <span class="kw">fn </span>build(<span class="kw-2">&amp;</span><span class="self">self</span>, _app: <span class="kw-2">&amp;mut </span>App) {}
         <span class="kw">fn </span>is_unique(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
             <span class="bool-val">false
         </span>}
@@ -2268,10 +2417,10 @@
         <span class="kw">struct </span>PluginRun;
         <span class="kw">struct </span>InnerPlugin;
         <span class="kw">impl </span>Plugin <span class="kw">for </span>InnerPlugin {
-            <span class="kw">fn </span>build(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw">_</span>: <span class="kw-2">&amp;mut </span><span class="kw">crate</span>::App) {}
+            <span class="kw">fn </span>build(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw">_</span>: <span class="kw-2">&amp;mut </span>App) {}
         }
         <span class="kw">impl </span>Plugin <span class="kw">for </span>PluginRun {
-            <span class="kw">fn </span>build(<span class="kw-2">&amp;</span><span class="self">self</span>, app: <span class="kw-2">&amp;mut </span><span class="kw">crate</span>::App) {
+            <span class="kw">fn </span>build(<span class="kw-2">&amp;</span><span class="self">self</span>, app: <span class="kw-2">&amp;mut </span>App) {
                 app.add_plugins(InnerPlugin).run();
             }
         }
@@ -2294,7 +2443,7 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>add_systems_should_create_schedule_if_it_does_not_exist() {
         <span class="kw">let </span><span class="kw-2">mut </span>app = App::new();
-        app.add_state::&lt;AppState&gt;()
+        app.init_state::&lt;AppState&gt;()
             .add_systems(OnEnter(AppState::MainMenu), (foo, bar));
 
         app.world.run_schedule(OnEnter(AppState::MainMenu));
@@ -2305,7 +2454,7 @@
     </span><span class="kw">fn </span>add_systems_should_create_schedule_if_it_does_not_exist2() {
         <span class="kw">let </span><span class="kw-2">mut </span>app = App::new();
         app.add_systems(OnEnter(AppState::MainMenu), (foo, bar))
-            .add_state::&lt;AppState&gt;();
+            .init_state::&lt;AppState&gt;();
 
         app.world.run_schedule(OnEnter(AppState::MainMenu));
         <span class="macro">assert_eq!</span>(app.world.entities().len(), <span class="number">2</span>);
@@ -2412,6 +2561,38 @@
             GenericLabel::&lt;u32&gt;(PhantomData).intern(),
             GenericLabel::&lt;u64&gt;(PhantomData).intern()
         );
+    }
+
+    <span class="doccomment">/// Custom runners should be in charge of when `app::update` gets called as they may need to
+    /// coordinate some state.
+    /// bug: &lt;https://github.com/bevyengine/bevy/issues/10385&gt;
+    /// fix: &lt;https://github.com/bevyengine/bevy/pull/10389&gt;
+    </span><span class="attr">#[test]
+    </span><span class="kw">fn </span>regression_test_10385() {
+        <span class="kw">use super</span>::{Res, Resource};
+        <span class="kw">use </span><span class="kw">crate</span>::PreUpdate;
+
+        <span class="attr">#[derive(Resource)]
+        </span><span class="kw">struct </span>MyState {}
+
+        <span class="kw">fn </span>my_runner(<span class="kw-2">mut </span>app: App) {
+            <span class="kw">let </span>my_state = MyState {};
+            app.world.insert_resource(my_state);
+
+            <span class="kw">for _ in </span><span class="number">0</span>..<span class="number">5 </span>{
+                app.update();
+            }
+        }
+
+        <span class="kw">fn </span>my_system(<span class="kw">_</span>: Res&lt;MyState&gt;) {
+            <span class="comment">// access state during app update
+        </span>}
+
+        <span class="comment">// Should not panic due to missing resource
+        </span>App::new()
+            .set_runner(my_runner)
+            .add_systems(PreUpdate, my_system)
+            .run();
     }
 }
 </code></pre></div></section></main></body></html>

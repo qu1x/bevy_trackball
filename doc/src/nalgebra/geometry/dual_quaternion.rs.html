@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/nalgebra-0.32.3/src/geometry/dual_quaternion.rs`."><title>dual_quaternion.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="nalgebra" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="icon" href="https://nalgebra.org/img/favicon.ico"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../nalgebra/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/nalgebra-0.32.4/src/geometry/dual_quaternion.rs`."><title>dual_quaternion.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="nalgebra" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="icon" href="https://nalgebra.org/img/favicon.ico"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1029,7 +1030,7 @@
 </pre></div><pre class="rust"><code><span class="comment">// The macros break if the references are taken out, for some reason.
 </span><span class="attr">#![allow(clippy::op_ref)]
 
-#[cfg(feature = <span class="string">&quot;rkyv-serialize&quot;</span>)]
+#[cfg(feature = <span class="string">"rkyv-serialize"</span>)]
 </span><span class="kw">use </span>rkyv::bytecheck;
 
 <span class="kw">use crate</span>::{
@@ -1037,7 +1038,7 @@
     Unit, UnitQuaternion, Vector3, Zero, U8,
 };
 <span class="kw">use </span>approx::{AbsDiffEq, RelativeEq, UlpsEq};
-<span class="attr">#[cfg(feature = <span class="string">&quot;serde-serialize-no-std&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"serde-serialize-no-std"</span>)]
 </span><span class="kw">use </span>serde::{Deserialize, Deserializer, Serialize, Serializer};
 <span class="kw">use </span>std::fmt;
 
@@ -1072,18 +1073,18 @@
 </span><span class="attr">#[repr(C)]
 #[derive(Debug, Copy, Clone)]
 #[cfg_attr(
-    feature = <span class="string">&quot;rkyv-serialize-no-std&quot;</span>,
+    feature = <span class="string">"rkyv-serialize-no-std"</span>,
     derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize),
     archive(
-        <span class="kw">as </span>= <span class="string">&quot;DualQuaternion&lt;T::Archived&gt;&quot;</span>,
-        bound(archive = <span class="string">&quot;
+        <span class="kw">as </span>= <span class="string">"DualQuaternion&lt;T::Archived&gt;"</span>,
+        bound(archive = <span class="string">"
         T: rkyv::Archive,
         Quaternion&lt;T&gt;: rkyv::Archive&lt;Archived = Quaternion&lt;T::Archived&gt;&gt;
-    &quot;</span>)
+    "</span>)
     )
 )]
-#[cfg_attr(feature = <span class="string">&quot;rkyv-serialize&quot;</span>, derive(bytecheck::CheckBytes))]
-#[cfg_attr(feature = <span class="string">&quot;cuda&quot;</span>, derive(cust_core::DeviceCopy))]
+#[cfg_attr(feature = <span class="string">"rkyv-serialize"</span>, derive(bytecheck::CheckBytes))]
+#[cfg_attr(feature = <span class="string">"cuda"</span>, derive(cust_core::DeviceCopy))]
 </span><span class="kw">pub struct </span>DualQuaternion&lt;T&gt; {
     <span class="doccomment">/// The real component of the quaternion
     </span><span class="kw">pub </span>real: Quaternion&lt;T&gt;,
@@ -1128,7 +1129,7 @@
     /// relative_eq!(dq_normalized.real.norm(), 1.0);
     /// ```
     </span><span class="attr">#[inline]
-    #[must_use = <span class="string">&quot;Did you mean to use normalize_mut()?&quot;</span>]
+    #[must_use = <span class="string">"Did you mean to use normalize_mut()?"</span>]
     </span><span class="kw">pub fn </span>normalize(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
         <span class="kw">let </span>real_norm = <span class="self">self</span>.real.norm();
 
@@ -1177,7 +1178,7 @@
     /// assert!(conj.dual.w == 5.0);
     /// ```
     </span><span class="attr">#[inline]
-    #[must_use = <span class="string">&quot;Did you mean to use conjugate_mut()?&quot;</span>]
+    #[must_use = <span class="string">"Did you mean to use conjugate_mut()?"</span>]
     </span><span class="kw">pub fn </span>conjugate(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
         <span class="self">Self</span>::from_real_and_dual(<span class="self">self</span>.real.conjugate(), <span class="self">self</span>.dual.conjugate())
     }
@@ -1225,7 +1226,7 @@
     /// assert!(inverse.is_none());
     /// ```
     </span><span class="attr">#[inline]
-    #[must_use = <span class="string">&quot;Did you mean to use try_inverse_mut()?&quot;</span>]
+    #[must_use = <span class="string">"Did you mean to use try_inverse_mut()?"</span>]
     </span><span class="kw">pub fn </span>try_inverse(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt;
     <span class="kw">where
         </span>T: RealField,
@@ -1298,7 +1299,7 @@
     }
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;bytemuck&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"bytemuck"</span>)]
 </span><span class="kw">unsafe impl</span>&lt;T&gt; bytemuck::Zeroable <span class="kw">for </span>DualQuaternion&lt;T&gt;
 <span class="kw">where
     </span>T: Scalar + bytemuck::Zeroable,
@@ -1306,7 +1307,7 @@
 {
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;bytemuck&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"bytemuck"</span>)]
 </span><span class="kw">unsafe impl</span>&lt;T&gt; bytemuck::Pod <span class="kw">for </span>DualQuaternion&lt;T&gt;
 <span class="kw">where
     </span>T: Scalar + bytemuck::Pod,
@@ -1314,7 +1315,7 @@
 {
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;serde-serialize-no-std&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"serde-serialize-no-std"</span>)]
 </span><span class="kw">impl</span>&lt;T: SimdRealField&gt; Serialize <span class="kw">for </span>DualQuaternion&lt;T&gt;
 <span class="kw">where
     </span>T: Serialize,
@@ -1327,14 +1328,14 @@
     }
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;serde-serialize-no-std&quot;</span>)]
-</span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, T: SimdRealField&gt; Deserialize&lt;<span class="lifetime">&#39;a</span>&gt; <span class="kw">for </span>DualQuaternion&lt;T&gt;
+<span class="attr">#[cfg(feature = <span class="string">"serde-serialize-no-std"</span>)]
+</span><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T: SimdRealField&gt; Deserialize&lt;<span class="lifetime">'a</span>&gt; <span class="kw">for </span>DualQuaternion&lt;T&gt;
 <span class="kw">where
-    </span>T: Deserialize&lt;<span class="lifetime">&#39;a</span>&gt;,
+    </span>T: Deserialize&lt;<span class="lifetime">'a</span>&gt;,
 {
     <span class="kw">fn </span>deserialize&lt;Des&gt;(deserializer: Des) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, Des::Error&gt;
     <span class="kw">where
-        </span>Des: Deserializer&lt;<span class="lifetime">&#39;a</span>&gt;,
+        </span>Des: Deserializer&lt;<span class="lifetime">'a</span>&gt;,
     {
         <span class="kw">type </span>Dq&lt;T&gt; = [T; <span class="number">8</span>];
 
@@ -1479,7 +1480,7 @@
     /// assert_eq!(conj.dual, unit.dual.conjugate());
     /// ```
     </span><span class="attr">#[inline]
-    #[must_use = <span class="string">&quot;Did you mean to use conjugate_mut()?&quot;</span>]
+    #[must_use = <span class="string">"Did you mean to use conjugate_mut()?"</span>]
     </span><span class="kw">pub fn </span>conjugate(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
         <span class="self">Self</span>::new_unchecked(<span class="self">self</span>.as_ref().conjugate())
     }
@@ -1518,7 +1519,7 @@
     /// assert_relative_eq!(inv * unit, UnitDualQuaternion::identity(), epsilon = 1.0e-6);
     /// ```
     </span><span class="attr">#[inline]
-    #[must_use = <span class="string">&quot;Did you mean to use inverse_mut()?&quot;</span>]
+    #[must_use = <span class="string">"Did you mean to use inverse_mut()?"</span>]
     </span><span class="kw">pub fn </span>inverse(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
         <span class="kw">let </span>real = Unit::new_unchecked(<span class="self">self</span>.as_ref().real.clone())
             .inverse()
@@ -1672,7 +1673,7 @@
         </span>T: RealField,
     {
         <span class="self">self</span>.try_sclerp(other, t, T::default_epsilon())
-            .expect(<span class="string">&quot;DualQuaternion sclerp: ambiguous configuration.&quot;</span>)
+            .expect(<span class="string">"DualQuaternion sclerp: ambiguous configuration."</span>)
     }
 
     <span class="doccomment">/// Computes the screw-linear interpolation between two unit quaternions or
@@ -1695,7 +1696,7 @@
         <span class="kw">let </span>two = T::one() + T::one();
         <span class="kw">let </span>half = T::one() / two.clone();
 
-        <span class="comment">// Invert one of the quaternions if we&#39;ve got a longest-path
+        <span class="comment">// Invert one of the quaternions if we've got a longest-path
         // interpolation.
         </span><span class="kw">let </span>other = {
             <span class="kw">let </span>dot_product = <span class="self">self</span>.as_ref().real.coords.dot(<span class="kw-2">&amp;</span>other.as_ref().real.coords);
@@ -1988,12 +1989,12 @@
 }
 
 <span class="kw">impl</span>&lt;T: RealField + fmt::Display&gt; fmt::Display <span class="kw">for </span>UnitDualQuaternion&lt;T&gt; {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
         <span class="kw">if let </span><span class="prelude-val">Some</span>(axis) = <span class="self">self</span>.rotation().axis() {
             <span class="kw">let </span>axis = axis.into_inner();
             <span class="macro">write!</span>(
                 f,
-                <span class="string">&quot;UnitDualQuaternion translation: {} − angle: {} − axis: ({}, {}, {})&quot;</span>,
+                <span class="string">"UnitDualQuaternion translation: {} − angle: {} − axis: ({}, {}, {})"</span>,
                 <span class="self">self</span>.translation().vector,
                 <span class="self">self</span>.rotation().angle(),
                 axis[<span class="number">0</span>],
@@ -2003,7 +2004,7 @@
         } <span class="kw">else </span>{
             <span class="macro">write!</span>(
                 f,
-                <span class="string">&quot;UnitDualQuaternion translation: {} − angle: {} − axis: (undefined)&quot;</span>,
+                <span class="string">"UnitDualQuaternion translation: {} − angle: {} − axis: (undefined)"</span>,
                 <span class="self">self</span>.translation().vector,
                 <span class="self">self</span>.rotation().angle()
             )

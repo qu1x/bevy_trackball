@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ecs-0.12.1/src/world/mod.rs`."><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="bevy_ecs" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../bevy_ecs/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ecs-0.13.0/src/world/mod.rs`."><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="bevy_ecs" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -2579,6 +2580,224 @@
 <a href="#2579" id="2579">2579</a>
 <a href="#2580" id="2580">2580</a>
 <a href="#2581" id="2581">2581</a>
+<a href="#2582" id="2582">2582</a>
+<a href="#2583" id="2583">2583</a>
+<a href="#2584" id="2584">2584</a>
+<a href="#2585" id="2585">2585</a>
+<a href="#2586" id="2586">2586</a>
+<a href="#2587" id="2587">2587</a>
+<a href="#2588" id="2588">2588</a>
+<a href="#2589" id="2589">2589</a>
+<a href="#2590" id="2590">2590</a>
+<a href="#2591" id="2591">2591</a>
+<a href="#2592" id="2592">2592</a>
+<a href="#2593" id="2593">2593</a>
+<a href="#2594" id="2594">2594</a>
+<a href="#2595" id="2595">2595</a>
+<a href="#2596" id="2596">2596</a>
+<a href="#2597" id="2597">2597</a>
+<a href="#2598" id="2598">2598</a>
+<a href="#2599" id="2599">2599</a>
+<a href="#2600" id="2600">2600</a>
+<a href="#2601" id="2601">2601</a>
+<a href="#2602" id="2602">2602</a>
+<a href="#2603" id="2603">2603</a>
+<a href="#2604" id="2604">2604</a>
+<a href="#2605" id="2605">2605</a>
+<a href="#2606" id="2606">2606</a>
+<a href="#2607" id="2607">2607</a>
+<a href="#2608" id="2608">2608</a>
+<a href="#2609" id="2609">2609</a>
+<a href="#2610" id="2610">2610</a>
+<a href="#2611" id="2611">2611</a>
+<a href="#2612" id="2612">2612</a>
+<a href="#2613" id="2613">2613</a>
+<a href="#2614" id="2614">2614</a>
+<a href="#2615" id="2615">2615</a>
+<a href="#2616" id="2616">2616</a>
+<a href="#2617" id="2617">2617</a>
+<a href="#2618" id="2618">2618</a>
+<a href="#2619" id="2619">2619</a>
+<a href="#2620" id="2620">2620</a>
+<a href="#2621" id="2621">2621</a>
+<a href="#2622" id="2622">2622</a>
+<a href="#2623" id="2623">2623</a>
+<a href="#2624" id="2624">2624</a>
+<a href="#2625" id="2625">2625</a>
+<a href="#2626" id="2626">2626</a>
+<a href="#2627" id="2627">2627</a>
+<a href="#2628" id="2628">2628</a>
+<a href="#2629" id="2629">2629</a>
+<a href="#2630" id="2630">2630</a>
+<a href="#2631" id="2631">2631</a>
+<a href="#2632" id="2632">2632</a>
+<a href="#2633" id="2633">2633</a>
+<a href="#2634" id="2634">2634</a>
+<a href="#2635" id="2635">2635</a>
+<a href="#2636" id="2636">2636</a>
+<a href="#2637" id="2637">2637</a>
+<a href="#2638" id="2638">2638</a>
+<a href="#2639" id="2639">2639</a>
+<a href="#2640" id="2640">2640</a>
+<a href="#2641" id="2641">2641</a>
+<a href="#2642" id="2642">2642</a>
+<a href="#2643" id="2643">2643</a>
+<a href="#2644" id="2644">2644</a>
+<a href="#2645" id="2645">2645</a>
+<a href="#2646" id="2646">2646</a>
+<a href="#2647" id="2647">2647</a>
+<a href="#2648" id="2648">2648</a>
+<a href="#2649" id="2649">2649</a>
+<a href="#2650" id="2650">2650</a>
+<a href="#2651" id="2651">2651</a>
+<a href="#2652" id="2652">2652</a>
+<a href="#2653" id="2653">2653</a>
+<a href="#2654" id="2654">2654</a>
+<a href="#2655" id="2655">2655</a>
+<a href="#2656" id="2656">2656</a>
+<a href="#2657" id="2657">2657</a>
+<a href="#2658" id="2658">2658</a>
+<a href="#2659" id="2659">2659</a>
+<a href="#2660" id="2660">2660</a>
+<a href="#2661" id="2661">2661</a>
+<a href="#2662" id="2662">2662</a>
+<a href="#2663" id="2663">2663</a>
+<a href="#2664" id="2664">2664</a>
+<a href="#2665" id="2665">2665</a>
+<a href="#2666" id="2666">2666</a>
+<a href="#2667" id="2667">2667</a>
+<a href="#2668" id="2668">2668</a>
+<a href="#2669" id="2669">2669</a>
+<a href="#2670" id="2670">2670</a>
+<a href="#2671" id="2671">2671</a>
+<a href="#2672" id="2672">2672</a>
+<a href="#2673" id="2673">2673</a>
+<a href="#2674" id="2674">2674</a>
+<a href="#2675" id="2675">2675</a>
+<a href="#2676" id="2676">2676</a>
+<a href="#2677" id="2677">2677</a>
+<a href="#2678" id="2678">2678</a>
+<a href="#2679" id="2679">2679</a>
+<a href="#2680" id="2680">2680</a>
+<a href="#2681" id="2681">2681</a>
+<a href="#2682" id="2682">2682</a>
+<a href="#2683" id="2683">2683</a>
+<a href="#2684" id="2684">2684</a>
+<a href="#2685" id="2685">2685</a>
+<a href="#2686" id="2686">2686</a>
+<a href="#2687" id="2687">2687</a>
+<a href="#2688" id="2688">2688</a>
+<a href="#2689" id="2689">2689</a>
+<a href="#2690" id="2690">2690</a>
+<a href="#2691" id="2691">2691</a>
+<a href="#2692" id="2692">2692</a>
+<a href="#2693" id="2693">2693</a>
+<a href="#2694" id="2694">2694</a>
+<a href="#2695" id="2695">2695</a>
+<a href="#2696" id="2696">2696</a>
+<a href="#2697" id="2697">2697</a>
+<a href="#2698" id="2698">2698</a>
+<a href="#2699" id="2699">2699</a>
+<a href="#2700" id="2700">2700</a>
+<a href="#2701" id="2701">2701</a>
+<a href="#2702" id="2702">2702</a>
+<a href="#2703" id="2703">2703</a>
+<a href="#2704" id="2704">2704</a>
+<a href="#2705" id="2705">2705</a>
+<a href="#2706" id="2706">2706</a>
+<a href="#2707" id="2707">2707</a>
+<a href="#2708" id="2708">2708</a>
+<a href="#2709" id="2709">2709</a>
+<a href="#2710" id="2710">2710</a>
+<a href="#2711" id="2711">2711</a>
+<a href="#2712" id="2712">2712</a>
+<a href="#2713" id="2713">2713</a>
+<a href="#2714" id="2714">2714</a>
+<a href="#2715" id="2715">2715</a>
+<a href="#2716" id="2716">2716</a>
+<a href="#2717" id="2717">2717</a>
+<a href="#2718" id="2718">2718</a>
+<a href="#2719" id="2719">2719</a>
+<a href="#2720" id="2720">2720</a>
+<a href="#2721" id="2721">2721</a>
+<a href="#2722" id="2722">2722</a>
+<a href="#2723" id="2723">2723</a>
+<a href="#2724" id="2724">2724</a>
+<a href="#2725" id="2725">2725</a>
+<a href="#2726" id="2726">2726</a>
+<a href="#2727" id="2727">2727</a>
+<a href="#2728" id="2728">2728</a>
+<a href="#2729" id="2729">2729</a>
+<a href="#2730" id="2730">2730</a>
+<a href="#2731" id="2731">2731</a>
+<a href="#2732" id="2732">2732</a>
+<a href="#2733" id="2733">2733</a>
+<a href="#2734" id="2734">2734</a>
+<a href="#2735" id="2735">2735</a>
+<a href="#2736" id="2736">2736</a>
+<a href="#2737" id="2737">2737</a>
+<a href="#2738" id="2738">2738</a>
+<a href="#2739" id="2739">2739</a>
+<a href="#2740" id="2740">2740</a>
+<a href="#2741" id="2741">2741</a>
+<a href="#2742" id="2742">2742</a>
+<a href="#2743" id="2743">2743</a>
+<a href="#2744" id="2744">2744</a>
+<a href="#2745" id="2745">2745</a>
+<a href="#2746" id="2746">2746</a>
+<a href="#2747" id="2747">2747</a>
+<a href="#2748" id="2748">2748</a>
+<a href="#2749" id="2749">2749</a>
+<a href="#2750" id="2750">2750</a>
+<a href="#2751" id="2751">2751</a>
+<a href="#2752" id="2752">2752</a>
+<a href="#2753" id="2753">2753</a>
+<a href="#2754" id="2754">2754</a>
+<a href="#2755" id="2755">2755</a>
+<a href="#2756" id="2756">2756</a>
+<a href="#2757" id="2757">2757</a>
+<a href="#2758" id="2758">2758</a>
+<a href="#2759" id="2759">2759</a>
+<a href="#2760" id="2760">2760</a>
+<a href="#2761" id="2761">2761</a>
+<a href="#2762" id="2762">2762</a>
+<a href="#2763" id="2763">2763</a>
+<a href="#2764" id="2764">2764</a>
+<a href="#2765" id="2765">2765</a>
+<a href="#2766" id="2766">2766</a>
+<a href="#2767" id="2767">2767</a>
+<a href="#2768" id="2768">2768</a>
+<a href="#2769" id="2769">2769</a>
+<a href="#2770" id="2770">2770</a>
+<a href="#2771" id="2771">2771</a>
+<a href="#2772" id="2772">2772</a>
+<a href="#2773" id="2773">2773</a>
+<a href="#2774" id="2774">2774</a>
+<a href="#2775" id="2775">2775</a>
+<a href="#2776" id="2776">2776</a>
+<a href="#2777" id="2777">2777</a>
+<a href="#2778" id="2778">2778</a>
+<a href="#2779" id="2779">2779</a>
+<a href="#2780" id="2780">2780</a>
+<a href="#2781" id="2781">2781</a>
+<a href="#2782" id="2782">2782</a>
+<a href="#2783" id="2783">2783</a>
+<a href="#2784" id="2784">2784</a>
+<a href="#2785" id="2785">2785</a>
+<a href="#2786" id="2786">2786</a>
+<a href="#2787" id="2787">2787</a>
+<a href="#2788" id="2788">2788</a>
+<a href="#2789" id="2789">2789</a>
+<a href="#2790" id="2790">2790</a>
+<a href="#2791" id="2791">2791</a>
+<a href="#2792" id="2792">2792</a>
+<a href="#2793" id="2793">2793</a>
+<a href="#2794" id="2794">2794</a>
+<a href="#2795" id="2795">2795</a>
+<a href="#2796" id="2796">2796</a>
+<a href="#2797" id="2797">2797</a>
+<a href="#2798" id="2798">2798</a>
+<a href="#2799" id="2799">2799</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Defines the [`World`] and APIs for accessing it directly.
 
 </span><span class="kw">mod </span>entity_ref;
@@ -2588,7 +2807,10 @@
 <span class="kw">mod </span>world_cell;
 
 <span class="kw">pub use </span><span class="kw">crate</span>::change_detection::{Mut, Ref, CHECK_TICK_THRESHOLD};
-<span class="kw">pub use </span>entity_ref::{EntityMut, EntityRef, EntityWorldMut};
+<span class="kw">pub use </span>entity_ref::{
+    EntityMut, EntityRef, EntityWorldMut, Entry, FilteredEntityMut, FilteredEntityRef,
+    OccupiedEntry, VacantEntry,
+};
 <span class="kw">pub use </span>spawn_batch::<span class="kw-2">*</span>;
 <span class="kw">pub use </span>world_cell::<span class="kw-2">*</span>;
 
@@ -2596,14 +2818,17 @@
     archetype::{ArchetypeComponentId, ArchetypeId, ArchetypeRow, Archetypes},
     bundle::{Bundle, BundleInserter, BundleSpawner, Bundles},
     change_detection::{MutUntyped, TicksMut},
-    component::{Component, ComponentDescriptor, ComponentId, ComponentInfo, Components, Tick},
+    component::{
+        Component, ComponentDescriptor, ComponentId, ComponentInfo, ComponentTicks, Components,
+        Tick,
+    },
     entity::{AllocAtWithoutReplacement, Entities, Entity, EntityLocation},
-    event::{Event, Events},
-    query::{DebugCheckedUnwrap, QueryEntityError, QueryState, ReadOnlyWorldQuery, WorldQuery},
+    event::{Event, EventId, Events, SendBatchIds},
+    query::{DebugCheckedUnwrap, QueryData, QueryEntityError, QueryFilter, QueryState},
     removal_detection::RemovedComponentEvents,
     schedule::{Schedule, ScheduleLabel, Schedules},
     storage::{ResourceData, Storages},
-    system::Resource,
+    system::{Res, Resource},
     world::error::TryRunScheduleError,
 };
 <span class="kw">use </span>bevy_ptr::{OwningPtr, Ptr};
@@ -2636,7 +2861,7 @@
 /// ## Resources
 ///
 /// Worlds can also store [`Resource`]s,
-/// which are unique instances of a given type that don&#39;t belong to a specific Entity.
+/// which are unique instances of a given type that don't belong to a specific Entity.
 /// There are also *non send resources*, which can only be accessed on the main thread.
 /// See [`Resource`] for usage.
 </span><span class="kw">pub struct </span>World {
@@ -2657,7 +2882,7 @@
 <span class="kw">impl </span>Default <span class="kw">for </span>World {
     <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
-            id: WorldId::new().expect(<span class="string">&quot;More `bevy` `World`s have been created than is supported&quot;</span>),
+            id: WorldId::new().expect(<span class="string">"More `bevy` `World`s have been created than is supported"</span>),
             entities: Entities::new(),
             components: Default::default(),
             archetypes: Archetypes::new(),
@@ -2687,7 +2912,7 @@
         World::default()
     }
 
-    <span class="doccomment">/// Retrieves this [`World`]&#39;s unique ID
+    <span class="doccomment">/// Retrieves this [`World`]'s unique ID
     </span><span class="attr">#[inline]
     </span><span class="kw">pub fn </span>id(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; WorldId {
         <span class="self">self</span>.id
@@ -2695,23 +2920,23 @@
 
     <span class="doccomment">/// Creates a new [`UnsafeWorldCell`] view with complete read+write access.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>as_unsafe_world_cell(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; UnsafeWorldCell&lt;<span class="lifetime">&#39;_</span>&gt; {
+    </span><span class="kw">pub fn </span>as_unsafe_world_cell(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; UnsafeWorldCell&lt;<span class="lifetime">'_</span>&gt; {
         UnsafeWorldCell::new_mutable(<span class="self">self</span>)
     }
 
     <span class="doccomment">/// Creates a new [`UnsafeWorldCell`] view with only read access to everything.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>as_unsafe_world_cell_readonly(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; UnsafeWorldCell&lt;<span class="lifetime">&#39;_</span>&gt; {
+    </span><span class="kw">pub fn </span>as_unsafe_world_cell_readonly(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; UnsafeWorldCell&lt;<span class="lifetime">'_</span>&gt; {
         UnsafeWorldCell::new_readonly(<span class="self">self</span>)
     }
 
-    <span class="doccomment">/// Retrieves this world&#39;s [`Entities`] collection.
+    <span class="doccomment">/// Retrieves this world's [`Entities`] collection.
     </span><span class="attr">#[inline]
     </span><span class="kw">pub fn </span>entities(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>Entities {
         <span class="kw-2">&amp;</span><span class="self">self</span>.entities
     }
 
-    <span class="doccomment">/// Retrieves this world&#39;s [`Entities`] collection mutably.
+    <span class="doccomment">/// Retrieves this world's [`Entities`] collection mutably.
     ///
     /// # Safety
     /// Mutable reference must not be used to put the [`Entities`] data
@@ -2721,31 +2946,31 @@
         <span class="kw-2">&amp;mut </span><span class="self">self</span>.entities
     }
 
-    <span class="doccomment">/// Retrieves this world&#39;s [`Archetypes`] collection.
+    <span class="doccomment">/// Retrieves this world's [`Archetypes`] collection.
     </span><span class="attr">#[inline]
     </span><span class="kw">pub fn </span>archetypes(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>Archetypes {
         <span class="kw-2">&amp;</span><span class="self">self</span>.archetypes
     }
 
-    <span class="doccomment">/// Retrieves this world&#39;s [`Components`] collection.
+    <span class="doccomment">/// Retrieves this world's [`Components`] collection.
     </span><span class="attr">#[inline]
     </span><span class="kw">pub fn </span>components(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>Components {
         <span class="kw-2">&amp;</span><span class="self">self</span>.components
     }
 
-    <span class="doccomment">/// Retrieves this world&#39;s [`Storages`] collection.
+    <span class="doccomment">/// Retrieves this world's [`Storages`] collection.
     </span><span class="attr">#[inline]
     </span><span class="kw">pub fn </span>storages(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>Storages {
         <span class="kw-2">&amp;</span><span class="self">self</span>.storages
     }
 
-    <span class="doccomment">/// Retrieves this world&#39;s [`Bundles`] collection.
+    <span class="doccomment">/// Retrieves this world's [`Bundles`] collection.
     </span><span class="attr">#[inline]
     </span><span class="kw">pub fn </span>bundles(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>Bundles {
         <span class="kw-2">&amp;</span><span class="self">self</span>.bundles
     }
 
-    <span class="doccomment">/// Retrieves this world&#39;s [`RemovedComponentEvents`] collection
+    <span class="doccomment">/// Retrieves this world's [`RemovedComponentEvents`] collection
     </span><span class="attr">#[inline]
     </span><span class="kw">pub fn </span>removed_components(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>RemovedComponentEvents {
         <span class="kw-2">&amp;</span><span class="self">self</span>.removed_components
@@ -2754,7 +2979,7 @@
     <span class="doccomment">/// Retrieves a [`WorldCell`], which safely enables multiple mutable World accesses at the same
     /// time, provided those accesses do not conflict with each other.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>cell(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; WorldCell&lt;<span class="lifetime">&#39;_</span>&gt; {
+    </span><span class="kw">pub fn </span>cell(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; WorldCell&lt;<span class="lifetime">'_</span>&gt; {
         WorldCell::new(<span class="self">self</span>)
     }
 
@@ -2788,7 +3013,7 @@
     /// Returns [`None`] if the `Component` type has not yet been initialized within
     /// the `World` using [`World::init_component`].
     ///
-    /// ```rust
+    /// ```
     /// use bevy_ecs::prelude::*;
     ///
     /// let mut world = World::new();
@@ -2835,7 +3060,7 @@
         #[cold]
         #[track_caller]
         </span><span class="kw">fn </span>panic_no_entity(entity: Entity) -&gt; ! {
-            <span class="macro">panic!</span>(<span class="string">&quot;Entity {entity:?} does not exist&quot;</span>);
+            <span class="macro">panic!</span>(<span class="string">"Entity {entity:?} does not exist"</span>);
         }
 
         <span class="kw">match </span><span class="self">self</span>.get_entity(entity) {
@@ -2870,7 +3095,7 @@
         #[cold]
         #[track_caller]
         </span><span class="kw">fn </span>panic_no_entity(entity: Entity) -&gt; ! {
-            <span class="macro">panic!</span>(<span class="string">&quot;Entity {entity:?} does not exist&quot;</span>);
+            <span class="macro">panic!</span>(<span class="string">"Entity {entity:?} does not exist"</span>);
         }
 
         <span class="kw">match </span><span class="self">self</span>.get_entity_mut(entity) {
@@ -2905,12 +3130,12 @@
     /// world.despawn(id2);
     /// world.many_entities([id1, id2]);
     /// ```
-    </span><span class="kw">pub fn </span>many_entities&lt;<span class="kw">const </span>N: usize&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, entities: [Entity; N]) -&gt; [EntityRef&lt;<span class="lifetime">&#39;_</span>&gt;; N] {
+    </span><span class="kw">pub fn </span>many_entities&lt;<span class="kw">const </span>N: usize&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, entities: [Entity; N]) -&gt; [EntityRef&lt;<span class="lifetime">'_</span>&gt;; N] {
         <span class="attr">#[inline(never)]
         #[cold]
         #[track_caller]
         </span><span class="kw">fn </span>panic_no_entity(entity: Entity) -&gt; ! {
-            <span class="macro">panic!</span>(<span class="string">&quot;Entity {entity:?} does not exist&quot;</span>);
+            <span class="macro">panic!</span>(<span class="string">"Entity {entity:?} does not exist"</span>);
         }
 
         <span class="kw">match </span><span class="self">self</span>.get_many_entities(entities) {
@@ -2950,12 +3175,12 @@
     </span><span class="kw">pub fn </span>many_entities_mut&lt;<span class="kw">const </span>N: usize&gt;(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
         entities: [Entity; N],
-    ) -&gt; [EntityMut&lt;<span class="lifetime">&#39;_</span>&gt;; N] {
+    ) -&gt; [EntityMut&lt;<span class="lifetime">'_</span>&gt;; N] {
         <span class="attr">#[inline(never)]
         #[cold]
         #[track_caller]
         </span><span class="kw">fn </span>panic_on_err(e: QueryEntityError) -&gt; ! {
-            <span class="macro">panic!</span>(<span class="string">&quot;{e}&quot;</span>);
+            <span class="macro">panic!</span>(<span class="string">"{e}"</span>);
         }
 
         <span class="kw">match </span><span class="self">self</span>.get_many_entities_mut(entities) {
@@ -2970,14 +3195,14 @@
         <span class="kw">let </span>entity_location = <span class="self">self
             </span>.entities()
             .get(entity)
-            .unwrap_or_else(|| <span class="macro">panic!</span>(<span class="string">&quot;Entity {entity:?} does not exist&quot;</span>));
+            .unwrap_or_else(|| <span class="macro">panic!</span>(<span class="string">"Entity {entity:?} does not exist"</span>));
 
         <span class="kw">let </span>archetype = <span class="self">self
             </span>.archetypes()
             .get(entity_location.archetype_id)
             .unwrap_or_else(|| {
                 <span class="macro">panic!</span>(
-                    <span class="string">&quot;Archetype {:?} does not exist&quot;</span>,
+                    <span class="string">"Archetype {:?} does not exist"</span>,
                     entity_location.archetype_id
                 )
             });
@@ -2988,19 +3213,19 @@
             .collect()
     }
 
-    <span class="doccomment">/// Returns an [`EntityWorldMut`] for the given `entity` (if it exists) or spawns one if it doesn&#39;t exist.
+    <span class="doccomment">/// Returns an [`EntityWorldMut`] for the given `entity` (if it exists) or spawns one if it doesn't exist.
     /// This will return [`None`] if the `entity` exists with a different generation.
     ///
     /// # Note
     /// Spawning a specific `entity` value is rarely the right choice. Most apps should favor [`World::spawn`].
     /// This method should generally only be used for sharing entities across apps, and only when they have a
-    /// scheme worked out to share an ID space (which doesn&#39;t happen by default).
+    /// scheme worked out to share an ID space (which doesn't happen by default).
     </span><span class="attr">#[inline]
     </span><span class="kw">pub fn </span>get_or_spawn(<span class="kw-2">&amp;mut </span><span class="self">self</span>, entity: Entity) -&gt; <span class="prelude-ty">Option</span>&lt;EntityWorldMut&gt; {
         <span class="self">self</span>.flush();
         <span class="kw">match </span><span class="self">self</span>.entities.alloc_at_without_replacement(entity) {
             AllocAtWithoutReplacement::Exists(location) =&gt; {
-                <span class="comment">// SAFETY: `entity` exists and `location` is that entity&#39;s location
+                <span class="comment">// SAFETY: `entity` exists and `location` is that entity's location
                 </span><span class="prelude-val">Some</span>(<span class="kw">unsafe </span>{ EntityWorldMut::new(<span class="self">self</span>, entity, location) })
             }
             AllocAtWithoutReplacement::DidNotExist =&gt; {
@@ -3065,7 +3290,7 @@
     </span><span class="kw">pub fn </span>get_many_entities&lt;<span class="kw">const </span>N: usize&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         entities: [Entity; N],
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;[EntityRef&lt;<span class="lifetime">&#39;_</span>&gt;; N], Entity&gt; {
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;[EntityRef&lt;<span class="lifetime">'_</span>&gt;; N], Entity&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>refs = [MaybeUninit::uninit(); N];
         <span class="kw">for </span>(r, id) <span class="kw">in </span>std::iter::zip(<span class="kw-2">&amp;mut </span>refs, entities) {
             <span class="kw-2">*</span>r = MaybeUninit::new(<span class="self">self</span>.get_entity(id).ok_or(id)<span class="question-mark">?</span>);
@@ -3081,14 +3306,14 @@
     ///
     /// This is useful in contexts where you only have read-only access to the [`World`].
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>iter_entities(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw">impl </span>Iterator&lt;Item = EntityRef&lt;<span class="lifetime">&#39;_</span>&gt;&gt; + <span class="lifetime">&#39;_ </span>{
+    </span><span class="kw">pub fn </span>iter_entities(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw">impl </span>Iterator&lt;Item = EntityRef&lt;<span class="lifetime">'_</span>&gt;&gt; + <span class="lifetime">'_ </span>{
         <span class="self">self</span>.archetypes.iter().flat_map(|archetype| {
             archetype
                 .entities()
                 .iter()
                 .enumerate()
                 .map(|(archetype_row, archetype_entity)| {
-                    <span class="kw">let </span>entity = archetype_entity.entity();
+                    <span class="kw">let </span>entity = archetype_entity.id();
                     <span class="kw">let </span>location = EntityLocation {
                         archetype_id: archetype.id(),
                         archetype_row: ArchetypeRow::new(archetype_row),
@@ -3109,7 +3334,7 @@
     }
 
     <span class="doccomment">/// Returns a mutable iterator over all entities in the `World`.
-    </span><span class="kw">pub fn </span>iter_entities_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw">impl </span>Iterator&lt;Item = EntityMut&lt;<span class="lifetime">&#39;_</span>&gt;&gt; + <span class="lifetime">&#39;_ </span>{
+    </span><span class="kw">pub fn </span>iter_entities_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw">impl </span>Iterator&lt;Item = EntityMut&lt;<span class="lifetime">'_</span>&gt;&gt; + <span class="lifetime">'_ </span>{
         <span class="kw">let </span>world_cell = <span class="self">self</span>.as_unsafe_world_cell();
         world_cell.archetypes().iter().flat_map(<span class="kw">move </span>|archetype| {
             archetype
@@ -3117,7 +3342,7 @@
                 .iter()
                 .enumerate()
                 .map(<span class="kw">move </span>|(archetype_row, archetype_entity)| {
-                    <span class="kw">let </span>entity = archetype_entity.entity();
+                    <span class="kw">let </span>entity = archetype_entity.id();
                     <span class="kw">let </span>location = EntityLocation {
                         archetype_id: archetype.id(),
                         archetype_row: ArchetypeRow::new(archetype_row),
@@ -3156,7 +3381,7 @@
     </span><span class="attr">#[inline]
     </span><span class="kw">pub fn </span>get_entity_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>, entity: Entity) -&gt; <span class="prelude-ty">Option</span>&lt;EntityWorldMut&gt; {
         <span class="kw">let </span>location = <span class="self">self</span>.entities.get(entity)<span class="question-mark">?</span>;
-        <span class="comment">// SAFETY: `entity` exists and `location` is that entity&#39;s location
+        <span class="comment">// SAFETY: `entity` exists and `location` is that entity's location
         </span><span class="prelude-val">Some</span>(<span class="kw">unsafe </span>{ EntityWorldMut::new(<span class="self">self</span>, entity, location) })
     }
 
@@ -3183,7 +3408,7 @@
     </span><span class="kw">pub fn </span>get_many_entities_mut&lt;<span class="kw">const </span>N: usize&gt;(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
         entities: [Entity; N],
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;[EntityMut&lt;<span class="lifetime">&#39;_</span>&gt;; N], QueryEntityError&gt; {
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;[EntityMut&lt;<span class="lifetime">'_</span>&gt;; N], QueryEntityError&gt; {
         <span class="comment">// Ensure each entity is unique.
         </span><span class="kw">for </span>i <span class="kw">in </span><span class="number">0</span>..N {
             <span class="kw">for </span>j <span class="kw">in </span><span class="number">0</span>..i {
@@ -3202,7 +3427,7 @@
     </span><span class="kw">unsafe fn </span>get_entities_mut_unchecked&lt;<span class="kw">const </span>N: usize&gt;(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
         entities: [Entity; N],
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;[EntityMut&lt;<span class="lifetime">&#39;_</span>&gt;; N], QueryEntityError&gt; {
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;[EntityMut&lt;<span class="lifetime">'_</span>&gt;; N], QueryEntityError&gt; {
         <span class="kw">let </span>world_cell = <span class="self">self</span>.as_unsafe_world_cell();
 
         <span class="kw">let </span><span class="kw-2">mut </span>cells = [MaybeUninit::uninit(); N];
@@ -3237,14 +3462,14 @@
     ///   y: f32,
     /// }
     /// #[derive(Component)]
-    /// struct Label(&amp;&#39;static str);
+    /// struct Label(&amp;'static str);
     /// #[derive(Component)]
     /// struct Num(u32);
     ///
     /// let mut world = World::new();
     /// let entity = world.spawn_empty()
     ///     .insert(Position { x: 0.0, y: 0.0 }) // add a single component
-    ///     .insert((Num(1), Label(&quot;hello&quot;))) // add a bundle of components
+    ///     .insert((Num(1), Label("hello"))) // add a bundle of components
     ///     .id();
     ///
     /// let position = world.entity(entity).get::&lt;Position&gt;().unwrap();
@@ -3277,7 +3502,7 @@
     /// };
     ///
     /// #[derive(Component)]
-    /// struct Name(&amp;&#39;static str);
+    /// struct Name(&amp;'static str);
     ///
     /// #[derive(Bundle)]
     /// struct PhysicsBundle {
@@ -3309,7 +3534,7 @@
     ///             position: Position { x: 2.0, y: 2.0 },
     ///             velocity: Velocity { x: 0.0, y: 4.0 },
     ///         },
-    ///         Name(&quot;Elaina Proctor&quot;),
+    ///         Name("Elaina Proctor"),
     ///     ))
     ///     // Calling id() will return the unique identifier for the spawned entity
     ///     .id();
@@ -3332,7 +3557,7 @@
                 change_tick,
             );
 
-            <span class="comment">// SAFETY: bundle&#39;s type matches `bundle_info`, entity is allocated but non-existent
+            <span class="comment">// SAFETY: bundle's type matches `bundle_info`, entity is allocated but non-existent
             </span><span class="kw">unsafe </span>{ spawner.spawn_non_existent(entity, bundle) }
         };
 
@@ -3364,19 +3589,19 @@
     /// use bevy_ecs::{component::Component, entity::Entity, world::World};
     ///
     /// #[derive(Component)]
-    /// struct Str(&amp;&#39;static str);
+    /// struct Str(&amp;'static str);
     /// #[derive(Component)]
     /// struct Num(u32);
     ///
     /// let mut world = World::new();
     /// let entities = world.spawn_batch(vec![
-    ///   (Str(&quot;a&quot;), Num(0)), // the first entity
-    ///   (Str(&quot;b&quot;), Num(1)), // the second entity
+    ///   (Str("a"), Num(0)), // the first entity
+    ///   (Str("b"), Num(1)), // the second entity
     /// ]).collect::&lt;Vec&lt;Entity&gt;&gt;();
     ///
     /// assert_eq!(entities.len(), 2);
     /// ```
-    </span><span class="kw">pub fn </span>spawn_batch&lt;I&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, iter: I) -&gt; SpawnBatchIter&lt;<span class="lifetime">&#39;_</span>, I::IntoIter&gt;
+    </span><span class="kw">pub fn </span>spawn_batch&lt;I&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, iter: I) -&gt; SpawnBatchIter&lt;<span class="lifetime">'_</span>, I::IntoIter&gt;
     <span class="kw">where
         </span>I: IntoIterator,
         I::Item: Bundle,
@@ -3384,7 +3609,7 @@
         SpawnBatchIter::new(<span class="self">self</span>, iter.into_iter())
     }
 
-    <span class="doccomment">/// Retrieves a reference to the given `entity`&#39;s [`Component`] of the given type.
+    <span class="doccomment">/// Retrieves a reference to the given `entity`'s [`Component`] of the given type.
     /// Returns `None` if the `entity` does not have a [`Component`] of the given type.
     /// ```
     /// use bevy_ecs::{component::Component, world::World};
@@ -3405,7 +3630,7 @@
         <span class="self">self</span>.get_entity(entity)<span class="question-mark">?</span>.get()
     }
 
-    <span class="doccomment">/// Retrieves a mutable reference to the given `entity`&#39;s [`Component`] of the given type.
+    <span class="doccomment">/// Retrieves a mutable reference to the given `entity`'s [`Component`] of the given type.
     /// Returns `None` if the `entity` does not have a [`Component`] of the given type.
     /// ```
     /// use bevy_ecs::{component::Component, world::World};
@@ -3430,9 +3655,15 @@
         </span><span class="kw">unsafe </span>{ <span class="self">self</span>.as_unsafe_world_cell().get_entity(entity)<span class="question-mark">?</span>.get_mut() }
     }
 
-    <span class="doccomment">/// Despawns the given `entity`, if it exists. This will also remove all of the entity&#39;s
+    <span class="doccomment">/// Despawns the given `entity`, if it exists. This will also remove all of the entity's
     /// [`Component`]s. Returns `true` if the `entity` is successfully despawned and `false` if
     /// the `entity` does not exist.
+    ///
+    /// # Note
+    ///
+    /// This won't clean up external references to the entity (such as parent-child relationships
+    /// if you're using `bevy_hierarchy`), which may leave the world in an invalid state.
+    ///
     /// ```
     /// use bevy_ecs::{component::Component, world::World};
     ///
@@ -3454,7 +3685,7 @@
             entity.despawn();
             <span class="bool-val">true
         </span>} <span class="kw">else </span>{
-            <span class="macro">warn!</span>(<span class="string">&quot;error[B0003]: Could not despawn entity {:?} because it doesn&#39;t exist in this World.&quot;</span>, entity);
+            <span class="macro">warn!</span>(<span class="string">"error[B0003]: Could not despawn entity {:?} because it doesn't exist in this World."</span>, entity);
             <span class="bool-val">false
         </span>}
     }
@@ -3468,11 +3699,11 @@
     /// The state is also used for change detection when accessing components and resources outside
     /// of a system, for example via [`World::get_mut()`] or [`World::get_resource_mut()`].
     ///
-    /// By clearing this internal state, the world &quot;forgets&quot; about those changes, allowing a new round
+    /// By clearing this internal state, the world "forgets" about those changes, allowing a new round
     /// of detection to be recorded.
     ///
     /// When using `bevy_ecs` as part of the full Bevy engine, this method is added as a system to the
-    /// main app, to run during `Last`, so you don&#39;t need to call it manually. When using `bevy_ecs`
+    /// main app, to run during `Last`, so you don't need to call it manually. When using `bevy_ecs`
     /// as a separate standalone crate however, you need to call this manually.
     ///
     /// ```
@@ -3503,7 +3734,7 @@
         <span class="self">self</span>.last_change_tick = <span class="self">self</span>.increment_change_tick();
     }
 
-    <span class="doccomment">/// Returns [`QueryState`] for the given [`WorldQuery`], which is used to efficiently
+    <span class="doccomment">/// Returns [`QueryState`] for the given [`QueryData`], which is used to efficiently
     /// run queries on the [`World`] by storing and reusing the [`QueryState`].
     /// ```
     /// use bevy_ecs::{component::Component, entity::Entity, world::World};
@@ -3547,12 +3778,12 @@
     /// #[derive(Component, PartialEq, Eq, PartialOrd, Ord, Debug)]
     /// struct Order(i32);
     /// #[derive(Component, PartialEq, Debug)]
-    /// struct Label(&amp;&#39;static str);
+    /// struct Label(&amp;'static str);
     ///
     /// let mut world = World::new();
-    /// let a = world.spawn((Order(2), Label(&quot;second&quot;))).id();
-    /// let b = world.spawn((Order(3), Label(&quot;third&quot;))).id();
-    /// let c = world.spawn((Order(1), Label(&quot;first&quot;))).id();
+    /// let a = world.spawn((Order(2), Label("second"))).id();
+    /// let b = world.spawn((Order(3), Label("third"))).id();
+    /// let c = world.spawn((Order(1), Label("first"))).id();
     /// let mut entities = world.query::&lt;(Entity, &amp;Order, &amp;Label)&gt;()
     ///     .iter(&amp;world)
     ///     .collect::&lt;Vec&lt;_&gt;&gt;();
@@ -3560,17 +3791,17 @@
     /// // to expected results. Query iteration order should not be relied on.
     /// entities.sort_by_key(|e| e.1);
     /// assert_eq!(entities, vec![
-    ///     (c, &amp;Order(1), &amp;Label(&quot;first&quot;)),
-    ///     (a, &amp;Order(2), &amp;Label(&quot;second&quot;)),
-    ///     (b, &amp;Order(3), &amp;Label(&quot;third&quot;)),
+    ///     (c, &amp;Order(1), &amp;Label("first")),
+    ///     (a, &amp;Order(2), &amp;Label("second")),
+    ///     (b, &amp;Order(3), &amp;Label("third")),
     /// ]);
     /// ```
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>query&lt;Q: WorldQuery&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; QueryState&lt;Q, ()&gt; {
-        <span class="self">self</span>.query_filtered::&lt;Q, ()&gt;()
+    </span><span class="kw">pub fn </span>query&lt;D: QueryData&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; QueryState&lt;D, ()&gt; {
+        <span class="self">self</span>.query_filtered::&lt;D, ()&gt;()
     }
 
-    <span class="doccomment">/// Returns [`QueryState`] for the given filtered [`WorldQuery`], which is used to efficiently
+    <span class="doccomment">/// Returns [`QueryState`] for the given filtered [`QueryData`], which is used to efficiently
     /// run queries on the [`World`] by storing and reusing the [`QueryState`].
     /// ```
     /// use bevy_ecs::{component::Component, entity::Entity, world::World, query::With};
@@ -3590,13 +3821,13 @@
     /// assert_eq!(matching_entities, vec![e2]);
     /// ```
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>query_filtered&lt;Q: WorldQuery, F: ReadOnlyWorldQuery&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; QueryState&lt;Q, F&gt; {
+    </span><span class="kw">pub fn </span>query_filtered&lt;D: QueryData, F: QueryFilter&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; QueryState&lt;D, F&gt; {
         QueryState::new(<span class="self">self</span>)
     }
 
     <span class="doccomment">/// Returns an iterator of entities that had components of type `T` removed
     /// since the last call to [`World::clear_trackers`].
-    </span><span class="kw">pub fn </span>removed&lt;T: Component&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw">impl </span>Iterator&lt;Item = Entity&gt; + <span class="lifetime">&#39;_ </span>{
+    </span><span class="kw">pub fn </span>removed&lt;T: Component&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw">impl </span>Iterator&lt;Item = Entity&gt; + <span class="lifetime">'_ </span>{
         <span class="self">self</span>.components
             .get_id(TypeId::of::&lt;T&gt;())
             .map(|component_id| <span class="self">self</span>.removed_with_id(component_id))
@@ -3606,7 +3837,7 @@
 
     <span class="doccomment">/// Returns an iterator of entities that had components with the given `component_id` removed
     /// since the last call to [`World::clear_trackers`].
-    </span><span class="kw">pub fn </span>removed_with_id(<span class="kw-2">&amp;</span><span class="self">self</span>, component_id: ComponentId) -&gt; <span class="kw">impl </span>Iterator&lt;Item = Entity&gt; + <span class="lifetime">&#39;_ </span>{
+    </span><span class="kw">pub fn </span>removed_with_id(<span class="kw-2">&amp;</span><span class="self">self</span>, component_id: ComponentId) -&gt; <span class="kw">impl </span>Iterator&lt;Item = Entity&gt; + <span class="lifetime">'_ </span>{
         <span class="self">self</span>.removed_components
             .get(component_id)
             .map(|removed| removed.iter_current_update_events().cloned())
@@ -3644,7 +3875,7 @@
 
     <span class="doccomment">/// Inserts a new resource with the given `value`.
     ///
-    /// Resources are &quot;unique&quot; data of a given type.
+    /// Resources are "unique" data of a given type.
     /// If you insert a resource of a type that already exists,
     /// you will overwrite any existing data.
     </span><span class="attr">#[inline]
@@ -3670,7 +3901,7 @@
     ///
     /// Panics if called from a thread other than the main thread.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>init_non_send_resource&lt;R: <span class="lifetime">&#39;static </span>+ FromWorld&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; ComponentId {
+    </span><span class="kw">pub fn </span>init_non_send_resource&lt;R: <span class="lifetime">'static </span>+ FromWorld&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; ComponentId {
         <span class="kw">let </span>component_id = <span class="self">self</span>.components.init_non_send::&lt;R&gt;();
         <span class="kw">if </span><span class="self">self
             </span>.storages
@@ -3699,7 +3930,7 @@
     /// If a value is already present, this function will panic if called
     /// from a different thread than where the original value was inserted from.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>insert_non_send_resource&lt;R: <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: R) {
+    </span><span class="kw">pub fn </span>insert_non_send_resource&lt;R: <span class="lifetime">'static</span>&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: R) {
         <span class="kw">let </span>component_id = <span class="self">self</span>.components.init_non_send::&lt;R&gt;();
         OwningPtr::make(value, |ptr| {
             <span class="comment">// SAFETY: component_id was just initialized and corresponds to resource of type R.
@@ -3730,7 +3961,7 @@
     /// If a value is present, this function will panic if called from a different
     /// thread than where the value was inserted from.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>remove_non_send_resource&lt;R: <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;R&gt; {
+    </span><span class="kw">pub fn </span>remove_non_send_resource&lt;R: <span class="lifetime">'static</span>&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;R&gt; {
         <span class="kw">let </span>component_id = <span class="self">self</span>.components.get_resource_id(TypeId::of::&lt;R&gt;())<span class="question-mark">?</span>;
         <span class="kw">let </span>(ptr, <span class="kw">_</span>) = <span class="self">self
             </span>.storages
@@ -3753,7 +3984,7 @@
 
     <span class="doccomment">/// Returns `true` if a resource of type `R` exists. Otherwise returns `false`.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>contains_non_send&lt;R: <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+    </span><span class="kw">pub fn </span>contains_non_send&lt;R: <span class="lifetime">'static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
         <span class="self">self</span>.components
             .get_resource_id(TypeId::of::&lt;R&gt;())
             .and_then(|component_id| <span class="self">self</span>.storages.non_send_resources.get(component_id))
@@ -3761,8 +3992,8 @@
             .unwrap_or(<span class="bool-val">false</span>)
     }
 
-    <span class="doccomment">/// Return&#39;s `true` if a resource of type `R` exists and was added since the world&#39;s
-    /// [`last_change_tick`](World::last_change_tick()). Otherwise, this return&#39;s `false`.
+    <span class="doccomment">/// Returns `true` if a resource of type `R` exists and was added since the world's
+    /// [`last_change_tick`](World::last_change_tick()). Otherwise, this returns `false`.
     ///
     /// This means that:
     /// - When called from an exclusive system, this will check for additions since the system last ran.
@@ -3771,13 +4002,31 @@
     </span><span class="kw">pub fn </span>is_resource_added&lt;R: Resource&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
         <span class="self">self</span>.components
             .get_resource_id(TypeId::of::&lt;R&gt;())
-            .and_then(|component_id| <span class="self">self</span>.storages.resources.get(component_id)<span class="question-mark">?</span>.get_ticks())
-            .map(|ticks| ticks.is_added(<span class="self">self</span>.last_change_tick(), <span class="self">self</span>.read_change_tick()))
+            .map(|component_id| <span class="self">self</span>.is_resource_added_by_id(component_id))
             .unwrap_or(<span class="bool-val">false</span>)
     }
 
-    <span class="doccomment">/// Return&#39;s `true` if a resource of type `R` exists and was modified since the world&#39;s
-    /// [`last_change_tick`](World::last_change_tick()). Otherwise, this return&#39;s `false`.
+    <span class="doccomment">/// Returns `true` if a resource with id `component_id` exists and was added since the world's
+    /// [`last_change_tick`](World::last_change_tick()). Otherwise, this returns `false`.
+    ///
+    /// This means that:
+    /// - When called from an exclusive system, this will check for additions since the system last ran.
+    /// - When called elsewhere, this will check for additions since the last time that [`World::clear_trackers`]
+    ///   was called.
+    </span><span class="kw">pub fn </span>is_resource_added_by_id(<span class="kw-2">&amp;</span><span class="self">self</span>, component_id: ComponentId) -&gt; bool {
+        <span class="self">self</span>.storages
+            .resources
+            .get(component_id)
+            .and_then(|resource| {
+                resource
+                    .get_ticks()
+                    .map(|ticks| ticks.is_added(<span class="self">self</span>.last_change_tick(), <span class="self">self</span>.read_change_tick()))
+            })
+            .unwrap_or(<span class="bool-val">false</span>)
+    }
+
+    <span class="doccomment">/// Returns `true` if a resource of type `R` exists and was modified since the world's
+    /// [`last_change_tick`](World::last_change_tick()). Otherwise, this returns `false`.
     ///
     /// This means that:
     /// - When called from an exclusive system, this will check for changes since the system last ran.
@@ -3786,9 +4035,47 @@
     </span><span class="kw">pub fn </span>is_resource_changed&lt;R: Resource&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
         <span class="self">self</span>.components
             .get_resource_id(TypeId::of::&lt;R&gt;())
-            .and_then(|component_id| <span class="self">self</span>.storages.resources.get(component_id)<span class="question-mark">?</span>.get_ticks())
-            .map(|ticks| ticks.is_changed(<span class="self">self</span>.last_change_tick(), <span class="self">self</span>.read_change_tick()))
+            .map(|component_id| <span class="self">self</span>.is_resource_changed_by_id(component_id))
             .unwrap_or(<span class="bool-val">false</span>)
+    }
+
+    <span class="doccomment">/// Returns `true` if a resource with id `component_id` exists and was modified since the world's
+    /// [`last_change_tick`](World::last_change_tick()). Otherwise, this returns `false`.
+    ///
+    /// This means that:
+    /// - When called from an exclusive system, this will check for changes since the system last ran.
+    /// - When called elsewhere, this will check for changes since the last time that [`World::clear_trackers`]
+    ///   was called.
+    </span><span class="kw">pub fn </span>is_resource_changed_by_id(<span class="kw-2">&amp;</span><span class="self">self</span>, component_id: ComponentId) -&gt; bool {
+        <span class="self">self</span>.storages
+            .resources
+            .get(component_id)
+            .and_then(|resource| {
+                resource
+                    .get_ticks()
+                    .map(|ticks| ticks.is_changed(<span class="self">self</span>.last_change_tick(), <span class="self">self</span>.read_change_tick()))
+            })
+            .unwrap_or(<span class="bool-val">false</span>)
+    }
+
+    <span class="doccomment">/// Retrieves the change ticks for the given resource.
+    </span><span class="kw">pub fn </span>get_resource_change_ticks&lt;R: Resource&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;ComponentTicks&gt; {
+        <span class="self">self</span>.components
+            .get_resource_id(TypeId::of::&lt;R&gt;())
+            .and_then(|component_id| <span class="self">self</span>.get_resource_change_ticks_by_id(component_id))
+    }
+
+    <span class="doccomment">/// Retrieves the change ticks for the given [`ComponentId`].
+    ///
+    /// **You should prefer to use the typed API [`World::get_resource_change_ticks`] where possible.**
+    </span><span class="kw">pub fn </span>get_resource_change_ticks_by_id(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        component_id: ComponentId,
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;ComponentTicks&gt; {
+        <span class="self">self</span>.storages
+            .resources
+            .get(component_id)
+            .and_then(|resource| resource.get_ticks())
     }
 
     <span class="doccomment">/// Gets a reference to the resource of the given type
@@ -3806,10 +4093,34 @@
         <span class="kw">match </span><span class="self">self</span>.get_resource() {
             <span class="prelude-val">Some</span>(x) =&gt; x,
             <span class="prelude-val">None </span>=&gt; <span class="macro">panic!</span>(
-                <span class="string">&quot;Requested resource {} does not exist in the `World`. 
-                Did you forget to add it using `app.insert_resource` / `app.init_resource`? 
+                <span class="string">"Requested resource {} does not exist in the `World`.
+                Did you forget to add it using `app.insert_resource` / `app.init_resource`?
                 Resources are also implicitly added via `app.add_event`,
-                and can be added by plugins.&quot;</span>,
+                and can be added by plugins."</span>,
+                std::any::type_name::&lt;R&gt;()
+            ),
+        }
+    }
+
+    <span class="doccomment">/// Gets a reference to the resource of the given type
+    ///
+    /// # Panics
+    ///
+    /// Panics if the resource does not exist.
+    /// Use [`get_resource_ref`](World::get_resource_ref) instead if you want to handle this case.
+    ///
+    /// If you want to instead insert a value if the resource does not exist,
+    /// use [`get_resource_or_insert_with`](World::get_resource_or_insert_with).
+    </span><span class="attr">#[inline]
+    #[track_caller]
+    </span><span class="kw">pub fn </span>resource_ref&lt;R: Resource&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Res&lt;R&gt; {
+        <span class="kw">match </span><span class="self">self</span>.get_resource_ref() {
+            <span class="prelude-val">Some</span>(x) =&gt; x,
+            <span class="prelude-val">None </span>=&gt; <span class="macro">panic!</span>(
+                <span class="string">"Requested resource {} does not exist in the `World`.
+                Did you forget to add it using `app.insert_resource` / `app.init_resource`?
+                Resources are also implicitly added via `app.add_event`,
+                and can be added by plugins."</span>,
                 std::any::type_name::&lt;R&gt;()
             ),
         }
@@ -3826,14 +4137,14 @@
     /// use [`get_resource_or_insert_with`](World::get_resource_or_insert_with).
     </span><span class="attr">#[inline]
     #[track_caller]
-    </span><span class="kw">pub fn </span>resource_mut&lt;R: Resource&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; Mut&lt;<span class="lifetime">&#39;_</span>, R&gt; {
+    </span><span class="kw">pub fn </span>resource_mut&lt;R: Resource&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; Mut&lt;<span class="lifetime">'_</span>, R&gt; {
         <span class="kw">match </span><span class="self">self</span>.get_resource_mut() {
             <span class="prelude-val">Some</span>(x) =&gt; x,
             <span class="prelude-val">None </span>=&gt; <span class="macro">panic!</span>(
-                <span class="string">&quot;Requested resource {} does not exist in the `World`. 
-                Did you forget to add it using `app.insert_resource` / `app.init_resource`? 
+                <span class="string">"Requested resource {} does not exist in the `World`.
+                Did you forget to add it using `app.insert_resource` / `app.init_resource`?
                 Resources are also implicitly added via `app.add_event`,
-                and can be added by plugins.&quot;</span>,
+                and can be added by plugins."</span>,
                 std::any::type_name::&lt;R&gt;()
             ),
         }
@@ -3844,13 +4155,22 @@
     </span><span class="kw">pub fn </span>get_resource&lt;R: Resource&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>R&gt; {
         <span class="comment">// SAFETY:
         // - `as_unsafe_world_cell_readonly` gives permission to access everything immutably
-        // - `&amp;self` ensures nothing in world is borrowed immutably
+        // - `&amp;self` ensures nothing in world is borrowed mutably
         </span><span class="kw">unsafe </span>{ <span class="self">self</span>.as_unsafe_world_cell_readonly().get_resource() }
+    }
+
+    <span class="doccomment">/// Gets a reference including change detection to the resource of the given type if it exists.
+    </span><span class="attr">#[inline]
+    </span><span class="kw">pub fn </span>get_resource_ref&lt;R: Resource&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;Res&lt;R&gt;&gt; {
+        <span class="comment">// SAFETY:
+        // - `as_unsafe_world_cell_readonly` gives permission to access everything immutably
+        // - `&amp;self` ensures nothing in world is borrowed mutably
+        </span><span class="kw">unsafe </span>{ <span class="self">self</span>.as_unsafe_world_cell_readonly().get_resource_ref() }
     }
 
     <span class="doccomment">/// Gets a mutable reference to the resource of the given type if it exists
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>get_resource_mut&lt;R: Resource&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;Mut&lt;<span class="lifetime">&#39;_</span>, R&gt;&gt; {
+    </span><span class="kw">pub fn </span>get_resource_mut&lt;R: Resource&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;Mut&lt;<span class="lifetime">'_</span>, R&gt;&gt; {
         <span class="comment">// SAFETY:
         // - `as_unsafe_world_cell` gives permission to access everything mutably
         // - `&amp;mut self` ensures nothing in world is borrowed
@@ -3863,7 +4183,7 @@
     </span><span class="kw">pub fn </span>get_resource_or_insert_with&lt;R: Resource&gt;(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
         func: <span class="kw">impl </span>FnOnce() -&gt; R,
-    ) -&gt; Mut&lt;<span class="lifetime">&#39;_</span>, R&gt; {
+    ) -&gt; Mut&lt;<span class="lifetime">'_</span>, R&gt; {
         <span class="kw">let </span>change_tick = <span class="self">self</span>.change_tick();
         <span class="kw">let </span>last_change_tick = <span class="self">self</span>.last_change_tick();
 
@@ -3894,16 +4214,16 @@
     /// Panics if the resource does not exist.
     /// Use [`get_non_send_resource`](World::get_non_send_resource) instead if you want to handle this case.
     ///
-    /// This function will panic if it isn&#39;t called from the same thread that the resource was inserted from.
+    /// This function will panic if it isn't called from the same thread that the resource was inserted from.
     </span><span class="attr">#[inline]
     #[track_caller]
-    </span><span class="kw">pub fn </span>non_send_resource&lt;R: <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>R {
+    </span><span class="kw">pub fn </span>non_send_resource&lt;R: <span class="lifetime">'static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>R {
         <span class="kw">match </span><span class="self">self</span>.get_non_send_resource() {
             <span class="prelude-val">Some</span>(x) =&gt; x,
             <span class="prelude-val">None </span>=&gt; <span class="macro">panic!</span>(
-                <span class="string">&quot;Requested non-send resource {} does not exist in the `World`. 
-                Did you forget to add it using `app.insert_non_send_resource` / `app.init_non_send_resource`? 
-                Non-send resources can also be be added by plugins.&quot;</span>,
+                <span class="string">"Requested non-send resource {} does not exist in the `World`.
+                Did you forget to add it using `app.insert_non_send_resource` / `app.init_non_send_resource`?
+                Non-send resources can also be be added by plugins."</span>,
                 std::any::type_name::&lt;R&gt;()
             ),
         }
@@ -3916,16 +4236,16 @@
     /// Panics if the resource does not exist.
     /// Use [`get_non_send_resource_mut`](World::get_non_send_resource_mut) instead if you want to handle this case.
     ///
-    /// This function will panic if it isn&#39;t called from the same thread that the resource was inserted from.
+    /// This function will panic if it isn't called from the same thread that the resource was inserted from.
     </span><span class="attr">#[inline]
     #[track_caller]
-    </span><span class="kw">pub fn </span>non_send_resource_mut&lt;R: <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; Mut&lt;<span class="lifetime">&#39;_</span>, R&gt; {
+    </span><span class="kw">pub fn </span>non_send_resource_mut&lt;R: <span class="lifetime">'static</span>&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; Mut&lt;<span class="lifetime">'_</span>, R&gt; {
         <span class="kw">match </span><span class="self">self</span>.get_non_send_resource_mut() {
             <span class="prelude-val">Some</span>(x) =&gt; x,
             <span class="prelude-val">None </span>=&gt; <span class="macro">panic!</span>(
-                <span class="string">&quot;Requested non-send resource {} does not exist in the `World`. 
-                Did you forget to add it using `app.insert_non_send_resource` / `app.init_non_send_resource`? 
-                Non-send resources can also be be added by plugins.&quot;</span>,
+                <span class="string">"Requested non-send resource {} does not exist in the `World`.
+                Did you forget to add it using `app.insert_non_send_resource` / `app.init_non_send_resource`?
+                Non-send resources can also be be added by plugins."</span>,
                 std::any::type_name::&lt;R&gt;()
             ),
         }
@@ -3935,9 +4255,9 @@
     /// Otherwise returns `None`.
     ///
     /// # Panics
-    /// This function will panic if it isn&#39;t called from the same thread that the resource was inserted from.
+    /// This function will panic if it isn't called from the same thread that the resource was inserted from.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>get_non_send_resource&lt;R: <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>R&gt; {
+    </span><span class="kw">pub fn </span>get_non_send_resource&lt;R: <span class="lifetime">'static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>R&gt; {
         <span class="comment">// SAFETY:
         // - `as_unsafe_world_cell_readonly` gives permission to access the entire world immutably
         // - `&amp;self` ensures that there are no mutable borrows of world data
@@ -3948,9 +4268,9 @@
     /// Otherwise returns `None`.
     ///
     /// # Panics
-    /// This function will panic if it isn&#39;t called from the same thread that the resource was inserted from.
+    /// This function will panic if it isn't called from the same thread that the resource was inserted from.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>get_non_send_resource_mut&lt;R: <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;Mut&lt;<span class="lifetime">&#39;_</span>, R&gt;&gt; {
+    </span><span class="kw">pub fn </span>get_non_send_resource_mut&lt;R: <span class="lifetime">'static</span>&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;Mut&lt;<span class="lifetime">'_</span>, R&gt;&gt; {
         <span class="comment">// SAFETY:
         // - `as_unsafe_world_cell` gives permission to access the entire world mutably
         // - `&amp;mut self` ensures that there are no borrows of world data
@@ -3981,18 +4301,18 @@
     /// bundle (if the entity does not exist), or inserts the [`Bundle`] (if the entity already exists).
     /// This is faster than doing equivalent operations one-by-one.
     /// Returns `Ok` if all entities were successfully inserted into or spawned. Otherwise it returns an `Err`
-    /// with a list of entities that could not be spawned or inserted into. A &quot;spawn or insert&quot; operation can
-    /// only fail if an [`Entity`] is passed in with an &quot;invalid generation&quot; that conflicts with an existing [`Entity`].
+    /// with a list of entities that could not be spawned or inserted into. A "spawn or insert" operation can
+    /// only fail if an [`Entity`] is passed in with an "invalid generation" that conflicts with an existing [`Entity`].
     ///
     /// # Note
     /// Spawning a specific `entity` value is rarely the right choice. Most apps should use [`World::spawn_batch`].
     /// This method should generally only be used for sharing entities across apps, and only when they have a scheme
-    /// worked out to share an ID space (which doesn&#39;t happen by default).
+    /// worked out to share an ID space (which doesn't happen by default).
     ///
     /// ```
     /// use bevy_ecs::{entity::Entity, world::World, component::Component};
     /// #[derive(Component)]
-    /// struct A(&amp;&#39;static str);
+    /// struct A(&amp;'static str);
     /// #[derive(Component, PartialEq, Debug)]
     /// struct B(f32);
     ///
@@ -4000,8 +4320,8 @@
     /// let e0 = world.spawn_empty().id();
     /// let e1 = world.spawn_empty().id();
     /// world.insert_or_spawn_batch(vec![
-    ///   (e0, (A(&quot;a&quot;), B(0.0))), // the first entity
-    ///   (e1, (A(&quot;b&quot;), B(1.0))), // the second entity
+    ///   (e0, (A("a"), B(0.0))), // the first entity
+    ///   (e1, (A("b"), B(1.0))), // the second entity
     /// ]);
     ///
     /// assert_eq!(world.get::&lt;B&gt;(e0), Some(&amp;B(0.0)));
@@ -4019,12 +4339,12 @@
         <span class="kw">let </span>bundle_info = <span class="self">self
             </span>.bundles
             .init_info::&lt;B&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>.components, <span class="kw-2">&amp;mut </span><span class="self">self</span>.storages);
-        <span class="kw">enum </span>SpawnOrInsert&lt;<span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;b</span>&gt; {
-            Spawn(BundleSpawner&lt;<span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;b</span>&gt;),
-            Insert(BundleInserter&lt;<span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;b</span>&gt;, ArchetypeId),
+        <span class="kw">enum </span>SpawnOrInsert&lt;<span class="lifetime">'a</span>, <span class="lifetime">'b</span>&gt; {
+            Spawn(BundleSpawner&lt;<span class="lifetime">'a</span>, <span class="lifetime">'b</span>&gt;),
+            Insert(BundleInserter&lt;<span class="lifetime">'a</span>, <span class="lifetime">'b</span>&gt;, ArchetypeId),
         }
 
-        <span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;b</span>&gt; SpawnOrInsert&lt;<span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;b</span>&gt; {
+        <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, <span class="lifetime">'b</span>&gt; SpawnOrInsert&lt;<span class="lifetime">'a</span>, <span class="lifetime">'b</span>&gt; {
             <span class="kw">fn </span>entities(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>Entities {
                 <span class="kw">match </span><span class="self">self </span>{
                     SpawnOrInsert::Spawn(spawner) =&gt; spawner.entities,
@@ -4130,13 +4450,13 @@
         <span class="kw">let </span>component_id = <span class="self">self
             </span>.components
             .get_resource_id(TypeId::of::&lt;R&gt;())
-            .unwrap_or_else(|| <span class="macro">panic!</span>(<span class="string">&quot;resource does not exist: {}&quot;</span>, std::any::type_name::&lt;R&gt;()));
+            .unwrap_or_else(|| <span class="macro">panic!</span>(<span class="string">"resource does not exist: {}"</span>, std::any::type_name::&lt;R&gt;()));
         <span class="kw">let </span>(ptr, <span class="kw-2">mut </span>ticks) = <span class="self">self
             </span>.storages
             .resources
             .get_mut(component_id)
             .and_then(|info| info.remove())
-            .unwrap_or_else(|| <span class="macro">panic!</span>(<span class="string">&quot;resource does not exist: {}&quot;</span>, std::any::type_name::&lt;R&gt;()));
+            .unwrap_or_else(|| <span class="macro">panic!</span>(<span class="string">"resource does not exist: {}"</span>, std::any::type_name::&lt;R&gt;()));
         <span class="comment">// Read the value onto the stack to avoid potential mut aliasing.
         // SAFETY: `ptr` was obtained from the TypeId of `R`.
         </span><span class="kw">let </span><span class="kw-2">mut </span>value = <span class="kw">unsafe </span>{ ptr.read::&lt;R&gt;() };
@@ -4151,8 +4471,8 @@
         };
         <span class="kw">let </span>result = f(<span class="self">self</span>, value_mut);
         <span class="macro">assert!</span>(!<span class="self">self</span>.contains_resource::&lt;R&gt;(),
-            <span class="string">&quot;Resource `{}` was inserted during a call to World::resource_scope.\n\
-            This is not allowed as the original resource is reinserted to the world after the closure is invoked.&quot;</span>,
+            <span class="string">"Resource `{}` was inserted during a call to World::resource_scope.\n\
+            This is not allowed as the original resource is reinserted to the world after the closure is invoked."</span>,
             std::any::type_name::&lt;R&gt;());
 
         OwningPtr::make(value, |ptr| {
@@ -4164,7 +4484,7 @@
                     .map(|info| info.insert_with_ticks(ptr, ticks))
                     .unwrap_or_else(|| {
                         <span class="macro">panic!</span>(
-                            <span class="string">&quot;No resource of type {} exists in the World.&quot;</span>,
+                            <span class="string">"No resource of type {} exists in the World."</span>,
                             std::any::type_name::&lt;R&gt;()
                         )
                     });
@@ -4175,27 +4495,37 @@
     }
 
     <span class="doccomment">/// Sends an [`Event`].
+    /// This method returns the [ID](`EventId`) of the sent `event`,
+    /// or [`None`] if the `event` could not be sent.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>send_event&lt;E: Event&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, event: E) {
-        <span class="self">self</span>.send_event_batch(std::iter::once(event));
+    </span><span class="kw">pub fn </span>send_event&lt;E: Event&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, event: E) -&gt; <span class="prelude-ty">Option</span>&lt;EventId&lt;E&gt;&gt; {
+        <span class="self">self</span>.send_event_batch(std::iter::once(event))<span class="question-mark">?</span>.next()
     }
 
     <span class="doccomment">/// Sends the default value of the [`Event`] of type `E`.
+    /// This method returns the [ID](`EventId`) of the sent `event`,
+    /// or [`None`] if the `event` could not be sent.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>send_event_default&lt;E: Event + Default&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
-        <span class="self">self</span>.send_event_batch(std::iter::once(E::default()));
+    </span><span class="kw">pub fn </span>send_event_default&lt;E: Event + Default&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;EventId&lt;E&gt;&gt; {
+        <span class="self">self</span>.send_event(E::default())
     }
 
     <span class="doccomment">/// Sends a batch of [`Event`]s from an iterator.
+    /// This method returns the [IDs](`EventId`) of the sent `events`,
+    /// or [`None`] if the `event` could not be sent.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>send_event_batch&lt;E: Event&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, events: <span class="kw">impl </span>IntoIterator&lt;Item = E&gt;) {
-        <span class="kw">match </span><span class="self">self</span>.get_resource_mut::&lt;Events&lt;E&gt;&gt;() {
-            <span class="prelude-val">Some</span>(<span class="kw-2">mut </span>events_resource) =&gt; events_resource.extend(events),
-            <span class="prelude-val">None </span>=&gt; <span class="macro">bevy_utils::tracing::error!</span>(
-                    <span class="string">&quot;Unable to send event `{}`\n\tEvent must be added to the app with `add_event()`\n\thttps://docs.rs/bevy/*/bevy/app/struct.App.html#method.add_event &quot;</span>,
-                    std::any::type_name::&lt;E&gt;()
-                ),
-        }
+    </span><span class="kw">pub fn </span>send_event_batch&lt;E: Event&gt;(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        events: <span class="kw">impl </span>IntoIterator&lt;Item = E&gt;,
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;SendBatchIds&lt;E&gt;&gt; {
+        <span class="kw">let </span><span class="prelude-val">Some</span>(<span class="kw-2">mut </span>events_resource) = <span class="self">self</span>.get_resource_mut::&lt;Events&lt;E&gt;&gt;() <span class="kw">else </span>{
+            <span class="macro">bevy_utils::tracing::error!</span>(
+                <span class="string">"Unable to send event `{}`\n\tEvent must be added to the app with `add_event()`\n\thttps://docs.rs/bevy/*/bevy/app/struct.App.html#method.add_event "</span>,
+                std::any::type_name::&lt;E&gt;()
+            );
+            <span class="kw">return </span><span class="prelude-val">None</span>;
+        };
+        <span class="prelude-val">Some</span>(events_resource.send_batch(events))
     }
 
     <span class="doccomment">/// Inserts a new resource with the given `value`. Will replace the value if it already existed.
@@ -4209,7 +4539,7 @@
     </span><span class="kw">pub unsafe fn </span>insert_resource_by_id(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
         component_id: ComponentId,
-        value: OwningPtr&lt;<span class="lifetime">&#39;_</span>&gt;,
+        value: OwningPtr&lt;<span class="lifetime">'_</span>&gt;,
     ) {
         <span class="kw">let </span>change_tick = <span class="self">self</span>.change_tick();
 
@@ -4234,7 +4564,7 @@
     </span><span class="kw">pub unsafe fn </span>insert_non_send_by_id(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
         component_id: ComponentId,
-        value: OwningPtr&lt;<span class="lifetime">&#39;_</span>&gt;,
+        value: OwningPtr&lt;<span class="lifetime">'_</span>&gt;,
     ) {
         <span class="kw">let </span>change_tick = <span class="self">self</span>.change_tick();
 
@@ -4250,13 +4580,11 @@
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
         component_id: ComponentId,
     ) -&gt; <span class="kw-2">&amp;mut </span>ResourceData&lt;<span class="bool-val">true</span>&gt; {
-        <span class="kw">let </span>archetype_component_count = <span class="kw-2">&amp;mut </span><span class="self">self</span>.archetypes.archetype_component_count;
+        <span class="kw">let </span>archetypes = <span class="kw-2">&amp;mut </span><span class="self">self</span>.archetypes;
         <span class="self">self</span>.storages
             .resources
             .initialize_with(component_id, <span class="kw-2">&amp;</span><span class="self">self</span>.components, || {
-                <span class="kw">let </span>id = ArchetypeComponentId::new(<span class="kw-2">*</span>archetype_component_count);
-                <span class="kw-2">*</span>archetype_component_count += <span class="number">1</span>;
-                id
+                archetypes.new_archetype_component_id()
             })
     }
 
@@ -4267,13 +4595,11 @@
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
         component_id: ComponentId,
     ) -&gt; <span class="kw-2">&amp;mut </span>ResourceData&lt;<span class="bool-val">false</span>&gt; {
-        <span class="kw">let </span>archetype_component_count = <span class="kw-2">&amp;mut </span><span class="self">self</span>.archetypes.archetype_component_count;
+        <span class="kw">let </span>archetypes = <span class="kw-2">&amp;mut </span><span class="self">self</span>.archetypes;
         <span class="self">self</span>.storages
             .non_send_resources
             .initialize_with(component_id, <span class="kw-2">&amp;</span><span class="self">self</span>.components, || {
-                <span class="kw">let </span>id = ArchetypeComponentId::new(<span class="kw-2">*</span>archetype_component_count);
-                <span class="kw-2">*</span>archetype_component_count += <span class="number">1</span>;
-                id
+                archetypes.new_archetype_component_id()
             })
     }
 
@@ -4283,7 +4609,7 @@
         component_id
     }
 
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>initialize_non_send_resource&lt;R: <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; ComponentId {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>initialize_non_send_resource&lt;R: <span class="lifetime">'static</span>&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; ComponentId {
         <span class="kw">let </span>component_id = <span class="self">self</span>.components.init_non_send::&lt;R&gt;();
         <span class="self">self</span>.initialize_non_send_internal(component_id);
         component_id
@@ -4306,7 +4632,7 @@
         }
     }
 
-    <span class="doccomment">/// Increments the world&#39;s current change tick and returns the old value.
+    <span class="doccomment">/// Increments the world's current change tick and returns the old value.
     </span><span class="attr">#[inline]
     </span><span class="kw">pub fn </span>increment_change_tick(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Tick {
         <span class="kw">let </span>prev_tick = <span class="self">self</span>.change_tick.fetch_add(<span class="number">1</span>, Ordering::AcqRel);
@@ -4344,6 +4670,117 @@
         <span class="self">self</span>.last_change_tick
     }
 
+    <span class="doccomment">/// Sets [`World::last_change_tick()`] to the specified value during a scope.
+    /// When the scope terminates, it will return to its old value.
+    ///
+    /// This is useful if you need a region of code to be able to react to earlier changes made in the same system.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use bevy_ecs::prelude::*;
+    /// // This function runs an update loop repeatedly, allowing each iteration of the loop
+    /// // to react to changes made in the previous loop iteration.
+    /// fn update_loop(
+    ///     world: &amp;mut World,
+    ///     mut update_fn: impl FnMut(&amp;mut World) -&gt; std::ops::ControlFlow&lt;()&gt;,
+    /// ) {
+    ///     let mut last_change_tick = world.last_change_tick();
+    ///
+    ///     // Repeatedly run the update function until it requests a break.
+    ///     loop {
+    ///         let control_flow = world.last_change_tick_scope(last_change_tick, |world| {
+    ///             // Increment the change tick so we can detect changes from the previous update.
+    ///             last_change_tick = world.change_tick();
+    ///             world.increment_change_tick();
+    ///
+    ///             // Update once.
+    ///             update_fn(world)
+    ///         });
+    ///
+    ///         // End the loop when the closure returns `ControlFlow::Break`.
+    ///         if control_flow.is_break() {
+    ///             break;
+    ///         }
+    ///     }
+    /// }
+    /// #
+    /// # #[derive(Resource)] struct Count(u32);
+    /// # let mut world = World::new();
+    /// # world.insert_resource(Count(0));
+    /// # let saved_last_tick = world.last_change_tick();
+    /// # let mut num_updates = 0;
+    /// # update_loop(&amp;mut world, |world| {
+    /// #     let mut c = world.resource_mut::&lt;Count&gt;();
+    /// #     match c.0 {
+    /// #         0 =&gt; {
+    /// #             assert_eq!(num_updates, 0);
+    /// #             assert!(c.is_added());
+    /// #             c.0 = 1;
+    /// #         }
+    /// #         1 =&gt; {
+    /// #             assert_eq!(num_updates, 1);
+    /// #             assert!(!c.is_added());
+    /// #             assert!(c.is_changed());
+    /// #             c.0 = 2;
+    /// #         }
+    /// #         2 if c.is_changed() =&gt; {
+    /// #             assert_eq!(num_updates, 2);
+    /// #             assert!(!c.is_added());
+    /// #         }
+    /// #         2 =&gt; {
+    /// #             assert_eq!(num_updates, 3);
+    /// #             assert!(!c.is_changed());
+    /// #             world.remove_resource::&lt;Count&gt;();
+    /// #             world.insert_resource(Count(3));
+    /// #         }
+    /// #         3 if c.is_changed() =&gt; {
+    /// #             assert_eq!(num_updates, 4);
+    /// #             assert!(c.is_added());
+    /// #         }
+    /// #         3 =&gt; {
+    /// #             assert_eq!(num_updates, 5);
+    /// #             assert!(!c.is_added());
+    /// #             c.0 = 4;
+    /// #             return std::ops::ControlFlow::Break(());
+    /// #         }
+    /// #         _ =&gt; unreachable!(),
+    /// #     }
+    /// #     num_updates += 1;
+    /// #     std::ops::ControlFlow::Continue(())
+    /// # });
+    /// # assert_eq!(num_updates, 5);
+    /// # assert_eq!(world.resource::&lt;Count&gt;().0, 4);
+    /// # assert_eq!(world.last_change_tick(), saved_last_tick);
+    /// ```
+    </span><span class="kw">pub fn </span>last_change_tick_scope&lt;T&gt;(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        last_change_tick: Tick,
+        f: <span class="kw">impl </span>FnOnce(<span class="kw-2">&amp;mut </span>World) -&gt; T,
+    ) -&gt; T {
+        <span class="kw">struct </span>LastTickGuard&lt;<span class="lifetime">'a</span>&gt; {
+            world: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>World,
+            last_tick: Tick,
+        }
+
+        <span class="comment">// By setting the change tick in the drop impl, we ensure that
+        // the change tick gets reset even if a panic occurs during the scope.
+        </span><span class="kw">impl </span>std::ops::Drop <span class="kw">for </span>LastTickGuard&lt;<span class="lifetime">'_</span>&gt; {
+            <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+                <span class="self">self</span>.world.last_change_tick = <span class="self">self</span>.last_tick;
+            }
+        }
+
+        <span class="kw">let </span>guard = LastTickGuard {
+            last_tick: <span class="self">self</span>.last_change_tick,
+            world: <span class="self">self</span>,
+        };
+
+        guard.world.last_change_tick = last_change_tick;
+
+        f(guard.world)
+    }
+
     <span class="doccomment">/// Iterates all component change ticks and clamps any older than [`MAX_CHANGE_AGE`](crate::change_detection::MAX_CHANGE_AGE).
     /// This prevents overflow and thus prevents false positives.
     ///
@@ -4363,14 +4800,14 @@
             <span class="kw-2">ref mut </span>non_send_resources,
         } = <span class="self">self</span>.storages;
 
-        <span class="attr">#[cfg(feature = <span class="string">&quot;trace&quot;</span>)]
-        </span><span class="kw">let </span>_span = <span class="macro">bevy_utils::tracing::info_span!</span>(<span class="string">&quot;check component ticks&quot;</span>).entered();
+        <span class="attr">#[cfg(feature = <span class="string">"trace"</span>)]
+        </span><span class="kw">let </span>_span = <span class="macro">bevy_utils::tracing::info_span!</span>(<span class="string">"check component ticks"</span>).entered();
         tables.check_change_ticks(change_tick);
         sparse_sets.check_change_ticks(change_tick);
         resources.check_change_ticks(change_tick);
         non_send_resources.check_change_ticks(change_tick);
 
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">mut </span>schedules) = <span class="self">self</span>.get_resource_mut::&lt;<span class="kw">crate</span>::schedule::Schedules&gt;() {
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">mut </span>schedules) = <span class="self">self</span>.get_resource_mut::&lt;Schedules&gt;() {
             schedules.check_change_ticks(change_tick);
         }
 
@@ -4378,7 +4815,7 @@
     }
 
     <span class="doccomment">/// Runs both [`clear_entities`](Self::clear_entities) and [`clear_resources`](Self::clear_resources),
-    /// invalidating all [`Entity`] and resource fetches such as [`Res`](crate::system::Res), [`ResMut`](crate::system::ResMut)
+    /// invalidating all [`Entity`] and resource fetches such as [`Res`], [`ResMut`](crate::system::ResMut)
     </span><span class="kw">pub fn </span>clear_all(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
         <span class="self">self</span>.clear_entities();
         <span class="self">self</span>.clear_resources();
@@ -4413,7 +4850,7 @@
     /// **You should prefer to use the typed API [`World::get_resource`] where possible and only
     /// use this in cases where the actual types are not known at compile time.**
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>get_resource_by_id(<span class="kw-2">&amp;</span><span class="self">self</span>, component_id: ComponentId) -&gt; <span class="prelude-ty">Option</span>&lt;Ptr&lt;<span class="lifetime">&#39;_</span>&gt;&gt; {
+    </span><span class="kw">pub fn </span>get_resource_by_id(<span class="kw-2">&amp;</span><span class="self">self</span>, component_id: ComponentId) -&gt; <span class="prelude-ty">Option</span>&lt;Ptr&lt;<span class="lifetime">'_</span>&gt;&gt; {
         <span class="comment">// SAFETY:
         // - `as_unsafe_world_cell_readonly` gives permission to access the whole world immutably
         // - `&amp;self` ensures there are no mutable borrows on world data
@@ -4430,7 +4867,7 @@
     /// **You should prefer to use the typed API [`World::get_resource_mut`] where possible and only
     /// use this in cases where the actual types are not known at compile time.**
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>get_resource_mut_by_id(<span class="kw-2">&amp;mut </span><span class="self">self</span>, component_id: ComponentId) -&gt; <span class="prelude-ty">Option</span>&lt;MutUntyped&lt;<span class="lifetime">&#39;_</span>&gt;&gt; {
+    </span><span class="kw">pub fn </span>get_resource_mut_by_id(<span class="kw-2">&amp;mut </span><span class="self">self</span>, component_id: ComponentId) -&gt; <span class="prelude-ty">Option</span>&lt;MutUntyped&lt;<span class="lifetime">'_</span>&gt;&gt; {
         <span class="comment">// SAFETY:
         // - `&amp;mut self` ensures that all accessed data is unaliased
         // - `as_unsafe_world_cell` provides mutable permission to the whole world
@@ -4448,9 +4885,9 @@
     /// use this in cases where the actual types are not known at compile time.**
     ///
     /// # Panics
-    /// This function will panic if it isn&#39;t called from the same thread that the resource was inserted from.
+    /// This function will panic if it isn't called from the same thread that the resource was inserted from.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>get_non_send_by_id(<span class="kw-2">&amp;</span><span class="self">self</span>, component_id: ComponentId) -&gt; <span class="prelude-ty">Option</span>&lt;Ptr&lt;<span class="lifetime">&#39;_</span>&gt;&gt; {
+    </span><span class="kw">pub fn </span>get_non_send_by_id(<span class="kw-2">&amp;</span><span class="self">self</span>, component_id: ComponentId) -&gt; <span class="prelude-ty">Option</span>&lt;Ptr&lt;<span class="lifetime">'_</span>&gt;&gt; {
         <span class="comment">// SAFETY:
         // - `as_unsafe_world_cell_readonly` gives permission to access the whole world immutably
         // - `&amp;self` ensures there are no mutable borrows on world data
@@ -4468,9 +4905,9 @@
     /// use this in cases where the actual types are not known at compile time.**
     ///
     /// # Panics
-    /// This function will panic if it isn&#39;t called from the same thread that the resource was inserted from.
+    /// This function will panic if it isn't called from the same thread that the resource was inserted from.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>get_non_send_mut_by_id(<span class="kw-2">&amp;mut </span><span class="self">self</span>, component_id: ComponentId) -&gt; <span class="prelude-ty">Option</span>&lt;MutUntyped&lt;<span class="lifetime">&#39;_</span>&gt;&gt; {
+    </span><span class="kw">pub fn </span>get_non_send_mut_by_id(<span class="kw-2">&amp;mut </span><span class="self">self</span>, component_id: ComponentId) -&gt; <span class="prelude-ty">Option</span>&lt;MutUntyped&lt;<span class="lifetime">'_</span>&gt;&gt; {
         <span class="comment">// SAFETY:
         // - `&amp;mut self` ensures that all accessed data is unaliased
         // - `as_unsafe_world_cell` provides mutable permission to the whole world
@@ -4498,7 +4935,7 @@
     /// use this in cases where the actual types are not known at compile time.**
     ///
     /// # Panics
-    /// This function will panic if it isn&#39;t called from the same thread that the resource was inserted from.
+    /// This function will panic if it isn't called from the same thread that the resource was inserted from.
     </span><span class="kw">pub fn </span>remove_non_send_by_id(<span class="kw-2">&amp;mut </span><span class="self">self</span>, component_id: ComponentId) -&gt; <span class="prelude-ty">Option</span>&lt;()&gt; {
         <span class="self">self</span>.storages
             .non_send_resources
@@ -4507,16 +4944,16 @@
         <span class="prelude-val">Some</span>(())
     }
 
-    <span class="doccomment">/// Retrieves an immutable untyped reference to the given `entity`&#39;s [`Component`] of the given [`ComponentId`].
+    <span class="doccomment">/// Retrieves an immutable untyped reference to the given `entity`'s [`Component`] of the given [`ComponentId`].
     /// Returns `None` if the `entity` does not have a [`Component`] of the given type.
     ///
     /// **You should prefer to use the typed API [`World::get_mut`] where possible and only
     /// use this in cases where the actual types are not known at compile time.**
     ///
     /// # Panics
-    /// This function will panic if it isn&#39;t called from the same thread that the resource was inserted from.
+    /// This function will panic if it isn't called from the same thread that the resource was inserted from.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>get_by_id(<span class="kw-2">&amp;</span><span class="self">self</span>, entity: Entity, component_id: ComponentId) -&gt; <span class="prelude-ty">Option</span>&lt;Ptr&lt;<span class="lifetime">&#39;_</span>&gt;&gt; {
+    </span><span class="kw">pub fn </span>get_by_id(<span class="kw-2">&amp;</span><span class="self">self</span>, entity: Entity, component_id: ComponentId) -&gt; <span class="prelude-ty">Option</span>&lt;Ptr&lt;<span class="lifetime">'_</span>&gt;&gt; {
         <span class="comment">// SAFETY:
         // - `&amp;self` ensures that all accessed data is not mutably aliased
         // - `as_unsafe_world_cell_readonly` provides shared/readonly permission to the whole world
@@ -4527,7 +4964,7 @@
         }
     }
 
-    <span class="doccomment">/// Retrieves a mutable untyped reference to the given `entity`&#39;s [`Component`] of the given [`ComponentId`].
+    <span class="doccomment">/// Retrieves a mutable untyped reference to the given `entity`'s [`Component`] of the given [`ComponentId`].
     /// Returns `None` if the `entity` does not have a [`Component`] of the given type.
     ///
     /// **You should prefer to use the typed API [`World::get_mut`] where possible and only
@@ -4537,7 +4974,7 @@
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
         entity: Entity,
         component_id: ComponentId,
-    ) -&gt; <span class="prelude-ty">Option</span>&lt;MutUntyped&lt;<span class="lifetime">&#39;_</span>&gt;&gt; {
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;MutUntyped&lt;<span class="lifetime">'_</span>&gt;&gt; {
         <span class="comment">// SAFETY:
         // - `&amp;mut self` ensures that all accessed data is unaliased
         // - `as_unsafe_world_cell` provides mutable permission to the whole world
@@ -4589,7 +5026,7 @@
 
         <span class="kw">let </span>old = <span class="self">self</span>.resource_mut::&lt;Schedules&gt;().insert(schedule);
         <span class="kw">if </span>old.is_some() {
-            <span class="macro">warn!</span>(<span class="string">&quot;Schedule `{label:?}` was inserted during a call to `World::schedule_scope`: its value has been overwritten&quot;</span>);
+            <span class="macro">warn!</span>(<span class="string">"Schedule `{label:?}` was inserted during a call to `World::schedule_scope`: its value has been overwritten"</span>);
         }
 
         <span class="prelude-val">Ok</span>(value)
@@ -4638,7 +5075,7 @@
         f: <span class="kw">impl </span>FnOnce(<span class="kw-2">&amp;mut </span>World, <span class="kw-2">&amp;mut </span>Schedule) -&gt; R,
     ) -&gt; R {
         <span class="self">self</span>.try_schedule_scope(label, f)
-            .unwrap_or_else(|e| <span class="macro">panic!</span>(<span class="string">&quot;{e}&quot;</span>))
+            .unwrap_or_else(|e| <span class="macro">panic!</span>(<span class="string">"{e}"</span>))
     }
 
     <span class="doccomment">/// Attempts to run the [`Schedule`] associated with the `label` a single time,
@@ -4688,12 +5125,12 @@
     <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
         <span class="comment">// SAFETY: `UnsafeWorldCell` requires that this must only access metadata.
         // Accessing any data stored in the world would be unsound.
-        </span>f.debug_struct(<span class="string">&quot;World&quot;</span>)
-            .field(<span class="string">&quot;id&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.id)
-            .field(<span class="string">&quot;entity_count&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.entities.len())
-            .field(<span class="string">&quot;archetype_count&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.archetypes.len())
-            .field(<span class="string">&quot;component_count&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.components.len())
-            .field(<span class="string">&quot;resource_count&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.storages.resources.len())
+        </span>f.debug_struct(<span class="string">"World"</span>)
+            .field(<span class="string">"id"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.id)
+            .field(<span class="string">"entity_count"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.entities.len())
+            .field(<span class="string">"archetype_count"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.archetypes.len())
+            .field(<span class="string">"component_count"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.components.len())
+            .field(<span class="string">"resource_count"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.storages.resources.len())
             .finish()
     }
 }
@@ -4764,7 +5201,7 @@
             should_panic: bool,
             id: u8,
         ) -&gt; <span class="self">Self </span>{
-            <span class="macro">println!</span>(<span class="string">&quot;creating component with id {id}&quot;</span>);
+            <span class="macro">println!</span>(<span class="string">"creating component with id {id}"</span>);
             drop_log.lock().unwrap().push(DropLogItem::Create(id));
 
             <span class="self">Self </span>{
@@ -4778,18 +5215,18 @@
 
     <span class="kw">impl </span>Drop <span class="kw">for </span>MayPanicInDrop {
         <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
-            <span class="macro">println!</span>(<span class="string">&quot;dropping component with id {}&quot;</span>, <span class="self">self</span>.id);
+            <span class="macro">println!</span>(<span class="string">"dropping component with id {}"</span>, <span class="self">self</span>.id);
 
             {
                 <span class="kw">let </span><span class="kw-2">mut </span>drop_log = <span class="self">self</span>.drop_log.lock().unwrap();
                 drop_log.push(DropLogItem::Drop(<span class="self">self</span>.id));
-                <span class="comment">// Don&#39;t keep the mutex while panicking, or we&#39;ll poison it.
+                <span class="comment">// Don't keep the mutex while panicking, or we'll poison it.
                 </span>drop(drop_log);
             }
 
             <span class="kw">if </span><span class="self">self</span>.should_panic {
                 <span class="self">self</span>.expected_panic_flag.store(<span class="bool-val">true</span>, Ordering::SeqCst);
-                <span class="macro">panic!</span>(<span class="string">&quot;testing what happens on panic inside drop&quot;</span>);
+                <span class="macro">panic!</span>(<span class="string">"testing what happens on panic inside drop"</span>);
             }
         }
     }
@@ -4819,7 +5256,7 @@
 
             <span class="kw">if </span>!expected_panic_flag {
                 <span class="kw">match </span>panic_res {
-                    <span class="prelude-val">Ok</span>(()) =&gt; <span class="macro">panic!</span>(<span class="string">&quot;Expected a panic but it didn&#39;t happen&quot;</span>),
+                    <span class="prelude-val">Ok</span>(()) =&gt; <span class="macro">panic!</span>(<span class="string">"Expected a panic but it didn't happen"</span>),
                     <span class="prelude-val">Err</span>(e) =&gt; panic::resume_unwind(e),
                 }
             }
@@ -4839,7 +5276,7 @@
                 .insert(helper.make_component(<span class="bool-val">true</span>, <span class="number">0</span>))
                 .insert(helper.make_component(<span class="bool-val">false</span>, <span class="number">1</span>));
 
-            <span class="macro">println!</span>(<span class="string">&quot;Done inserting! Dropping world...&quot;</span>);
+            <span class="macro">println!</span>(<span class="string">"Done inserting! Dropping world..."</span>);
         });
 
         <span class="kw">let </span>drop_log = helper.finish(res);
@@ -4864,7 +5301,7 @@
         world.insert_resource(TestResource(<span class="number">42</span>));
         <span class="kw">let </span>component_id = world
             .components()
-            .get_resource_id(std::any::TypeId::of::&lt;TestResource&gt;())
+            .get_resource_id(TypeId::of::&lt;TestResource&gt;())
             .unwrap();
 
         <span class="kw">let </span>resource = world.get_resource_by_id(component_id).unwrap();
@@ -4880,7 +5317,7 @@
         world.insert_resource(TestResource(<span class="number">42</span>));
         <span class="kw">let </span>component_id = world
             .components()
-            .get_resource_id(std::any::TypeId::of::&lt;TestResource&gt;())
+            .get_resource_id(TypeId::of::&lt;TestResource&gt;())
             .unwrap();
 
         {
@@ -4907,13 +5344,13 @@
         <span class="comment">// SAFETY: the drop function is valid for the layout and the data will be safe to access from any thread
         </span><span class="kw">let </span>descriptor = <span class="kw">unsafe </span>{
             ComponentDescriptor::new_with_layout(
-                <span class="string">&quot;Custom Test Component&quot;</span>.to_string(),
+                <span class="string">"Custom Test Component"</span>.to_string(),
                 StorageType::Table,
                 std::alloc::Layout::new::&lt;[u8; <span class="number">8</span>]&gt;(),
                 <span class="prelude-val">Some</span>(|ptr| {
                     <span class="kw">let </span>data = ptr.read::&lt;[u8; <span class="number">8</span>]&gt;();
                     <span class="macro">assert_eq!</span>(data, [<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>]);
-                    DROP_COUNT.fetch_add(<span class="number">1</span>, std::sync::atomic::Ordering::SeqCst);
+                    DROP_COUNT.fetch_add(<span class="number">1</span>, Ordering::SeqCst);
                 }),
             )
         };
@@ -4939,7 +5376,7 @@
 
         <span class="macro">assert!</span>(world.remove_resource_by_id(component_id).is_some());
 
-        <span class="macro">assert_eq!</span>(DROP_COUNT.load(std::sync::atomic::Ordering::SeqCst), <span class="number">1</span>);
+        <span class="macro">assert_eq!</span>(DROP_COUNT.load(Ordering::SeqCst), <span class="number">1</span>);
     }
 
     <span class="attr">#[derive(Resource)]

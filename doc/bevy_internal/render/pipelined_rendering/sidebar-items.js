@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["MainToRenderAppSender","PipelinedRenderingPlugin","RenderExtractApp","RenderToMainAppReceiver"]};
+window.SIDEBAR_ITEMS = {"struct":["PipelinedRenderingPlugin","RenderAppChannels","RenderExtractApp"]};

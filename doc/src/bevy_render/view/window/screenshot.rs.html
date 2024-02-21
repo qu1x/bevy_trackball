@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_render-0.12.1/src/view/window/screenshot.rs`."><title>screenshot.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="bevy_render" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../../bevy_render/index.html"><img class="rust-logo" src="../../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_render-0.13.0/src/view/window/screenshot.rs`."><title>screenshot.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="bevy_render" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -371,17 +372,13 @@
 <a href="#371" id="371">371</a>
 <a href="#372" id="372">372</a>
 <a href="#373" id="373">373</a>
-<a href="#374" id="374">374</a>
-<a href="#375" id="375">375</a>
-<a href="#376" id="376">376</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::{borrow::Cow, path::Path, sync::PoisonError};
 
 <span class="kw">use </span>bevy_app::Plugin;
 <span class="kw">use </span>bevy_asset::{load_internal_asset, Handle};
-<span class="kw">use </span>bevy_ecs::prelude::<span class="kw-2">*</span>;
+<span class="kw">use </span>bevy_ecs::{entity::EntityHashMap, prelude::<span class="kw-2">*</span>};
 <span class="kw">use </span>bevy_log::{error, info, info_span};
 <span class="kw">use </span>bevy_tasks::AsyncComputeTaskPool;
-<span class="kw">use </span>bevy_utils::HashMap;
 <span class="kw">use </span>std::sync::Mutex;
 <span class="kw">use </span>thiserror::Error;
 <span class="kw">use </span>wgpu::{
@@ -390,10 +387,11 @@
 
 <span class="kw">use crate</span>::{
     prelude::{Image, Shader},
+    render_asset::RenderAssetUsages,
     render_resource::{
-        BindGroup, BindGroupLayout, Buffer, CachedRenderPipelineId, FragmentState, PipelineCache,
-        RenderPipelineDescriptor, SpecializedRenderPipeline, SpecializedRenderPipelines, Texture,
-        VertexState,
+        binding_types::texture_2d, BindGroup, BindGroupLayout, BindGroupLayoutEntries, Buffer,
+        CachedRenderPipelineId, FragmentState, PipelineCache, RenderPipelineDescriptor,
+        SpecializedRenderPipeline, SpecializedRenderPipelines, Texture, VertexState,
     },
     renderer::RenderDevice,
     texture::TextureFormatPixelInfo,
@@ -408,11 +406,11 @@
 </span><span class="attr">#[derive(Resource, Default)]
 </span><span class="kw">pub struct </span>ScreenshotManager {
     <span class="comment">// this is in a mutex to enable extraction with only an immutable reference
-    </span><span class="kw">pub</span>(<span class="kw">crate</span>) callbacks: Mutex&lt;HashMap&lt;Entity, ScreenshotFn&gt;&gt;,
+    </span><span class="kw">pub</span>(<span class="kw">crate</span>) callbacks: Mutex&lt;EntityHashMap&lt;ScreenshotFn&gt;&gt;,
 }
 
 <span class="attr">#[derive(Error, Debug)]
-#[error(<span class="string">&quot;A screenshot for this window has already been requested.&quot;</span>)]
+#[error(<span class="string">"A screenshot for this window has already been requested."</span>)]
 </span><span class="kw">pub struct </span>ScreenshotAlreadyRequestedError;
 
 <span class="kw">impl </span>ScreenshotManager {
@@ -422,7 +420,7 @@
     </span><span class="kw">pub fn </span>take_screenshot(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
         window: Entity,
-        callback: <span class="kw">impl </span>FnOnce(Image) + Send + Sync + <span class="lifetime">&#39;static</span>,
+        callback: <span class="kw">impl </span>FnOnce(Image) + Send + Sync + <span class="lifetime">'static</span>,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;(), ScreenshotAlreadyRequestedError&gt; {
         <span class="self">self</span>.callbacks
             .get_mut()
@@ -447,13 +445,13 @@
                     <span class="comment">// discard the alpha channel which stores brightness values when HDR is enabled to make sure
                     // the screenshot looks right
                     </span><span class="kw">let </span>img = dyn_img.to_rgb8();
-                    <span class="attr">#[cfg(not(target_arch = <span class="string">&quot;wasm32&quot;</span>))]
+                    <span class="attr">#[cfg(not(target_arch = <span class="string">"wasm32"</span>))]
                     </span><span class="kw">match </span>img.save_with_format(<span class="kw-2">&amp;</span>path, format) {
-                        <span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; <span class="macro">info!</span>(<span class="string">&quot;Screenshot saved to {}&quot;</span>, path.display()),
-                        <span class="prelude-val">Err</span>(e) =&gt; <span class="macro">error!</span>(<span class="string">&quot;Cannot save screenshot, IO error: {e}&quot;</span>),
+                        <span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; <span class="macro">info!</span>(<span class="string">"Screenshot saved to {}"</span>, path.display()),
+                        <span class="prelude-val">Err</span>(e) =&gt; <span class="macro">error!</span>(<span class="string">"Cannot save screenshot, IO error: {e}"</span>),
                     }
 
-                    <span class="attr">#[cfg(target_arch = <span class="string">&quot;wasm32&quot;</span>)]
+                    <span class="attr">#[cfg(target_arch = <span class="string">"wasm32"</span>)]
                     </span>{
                         <span class="kw">match </span>(|| {
                             <span class="kw">use </span>image::EncodableLayout;
@@ -461,7 +459,7 @@
 
                             <span class="kw">let </span><span class="kw-2">mut </span>image_buffer = std::io::Cursor::new(Vec::new());
                             img.write_to(<span class="kw-2">&amp;mut </span>image_buffer, format)
-                                .map_err(|e| JsValue::from_str(<span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;{e}&quot;</span>)))<span class="question-mark">?</span>;
+                                .map_err(|e| JsValue::from_str(<span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">"{e}"</span>)))<span class="question-mark">?</span>;
                             <span class="comment">// SAFETY: `image_buffer` only exist in this closure, and is not used after this line
                             </span><span class="kw">let </span>parts = js_sys::Array::of1(<span class="kw-2">&amp;</span><span class="kw">unsafe </span>{
                                 js_sys::Uint8Array::view(image_buffer.into_inner().as_bytes())
@@ -471,27 +469,27 @@
                             <span class="kw">let </span>url = web_sys::Url::create_object_url_with_blob(<span class="kw-2">&amp;</span>blob)<span class="question-mark">?</span>;
                             <span class="kw">let </span>window = web_sys::window().unwrap();
                             <span class="kw">let </span>document = window.document().unwrap();
-                            <span class="kw">let </span>link = document.create_element(<span class="string">&quot;a&quot;</span>)<span class="question-mark">?</span>;
-                            link.set_attribute(<span class="string">&quot;href&quot;</span>, <span class="kw-2">&amp;</span>url)<span class="question-mark">?</span>;
+                            <span class="kw">let </span>link = document.create_element(<span class="string">"a"</span>)<span class="question-mark">?</span>;
+                            link.set_attribute(<span class="string">"href"</span>, <span class="kw-2">&amp;</span>url)<span class="question-mark">?</span>;
                             link.set_attribute(
-                                <span class="string">&quot;download&quot;</span>,
+                                <span class="string">"download"</span>,
                                 path.file_name()
                                     .and_then(|filename| filename.to_str())
-                                    .ok_or_else(|| JsValue::from_str(<span class="string">&quot;Invalid filename&quot;</span>))<span class="question-mark">?</span>,
+                                    .ok_or_else(|| JsValue::from_str(<span class="string">"Invalid filename"</span>))<span class="question-mark">?</span>,
                             )<span class="question-mark">?</span>;
                             <span class="kw">let </span>html_element = link.dyn_into::&lt;web_sys::HtmlElement&gt;()<span class="question-mark">?</span>;
                             html_element.click();
                             web_sys::Url::revoke_object_url(<span class="kw-2">&amp;</span>url)<span class="question-mark">?</span>;
                             <span class="prelude-val">Ok</span>::&lt;(), JsValue&gt;(())
                         })() {
-                            <span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; <span class="macro">info!</span>(<span class="string">&quot;Screenshot saved to {}&quot;</span>, path.display()),
-                            <span class="prelude-val">Err</span>(e) =&gt; <span class="macro">error!</span>(<span class="string">&quot;Cannot save screenshot, error: {e:?}&quot;</span>),
+                            <span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; <span class="macro">info!</span>(<span class="string">"Screenshot saved to {}"</span>, path.display()),
+                            <span class="prelude-val">Err</span>(e) =&gt; <span class="macro">error!</span>(<span class="string">"Cannot save screenshot, error: {e:?}"</span>),
                         };
                     }
                 }
-                <span class="prelude-val">Err</span>(e) =&gt; <span class="macro">error!</span>(<span class="string">&quot;Cannot save screenshot, requested format not recognized: {e}&quot;</span>),
+                <span class="prelude-val">Err</span>(e) =&gt; <span class="macro">error!</span>(<span class="string">"Cannot save screenshot, requested format not recognized: {e}"</span>),
             },
-            <span class="prelude-val">Err</span>(e) =&gt; <span class="macro">error!</span>(<span class="string">&quot;Cannot save screenshot, screen format cannot be understood: {e}&quot;</span>),
+            <span class="prelude-val">Err</span>(e) =&gt; <span class="macro">error!</span>(<span class="string">"Cannot save screenshot, screen format cannot be understood: {e}"</span>),
         })
     }
 }
@@ -507,7 +505,7 @@
         <span class="macro">load_internal_asset!</span>(
             app,
             SCREENSHOT_SHADER_HANDLE,
-            <span class="string">&quot;screenshot.wgsl&quot;</span>,
+            <span class="string">"screenshot.wgsl"</span>,
             Shader::from_wgsl
         );
     }
@@ -517,7 +515,7 @@
             render_app.init_resource::&lt;SpecializedRenderPipelines&lt;ScreenshotToScreenPipeline&gt;&gt;();
         }
 
-        <span class="attr">#[cfg(feature = <span class="string">&quot;bevy_ci_testing&quot;</span>)]
+        <span class="attr">#[cfg(feature = <span class="string">"bevy_ci_testing"</span>)]
         </span><span class="kw">if </span>app
             .world
             .contains_resource::&lt;bevy_app::ci_testing::CiTestingConfig&gt;()
@@ -527,10 +525,10 @@
     }
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;bevy_ci_testing&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"bevy_ci_testing"</span>)]
 </span><span class="kw">fn </span>ci_testing_screenshot_at(
-    <span class="kw-2">mut </span>current_frame: bevy_ecs::prelude::Local&lt;u32&gt;,
-    ci_testing_config: bevy_ecs::prelude::Res&lt;bevy_app::ci_testing::CiTestingConfig&gt;,
+    <span class="kw-2">mut </span>current_frame: Local&lt;u32&gt;,
+    ci_testing_config: Res&lt;bevy_app::ci_testing::CiTestingConfig&gt;,
     <span class="kw-2">mut </span>screenshot_manager: ResMut&lt;ScreenshotManager&gt;,
     main_window: Query&lt;Entity, With&lt;bevy_window::PrimaryWindow&gt;&gt;,
 ) {
@@ -538,8 +536,8 @@
         .screenshot_frames
         .contains(<span class="kw-2">&amp;*</span>current_frame)
     {
-        <span class="macro">info!</span>(<span class="string">&quot;Taking a screenshot at frame {}.&quot;</span>, <span class="kw-2">*</span>current_frame);
-        <span class="kw">let </span>path = <span class="macro">format!</span>(<span class="string">&quot;./screenshot-{}.png&quot;</span>, <span class="kw-2">*</span>current_frame);
+        <span class="macro">info!</span>(<span class="string">"Taking a screenshot at frame {}."</span>, <span class="kw-2">*</span>current_frame);
+        <span class="kw">let </span>path = <span class="macro">format!</span>(<span class="string">"./screenshot-{}.png"</span>, <span class="kw-2">*</span>current_frame);
         screenshot_manager
             .save_screenshot_to_disk(main_window.single(), path)
             .unwrap();
@@ -577,19 +575,13 @@
     <span class="kw">fn </span>from_world(render_world: <span class="kw-2">&amp;mut </span>World) -&gt; <span class="self">Self </span>{
         <span class="kw">let </span>device = render_world.resource::&lt;RenderDevice&gt;();
 
-        <span class="kw">let </span>bind_group_layout = device.create_bind_group_layout(<span class="kw-2">&amp;</span>wgpu::BindGroupLayoutDescriptor {
-            label: <span class="prelude-val">Some</span>(<span class="string">&quot;screenshot-to-screen-bgl&quot;</span>),
-            entries: <span class="kw-2">&amp;</span>[wgpu::BindGroupLayoutEntry {
-                binding: <span class="number">0</span>,
-                visibility: wgpu::ShaderStages::FRAGMENT,
-                ty: wgpu::BindingType::Texture {
-                    sample_type: wgpu::TextureSampleType::Float { filterable: <span class="bool-val">false </span>},
-                    view_dimension: wgpu::TextureViewDimension::D2,
-                    multisampled: <span class="bool-val">false</span>,
-                },
-                count: <span class="prelude-val">None</span>,
-            }],
-        });
+        <span class="kw">let </span>bind_group_layout = device.create_bind_group_layout(
+            <span class="string">"screenshot-to-screen-bgl"</span>,
+            <span class="kw-2">&amp;</span>BindGroupLayoutEntries::single(
+                wgpu::ShaderStages::FRAGMENT,
+                texture_2d(wgpu::TextureSampleType::Float { filterable: <span class="bool-val">false </span>}),
+            ),
+        );
 
         <span class="self">Self </span>{ bind_group_layout }
     }
@@ -600,12 +592,12 @@
 
     <span class="kw">fn </span>specialize(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="self">Self</span>::Key) -&gt; RenderPipelineDescriptor {
         RenderPipelineDescriptor {
-            label: <span class="prelude-val">Some</span>(Cow::Borrowed(<span class="string">&quot;screenshot-to-screen&quot;</span>)),
+            label: <span class="prelude-val">Some</span>(Cow::Borrowed(<span class="string">"screenshot-to-screen"</span>)),
             layout: <span class="macro">vec!</span>[<span class="self">self</span>.bind_group_layout.clone()],
             vertex: VertexState {
                 buffers: <span class="macro">vec!</span>[],
                 shader_defs: <span class="macro">vec!</span>[],
-                entry_point: Cow::Borrowed(<span class="string">&quot;vs_main&quot;</span>),
+                entry_point: Cow::Borrowed(<span class="string">"vs_main"</span>),
                 shader: SCREENSHOT_SHADER_HANDLE,
             },
             primitive: wgpu::PrimitiveState {
@@ -616,7 +608,7 @@
             multisample: Default::default(),
             fragment: <span class="prelude-val">Some</span>(FragmentState {
                 shader: SCREENSHOT_SHADER_HANDLE,
-                entry_point: Cow::Borrowed(<span class="string">&quot;fs_main&quot;</span>),
+                entry_point: Cow::Borrowed(<span class="string">"fs_main"</span>),
                 shader_defs: <span class="macro">vec!</span>[],
                 targets: <span class="macro">vec!</span>[<span class="prelude-val">Some</span>(wgpu::ColorTargetState {
                     format: key,
@@ -650,7 +642,7 @@
                 memory.texture.as_image_copy(),
                 wgpu::ImageCopyBuffer {
                     buffer: <span class="kw-2">&amp;</span>memory.buffer,
-                    layout: <span class="kw">crate</span>::view::screenshot::layout_data(width, height, texture_format),
+                    layout: layout_data(width, height, texture_format),
                 },
                 Extent3d {
                     width,
@@ -666,16 +658,18 @@
                     .texture
                     .create_view(<span class="kw-2">&amp;</span>Default::default());
                 <span class="kw">let </span><span class="kw-2">mut </span>pass = encoder.begin_render_pass(<span class="kw-2">&amp;</span>wgpu::RenderPassDescriptor {
-                    label: <span class="prelude-val">Some</span>(<span class="string">&quot;screenshot_to_screen_pass&quot;</span>),
+                    label: <span class="prelude-val">Some</span>(<span class="string">"screenshot_to_screen_pass"</span>),
                     color_attachments: <span class="kw-2">&amp;</span>[<span class="prelude-val">Some</span>(wgpu::RenderPassColorAttachment {
                         view: <span class="kw-2">&amp;</span>true_swapchain_texture_view,
                         resolve_target: <span class="prelude-val">None</span>,
                         ops: wgpu::Operations {
                             load: wgpu::LoadOp::Load,
-                            store: <span class="bool-val">true</span>,
+                            store: wgpu::StoreOp::Store,
                         },
                     })],
                     depth_stencil_attachment: <span class="prelude-val">None</span>,
+                    timestamp_writes: <span class="prelude-val">None</span>,
+                    occlusion_query_set: <span class="prelude-val">None</span>,
                 });
                 pass.set_pipeline(pipeline);
                 pass.set_bind_group(<span class="number">0</span>, <span class="kw-2">&amp;</span>memory.bind_group, <span class="kw-2">&amp;</span>[]);
@@ -686,7 +680,7 @@
 }
 
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>collect_screenshots(world: <span class="kw-2">&amp;mut </span>World) {
-    <span class="kw">let </span>_span = <span class="macro">info_span!</span>(<span class="string">&quot;collect_screenshots&quot;</span>);
+    <span class="kw">let </span>_span = <span class="macro">info_span!</span>(<span class="string">"collect_screenshots"</span>);
 
     <span class="kw">let </span><span class="kw-2">mut </span>windows = world.resource_mut::&lt;ExtractedWindows&gt;();
     <span class="kw">for </span>window <span class="kw">in </span>windows.values_mut() {
@@ -704,7 +698,7 @@
                 </span>buffer_slice.map_async(wgpu::MapMode::Read, <span class="kw">move </span>|result| {
                     <span class="kw">let </span>err = result.err();
                     <span class="kw">if </span>err.is_some() {
-                        <span class="macro">panic!</span>(<span class="string">&quot;{}&quot;</span>, err.unwrap().to_string());
+                        <span class="macro">panic!</span>(<span class="string">"{}"</span>, err.unwrap().to_string());
                     }
                     tx.try_send(()).unwrap();
                 });
@@ -743,6 +737,7 @@
                     wgpu::TextureDimension::D2,
                     result,
                     texture_format,
+                    RenderAssetUsages::RENDER_WORLD,
                 ));
             };
 

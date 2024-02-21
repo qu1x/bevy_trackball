@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ecs-0.12.1/src/reflect/component.rs`."><title>component.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="bevy_ecs" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../bevy_ecs/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ecs-0.13.0/src/reflect/component.rs`."><title>component.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="bevy_ecs" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -290,7 +291,73 @@
 <a href="#290" id="290">290</a>
 <a href="#291" id="291">291</a>
 <a href="#292" id="292">292</a>
+<a href="#293" id="293">293</a>
+<a href="#294" id="294">294</a>
+<a href="#295" id="295">295</a>
+<a href="#296" id="296">296</a>
+<a href="#297" id="297">297</a>
+<a href="#298" id="298">298</a>
+<a href="#299" id="299">299</a>
+<a href="#300" id="300">300</a>
+<a href="#301" id="301">301</a>
+<a href="#302" id="302">302</a>
+<a href="#303" id="303">303</a>
+<a href="#304" id="304">304</a>
+<a href="#305" id="305">305</a>
+<a href="#306" id="306">306</a>
+<a href="#307" id="307">307</a>
+<a href="#308" id="308">308</a>
+<a href="#309" id="309">309</a>
+<a href="#310" id="310">310</a>
+<a href="#311" id="311">311</a>
+<a href="#312" id="312">312</a>
+<a href="#313" id="313">313</a>
+<a href="#314" id="314">314</a>
+<a href="#315" id="315">315</a>
+<a href="#316" id="316">316</a>
+<a href="#317" id="317">317</a>
+<a href="#318" id="318">318</a>
+<a href="#319" id="319">319</a>
+<a href="#320" id="320">320</a>
+<a href="#321" id="321">321</a>
+<a href="#322" id="322">322</a>
+<a href="#323" id="323">323</a>
+<a href="#324" id="324">324</a>
+<a href="#325" id="325">325</a>
+<a href="#326" id="326">326</a>
+<a href="#327" id="327">327</a>
+<a href="#328" id="328">328</a>
+<a href="#329" id="329">329</a>
+<a href="#330" id="330">330</a>
+<a href="#331" id="331">331</a>
+<a href="#332" id="332">332</a>
+<a href="#333" id="333">333</a>
+<a href="#334" id="334">334</a>
+<a href="#335" id="335">335</a>
+<a href="#336" id="336">336</a>
+<a href="#337" id="337">337</a>
+<a href="#338" id="338">338</a>
+<a href="#339" id="339">339</a>
+<a href="#340" id="340">340</a>
+<a href="#341" id="341">341</a>
+<a href="#342" id="342">342</a>
+<a href="#343" id="343">343</a>
+<a href="#344" id="344">344</a>
+<a href="#345" id="345">345</a>
+<a href="#346" id="346">346</a>
+<a href="#347" id="347">347</a>
+<a href="#348" id="348">348</a>
+<a href="#349" id="349">349</a>
+<a href="#350" id="350">350</a>
+<a href="#351" id="351">351</a>
+<a href="#352" id="352">352</a>
+<a href="#353" id="353">353</a>
+<a href="#354" id="354">354</a>
+<a href="#355" id="355">355</a>
+<a href="#356" id="356">356</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Definitions for [`Component`] reflection.
+//! This allows inserting, updating, removing and generally interacting with components
+//! whose types are only known at runtime.
 //!
 //! This module exports two types: [`ReflectComponentFns`] and [`ReflectComponent`].
 //!
@@ -305,8 +372,17 @@
 //! type, it tells the derive macro for `Reflect` to add the following single line to its
 //! [`get_type_registration`] method (see the relevant code[^1]).
 //!
-//! ```ignore
+//! ```
+//! # use bevy_reflect::{FromType, Reflect};
+//! # use bevy_ecs::prelude::{ReflectComponent, Component};
+//! # #[derive(Default, Reflect, Component)]
+//! # struct A;
+//! # impl A {
+//! #   fn foo() {
+//! # let mut registration = bevy_reflect::TypeRegistration::of::&lt;A&gt;();
 //! registration.insert::&lt;ReflectComponent&gt;(FromType::&lt;Self&gt;::from_type());
+//! #   }
+//! # }
 //! ```
 //!
 //! This line adds a `ReflectComponent` to the registration data for the type in question.
@@ -338,15 +414,18 @@
 //!
 //! [`get_type_registration`]: bevy_reflect::GetTypeRegistration::get_type_registration
 
-</span><span class="kw">use crate</span>::{
+</span><span class="kw">use </span>std::any::TypeId;
+
+<span class="kw">use </span><span class="kw">super</span>::ReflectFromWorld;
+<span class="kw">use crate</span>::{
     change_detection::Mut,
     component::Component,
     entity::Entity,
-    world::{unsafe_world_cell::UnsafeEntityCell, EntityRef, EntityWorldMut, FromWorld, World},
+    world::{unsafe_world_cell::UnsafeEntityCell, EntityRef, EntityWorldMut, World},
 };
-<span class="kw">use </span>bevy_reflect::{FromType, Reflect};
+<span class="kw">use </span>bevy_reflect::{FromReflect, FromType, Reflect, TypeRegistry};
 
-<span class="doccomment">/// A struct used to operate on reflected [`Component`] of a type.
+<span class="doccomment">/// A struct used to operate on reflected [`Component`] trait of a type.
 ///
 /// A [`ReflectComponent`] for type `T` can be obtained via
 /// [`bevy_reflect::TypeRegistration::data`].
@@ -363,26 +442,24 @@
 /// &gt; will not need.
 /// &gt; Usually a [`ReflectComponent`] is created for a type by deriving [`Reflect`]
 /// &gt; and adding the `#[reflect(Component)]` attribute.
-/// &gt; After adding the component to the [`TypeRegistry`][bevy_reflect::TypeRegistry],
+/// &gt; After adding the component to the [`TypeRegistry`],
 /// &gt; its [`ReflectComponent`] can then be retrieved when needed.
 ///
 /// Creating a custom [`ReflectComponent`] may be useful if you need to create new component types
 /// at runtime, for example, for scripting implementations.
 ///
-/// By creating a custom [`ReflectComponent`] and inserting it into a type&#39;s
+/// By creating a custom [`ReflectComponent`] and inserting it into a type's
 /// [`TypeRegistration`][bevy_reflect::TypeRegistration],
 /// you can modify the way that reflected components of that type will be inserted into the Bevy
 /// world.
 </span><span class="attr">#[derive(Clone)]
 </span><span class="kw">pub struct </span>ReflectComponentFns {
-    <span class="doccomment">/// Function pointer implementing [`ReflectComponent::from_world()`].
-    </span><span class="kw">pub </span>from_world: <span class="kw">fn</span>(<span class="kw-2">&amp;mut </span>World) -&gt; Box&lt;<span class="kw">dyn </span>Reflect&gt;,
     <span class="doccomment">/// Function pointer implementing [`ReflectComponent::insert()`].
-    </span><span class="kw">pub </span>insert: <span class="kw">fn</span>(<span class="kw-2">&amp;mut </span>EntityWorldMut, <span class="kw-2">&amp;</span><span class="kw">dyn </span>Reflect),
+    </span><span class="kw">pub </span>insert: <span class="kw">fn</span>(<span class="kw-2">&amp;mut </span>EntityWorldMut, <span class="kw-2">&amp;</span><span class="kw">dyn </span>Reflect, <span class="kw-2">&amp;</span>TypeRegistry),
     <span class="doccomment">/// Function pointer implementing [`ReflectComponent::apply()`].
     </span><span class="kw">pub </span>apply: <span class="kw">fn</span>(<span class="kw-2">&amp;mut </span>EntityWorldMut, <span class="kw-2">&amp;</span><span class="kw">dyn </span>Reflect),
     <span class="doccomment">/// Function pointer implementing [`ReflectComponent::apply_or_insert()`].
-    </span><span class="kw">pub </span>apply_or_insert: <span class="kw">fn</span>(<span class="kw-2">&amp;mut </span>EntityWorldMut, <span class="kw-2">&amp;</span><span class="kw">dyn </span>Reflect),
+    </span><span class="kw">pub </span>apply_or_insert: <span class="kw">fn</span>(<span class="kw-2">&amp;mut </span>EntityWorldMut, <span class="kw-2">&amp;</span><span class="kw">dyn </span>Reflect, <span class="kw-2">&amp;</span>TypeRegistry),
     <span class="doccomment">/// Function pointer implementing [`ReflectComponent::remove()`].
     </span><span class="kw">pub </span>remove: <span class="kw">fn</span>(<span class="kw-2">&amp;mut </span>EntityWorldMut),
     <span class="doccomment">/// Function pointer implementing [`ReflectComponent::contains()`].
@@ -390,14 +467,14 @@
     <span class="doccomment">/// Function pointer implementing [`ReflectComponent::reflect()`].
     </span><span class="kw">pub </span>reflect: <span class="kw">fn</span>(EntityRef) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">dyn </span>Reflect&gt;,
     <span class="doccomment">/// Function pointer implementing [`ReflectComponent::reflect_mut()`].
-    </span><span class="kw">pub </span>reflect_mut: <span class="kw">for</span>&lt;<span class="lifetime">&#39;a</span>&gt; <span class="kw">fn</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>EntityWorldMut&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; <span class="prelude-ty">Option</span>&lt;Mut&lt;<span class="lifetime">&#39;a</span>, <span class="kw">dyn </span>Reflect&gt;&gt;,
+    </span><span class="kw">pub </span>reflect_mut: <span class="kw">for</span>&lt;<span class="lifetime">'a</span>&gt; <span class="kw">fn</span>(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>EntityWorldMut&lt;<span class="lifetime">'_</span>&gt;) -&gt; <span class="prelude-ty">Option</span>&lt;Mut&lt;<span class="lifetime">'a</span>, <span class="kw">dyn </span>Reflect&gt;&gt;,
     <span class="doccomment">/// Function pointer implementing [`ReflectComponent::reflect_unchecked_mut()`].
     ///
     /// # Safety
     /// The function may only be called with an [`UnsafeEntityCell`] that can be used to mutably access the relevant component on the given entity.
-    </span><span class="kw">pub </span>reflect_unchecked_mut: <span class="kw">unsafe fn</span>(UnsafeEntityCell&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; <span class="prelude-ty">Option</span>&lt;Mut&lt;<span class="lifetime">&#39;_</span>, <span class="kw">dyn </span>Reflect&gt;&gt;,
+    </span><span class="kw">pub </span>reflect_unchecked_mut: <span class="kw">unsafe fn</span>(UnsafeEntityCell&lt;<span class="lifetime">'_</span>&gt;) -&gt; <span class="prelude-ty">Option</span>&lt;Mut&lt;<span class="lifetime">'_</span>, <span class="kw">dyn </span>Reflect&gt;&gt;,
     <span class="doccomment">/// Function pointer implementing [`ReflectComponent::copy()`].
-    </span><span class="kw">pub </span>copy: <span class="kw">fn</span>(<span class="kw-2">&amp;</span>World, <span class="kw-2">&amp;mut </span>World, Entity, Entity),
+    </span><span class="kw">pub </span>copy: <span class="kw">fn</span>(<span class="kw-2">&amp;</span>World, <span class="kw-2">&amp;mut </span>World, Entity, Entity, <span class="kw-2">&amp;</span>TypeRegistry),
 }
 
 <span class="kw">impl </span>ReflectComponentFns {
@@ -406,20 +483,20 @@
     ///
     /// This is useful if you want to start with the default implementation before overriding some
     /// of the functions to create a custom implementation.
-    </span><span class="kw">pub fn </span>new&lt;T: Component + Reflect + FromWorld&gt;() -&gt; <span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>new&lt;T: Component + Reflect + FromReflect&gt;() -&gt; <span class="self">Self </span>{
         &lt;ReflectComponent <span class="kw">as </span>FromType&lt;T&gt;&gt;::from_type().<span class="number">0
     </span>}
 }
 
 <span class="kw">impl </span>ReflectComponent {
-    <span class="doccomment">/// Constructs default reflected [`Component`] from world using [`from_world()`](FromWorld::from_world).
-    </span><span class="kw">pub fn </span>from_world(<span class="kw-2">&amp;</span><span class="self">self</span>, world: <span class="kw-2">&amp;mut </span>World) -&gt; Box&lt;<span class="kw">dyn </span>Reflect&gt; {
-        (<span class="self">self</span>.<span class="number">0</span>.from_world)(world)
-    }
-
-    <span class="doccomment">/// Insert a reflected [`Component`] into the entity like [`insert()`](crate::world::EntityWorldMut::insert).
-    </span><span class="kw">pub fn </span>insert(<span class="kw-2">&amp;</span><span class="self">self</span>, entity: <span class="kw-2">&amp;mut </span>EntityWorldMut, component: <span class="kw-2">&amp;</span><span class="kw">dyn </span>Reflect) {
-        (<span class="self">self</span>.<span class="number">0</span>.insert)(entity, component);
+    <span class="doccomment">/// Insert a reflected [`Component`] into the entity like [`insert()`](EntityWorldMut::insert).
+    </span><span class="kw">pub fn </span>insert(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        entity: <span class="kw-2">&amp;mut </span>EntityWorldMut,
+        component: <span class="kw-2">&amp;</span><span class="kw">dyn </span>Reflect,
+        registry: <span class="kw-2">&amp;</span>TypeRegistry,
+    ) {
+        (<span class="self">self</span>.<span class="number">0</span>.insert)(entity, component, registry);
     }
 
     <span class="doccomment">/// Uses reflection to set the value of this [`Component`] type in the entity to the given value.
@@ -432,11 +509,16 @@
     }
 
     <span class="doccomment">/// Uses reflection to set the value of this [`Component`] type in the entity to the given value or insert a new one if it does not exist.
-    </span><span class="kw">pub fn </span>apply_or_insert(<span class="kw-2">&amp;</span><span class="self">self</span>, entity: <span class="kw-2">&amp;mut </span>EntityWorldMut, component: <span class="kw-2">&amp;</span><span class="kw">dyn </span>Reflect) {
-        (<span class="self">self</span>.<span class="number">0</span>.apply_or_insert)(entity, component);
+    </span><span class="kw">pub fn </span>apply_or_insert(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        entity: <span class="kw-2">&amp;mut </span>EntityWorldMut,
+        component: <span class="kw-2">&amp;</span><span class="kw">dyn </span>Reflect,
+        registry: <span class="kw-2">&amp;</span>TypeRegistry,
+    ) {
+        (<span class="self">self</span>.<span class="number">0</span>.apply_or_insert)(entity, component, registry);
     }
 
-    <span class="doccomment">/// Removes this [`Component`] type from the entity. Does nothing if it doesn&#39;t exist.
+    <span class="doccomment">/// Removes this [`Component`] type from the entity. Does nothing if it doesn't exist.
     </span><span class="kw">pub fn </span>remove(<span class="kw-2">&amp;</span><span class="self">self</span>, entity: <span class="kw-2">&amp;mut </span>EntityWorldMut) {
         (<span class="self">self</span>.<span class="number">0</span>.remove)(entity);
     }
@@ -447,27 +529,27 @@
     }
 
     <span class="doccomment">/// Gets the value of this [`Component`] type from the entity as a reflected reference.
-    </span><span class="kw">pub fn </span>reflect&lt;<span class="lifetime">&#39;a</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, entity: EntityRef&lt;<span class="lifetime">&#39;a</span>&gt;) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw">dyn </span>Reflect&gt; {
+    </span><span class="kw">pub fn </span>reflect&lt;<span class="lifetime">'a</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, entity: EntityRef&lt;<span class="lifetime">'a</span>&gt;) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw">dyn </span>Reflect&gt; {
         (<span class="self">self</span>.<span class="number">0</span>.reflect)(entity)
     }
 
     <span class="doccomment">/// Gets the value of this [`Component`] type from the entity as a mutable reflected reference.
-    </span><span class="kw">pub fn </span>reflect_mut&lt;<span class="lifetime">&#39;a</span>&gt;(
+    </span><span class="kw">pub fn </span>reflect_mut&lt;<span class="lifetime">'a</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        entity: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>EntityWorldMut&lt;<span class="lifetime">&#39;_</span>&gt;,
-    ) -&gt; <span class="prelude-ty">Option</span>&lt;Mut&lt;<span class="lifetime">&#39;a</span>, <span class="kw">dyn </span>Reflect&gt;&gt; {
+        entity: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>EntityWorldMut&lt;<span class="lifetime">'_</span>&gt;,
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;Mut&lt;<span class="lifetime">'a</span>, <span class="kw">dyn </span>Reflect&gt;&gt; {
         (<span class="self">self</span>.<span class="number">0</span>.reflect_mut)(entity)
     }
 
     <span class="doccomment">/// # Safety
     /// This method does not prevent you from having two mutable pointers to the same data,
-    /// violating Rust&#39;s aliasing rules. To avoid this:
+    /// violating Rust's aliasing rules. To avoid this:
     /// * Only call this method with a [`UnsafeEntityCell`] that may be used to mutably access the component on the entity `entity`
-    /// * Don&#39;t call this method more than once in the same scope for a given [`Component`].
-    </span><span class="kw">pub unsafe fn </span>reflect_unchecked_mut&lt;<span class="lifetime">&#39;a</span>&gt;(
+    /// * Don't call this method more than once in the same scope for a given [`Component`].
+    </span><span class="kw">pub unsafe fn </span>reflect_unchecked_mut&lt;<span class="lifetime">'a</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        entity: UnsafeEntityCell&lt;<span class="lifetime">&#39;a</span>&gt;,
-    ) -&gt; <span class="prelude-ty">Option</span>&lt;Mut&lt;<span class="lifetime">&#39;a</span>, <span class="kw">dyn </span>Reflect&gt;&gt; {
+        entity: UnsafeEntityCell&lt;<span class="lifetime">'a</span>&gt;,
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;Mut&lt;<span class="lifetime">'a</span>, <span class="kw">dyn </span>Reflect&gt;&gt; {
         <span class="comment">// SAFETY: safety requirements deferred to caller
         </span>(<span class="self">self</span>.<span class="number">0</span>.reflect_unchecked_mut)(entity)
     }
@@ -483,12 +565,14 @@
         destination_world: <span class="kw-2">&amp;mut </span>World,
         source_entity: Entity,
         destination_entity: Entity,
+        registry: <span class="kw-2">&amp;</span>TypeRegistry,
     ) {
         (<span class="self">self</span>.<span class="number">0</span>.copy)(
             source_world,
             destination_world,
             source_entity,
             destination_entity,
+            registry,
         );
     }
 
@@ -528,25 +612,26 @@
     </span>}
 }
 
-<span class="kw">impl</span>&lt;C: Component + Reflect + FromWorld&gt; FromType&lt;C&gt; <span class="kw">for </span>ReflectComponent {
+<span class="kw">impl</span>&lt;C: Component + Reflect + FromReflect&gt; FromType&lt;C&gt; <span class="kw">for </span>ReflectComponent {
     <span class="kw">fn </span>from_type() -&gt; <span class="self">Self </span>{
         ReflectComponent(ReflectComponentFns {
-            from_world: |world| Box::new(C::from_world(world)),
-            insert: |entity, reflected_component| {
-                <span class="kw">let </span><span class="kw-2">mut </span>component = entity.world_scope(|world| C::from_world(world));
-                component.apply(reflected_component);
+            insert: |entity, reflected_component, registry| {
+                <span class="kw">let </span>component = entity.world_scope(|world| {
+                    from_reflect_or_world::&lt;C&gt;(reflected_component, world, registry)
+                });
                 entity.insert(component);
             },
             apply: |entity, reflected_component| {
                 <span class="kw">let </span><span class="kw-2">mut </span>component = entity.get_mut::&lt;C&gt;().unwrap();
                 component.apply(reflected_component);
             },
-            apply_or_insert: |entity, reflected_component| {
+            apply_or_insert: |entity, reflected_component, registry| {
                 <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">mut </span>component) = entity.get_mut::&lt;C&gt;() {
                     component.apply(reflected_component);
                 } <span class="kw">else </span>{
-                    <span class="kw">let </span><span class="kw-2">mut </span>component = entity.world_scope(|world| C::from_world(world));
-                    component.apply(reflected_component);
+                    <span class="kw">let </span>component = entity.world_scope(|world| {
+                        from_reflect_or_world::&lt;C&gt;(reflected_component, world, registry)
+                    });
                     entity.insert(component);
                 }
             },
@@ -554,10 +639,10 @@
                 entity.remove::&lt;C&gt;();
             },
             contains: |entity| entity.contains::&lt;C&gt;(),
-            copy: |source_world, destination_world, source_entity, destination_entity| {
+            copy: |source_world, destination_world, source_entity, destination_entity, registry| {
                 <span class="kw">let </span>source_component = source_world.get::&lt;C&gt;(source_entity).unwrap();
-                <span class="kw">let </span><span class="kw-2">mut </span>destination_component = C::from_world(destination_world);
-                destination_component.apply(source_component);
+                <span class="kw">let </span>destination_component =
+                    from_reflect_or_world::&lt;C&gt;(source_component, destination_world, registry);
                 destination_world
                     .entity_mut(destination_entity)
                     .insert(destination_component);
@@ -581,5 +666,49 @@
             },
         })
     }
+}
+
+<span class="doccomment">/// Creates a `T` from a `&amp;dyn Reflect`.
+///
+/// The first approach uses `T`'s implementation of `FromReflect`.
+/// If this fails, it falls back to default-initializing a new instance of `T` using its
+/// `ReflectFromWorld` data from the `world`'s `AppTypeRegistry` and `apply`ing the
+/// `&amp;dyn Reflect` on it.
+///
+/// Panics if both approaches fail.
+</span><span class="kw">fn </span>from_reflect_or_world&lt;T: FromReflect&gt;(
+    reflected: <span class="kw-2">&amp;</span><span class="kw">dyn </span>Reflect,
+    world: <span class="kw-2">&amp;mut </span>World,
+    registry: <span class="kw-2">&amp;</span>TypeRegistry,
+) -&gt; T {
+    <span class="kw">if let </span><span class="prelude-val">Some</span>(value) = T::from_reflect(reflected) {
+        <span class="kw">return </span>value;
+    }
+
+    <span class="comment">// Clone the `ReflectFromWorld` because it's cheap and "frees"
+    // the borrow of `world` so that it can be passed to `from_world`.
+    </span><span class="kw">let </span><span class="prelude-val">Some</span>(reflect_from_world) = registry.get_type_data::&lt;ReflectFromWorld&gt;(TypeId::of::&lt;T&gt;())
+    <span class="kw">else </span>{
+        <span class="macro">panic!</span>(
+            <span class="string">"`FromReflect` failed and no `ReflectFromWorld` registration found for `{}`"</span>,
+            <span class="comment">// FIXME: once we have unique reflect, use `TypePath`.
+            </span>std::any::type_name::&lt;T&gt;(),
+        );
+    };
+
+    <span class="kw">let </span><span class="prelude-val">Ok</span>(<span class="kw-2">mut </span>value) = reflect_from_world
+        .from_world(world)
+        .into_any()
+        .downcast::&lt;T&gt;()
+    <span class="kw">else </span>{
+        <span class="macro">panic!</span>(
+            <span class="string">"the `ReflectFromWorld` registration for `{}` produced a value of a different type"</span>,
+            <span class="comment">// FIXME: once we have unique reflect, use `TypePath`.
+            </span>std::any::type_name::&lt;T&gt;(),
+        );
+    };
+
+    value.apply(reflected);
+    <span class="kw-2">*</span>value
 }
 </code></pre></div></section></main></body></html>

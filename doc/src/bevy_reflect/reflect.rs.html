@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_reflect-0.12.1/src/reflect.rs`."><title>reflect.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="bevy_reflect" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../bevy_reflect/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_reflect-0.13.0/src/reflect.rs`."><title>reflect.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="bevy_reflect" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -344,6 +345,64 @@
 <a href="#344" id="344">344</a>
 <a href="#345" id="345">345</a>
 <a href="#346" id="346">346</a>
+<a href="#347" id="347">347</a>
+<a href="#348" id="348">348</a>
+<a href="#349" id="349">349</a>
+<a href="#350" id="350">350</a>
+<a href="#351" id="351">351</a>
+<a href="#352" id="352">352</a>
+<a href="#353" id="353">353</a>
+<a href="#354" id="354">354</a>
+<a href="#355" id="355">355</a>
+<a href="#356" id="356">356</a>
+<a href="#357" id="357">357</a>
+<a href="#358" id="358">358</a>
+<a href="#359" id="359">359</a>
+<a href="#360" id="360">360</a>
+<a href="#361" id="361">361</a>
+<a href="#362" id="362">362</a>
+<a href="#363" id="363">363</a>
+<a href="#364" id="364">364</a>
+<a href="#365" id="365">365</a>
+<a href="#366" id="366">366</a>
+<a href="#367" id="367">367</a>
+<a href="#368" id="368">368</a>
+<a href="#369" id="369">369</a>
+<a href="#370" id="370">370</a>
+<a href="#371" id="371">371</a>
+<a href="#372" id="372">372</a>
+<a href="#373" id="373">373</a>
+<a href="#374" id="374">374</a>
+<a href="#375" id="375">375</a>
+<a href="#376" id="376">376</a>
+<a href="#377" id="377">377</a>
+<a href="#378" id="378">378</a>
+<a href="#379" id="379">379</a>
+<a href="#380" id="380">380</a>
+<a href="#381" id="381">381</a>
+<a href="#382" id="382">382</a>
+<a href="#383" id="383">383</a>
+<a href="#384" id="384">384</a>
+<a href="#385" id="385">385</a>
+<a href="#386" id="386">386</a>
+<a href="#387" id="387">387</a>
+<a href="#388" id="388">388</a>
+<a href="#389" id="389">389</a>
+<a href="#390" id="390">390</a>
+<a href="#391" id="391">391</a>
+<a href="#392" id="392">392</a>
+<a href="#393" id="393">393</a>
+<a href="#394" id="394">394</a>
+<a href="#395" id="395">395</a>
+<a href="#396" id="396">396</a>
+<a href="#397" id="397">397</a>
+<a href="#398" id="398">398</a>
+<a href="#399" id="399">399</a>
+<a href="#400" id="400">400</a>
+<a href="#401" id="401">401</a>
+<a href="#402" id="402">402</a>
+<a href="#403" id="403">403</a>
+<a href="#404" id="404">404</a>
 </pre></div><pre class="rust"><code><span class="kw">use crate</span>::{
     array_debug, enum_debug, list_debug, map_debug, serde::Serializable, struct_debug, tuple_debug,
     tuple_struct_debug, Array, DynamicTypePath, Enum, List, Map, Struct, Tuple, TupleStruct,
@@ -356,46 +415,83 @@
 
 <span class="kw">use </span><span class="kw">crate</span>::utility::NonGenericTypeInfoCell;
 
-<span class="doccomment">/// An immutable enumeration of &quot;kinds&quot; of reflected type.
-///
-/// Each variant contains a trait object with methods specific to a kind of
-/// type.
-///
-/// A `ReflectRef` is obtained via [`Reflect::reflect_ref`].
-</span><span class="kw">pub enum </span>ReflectRef&lt;<span class="lifetime">&#39;a</span>&gt; {
-    Struct(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw">dyn </span>Struct),
-    TupleStruct(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw">dyn </span>TupleStruct),
-    Tuple(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw">dyn </span>Tuple),
-    List(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw">dyn </span>List),
-    Array(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw">dyn </span>Array),
-    Map(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw">dyn </span>Map),
-    Enum(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw">dyn </span>Enum),
-    Value(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw">dyn </span>Reflect),
+<span class="macro">macro_rules! </span>impl_reflect_enum {
+    (<span class="macro-nonterminal">$name</span>:ident$(&lt;<span class="macro-nonterminal">$lifetime</span>:lifetime&gt;)<span class="question-mark">?</span>) =&gt; {
+        <span class="kw">impl </span><span class="macro-nonterminal">$name</span>$(&lt;<span class="macro-nonterminal">$lifetime</span>&gt;)<span class="question-mark">? </span>{
+            <span class="doccomment">/// Returns the "kind" of this reflected type without any information.
+            </span><span class="kw">pub fn </span>kind(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; ReflectKind {
+                <span class="kw">match </span><span class="self">self </span>{
+                    <span class="self">Self</span>::Struct(<span class="kw">_</span>) =&gt; ReflectKind::Struct,
+                    <span class="self">Self</span>::TupleStruct(<span class="kw">_</span>) =&gt; ReflectKind::TupleStruct,
+                    <span class="self">Self</span>::Tuple(<span class="kw">_</span>) =&gt; ReflectKind::Tuple,
+                    <span class="self">Self</span>::List(<span class="kw">_</span>) =&gt; ReflectKind::List,
+                    <span class="self">Self</span>::Array(<span class="kw">_</span>) =&gt; ReflectKind::Array,
+                    <span class="self">Self</span>::Map(<span class="kw">_</span>) =&gt; ReflectKind::Map,
+                    <span class="self">Self</span>::Enum(<span class="kw">_</span>) =&gt; ReflectKind::Enum,
+                    <span class="self">Self</span>::Value(<span class="kw">_</span>) =&gt; ReflectKind::Value,
+                }
+            }
+        }
+
+        <span class="kw">impl </span>From&lt;<span class="macro-nonterminal">$name</span>$(&lt;<span class="macro-nonterminal">$lifetime</span>&gt;)<span class="question-mark">?</span>&gt; <span class="kw">for </span>ReflectKind {
+            <span class="kw">fn </span>from(value: <span class="macro-nonterminal">$name</span>) -&gt; <span class="self">Self </span>{
+                <span class="kw">match </span>value {
+                    <span class="macro-nonterminal">$name::Struct</span>(<span class="kw">_</span>) =&gt; <span class="self">Self</span>::Struct,
+                    <span class="macro-nonterminal">$name::TupleStruct</span>(<span class="kw">_</span>) =&gt; <span class="self">Self</span>::TupleStruct,
+                    <span class="macro-nonterminal">$name::Tuple</span>(<span class="kw">_</span>) =&gt; <span class="self">Self</span>::Tuple,
+                    <span class="macro-nonterminal">$name::List</span>(<span class="kw">_</span>) =&gt; <span class="self">Self</span>::List,
+                    <span class="macro-nonterminal">$name::Array</span>(<span class="kw">_</span>) =&gt; <span class="self">Self</span>::Array,
+                    <span class="macro-nonterminal">$name::Map</span>(<span class="kw">_</span>) =&gt; <span class="self">Self</span>::Map,
+                    <span class="macro-nonterminal">$name::Enum</span>(<span class="kw">_</span>) =&gt; <span class="self">Self</span>::Enum,
+                    <span class="macro-nonterminal">$name::Value</span>(<span class="kw">_</span>) =&gt; <span class="self">Self</span>::Value,
+                }
+            }
+        }
+    };
 }
 
-<span class="doccomment">/// A mutable enumeration of &quot;kinds&quot; of reflected type.
+<span class="doccomment">/// An immutable enumeration of "kinds" of a reflected type.
 ///
 /// Each variant contains a trait object with methods specific to a kind of
 /// type.
 ///
-/// A `ReflectMut` is obtained via [`Reflect::reflect_mut`].
-</span><span class="kw">pub enum </span>ReflectMut&lt;<span class="lifetime">&#39;a</span>&gt; {
-    Struct(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span><span class="kw">dyn </span>Struct),
-    TupleStruct(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span><span class="kw">dyn </span>TupleStruct),
-    Tuple(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span><span class="kw">dyn </span>Tuple),
-    List(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span><span class="kw">dyn </span>List),
-    Array(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span><span class="kw">dyn </span>Array),
-    Map(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span><span class="kw">dyn </span>Map),
-    Enum(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span><span class="kw">dyn </span>Enum),
-    Value(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span><span class="kw">dyn </span>Reflect),
+/// A [`ReflectRef`] is obtained via [`Reflect::reflect_ref`].
+</span><span class="kw">pub enum </span>ReflectRef&lt;<span class="lifetime">'a</span>&gt; {
+    Struct(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw">dyn </span>Struct),
+    TupleStruct(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw">dyn </span>TupleStruct),
+    Tuple(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw">dyn </span>Tuple),
+    List(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw">dyn </span>List),
+    Array(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw">dyn </span>Array),
+    Map(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw">dyn </span>Map),
+    Enum(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw">dyn </span>Enum),
+    Value(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw">dyn </span>Reflect),
 }
+<span class="macro">impl_reflect_enum!</span>(ReflectRef&lt;<span class="lifetime">'_</span>&gt;);
 
-<span class="doccomment">/// An owned enumeration of &quot;kinds&quot; of reflected type.
+<span class="doccomment">/// A mutable enumeration of "kinds" of a reflected type.
 ///
 /// Each variant contains a trait object with methods specific to a kind of
 /// type.
 ///
-/// A `ReflectOwned` is obtained via [`Reflect::reflect_owned`].
+/// A [`ReflectMut`] is obtained via [`Reflect::reflect_mut`].
+</span><span class="kw">pub enum </span>ReflectMut&lt;<span class="lifetime">'a</span>&gt; {
+    Struct(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span><span class="kw">dyn </span>Struct),
+    TupleStruct(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span><span class="kw">dyn </span>TupleStruct),
+    Tuple(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span><span class="kw">dyn </span>Tuple),
+    List(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span><span class="kw">dyn </span>List),
+    Array(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span><span class="kw">dyn </span>Array),
+    Map(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span><span class="kw">dyn </span>Map),
+    Enum(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span><span class="kw">dyn </span>Enum),
+    Value(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span><span class="kw">dyn </span>Reflect),
+}
+<span class="macro">impl_reflect_enum!</span>(ReflectMut&lt;<span class="lifetime">'_</span>&gt;);
+
+<span class="doccomment">/// An owned enumeration of "kinds" of a reflected type.
+///
+/// Each variant contains a trait object with methods specific to a kind of
+/// type.
+///
+/// A [`ReflectOwned`] is obtained via [`Reflect::reflect_owned`].
 </span><span class="kw">pub enum </span>ReflectOwned {
     Struct(Box&lt;<span class="kw">dyn </span>Struct&gt;),
     TupleStruct(Box&lt;<span class="kw">dyn </span>TupleStruct&gt;),
@@ -406,10 +502,42 @@
     Enum(Box&lt;<span class="kw">dyn </span>Enum&gt;),
     Value(Box&lt;<span class="kw">dyn </span>Reflect&gt;),
 }
+<span class="macro">impl_reflect_enum!</span>(ReflectOwned);
+
+<span class="doccomment">/// A zero-sized enumuration of the "kinds" of a reflected type.
+///
+/// A [`ReflectKind`] is obtained via [`Reflect::reflect_kind`],
+/// or via [`ReflectRef::kind`],[`ReflectMut::kind`] or [`ReflectOwned::kind`].
+</span><span class="attr">#[derive(Debug, PartialEq, Eq, Clone, Copy)]
+</span><span class="kw">pub enum </span>ReflectKind {
+    Struct,
+    TupleStruct,
+    Tuple,
+    List,
+    Array,
+    Map,
+    Enum,
+    Value,
+}
+
+<span class="kw">impl </span>std::fmt::Display <span class="kw">for </span>ReflectKind {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; std::fmt::Result {
+        <span class="kw">match </span><span class="self">self </span>{
+            ReflectKind::Struct =&gt; f.pad(<span class="string">"struct"</span>),
+            ReflectKind::TupleStruct =&gt; f.pad(<span class="string">"tuple struct"</span>),
+            ReflectKind::Tuple =&gt; f.pad(<span class="string">"tuple"</span>),
+            ReflectKind::List =&gt; f.pad(<span class="string">"list"</span>),
+            ReflectKind::Array =&gt; f.pad(<span class="string">"array"</span>),
+            ReflectKind::Map =&gt; f.pad(<span class="string">"map"</span>),
+            ReflectKind::Enum =&gt; f.pad(<span class="string">"enum"</span>),
+            ReflectKind::Value =&gt; f.pad(<span class="string">"value"</span>),
+        }
+    }
+}
 
 <span class="doccomment">/// The core trait of [`bevy_reflect`], used for accessing and modifying data dynamically.
 ///
-/// It&#39;s recommended to use the [derive macro] rather than manually implementing this trait.
+/// It's recommended to use the [derive macro] rather than manually implementing this trait.
 /// Doing so will automatically implement many other useful traits for reflection,
 /// including one of the appropriate subtraits: [`Struct`], [`TupleStruct`] or [`Enum`].
 ///
@@ -419,30 +547,12 @@
 /// [derive macro]: bevy_reflect_derive::Reflect
 /// [crate-level documentation]: crate
 </span><span class="kw">pub trait </span>Reflect: DynamicTypePath + Any + Send + Sync {
-    <span class="doccomment">/// Returns the type path of the underlying type.
-    ///
-    /// This type path will either be found through [`get_represented_type_info`]
-    /// or taken from a [`TypePath`] implementation if the former isn&#39;t available.
-    ///
-    /// This method is deprecated; please consider migrating to one of the above methods.
-    ///
-    /// [`get_represented_type_info`]: Reflect::get_represented_type_info
-    </span><span class="attr">#[deprecated(
-        since = <span class="string">&quot;0.12.0&quot;</span>,
-        note = <span class="string">&quot;view the method documentation to find alternatives to this method.&quot;
-    </span>)]
-    </span><span class="kw">fn </span>type_name(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>str {
-        <span class="self">self</span>.get_represented_type_info()
-            .map(|info| info.type_path())
-            .unwrap_or_else(|| <span class="self">self</span>.reflect_type_path())
-    }
-
     <span class="doccomment">/// Returns the [`TypeInfo`] of the type _represented_ by this value.
     ///
     /// For most types, this will simply return their own `TypeInfo`.
     /// However, for dynamic types, such as [`DynamicStruct`] or [`DynamicList`],
     /// this will return the type they represent
-    /// (or `None` if they don&#39;t represent any particular type).
+    /// (or `None` if they don't represent any particular type).
     ///
     /// This method is great if you have an instance of a type or a `dyn Reflect`,
     /// and want to access its [`TypeInfo`]. However, if this method is to be called
@@ -452,7 +562,7 @@
     /// [`DynamicStruct`]: crate::DynamicStruct
     /// [`DynamicList`]: crate::DynamicList
     /// [`TypeRegistry::get_type_info`]: crate::TypeRegistry::get_type_info
-    </span><span class="kw">fn </span>get_represented_type_info(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>TypeInfo&gt;;
+    </span><span class="kw">fn </span>get_represented_type_info(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span>TypeInfo&gt;;
 
     <span class="doccomment">/// Returns the value as a [`Box&lt;dyn Any&gt;`][std::any::Any].
     </span><span class="kw">fn </span>into_any(<span class="self">self</span>: Box&lt;<span class="self">Self</span>&gt;) -&gt; Box&lt;<span class="kw">dyn </span>Any&gt;;
@@ -520,17 +630,24 @@
     /// containing the trait object.
     </span><span class="kw">fn </span>set(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: Box&lt;<span class="kw">dyn </span>Reflect&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;(), Box&lt;<span class="kw">dyn </span>Reflect&gt;&gt;;
 
-    <span class="doccomment">/// Returns an enumeration of &quot;kinds&quot; of type.
+    <span class="doccomment">/// Returns a zero-sized enumeration of "kinds" of type.
+    ///
+    /// See [`ReflectKind`].
+    </span><span class="kw">fn </span>reflect_kind(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; ReflectKind {
+        <span class="self">self</span>.reflect_ref().kind()
+    }
+
+    <span class="doccomment">/// Returns an immutable enumeration of "kinds" of type.
     ///
     /// See [`ReflectRef`].
     </span><span class="kw">fn </span>reflect_ref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; ReflectRef;
 
-    <span class="doccomment">/// Returns a mutable enumeration of &quot;kinds&quot; of type.
+    <span class="doccomment">/// Returns a mutable enumeration of "kinds" of type.
     ///
     /// See [`ReflectMut`].
     </span><span class="kw">fn </span>reflect_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; ReflectMut;
 
-    <span class="doccomment">/// Returns an owned enumeration of &quot;kinds&quot; of type.
+    <span class="doccomment">/// Returns an owned enumeration of "kinds" of type.
     ///
     /// See [`ReflectOwned`].
     </span><span class="kw">fn </span>reflect_owned(<span class="self">self</span>: Box&lt;<span class="self">Self</span>&gt;) -&gt; ReflectOwned;
@@ -541,7 +658,7 @@
     /// cloned via [`Struct::clone_dynamic`], [`TupleStruct::clone_dynamic`],
     /// or [`Enum::clone_dynamic`], respectively.
     /// Implementors of other `Reflect` subtraits (e.g. [`List`], [`Map`]) should
-    /// use those subtraits&#39; respective `clone_dynamic` methods.
+    /// use those subtraits' respective `clone_dynamic` methods.
     </span><span class="kw">fn </span>clone_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Box&lt;<span class="kw">dyn </span>Reflect&gt;;
 
     <span class="doccomment">/// Returns a hash of the value (which includes the type).
@@ -551,7 +668,7 @@
         <span class="prelude-val">None
     </span>}
 
-    <span class="doccomment">/// Returns a &quot;partial equality&quot; comparison result.
+    <span class="doccomment">/// Returns a "partial equality" comparison result.
     ///
     /// If the underlying type does not support equality testing, returns `None`.
     </span><span class="kw">fn </span>reflect_partial_eq(<span class="kw-2">&amp;</span><span class="self">self</span>, _value: <span class="kw-2">&amp;</span><span class="kw">dyn </span>Reflect) -&gt; <span class="prelude-ty">Option</span>&lt;bool&gt; {
@@ -561,11 +678,11 @@
     <span class="doccomment">/// Debug formatter for the value.
     ///
     /// Any value that is not an implementor of other `Reflect` subtraits
-    /// (e.g. [`List`], [`Map`]), will default to the format: `&quot;Reflect(type_path)&quot;`,
+    /// (e.g. [`List`], [`Map`]), will default to the format: `"Reflect(type_path)"`,
     /// where `type_path` is the [type path] of the underlying type.
     ///
     /// [type path]: TypePath::type_path
-    </span><span class="kw">fn </span>debug(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; std::fmt::Result {
+    </span><span class="kw">fn </span>debug(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; std::fmt::Result {
         <span class="kw">match </span><span class="self">self</span>.reflect_ref() {
             ReflectRef::Struct(dyn_struct) =&gt; struct_debug(dyn_struct, f),
             ReflectRef::TupleStruct(dyn_tuple_struct) =&gt; tuple_struct_debug(dyn_tuple_struct, f),
@@ -574,7 +691,7 @@
             ReflectRef::Array(dyn_array) =&gt; array_debug(dyn_array, f),
             ReflectRef::Map(dyn_map) =&gt; map_debug(dyn_map, f),
             ReflectRef::Enum(dyn_enum) =&gt; enum_debug(dyn_enum, f),
-            <span class="kw">_ </span>=&gt; <span class="macro">write!</span>(f, <span class="string">&quot;Reflect({})&quot;</span>, <span class="self">self</span>.reflect_type_path()),
+            <span class="kw">_ </span>=&gt; <span class="macro">write!</span>(f, <span class="string">"Reflect({})"</span>, <span class="self">self</span>.reflect_type_path()),
         }
     }
 
@@ -603,13 +720,13 @@
 }
 
 <span class="kw">impl </span>Debug <span class="kw">for dyn </span>Reflect {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; std::fmt::Result {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; std::fmt::Result {
         <span class="self">self</span>.debug(f)
     }
 }
 
 <span class="kw">impl </span>Typed <span class="kw">for dyn </span>Reflect {
-    <span class="kw">fn </span>type_info() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>TypeInfo {
+    <span class="kw">fn </span>type_info() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'static </span>TypeInfo {
         <span class="kw">static </span>CELL: NonGenericTypeInfoCell = NonGenericTypeInfoCell::new();
         CELL.get_or_set(|| TypeInfo::Value(ValueInfo::new::&lt;<span class="self">Self</span>&gt;()))
     }
@@ -619,12 +736,12 @@
 
 // See this playground (https://play.rust-lang.org/?version=stable&amp;mode=debug&amp;edition=2021&amp;gist=589064053f27bc100d90da89c6a860aa).
 </span><span class="kw">impl </span>TypePath <span class="kw">for dyn </span>Reflect {
-    <span class="kw">fn </span>type_path() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str {
-        <span class="string">&quot;dyn bevy_reflect::Reflect&quot;
+    <span class="kw">fn </span>type_path() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str {
+        <span class="string">"dyn bevy_reflect::Reflect"
     </span>}
 
-    <span class="kw">fn </span>short_type_path() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str {
-        <span class="string">&quot;dyn Reflect&quot;
+    <span class="kw">fn </span>short_type_path() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str {
+        <span class="string">"dyn Reflect"
     </span>}
 }
 
@@ -663,7 +780,7 @@
     /// otherwise.
     ///
     /// The underlying value is the concrete type that is stored in this `dyn` object;
-    /// it can be downcasted to. In the case that this underlying value &quot;represents&quot;
+    /// it can be downcasted to. In the case that this underlying value "represents"
     /// a different type, like the Dynamic\*\*\* types do, you can call `represents`
     /// to determine what type they represent. Represented types cannot be downcasted
     /// to, but you can use [`FromReflect`] to create a value of the represented type from them.

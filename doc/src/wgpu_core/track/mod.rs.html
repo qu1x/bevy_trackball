@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/wgpu-core-0.17.1/src/track/mod.rs`."><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="wgpu_core" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../wgpu_core/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/wgpu-core-0.19.0/src/track/mod.rs`."><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="wgpu_core" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -611,6 +612,14 @@
 <a href="#611" id="611">611</a>
 <a href="#612" id="612">612</a>
 <a href="#613" id="613">613</a>
+<a href="#614" id="614">614</a>
+<a href="#615" id="615">615</a>
+<a href="#616" id="616">616</a>
+<a href="#617" id="617">617</a>
+<a href="#618" id="618">618</a>
+<a href="#619" id="619">619</a>
+<a href="#620" id="620">620</a>
+<a href="#621" id="621">621</a>
 </pre></div><pre class="rust"><code><span class="doccomment">/*! Resource State and Lifetime Trackers
 
 These structures are responsible for keeping track of resource state,
@@ -629,8 +638,10 @@ is a corresponding debug assert the checks if that access is valid. This helps
 get bugs caught fast, while still letting users not need to pay for the bounds
 checks.
 
-In wgpu, resource IDs are allocated and re-used, so will always be as low
-as reasonably possible. This allows us to use the ID as an index into an array.
+In wgpu, each resource ID includes a bitfield holding an index.
+Indices are allocated and re-used, so they will always be as low as
+reasonably possible. This allows us to use IDs to index into an array
+of tracking information.
 
 ## Statefulness
 
@@ -650,7 +661,7 @@ use cases, Bind Group, Usage Scope, and a full Tracker.
 
 Bind Group trackers are just a list of different resources, their refcount,
 and how they are used. Textures are used via a selector and a usage type.
-Buffers by just a usage type. Stateless resources don&#39;t have a usage type.
+Buffers by just a usage type. Stateless resources don't have a usage type.
 
 Usage Scope trackers are only for stateful resources. These trackers represent
 a single [`UsageScope`] in the spec. When a use is added to a usage scope,
@@ -716,9 +727,12 @@ Device &lt;- CommandBuffer = insert(device.start, device.end, buffer.start, buff
     binding_model, command, conv,
     hal_api::HalApi,
     id::{<span class="self">self</span>, TypedId},
-    pipeline, resource, storage,
+    pipeline, resource,
+    snatch::SnatchGuard,
+    storage::Storage,
 };
 
+<span class="kw">use </span>parking_lot::RwLock;
 <span class="kw">use </span>std::{fmt, ops};
 <span class="kw">use </span>thiserror::Error;
 
@@ -740,13 +754,16 @@ Device &lt;- CommandBuffer = insert(device.start, device.end, buffer.start, buff
     <span class="kw">pub </span>usage: ops::Range&lt;S&gt;,
 }
 
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">type </span>PendingTransitionList = Vec&lt;PendingTransition&lt;hal::TextureUses&gt;&gt;;
+
 <span class="kw">impl </span>PendingTransition&lt;hal::BufferUses&gt; {
     <span class="doccomment">/// Produce the hal barrier corresponding to the transition.
-    </span><span class="kw">pub fn </span>into_hal&lt;<span class="lifetime">&#39;a</span>, A: hal::Api&gt;(
+    </span><span class="kw">pub fn </span>into_hal&lt;<span class="lifetime">'a</span>, A: HalApi&gt;(
         <span class="self">self</span>,
-        buf: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>resource::Buffer&lt;A&gt;,
-    ) -&gt; hal::BufferBarrier&lt;<span class="lifetime">&#39;a</span>, A&gt; {
-        <span class="kw">let </span>buffer = buf.raw.as_ref().expect(<span class="string">&quot;Buffer is destroyed&quot;</span>);
+        buf: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>resource::Buffer&lt;A&gt;,
+        snatch_guard: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>SnatchGuard&lt;<span class="lifetime">'a</span>&gt;,
+    ) -&gt; hal::BufferBarrier&lt;<span class="lifetime">'a</span>, A&gt; {
+        <span class="kw">let </span>buffer = buf.raw.get(snatch_guard).expect(<span class="string">"Buffer is destroyed"</span>);
         hal::BufferBarrier {
             buffer,
             usage: <span class="self">self</span>.usage,
@@ -756,12 +773,7 @@ Device &lt;- CommandBuffer = insert(device.start, device.end, buffer.start, buff
 
 <span class="kw">impl </span>PendingTransition&lt;hal::TextureUses&gt; {
     <span class="doccomment">/// Produce the hal barrier corresponding to the transition.
-    </span><span class="kw">pub fn </span>into_hal&lt;<span class="lifetime">&#39;a</span>, A: hal::Api&gt;(
-        <span class="self">self</span>,
-        tex: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>resource::Texture&lt;A&gt;,
-    ) -&gt; hal::TextureBarrier&lt;<span class="lifetime">&#39;a</span>, A&gt; {
-        <span class="kw">let </span>texture = tex.inner.as_raw().expect(<span class="string">&quot;Texture is destroyed&quot;</span>);
-
+    </span><span class="kw">pub fn </span>into_hal&lt;<span class="lifetime">'a</span>, A: HalApi&gt;(<span class="self">self</span>, texture: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>A::Texture) -&gt; hal::TextureBarrier&lt;<span class="lifetime">'a</span>, A&gt; {
         <span class="comment">// These showing up in a barrier is always a bug
         </span><span class="macro">strict_assert_ne!</span>(<span class="self">self</span>.usage.start, hal::TextureUses::UNKNOWN);
         <span class="macro">strict_assert_ne!</span>(<span class="self">self</span>.usage.end, hal::TextureUses::UNKNOWN);
@@ -808,31 +820,31 @@ Device &lt;- CommandBuffer = insert(device.start, device.end, buffer.start, buff
 <span class="doccomment">/// Returns true if the given states violates the usage scope rule
 /// of any(inclusive) XOR one(exclusive)
 </span><span class="kw">fn </span>invalid_resource_state&lt;T: ResourceUses&gt;(state: T) -&gt; bool {
-    <span class="comment">// Is power of two also means &quot;is one bit set&quot;. We check for this as if
-    // we&#39;re in any exclusive state, we must only be in a single state.
+    <span class="comment">// Is power of two also means "is one bit set". We check for this as if
+    // we're in any exclusive state, we must only be in a single state.
     </span>state.any_exclusive() &amp;&amp; !conv::is_power_of_two_u16(state.bits())
 }
 
 <span class="doccomment">/// Returns true if the transition from one state to another does not require
 /// a barrier.
 </span><span class="kw">fn </span>skip_barrier&lt;T: ResourceUses&gt;(old_state: T, new_state: T) -&gt; bool {
-    <span class="comment">// If the state didn&#39;t change and all the usages are ordered, the hardware
+    <span class="comment">// If the state didn't change and all the usages are ordered, the hardware
     // will guarentee the order of accesses, so we do not need to issue a barrier at all
     </span>old_state == new_state &amp;&amp; old_state.all_ordered()
 }
 
 <span class="attr">#[derive(Clone, Debug, Error, Eq, PartialEq)]
 </span><span class="kw">pub enum </span>UsageConflict {
-    <span class="attr">#[error(<span class="string">&quot;Attempted to use invalid buffer&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Attempted to use invalid buffer"</span>)]
     </span>BufferInvalid { id: id::BufferId },
-    <span class="attr">#[error(<span class="string">&quot;Attempted to use invalid texture&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Attempted to use invalid texture"</span>)]
     </span>TextureInvalid { id: id::TextureId },
-    <span class="attr">#[error(<span class="string">&quot;Attempted to use buffer with {invalid_use}.&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Attempted to use buffer with {invalid_use}."</span>)]
     </span>Buffer {
         id: id::BufferId,
         invalid_use: InvalidUse&lt;hal::BufferUses&gt;,
     },
-    <span class="attr">#[error(<span class="string">&quot;Attempted to use a texture (mips {mip_levels:?} layers {array_layers:?}) with {invalid_use}.&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Attempted to use a texture (mips {mip_levels:?} layers {array_layers:?}) with {invalid_use}."</span>)]
     </span>Texture {
         id: id::TextureId,
         mip_levels: ops::Range&lt;u32&gt;,
@@ -902,7 +914,7 @@ Device &lt;- CommandBuffer = insert(device.start, device.end, buffer.start, buff
 }
 
 <span class="kw">impl</span>&lt;T: ResourceUses&gt; fmt::Display <span class="kw">for </span>InvalidUse&lt;T&gt; {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
         <span class="kw">let </span>current = <span class="self">self</span>.current_state;
         <span class="kw">let </span>new = <span class="self">self</span>.new_state;
 
@@ -911,12 +923,12 @@ Device &lt;- CommandBuffer = insert(device.start, device.end, buffer.start, buff
 
         <span class="kw">let </span>exclusive = current_exclusive | new_exclusive;
 
-        <span class="comment">// The text starts with &quot;tried to use X resource with {self}&quot;
+        <span class="comment">// The text starts with "tried to use X resource with {self}"
         </span><span class="macro">write!</span>(
             f,
-            <span class="string">&quot;conflicting usages. Current usage {current:?} and new usage {new:?}. \
+            <span class="string">"conflicting usages. Current usage {current:?} and new usage {new:?}. \
             {exclusive:?} is an exclusive usage and cannot be used with any other \
-            usages within the usage scope (renderpass or compute dispatch)&quot;
+            usages within the usage scope (renderpass or compute dispatch)"
         </span>)
     }
 }
@@ -926,11 +938,12 @@ Device &lt;- CommandBuffer = insert(device.start, device.end, buffer.start, buff
 ///
 /// All bind group states are sorted by their ID so that when adding to a tracker,
 /// they are added in the most efficient order possible (assending order).
+</span><span class="attr">#[derive(Debug)]
 </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct </span>BindGroupStates&lt;A: HalApi&gt; {
     <span class="kw">pub </span>buffers: BufferBindGroupState&lt;A&gt;,
     <span class="kw">pub </span>textures: TextureBindGroupState&lt;A&gt;,
-    <span class="kw">pub </span>views: StatelessBindGroupSate&lt;resource::TextureView&lt;A&gt;, id::TextureViewId&gt;,
-    <span class="kw">pub </span>samplers: StatelessBindGroupSate&lt;resource::Sampler&lt;A&gt;, id::SamplerId&gt;,
+    <span class="kw">pub </span>views: StatelessBindGroupSate&lt;id::TextureViewId, resource::TextureView&lt;A&gt;&gt;,
+    <span class="kw">pub </span>samplers: StatelessBindGroupSate&lt;id::SamplerId, resource::Sampler&lt;A&gt;&gt;,
 }
 
 <span class="kw">impl</span>&lt;A: HalApi&gt; BindGroupStates&lt;A&gt; {
@@ -958,37 +971,42 @@ Device &lt;- CommandBuffer = insert(device.start, device.end, buffer.start, buff
 <span class="doccomment">/// This is a render bundle specific usage scope. It includes stateless resources
 /// that are not normally included in a usage scope, but are used by render bundles
 /// and need to be owned by the render bundles.
+</span><span class="attr">#[derive(Debug)]
 </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct </span>RenderBundleScope&lt;A: HalApi&gt; {
-    <span class="kw">pub </span>buffers: BufferUsageScope&lt;A&gt;,
-    <span class="kw">pub </span>textures: TextureUsageScope&lt;A&gt;,
-    <span class="comment">// Don&#39;t need to track views and samplers, they are never used directly, only by bind groups.
-    </span><span class="kw">pub </span>bind_groups: StatelessTracker&lt;A, binding_model::BindGroup&lt;A&gt;, id::BindGroupId&gt;,
-    <span class="kw">pub </span>render_pipelines: StatelessTracker&lt;A, pipeline::RenderPipeline&lt;A&gt;, id::RenderPipelineId&gt;,
-    <span class="kw">pub </span>query_sets: StatelessTracker&lt;A, resource::QuerySet&lt;A&gt;, id::QuerySetId&gt;,
+    <span class="kw">pub </span>buffers: RwLock&lt;BufferUsageScope&lt;A&gt;&gt;,
+    <span class="kw">pub </span>textures: RwLock&lt;TextureUsageScope&lt;A&gt;&gt;,
+    <span class="comment">// Don't need to track views and samplers, they are never used directly, only by bind groups.
+    </span><span class="kw">pub </span>bind_groups: RwLock&lt;StatelessTracker&lt;A, id::BindGroupId, binding_model::BindGroup&lt;A&gt;&gt;&gt;,
+    <span class="kw">pub </span>render_pipelines:
+        RwLock&lt;StatelessTracker&lt;A, id::RenderPipelineId, pipeline::RenderPipeline&lt;A&gt;&gt;&gt;,
+    <span class="kw">pub </span>query_sets: RwLock&lt;StatelessTracker&lt;A, id::QuerySetId, resource::QuerySet&lt;A&gt;&gt;&gt;,
 }
 
 <span class="kw">impl</span>&lt;A: HalApi&gt; RenderBundleScope&lt;A&gt; {
     <span class="doccomment">/// Create the render bundle scope and pull the maximum IDs from the hubs.
     </span><span class="kw">pub fn </span>new(
-        buffers: <span class="kw-2">&amp;</span>storage::Storage&lt;resource::Buffer&lt;A&gt;, id::BufferId&gt;,
-        textures: <span class="kw-2">&amp;</span>storage::Storage&lt;resource::Texture&lt;A&gt;, id::TextureId&gt;,
-        bind_groups: <span class="kw-2">&amp;</span>storage::Storage&lt;binding_model::BindGroup&lt;A&gt;, id::BindGroupId&gt;,
-        render_pipelines: <span class="kw-2">&amp;</span>storage::Storage&lt;pipeline::RenderPipeline&lt;A&gt;, id::RenderPipelineId&gt;,
-        query_sets: <span class="kw-2">&amp;</span>storage::Storage&lt;resource::QuerySet&lt;A&gt;, id::QuerySetId&gt;,
+        buffers: <span class="kw-2">&amp;</span>Storage&lt;resource::Buffer&lt;A&gt;, id::BufferId&gt;,
+        textures: <span class="kw-2">&amp;</span>Storage&lt;resource::Texture&lt;A&gt;, id::TextureId&gt;,
+        bind_groups: <span class="kw-2">&amp;</span>Storage&lt;binding_model::BindGroup&lt;A&gt;, id::BindGroupId&gt;,
+        render_pipelines: <span class="kw-2">&amp;</span>Storage&lt;pipeline::RenderPipeline&lt;A&gt;, id::RenderPipelineId&gt;,
+        query_sets: <span class="kw-2">&amp;</span>Storage&lt;resource::QuerySet&lt;A&gt;, id::QuerySetId&gt;,
     ) -&gt; <span class="self">Self </span>{
-        <span class="kw">let </span><span class="kw-2">mut </span>value = <span class="self">Self </span>{
-            buffers: BufferUsageScope::new(),
-            textures: TextureUsageScope::new(),
-            bind_groups: StatelessTracker::new(),
-            render_pipelines: StatelessTracker::new(),
-            query_sets: StatelessTracker::new(),
+        <span class="kw">let </span>value = <span class="self">Self </span>{
+            buffers: RwLock::new(BufferUsageScope::new()),
+            textures: RwLock::new(TextureUsageScope::new()),
+            bind_groups: RwLock::new(StatelessTracker::new()),
+            render_pipelines: RwLock::new(StatelessTracker::new()),
+            query_sets: RwLock::new(StatelessTracker::new()),
         };
 
-        value.buffers.set_size(buffers.len());
-        value.textures.set_size(textures.len());
-        value.bind_groups.set_size(bind_groups.len());
-        value.render_pipelines.set_size(render_pipelines.len());
-        value.query_sets.set_size(query_sets.len());
+        value.buffers.write().set_size(buffers.len());
+        value.textures.write().set_size(textures.len());
+        value.bind_groups.write().set_size(bind_groups.len());
+        value
+            .render_pipelines
+            .write()
+            .set_size(render_pipelines.len());
+        value.query_sets.write().set_size(query_sets.len());
 
         value
     }
@@ -1004,13 +1022,13 @@ Device &lt;- CommandBuffer = insert(device.start, device.end, buffer.start, buff
     /// length of the storage given at the call to `new`.
     </span><span class="kw">pub unsafe fn </span>merge_bind_group(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        textures: <span class="kw-2">&amp;</span>storage::Storage&lt;resource::Texture&lt;A&gt;, id::TextureId&gt;,
         bind_group: <span class="kw-2">&amp;</span>BindGroupStates&lt;A&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;(), UsageConflict&gt; {
-        <span class="kw">unsafe </span>{ <span class="self">self</span>.buffers.merge_bind_group(<span class="kw-2">&amp;</span>bind_group.buffers)<span class="question-mark">? </span>};
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.buffers.write().merge_bind_group(<span class="kw-2">&amp;</span>bind_group.buffers)<span class="question-mark">? </span>};
         <span class="kw">unsafe </span>{
             <span class="self">self</span>.textures
-                .merge_bind_group(textures, <span class="kw-2">&amp;</span>bind_group.textures)<span class="question-mark">?
+                .write()
+                .merge_bind_group(<span class="kw-2">&amp;</span>bind_group.textures)<span class="question-mark">?
         </span>};
 
         <span class="prelude-val">Ok</span>(())
@@ -1028,8 +1046,8 @@ Device &lt;- CommandBuffer = insert(device.start, device.end, buffer.start, buff
 <span class="kw">impl</span>&lt;A: HalApi&gt; UsageScope&lt;A&gt; {
     <span class="doccomment">/// Create the render bundle scope and pull the maximum IDs from the hubs.
     </span><span class="kw">pub fn </span>new(
-        buffers: <span class="kw-2">&amp;</span>storage::Storage&lt;resource::Buffer&lt;A&gt;, id::BufferId&gt;,
-        textures: <span class="kw-2">&amp;</span>storage::Storage&lt;resource::Texture&lt;A&gt;, id::TextureId&gt;,
+        buffers: <span class="kw-2">&amp;</span>Storage&lt;resource::Buffer&lt;A&gt;, id::BufferId&gt;,
+        textures: <span class="kw-2">&amp;</span>Storage&lt;resource::Texture&lt;A&gt;, id::TextureId&gt;,
     ) -&gt; <span class="self">Self </span>{
         <span class="kw">let </span><span class="kw-2">mut </span>value = <span class="self">Self </span>{
             buffers: BufferUsageScope::new(),
@@ -1053,13 +1071,11 @@ Device &lt;- CommandBuffer = insert(device.start, device.end, buffer.start, buff
     /// length of the storage given at the call to `new`.
     </span><span class="kw">pub unsafe fn </span>merge_bind_group(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        textures: <span class="kw-2">&amp;</span>storage::Storage&lt;resource::Texture&lt;A&gt;, id::TextureId&gt;,
         bind_group: <span class="kw-2">&amp;</span>BindGroupStates&lt;A&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;(), UsageConflict&gt; {
         <span class="kw">unsafe </span>{
             <span class="self">self</span>.buffers.merge_bind_group(<span class="kw-2">&amp;</span>bind_group.buffers)<span class="question-mark">?</span>;
-            <span class="self">self</span>.textures
-                .merge_bind_group(textures, <span class="kw-2">&amp;</span>bind_group.textures)<span class="question-mark">?</span>;
+            <span class="self">self</span>.textures.merge_bind_group(<span class="kw-2">&amp;</span>bind_group.textures)<span class="question-mark">?</span>;
         }
 
         <span class="prelude-val">Ok</span>(())
@@ -1076,28 +1092,36 @@ Device &lt;- CommandBuffer = insert(device.start, device.end, buffer.start, buff
     /// length of the storage given at the call to `new`.
     </span><span class="kw">pub unsafe fn </span>merge_render_bundle(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        textures: <span class="kw-2">&amp;</span>storage::Storage&lt;resource::Texture&lt;A&gt;, id::TextureId&gt;,
         render_bundle: <span class="kw-2">&amp;</span>RenderBundleScope&lt;A&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;(), UsageConflict&gt; {
-        <span class="self">self</span>.buffers.merge_usage_scope(<span class="kw-2">&amp;</span>render_bundle.buffers)<span class="question-mark">?</span>;
+        <span class="self">self</span>.buffers
+            .merge_usage_scope(<span class="kw-2">&amp;*</span>render_bundle.buffers.read())<span class="question-mark">?</span>;
         <span class="self">self</span>.textures
-            .merge_usage_scope(textures, <span class="kw-2">&amp;</span>render_bundle.textures)<span class="question-mark">?</span>;
+            .merge_usage_scope(<span class="kw-2">&amp;*</span>render_bundle.textures.read())<span class="question-mark">?</span>;
 
         <span class="prelude-val">Ok</span>(())
     }
+}
+
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">trait </span>ResourceTracker&lt;Id, R&gt;
+<span class="kw">where
+    </span>Id: TypedId,
+    R: resource::Resource&lt;Id&gt;,
+{
+    <span class="kw">fn </span>remove_abandoned(<span class="kw-2">&amp;mut </span><span class="self">self</span>, id: Id) -&gt; bool;
 }
 
 <span class="doccomment">/// A full double sided tracker used by CommandBuffers and the Device.
 </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct </span>Tracker&lt;A: HalApi&gt; {
     <span class="kw">pub </span>buffers: BufferTracker&lt;A&gt;,
     <span class="kw">pub </span>textures: TextureTracker&lt;A&gt;,
-    <span class="kw">pub </span>views: StatelessTracker&lt;A, resource::TextureView&lt;A&gt;, id::TextureViewId&gt;,
-    <span class="kw">pub </span>samplers: StatelessTracker&lt;A, resource::Sampler&lt;A&gt;, id::SamplerId&gt;,
-    <span class="kw">pub </span>bind_groups: StatelessTracker&lt;A, binding_model::BindGroup&lt;A&gt;, id::BindGroupId&gt;,
-    <span class="kw">pub </span>compute_pipelines: StatelessTracker&lt;A, pipeline::ComputePipeline&lt;A&gt;, id::ComputePipelineId&gt;,
-    <span class="kw">pub </span>render_pipelines: StatelessTracker&lt;A, pipeline::RenderPipeline&lt;A&gt;, id::RenderPipelineId&gt;,
-    <span class="kw">pub </span>bundles: StatelessTracker&lt;A, command::RenderBundle&lt;A&gt;, id::RenderBundleId&gt;,
-    <span class="kw">pub </span>query_sets: StatelessTracker&lt;A, resource::QuerySet&lt;A&gt;, id::QuerySetId&gt;,
+    <span class="kw">pub </span>views: StatelessTracker&lt;A, id::TextureViewId, resource::TextureView&lt;A&gt;&gt;,
+    <span class="kw">pub </span>samplers: StatelessTracker&lt;A, id::SamplerId, resource::Sampler&lt;A&gt;&gt;,
+    <span class="kw">pub </span>bind_groups: StatelessTracker&lt;A, id::BindGroupId, binding_model::BindGroup&lt;A&gt;&gt;,
+    <span class="kw">pub </span>compute_pipelines: StatelessTracker&lt;A, id::ComputePipelineId, pipeline::ComputePipeline&lt;A&gt;&gt;,
+    <span class="kw">pub </span>render_pipelines: StatelessTracker&lt;A, id::RenderPipelineId, pipeline::RenderPipeline&lt;A&gt;&gt;,
+    <span class="kw">pub </span>bundles: StatelessTracker&lt;A, id::RenderBundleId, command::RenderBundle&lt;A&gt;&gt;,
+    <span class="kw">pub </span>query_sets: StatelessTracker&lt;A, id::QuerySetId, resource::QuerySet&lt;A&gt;&gt;,
 }
 
 <span class="kw">impl</span>&lt;A: HalApi&gt; Tracker&lt;A&gt; {
@@ -1118,19 +1142,15 @@ Device &lt;- CommandBuffer = insert(device.start, device.end, buffer.start, buff
     <span class="doccomment">/// Pull the maximum IDs from the hubs.
     </span><span class="kw">pub fn </span>set_size(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        buffers: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>storage::Storage&lt;resource::Buffer&lt;A&gt;, id::BufferId&gt;&gt;,
-        textures: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>storage::Storage&lt;resource::Texture&lt;A&gt;, id::TextureId&gt;&gt;,
-        views: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>storage::Storage&lt;resource::TextureView&lt;A&gt;, id::TextureViewId&gt;&gt;,
-        samplers: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>storage::Storage&lt;resource::Sampler&lt;A&gt;, id::SamplerId&gt;&gt;,
-        bind_groups: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>storage::Storage&lt;binding_model::BindGroup&lt;A&gt;, id::BindGroupId&gt;&gt;,
-        compute_pipelines: <span class="prelude-ty">Option</span>&lt;
-            <span class="kw-2">&amp;</span>storage::Storage&lt;pipeline::ComputePipeline&lt;A&gt;, id::ComputePipelineId&gt;,
-        &gt;,
-        render_pipelines: <span class="prelude-ty">Option</span>&lt;
-            <span class="kw-2">&amp;</span>storage::Storage&lt;pipeline::RenderPipeline&lt;A&gt;, id::RenderPipelineId&gt;,
-        &gt;,
-        bundles: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>storage::Storage&lt;command::RenderBundle&lt;A&gt;, id::RenderBundleId&gt;&gt;,
-        query_sets: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>storage::Storage&lt;resource::QuerySet&lt;A&gt;, id::QuerySetId&gt;&gt;,
+        buffers: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Storage&lt;resource::Buffer&lt;A&gt;, id::BufferId&gt;&gt;,
+        textures: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Storage&lt;resource::Texture&lt;A&gt;, id::TextureId&gt;&gt;,
+        views: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Storage&lt;resource::TextureView&lt;A&gt;, id::TextureViewId&gt;&gt;,
+        samplers: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Storage&lt;resource::Sampler&lt;A&gt;, id::SamplerId&gt;&gt;,
+        bind_groups: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Storage&lt;binding_model::BindGroup&lt;A&gt;, id::BindGroupId&gt;&gt;,
+        compute_pipelines: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Storage&lt;pipeline::ComputePipeline&lt;A&gt;, id::ComputePipelineId&gt;&gt;,
+        render_pipelines: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Storage&lt;pipeline::RenderPipeline&lt;A&gt;, id::RenderPipelineId&gt;&gt;,
+        bundles: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Storage&lt;command::RenderBundle&lt;A&gt;, id::RenderBundleId&gt;&gt;,
+        query_sets: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Storage&lt;resource::QuerySet&lt;A&gt;, id::QuerySetId&gt;&gt;,
     ) {
         <span class="kw">if let </span><span class="prelude-val">Some</span>(buffers) = buffers {
             <span class="self">self</span>.buffers.set_size(buffers.len());
@@ -1185,22 +1205,18 @@ Device &lt;- CommandBuffer = insert(device.start, device.end, buffer.start, buff
     /// value given to `set_size`
     </span><span class="kw">pub unsafe fn </span>set_and_remove_from_usage_scope_sparse(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        textures: <span class="kw-2">&amp;</span>storage::Storage&lt;resource::Texture&lt;A&gt;, id::TextureId&gt;,
         scope: <span class="kw-2">&amp;mut </span>UsageScope&lt;A&gt;,
         bind_group: <span class="kw-2">&amp;</span>BindGroupStates&lt;A&gt;,
     ) {
         <span class="kw">unsafe </span>{
             <span class="self">self</span>.buffers.set_and_remove_from_usage_scope_sparse(
                 <span class="kw-2">&amp;mut </span>scope.buffers,
-                bind_group.buffers.used(),
+                bind_group.buffers.used_ids(),
             )
         };
         <span class="kw">unsafe </span>{
-            <span class="self">self</span>.textures.set_and_remove_from_usage_scope_sparse(
-                textures,
-                <span class="kw-2">&amp;mut </span>scope.textures,
-                <span class="kw-2">&amp;</span>bind_group.textures,
-            )
+            <span class="self">self</span>.textures
+                .set_and_remove_from_usage_scope_sparse(<span class="kw-2">&amp;mut </span>scope.textures, <span class="kw-2">&amp;</span>bind_group.textures)
         };
     }
 
@@ -1216,10 +1232,11 @@ Device &lt;- CommandBuffer = insert(device.start, device.end, buffer.start, buff
         render_bundle: <span class="kw-2">&amp;</span>RenderBundleScope&lt;A&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;(), UsageConflict&gt; {
         <span class="self">self</span>.bind_groups
-            .add_from_tracker(<span class="kw-2">&amp;</span>render_bundle.bind_groups);
+            .add_from_tracker(<span class="kw-2">&amp;*</span>render_bundle.bind_groups.read());
         <span class="self">self</span>.render_pipelines
-            .add_from_tracker(<span class="kw-2">&amp;</span>render_bundle.render_pipelines);
-        <span class="self">self</span>.query_sets.add_from_tracker(<span class="kw-2">&amp;</span>render_bundle.query_sets);
+            .add_from_tracker(<span class="kw-2">&amp;*</span>render_bundle.render_pipelines.read());
+        <span class="self">self</span>.query_sets
+            .add_from_tracker(<span class="kw-2">&amp;*</span>render_bundle.query_sets.read());
 
         <span class="prelude-val">Ok</span>(())
     }

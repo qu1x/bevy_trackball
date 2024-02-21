@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_asset-0.12.1/src/processor/process.rs`."><title>process.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="bevy_asset" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../bevy_asset/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_asset-0.13.0/src/processor/process.rs`."><title>process.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="bevy_asset" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -274,6 +275,105 @@
 <a href="#274" id="274">274</a>
 <a href="#275" id="275">275</a>
 <a href="#276" id="276">276</a>
+<a href="#277" id="277">277</a>
+<a href="#278" id="278">278</a>
+<a href="#279" id="279">279</a>
+<a href="#280" id="280">280</a>
+<a href="#281" id="281">281</a>
+<a href="#282" id="282">282</a>
+<a href="#283" id="283">283</a>
+<a href="#284" id="284">284</a>
+<a href="#285" id="285">285</a>
+<a href="#286" id="286">286</a>
+<a href="#287" id="287">287</a>
+<a href="#288" id="288">288</a>
+<a href="#289" id="289">289</a>
+<a href="#290" id="290">290</a>
+<a href="#291" id="291">291</a>
+<a href="#292" id="292">292</a>
+<a href="#293" id="293">293</a>
+<a href="#294" id="294">294</a>
+<a href="#295" id="295">295</a>
+<a href="#296" id="296">296</a>
+<a href="#297" id="297">297</a>
+<a href="#298" id="298">298</a>
+<a href="#299" id="299">299</a>
+<a href="#300" id="300">300</a>
+<a href="#301" id="301">301</a>
+<a href="#302" id="302">302</a>
+<a href="#303" id="303">303</a>
+<a href="#304" id="304">304</a>
+<a href="#305" id="305">305</a>
+<a href="#306" id="306">306</a>
+<a href="#307" id="307">307</a>
+<a href="#308" id="308">308</a>
+<a href="#309" id="309">309</a>
+<a href="#310" id="310">310</a>
+<a href="#311" id="311">311</a>
+<a href="#312" id="312">312</a>
+<a href="#313" id="313">313</a>
+<a href="#314" id="314">314</a>
+<a href="#315" id="315">315</a>
+<a href="#316" id="316">316</a>
+<a href="#317" id="317">317</a>
+<a href="#318" id="318">318</a>
+<a href="#319" id="319">319</a>
+<a href="#320" id="320">320</a>
+<a href="#321" id="321">321</a>
+<a href="#322" id="322">322</a>
+<a href="#323" id="323">323</a>
+<a href="#324" id="324">324</a>
+<a href="#325" id="325">325</a>
+<a href="#326" id="326">326</a>
+<a href="#327" id="327">327</a>
+<a href="#328" id="328">328</a>
+<a href="#329" id="329">329</a>
+<a href="#330" id="330">330</a>
+<a href="#331" id="331">331</a>
+<a href="#332" id="332">332</a>
+<a href="#333" id="333">333</a>
+<a href="#334" id="334">334</a>
+<a href="#335" id="335">335</a>
+<a href="#336" id="336">336</a>
+<a href="#337" id="337">337</a>
+<a href="#338" id="338">338</a>
+<a href="#339" id="339">339</a>
+<a href="#340" id="340">340</a>
+<a href="#341" id="341">341</a>
+<a href="#342" id="342">342</a>
+<a href="#343" id="343">343</a>
+<a href="#344" id="344">344</a>
+<a href="#345" id="345">345</a>
+<a href="#346" id="346">346</a>
+<a href="#347" id="347">347</a>
+<a href="#348" id="348">348</a>
+<a href="#349" id="349">349</a>
+<a href="#350" id="350">350</a>
+<a href="#351" id="351">351</a>
+<a href="#352" id="352">352</a>
+<a href="#353" id="353">353</a>
+<a href="#354" id="354">354</a>
+<a href="#355" id="355">355</a>
+<a href="#356" id="356">356</a>
+<a href="#357" id="357">357</a>
+<a href="#358" id="358">358</a>
+<a href="#359" id="359">359</a>
+<a href="#360" id="360">360</a>
+<a href="#361" id="361">361</a>
+<a href="#362" id="362">362</a>
+<a href="#363" id="363">363</a>
+<a href="#364" id="364">364</a>
+<a href="#365" id="365">365</a>
+<a href="#366" id="366">366</a>
+<a href="#367" id="367">367</a>
+<a href="#368" id="368">368</a>
+<a href="#369" id="369">369</a>
+<a href="#370" id="370">370</a>
+<a href="#371" id="371">371</a>
+<a href="#372" id="372">372</a>
+<a href="#373" id="373">373</a>
+<a href="#374" id="374">374</a>
+<a href="#375" id="375">375</a>
 </pre></div><pre class="rust"><code><span class="kw">use crate</span>::{
     io::{
         AssetReaderError, AssetWriterError, MissingAssetWriterError,
@@ -282,6 +382,7 @@
     meta::{AssetAction, AssetMeta, AssetMetaDyn, ProcessDependencyInfo, ProcessedInfo, Settings},
     processor::AssetProcessor,
     saver::{AssetSaver, SavedAsset},
+    transformer::{AssetTransformer, TransformedAsset},
     AssetLoadError, AssetLoader, AssetPath, DeserializeMetaError, ErasedLoadedAsset,
     MissingAssetLoaderForExtensionError, MissingAssetLoaderForTypeNameError,
 };
@@ -290,33 +391,82 @@
 <span class="kw">use </span>std::marker::PhantomData;
 <span class="kw">use </span>thiserror::Error;
 
-<span class="doccomment">/// Asset &quot;processor&quot; logic that reads input asset bytes (stored on [`ProcessContext`]), processes the value in some way,
+<span class="doccomment">/// Asset "processor" logic that reads input asset bytes (stored on [`ProcessContext`]), processes the value in some way,
 /// and then writes the final processed bytes with [`Writer`]. The resulting bytes must be loadable with the given [`Process::OutputLoader`].
 ///
-/// This is a &quot;low level&quot;, maximally flexible interface. Most use cases are better served by the [`LoadAndSave`] implementation
+/// This is a "low level", maximally flexible interface. Most use cases are better served by the [`LoadTransformAndSave`] implementation
 /// of [`Process`].
-</span><span class="kw">pub trait </span>Process: Send + Sync + Sized + <span class="lifetime">&#39;static </span>{
+</span><span class="kw">pub trait </span>Process: Send + Sync + Sized + <span class="lifetime">'static </span>{
     <span class="doccomment">/// The configuration / settings used to process the asset. This will be stored in the [`AssetMeta`] and is user-configurable per-asset.
-    </span><span class="kw">type </span>Settings: Settings + Default + Serialize + <span class="kw">for</span>&lt;<span class="lifetime">&#39;a</span>&gt; Deserialize&lt;<span class="lifetime">&#39;a</span>&gt;;
+    </span><span class="kw">type </span>Settings: Settings + Default + Serialize + <span class="kw">for</span>&lt;<span class="lifetime">'a</span>&gt; Deserialize&lt;<span class="lifetime">'a</span>&gt;;
     <span class="doccomment">/// The [`AssetLoader`] that will be used to load the final processed asset.
     </span><span class="kw">type </span>OutputLoader: AssetLoader;
     <span class="doccomment">/// Processes the asset stored on `context` in some way using the settings stored on `meta`. The results are written to `writer`. The
     /// final written processed asset is loadable using [`Process::OutputLoader`]. This load will use the returned [`AssetLoader::Settings`].
-    </span><span class="kw">fn </span>process&lt;<span class="lifetime">&#39;a</span>&gt;(
-        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>,
-        context: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>ProcessContext,
+    </span><span class="kw">fn </span>process&lt;<span class="lifetime">'a</span>&gt;(
+        <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="self">self</span>,
+        context: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>ProcessContext,
         meta: AssetMeta&lt;(), <span class="self">Self</span>&gt;,
-        writer: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>Writer,
-    ) -&gt; BoxedFuture&lt;<span class="lifetime">&#39;a</span>, <span class="prelude-ty">Result</span>&lt;&lt;<span class="self">Self</span>::OutputLoader <span class="kw">as </span>AssetLoader&gt;::Settings, ProcessError&gt;&gt;;
+        writer: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>Writer,
+    ) -&gt; BoxedFuture&lt;<span class="lifetime">'a</span>, <span class="prelude-ty">Result</span>&lt;&lt;<span class="self">Self</span>::OutputLoader <span class="kw">as </span>AssetLoader&gt;::Settings, ProcessError&gt;&gt;;
+}
+
+<span class="doccomment">/// A flexible [`Process`] implementation that loads the source [`Asset`] using the `L` [`AssetLoader`], then transforms
+/// the `L` asset into an `S` [`AssetSaver`] asset using the `T` [`AssetTransformer`], and lastly saves the asset using the `S` [`AssetSaver`].
+///
+/// When creating custom processors, it is generally recommended to use the [`LoadTransformAndSave`] [`Process`] implementation,
+/// as it encourages you to separate your code into an [`AssetLoader`] capable of loading assets without processing enabled,
+/// an [`AssetTransformer`] capable of converting from an `L` asset to an `S` asset, and
+/// an [`AssetSaver`] that allows you save any `S` asset. However you can
+/// also implement [`Process`] directly if [`LoadTransformAndSave`] feels limiting or unnecessary.
+///
+/// This uses [`LoadTransformAndSaveSettings`] to configure the processor.
+///
+/// [`Asset`]: crate::Asset
+</span><span class="kw">pub struct </span>LoadTransformAndSave&lt;
+    L: AssetLoader,
+    T: AssetTransformer&lt;AssetInput = L::Asset&gt;,
+    S: AssetSaver&lt;Asset = T::AssetOutput&gt;,
+&gt; {
+    transformer: T,
+    saver: S,
+    marker: PhantomData&lt;<span class="kw">fn</span>() -&gt; L&gt;,
+}
+
+<span class="doccomment">/// Settings for the [`LoadTransformAndSave`] [`Process::Settings`] implementation.
+///
+/// `LoaderSettings` corresponds to [`AssetLoader::Settings`], `TransformerSettings` corresponds to [`AssetTransformer::Settings`],
+/// and `SaverSettings` corresponds to [`AssetSaver::Settings`].
+</span><span class="attr">#[derive(Serialize, Deserialize, Default)]
+</span><span class="kw">pub struct </span>LoadTransformAndSaveSettings&lt;LoaderSettings, TransformerSettings, SaverSettings&gt; {
+    <span class="doccomment">/// The [`AssetLoader::Settings`] for [`LoadTransformAndSave`].
+    </span><span class="kw">pub </span>loader_settings: LoaderSettings,
+    <span class="doccomment">/// The [`AssetTransformer::Settings`] for [`LoadTransformAndSave`].
+    </span><span class="kw">pub </span>transformer_settings: TransformerSettings,
+    <span class="doccomment">/// The [`AssetSaver::Settings`] for [`LoadTransformAndSave`].
+    </span><span class="kw">pub </span>saver_settings: SaverSettings,
+}
+
+<span class="kw">impl</span>&lt;
+        L: AssetLoader,
+        T: AssetTransformer&lt;AssetInput = L::Asset&gt;,
+        S: AssetSaver&lt;Asset = T::AssetOutput&gt;,
+    &gt; LoadTransformAndSave&lt;L, T, S&gt;
+{
+    <span class="kw">pub fn </span>new(transformer: T, saver: S) -&gt; <span class="self">Self </span>{
+        LoadTransformAndSave {
+            transformer,
+            saver,
+            marker: PhantomData,
+        }
+    }
 }
 
 <span class="doccomment">/// A flexible [`Process`] implementation that loads the source [`Asset`] using the `L` [`AssetLoader`], then
 /// saves that `L` asset using the `S` [`AssetSaver`].
 ///
-/// When creating custom processors, it is generally recommended to use the [`LoadAndSave`] [`Process`] implementation,
-/// as it encourages you to write both an [`AssetLoader`] capable of loading assets without processing enabled _and_
-/// an [`AssetSaver`] that allows you to efficiently process that asset type when that is desirable by users. However you can
-/// also implement [`Process`] directly if [`LoadAndSave`] feels limiting or unnecessary.
+/// This is a specialized use case of [`LoadTransformAndSave`] and is useful where there is no asset manipulation
+/// such as when compressing assets.
 ///
 /// This uses [`LoadAndSaveSettings`] to configure the processor.
 ///
@@ -353,16 +503,16 @@
     </span>MissingAssetLoaderForExtension(<span class="attr">#[from] </span>MissingAssetLoaderForExtensionError),
     <span class="attr">#[error(transparent)]
     </span>MissingAssetLoaderForTypeName(<span class="attr">#[from] </span>MissingAssetLoaderForTypeNameError),
-    <span class="attr">#[error(<span class="string">&quot;The processor &#39;{0}&#39; does not exist&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"The processor '{0}' does not exist"</span>)]
     </span>MissingProcessor(String),
-    <span class="attr">#[error(<span class="string">&quot;Encountered an AssetReader error for &#39;{path}&#39;: {err}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Encountered an AssetReader error for '{path}': {err}"</span>)]
     </span>AssetReaderError {
-        path: AssetPath&lt;<span class="lifetime">&#39;static</span>&gt;,
+        path: AssetPath&lt;<span class="lifetime">'static</span>&gt;,
         err: AssetReaderError,
     },
-    <span class="attr">#[error(<span class="string">&quot;Encountered an AssetWriter error for &#39;{path}&#39;: {err}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Encountered an AssetWriter error for '{path}': {err}"</span>)]
     </span>AssetWriterError {
-        path: AssetPath&lt;<span class="lifetime">&#39;static</span>&gt;,
+        path: AssetPath&lt;<span class="lifetime">'static</span>&gt;,
         err: AssetWriterError,
     },
     <span class="attr">#[error(transparent)]
@@ -371,21 +521,70 @@
     </span>MissingProcessedAssetReaderError(<span class="attr">#[from] </span>MissingProcessedAssetReaderError),
     <span class="attr">#[error(transparent)]
     </span>MissingProcessedAssetWriterError(<span class="attr">#[from] </span>MissingProcessedAssetWriterError),
-    <span class="attr">#[error(<span class="string">&quot;Failed to read asset metadata for {path}: {err}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Failed to read asset metadata for {path}: {err}"</span>)]
     </span>ReadAssetMetaError {
-        path: AssetPath&lt;<span class="lifetime">&#39;static</span>&gt;,
+        path: AssetPath&lt;<span class="lifetime">'static</span>&gt;,
         err: AssetReaderError,
     },
     <span class="attr">#[error(transparent)]
     </span>DeserializeMetaError(<span class="attr">#[from] </span>DeserializeMetaError),
     <span class="attr">#[error(transparent)]
     </span>AssetLoadError(<span class="attr">#[from] </span>AssetLoadError),
-    <span class="attr">#[error(<span class="string">&quot;The wrong meta type was passed into a processor. This is probably an internal implementation error.&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"The wrong meta type was passed into a processor. This is probably an internal implementation error."</span>)]
     </span>WrongMetaType,
-    <span class="attr">#[error(<span class="string">&quot;Encountered an error while saving the asset: {0}&quot;</span>)]
-    </span>AssetSaveError(<span class="attr">#[from] </span>Box&lt;<span class="kw">dyn </span>std::error::Error + Send + Sync + <span class="lifetime">&#39;static</span>&gt;),
-    <span class="attr">#[error(<span class="string">&quot;Assets without extensions are not supported.&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Encountered an error while saving the asset: {0}"</span>)]
+    </span>AssetSaveError(<span class="attr">#[from] </span>Box&lt;<span class="kw">dyn </span>std::error::Error + Send + Sync + <span class="lifetime">'static</span>&gt;),
+    <span class="attr">#[error(<span class="string">"Encountered an error while transforming the asset: {0}"</span>)]
+    </span>AssetTransformError(Box&lt;<span class="kw">dyn </span>std::error::Error + Send + Sync + <span class="lifetime">'static</span>&gt;),
+    <span class="attr">#[error(<span class="string">"Assets without extensions are not supported."</span>)]
     </span>ExtensionRequired,
+}
+
+<span class="kw">impl</span>&lt;
+        Loader: AssetLoader,
+        T: AssetTransformer&lt;AssetInput = Loader::Asset&gt;,
+        Saver: AssetSaver&lt;Asset = T::AssetOutput&gt;,
+    &gt; Process <span class="kw">for </span>LoadTransformAndSave&lt;Loader, T, Saver&gt;
+{
+    <span class="kw">type </span>Settings = LoadTransformAndSaveSettings&lt;Loader::Settings, T::Settings, Saver::Settings&gt;;
+    <span class="kw">type </span>OutputLoader = Saver::OutputLoader;
+
+    <span class="kw">fn </span>process&lt;<span class="lifetime">'a</span>&gt;(
+        <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="self">self</span>,
+        context: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>ProcessContext,
+        meta: AssetMeta&lt;(), <span class="self">Self</span>&gt;,
+        writer: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>Writer,
+    ) -&gt; BoxedFuture&lt;<span class="lifetime">'a</span>, <span class="prelude-ty">Result</span>&lt;&lt;<span class="self">Self</span>::OutputLoader <span class="kw">as </span>AssetLoader&gt;::Settings, ProcessError&gt;&gt; {
+        Box::pin(<span class="kw">async move </span>{
+            <span class="kw">let </span>AssetAction::Process { settings, .. } = meta.asset <span class="kw">else </span>{
+                <span class="kw">return </span><span class="prelude-val">Err</span>(ProcessError::WrongMetaType);
+            };
+            <span class="kw">let </span>loader_meta = AssetMeta::&lt;Loader, ()&gt;::new(AssetAction::Load {
+                loader: std::any::type_name::&lt;Loader&gt;().to_string(),
+                settings: settings.loader_settings,
+            });
+            <span class="kw">let </span>pre_transformed_asset = TransformedAsset::&lt;Loader::Asset&gt;::from_loaded(
+                context.load_source_asset(loader_meta).<span class="kw">await</span><span class="question-mark">?</span>,
+            )
+            .unwrap();
+
+            <span class="kw">let </span>post_transformed_asset = <span class="self">self
+                </span>.transformer
+                .transform(pre_transformed_asset, <span class="kw-2">&amp;</span>settings.transformer_settings)
+                .<span class="kw">await
+                </span>.map_err(|err| ProcessError::AssetTransformError(err.into()))<span class="question-mark">?</span>;
+
+            <span class="kw">let </span>saved_asset =
+                SavedAsset::&lt;T::AssetOutput&gt;::from_transformed(<span class="kw-2">&amp;</span>post_transformed_asset);
+
+            <span class="kw">let </span>output_settings = <span class="self">self
+                </span>.saver
+                .save(writer, saved_asset, <span class="kw-2">&amp;</span>settings.saver_settings)
+                .<span class="kw">await
+                </span>.map_err(|error| ProcessError::AssetSaveError(error.into()))<span class="question-mark">?</span>;
+            <span class="prelude-val">Ok</span>(output_settings)
+        })
+    }
 }
 
 <span class="kw">impl</span>&lt;Loader: AssetLoader, Saver: AssetSaver&lt;Asset = Loader::Asset&gt;&gt; Process
@@ -394,12 +593,12 @@
     <span class="kw">type </span>Settings = LoadAndSaveSettings&lt;Loader::Settings, Saver::Settings&gt;;
     <span class="kw">type </span>OutputLoader = Saver::OutputLoader;
 
-    <span class="kw">fn </span>process&lt;<span class="lifetime">&#39;a</span>&gt;(
-        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>,
-        context: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>ProcessContext,
+    <span class="kw">fn </span>process&lt;<span class="lifetime">'a</span>&gt;(
+        <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="self">self</span>,
+        context: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>ProcessContext,
         meta: AssetMeta&lt;(), <span class="self">Self</span>&gt;,
-        writer: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>Writer,
-    ) -&gt; BoxedFuture&lt;<span class="lifetime">&#39;a</span>, <span class="prelude-ty">Result</span>&lt;&lt;<span class="self">Self</span>::OutputLoader <span class="kw">as </span>AssetLoader&gt;::Settings, ProcessError&gt;&gt; {
+        writer: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>Writer,
+    ) -&gt; BoxedFuture&lt;<span class="lifetime">'a</span>, <span class="prelude-ty">Result</span>&lt;&lt;<span class="self">Self</span>::OutputLoader <span class="kw">as </span>AssetLoader&gt;::Settings, ProcessError&gt;&gt; {
         Box::pin(<span class="kw">async move </span>{
             <span class="kw">let </span>AssetAction::Process { settings, .. } = meta.asset <span class="kw">else </span>{
                 <span class="kw">return </span><span class="prelude-val">Err</span>(ProcessError::WrongMetaType);
@@ -424,12 +623,12 @@
 /// their type.
 </span><span class="kw">pub trait </span>ErasedProcessor: Send + Sync {
     <span class="doccomment">/// Type-erased variant of [`Process::process`].
-    </span><span class="kw">fn </span>process&lt;<span class="lifetime">&#39;a</span>&gt;(
-        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>,
-        context: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>ProcessContext,
+    </span><span class="kw">fn </span>process&lt;<span class="lifetime">'a</span>&gt;(
+        <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="self">self</span>,
+        context: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>ProcessContext,
         meta: Box&lt;<span class="kw">dyn </span>AssetMetaDyn&gt;,
-        writer: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>Writer,
-    ) -&gt; BoxedFuture&lt;<span class="lifetime">&#39;a</span>, <span class="prelude-ty">Result</span>&lt;Box&lt;<span class="kw">dyn </span>AssetMetaDyn&gt;, ProcessError&gt;&gt;;
+        writer: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>Writer,
+    ) -&gt; BoxedFuture&lt;<span class="lifetime">'a</span>, <span class="prelude-ty">Result</span>&lt;Box&lt;<span class="kw">dyn </span>AssetMetaDyn&gt;, ProcessError&gt;&gt;;
     <span class="doccomment">/// Deserialized `meta` as type-erased [`AssetMeta`], operating under the assumption that it matches the meta
     /// for the underlying [`Process`] impl.
     </span><span class="kw">fn </span>deserialize_meta(<span class="kw-2">&amp;</span><span class="self">self</span>, meta: <span class="kw-2">&amp;</span>[u8]) -&gt; <span class="prelude-ty">Result</span>&lt;Box&lt;<span class="kw">dyn </span>AssetMetaDyn&gt;, DeserializeMetaError&gt;;
@@ -438,12 +637,12 @@
 }
 
 <span class="kw">impl</span>&lt;P: Process&gt; ErasedProcessor <span class="kw">for </span>P {
-    <span class="kw">fn </span>process&lt;<span class="lifetime">&#39;a</span>&gt;(
-        <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>,
-        context: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>ProcessContext,
+    <span class="kw">fn </span>process&lt;<span class="lifetime">'a</span>&gt;(
+        <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="self">self</span>,
+        context: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>ProcessContext,
         meta: Box&lt;<span class="kw">dyn </span>AssetMetaDyn&gt;,
-        writer: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>Writer,
-    ) -&gt; BoxedFuture&lt;<span class="lifetime">&#39;a</span>, <span class="prelude-ty">Result</span>&lt;Box&lt;<span class="kw">dyn </span>AssetMetaDyn&gt;, ProcessError&gt;&gt; {
+        writer: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>Writer,
+    ) -&gt; BoxedFuture&lt;<span class="lifetime">'a</span>, <span class="prelude-ty">Result</span>&lt;Box&lt;<span class="kw">dyn </span>AssetMetaDyn&gt;, ProcessError&gt;&gt; {
         Box::pin(<span class="kw">async move </span>{
             <span class="kw">let </span>meta = meta
                 .downcast::&lt;AssetMeta&lt;(), P&gt;&gt;()
@@ -472,9 +671,9 @@
 }
 
 <span class="doccomment">/// Provides scoped data access to the [`AssetProcessor`].
-/// This must only expose processor data that is represented in the asset&#39;s hash.
-</span><span class="kw">pub struct </span>ProcessContext&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="doccomment">/// The &quot;new&quot; processed info for the final processed asset. It is [`ProcessContext`]&#39;s
+/// This must only expose processor data that is represented in the asset's hash.
+</span><span class="kw">pub struct </span>ProcessContext&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="doccomment">/// The "new" processed info for the final processed asset. It is [`ProcessContext`]'s
     /// job to populate `process_dependencies` with any asset dependencies used to process
     /// this asset (ex: loading an asset value from the [`AssetServer`] of the [`AssetProcessor`])
     ///
@@ -483,7 +682,7 @@
     /// Do not expose this publicly as it would be too easily to invalidate state.
     ///
     /// [`AssetServer`]: crate::server::AssetServer
-    </span><span class="kw">pub</span>(<span class="kw">crate</span>) new_processed_info: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>ProcessedInfo,
+    </span><span class="kw">pub</span>(<span class="kw">crate</span>) new_processed_info: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>ProcessedInfo,
     <span class="doccomment">/// This exists to expose access to asset values (via the [`AssetServer`]).
     ///
     /// ANY ASSET VALUE THAT IS ACCESSED SHOULD BE ADDED TO `new_processed_info.process_dependencies`
@@ -492,17 +691,17 @@
     /// `process_dependencies`.
     ///
     /// [`AssetServer`]: crate::server::AssetServer
-    </span>processor: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>AssetProcessor,
-    path: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>AssetPath&lt;<span class="lifetime">&#39;static</span>&gt;,
-    asset_bytes: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[u8],
+    </span>processor: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>AssetProcessor,
+    path: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>AssetPath&lt;<span class="lifetime">'static</span>&gt;,
+    asset_bytes: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>[u8],
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; ProcessContext&lt;<span class="lifetime">&#39;a</span>&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; ProcessContext&lt;<span class="lifetime">'a</span>&gt; {
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>new(
-        processor: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>AssetProcessor,
-        path: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>AssetPath&lt;<span class="lifetime">&#39;static</span>&gt;,
-        asset_bytes: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[u8],
-        new_processed_info: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>ProcessedInfo,
+        processor: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>AssetProcessor,
+        path: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>AssetPath&lt;<span class="lifetime">'static</span>&gt;,
+        asset_bytes: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>[u8],
+        new_processed_info: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>ProcessedInfo,
     ) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
             processor,
@@ -513,8 +712,8 @@
     }
 
     <span class="doccomment">/// Load the source asset using the `L` [`AssetLoader`] and the passed in `meta` config.
-    /// This will take the &quot;load dependencies&quot; (asset values used when loading with `L`]) and
-    /// register them as &quot;process dependencies&quot; because they are asset values required to process the
+    /// This will take the "load dependencies" (asset values used when loading with `L`]) and
+    /// register them as "process dependencies" because they are asset values required to process the
     /// current asset.
     </span><span class="kw">pub async fn </span>load_source_asset&lt;L: AssetLoader&gt;(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,

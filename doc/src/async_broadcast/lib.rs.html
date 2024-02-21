@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/async-broadcast-0.5.1/src/lib.rs`."><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="async_broadcast" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../async_broadcast/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/async-broadcast-0.5.1/src/lib.rs`."><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="async_broadcast" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1938,26 +1939,26 @@
 //!
 //! ## Difference with other broadcast crates
 //!
-//! * [`broadcaster`]: The main difference would be that `broadcaster` doesn&#39;t have a sender and
+//! * [`broadcaster`]: The main difference would be that `broadcaster` doesn't have a sender and
 //!   receiver split and both sides use clones of the same BroadcastChannel instance. The messages
 //!   are sent are sent to all channel clones. While this can work for many cases, the lack of
-//!   sender and receiver split, means that often times, you&#39;ll find yourself having to drain the
+//!   sender and receiver split, means that often times, you'll find yourself having to drain the
 //!   channel on the sending side yourself.
 //!
 //! * [`postage`]: this crate provides a [broadcast API][pba] similar to `async_broadcast`. However,
 //!   it:
-//!   - (at the time of this writing) duplicates [futures] API, which isn&#39;t ideal.
+//!   - (at the time of this writing) duplicates [futures] API, which isn't ideal.
 //!   - Does not support overflow mode nor has the concept of inactive receivers, so a slow or
 //!     inactive receiver blocking the whole channel is not a solvable problem.
 //!   - Provides all kinds of channels, which is generally good but if you just need a broadcast
 //!     channel, `async_broadcast` is probably a better choice.
 //!
-//! * [`tokio::sync`]: Tokio&#39;s `sync` module provides a [broadcast channel][tbc] API. The differences
+//! * [`tokio::sync`]: Tokio's `sync` module provides a [broadcast channel][tbc] API. The differences
 //!    here are:
 //!   - While this implementation does provide [overflow mode][tom], it is the default behavior and not
 //!     opt-in.
 //!   - There is no equivalent of inactive receivers.
-//!   - While it&#39;s possible to build tokio with only the `sync` module, it comes with other APIs that
+//!   - While it's possible to build tokio with only the `sync` module, it comes with other APIs that
 //!     you may not need.
 //!
 //! [`broadcaster`]: https://crates.io/crates/broadcaster
@@ -1974,7 +1975,7 @@
 
 #[cfg(doctest)]
 </span><span class="kw">mod </span>doctests {
-    <span class="macro">doc_comment::doctest!</span>(<span class="string">&quot;../README.md&quot;</span>);
+    <span class="macro">doc_comment::doctest!</span>(<span class="string">"../README.md"</span>);
 }
 
 <span class="kw">use </span>std::collections::VecDeque;
@@ -2016,7 +2017,7 @@
 /// # });
 /// ```
 </span><span class="kw">pub fn </span>broadcast&lt;T&gt;(cap: usize) -&gt; (Sender&lt;T&gt;, Receiver&lt;T&gt;) {
-    <span class="macro">assert!</span>(cap &gt; <span class="number">0</span>, <span class="string">&quot;capacity cannot be zero&quot;</span>);
+    <span class="macro">assert!</span>(cap &gt; <span class="number">0</span>, <span class="string">"capacity cannot be zero"</span>);
 
     <span class="kw">let </span>inner = Arc::new(RwLock::new(Inner {
         queue: VecDeque::with_capacity(cap),
@@ -2047,7 +2048,7 @@
 <span class="attr">#[derive(Debug)]
 </span><span class="kw">struct </span>Inner&lt;T&gt; {
     queue: VecDeque&lt;(T, usize)&gt;,
-    <span class="comment">// We assign the same capacity to the queue but that&#39;s just specifying the minimum capacity and
+    <span class="comment">// We assign the same capacity to the queue but that's just specifying the minimum capacity and
     // the actual capacity could be anything. Hence the need to keep track of our own set capacity.
     </span>capacity: usize,
     receiver_count: usize,
@@ -2070,12 +2071,12 @@
 <span class="kw">impl</span>&lt;T&gt; Inner&lt;T&gt; {
     <span class="doccomment">/// Try receiving at the given position, returning either the element or a reference to it.
     ///
-    /// Result is used here instead of Cow because we don&#39;t have a Clone bound on T.
+    /// Result is used here instead of Cow because we don't have a Clone bound on T.
     </span><span class="kw">fn </span>try_recv_at(<span class="kw-2">&amp;mut </span><span class="self">self</span>, pos: <span class="kw-2">&amp;mut </span>u64) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Result</span>&lt;T, <span class="kw-2">&amp;</span>T&gt;, TryRecvError&gt; {
         <span class="kw">let </span>i = <span class="kw">match </span>pos.checked_sub(<span class="self">self</span>.head_pos) {
             <span class="prelude-val">Some</span>(i) =&gt; i
                 .try_into()
-                .expect(<span class="string">&quot;Head position more than usize::MAX behind a receiver&quot;</span>),
+                .expect(<span class="string">"Head position more than usize::MAX behind a receiver"</span>),
             <span class="prelude-val">None </span>=&gt; {
                 <span class="kw">let </span>count = <span class="self">self</span>.head_pos - <span class="kw-2">*</span>pos;
                 <span class="kw-2">*</span>pos = <span class="self">self</span>.head_pos;
@@ -2136,7 +2137,7 @@
 
     <span class="doccomment">/// Set the channel capacity.
     ///
-    /// There are times when you need to change the channel&#39;s capacity after creating it. If the
+    /// There are times when you need to change the channel's capacity after creating it. If the
     /// `new_cap` is less than the number of messages in the channel, the oldest messages will be
     /// dropped to shrink the channel.
     </span><span class="kw">fn </span>set_capacity(<span class="kw-2">&amp;mut </span><span class="self">self</span>, new_cap: usize) {
@@ -2146,7 +2147,7 @@
             <span class="self">self</span>.queue.reserve(diff);
         }
 
-        <span class="comment">// Ensure queue doesn&#39;t have more than `new_cap` messages.
+        <span class="comment">// Ensure queue doesn't have more than `new_cap` messages.
         </span><span class="kw">if </span>new_cap &lt; <span class="self">self</span>.queue.len() {
             <span class="kw">let </span>diff = <span class="self">self</span>.queue.len() - new_cap;
             <span class="self">self</span>.queue.drain(<span class="number">0</span>..diff);
@@ -2154,7 +2155,7 @@
         }
     }
 
-    <span class="doccomment">/// Close the channel if there aren&#39;t any receivers present anymore
+    <span class="doccomment">/// Close the channel if there aren't any receivers present anymore
     </span><span class="kw">fn </span>close_channel(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
         <span class="kw">if </span><span class="self">self</span>.receiver_count == <span class="number">0 </span>&amp;&amp; <span class="self">self</span>.inactive_receiver_count == <span class="number">0 </span>{
             <span class="self">self</span>.close();
@@ -2190,7 +2191,7 @@
 
     <span class="doccomment">/// Set the channel capacity.
     ///
-    /// There are times when you need to change the channel&#39;s capacity after creating it. If the
+    /// There are times when you need to change the channel's capacity after creating it. If the
     /// `new_cap` is less than the number of messages in the channel, the oldest messages will be
     /// dropped to shrink the channel.
     ///
@@ -2533,7 +2534,7 @@
     /// assert_eq!(s.broadcast(2).await, Err(SendError(2)));
     /// # });
     /// ```
-    </span><span class="kw">pub fn </span>broadcast(<span class="kw-2">&amp;</span><span class="self">self</span>, msg: T) -&gt; Send&lt;<span class="lifetime">&#39;_</span>, T&gt; {
+    </span><span class="kw">pub fn </span>broadcast(<span class="kw-2">&amp;</span><span class="self">self</span>, msg: T) -&gt; Send&lt;<span class="lifetime">'_</span>, T&gt; {
         Send {
             sender: <span class="self">self</span>,
             listener: <span class="prelude-val">None</span>,
@@ -2648,7 +2649,7 @@
 
     <span class="doccomment">/// Set the channel capacity.
     ///
-    /// There are times when you need to change the channel&#39;s capacity after creating it. If the
+    /// There are times when you need to change the channel's capacity after creating it. If the
     /// `new_cap` is less than the number of messages in the channel, the oldest messages will be
     /// dropped to shrink the channel.
     ///
@@ -2992,7 +2993,7 @@
     /// assert_eq!(r2.recv().await, Err(RecvError::Closed));
     /// # });
     /// ```
-    </span><span class="kw">pub fn </span>recv(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; Recv&lt;<span class="lifetime">&#39;_</span>, T&gt; {
+    </span><span class="kw">pub fn </span>recv(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; Recv&lt;<span class="lifetime">'_</span>, T&gt; {
         Recv {
             receiver: <span class="self">self</span>,
             listener: <span class="prelude-val">None</span>,
@@ -3111,7 +3112,7 @@
     <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
         <span class="kw">let </span><span class="kw-2">mut </span>inner = <span class="self">self</span>.inner.write().unwrap();
 
-        <span class="comment">// Remove ourself from each item&#39;s counter
+        <span class="comment">// Remove ourself from each item's counter
         </span><span class="kw">loop </span>{
             <span class="kw">match </span>inner.try_recv_at(<span class="kw-2">&amp;mut </span><span class="self">self</span>.pos) {
                 <span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; <span class="kw">continue</span>,
@@ -3168,7 +3169,7 @@
 <span class="kw">impl</span>&lt;T: Clone&gt; Stream <span class="kw">for </span>Receiver&lt;T&gt; {
     <span class="kw">type </span>Item = T;
 
-    <span class="kw">fn </span>poll_next(<span class="kw-2">mut </span><span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; Poll&lt;<span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::Item&gt;&gt; {
+    <span class="kw">fn </span>poll_next(<span class="kw-2">mut </span><span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">'_</span>&gt;) -&gt; Poll&lt;<span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::Item&gt;&gt; {
         <span class="kw">loop </span>{
             <span class="comment">// If this stream is listening for events, first wait for a notification.
             </span><span class="kw">if let </span><span class="prelude-val">Some</span>(listener) = <span class="self">self</span>.listener.as_mut() {
@@ -3228,7 +3229,7 @@
 </span><span class="kw">pub struct </span>SendError&lt;T&gt;(<span class="kw">pub </span>T);
 
 <span class="kw">impl</span>&lt;T&gt; SendError&lt;T&gt; {
-    <span class="doccomment">/// Unwraps the message that couldn&#39;t be sent.
+    <span class="doccomment">/// Unwraps the message that couldn't be sent.
     </span><span class="kw">pub fn </span>into_inner(<span class="self">self</span>) -&gt; T {
         <span class="self">self</span>.<span class="number">0
     </span>}
@@ -3237,14 +3238,14 @@
 <span class="kw">impl</span>&lt;T&gt; error::Error <span class="kw">for </span>SendError&lt;T&gt; {}
 
 <span class="kw">impl</span>&lt;T&gt; fmt::Debug <span class="kw">for </span>SendError&lt;T&gt; {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
-        <span class="macro">write!</span>(f, <span class="string">&quot;SendError(..)&quot;</span>)
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
+        <span class="macro">write!</span>(f, <span class="string">"SendError(..)"</span>)
     }
 }
 
 <span class="kw">impl</span>&lt;T&gt; fmt::Display <span class="kw">for </span>SendError&lt;T&gt; {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
-        <span class="macro">write!</span>(f, <span class="string">&quot;sending into a closed channel&quot;</span>)
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
+        <span class="macro">write!</span>(f, <span class="string">"sending into a closed channel"</span>)
     }
 }
 
@@ -3262,7 +3263,7 @@
 }
 
 <span class="kw">impl</span>&lt;T&gt; TrySendError&lt;T&gt; {
-    <span class="doccomment">/// Unwraps the message that couldn&#39;t be sent.
+    <span class="doccomment">/// Unwraps the message that couldn't be sent.
     </span><span class="kw">pub fn </span>into_inner(<span class="self">self</span>) -&gt; T {
         <span class="kw">match </span><span class="self">self </span>{
             TrySendError::Full(t) =&gt; t,
@@ -3299,21 +3300,21 @@
 <span class="kw">impl</span>&lt;T&gt; error::Error <span class="kw">for </span>TrySendError&lt;T&gt; {}
 
 <span class="kw">impl</span>&lt;T&gt; fmt::Debug <span class="kw">for </span>TrySendError&lt;T&gt; {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
         <span class="kw">match </span><span class="kw-2">*</span><span class="self">self </span>{
-            TrySendError::Full(..) =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;Full(..)&quot;</span>),
-            TrySendError::Closed(..) =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;Closed(..)&quot;</span>),
-            TrySendError::Inactive(..) =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;Inactive(..)&quot;</span>),
+            TrySendError::Full(..) =&gt; <span class="macro">write!</span>(f, <span class="string">"Full(..)"</span>),
+            TrySendError::Closed(..) =&gt; <span class="macro">write!</span>(f, <span class="string">"Closed(..)"</span>),
+            TrySendError::Inactive(..) =&gt; <span class="macro">write!</span>(f, <span class="string">"Inactive(..)"</span>),
         }
     }
 }
 
 <span class="kw">impl</span>&lt;T&gt; fmt::Display <span class="kw">for </span>TrySendError&lt;T&gt; {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
         <span class="kw">match </span><span class="kw-2">*</span><span class="self">self </span>{
-            TrySendError::Full(..) =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;sending into a full channel&quot;</span>),
-            TrySendError::Closed(..) =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;sending into a closed channel&quot;</span>),
-            TrySendError::Inactive(..) =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;sending into the void (no active receivers)&quot;</span>),
+            TrySendError::Full(..) =&gt; <span class="macro">write!</span>(f, <span class="string">"sending into a full channel"</span>),
+            TrySendError::Closed(..) =&gt; <span class="macro">write!</span>(f, <span class="string">"sending into a closed channel"</span>),
+            TrySendError::Inactive(..) =&gt; <span class="macro">write!</span>(f, <span class="string">"sending into the void (no active receivers)"</span>),
         }
     }
 }
@@ -3334,10 +3335,10 @@
 <span class="kw">impl </span>error::Error <span class="kw">for </span>RecvError {}
 
 <span class="kw">impl </span>fmt::Display <span class="kw">for </span>RecvError {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
         <span class="kw">match </span><span class="self">self </span>{
-            <span class="self">Self</span>::Overflowed(n) =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;receiving skipped {} messages&quot;</span>, n),
-            <span class="self">Self</span>::Closed =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;receiving from an empty and closed channel&quot;</span>),
+            <span class="self">Self</span>::Overflowed(n) =&gt; <span class="macro">write!</span>(f, <span class="string">"receiving skipped {} messages"</span>, n),
+            <span class="self">Self</span>::Closed =&gt; <span class="macro">write!</span>(f, <span class="string">"receiving from an empty and closed channel"</span>),
         }
     }
 }
@@ -3388,12 +3389,12 @@
 <span class="kw">impl </span>error::Error <span class="kw">for </span>TryRecvError {}
 
 <span class="kw">impl </span>fmt::Display <span class="kw">for </span>TryRecvError {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
         <span class="kw">match </span><span class="kw-2">*</span><span class="self">self </span>{
-            TryRecvError::Empty =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;receiving from an empty channel&quot;</span>),
-            TryRecvError::Closed =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;receiving from an empty and closed channel&quot;</span>),
+            TryRecvError::Empty =&gt; <span class="macro">write!</span>(f, <span class="string">"receiving from an empty channel"</span>),
+            TryRecvError::Closed =&gt; <span class="macro">write!</span>(f, <span class="string">"receiving from an empty and closed channel"</span>),
             TryRecvError::Overflowed(n) =&gt; {
-                <span class="macro">write!</span>(f, <span class="string">&quot;receiving operation observed {} lost messages&quot;</span>, n)
+                <span class="macro">write!</span>(f, <span class="string">"receiving operation observed {} lost messages"</span>, n)
             }
         }
     }
@@ -3401,19 +3402,19 @@
 
 <span class="doccomment">/// A future returned by [`Sender::broadcast()`].
 </span><span class="attr">#[derive(Debug)]
-#[must_use = <span class="string">&quot;futures do nothing unless .awaited&quot;</span>]
-</span><span class="kw">pub struct </span>Send&lt;<span class="lifetime">&#39;a</span>, T&gt; {
-    sender: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Sender&lt;T&gt;,
+#[must_use = <span class="string">"futures do nothing unless .awaited"</span>]
+</span><span class="kw">pub struct </span>Send&lt;<span class="lifetime">'a</span>, T&gt; {
+    sender: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>Sender&lt;T&gt;,
     listener: <span class="prelude-ty">Option</span>&lt;EventListener&gt;,
     msg: <span class="prelude-ty">Option</span>&lt;T&gt;,
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, T&gt; Unpin <span class="kw">for </span>Send&lt;<span class="lifetime">&#39;a</span>, T&gt; {}
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T&gt; Unpin <span class="kw">for </span>Send&lt;<span class="lifetime">'a</span>, T&gt; {}
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, T: Clone&gt; Future <span class="kw">for </span>Send&lt;<span class="lifetime">&#39;a</span>, T&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T: Clone&gt; Future <span class="kw">for </span>Send&lt;<span class="lifetime">'a</span>, T&gt; {
     <span class="kw">type </span>Output = <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;T&gt;, SendError&lt;T&gt;&gt;;
 
-    <span class="kw">fn </span>poll(<span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; Poll&lt;<span class="self">Self</span>::Output&gt; {
+    <span class="kw">fn </span>poll(<span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">'_</span>&gt;) -&gt; Poll&lt;<span class="self">Self</span>::Output&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>this = Pin::new(<span class="self">self</span>);
 
         <span class="kw">loop </span>{
@@ -3459,18 +3460,18 @@
 
 <span class="doccomment">/// A future returned by [`Receiver::recv()`].
 </span><span class="attr">#[derive(Debug)]
-#[must_use = <span class="string">&quot;futures do nothing unless .awaited&quot;</span>]
-</span><span class="kw">pub struct </span>Recv&lt;<span class="lifetime">&#39;a</span>, T&gt; {
-    receiver: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>Receiver&lt;T&gt;,
+#[must_use = <span class="string">"futures do nothing unless .awaited"</span>]
+</span><span class="kw">pub struct </span>Recv&lt;<span class="lifetime">'a</span>, T&gt; {
+    receiver: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>Receiver&lt;T&gt;,
     listener: <span class="prelude-ty">Option</span>&lt;EventListener&gt;,
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, T&gt; Unpin <span class="kw">for </span>Recv&lt;<span class="lifetime">&#39;a</span>, T&gt; {}
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T&gt; Unpin <span class="kw">for </span>Recv&lt;<span class="lifetime">'a</span>, T&gt; {}
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, T: Clone&gt; Future <span class="kw">for </span>Recv&lt;<span class="lifetime">&#39;a</span>, T&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T: Clone&gt; Future <span class="kw">for </span>Recv&lt;<span class="lifetime">'a</span>, T&gt; {
     <span class="kw">type </span>Output = <span class="prelude-ty">Result</span>&lt;T, RecvError&gt;;
 
-    <span class="kw">fn </span>poll(<span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; Poll&lt;<span class="self">Self</span>::Output&gt; {
+    <span class="kw">fn </span>poll(<span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">'_</span>&gt;) -&gt; Poll&lt;<span class="self">Self</span>::Output&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>this = Pin::new(<span class="self">self</span>);
 
         <span class="kw">loop </span>{
@@ -3505,7 +3506,7 @@
 
 <span class="doccomment">/// An inactive  receiver.
 ///
-/// An inactive receiver is a receiver that is unable to receive messages. It&#39;s only useful for
+/// An inactive receiver is a receiver that is unable to receive messages. It's only useful for
 /// keeping a channel open even when no associated active receivers exist.
 </span><span class="attr">#[derive(Debug)]
 </span><span class="kw">pub struct </span>InactiveReceiver&lt;T&gt; {
@@ -3575,7 +3576,7 @@
 
     <span class="doccomment">/// Set the channel capacity.
     ///
-    /// There are times when you need to change the channel&#39;s capacity after creating it. If the
+    /// There are times when you need to change the channel's capacity after creating it. If the
     /// `new_cap` is less than the number of messages in the channel, the oldest messages will be
     /// dropped to shrink the channel.
     ///
@@ -3686,7 +3687,7 @@
     <span class="doccomment">/// Returns the number of receivers for the channel.
     ///
     /// This does not include inactive receivers. Use [`InactiveReceiver::inactive_receiver_count`]
-    /// if you&#39;re interested in that.
+    /// if you're interested in that.
     ///
     /// # Examples
     ///

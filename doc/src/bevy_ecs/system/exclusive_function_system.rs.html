@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ecs-0.12.1/src/system/exclusive_function_system.rs`."><title>exclusive_function_system.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="bevy_ecs" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../bevy_ecs/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ecs-0.13.0/src/system/exclusive_function_system.rs`."><title>exclusive_function_system.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="bevy_ecs" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -244,6 +245,46 @@
 <a href="#244" id="244">244</a>
 <a href="#245" id="245">245</a>
 <a href="#246" id="246">246</a>
+<a href="#247" id="247">247</a>
+<a href="#248" id="248">248</a>
+<a href="#249" id="249">249</a>
+<a href="#250" id="250">250</a>
+<a href="#251" id="251">251</a>
+<a href="#252" id="252">252</a>
+<a href="#253" id="253">253</a>
+<a href="#254" id="254">254</a>
+<a href="#255" id="255">255</a>
+<a href="#256" id="256">256</a>
+<a href="#257" id="257">257</a>
+<a href="#258" id="258">258</a>
+<a href="#259" id="259">259</a>
+<a href="#260" id="260">260</a>
+<a href="#261" id="261">261</a>
+<a href="#262" id="262">262</a>
+<a href="#263" id="263">263</a>
+<a href="#264" id="264">264</a>
+<a href="#265" id="265">265</a>
+<a href="#266" id="266">266</a>
+<a href="#267" id="267">267</a>
+<a href="#268" id="268">268</a>
+<a href="#269" id="269">269</a>
+<a href="#270" id="270">270</a>
+<a href="#271" id="271">271</a>
+<a href="#272" id="272">272</a>
+<a href="#273" id="273">273</a>
+<a href="#274" id="274">274</a>
+<a href="#275" id="275">275</a>
+<a href="#276" id="276">276</a>
+<a href="#277" id="277">277</a>
+<a href="#278" id="278">278</a>
+<a href="#279" id="279">279</a>
+<a href="#280" id="280">280</a>
+<a href="#281" id="281">281</a>
+<a href="#282" id="282">282</a>
+<a href="#283" id="283">283</a>
+<a href="#284" id="284">284</a>
+<a href="#285" id="285">285</a>
+<a href="#286" id="286">286</a>
 </pre></div><pre class="rust"><code><span class="kw">use crate</span>::{
     archetype::ArchetypeComponentId,
     component::{ComponentId, Tick},
@@ -257,7 +298,7 @@
 };
 
 <span class="kw">use </span>bevy_utils::all_tuples;
-<span class="kw">use </span>std::{any::TypeId, borrow::Cow, marker::PhantomData};
+<span class="kw">use </span>std::{borrow::Cow, marker::PhantomData};
 
 <span class="doccomment">/// A function system that runs with exclusive [`World`] access.
 ///
@@ -282,7 +323,7 @@
 
 <span class="kw">impl</span>&lt;Marker, F&gt; IntoSystem&lt;F::In, F::Out, (IsExclusiveFunctionSystem, Marker)&gt; <span class="kw">for </span>F
 <span class="kw">where
-    </span>Marker: <span class="lifetime">&#39;static</span>,
+    </span>Marker: <span class="lifetime">'static</span>,
     F: ExclusiveSystemParamFunction&lt;Marker&gt;,
 {
     <span class="kw">type </span>System = ExclusiveFunctionSystem&lt;Marker, F&gt;;
@@ -296,24 +337,19 @@
     }
 }
 
-<span class="kw">const </span>PARAM_MESSAGE: <span class="kw-2">&amp;</span>str = <span class="string">&quot;System&#39;s param_state was not found. Did you forget to initialize this system before running it?&quot;</span>;
+<span class="kw">const </span>PARAM_MESSAGE: <span class="kw-2">&amp;</span>str = <span class="string">"System's param_state was not found. Did you forget to initialize this system before running it?"</span>;
 
 <span class="kw">impl</span>&lt;Marker, F&gt; System <span class="kw">for </span>ExclusiveFunctionSystem&lt;Marker, F&gt;
 <span class="kw">where
-    </span>Marker: <span class="lifetime">&#39;static</span>,
+    </span>Marker: <span class="lifetime">'static</span>,
     F: ExclusiveSystemParamFunction&lt;Marker&gt;,
 {
     <span class="kw">type </span>In = F::In;
     <span class="kw">type </span>Out = F::Out;
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>name(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Cow&lt;<span class="lifetime">&#39;static</span>, str&gt; {
+    </span><span class="kw">fn </span>name(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Cow&lt;<span class="lifetime">'static</span>, str&gt; {
         <span class="self">self</span>.system_meta.name.clone()
-    }
-
-    <span class="attr">#[inline]
-    </span><span class="kw">fn </span>type_id(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; TypeId {
-        TypeId::of::&lt;F&gt;()
     }
 
     <span class="attr">#[inline]
@@ -335,47 +371,43 @@
     </span>}
 
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>run_unsafe(<span class="kw-2">&amp;mut </span><span class="self">self</span>, _input: <span class="self">Self</span>::In, _world: UnsafeWorldCell) -&gt; <span class="self">Self</span>::Out {
-        <span class="macro">panic!</span>(<span class="string">&quot;Cannot run exclusive systems with a shared World reference&quot;</span>);
-    }
-
-    <span class="kw">fn </span>run(<span class="kw-2">&amp;mut </span><span class="self">self</span>, input: <span class="self">Self</span>::In, world: <span class="kw-2">&amp;mut </span>World) -&gt; <span class="self">Self</span>::Out {
-        <span class="attr">#[cfg(feature = <span class="string">&quot;trace&quot;</span>)]
-        </span><span class="kw">let </span>_span_guard = <span class="self">self</span>.system_meta.system_span.enter();
-
-        <span class="kw">let </span>saved_last_tick = world.last_change_tick;
-        world.last_change_tick = <span class="self">self</span>.system_meta.last_run;
-
-        <span class="kw">let </span>params = F::Param::get_param(
-            <span class="self">self</span>.param_state.as_mut().expect(PARAM_MESSAGE),
-            <span class="kw-2">&amp;</span><span class="self">self</span>.system_meta,
-        );
-        <span class="kw">let </span>out = <span class="self">self</span>.func.run(world, input, params);
-
-        <span class="kw">let </span>change_tick = world.change_tick.get_mut();
-        <span class="self">self</span>.system_meta.last_run.set(<span class="kw-2">*</span>change_tick);
-        <span class="kw-2">*</span>change_tick = change_tick.wrapping_add(<span class="number">1</span>);
-        world.last_change_tick = saved_last_tick;
-
-        out
-    }
-
-    <span class="attr">#[inline]
     </span><span class="kw">fn </span>is_exclusive(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
         <span class="bool-val">true
     </span>}
 
-    <span class="kw">fn </span>get_last_run(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Tick {
-        <span class="self">self</span>.system_meta.last_run
+    <span class="attr">#[inline]
+    </span><span class="kw">fn </span>has_deferred(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="comment">// exclusive systems have no deferred system params
+        </span><span class="bool-val">false
+    </span>}
+
+    <span class="attr">#[inline]
+    </span><span class="kw">unsafe fn </span>run_unsafe(<span class="kw-2">&amp;mut </span><span class="self">self</span>, _input: <span class="self">Self</span>::In, _world: UnsafeWorldCell) -&gt; <span class="self">Self</span>::Out {
+        <span class="macro">panic!</span>(<span class="string">"Cannot run exclusive systems with a shared World reference"</span>);
     }
 
-    <span class="kw">fn </span>set_last_run(<span class="kw-2">&amp;mut </span><span class="self">self</span>, last_run: Tick) {
-        <span class="self">self</span>.system_meta.last_run = last_run;
+    <span class="kw">fn </span>run(<span class="kw-2">&amp;mut </span><span class="self">self</span>, input: <span class="self">Self</span>::In, world: <span class="kw-2">&amp;mut </span>World) -&gt; <span class="self">Self</span>::Out {
+        world.last_change_tick_scope(<span class="self">self</span>.system_meta.last_run, |world| {
+            <span class="attr">#[cfg(feature = <span class="string">"trace"</span>)]
+            </span><span class="kw">let </span>_span_guard = <span class="self">self</span>.system_meta.system_span.enter();
+
+            <span class="kw">let </span>params = F::Param::get_param(
+                <span class="self">self</span>.param_state.as_mut().expect(PARAM_MESSAGE),
+                <span class="kw-2">&amp;</span><span class="self">self</span>.system_meta,
+            );
+            <span class="kw">let </span>out = <span class="self">self</span>.func.run(world, input, params);
+
+            <span class="kw">let </span>change_tick = world.change_tick.get_mut();
+            <span class="self">self</span>.system_meta.last_run.set(<span class="kw-2">*</span>change_tick);
+            <span class="kw-2">*</span>change_tick = change_tick.wrapping_add(<span class="number">1</span>);
+
+            out
+        })
     }
 
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>apply_deferred(<span class="kw-2">&amp;mut </span><span class="self">self</span>, _world: <span class="kw-2">&amp;mut </span>World) {
-        <span class="comment">// &quot;pure&quot; exclusive systems do not have any buffers to apply.
+        <span class="comment">// "pure" exclusive systems do not have any buffers to apply.
         // Systems made by piping a normal system with an exclusive system
         // might have buffers to apply, but this is handled by `PipeSystem`.
     </span>}
@@ -401,20 +433,28 @@
         <span class="kw">let </span>set = <span class="kw">crate</span>::schedule::SystemTypeSet::&lt;F&gt;::new();
         <span class="macro">vec!</span>[set.intern()]
     }
+
+    <span class="kw">fn </span>get_last_run(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Tick {
+        <span class="self">self</span>.system_meta.last_run
+    }
+
+    <span class="kw">fn </span>set_last_run(<span class="kw-2">&amp;mut </span><span class="self">self</span>, last_run: Tick) {
+        <span class="self">self</span>.system_meta.last_run = last_run;
+    }
 }
 
 <span class="doccomment">/// A trait implemented for all exclusive system functions that can be used as [`System`]s.
 ///
 /// This trait can be useful for making your own systems which accept other systems,
 /// sometimes called higher order systems.
-</span><span class="kw">pub trait </span>ExclusiveSystemParamFunction&lt;Marker&gt;: Send + Sync + <span class="lifetime">&#39;static </span>{
+</span><span class="kw">pub trait </span>ExclusiveSystemParamFunction&lt;Marker&gt;: Send + Sync + <span class="lifetime">'static </span>{
     <span class="doccomment">/// The input type to this system. See [`System::In`].
     </span><span class="kw">type </span>In;
 
     <span class="doccomment">/// The return type of this system. See [`System::Out`].
     </span><span class="kw">type </span>Out;
 
-    <span class="doccomment">/// The [`ExclusiveSystemParam`]/s defined by this system&#39;s `fn` parameters.
+    <span class="doccomment">/// The [`ExclusiveSystemParam`]/s defined by this system's `fn` parameters.
     </span><span class="kw">type </span>Param: ExclusiveSystemParam;
 
     <span class="doccomment">/// Executes this system once. See [`System::run`].
@@ -429,12 +469,12 @@
 <span class="macro">macro_rules! </span>impl_exclusive_system_function {
     ($(<span class="macro-nonterminal">$param</span>: ident),<span class="kw-2">*</span>) =&gt; {
         <span class="attr">#[allow(non_snake_case)]
-        </span><span class="kw">impl</span>&lt;Out, Func: Send + Sync + <span class="lifetime">&#39;static</span>, $(<span class="macro-nonterminal">$param</span>: ExclusiveSystemParam),<span class="kw-2">*</span>&gt; ExclusiveSystemParamFunction&lt;<span class="kw">fn</span>($(<span class="macro-nonterminal">$param</span>,)<span class="kw-2">*</span>) -&gt; Out&gt; <span class="kw">for </span>Func
+        </span><span class="kw">impl</span>&lt;Out, Func: Send + Sync + <span class="lifetime">'static</span>, $(<span class="macro-nonterminal">$param</span>: ExclusiveSystemParam),<span class="kw-2">*</span>&gt; ExclusiveSystemParamFunction&lt;<span class="kw">fn</span>($(<span class="macro-nonterminal">$param</span>,)<span class="kw-2">*</span>) -&gt; Out&gt; <span class="kw">for </span>Func
         <span class="kw">where
-        for </span>&lt;<span class="lifetime">&#39;a</span>&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>Func:
+        for </span>&lt;<span class="lifetime">'a</span>&gt; <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>Func:
                 FnMut(<span class="kw-2">&amp;mut </span>World, $(<span class="macro-nonterminal">$param</span>),<span class="kw-2">*</span>) -&gt; Out +
                 FnMut(<span class="kw-2">&amp;mut </span>World, $(ExclusiveSystemParamItem&lt;<span class="macro-nonterminal">$param</span>&gt;),<span class="kw-2">*</span>) -&gt; Out,
-            Out: <span class="lifetime">&#39;static</span>,
+            Out: <span class="lifetime">'static</span>,
         {
             <span class="kw">type </span>In = ();
             <span class="kw">type </span>Out = Out;
@@ -457,12 +497,12 @@
             }
         }
         <span class="attr">#[allow(non_snake_case)]
-        </span><span class="kw">impl</span>&lt;Input, Out, Func: Send + Sync + <span class="lifetime">&#39;static</span>, $(<span class="macro-nonterminal">$param</span>: ExclusiveSystemParam),<span class="kw-2">*</span>&gt; ExclusiveSystemParamFunction&lt;<span class="kw">fn</span>(In&lt;Input&gt;, $(<span class="macro-nonterminal">$param</span>,)<span class="kw-2">*</span>) -&gt; Out&gt; <span class="kw">for </span>Func
+        </span><span class="kw">impl</span>&lt;Input, Out, Func: Send + Sync + <span class="lifetime">'static</span>, $(<span class="macro-nonterminal">$param</span>: ExclusiveSystemParam),<span class="kw-2">*</span>&gt; ExclusiveSystemParamFunction&lt;<span class="kw">fn</span>(In&lt;Input&gt;, $(<span class="macro-nonterminal">$param</span>,)<span class="kw-2">*</span>) -&gt; Out&gt; <span class="kw">for </span>Func
         <span class="kw">where
-        for </span>&lt;<span class="lifetime">&#39;a</span>&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>Func:
+        for </span>&lt;<span class="lifetime">'a</span>&gt; <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>Func:
                 FnMut(In&lt;Input&gt;, <span class="kw-2">&amp;mut </span>World, $(<span class="macro-nonterminal">$param</span>),<span class="kw-2">*</span>) -&gt; Out +
                 FnMut(In&lt;Input&gt;, <span class="kw-2">&amp;mut </span>World, $(ExclusiveSystemParamItem&lt;<span class="macro-nonterminal">$param</span>&gt;),<span class="kw-2">*</span>) -&gt; Out,
-            Out: <span class="lifetime">&#39;static</span>,
+            Out: <span class="lifetime">'static</span>,
         {
             <span class="kw">type </span>In = Input;
             <span class="kw">type </span>Out = Out;
@@ -490,4 +530,45 @@
 <span class="comment">// Note that we rely on the highest impl to be &lt;= the highest order of the tuple impls
 // of `SystemParam` created.
 </span><span class="macro">all_tuples!</span>(impl_exclusive_system_function, <span class="number">0</span>, <span class="number">16</span>, F);
+
+<span class="attr">#[cfg(test)]
+</span><span class="kw">mod </span>tests {
+    <span class="kw">use super</span>::<span class="kw-2">*</span>;
+
+    <span class="attr">#[test]
+    </span><span class="kw">fn </span>into_system_type_id_consistency() {
+        <span class="kw">fn </span>test&lt;T, In, Out, Marker&gt;(function: T)
+        <span class="kw">where
+            </span>T: IntoSystem&lt;In, Out, Marker&gt; + Copy,
+        {
+            <span class="kw">fn </span>reference_system(_world: <span class="kw-2">&amp;mut </span>World) {}
+
+            <span class="kw">use </span>std::any::TypeId;
+
+            <span class="kw">let </span>system = IntoSystem::into_system(function);
+
+            <span class="macro">assert_eq!</span>(
+                system.type_id(),
+                function.system_type_id(),
+                <span class="string">"System::type_id should be consistent with IntoSystem::system_type_id"
+            </span>);
+
+            <span class="macro">assert_eq!</span>(
+                system.type_id(),
+                TypeId::of::&lt;T::System&gt;(),
+                <span class="string">"System::type_id should be consistent with TypeId::of::&lt;T::System&gt;()"
+            </span>);
+
+            <span class="macro">assert_ne!</span>(
+                system.type_id(),
+                IntoSystem::into_system(reference_system).type_id(),
+                <span class="string">"Different systems should have different TypeIds"
+            </span>);
+        }
+
+        <span class="kw">fn </span>exclusive_function_system(_world: <span class="kw-2">&amp;mut </span>World) {}
+
+        test(exclusive_function_system);
+    }
+}
 </code></pre></div></section></main></body></html>

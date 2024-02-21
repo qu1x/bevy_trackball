@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/async-task-4.5.0/src/raw.rs`."><title>raw.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="async_task" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/smol-rs/smol/master/assets/images/logo_fullsize_transparent.png"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../async_task/index.html"><img src="https://raw.githubusercontent.com/smol-rs/smol/master/assets/images/logo_fullsize_transparent.png" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/async-task-4.7.0/src/raw.rs`."><title>raw.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="async_task" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/smol-rs/smol/master/assets/images/logo_fullsize_transparent.png"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><a class="sub-logo-container" href="../../async_task/index.html"><img src="https://raw.githubusercontent.com/smol-rs/smol/master/assets/images/logo_fullsize_transparent.png" alt="async_task"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -754,30 +755,18 @@
 <a href="#754" id="754">754</a>
 <a href="#755" id="755">755</a>
 <a href="#756" id="756">756</a>
-<a href="#757" id="757">757</a>
-<a href="#758" id="758">758</a>
-<a href="#759" id="759">759</a>
-<a href="#760" id="760">760</a>
-<a href="#761" id="761">761</a>
-<a href="#762" id="762">762</a>
-<a href="#763" id="763">763</a>
-<a href="#764" id="764">764</a>
-<a href="#765" id="765">765</a>
-<a href="#766" id="766">766</a>
-<a href="#767" id="767">767</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>alloc::alloc::Layout <span class="kw">as </span>StdLayout;
 <span class="kw">use </span>core::cell::UnsafeCell;
 <span class="kw">use </span>core::future::Future;
-<span class="kw">use </span>core::marker::PhantomData;
 <span class="kw">use </span>core::mem::{<span class="self">self</span>, ManuallyDrop};
 <span class="kw">use </span>core::pin::Pin;
 <span class="kw">use </span>core::ptr::NonNull;
 <span class="kw">use </span>core::task::{Context, Poll, RawWaker, RawWakerVTable, Waker};
 
-<span class="attr">#[cfg(not(feature = <span class="string">&quot;portable-atomic&quot;</span>))]
+<span class="attr">#[cfg(not(feature = <span class="string">"portable-atomic"</span>))]
 </span><span class="kw">use </span>core::sync::atomic::AtomicUsize;
 <span class="kw">use </span>core::sync::atomic::Ordering;
-<span class="attr">#[cfg(feature = <span class="string">&quot;portable-atomic&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"portable-atomic"</span>)]
 </span><span class="kw">use </span>portable_atomic::AtomicUsize;
 
 <span class="kw">use </span><span class="kw">crate</span>::header::Header;
@@ -786,10 +775,10 @@
 <span class="kw">use </span><span class="kw">crate</span>::utils::{abort, abort_on_panic, max, Layout};
 <span class="kw">use </span><span class="kw">crate</span>::Runnable;
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;std&quot;</span>)]
-</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">type </span>Panic = alloc::boxed::Box&lt;<span class="kw">dyn </span>core::any::Any + Send + <span class="lifetime">&#39;static</span>&gt;;
+<span class="attr">#[cfg(feature = <span class="string">"std"</span>)]
+</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">type </span>Panic = alloc::boxed::Box&lt;<span class="kw">dyn </span>core::any::Any + Send + <span class="lifetime">'static</span>&gt;;
 
-<span class="attr">#[cfg(not(feature = <span class="string">&quot;std&quot;</span>))]
+<span class="attr">#[cfg(not(feature = <span class="string">"std"</span>))]
 </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">type </span>Panic = core::convert::Infallible;
 
 <span class="doccomment">/// The vtable for a task.
@@ -819,7 +808,7 @@
     /// debuggers to decode raw task memory blobs. Do not remove
     /// the field, even if it appears to be unused.
     </span><span class="attr">#[allow(unused)]
-    </span><span class="kw">pub</span>(<span class="kw">crate</span>) layout_info: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span><span class="prelude-ty">Option</span>&lt;TaskLayout&gt;,
+    </span><span class="kw">pub</span>(<span class="kw">crate</span>) layout_info: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>TaskLayout,
 }
 
 <span class="doccomment">/// Memory layout of a task.
@@ -867,11 +856,11 @@
 }
 
 <span class="kw">impl</span>&lt;F, T, S, M&gt; RawTask&lt;F, T, S, M&gt; {
-    <span class="kw">const </span>TASK_LAYOUT: <span class="prelude-ty">Option</span>&lt;TaskLayout&gt; = <span class="self">Self</span>::eval_task_layout();
+    <span class="kw">const </span>TASK_LAYOUT: TaskLayout = <span class="self">Self</span>::eval_task_layout();
 
     <span class="doccomment">/// Computes the memory layout for a task.
     </span><span class="attr">#[inline]
-    </span><span class="kw">const fn </span>eval_task_layout() -&gt; <span class="prelude-ty">Option</span>&lt;TaskLayout&gt; {
+    </span><span class="kw">const fn </span>eval_task_layout() -&gt; TaskLayout {
         <span class="comment">// Compute the layouts for `Header`, `S`, `F`, and `T`.
         </span><span class="kw">let </span>layout_header = Layout::new::&lt;Header&lt;M&gt;&gt;();
         <span class="kw">let </span>layout_s = Layout::new::&lt;S&gt;();
@@ -885,17 +874,17 @@
 
         <span class="comment">// Compute the layout for `Header` followed `S` and `union { F, T }`.
         </span><span class="kw">let </span>layout = layout_header;
-        <span class="kw">let </span>(layout, offset_s) = <span class="macro">leap!</span>(layout.extend(layout_s));
-        <span class="kw">let </span>(layout, offset_union) = <span class="macro">leap!</span>(layout.extend(layout_union));
+        <span class="kw">let </span>(layout, offset_s) = <span class="macro">leap_unwrap!</span>(layout.extend(layout_s));
+        <span class="kw">let </span>(layout, offset_union) = <span class="macro">leap_unwrap!</span>(layout.extend(layout_union));
         <span class="kw">let </span>offset_f = offset_union;
         <span class="kw">let </span>offset_r = offset_union;
 
-        <span class="prelude-val">Some</span>(TaskLayout {
+        TaskLayout {
             layout: <span class="kw">unsafe </span>{ layout.into_std() },
             offset_s,
             offset_f,
             offset_r,
-        })
+        }
     }
 }
 
@@ -914,14 +903,14 @@
     <span class="doccomment">/// Allocates a task with the given `future` and `schedule` function.
     ///
     /// It is assumed that initially only the `Runnable` and the `Task` exist.
-    </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>allocate&lt;<span class="lifetime">&#39;a</span>, Gen: FnOnce(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>M) -&gt; F&gt;(
+    </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>allocate&lt;<span class="lifetime">'a</span>, Gen: FnOnce(<span class="kw-2">&amp;</span><span class="lifetime">'a </span>M) -&gt; F&gt;(
         future: Gen,
         schedule: S,
         builder: <span class="kw">crate</span>::Builder&lt;M&gt;,
     ) -&gt; NonNull&lt;()&gt;
     <span class="kw">where
-        </span>F: <span class="lifetime">&#39;a</span>,
-        M: <span class="lifetime">&#39;a</span>,
+        </span>F: <span class="lifetime">'a</span>,
+        M: <span class="lifetime">'a</span>,
     {
         <span class="comment">// Compute the layout of the task for allocation. Abort if the computation fails.
         //
@@ -939,7 +928,7 @@
 
             <span class="kw">let </span><span class="kw">crate</span>::Builder {
                 metadata,
-                <span class="attr">#[cfg(feature = <span class="string">&quot;std&quot;</span>)]
+                <span class="attr">#[cfg(feature = <span class="string">"std"</span>)]
                 </span>propagate_panic,
             } = builder;
 
@@ -958,7 +947,7 @@
                     layout_info: <span class="kw-2">&amp;</span><span class="self">Self</span>::TASK_LAYOUT,
                 },
                 metadata,
-                <span class="attr">#[cfg(feature = <span class="string">&quot;std&quot;</span>)]
+                <span class="attr">#[cfg(feature = <span class="string">"std"</span>)]
                 </span>propagate_panic,
             });
 
@@ -994,16 +983,12 @@
     <span class="doccomment">/// Returns the layout of the task.
     </span><span class="attr">#[inline]
     </span><span class="kw">fn </span>task_layout() -&gt; TaskLayout {
-        <span class="kw">match </span><span class="self">Self</span>::TASK_LAYOUT {
-            <span class="prelude-val">Some</span>(tl) =&gt; tl,
-            <span class="prelude-val">None </span>=&gt; abort(),
-        }
+        <span class="self">Self</span>::TASK_LAYOUT
     }
-
     <span class="doccomment">/// Wakes a waker.
     </span><span class="kw">unsafe fn </span>wake(ptr: <span class="kw-2">*const </span>()) {
         <span class="comment">// This is just an optimization. If the schedule function has captured variables, then
-        // we&#39;ll do less reference counting if we wake the waker by reference and then drop it.
+        // we'll do less reference counting if we wake the waker by reference and then drop it.
         </span><span class="kw">if </span>mem::size_of::&lt;S&gt;() &gt; <span class="number">0 </span>{
             <span class="self">Self</span>::wake_by_ref(ptr);
             <span class="self">Self</span>::drop_waker(ptr);
@@ -1015,7 +1000,7 @@
         <span class="kw">let </span><span class="kw-2">mut </span>state = (<span class="kw-2">*</span>raw.header).state.load(Ordering::Acquire);
 
         <span class="kw">loop </span>{
-            <span class="comment">// If the task is completed or closed, it can&#39;t be woken up.
+            <span class="comment">// If the task is completed or closed, it can't be woken up.
             </span><span class="kw">if </span>state &amp; (COMPLETED | CLOSED) != <span class="number">0 </span>{
                 <span class="comment">// Drop the waker.
                 </span><span class="self">Self</span>::drop_waker(ptr);
@@ -1023,7 +1008,7 @@
             }
 
             <span class="comment">// If the task is already scheduled, we just need to synchronize with the thread that
-            // will run the task by &quot;publishing&quot; our current view of the memory.
+            // will run the task by "publishing" our current view of the memory.
             </span><span class="kw">if </span>state &amp; SCHEDULED != <span class="number">0 </span>{
                 <span class="comment">// Update the state without actually modifying it.
                 </span><span class="kw">match </span>(<span class="kw-2">*</span>raw.header).state.compare_exchange_weak(
@@ -1048,7 +1033,7 @@
                     Ordering::Acquire,
                 ) {
                     <span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; {
-                        <span class="comment">// If the task is not yet scheduled and isn&#39;t currently running, now is the
+                        <span class="comment">// If the task is not yet scheduled and isn't currently running, now is the
                         // time to schedule it.
                         </span><span class="kw">if </span>state &amp; RUNNING == <span class="number">0 </span>{
                             <span class="comment">// Schedule the task.
@@ -1073,13 +1058,13 @@
         <span class="kw">let </span><span class="kw-2">mut </span>state = (<span class="kw-2">*</span>raw.header).state.load(Ordering::Acquire);
 
         <span class="kw">loop </span>{
-            <span class="comment">// If the task is completed or closed, it can&#39;t be woken up.
+            <span class="comment">// If the task is completed or closed, it can't be woken up.
             </span><span class="kw">if </span>state &amp; (COMPLETED | CLOSED) != <span class="number">0 </span>{
                 <span class="kw">break</span>;
             }
 
             <span class="comment">// If the task is already scheduled, we just need to synchronize with the thread that
-            // will run the task by &quot;publishing&quot; our current view of the memory.
+            // will run the task by "publishing" our current view of the memory.
             </span><span class="kw">if </span>state &amp; SCHEDULED != <span class="number">0 </span>{
                 <span class="comment">// Update the state without actually modifying it.
                 </span><span class="kw">match </span>(<span class="kw-2">*</span>raw.header).state.compare_exchange_weak(
@@ -1117,10 +1102,7 @@
                             <span class="comment">// Schedule the task. There is no need to call `Self::schedule(ptr)`
                             // because the schedule function cannot be destroyed while the waker is
                             // still alive.
-                            </span><span class="kw">let </span>task = Runnable {
-                                ptr: NonNull::new_unchecked(ptr <span class="kw">as </span><span class="kw-2">*mut </span>()),
-                                _marker: PhantomData,
-                            };
+                            </span><span class="kw">let </span>task = Runnable::from_raw(NonNull::new_unchecked(ptr <span class="kw">as </span><span class="kw-2">*mut </span>()));
                             (<span class="kw-2">*</span>raw.schedule).schedule(task, ScheduleInfo::new(<span class="bool-val">false</span>));
                         }
 
@@ -1197,7 +1179,7 @@
 
     <span class="doccomment">/// Schedules a task for running.
     ///
-    /// This function doesn&#39;t modify the state of the task. It only passes the task reference to
+    /// This function doesn't modify the state of the task. It only passes the task reference to
     /// its schedule function.
     </span><span class="kw">unsafe fn </span>schedule(ptr: <span class="kw-2">*const </span>(), info: ScheduleInfo) {
         <span class="kw">let </span>raw = <span class="self">Self</span>::from_ptr(ptr);
@@ -1209,10 +1191,7 @@
             _waker = Waker::from_raw(<span class="self">Self</span>::clone_waker(ptr));
         }
 
-        <span class="kw">let </span>task = Runnable {
-            ptr: NonNull::new_unchecked(ptr <span class="kw">as </span><span class="kw-2">*mut </span>()),
-            _marker: PhantomData,
-        };
+        <span class="kw">let </span>task = Runnable::from_raw(NonNull::new_unchecked(ptr <span class="kw">as </span><span class="kw-2">*mut </span>()));
         (<span class="kw-2">*</span>raw.schedule).schedule(task, info);
     }
 
@@ -1233,7 +1212,7 @@
         raw.output <span class="kw">as </span><span class="kw-2">*const </span>()
     }
 
-    <span class="doccomment">/// Cleans up task&#39;s resources and deallocates it.
+    <span class="doccomment">/// Cleans up task's resources and deallocates it.
     ///
     /// The schedule function will be dropped, and the task will then get deallocated.
     /// The task must be closed before this function is called.
@@ -1268,7 +1247,7 @@
 
         <span class="kw">let </span><span class="kw-2">mut </span>state = (<span class="kw-2">*</span>raw.header).state.load(Ordering::Acquire);
 
-        <span class="comment">// Update the task&#39;s state before polling its future.
+        <span class="comment">// Update the task's state before polling its future.
         </span><span class="kw">loop </span>{
             <span class="comment">// If the task has already been closed, drop the task reference and return.
             </span><span class="kw">if </span>state &amp; CLOSED != <span class="number">0 </span>{
@@ -1302,7 +1281,7 @@
                 Ordering::Acquire,
             ) {
                 <span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; {
-                    <span class="comment">// Update the state because we&#39;re continuing with polling the future.
+                    <span class="comment">// Update the state because we're continuing with polling the future.
                     </span>state = (state &amp; !SCHEDULED) | RUNNING;
                     <span class="kw">break</span>;
                 }
@@ -1316,10 +1295,10 @@
         </span><span class="kw">let </span>guard = Guard(raw);
 
         <span class="comment">// Panic propagation is not available for no_std.
-        </span><span class="attr">#[cfg(not(feature = <span class="string">&quot;std&quot;</span>))]
+        </span><span class="attr">#[cfg(not(feature = <span class="string">"std"</span>))]
         </span><span class="kw">let </span>poll = &lt;F <span class="kw">as </span>Future&gt;::poll(Pin::new_unchecked(<span class="kw-2">&amp;mut *</span>raw.future), cx).map(<span class="prelude-val">Ok</span>);
 
-        <span class="attr">#[cfg(feature = <span class="string">&quot;std&quot;</span>)]
+        <span class="attr">#[cfg(feature = <span class="string">"std"</span>)]
         </span><span class="kw">let </span>poll = {
             <span class="comment">// Check if we should propagate panics.
             </span><span class="kw">if </span>(<span class="kw-2">*</span>raw.header).propagate_panic {
@@ -1346,7 +1325,7 @@
 
                 <span class="comment">// The task is now completed.
                 </span><span class="kw">loop </span>{
-                    <span class="comment">// If the `Task` is dropped, we&#39;ll need to close it and drop the output.
+                    <span class="comment">// If the `Task` is dropped, we'll need to close it and drop the output.
                     </span><span class="kw">let </span>new = <span class="kw">if </span>state &amp; TASK == <span class="number">0 </span>{
                         (state &amp; !RUNNING &amp; !SCHEDULED) | COMPLETED | CLOSED
                     } <span class="kw">else </span>{
@@ -1362,7 +1341,7 @@
                     ) {
                         <span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; {
                             <span class="comment">// If the `Task` is dropped or if the task was closed while running,
-                            // now it&#39;s time to drop the output.
+                            // now it's time to drop the output.
                             </span><span class="kw">if </span>state &amp; TASK == <span class="number">0 </span>|| state &amp; CLOSED != <span class="number">0 </span>{
                                 <span class="comment">// Drop the output.
                                 </span>abort_on_panic(|| raw.output.drop_in_place());
@@ -1392,7 +1371,7 @@
 
                 <span class="comment">// The task is still not completed.
                 </span><span class="kw">loop </span>{
-                    <span class="comment">// If the task was closed while running, we&#39;ll need to unschedule in case it
+                    <span class="comment">// If the task was closed while running, we'll need to unschedule in case it
                     // was woken up and then destroy it.
                     </span><span class="kw">let </span>new = <span class="kw">if </span>state &amp; CLOSED != <span class="number">0 </span>{
                         state &amp; !RUNNING &amp; !SCHEDULED
@@ -1401,8 +1380,8 @@
                     };
 
                     <span class="kw">if </span>state &amp; CLOSED != <span class="number">0 </span>&amp;&amp; !future_dropped {
-                        <span class="comment">// The thread that closed the task didn&#39;t drop the future because it was
-                        // running so now it&#39;s our responsibility to do so.
+                        <span class="comment">// The thread that closed the task didn't drop the future because it was
+                        // running so now it's our responsibility to do so.
                         </span><span class="self">Self</span>::drop_future(ptr);
                         future_dropped = <span class="bool-val">true</span>;
                     }
@@ -1433,8 +1412,8 @@
                                     abort_on_panic(|| w.wake());
                                 }
                             } <span class="kw">else if </span>state &amp; SCHEDULED != <span class="number">0 </span>{
-                                <span class="comment">// The thread that woke the task up didn&#39;t reschedule it because
-                                // it was running so now it&#39;s our responsibility to do so.
+                                <span class="comment">// The thread that woke the task up didn't reschedule it because
+                                // it was running so now it's our responsibility to do so.
                                 </span><span class="self">Self</span>::schedule(ptr, ScheduleInfo::new(<span class="bool-val">true</span>));
                                 <span class="kw">return </span><span class="bool-val">true</span>;
                             } <span class="kw">else </span>{
@@ -1473,8 +1452,8 @@
                         <span class="comment">// If the task was closed while running, then unschedule it, drop its
                         // future, and drop the task reference.
                         </span><span class="kw">if </span>state &amp; CLOSED != <span class="number">0 </span>{
-                            <span class="comment">// The thread that closed the task didn&#39;t drop the future because it
-                            // was running so now it&#39;s our responsibility to do so.
+                            <span class="comment">// The thread that closed the task didn't drop the future because it
+                            // was running so now it's our responsibility to do so.
                             </span>RawTask::&lt;F, T, S, M&gt;::drop_future(ptr);
 
                             <span class="comment">// Mark the task as not running and not scheduled.

@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/glam-0.24.2/src/f32/sse2/mat4.rs`."><title>mat4.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="glam" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../../glam/index.html"><img class="rust-logo" src="../../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/glam-0.25.0/src/f32/sse2/mat4.rs`."><title>mat4.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="glam" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1367,23 +1368,76 @@
 <a href="#1367" id="1367">1367</a>
 <a href="#1368" id="1368">1368</a>
 <a href="#1369" id="1369">1369</a>
+<a href="#1370" id="1370">1370</a>
+<a href="#1371" id="1371">1371</a>
+<a href="#1372" id="1372">1372</a>
+<a href="#1373" id="1373">1373</a>
+<a href="#1374" id="1374">1374</a>
+<a href="#1375" id="1375">1375</a>
+<a href="#1376" id="1376">1376</a>
+<a href="#1377" id="1377">1377</a>
+<a href="#1378" id="1378">1378</a>
+<a href="#1379" id="1379">1379</a>
+<a href="#1380" id="1380">1380</a>
+<a href="#1381" id="1381">1381</a>
+<a href="#1382" id="1382">1382</a>
+<a href="#1383" id="1383">1383</a>
+<a href="#1384" id="1384">1384</a>
+<a href="#1385" id="1385">1385</a>
+<a href="#1386" id="1386">1386</a>
+<a href="#1387" id="1387">1387</a>
+<a href="#1388" id="1388">1388</a>
+<a href="#1389" id="1389">1389</a>
+<a href="#1390" id="1390">1390</a>
+<a href="#1391" id="1391">1391</a>
+<a href="#1392" id="1392">1392</a>
+<a href="#1393" id="1393">1393</a>
+<a href="#1394" id="1394">1394</a>
+<a href="#1395" id="1395">1395</a>
+<a href="#1396" id="1396">1396</a>
+<a href="#1397" id="1397">1397</a>
+<a href="#1398" id="1398">1398</a>
+<a href="#1399" id="1399">1399</a>
+<a href="#1400" id="1400">1400</a>
+<a href="#1401" id="1401">1401</a>
+<a href="#1402" id="1402">1402</a>
+<a href="#1403" id="1403">1403</a>
+<a href="#1404" id="1404">1404</a>
+<a href="#1405" id="1405">1405</a>
+<a href="#1406" id="1406">1406</a>
+<a href="#1407" id="1407">1407</a>
+<a href="#1408" id="1408">1408</a>
+<a href="#1409" id="1409">1409</a>
+<a href="#1410" id="1410">1410</a>
+<a href="#1411" id="1411">1411</a>
+<a href="#1412" id="1412">1412</a>
+<a href="#1413" id="1413">1413</a>
+<a href="#1414" id="1414">1414</a>
+<a href="#1415" id="1415">1415</a>
+<a href="#1416" id="1416">1416</a>
+<a href="#1417" id="1417">1417</a>
+<a href="#1418" id="1418">1418</a>
+<a href="#1419" id="1419">1419</a>
+<a href="#1420" id="1420">1420</a>
+<a href="#1421" id="1421">1421</a>
 </pre></div><pre class="rust"><code><span class="comment">// Generated from mat.rs.tera template. Edit the template, not the generated file.
 
 </span><span class="kw">use crate</span>::{
     f32::math, sse2::<span class="kw-2">*</span>, swizzles::<span class="kw-2">*</span>, DMat4, EulerRot, Mat3, Mat3A, Quat, Vec3, Vec3A, Vec4,
 };
-<span class="attr">#[cfg(not(target_arch = <span class="string">&quot;spirv&quot;</span>))]
+<span class="attr">#[cfg(not(target_arch = <span class="string">"spirv"</span>))]
 </span><span class="kw">use </span>core::fmt;
 <span class="kw">use </span>core::iter::{Product, Sum};
 <span class="kw">use </span>core::ops::{Add, AddAssign, Mul, MulAssign, Neg, Sub, SubAssign};
 
-<span class="attr">#[cfg(target_arch = <span class="string">&quot;x86&quot;</span>)]
+<span class="attr">#[cfg(target_arch = <span class="string">"x86"</span>)]
 </span><span class="kw">use </span>core::arch::x86::<span class="kw-2">*</span>;
-<span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+<span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
 </span><span class="kw">use </span>core::arch::x86_64::<span class="kw-2">*</span>;
 
 <span class="doccomment">/// Creates a 4x4 matrix from four column vectors.
 </span><span class="attr">#[inline(always)]
+#[must_use]
 </span><span class="kw">pub const fn </span>mat4(x_axis: Vec4, y_axis: Vec4, z_axis: Vec4, w_axis: Vec4) -&gt; Mat4 {
     Mat4::from_cols(x_axis, y_axis, z_axis, w_axis)
 }
@@ -1438,6 +1492,7 @@
 
     <span class="attr">#[allow(clippy::too_many_arguments)]
     #[inline(always)]
+    #[must_use]
     </span><span class="kw">const fn </span>new(
         m00: f32,
         m01: f32,
@@ -1466,6 +1521,7 @@
 
     <span class="doccomment">/// Creates a 4x4 matrix from four column vectors.
     </span><span class="attr">#[inline(always)]
+    #[must_use]
     </span><span class="kw">pub const fn </span>from_cols(x_axis: Vec4, y_axis: Vec4, z_axis: Vec4, w_axis: Vec4) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
             x_axis,
@@ -1479,6 +1535,7 @@
     /// If your data is stored in row major you will need to `transpose` the returned
     /// matrix.
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub const fn </span>from_cols_array(m: <span class="kw-2">&amp;</span>[f32; <span class="number">16</span>]) -&gt; <span class="self">Self </span>{
         <span class="self">Self</span>::new(
             m[<span class="number">0</span>], m[<span class="number">1</span>], m[<span class="number">2</span>], m[<span class="number">3</span>], m[<span class="number">4</span>], m[<span class="number">5</span>], m[<span class="number">6</span>], m[<span class="number">7</span>], m[<span class="number">8</span>], m[<span class="number">9</span>], m[<span class="number">10</span>], m[<span class="number">11</span>], m[<span class="number">12</span>], m[<span class="number">13</span>],
@@ -1489,6 +1546,7 @@
     <span class="doccomment">/// Creates a `[f32; 16]` array storing data in column major order.
     /// If you require data in row major order `transpose` the matrix first.
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub const fn </span>to_cols_array(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; [f32; <span class="number">16</span>] {
         <span class="kw">let </span>[x_axis_x, x_axis_y, x_axis_z, x_axis_w] = <span class="self">self</span>.x_axis.to_array();
         <span class="kw">let </span>[y_axis_x, y_axis_y, y_axis_z, y_axis_w] = <span class="self">self</span>.y_axis.to_array();
@@ -1505,6 +1563,7 @@
     /// If your data is in row major order you will need to `transpose` the returned
     /// matrix.
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub const fn </span>from_cols_array_2d(m: <span class="kw-2">&amp;</span>[[f32; <span class="number">4</span>]; <span class="number">4</span>]) -&gt; <span class="self">Self </span>{
         <span class="self">Self</span>::from_cols(
             Vec4::from_array(m[<span class="number">0</span>]),
@@ -1517,6 +1576,7 @@
     <span class="doccomment">/// Creates a `[[f32; 4]; 4]` 4D array storing data in column major order.
     /// If you require data in row major order `transpose` the matrix first.
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub const fn </span>to_cols_array_2d(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; [[f32; <span class="number">4</span>]; <span class="number">4</span>] {
         [
             <span class="self">self</span>.x_axis.to_array(),
@@ -1527,10 +1587,11 @@
     }
 
     <span class="doccomment">/// Creates a 4x4 matrix with its diagonal set to `diagonal` and all other entries set to 0.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;scale&quot;</span>)]
+    </span><span class="attr">#[doc(alias = <span class="string">"scale"</span>)]
     #[inline]
+    #[must_use]
     </span><span class="kw">pub const fn </span>from_diagonal(diagonal: Vec4) -&gt; <span class="self">Self </span>{
-        <span class="comment">// diagonal.x, diagonal.y etc can&#39;t be done in a const-context
+        <span class="comment">// diagonal.x, diagonal.y etc can't be done in a const-context
         </span><span class="kw">let </span>[x, y, z, w] = diagonal.to_array();
         <span class="self">Self</span>::new(
             x, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, y, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, z, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, w,
@@ -1538,6 +1599,7 @@
     }
 
     <span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">fn </span>quat_to_axes(rotation: Quat) -&gt; (Vec4, Vec4, Vec4) {
         <span class="macro">glam_assert!</span>(rotation.is_normalized());
 
@@ -1571,6 +1633,7 @@
     ///
     /// Will panic if `rotation` is not normalized when `glam_assert` is enabled.
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>from_scale_rotation_translation(scale: Vec3, rotation: Quat, translation: Vec3) -&gt; <span class="self">Self </span>{
         <span class="kw">let </span>(x_axis, y_axis, z_axis) = <span class="self">Self</span>::quat_to_axes(rotation);
         <span class="self">Self</span>::from_cols(
@@ -1590,6 +1653,7 @@
     ///
     /// Will panic if `rotation` is not normalized when `glam_assert` is enabled.
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>from_rotation_translation(rotation: Quat, translation: Vec3) -&gt; <span class="self">Self </span>{
         <span class="kw">let </span>(x_axis, y_axis, z_axis) = <span class="self">Self</span>::quat_to_axes(rotation);
         <span class="self">Self</span>::from_cols(x_axis, y_axis, z_axis, Vec4::from((translation, <span class="number">1.0</span>)))
@@ -1603,6 +1667,7 @@
     /// Will panic if the determinant of `self` is zero or if the resulting scale vector
     /// contains any zero elements when `glam_assert` is enabled.
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>to_scale_rotation_translation(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; (Vec3, Quat, Vec3) {
         <span class="kw">let </span>det = <span class="self">self</span>.determinant();
         <span class="macro">glam_assert!</span>(det != <span class="number">0.0</span>);
@@ -1637,6 +1702,7 @@
     ///
     /// Will panic if `rotation` is not normalized when `glam_assert` is enabled.
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>from_quat(rotation: Quat) -&gt; <span class="self">Self </span>{
         <span class="kw">let </span>(x_axis, y_axis, z_axis) = <span class="self">Self</span>::quat_to_axes(rotation);
         <span class="self">Self</span>::from_cols(x_axis, y_axis, z_axis, Vec4::W)
@@ -1648,6 +1714,7 @@
     /// The resulting matrix can be used to transform 3D points and vectors. See
     /// [`Self::transform_point3()`] and [`Self::transform_vector3()`].
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>from_mat3(m: Mat3) -&gt; <span class="self">Self </span>{
         <span class="self">Self</span>::from_cols(
             Vec4::from((m.x_axis, <span class="number">0.0</span>)),
@@ -1663,6 +1730,7 @@
     /// The resulting matrix can be used to transform 3D points and vectors. See
     /// [`Self::transform_point3()`] and [`Self::transform_vector3()`].
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>from_mat3a(m: Mat3A) -&gt; <span class="self">Self </span>{
         <span class="self">Self</span>::from_cols(
             Vec4::from((m.x_axis, <span class="number">0.0</span>)),
@@ -1677,6 +1745,7 @@
     /// The resulting matrix can be used to transform 3D points and vectors. See
     /// [`Self::transform_point3()`] and [`Self::transform_vector3()`].
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>from_translation(translation: Vec3) -&gt; <span class="self">Self </span>{
         <span class="self">Self</span>::from_cols(
             Vec4::X,
@@ -1696,6 +1765,7 @@
     ///
     /// Will panic if `axis` is not normalized when `glam_assert` is enabled.
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>from_axis_angle(axis: Vec3, angle: f32) -&gt; <span class="self">Self </span>{
         <span class="macro">glam_assert!</span>(axis.is_normalized());
 
@@ -1729,12 +1799,13 @@
         )
     }
 
-    <span class="attr">#[inline]
-    </span><span class="doccomment">/// Creates a affine transformation matrix containing a rotation from the given euler
+    <span class="doccomment">/// Creates a affine transformation matrix containing a rotation from the given euler
     /// rotation sequence and angles (in radians).
     ///
     /// The resulting matrix can be used to transform 3D points and vectors. See
     /// [`Self::transform_point3()`] and [`Self::transform_vector3()`].
+    </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>from_euler(order: EulerRot, a: f32, b: f32, c: f32) -&gt; <span class="self">Self </span>{
         <span class="kw">let </span>quat = Quat::from_euler(order, a, b, c);
         <span class="self">Self</span>::from_quat(quat)
@@ -1746,6 +1817,7 @@
     /// The resulting matrix can be used to transform 3D points and vectors. See
     /// [`Self::transform_point3()`] and [`Self::transform_vector3()`].
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>from_rotation_x(angle: f32) -&gt; <span class="self">Self </span>{
         <span class="kw">let </span>(sina, cosa) = math::sin_cos(angle);
         <span class="self">Self</span>::from_cols(
@@ -1762,6 +1834,7 @@
     /// The resulting matrix can be used to transform 3D points and vectors. See
     /// [`Self::transform_point3()`] and [`Self::transform_vector3()`].
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>from_rotation_y(angle: f32) -&gt; <span class="self">Self </span>{
         <span class="kw">let </span>(sina, cosa) = math::sin_cos(angle);
         <span class="self">Self</span>::from_cols(
@@ -1778,6 +1851,7 @@
     /// The resulting matrix can be used to transform 3D points and vectors. See
     /// [`Self::transform_point3()`] and [`Self::transform_vector3()`].
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>from_rotation_z(angle: f32) -&gt; <span class="self">Self </span>{
         <span class="kw">let </span>(sina, cosa) = math::sin_cos(angle);
         <span class="self">Self</span>::from_cols(
@@ -1797,6 +1871,7 @@
     ///
     /// Will panic if all elements of `scale` are zero when `glam_assert` is enabled.
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>from_scale(scale: Vec3) -&gt; <span class="self">Self </span>{
         <span class="comment">// Do not panic as long as any component is non-zero
         </span><span class="macro">glam_assert!</span>(scale.cmpne(Vec3::ZERO).any());
@@ -1815,6 +1890,7 @@
     ///
     /// Panics if `slice` is less than 16 elements long.
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub const fn </span>from_cols_slice(slice: <span class="kw-2">&amp;</span>[f32]) -&gt; <span class="self">Self </span>{
         <span class="self">Self</span>::new(
             slice[<span class="number">0</span>], slice[<span class="number">1</span>], slice[<span class="number">2</span>], slice[<span class="number">3</span>], slice[<span class="number">4</span>], slice[<span class="number">5</span>], slice[<span class="number">6</span>], slice[<span class="number">7</span>],
@@ -1853,13 +1929,14 @@
     ///
     /// Panics if `index` is greater than 3.
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>col(<span class="kw-2">&amp;</span><span class="self">self</span>, index: usize) -&gt; Vec4 {
         <span class="kw">match </span>index {
             <span class="number">0 </span>=&gt; <span class="self">self</span>.x_axis,
             <span class="number">1 </span>=&gt; <span class="self">self</span>.y_axis,
             <span class="number">2 </span>=&gt; <span class="self">self</span>.z_axis,
             <span class="number">3 </span>=&gt; <span class="self">self</span>.w_axis,
-            <span class="kw">_ </span>=&gt; <span class="macro">panic!</span>(<span class="string">&quot;index out of bounds&quot;</span>),
+            <span class="kw">_ </span>=&gt; <span class="macro">panic!</span>(<span class="string">"index out of bounds"</span>),
         }
     }
 
@@ -1875,7 +1952,7 @@
             <span class="number">1 </span>=&gt; <span class="kw-2">&amp;mut </span><span class="self">self</span>.y_axis,
             <span class="number">2 </span>=&gt; <span class="kw-2">&amp;mut </span><span class="self">self</span>.z_axis,
             <span class="number">3 </span>=&gt; <span class="kw-2">&amp;mut </span><span class="self">self</span>.w_axis,
-            <span class="kw">_ </span>=&gt; <span class="macro">panic!</span>(<span class="string">&quot;index out of bounds&quot;</span>),
+            <span class="kw">_ </span>=&gt; <span class="macro">panic!</span>(<span class="string">"index out of bounds"</span>),
         }
     }
 
@@ -1885,19 +1962,21 @@
     ///
     /// Panics if `index` is greater than 3.
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>row(<span class="kw-2">&amp;</span><span class="self">self</span>, index: usize) -&gt; Vec4 {
         <span class="kw">match </span>index {
             <span class="number">0 </span>=&gt; Vec4::new(<span class="self">self</span>.x_axis.x, <span class="self">self</span>.y_axis.x, <span class="self">self</span>.z_axis.x, <span class="self">self</span>.w_axis.x),
             <span class="number">1 </span>=&gt; Vec4::new(<span class="self">self</span>.x_axis.y, <span class="self">self</span>.y_axis.y, <span class="self">self</span>.z_axis.y, <span class="self">self</span>.w_axis.y),
             <span class="number">2 </span>=&gt; Vec4::new(<span class="self">self</span>.x_axis.z, <span class="self">self</span>.y_axis.z, <span class="self">self</span>.z_axis.z, <span class="self">self</span>.w_axis.z),
             <span class="number">3 </span>=&gt; Vec4::new(<span class="self">self</span>.x_axis.w, <span class="self">self</span>.y_axis.w, <span class="self">self</span>.z_axis.w, <span class="self">self</span>.w_axis.w),
-            <span class="kw">_ </span>=&gt; <span class="macro">panic!</span>(<span class="string">&quot;index out of bounds&quot;</span>),
+            <span class="kw">_ </span>=&gt; <span class="macro">panic!</span>(<span class="string">"index out of bounds"</span>),
         }
     }
 
     <span class="doccomment">/// Returns `true` if, and only if, all elements are finite.
     /// If any element is either `NaN`, positive or negative infinity, this will return `false`.
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>is_finite(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
         <span class="self">self</span>.x_axis.is_finite()
             &amp;&amp; <span class="self">self</span>.y_axis.is_finite()
@@ -1907,13 +1986,14 @@
 
     <span class="doccomment">/// Returns `true` if any elements are `NaN`.
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>is_nan(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
         <span class="self">self</span>.x_axis.is_nan() || <span class="self">self</span>.y_axis.is_nan() || <span class="self">self</span>.z_axis.is_nan() || <span class="self">self</span>.w_axis.is_nan()
     }
 
     <span class="doccomment">/// Returns the transpose of `self`.
-    </span><span class="attr">#[must_use]
-    #[inline]
+    </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>transpose(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
         <span class="kw">unsafe </span>{
             <span class="comment">// Based on https://github.com/microsoft/DirectXMath `XMMatrixTranspose`
@@ -1932,6 +2012,7 @@
     }
 
     <span class="doccomment">/// Returns the determinant of `self`.
+    </span><span class="attr">#[must_use]
     </span><span class="kw">pub fn </span>determinant(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; f32 {
         <span class="kw">unsafe </span>{
             <span class="comment">// Based on https://github.com/g-truc/glm `glm_mat4_determinant_lowp`
@@ -2125,6 +2206,7 @@
     ///
     /// For a view coordinate system with `+X=right`, `+Y=up` and `+Z=forward`.
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>look_to_lh(eye: Vec3, dir: Vec3, up: Vec3) -&gt; <span class="self">Self </span>{
         <span class="self">Self</span>::look_to_rh(eye, -dir, up)
     }
@@ -2134,6 +2216,7 @@
     ///
     /// For a view coordinate system with `+X=right`, `+Y=up` and `+Z=back`.
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>look_to_rh(eye: Vec3, dir: Vec3, up: Vec3) -&gt; <span class="self">Self </span>{
         <span class="kw">let </span>f = dir.normalize();
         <span class="kw">let </span>s = f.cross(up).normalize();
@@ -2155,6 +2238,7 @@
     ///
     /// Will panic if `up` is not normalized when `glam_assert` is enabled.
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>look_at_lh(eye: Vec3, center: Vec3, up: Vec3) -&gt; <span class="self">Self </span>{
         <span class="macro">glam_assert!</span>(up.is_normalized());
         <span class="self">Self</span>::look_to_lh(eye, center.sub(eye), up)
@@ -2177,6 +2261,7 @@
     /// This is the same as the OpenGL `gluPerspective` function.
     /// See &lt;https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/gluPerspective.xml&gt;
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>perspective_rh_gl(
         fov_y_radians: f32,
         aspect_ratio: f32,
@@ -2203,6 +2288,7 @@
     /// Will panic if `z_near` or `z_far` are less than or equal to zero when `glam_assert` is
     /// enabled.
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>perspective_lh(fov_y_radians: f32, aspect_ratio: f32, z_near: f32, z_far: f32) -&gt; <span class="self">Self </span>{
         <span class="macro">glam_assert!</span>(z_near &gt; <span class="number">0.0 </span>&amp;&amp; z_far &gt; <span class="number">0.0</span>);
         <span class="kw">let </span>(sin_fov, cos_fov) = math::sin_cos(<span class="number">0.5 </span>* fov_y_radians);
@@ -2224,6 +2310,7 @@
     /// Will panic if `z_near` or `z_far` are less than or equal to zero when `glam_assert` is
     /// enabled.
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>perspective_rh(fov_y_radians: f32, aspect_ratio: f32, z_near: f32, z_far: f32) -&gt; <span class="self">Self </span>{
         <span class="macro">glam_assert!</span>(z_near &gt; <span class="number">0.0 </span>&amp;&amp; z_far &gt; <span class="number">0.0</span>);
         <span class="kw">let </span>(sin_fov, cos_fov) = math::sin_cos(<span class="number">0.5 </span>* fov_y_radians);
@@ -2244,6 +2331,7 @@
     ///
     /// Will panic if `z_near` is less than or equal to zero when `glam_assert` is enabled.
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>perspective_infinite_lh(fov_y_radians: f32, aspect_ratio: f32, z_near: f32) -&gt; <span class="self">Self </span>{
         <span class="macro">glam_assert!</span>(z_near &gt; <span class="number">0.0</span>);
         <span class="kw">let </span>(sin_fov, cos_fov) = math::sin_cos(<span class="number">0.5 </span>* fov_y_radians);
@@ -2263,6 +2351,7 @@
     ///
     /// Will panic if `z_near` is less than or equal to zero when `glam_assert` is enabled.
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>perspective_infinite_reverse_lh(
         fov_y_radians: f32,
         aspect_ratio: f32,
@@ -2283,6 +2372,7 @@
     <span class="doccomment">/// Creates an infinite right-handed perspective projection matrix with
     /// `[0,1]` depth range.
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>perspective_infinite_rh(fov_y_radians: f32, aspect_ratio: f32, z_near: f32) -&gt; <span class="self">Self </span>{
         <span class="macro">glam_assert!</span>(z_near &gt; <span class="number">0.0</span>);
         <span class="kw">let </span>f = <span class="number">1.0 </span>/ math::tan(<span class="number">0.5 </span>* fov_y_radians);
@@ -2297,6 +2387,7 @@
     <span class="doccomment">/// Creates an infinite reverse right-handed perspective projection matrix
     /// with `[0,1]` depth range.
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>perspective_infinite_reverse_rh(
         fov_y_radians: f32,
         aspect_ratio: f32,
@@ -2317,6 +2408,7 @@
     /// See
     /// &lt;https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glOrtho.xml&gt;
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>orthographic_rh_gl(
         left: f32,
         right: f32,
@@ -2342,6 +2434,7 @@
 
     <span class="doccomment">/// Creates a left-handed orthographic projection matrix with `[0,1]` depth range.
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>orthographic_lh(
         left: f32,
         right: f32,
@@ -2368,6 +2461,7 @@
 
     <span class="doccomment">/// Creates a right-handed orthographic projection matrix with `[0,1]` depth range.
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>orthographic_rh(
         left: f32,
         right: f32,
@@ -2399,6 +2493,7 @@
     ///
     /// This method assumes that `self` contains a projective transform.
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>project_point3(<span class="kw-2">&amp;</span><span class="self">self</span>, rhs: Vec3) -&gt; Vec3 {
         <span class="kw">let </span><span class="kw-2">mut </span>res = <span class="self">self</span>.x_axis.mul(rhs.x);
         res = <span class="self">self</span>.y_axis.mul(rhs.y).add(res);
@@ -2421,6 +2516,7 @@
     ///
     /// Will panic if the 3rd row of `self` is not `(0, 0, 0, 1)` when `glam_assert` is enabled.
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>transform_point3(<span class="kw-2">&amp;</span><span class="self">self</span>, rhs: Vec3) -&gt; Vec3 {
         <span class="macro">glam_assert!</span>(<span class="self">self</span>.row(<span class="number">3</span>).abs_diff_eq(Vec4::W, <span class="number">1e-6</span>));
         <span class="kw">let </span><span class="kw-2">mut </span>res = <span class="self">self</span>.x_axis.mul(rhs.x);
@@ -2441,6 +2537,7 @@
     ///
     /// Will panic if the 3rd row of `self` is not `(0, 0, 0, 1)` when `glam_assert` is enabled.
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>transform_vector3(<span class="kw-2">&amp;</span><span class="self">self</span>, rhs: Vec3) -&gt; Vec3 {
         <span class="macro">glam_assert!</span>(<span class="self">self</span>.row(<span class="number">3</span>).abs_diff_eq(Vec4::W, <span class="number">1e-6</span>));
         <span class="kw">let </span><span class="kw-2">mut </span>res = <span class="self">self</span>.x_axis.mul(rhs.x);
@@ -2453,6 +2550,7 @@
     ///
     /// This is the equivalent of multiplying the [`Vec3A`] as a 4D vector where `w` is `1.0`.
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>transform_point3a(<span class="kw-2">&amp;</span><span class="self">self</span>, rhs: Vec3A) -&gt; Vec3A {
         <span class="macro">glam_assert!</span>(<span class="self">self</span>.row(<span class="number">3</span>).abs_diff_eq(Vec4::W, <span class="number">1e-6</span>));
         <span class="kw">let </span><span class="kw-2">mut </span>res = <span class="self">self</span>.x_axis.mul(rhs.xxxx());
@@ -2466,6 +2564,7 @@
     ///
     /// This is the equivalent of multiplying the [`Vec3A`] as a 4D vector where `w` is `0.0`.
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>transform_vector3a(<span class="kw-2">&amp;</span><span class="self">self</span>, rhs: Vec3A) -&gt; Vec3A {
         <span class="macro">glam_assert!</span>(<span class="self">self</span>.row(<span class="number">3</span>).abs_diff_eq(Vec4::W, <span class="number">1e-6</span>));
         <span class="kw">let </span><span class="kw-2">mut </span>res = <span class="self">self</span>.x_axis.mul(rhs.xxxx());
@@ -2476,6 +2575,7 @@
 
     <span class="doccomment">/// Transforms a 4D vector.
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>mul_vec4(<span class="kw-2">&amp;</span><span class="self">self</span>, rhs: Vec4) -&gt; Vec4 {
         <span class="kw">let </span><span class="kw-2">mut </span>res = <span class="self">self</span>.x_axis.mul(rhs.xxxx());
         res = res.add(<span class="self">self</span>.y_axis.mul(rhs.yyyy()));
@@ -2486,6 +2586,7 @@
 
     <span class="doccomment">/// Multiplies two 4x4 matrices.
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>mul_mat4(<span class="kw-2">&amp;</span><span class="self">self</span>, rhs: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="self">Self </span>{
         <span class="self">Self</span>::from_cols(
             <span class="self">self</span>.mul(rhs.x_axis),
@@ -2497,6 +2598,7 @@
 
     <span class="doccomment">/// Adds two 4x4 matrices.
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>add_mat4(<span class="kw-2">&amp;</span><span class="self">self</span>, rhs: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="self">Self </span>{
         <span class="self">Self</span>::from_cols(
             <span class="self">self</span>.x_axis.add(rhs.x_axis),
@@ -2508,6 +2610,7 @@
 
     <span class="doccomment">/// Subtracts two 4x4 matrices.
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>sub_mat4(<span class="kw-2">&amp;</span><span class="self">self</span>, rhs: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="self">Self </span>{
         <span class="self">Self</span>::from_cols(
             <span class="self">self</span>.x_axis.sub(rhs.x_axis),
@@ -2519,6 +2622,7 @@
 
     <span class="doccomment">/// Multiplies a 4x4 matrix by a scalar.
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>mul_scalar(<span class="kw-2">&amp;</span><span class="self">self</span>, rhs: f32) -&gt; <span class="self">Self </span>{
         <span class="self">Self</span>::from_cols(
             <span class="self">self</span>.x_axis.mul(rhs),
@@ -2538,6 +2642,7 @@
     /// For more see
     /// [comparing floating point numbers](https://randomascii.wordpress.com/2012/02/25/comparing-floating-point-numbers-2012-edition/).
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>abs_diff_eq(<span class="kw-2">&amp;</span><span class="self">self</span>, rhs: <span class="self">Self</span>, max_abs_diff: f32) -&gt; bool {
         <span class="self">self</span>.x_axis.abs_diff_eq(rhs.x_axis, max_abs_diff)
             &amp;&amp; <span class="self">self</span>.y_axis.abs_diff_eq(rhs.y_axis, max_abs_diff)
@@ -2661,10 +2766,10 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; Sum&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">Self</span>&gt; <span class="kw">for </span>Mat4 {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; Sum&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="self">Self</span>&gt; <span class="kw">for </span>Mat4 {
     <span class="kw">fn </span>sum&lt;I&gt;(iter: I) -&gt; <span class="self">Self
     </span><span class="kw">where
-        </span>I: Iterator&lt;Item = <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">Self</span>&gt;,
+        </span>I: Iterator&lt;Item = <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="self">Self</span>&gt;,
     {
         iter.fold(<span class="self">Self</span>::ZERO, |a, <span class="kw-2">&amp;</span>b| <span class="self">Self</span>::add(a, b))
     }
@@ -2679,10 +2784,10 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; Product&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">Self</span>&gt; <span class="kw">for </span>Mat4 {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; Product&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="self">Self</span>&gt; <span class="kw">for </span>Mat4 {
     <span class="kw">fn </span>product&lt;I&gt;(iter: I) -&gt; <span class="self">Self
     </span><span class="kw">where
-        </span>I: Iterator&lt;Item = <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">Self</span>&gt;,
+        </span>I: Iterator&lt;Item = <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="self">Self</span>&gt;,
     {
         iter.fold(<span class="self">Self</span>::IDENTITY, |a, <span class="kw-2">&amp;</span>b| <span class="self">Self</span>::mul(a, b))
     }
@@ -2698,7 +2803,7 @@
     }
 }
 
-<span class="attr">#[cfg(not(target_arch = <span class="string">&quot;spirv&quot;</span>))]
+<span class="attr">#[cfg(not(target_arch = <span class="string">"spirv"</span>))]
 </span><span class="kw">impl </span>AsRef&lt;[f32; <span class="number">16</span>]&gt; <span class="kw">for </span>Mat4 {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>as_ref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[f32; <span class="number">16</span>] {
@@ -2706,7 +2811,7 @@
     }
 }
 
-<span class="attr">#[cfg(not(target_arch = <span class="string">&quot;spirv&quot;</span>))]
+<span class="attr">#[cfg(not(target_arch = <span class="string">"spirv"</span>))]
 </span><span class="kw">impl </span>AsMut&lt;[f32; <span class="number">16</span>]&gt; <span class="kw">for </span>Mat4 {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>as_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>[f32; <span class="number">16</span>] {
@@ -2714,24 +2819,24 @@
     }
 }
 
-<span class="attr">#[cfg(not(target_arch = <span class="string">&quot;spirv&quot;</span>))]
+<span class="attr">#[cfg(not(target_arch = <span class="string">"spirv"</span>))]
 </span><span class="kw">impl </span>fmt::Debug <span class="kw">for </span>Mat4 {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, fmt: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, fmt: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
         fmt.debug_struct(<span class="macro">stringify!</span>(Mat4))
-            .field(<span class="string">&quot;x_axis&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.x_axis)
-            .field(<span class="string">&quot;y_axis&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.y_axis)
-            .field(<span class="string">&quot;z_axis&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.z_axis)
-            .field(<span class="string">&quot;w_axis&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.w_axis)
+            .field(<span class="string">"x_axis"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.x_axis)
+            .field(<span class="string">"y_axis"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.y_axis)
+            .field(<span class="string">"z_axis"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.z_axis)
+            .field(<span class="string">"w_axis"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.w_axis)
             .finish()
     }
 }
 
-<span class="attr">#[cfg(not(target_arch = <span class="string">&quot;spirv&quot;</span>))]
+<span class="attr">#[cfg(not(target_arch = <span class="string">"spirv"</span>))]
 </span><span class="kw">impl </span>fmt::Display <span class="kw">for </span>Mat4 {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
         <span class="macro">write!</span>(
             f,
-            <span class="string">&quot;[{}, {}, {}, {}]&quot;</span>,
+            <span class="string">"[{}, {}, {}, {}]"</span>,
             <span class="self">self</span>.x_axis, <span class="self">self</span>.y_axis, <span class="self">self</span>.z_axis, <span class="self">self</span>.w_axis
         )
     }

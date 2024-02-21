@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ecs-0.12.1/src/entity/map_entities.rs`."><title>map_entities.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="bevy_ecs" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../bevy_ecs/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ecs-0.13.0/src/entity/map_entities.rs`."><title>map_entities.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="bevy_ecs" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -183,23 +184,79 @@
 <a href="#183" id="183">183</a>
 <a href="#184" id="184">184</a>
 <a href="#185" id="185">185</a>
-</pre></div><pre class="rust"><code><span class="kw">use crate</span>::{entity::Entity, world::World};
-<span class="kw">use </span>bevy_utils::HashMap;
+<a href="#186" id="186">186</a>
+<a href="#187" id="187">187</a>
+<a href="#188" id="188">188</a>
+<a href="#189" id="189">189</a>
+<a href="#190" id="190">190</a>
+<a href="#191" id="191">191</a>
+<a href="#192" id="192">192</a>
+<a href="#193" id="193">193</a>
+<a href="#194" id="194">194</a>
+<a href="#195" id="195">195</a>
+<a href="#196" id="196">196</a>
+<a href="#197" id="197">197</a>
+<a href="#198" id="198">198</a>
+<a href="#199" id="199">199</a>
+<a href="#200" id="200">200</a>
+<a href="#201" id="201">201</a>
+<a href="#202" id="202">202</a>
+<a href="#203" id="203">203</a>
+<a href="#204" id="204">204</a>
+<a href="#205" id="205">205</a>
+<a href="#206" id="206">206</a>
+<a href="#207" id="207">207</a>
+<a href="#208" id="208">208</a>
+<a href="#209" id="209">209</a>
+<a href="#210" id="210">210</a>
+<a href="#211" id="211">211</a>
+<a href="#212" id="212">212</a>
+<a href="#213" id="213">213</a>
+<a href="#214" id="214">214</a>
+<a href="#215" id="215">215</a>
+<a href="#216" id="216">216</a>
+<a href="#217" id="217">217</a>
+<a href="#218" id="218">218</a>
+<a href="#219" id="219">219</a>
+<a href="#220" id="220">220</a>
+<a href="#221" id="221">221</a>
+<a href="#222" id="222">222</a>
+<a href="#223" id="223">223</a>
+<a href="#224" id="224">224</a>
+<a href="#225" id="225">225</a>
+<a href="#226" id="226">226</a>
+<a href="#227" id="227">227</a>
+<a href="#228" id="228">228</a>
+<a href="#229" id="229">229</a>
+<a href="#230" id="230">230</a>
+<a href="#231" id="231">231</a>
+<a href="#232" id="232">232</a>
+<a href="#233" id="233">233</a>
+</pre></div><pre class="rust"><code><span class="kw">use crate</span>::{
+    entity::Entity,
+    identifier::masks::{IdentifierMask, HIGH_MASK},
+    world::World,
+};
+
+<span class="kw">use </span><span class="kw">super</span>::EntityHashMap;
 
 <span class="doccomment">/// Operation to map all contained [`Entity`] fields in a type to new values.
 ///
-/// As entity IDs are valid only for the [`World`] they&#39;re sourced from, using [`Entity`]
+/// As entity IDs are valid only for the [`World`] they're sourced from, using [`Entity`]
 /// as references in components copied from another world will be invalid. This trait
-/// allows defining custom mappings for these references via [`HashMap&lt;Entity, Entity&gt;`]
+/// allows defining custom mappings for these references via [`EntityMappers`](EntityMapper), which
+/// inject the entity mapping strategy between your `MapEntities` type and the current world
+/// (usually by using an [`EntityHashMap&lt;Entity&gt;`] between source entities and entities in the
+/// current world).
 ///
 /// Implementing this trait correctly is required for properly loading components
 /// with entity references from scenes.
 ///
 /// ## Example
 ///
-/// ```rust
+/// ```
 /// use bevy_ecs::prelude::*;
-/// use bevy_ecs::entity::{EntityMapper, MapEntities};
+/// use bevy_ecs::entity::MapEntities;
 ///
 /// #[derive(Component)]
 /// struct Spring {
@@ -208,75 +265,117 @@
 /// }
 ///
 /// impl MapEntities for Spring {
-///     fn map_entities(&amp;mut self, entity_mapper: &amp;mut EntityMapper) {
-///         self.a = entity_mapper.get_or_reserve(self.a);
-///         self.b = entity_mapper.get_or_reserve(self.b);
+///     fn map_entities&lt;M: EntityMapper&gt;(&amp;mut self, entity_mapper: &amp;mut M) {
+///         self.a = entity_mapper.map_entity(self.a);
+///         self.b = entity_mapper.map_entity(self.b);
 ///     }
 /// }
 /// ```
 ///
-/// [`World`]: crate::world::World
 </span><span class="kw">pub trait </span>MapEntities {
     <span class="doccomment">/// Updates all [`Entity`] references stored inside using `entity_mapper`.
     ///
-    /// Implementors should look up any and all [`Entity`] values stored within and
+    /// Implementors should look up any and all [`Entity`] values stored within `self` and
     /// update them to the mapped values via `entity_mapper`.
-    </span><span class="kw">fn </span>map_entities(<span class="kw-2">&amp;mut </span><span class="self">self</span>, entity_mapper: <span class="kw-2">&amp;mut </span>EntityMapper);
+    </span><span class="kw">fn </span>map_entities&lt;M: EntityMapper&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, entity_mapper: <span class="kw-2">&amp;mut </span>M);
 }
 
-<span class="doccomment">/// A wrapper for [`HashMap&lt;Entity, Entity&gt;`], augmenting it with the ability to allocate new [`Entity`] references in a destination
+<span class="doccomment">/// An implementor of this trait knows how to map an [`Entity`] into another [`Entity`].
+///
+/// Usually this is done by using an [`EntityHashMap&lt;Entity&gt;`] to map source entities
+/// (mapper inputs) to the current world's entities (mapper outputs).
+///
+/// More generally, this can be used to map [`Entity`] references between any two [`Worlds`](World).
+///
+/// ## Example
+///
+/// ```
+/// # use bevy_ecs::entity::{Entity, EntityMapper};
+/// # use bevy_ecs::entity::EntityHashMap;
+/// #
+/// pub struct SimpleEntityMapper {
+///   map: EntityHashMap&lt;Entity&gt;,
+/// }
+///
+/// // Example implementation of EntityMapper where we map an entity to another entity if it exists
+/// // in the underlying `EntityHashMap`, otherwise we just return the original entity.
+/// impl EntityMapper for SimpleEntityMapper {
+///     fn map_entity(&amp;mut self, entity: Entity) -&gt; Entity {
+///         self.map.get(&amp;entity).copied().unwrap_or(entity)
+///     }
+/// }
+/// ```
+</span><span class="kw">pub trait </span>EntityMapper {
+    <span class="doccomment">/// Map an entity to another entity
+    </span><span class="kw">fn </span>map_entity(<span class="kw-2">&amp;mut </span><span class="self">self</span>, entity: Entity) -&gt; Entity;
+}
+
+<span class="kw">impl </span>EntityMapper <span class="kw">for </span>SceneEntityMapper&lt;<span class="lifetime">'_</span>&gt; {
+    <span class="doccomment">/// Returns the corresponding mapped entity or reserves a new dead entity ID in the current world if it is absent.
+    </span><span class="kw">fn </span>map_entity(<span class="kw-2">&amp;mut </span><span class="self">self</span>, entity: Entity) -&gt; Entity {
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>mapped) = <span class="self">self</span>.map.get(<span class="kw-2">&amp;</span>entity) {
+            <span class="kw">return </span>mapped;
+        }
+
+        <span class="comment">// this new entity reference is specifically designed to never represent any living entity
+        </span><span class="kw">let </span>new = Entity::from_raw_and_generation(
+            <span class="self">self</span>.dead_start.index(),
+            IdentifierMask::inc_masked_high_by(<span class="self">self</span>.dead_start.generation, <span class="self">self</span>.generations),
+        );
+
+        <span class="comment">// Prevent generations counter from being a greater value than HIGH_MASK.
+        </span><span class="self">self</span>.generations = (<span class="self">self</span>.generations + <span class="number">1</span>) &amp; HIGH_MASK;
+
+        <span class="self">self</span>.map.insert(entity, new);
+
+        new
+    }
+}
+
+<span class="doccomment">/// A wrapper for [`EntityHashMap&lt;Entity&gt;`], augmenting it with the ability to allocate new [`Entity`] references in a destination
 /// world. These newly allocated references are guaranteed to never point to any living entity in that world.
 ///
 /// References are allocated by returning increasing generations starting from an internally initialized base
 /// [`Entity`]. After it is finished being used by [`MapEntities`] implementations, this entity is despawned and the
 /// requisite number of generations reserved.
-</span><span class="kw">pub struct </span>EntityMapper&lt;<span class="lifetime">&#39;m</span>&gt; {
+</span><span class="kw">pub struct </span>SceneEntityMapper&lt;<span class="lifetime">'m</span>&gt; {
     <span class="doccomment">/// A mapping from one set of entities to another.
     ///
     /// This is typically used to coordinate data transfer between sets of entities, such as between a scene and the world
     /// or over the network. This is required as [`Entity`] identifiers are opaque; you cannot and do not want to reuse
     /// identifiers directly.
     ///
-    /// On its own, a [`HashMap&lt;Entity, Entity&gt;`] is not capable of allocating new entity identifiers, which is needed to map references
-    /// to entities that lie outside the source entity set. This functionality can be accessed through [`EntityMapper::world_scope()`].
-    </span>map: <span class="kw-2">&amp;</span><span class="lifetime">&#39;m </span><span class="kw-2">mut </span>HashMap&lt;Entity, Entity&gt;,
+    /// On its own, a [`EntityHashMap&lt;Entity&gt;`] is not capable of allocating new entity identifiers, which is needed to map references
+    /// to entities that lie outside the source entity set. This functionality can be accessed through [`SceneEntityMapper::world_scope()`].
+    </span>map: <span class="kw-2">&amp;</span><span class="lifetime">'m </span><span class="kw-2">mut </span>EntityHashMap&lt;Entity&gt;,
     <span class="doccomment">/// A base [`Entity`] used to allocate new references.
     </span>dead_start: Entity,
     <span class="doccomment">/// The number of generations this mapper has allocated thus far.
     </span>generations: u32,
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;m</span>&gt; EntityMapper&lt;<span class="lifetime">&#39;m</span>&gt; {
-    <span class="doccomment">/// Returns the corresponding mapped entity or reserves a new dead entity ID if it is absent.
+<span class="kw">impl</span>&lt;<span class="lifetime">'m</span>&gt; SceneEntityMapper&lt;<span class="lifetime">'m</span>&gt; {
+    <span class="attr">#[deprecated(
+        since = <span class="string">"0.13.0"</span>,
+        note = <span class="string">"please use `EntityMapper::map_entity` instead"
+    </span>)]
+    </span><span class="doccomment">/// Returns the corresponding mapped entity or reserves a new dead entity ID in the current world if it is absent.
     </span><span class="kw">pub fn </span>get_or_reserve(<span class="kw-2">&amp;mut </span><span class="self">self</span>, entity: Entity) -&gt; Entity {
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>mapped) = <span class="self">self</span>.map.get(<span class="kw-2">&amp;</span>entity) {
-            <span class="kw">return </span>mapped;
-        }
-
-        <span class="comment">// this new entity reference is specifically designed to never represent any living entity
-        </span><span class="kw">let </span>new = Entity {
-            generation: <span class="self">self</span>.dead_start.generation + <span class="self">self</span>.generations,
-            index: <span class="self">self</span>.dead_start.index,
-        };
-        <span class="self">self</span>.generations += <span class="number">1</span>;
-
-        <span class="self">self</span>.map.insert(entity, new);
-
-        new
+        <span class="self">self</span>.map_entity(entity)
     }
 
-    <span class="doccomment">/// Gets a reference to the underlying [`HashMap&lt;Entity, Entity&gt;`].
-    </span><span class="kw">pub fn </span>get_map(<span class="kw-2">&amp;</span><span class="lifetime">&#39;m </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;m </span>HashMap&lt;Entity, Entity&gt; {
+    <span class="doccomment">/// Gets a reference to the underlying [`EntityHashMap&lt;Entity&gt;`].
+    </span><span class="kw">pub fn </span>get_map(<span class="kw-2">&amp;</span><span class="lifetime">'m </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'m </span>EntityHashMap&lt;Entity&gt; {
         <span class="self">self</span>.map
     }
 
-    <span class="doccomment">/// Gets a mutable reference to the underlying [`HashMap&lt;Entity, Entity&gt;`].
-    </span><span class="kw">pub fn </span>get_map_mut(<span class="kw-2">&amp;</span><span class="lifetime">&#39;m </span><span class="kw-2">mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;m </span><span class="kw-2">mut </span>HashMap&lt;Entity, Entity&gt; {
+    <span class="doccomment">/// Gets a mutable reference to the underlying [`EntityHashMap&lt;Entity&gt;`].
+    </span><span class="kw">pub fn </span>get_map_mut(<span class="kw-2">&amp;</span><span class="lifetime">'m </span><span class="kw-2">mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'m </span><span class="kw-2">mut </span>EntityHashMap&lt;Entity&gt; {
         <span class="self">self</span>.map
     }
 
-    <span class="doccomment">/// Creates a new [`EntityMapper`], spawning a temporary base [`Entity`] in the provided [`World`]
-    </span><span class="kw">fn </span>new(map: <span class="kw-2">&amp;</span><span class="lifetime">&#39;m </span><span class="kw-2">mut </span>HashMap&lt;Entity, Entity&gt;, world: <span class="kw-2">&amp;mut </span>World) -&gt; <span class="self">Self </span>{
+    <span class="doccomment">/// Creates a new [`SceneEntityMapper`], spawning a temporary base [`Entity`] in the provided [`World`]
+    </span><span class="kw">fn </span>new(map: <span class="kw-2">&amp;</span><span class="lifetime">'m </span><span class="kw-2">mut </span>EntityHashMap&lt;Entity&gt;, world: <span class="kw-2">&amp;mut </span>World) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
             map,
             <span class="comment">// SAFETY: Entities data is kept in a valid state via `EntityMapper::world_scope`
@@ -287,23 +386,23 @@
 
     <span class="doccomment">/// Reserves the allocated references to dead entities within the world. This frees the temporary base
     /// [`Entity`] while reserving extra generations via [`crate::entity::Entities::reserve_generations`]. Because this
-    /// renders the [`EntityMapper`] unable to safely allocate any more references, this method takes ownership of
+    /// renders the [`SceneEntityMapper`] unable to safely allocate any more references, this method takes ownership of
     /// `self` in order to render it unusable.
     </span><span class="kw">fn </span>finish(<span class="self">self</span>, world: <span class="kw-2">&amp;mut </span>World) {
         <span class="comment">// SAFETY: Entities data is kept in a valid state via `EntityMap::world_scope`
         </span><span class="kw">let </span>entities = <span class="kw">unsafe </span>{ world.entities_mut() };
         <span class="macro">assert!</span>(entities.free(<span class="self">self</span>.dead_start).is_some());
-        <span class="macro">assert!</span>(entities.reserve_generations(<span class="self">self</span>.dead_start.index, <span class="self">self</span>.generations));
+        <span class="macro">assert!</span>(entities.reserve_generations(<span class="self">self</span>.dead_start.index(), <span class="self">self</span>.generations));
     }
 
-    <span class="doccomment">/// Creates an [`EntityMapper`] from a provided [`World`] and [`HashMap&lt;Entity, Entity&gt;`], then calls the
+    <span class="doccomment">/// Creates an [`SceneEntityMapper`] from a provided [`World`] and [`EntityHashMap&lt;Entity&gt;`], then calls the
     /// provided function with it. This allows one to allocate new entity references in this [`World`] that are
     /// guaranteed to never point at a living entity now or in the future. This functionality is useful for safely
     /// mapping entity identifiers that point at entities outside the source world. The passed function, `f`, is called
     /// within the scope of this world. Its return value is then returned from `world_scope` as the generic type
     /// parameter `R`.
     </span><span class="kw">pub fn </span>world_scope&lt;R&gt;(
-        entity_map: <span class="kw-2">&amp;</span><span class="lifetime">&#39;m </span><span class="kw-2">mut </span>HashMap&lt;Entity, Entity&gt;,
+        entity_map: <span class="kw-2">&amp;</span><span class="lifetime">'m </span><span class="kw-2">mut </span>EntityHashMap&lt;Entity&gt;,
         world: <span class="kw-2">&amp;mut </span>World,
         f: <span class="kw">impl </span>FnOnce(<span class="kw-2">&amp;mut </span>World, <span class="kw-2">&amp;mut </span><span class="self">Self</span>) -&gt; R,
     ) -&gt; R {
@@ -316,10 +415,8 @@
 
 <span class="attr">#[cfg(test)]
 </span><span class="kw">mod </span>tests {
-    <span class="kw">use </span>bevy_utils::HashMap;
-
     <span class="kw">use crate</span>::{
-        entity::{Entity, EntityMapper},
+        entity::{Entity, EntityHashMap, EntityMapper, SceneEntityMapper},
         world::World,
     };
 
@@ -328,22 +425,22 @@
         <span class="kw">const </span>FIRST_IDX: u32 = <span class="number">1</span>;
         <span class="kw">const </span>SECOND_IDX: u32 = <span class="number">2</span>;
 
-        <span class="kw">let </span><span class="kw-2">mut </span>map = HashMap::default();
+        <span class="kw">let </span><span class="kw-2">mut </span>map = EntityHashMap::default();
         <span class="kw">let </span><span class="kw-2">mut </span>world = World::new();
-        <span class="kw">let </span><span class="kw-2">mut </span>mapper = EntityMapper::new(<span class="kw-2">&amp;mut </span>map, <span class="kw-2">&amp;mut </span>world);
+        <span class="kw">let </span><span class="kw-2">mut </span>mapper = SceneEntityMapper::new(<span class="kw-2">&amp;mut </span>map, <span class="kw-2">&amp;mut </span>world);
 
-        <span class="kw">let </span>mapped_ent = Entity::new(FIRST_IDX, <span class="number">0</span>);
-        <span class="kw">let </span>dead_ref = mapper.get_or_reserve(mapped_ent);
+        <span class="kw">let </span>mapped_ent = Entity::from_raw(FIRST_IDX);
+        <span class="kw">let </span>dead_ref = mapper.map_entity(mapped_ent);
 
         <span class="macro">assert_eq!</span>(
             dead_ref,
-            mapper.get_or_reserve(mapped_ent),
-            <span class="string">&quot;should persist the allocated mapping from the previous line&quot;
+            mapper.map_entity(mapped_ent),
+            <span class="string">"should persist the allocated mapping from the previous line"
         </span>);
         <span class="macro">assert_eq!</span>(
-            mapper.get_or_reserve(Entity::new(SECOND_IDX, <span class="number">0</span>)).index(),
+            mapper.map_entity(Entity::from_raw(SECOND_IDX)).index(),
             dead_ref.index(),
-            <span class="string">&quot;should re-use the same index for further dead refs&quot;
+            <span class="string">"should re-use the same index for further dead refs"
         </span>);
 
         mapper.finish(<span class="kw-2">&amp;mut </span>world);
@@ -355,11 +452,11 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>world_scope_reserves_generations() {
-        <span class="kw">let </span><span class="kw-2">mut </span>map = HashMap::default();
+        <span class="kw">let </span><span class="kw-2">mut </span>map = EntityHashMap::default();
         <span class="kw">let </span><span class="kw-2">mut </span>world = World::new();
 
-        <span class="kw">let </span>dead_ref = EntityMapper::world_scope(<span class="kw-2">&amp;mut </span>map, <span class="kw-2">&amp;mut </span>world, |<span class="kw">_</span>, mapper| {
-            mapper.get_or_reserve(Entity::new(<span class="number">0</span>, <span class="number">0</span>))
+        <span class="kw">let </span>dead_ref = SceneEntityMapper::world_scope(<span class="kw-2">&amp;mut </span>map, <span class="kw-2">&amp;mut </span>world, |<span class="kw">_</span>, mapper| {
+            mapper.map_entity(Entity::from_raw(<span class="number">0</span>))
         });
 
         <span class="comment">// Next allocated entity should be a further generation on the same index

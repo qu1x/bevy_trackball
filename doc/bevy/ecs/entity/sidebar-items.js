@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["Entities","Entity","EntityLocation","EntityMapper","ReserveEntitiesIterator"],"trait":["MapEntities"]};
+window.SIDEBAR_ITEMS = {"struct":["Entities","Entity","EntityHash","EntityHasher","EntityLocation","ReserveEntitiesIterator","SceneEntityMapper"],"trait":["EntityMapper","MapEntities"],"type":["EntityHashMap","EntityHashSet"]};

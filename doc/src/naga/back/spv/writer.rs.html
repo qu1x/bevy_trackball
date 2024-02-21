@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/naga-0.13.0/src/back/spv/writer.rs`."><title>writer.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="naga" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../../naga/index.html"><img class="rust-logo" src="../../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/naga-0.19.0/src/back/spv/writer.rs`."><title>writer.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="naga" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1978,6 +1979,89 @@
 <a href="#1978" id="1978">1978</a>
 <a href="#1979" id="1979">1979</a>
 <a href="#1980" id="1980">1980</a>
+<a href="#1981" id="1981">1981</a>
+<a href="#1982" id="1982">1982</a>
+<a href="#1983" id="1983">1983</a>
+<a href="#1984" id="1984">1984</a>
+<a href="#1985" id="1985">1985</a>
+<a href="#1986" id="1986">1986</a>
+<a href="#1987" id="1987">1987</a>
+<a href="#1988" id="1988">1988</a>
+<a href="#1989" id="1989">1989</a>
+<a href="#1990" id="1990">1990</a>
+<a href="#1991" id="1991">1991</a>
+<a href="#1992" id="1992">1992</a>
+<a href="#1993" id="1993">1993</a>
+<a href="#1994" id="1994">1994</a>
+<a href="#1995" id="1995">1995</a>
+<a href="#1996" id="1996">1996</a>
+<a href="#1997" id="1997">1997</a>
+<a href="#1998" id="1998">1998</a>
+<a href="#1999" id="1999">1999</a>
+<a href="#2000" id="2000">2000</a>
+<a href="#2001" id="2001">2001</a>
+<a href="#2002" id="2002">2002</a>
+<a href="#2003" id="2003">2003</a>
+<a href="#2004" id="2004">2004</a>
+<a href="#2005" id="2005">2005</a>
+<a href="#2006" id="2006">2006</a>
+<a href="#2007" id="2007">2007</a>
+<a href="#2008" id="2008">2008</a>
+<a href="#2009" id="2009">2009</a>
+<a href="#2010" id="2010">2010</a>
+<a href="#2011" id="2011">2011</a>
+<a href="#2012" id="2012">2012</a>
+<a href="#2013" id="2013">2013</a>
+<a href="#2014" id="2014">2014</a>
+<a href="#2015" id="2015">2015</a>
+<a href="#2016" id="2016">2016</a>
+<a href="#2017" id="2017">2017</a>
+<a href="#2018" id="2018">2018</a>
+<a href="#2019" id="2019">2019</a>
+<a href="#2020" id="2020">2020</a>
+<a href="#2021" id="2021">2021</a>
+<a href="#2022" id="2022">2022</a>
+<a href="#2023" id="2023">2023</a>
+<a href="#2024" id="2024">2024</a>
+<a href="#2025" id="2025">2025</a>
+<a href="#2026" id="2026">2026</a>
+<a href="#2027" id="2027">2027</a>
+<a href="#2028" id="2028">2028</a>
+<a href="#2029" id="2029">2029</a>
+<a href="#2030" id="2030">2030</a>
+<a href="#2031" id="2031">2031</a>
+<a href="#2032" id="2032">2032</a>
+<a href="#2033" id="2033">2033</a>
+<a href="#2034" id="2034">2034</a>
+<a href="#2035" id="2035">2035</a>
+<a href="#2036" id="2036">2036</a>
+<a href="#2037" id="2037">2037</a>
+<a href="#2038" id="2038">2038</a>
+<a href="#2039" id="2039">2039</a>
+<a href="#2040" id="2040">2040</a>
+<a href="#2041" id="2041">2041</a>
+<a href="#2042" id="2042">2042</a>
+<a href="#2043" id="2043">2043</a>
+<a href="#2044" id="2044">2044</a>
+<a href="#2045" id="2045">2045</a>
+<a href="#2046" id="2046">2046</a>
+<a href="#2047" id="2047">2047</a>
+<a href="#2048" id="2048">2048</a>
+<a href="#2049" id="2049">2049</a>
+<a href="#2050" id="2050">2050</a>
+<a href="#2051" id="2051">2051</a>
+<a href="#2052" id="2052">2052</a>
+<a href="#2053" id="2053">2053</a>
+<a href="#2054" id="2054">2054</a>
+<a href="#2055" id="2055">2055</a>
+<a href="#2056" id="2056">2056</a>
+<a href="#2057" id="2057">2057</a>
+<a href="#2058" id="2058">2058</a>
+<a href="#2059" id="2059">2059</a>
+<a href="#2060" id="2060">2060</a>
+<a href="#2061" id="2061">2061</a>
+<a href="#2062" id="2062">2062</a>
+<a href="#2063" id="2063">2063</a>
 </pre></div><pre class="rust"><code><span class="kw">use super</span>::{
     block::DebugInfoInner,
     helpers::{contains_builtin, global_needs_wrapper, map_storage_class},
@@ -1995,8 +2079,8 @@
 <span class="kw">use </span>spirv::Word;
 <span class="kw">use </span>std::collections::hash_map::Entry;
 
-<span class="kw">struct </span>FunctionInterface&lt;<span class="lifetime">&#39;a</span>&gt; {
-    varying_ids: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>Vec&lt;Word&gt;,
+<span class="kw">struct </span>FunctionInterface&lt;<span class="lifetime">'a</span>&gt; {
+    varying_ids: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>Vec&lt;Word&gt;,
     stage: <span class="kw">crate</span>::ShaderStage,
 }
 
@@ -2123,7 +2207,7 @@
     /// explain what provoked the requirement. (If no available capabilities were
     /// given, assume everything is available.)
     ///
-    /// The first acceptable capability will be added to this `Writer`&#39;s
+    /// The first acceptable capability will be added to this `Writer`'s
     /// [`capabilities_used`] table, and an `OpCapability` emitted for it in the
     /// result. For this reason, more specific capabilities should be listed
     /// before more general.
@@ -2131,7 +2215,7 @@
     /// [`capabilities_used`]: Writer::capabilities_used
     </span><span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>require_any(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        what: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        what: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
         capabilities: <span class="kw-2">&amp;</span>[spirv::Capability],
     ) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt; {
         <span class="kw">match </span><span class="kw-2">*</span>capabilities {
@@ -2157,7 +2241,7 @@
     }
 
     <span class="doccomment">/// Indicate that the code uses the given extension.
-    </span><span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>use_extension(<span class="kw-2">&amp;mut </span><span class="self">self</span>, extension: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str) {
+    </span><span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>use_extension(<span class="kw-2">&amp;mut </span><span class="self">self</span>, extension: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str) {
         <span class="self">self</span>.extensions_used.insert(extension);
     }
 
@@ -2166,7 +2250,7 @@
             Entry::Occupied(e) =&gt; <span class="kw-2">*</span>e.get(),
             Entry::Vacant(e) =&gt; {
                 <span class="kw">let </span>local = <span class="kw">match </span>lookup_ty {
-                    LookupType::Handle(_handle) =&gt; <span class="macro">unreachable!</span>(<span class="string">&quot;Handles are populated at start&quot;</span>),
+                    LookupType::Handle(_handle) =&gt; <span class="macro">unreachable!</span>(<span class="string">"Handles are populated at start"</span>),
                     LookupType::Local(local) =&gt; local,
                 };
 
@@ -2178,11 +2262,15 @@
         }
     }
 
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>get_expression_type_id(<span class="kw-2">&amp;mut </span><span class="self">self</span>, tr: <span class="kw-2">&amp;</span>TypeResolution) -&gt; Word {
-        <span class="kw">let </span>lookup_ty = <span class="kw">match </span><span class="kw-2">*</span>tr {
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>get_expression_lookup_type(<span class="kw-2">&amp;mut </span><span class="self">self</span>, tr: <span class="kw-2">&amp;</span>TypeResolution) -&gt; LookupType {
+        <span class="kw">match </span><span class="kw-2">*</span>tr {
             TypeResolution::Handle(ty_handle) =&gt; LookupType::Handle(ty_handle),
             TypeResolution::Value(<span class="kw-2">ref </span>inner) =&gt; LookupType::Local(make_local(inner).unwrap()),
-        };
+        }
+    }
+
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>get_expression_type_id(<span class="kw-2">&amp;mut </span><span class="self">self</span>, tr: <span class="kw-2">&amp;</span>TypeResolution) -&gt; Word {
+        <span class="kw">let </span>lookup_ty = <span class="self">self</span>.get_expression_lookup_type(tr);
         <span class="self">self</span>.get_type_id(lookup_ty)
     }
 
@@ -2214,8 +2302,7 @@
     <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>get_uint_type_id(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; Word {
         <span class="kw">let </span>local_type = LocalType::Value {
             vector_size: <span class="prelude-val">None</span>,
-            kind: <span class="kw">crate</span>::ScalarKind::Uint,
-            width: <span class="number">4</span>,
+            scalar: <span class="kw">crate</span>::Scalar::U32,
             pointer_space: <span class="prelude-val">None</span>,
         };
         <span class="self">self</span>.get_type_id(local_type.into())
@@ -2224,8 +2311,7 @@
     <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>get_float_type_id(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; Word {
         <span class="kw">let </span>local_type = LocalType::Value {
             vector_size: <span class="prelude-val">None</span>,
-            kind: <span class="kw">crate</span>::ScalarKind::Float,
-            width: <span class="number">4</span>,
+            scalar: <span class="kw">crate</span>::Scalar::F32,
             pointer_space: <span class="prelude-val">None</span>,
         };
         <span class="self">self</span>.get_type_id(local_type.into())
@@ -2234,8 +2320,7 @@
     <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>get_uint3_type_id(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; Word {
         <span class="kw">let </span>local_type = LocalType::Value {
             vector_size: <span class="prelude-val">Some</span>(<span class="kw">crate</span>::VectorSize::Tri),
-            kind: <span class="kw">crate</span>::ScalarKind::Uint,
-            width: <span class="number">4</span>,
+            scalar: <span class="kw">crate</span>::Scalar::U32,
             pointer_space: <span class="prelude-val">None</span>,
         };
         <span class="self">self</span>.get_type_id(local_type.into())
@@ -2244,8 +2329,7 @@
     <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>get_float_pointer_type_id(<span class="kw-2">&amp;mut </span><span class="self">self</span>, class: spirv::StorageClass) -&gt; Word {
         <span class="kw">let </span>lookup_type = LookupType::Local(LocalType::Value {
             vector_size: <span class="prelude-val">None</span>,
-            kind: <span class="kw">crate</span>::ScalarKind::Float,
-            width: <span class="number">4</span>,
+            scalar: <span class="kw">crate</span>::Scalar::F32,
             pointer_space: <span class="prelude-val">Some</span>(class),
         });
         <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>id) = <span class="self">self</span>.lookup_type.get(<span class="kw-2">&amp;</span>lookup_type) {
@@ -2263,8 +2347,7 @@
     <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>get_uint3_pointer_type_id(<span class="kw-2">&amp;mut </span><span class="self">self</span>, class: spirv::StorageClass) -&gt; Word {
         <span class="kw">let </span>lookup_type = LookupType::Local(LocalType::Value {
             vector_size: <span class="prelude-val">Some</span>(<span class="kw">crate</span>::VectorSize::Tri),
-            kind: <span class="kw">crate</span>::ScalarKind::Uint,
-            width: <span class="number">4</span>,
+            scalar: <span class="kw">crate</span>::Scalar::U32,
             pointer_space: <span class="prelude-val">Some</span>(class),
         });
         <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>id) = <span class="self">self</span>.lookup_type.get(<span class="kw-2">&amp;</span>lookup_type) {
@@ -2282,8 +2365,7 @@
     <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>get_bool_type_id(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; Word {
         <span class="kw">let </span>local_type = LocalType::Value {
             vector_size: <span class="prelude-val">None</span>,
-            kind: <span class="kw">crate</span>::ScalarKind::Bool,
-            width: <span class="number">1</span>,
+            scalar: <span class="kw">crate</span>::Scalar::BOOL,
             pointer_space: <span class="prelude-val">None</span>,
         };
         <span class="self">self</span>.get_type_id(local_type.into())
@@ -2292,8 +2374,7 @@
     <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>get_bool3_type_id(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; Word {
         <span class="kw">let </span>local_type = LocalType::Value {
             vector_size: <span class="prelude-val">Some</span>(<span class="kw">crate</span>::VectorSize::Tri),
-            kind: <span class="kw">crate</span>::ScalarKind::Bool,
-            width: <span class="number">1</span>,
+            scalar: <span class="kw">crate</span>::Scalar::BOOL,
             pointer_space: <span class="prelude-val">None</span>,
         };
         <span class="self">self</span>.get_type_id(local_type.into())
@@ -2313,37 +2394,6 @@
         debug_info: <span class="kw-2">&amp;</span><span class="prelude-ty">Option</span>&lt;DebugInfoInner&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Word, Error&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>function = Function::default();
-
-        <span class="kw">for </span>(handle, variable) <span class="kw">in </span>ir_function.local_variables.iter() {
-            <span class="kw">let </span>id = <span class="self">self</span>.id_gen.next();
-
-            <span class="kw">if </span><span class="self">self</span>.flags.contains(WriterFlags::DEBUG) {
-                <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">ref </span>name) = variable.name {
-                    <span class="self">self</span>.debugs.push(Instruction::name(id, name));
-                }
-            }
-
-            <span class="kw">let </span>init_word = variable
-                .init
-                .map(|constant| <span class="self">self</span>.constant_ids[constant.index()]);
-            <span class="kw">let </span>pointer_type_id =
-                <span class="self">self</span>.get_pointer_id(<span class="kw-2">&amp;</span>ir_module.types, variable.ty, spirv::StorageClass::Function)<span class="question-mark">?</span>;
-            <span class="kw">let </span>instruction = Instruction::variable(
-                pointer_type_id,
-                id,
-                spirv::StorageClass::Function,
-                init_word.or_else(|| <span class="kw">match </span>ir_module.types[variable.ty].inner {
-                    <span class="kw">crate</span>::TypeInner::RayQuery =&gt; <span class="prelude-val">None</span>,
-                    <span class="kw">_ </span>=&gt; {
-                        <span class="kw">let </span>type_id = <span class="self">self</span>.get_type_id(LookupType::Handle(variable.ty));
-                        <span class="prelude-val">Some</span>(<span class="self">self</span>.write_constant_null(type_id))
-                    }
-                }),
-            );
-            function
-                .variables
-                .insert(handle, LocalVariable { id, instruction });
-        }
 
         <span class="kw">let </span>prelude_id = <span class="self">self</span>.id_gen.next();
         <span class="kw">let </span><span class="kw-2">mut </span>prelude = Block::new(prelude_id);
@@ -2425,7 +2475,7 @@
                     ));
                     struct_id
                 } <span class="kw">else </span>{
-                    <span class="macro">unreachable!</span>(<span class="string">&quot;Missing argument binding on an entry point&quot;</span>);
+                    <span class="macro">unreachable!</span>(<span class="string">"Missing argument binding on an entry point"</span>);
                 };
                 ep_context.argument_ids.push(id);
             } <span class="kw">else </span>{
@@ -2503,7 +2553,7 @@
                             });
                         }
                     } <span class="kw">else </span>{
-                        <span class="macro">unreachable!</span>(<span class="string">&quot;Missing result binding on an entry point&quot;</span>);
+                        <span class="macro">unreachable!</span>(<span class="string">"Missing result binding on an entry point"</span>);
                     }
 
                     <span class="kw">if </span><span class="self">self</span>.flags.contains(WriterFlags::FORCE_POINT_SIZE)
@@ -2614,7 +2664,7 @@
             </span><span class="self">self</span>.global_variables[handle.index()] = gv;
         }
 
-        <span class="comment">// Create a `BlockContext` for generating SPIR-V for the function&#39;s
+        <span class="comment">// Create a `BlockContext` for generating SPIR-V for the function's
         // body.
         </span><span class="kw">let </span><span class="kw-2">mut </span>context = BlockContext {
             ir_module,
@@ -2624,15 +2674,60 @@
             <span class="comment">// Re-use the cached expression table from prior functions.
             </span>cached: std::mem::take(<span class="kw-2">&amp;mut </span><span class="self">self</span>.saved_cached),
 
-            <span class="comment">// Steal the Writer&#39;s temp list for a bit.
+            <span class="comment">// Steal the Writer's temp list for a bit.
             </span>temp_list: std::mem::take(<span class="kw-2">&amp;mut </span><span class="self">self</span>.temp_list),
             writer: <span class="self">self</span>,
+            expression_constness: <span class="kw">crate</span>::proc::ExpressionConstnessTracker::from_arena(
+                <span class="kw-2">&amp;</span>ir_function.expressions,
+            ),
         };
 
-        <span class="comment">// fill up the pre-emitted expressions
+        <span class="comment">// fill up the pre-emitted and const expressions
         </span>context.cached.reset(ir_function.expressions.len());
         <span class="kw">for </span>(handle, expr) <span class="kw">in </span>ir_function.expressions.iter() {
-            <span class="kw">if </span>expr.needs_pre_emit() {
+            <span class="kw">if </span>(expr.needs_pre_emit() &amp;&amp; !<span class="macro">matches!</span>(<span class="kw-2">*</span>expr, <span class="kw">crate</span>::Expression::LocalVariable(<span class="kw">_</span>)))
+                || context.expression_constness.is_const(handle)
+            {
+                context.cache_expression_value(handle, <span class="kw-2">&amp;mut </span>prelude)<span class="question-mark">?</span>;
+            }
+        }
+
+        <span class="kw">for </span>(handle, variable) <span class="kw">in </span>ir_function.local_variables.iter() {
+            <span class="kw">let </span>id = context.gen_id();
+
+            <span class="kw">if </span>context.writer.flags.contains(WriterFlags::DEBUG) {
+                <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">ref </span>name) = variable.name {
+                    context.writer.debugs.push(Instruction::name(id, name));
+                }
+            }
+
+            <span class="kw">let </span>init_word = variable.init.map(|constant| context.cached[constant]);
+            <span class="kw">let </span>pointer_type_id = context.writer.get_pointer_id(
+                <span class="kw-2">&amp;</span>ir_module.types,
+                variable.ty,
+                spirv::StorageClass::Function,
+            )<span class="question-mark">?</span>;
+            <span class="kw">let </span>instruction = Instruction::variable(
+                pointer_type_id,
+                id,
+                spirv::StorageClass::Function,
+                init_word.or_else(|| <span class="kw">match </span>ir_module.types[variable.ty].inner {
+                    <span class="kw">crate</span>::TypeInner::RayQuery =&gt; <span class="prelude-val">None</span>,
+                    <span class="kw">_ </span>=&gt; {
+                        <span class="kw">let </span>type_id = context.get_type_id(LookupType::Handle(variable.ty));
+                        <span class="prelude-val">Some</span>(context.writer.write_constant_null(type_id))
+                    }
+                }),
+            );
+            context
+                .function
+                .variables
+                .insert(handle, LocalVariable { id, instruction });
+        }
+
+        <span class="comment">// cache local variable expressions
+        </span><span class="kw">for </span>(handle, expr) <span class="kw">in </span>ir_function.expressions.iter() {
+            <span class="kw">if </span><span class="macro">matches!</span>(<span class="kw-2">*</span>expr, <span class="kw">crate</span>::Expression::LocalVariable(<span class="kw">_</span>)) {
                 context.cache_expression_value(handle, <span class="kw-2">&amp;mut </span>prelude)<span class="question-mark">?</span>;
             }
         }
@@ -2764,18 +2859,13 @@
         ))
     }
 
-    <span class="kw">fn </span>make_scalar(
-        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        id: Word,
-        kind: <span class="kw">crate</span>::ScalarKind,
-        width: <span class="kw">crate</span>::Bytes,
-    ) -&gt; Instruction {
+    <span class="kw">fn </span>make_scalar(<span class="kw-2">&amp;mut </span><span class="self">self</span>, id: Word, scalar: <span class="kw">crate</span>::Scalar) -&gt; Instruction {
         <span class="kw">use </span><span class="kw">crate</span>::ScalarKind <span class="kw">as </span>Sk;
 
-        <span class="kw">let </span>bits = (width * BITS_PER_BYTE) <span class="kw">as </span>u32;
-        <span class="kw">match </span>kind {
+        <span class="kw">let </span>bits = (scalar.width * BITS_PER_BYTE) <span class="kw">as </span>u32;
+        <span class="kw">match </span>scalar.kind {
             Sk::Sint | Sk::Uint =&gt; {
-                <span class="kw">let </span>signedness = <span class="kw">if </span>kind == Sk::Sint {
+                <span class="kw">let </span>signedness = <span class="kw">if </span>scalar.kind == Sk::Sint {
                     <span class="kw">super</span>::instructions::Signedness::Signed
                 } <span class="kw">else </span>{
                     <span class="kw">super</span>::instructions::Signedness::Unsigned
@@ -2798,6 +2888,9 @@
                 Instruction::type_float(id, bits)
             }
             Sk::Bool =&gt; Instruction::type_bool(id),
+            Sk::AbstractInt | Sk::AbstractFloat =&gt; {
+                <span class="macro">unreachable!</span>(<span class="string">"abstract types should never reach the backend"</span>);
+            }
         }
     }
 
@@ -2820,20 +2913,20 @@
                 <span class="kw">match </span>dim {
                     <span class="kw">crate</span>::ImageDimension::D1 =&gt; {
                         <span class="kw">if </span>sampled {
-                            <span class="self">self</span>.require_any(<span class="string">&quot;sampled 1D images&quot;</span>, <span class="kw-2">&amp;</span>[spirv::Capability::Sampled1D])<span class="question-mark">?</span>;
+                            <span class="self">self</span>.require_any(<span class="string">"sampled 1D images"</span>, <span class="kw-2">&amp;</span>[spirv::Capability::Sampled1D])<span class="question-mark">?</span>;
                         } <span class="kw">else </span>{
-                            <span class="self">self</span>.require_any(<span class="string">&quot;1D storage images&quot;</span>, <span class="kw-2">&amp;</span>[spirv::Capability::Image1D])<span class="question-mark">?</span>;
+                            <span class="self">self</span>.require_any(<span class="string">"1D storage images"</span>, <span class="kw-2">&amp;</span>[spirv::Capability::Image1D])<span class="question-mark">?</span>;
                         }
                     }
                     <span class="kw">crate</span>::ImageDimension::Cube <span class="kw">if </span>arrayed =&gt; {
                         <span class="kw">if </span>sampled {
                             <span class="self">self</span>.require_any(
-                                <span class="string">&quot;sampled cube array images&quot;</span>,
+                                <span class="string">"sampled cube array images"</span>,
                                 <span class="kw-2">&amp;</span>[spirv::Capability::SampledCubeArray],
                             )<span class="question-mark">?</span>;
                         } <span class="kw">else </span>{
                             <span class="self">self</span>.require_any(
-                                <span class="string">&quot;cube array storage images&quot;</span>,
+                                <span class="string">"cube array storage images"</span>,
                                 <span class="kw-2">&amp;</span>[spirv::Capability::ImageCubeArray],
                             )<span class="question-mark">?</span>;
                         }
@@ -2842,10 +2935,10 @@
                 }
             }
             <span class="kw">crate</span>::TypeInner::AccelerationStructure =&gt; {
-                <span class="self">self</span>.require_any(<span class="string">&quot;Acceleration Structure&quot;</span>, <span class="kw-2">&amp;</span>[spirv::Capability::RayQueryKHR])<span class="question-mark">?</span>;
+                <span class="self">self</span>.require_any(<span class="string">"Acceleration Structure"</span>, <span class="kw-2">&amp;</span>[spirv::Capability::RayQueryKHR])<span class="question-mark">?</span>;
             }
             <span class="kw">crate</span>::TypeInner::RayQuery =&gt; {
-                <span class="self">self</span>.require_any(<span class="string">&quot;Ray Query&quot;</span>, <span class="kw-2">&amp;</span>[spirv::Capability::RayQueryKHR])<span class="question-mark">?</span>;
+                <span class="self">self</span>.require_any(<span class="string">"Ray Query"</span>, <span class="kw-2">&amp;</span>[spirv::Capability::RayQueryKHR])<span class="question-mark">?</span>;
             }
             <span class="kw">_ </span>=&gt; {}
         }
@@ -2856,20 +2949,17 @@
         <span class="kw">let </span>instruction = <span class="kw">match </span>local_ty {
             LocalType::Value {
                 vector_size: <span class="prelude-val">None</span>,
-                kind,
-                width,
+                scalar,
                 pointer_space: <span class="prelude-val">None</span>,
-            } =&gt; <span class="self">self</span>.make_scalar(id, kind, width),
+            } =&gt; <span class="self">self</span>.make_scalar(id, scalar),
             LocalType::Value {
                 vector_size: <span class="prelude-val">Some</span>(size),
-                kind,
-                width,
+                scalar,
                 pointer_space: <span class="prelude-val">None</span>,
             } =&gt; {
                 <span class="kw">let </span>scalar_id = <span class="self">self</span>.get_type_id(LookupType::Local(LocalType::Value {
                     vector_size: <span class="prelude-val">None</span>,
-                    kind,
-                    width,
+                    scalar,
                     pointer_space: <span class="prelude-val">None</span>,
                 }));
                 Instruction::type_vector(id, scalar_id, size)
@@ -2881,8 +2971,7 @@
             } =&gt; {
                 <span class="kw">let </span>vector_id = <span class="self">self</span>.get_type_id(LookupType::Local(LocalType::Value {
                     vector_size: <span class="prelude-val">Some</span>(rows),
-                    kind: <span class="kw">crate</span>::ScalarKind::Float,
-                    width,
+                    scalar: <span class="kw">crate</span>::Scalar::float(width),
                     pointer_space: <span class="prelude-val">None</span>,
                 }));
                 Instruction::type_matrix(id, vector_id, columns)
@@ -2893,14 +2982,12 @@
             }
             LocalType::Value {
                 vector_size,
-                kind,
-                width,
+                scalar,
                 pointer_space: <span class="prelude-val">Some</span>(class),
             } =&gt; {
                 <span class="kw">let </span>type_id = <span class="self">self</span>.get_type_id(LookupType::Local(LocalType::Value {
                     vector_size,
-                    kind,
-                    width,
+                    scalar,
                     pointer_space: <span class="prelude-val">None</span>,
                 }));
                 Instruction::type_pointer(id, class, type_id)
@@ -2908,8 +2995,10 @@
             LocalType::Image(image) =&gt; {
                 <span class="kw">let </span>local_type = LocalType::Value {
                     vector_size: <span class="prelude-val">None</span>,
-                    kind: image.sampled_type,
-                    width: <span class="number">4</span>,
+                    scalar: <span class="kw">crate</span>::Scalar {
+                        kind: image.sampled_type,
+                        width: <span class="number">4</span>,
+                    },
                     pointer_space: <span class="prelude-val">None</span>,
                 };
                 <span class="kw">let </span>type_id = <span class="self">self</span>.get_type_id(LookupType::Local(local_type));
@@ -2944,21 +3033,21 @@
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Word, Error&gt; {
         <span class="kw">let </span>ty = <span class="kw-2">&amp;</span>arena[handle];
         <span class="kw">let </span>id = <span class="kw">if let </span><span class="prelude-val">Some</span>(local) = make_local(<span class="kw-2">&amp;</span>ty.inner) {
-            <span class="comment">// This type can be represented as a `LocalType`, so check if we&#39;ve
+            <span class="comment">// This type can be represented as a `LocalType`, so check if we've
             // already written an instruction for it. If not, do so now, with
             // `write_type_declaration_local`.
             </span><span class="kw">match </span><span class="self">self</span>.lookup_type.entry(LookupType::Local(local)) {
                 <span class="comment">// We already have an id for this `LocalType`.
                 </span>Entry::Occupied(e) =&gt; <span class="kw-2">*</span>e.get(),
 
-                <span class="comment">// It&#39;s a type we haven&#39;t seen before.
+                <span class="comment">// It's a type we haven't seen before.
                 </span>Entry::Vacant(e) =&gt; {
                     <span class="kw">let </span>id = <span class="self">self</span>.id_gen.next();
                     e.insert(id);
 
                     <span class="self">self</span>.write_type_declaration_local(id, local);
 
-                    <span class="comment">// If it&#39;s a type that needs SPIR-V capabilities, request them now,
+                    <span class="comment">// If it's a type that needs SPIR-V capabilities, request them now,
                     // so write_type_declaration_local can stay infallible.
                     </span><span class="self">self</span>.request_type_capabilities(<span class="kw-2">&amp;</span>ty.inner)<span class="question-mark">?</span>;
 
@@ -2996,19 +3085,34 @@
                     <span class="kw-2">ref </span>members,
                     span: <span class="kw">_</span>,
                 } =&gt; {
+                    <span class="kw">let </span><span class="kw-2">mut </span>has_runtime_array = <span class="bool-val">false</span>;
                     <span class="kw">let </span><span class="kw-2">mut </span>member_ids = Vec::with_capacity(members.len());
                     <span class="kw">for </span>(index, member) <span class="kw">in </span>members.iter().enumerate() {
+                        <span class="kw">let </span>member_ty = <span class="kw-2">&amp;</span>arena[member.ty];
+                        <span class="kw">match </span>member_ty.inner {
+                            <span class="kw">crate</span>::TypeInner::Array {
+                                base: <span class="kw">_</span>,
+                                size: <span class="kw">crate</span>::ArraySize::Dynamic,
+                                stride: <span class="kw">_</span>,
+                            } =&gt; {
+                                has_runtime_array = <span class="bool-val">true</span>;
+                            }
+                            <span class="kw">_ </span>=&gt; (),
+                        }
                         <span class="self">self</span>.decorate_struct_member(id, index, member, arena)<span class="question-mark">?</span>;
                         <span class="kw">let </span>member_id = <span class="self">self</span>.get_type_id(LookupType::Handle(member.ty));
                         member_ids.push(member_id);
+                    }
+                    <span class="kw">if </span>has_runtime_array {
+                        <span class="self">self</span>.decorate(id, Decoration::Block, <span class="kw-2">&amp;</span>[]);
                     }
                     Instruction::type_struct(id, member_ids.as_slice())
                 }
 
                 <span class="comment">// These all have TypeLocal representations, so they should have been
                 // handled by `write_type_declaration_local` above.
-                </span><span class="kw">crate</span>::TypeInner::Scalar { .. }
-                | <span class="kw">crate</span>::TypeInner::Atomic { .. }
+                </span><span class="kw">crate</span>::TypeInner::Scalar(<span class="kw">_</span>)
+                | <span class="kw">crate</span>::TypeInner::Atomic(<span class="kw">_</span>)
                 | <span class="kw">crate</span>::TypeInner::Vector { .. }
                 | <span class="kw">crate</span>::TypeInner::Matrix { .. }
                 | <span class="kw">crate</span>::TypeInner::Pointer { .. }
@@ -3067,11 +3171,11 @@
             | If::Rg8ui
             | If::R16ui
             | If::R8ui =&gt; <span class="self">self</span>.require_any(
-                <span class="string">&quot;storage image format&quot;</span>,
+                <span class="string">"storage image format"</span>,
                 <span class="kw-2">&amp;</span>[spirv::Capability::StorageImageExtendedFormats],
             ),
             If::R64ui | If::R64i =&gt; <span class="self">self</span>.require_any(
-                <span class="string">&quot;64-bit integer storage image format&quot;</span>,
+                <span class="string">"64-bit integer storage image format"</span>,
                 <span class="kw-2">&amp;</span>[spirv::Capability::Int64ImageEXT],
             ),
             If::Unknown
@@ -3098,12 +3202,11 @@
     <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>get_constant_scalar_with(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
         value: u8,
-        kind: <span class="kw">crate</span>::ScalarKind,
-        width: <span class="kw">crate</span>::Bytes,
+        scalar: <span class="kw">crate</span>::Scalar,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Word, Error&gt; {
         <span class="prelude-val">Ok</span>(
-            <span class="self">self</span>.get_constant_scalar(<span class="kw">crate</span>::Literal::new(value, kind, width).ok_or(
-                Error::Validation(<span class="string">&quot;Unexpected kind and/or width for Literal&quot;</span>),
+            <span class="self">self</span>.get_constant_scalar(<span class="kw">crate</span>::Literal::new(value, scalar).ok_or(
+                Error::Validation(<span class="string">"Unexpected kind and/or width for Literal"</span>),
             )<span class="question-mark">?</span>),
         )
     }
@@ -3132,8 +3235,7 @@
         }
         <span class="kw">let </span>type_id = <span class="self">self</span>.get_type_id(LookupType::Local(LocalType::Value {
             vector_size: <span class="prelude-val">None</span>,
-            kind: value.scalar_kind(),
-            width: value.width(),
+            scalar: value.scalar(),
             pointer_space: <span class="prelude-val">None</span>,
         }));
         <span class="kw">let </span>instruction = <span class="kw">match </span><span class="kw-2">*</span>value {
@@ -3144,8 +3246,14 @@
             <span class="kw">crate</span>::Literal::F32(value) =&gt; Instruction::constant_32bit(type_id, id, value.to_bits()),
             <span class="kw">crate</span>::Literal::U32(value) =&gt; Instruction::constant_32bit(type_id, id, value),
             <span class="kw">crate</span>::Literal::I32(value) =&gt; Instruction::constant_32bit(type_id, id, value <span class="kw">as </span>u32),
+            <span class="kw">crate</span>::Literal::I64(value) =&gt; {
+                Instruction::constant_64bit(type_id, id, value <span class="kw">as </span>u32, (value &gt;&gt; <span class="number">32</span>) <span class="kw">as </span>u32)
+            }
             <span class="kw">crate</span>::Literal::Bool(<span class="bool-val">true</span>) =&gt; Instruction::constant_true(type_id, id),
             <span class="kw">crate</span>::Literal::Bool(<span class="bool-val">false</span>) =&gt; Instruction::constant_false(type_id, id),
+            <span class="kw">crate</span>::Literal::AbstractInt(<span class="kw">_</span>) | <span class="kw">crate</span>::Literal::AbstractFloat(<span class="kw">_</span>) =&gt; {
+                <span class="macro">unreachable!</span>(<span class="string">"Abstract types should not appear in IR presented to backends"</span>);
+            }
         };
 
         instruction.to_words(<span class="kw-2">&amp;mut </span><span class="self">self</span>.logical_layout.declarations);
@@ -3186,6 +3294,16 @@
             .to_words(<span class="kw-2">&amp;mut </span><span class="self">self</span>.logical_layout.declarations);
     }
 
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>get_constant_null(<span class="kw-2">&amp;mut </span><span class="self">self</span>, type_id: Word) -&gt; Word {
+        <span class="kw">let </span>null = CachedConstant::ZeroValue(type_id);
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>id) = <span class="self">self</span>.cached_constants.get(<span class="kw-2">&amp;</span>null) {
+            <span class="kw">return </span>id;
+        }
+        <span class="kw">let </span>id = <span class="self">self</span>.write_constant_null(type_id);
+        <span class="self">self</span>.cached_constants.insert(null, id);
+        id
+    }
+
     <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>write_constant_null(<span class="kw-2">&amp;mut </span><span class="self">self</span>, type_id: Word) -&gt; Word {
         <span class="kw">let </span>null_id = <span class="self">self</span>.id_gen.next();
         Instruction::constant_null(type_id, null_id)
@@ -3197,6 +3315,7 @@
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
         handle: Handle&lt;<span class="kw">crate</span>::Expression&gt;,
         ir_module: <span class="kw-2">&amp;</span><span class="kw">crate</span>::Module,
+        mod_info: <span class="kw-2">&amp;</span>ModuleInfo,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Word, Error&gt; {
         <span class="kw">let </span>id = <span class="kw">match </span>ir_module.const_expressions[handle] {
             <span class="kw">crate</span>::Expression::Literal(literal) =&gt; <span class="self">self</span>.get_constant_scalar(literal),
@@ -3206,14 +3325,26 @@
             }
             <span class="kw">crate</span>::Expression::ZeroValue(ty) =&gt; {
                 <span class="kw">let </span>type_id = <span class="self">self</span>.get_type_id(LookupType::Handle(ty));
-                <span class="self">self</span>.write_constant_null(type_id)
+                <span class="self">self</span>.get_constant_null(type_id)
             }
             <span class="kw">crate</span>::Expression::Compose { ty, <span class="kw-2">ref </span>components } =&gt; {
-                <span class="kw">let </span>component_ids: Vec&lt;<span class="kw">_</span>&gt; = components
-                    .iter()
-                    .map(|component| <span class="self">self</span>.constant_ids[component.index()])
-                    .collect();
+                <span class="kw">let </span>component_ids: Vec&lt;<span class="kw">_</span>&gt; = <span class="kw">crate</span>::proc::flatten_compose(
+                    ty,
+                    components,
+                    <span class="kw-2">&amp;</span>ir_module.const_expressions,
+                    <span class="kw-2">&amp;</span>ir_module.types,
+                )
+                .map(|component| <span class="self">self</span>.constant_ids[component.index()])
+                .collect();
                 <span class="self">self</span>.get_constant_composite(LookupType::Handle(ty), component_ids.as_slice())
+            }
+            <span class="kw">crate</span>::Expression::Splat { size, value } =&gt; {
+                <span class="kw">let </span>value_id = <span class="self">self</span>.constant_ids[value.index()];
+                <span class="kw">let </span>component_ids = <span class="kw-2">&amp;</span>[value_id; <span class="number">4</span>][..size <span class="kw">as </span>usize];
+
+                <span class="kw">let </span>ty = <span class="self">self</span>.get_expression_lookup_type(<span class="kw-2">&amp;</span>mod_info[handle]);
+
+                <span class="self">self</span>.get_constant_composite(ty, component_ids)
             }
             <span class="kw">_ </span>=&gt; <span class="macro">unreachable!</span>(),
         };
@@ -3264,12 +3395,12 @@
                 !info[handle].is_empty() &amp;&amp; var.space == <span class="kw">crate</span>::AddressSpace::WorkGroup
             })
             .map(|(handle, var)| {
-                <span class="comment">// It&#39;s safe to use `var_id` here, not `access_id`, because only
+                <span class="comment">// It's safe to use `var_id` here, not `access_id`, because only
                 // variables in the `Uniform` and `StorageBuffer` address spaces
-                // get wrapped, and we&#39;re initializing `WorkGroup` variables.
+                // get wrapped, and we're initializing `WorkGroup` variables.
                 </span><span class="kw">let </span>var_id = <span class="self">self</span>.global_variables[handle.index()].var_id;
                 <span class="kw">let </span>var_type_id = <span class="self">self</span>.get_type_id(LookupType::Handle(var.ty));
-                <span class="kw">let </span>init_word = <span class="self">self</span>.write_constant_null(var_type_id);
+                <span class="kw">let </span>init_word = <span class="self">self</span>.get_constant_null(var_type_id);
                 Instruction::store(var_id, init_word, <span class="prelude-val">None</span>)
             })
             .collect::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;();
@@ -3307,7 +3438,7 @@
             id
         };
 
-        <span class="kw">let </span>zero_id = <span class="self">self</span>.write_constant_null(uint3_type_id);
+        <span class="kw">let </span>zero_id = <span class="self">self</span>.get_constant_null(uint3_type_id);
         <span class="kw">let </span>bool3_type_id = <span class="self">self</span>.get_bool3_type_id();
 
         <span class="kw">let </span>eq_id = <span class="self">self</span>.id_gen.next();
@@ -3355,9 +3486,9 @@
         <span class="prelude-val">Some</span>(next_id)
     }
 
-    <span class="doccomment">/// Generate an `OpVariable` for one value in an [`EntryPoint`]&#39;s IO interface.
+    <span class="doccomment">/// Generate an `OpVariable` for one value in an [`EntryPoint`]'s IO interface.
     ///
-    /// The [`Binding`]s of the arguments and result of an [`EntryPoint`]&#39;s
+    /// The [`Binding`]s of the arguments and result of an [`EntryPoint`]'s
     /// [`Function`] describe a SPIR-V shader interface. In SPIR-V, the
     /// interface is represented by global variables in the `Input` and `Output`
     /// storage classes, with decorations indicating which builtin or location
@@ -3366,7 +3497,7 @@
     /// This function emits a single global `OpVariable` for a single value from
     /// the interface, and adds appropriate decorations to indicate which
     /// builtin or location it represents, how it should be interpolated, and so
-    /// on. The `class` argument gives the variable&#39;s SPIR-V storage class,
+    /// on. The `class` argument gives the variable's SPIR-V storage class,
     /// which should be either [`Input`] or [`Output`].
     ///
     /// [`Binding`]: crate::Binding
@@ -3404,6 +3535,7 @@
                 location,
                 interpolation,
                 sampling,
+                second_blend_source,
             } =&gt; {
                 <span class="self">self</span>.decorate(id, Decoration::Location, <span class="kw-2">&amp;</span>[location]);
 
@@ -3436,12 +3568,15 @@
                         }
                         <span class="prelude-val">Some</span>(<span class="kw">crate</span>::Sampling::Sample) =&gt; {
                             <span class="self">self</span>.require_any(
-                                <span class="string">&quot;per-sample interpolation&quot;</span>,
+                                <span class="string">"per-sample interpolation"</span>,
                                 <span class="kw-2">&amp;</span>[spirv::Capability::SampleRateShading],
                             )<span class="question-mark">?</span>;
                             <span class="self">self</span>.decorate(id, Decoration::Sample, <span class="kw-2">&amp;</span>[]);
                         }
                     }
+                }
+                <span class="kw">if </span>second_blend_source {
+                    <span class="self">self</span>.decorate(id, Decoration::Index, <span class="kw-2">&amp;</span>[<span class="number">1</span>]);
                 }
             }
             <span class="kw">crate</span>::Binding::BuiltIn(built_in) =&gt; {
@@ -3459,14 +3594,26 @@
                         }
                     }
                     Bi::ViewIndex =&gt; {
-                        <span class="self">self</span>.require_any(<span class="string">&quot;`view_index` built-in&quot;</span>, <span class="kw-2">&amp;</span>[spirv::Capability::MultiView])<span class="question-mark">?</span>;
+                        <span class="self">self</span>.require_any(<span class="string">"`view_index` built-in"</span>, <span class="kw-2">&amp;</span>[spirv::Capability::MultiView])<span class="question-mark">?</span>;
                         BuiltIn::ViewIndex
                     }
                     <span class="comment">// vertex
                     </span>Bi::BaseInstance =&gt; BuiltIn::BaseInstance,
                     Bi::BaseVertex =&gt; BuiltIn::BaseVertex,
-                    Bi::ClipDistance =&gt; BuiltIn::ClipDistance,
-                    Bi::CullDistance =&gt; BuiltIn::CullDistance,
+                    Bi::ClipDistance =&gt; {
+                        <span class="self">self</span>.require_any(
+                            <span class="string">"`clip_distance` built-in"</span>,
+                            <span class="kw-2">&amp;</span>[spirv::Capability::ClipDistance],
+                        )<span class="question-mark">?</span>;
+                        BuiltIn::ClipDistance
+                    }
+                    Bi::CullDistance =&gt; {
+                        <span class="self">self</span>.require_any(
+                            <span class="string">"`cull_distance` built-in"</span>,
+                            <span class="kw-2">&amp;</span>[spirv::Capability::CullDistance],
+                        )<span class="question-mark">?</span>;
+                        BuiltIn::CullDistance
+                    }
                     Bi::InstanceIndex =&gt; BuiltIn::InstanceIndex,
                     Bi::PointSize =&gt; BuiltIn::PointSize,
                     Bi::VertexIndex =&gt; BuiltIn::VertexIndex,
@@ -3476,14 +3623,14 @@
                     Bi::FrontFacing =&gt; BuiltIn::FrontFacing,
                     Bi::PrimitiveIndex =&gt; {
                         <span class="self">self</span>.require_any(
-                            <span class="string">&quot;`primitive_index` built-in&quot;</span>,
+                            <span class="string">"`primitive_index` built-in"</span>,
                             <span class="kw-2">&amp;</span>[spirv::Capability::Geometry],
                         )<span class="question-mark">?</span>;
                         BuiltIn::PrimitiveId
                     }
                     Bi::SampleIndex =&gt; {
                         <span class="self">self</span>.require_any(
-                            <span class="string">&quot;`sample_index` built-in&quot;</span>,
+                            <span class="string">"`sample_index` built-in"</span>,
                             <span class="kw-2">&amp;</span>[spirv::Capability::SampleRateShading],
                         )<span class="question-mark">?</span>;
 
@@ -3510,10 +3657,15 @@
                 // &gt; shader, must be decorated Flat
                 </span><span class="kw">if </span>class == spirv::StorageClass::Input &amp;&amp; stage == <span class="kw">crate</span>::ShaderStage::Fragment {
                     <span class="kw">let </span>is_flat = <span class="kw">match </span>ir_module.types[ty].inner {
-                        <span class="kw">crate</span>::TypeInner::Scalar { kind, .. }
-                        | <span class="kw">crate</span>::TypeInner::Vector { kind, .. } =&gt; <span class="kw">match </span>kind {
+                        <span class="kw">crate</span>::TypeInner::Scalar(scalar)
+                        | <span class="kw">crate</span>::TypeInner::Vector { scalar, .. } =&gt; <span class="kw">match </span>scalar.kind {
                             Sk::Uint | Sk::Sint | Sk::Bool =&gt; <span class="bool-val">true</span>,
                             Sk::Float =&gt; <span class="bool-val">false</span>,
+                            Sk::AbstractInt | Sk::AbstractFloat =&gt; {
+                                <span class="kw">return </span><span class="prelude-val">Err</span>(Error::Validation(
+                                    <span class="string">"Abstract types should not appear in IR presented to backends"</span>,
+                                ))
+                            }
                         },
                         <span class="kw">_ </span>=&gt; <span class="bool-val">false</span>,
                     };
@@ -3587,7 +3739,6 @@
                             space: global_variable.space,
                         }))
                 }
-            } <span class="kw">else </span>{
             }
         };
 
@@ -3622,16 +3773,17 @@
         } <span class="kw">else </span>{
             <span class="comment">// This is a global variable in the Storage address space. The only
             // way it could have `global_needs_wrapper() == false` is if it has
-            // a runtime-sized array. In this case, we need to decorate it with
-            // Block.
+            // a runtime-sized or binding array.
+            // Runtime-sized arrays were decorated when iterating through struct content.
+            // Now binding arrays require Block decorating.
             </span><span class="kw">if let </span><span class="kw">crate</span>::AddressSpace::Storage { .. } = global_variable.space {
-                <span class="kw">let </span>decorated_id = <span class="kw">match </span>ir_module.types[global_variable.ty].inner {
+                <span class="kw">match </span>ir_module.types[global_variable.ty].inner {
                     <span class="kw">crate</span>::TypeInner::BindingArray { base, .. } =&gt; {
-                        <span class="self">self</span>.get_type_id(LookupType::Handle(base))
+                        <span class="kw">let </span>decorated_id = <span class="self">self</span>.get_type_id(LookupType::Handle(base));
+                        <span class="self">self</span>.decorate(decorated_id, Decoration::Block, <span class="kw-2">&amp;</span>[]);
                     }
-                    <span class="kw">_ </span>=&gt; inner_type_id,
+                    <span class="kw">_ </span>=&gt; (),
                 };
-                <span class="self">self</span>.decorate(decorated_id, Decoration::Block, <span class="kw-2">&amp;</span>[]);
             }
             <span class="kw">if </span>substitute_inner_type_lookup.is_some() {
                 inner_type_id
@@ -3643,7 +3795,7 @@
         <span class="kw">let </span>init_word = <span class="kw">match </span>(global_variable.space, <span class="self">self</span>.zero_initialize_workgroup_memory) {
             (<span class="kw">crate</span>::AddressSpace::Private, <span class="kw">_</span>)
             | (<span class="kw">crate</span>::AddressSpace::WorkGroup, <span class="kw">super</span>::ZeroInitializeWorkgroupMemoryMode::Native) =&gt; {
-                init_word.or_else(|| <span class="prelude-val">Some</span>(<span class="self">self</span>.write_constant_null(inner_type_id)))
+                init_word.or_else(|| <span class="prelude-val">Some</span>(<span class="self">self</span>.get_constant_null(inner_type_id)))
             }
             <span class="kw">_ </span>=&gt; init_word,
         };
@@ -3655,7 +3807,7 @@
 
     <span class="doccomment">/// Write the necessary decorations for a struct member.
     ///
-    /// Emit decorations for the `index`&#39;th member of the struct type
+    /// Emit decorations for the `index`'th member of the struct type
     /// designated by `struct_id`, described by `member`.
     </span><span class="kw">fn </span>decorate_struct_member(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
@@ -3681,7 +3833,7 @@
         }
 
         <span class="comment">// Matrices and arrays of matrices both require decorations,
-        // so &quot;see through&quot; an array to determine if they&#39;re needed.
+        // so "see through" an array to determine if they're needed.
         </span><span class="kw">let </span>member_array_subty_inner = <span class="kw">match </span>arena[member.ty].inner {
             <span class="kw">crate</span>::TypeInner::Array { base, .. } =&gt; <span class="kw-2">&amp;</span>arena[base].inner,
             <span class="kw-2">ref </span>other =&gt; other,
@@ -3689,10 +3841,10 @@
         <span class="kw">if let </span><span class="kw">crate</span>::TypeInner::Matrix {
             columns: <span class="kw">_</span>,
             rows,
-            width,
+            scalar,
         } = <span class="kw-2">*</span>member_array_subty_inner
         {
-            <span class="kw">let </span>byte_stride = Alignment::from(rows) * width <span class="kw">as </span>u32;
+            <span class="kw">let </span>byte_stride = Alignment::from(rows) * scalar.width <span class="kw">as </span>u32;
             <span class="self">self</span>.annotations.push(Instruction::member_decorate(
                 struct_id,
                 index <span class="kw">as </span>u32,
@@ -3772,27 +3924,29 @@
 
         <span class="kw">if </span><span class="self">self</span>.physical_layout.version &lt; <span class="number">0x10300 </span>&amp;&amp; has_storage_buffers {
             <span class="comment">// enable the storage buffer class on &lt; SPV-1.3
-            </span>Instruction::extension(<span class="string">&quot;SPV_KHR_storage_buffer_storage_class&quot;</span>)
+            </span>Instruction::extension(<span class="string">"SPV_KHR_storage_buffer_storage_class"</span>)
                 .to_words(<span class="kw-2">&amp;mut </span><span class="self">self</span>.logical_layout.extensions);
         }
         <span class="kw">if </span>has_view_index {
-            Instruction::extension(<span class="string">&quot;SPV_KHR_multiview&quot;</span>)
+            Instruction::extension(<span class="string">"SPV_KHR_multiview"</span>)
                 .to_words(<span class="kw-2">&amp;mut </span><span class="self">self</span>.logical_layout.extensions)
         }
         <span class="kw">if </span>has_ray_query {
-            Instruction::extension(<span class="string">&quot;SPV_KHR_ray_query&quot;</span>)
+            Instruction::extension(<span class="string">"SPV_KHR_ray_query"</span>)
                 .to_words(<span class="kw-2">&amp;mut </span><span class="self">self</span>.logical_layout.extensions)
         }
         Instruction::type_void(<span class="self">self</span>.void_type).to_words(<span class="kw-2">&amp;mut </span><span class="self">self</span>.logical_layout.declarations);
-        Instruction::ext_inst_import(<span class="self">self</span>.gl450_ext_inst_id, <span class="string">&quot;GLSL.std.450&quot;</span>)
+        Instruction::ext_inst_import(<span class="self">self</span>.gl450_ext_inst_id, <span class="string">"GLSL.std.450"</span>)
             .to_words(<span class="kw-2">&amp;mut </span><span class="self">self</span>.logical_layout.ext_inst_imports);
 
         <span class="kw">let </span><span class="kw-2">mut </span>debug_info_inner = <span class="prelude-val">None</span>;
         <span class="kw">if </span><span class="self">self</span>.flags.contains(WriterFlags::DEBUG) {
             <span class="kw">if let </span><span class="prelude-val">Some</span>(debug_info) = debug_info.as_ref() {
                 <span class="kw">let </span>source_file_id = <span class="self">self</span>.id_gen.next();
-                <span class="self">self</span>.debugs
-                    .push(Instruction::string(debug_info.file_name, source_file_id));
+                <span class="self">self</span>.debugs.push(Instruction::string(
+                    <span class="kw-2">&amp;</span>debug_info.file_name.display().to_string(),
+                    source_file_id,
+                ));
 
                 debug_info_inner = <span class="prelude-val">Some</span>(DebugInfoInner {
                     source_code: debug_info.source_code,
@@ -3815,7 +3969,7 @@
         </span><span class="self">self</span>.constant_ids
             .resize(ir_module.const_expressions.len(), <span class="number">0</span>);
         <span class="kw">for </span>(handle, <span class="kw">_</span>) <span class="kw">in </span>ir_module.const_expressions.iter() {
-            <span class="self">self</span>.write_constant_expr(handle, ir_module)<span class="question-mark">?</span>;
+            <span class="self">self</span>.write_constant_expr(handle, ir_module, mod_info)<span class="question-mark">?</span>;
         }
         <span class="macro">debug_assert!</span>(<span class="self">self</span>.constant_ids.iter().all(|<span class="kw-2">&amp;</span>id| id != <span class="number">0</span>));
 
@@ -3852,10 +4006,23 @@
             <span class="kw">if let </span><span class="prelude-val">Some</span>(index) = ep_index {
                 <span class="kw">let </span>ep_info = mod_info.get_entry_point(index);
                 <span class="comment">// If this function uses globals that we omitted from the SPIR-V
-                // because the entry point and its callees didn&#39;t use them,
+                // because the entry point and its callees didn't use them,
                 // then we must skip it.
                 </span><span class="kw">if </span>!ep_info.dominates_global_use(info) {
-                    <span class="macro">log::info!</span>(<span class="string">&quot;Skip function {:?}&quot;</span>, ir_function.name);
+                    <span class="macro">log::info!</span>(<span class="string">"Skip function {:?}"</span>, ir_function.name);
+                    <span class="kw">continue</span>;
+                }
+
+                <span class="comment">// Skip functions that that are not compatible with this entry point's stage.
+                //
+                // When validation is enabled, it rejects modules whose entry points try to call
+                // incompatible functions, so if we got this far, then any functions incompatible
+                // with our selected entry point must not be used.
+                //
+                // When validation is disabled, `fun_info.available_stages` is always just
+                // `ShaderStages::all()`, so this will write all functions in the module, and
+                // the downstream GLSL compiler will catch any problems.
+                </span><span class="kw">if </span>!info.available_stages.contains(ep_info.available_stages) {
                     <span class="kw">continue</span>;
                 }
             }
@@ -3881,7 +4048,7 @@
             Instruction::extension(extension).to_words(<span class="kw-2">&amp;mut </span><span class="self">self</span>.logical_layout.extensions);
         }
         <span class="kw">if </span>ir_module.entry_points.is_empty() {
-            <span class="comment">// SPIR-V doesn&#39;t like modules without entry points
+            <span class="comment">// SPIR-V doesn't like modules without entry points
             </span>Instruction::capability(spirv::Capability::Linkage)
                 .to_words(<span class="kw-2">&amp;mut </span><span class="self">self</span>.logical_layout.capabilities);
         }
@@ -3944,8 +4111,8 @@
     }
 
     <span class="kw">pub fn </span>decorate_non_uniform_binding_array_access(<span class="kw-2">&amp;mut </span><span class="self">self</span>, id: Word) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt; {
-        <span class="self">self</span>.require_any(<span class="string">&quot;NonUniformEXT&quot;</span>, <span class="kw-2">&amp;</span>[spirv::Capability::ShaderNonUniform])<span class="question-mark">?</span>;
-        <span class="self">self</span>.use_extension(<span class="string">&quot;SPV_EXT_descriptor_indexing&quot;</span>);
+        <span class="self">self</span>.require_any(<span class="string">"NonUniformEXT"</span>, <span class="kw-2">&amp;</span>[spirv::Capability::ShaderNonUniform])<span class="question-mark">?</span>;
+        <span class="self">self</span>.use_extension(<span class="string">"SPV_EXT_descriptor_indexing"</span>);
         <span class="self">self</span>.decorate(id, spirv::Decoration::NonUniform, <span class="kw-2">&amp;</span>[]);
         <span class="prelude-val">Ok</span>(())
     }

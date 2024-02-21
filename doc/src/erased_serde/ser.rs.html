@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/erased-serde-0.3.31/src/ser.rs`."><title>ser.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="erased_serde" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../erased_serde/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/erased-serde-0.4.3/src/ser.rs`."><title>ser.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="erased_serde" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1493,22 +1494,131 @@
 <a href="#1493" id="1493">1493</a>
 <a href="#1494" id="1494">1494</a>
 <a href="#1495" id="1495">1495</a>
-</pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::alloc::Box;
-<span class="kw">use </span><span class="kw">crate</span>::any::Any;
+<a href="#1496" id="1496">1496</a>
+<a href="#1497" id="1497">1497</a>
+<a href="#1498" id="1498">1498</a>
+<a href="#1499" id="1499">1499</a>
+<a href="#1500" id="1500">1500</a>
+<a href="#1501" id="1501">1501</a>
+<a href="#1502" id="1502">1502</a>
+<a href="#1503" id="1503">1503</a>
+<a href="#1504" id="1504">1504</a>
+<a href="#1505" id="1505">1505</a>
+<a href="#1506" id="1506">1506</a>
+<a href="#1507" id="1507">1507</a>
+<a href="#1508" id="1508">1508</a>
+<a href="#1509" id="1509">1509</a>
+<a href="#1510" id="1510">1510</a>
+<a href="#1511" id="1511">1511</a>
+<a href="#1512" id="1512">1512</a>
+<a href="#1513" id="1513">1513</a>
+<a href="#1514" id="1514">1514</a>
+<a href="#1515" id="1515">1515</a>
+<a href="#1516" id="1516">1516</a>
+<a href="#1517" id="1517">1517</a>
+<a href="#1518" id="1518">1518</a>
+<a href="#1519" id="1519">1519</a>
+<a href="#1520" id="1520">1520</a>
+<a href="#1521" id="1521">1521</a>
+<a href="#1522" id="1522">1522</a>
+<a href="#1523" id="1523">1523</a>
+<a href="#1524" id="1524">1524</a>
+<a href="#1525" id="1525">1525</a>
+<a href="#1526" id="1526">1526</a>
+<a href="#1527" id="1527">1527</a>
+<a href="#1528" id="1528">1528</a>
+<a href="#1529" id="1529">1529</a>
+<a href="#1530" id="1530">1530</a>
+<a href="#1531" id="1531">1531</a>
+<a href="#1532" id="1532">1532</a>
+<a href="#1533" id="1533">1533</a>
+<a href="#1534" id="1534">1534</a>
+<a href="#1535" id="1535">1535</a>
+<a href="#1536" id="1536">1536</a>
+<a href="#1537" id="1537">1537</a>
+<a href="#1538" id="1538">1538</a>
+<a href="#1539" id="1539">1539</a>
+<a href="#1540" id="1540">1540</a>
+<a href="#1541" id="1541">1541</a>
+<a href="#1542" id="1542">1542</a>
+<a href="#1543" id="1543">1543</a>
+<a href="#1544" id="1544">1544</a>
+<a href="#1545" id="1545">1545</a>
+<a href="#1546" id="1546">1546</a>
+<a href="#1547" id="1547">1547</a>
+<a href="#1548" id="1548">1548</a>
+<a href="#1549" id="1549">1549</a>
+<a href="#1550" id="1550">1550</a>
+<a href="#1551" id="1551">1551</a>
+<a href="#1552" id="1552">1552</a>
+<a href="#1553" id="1553">1553</a>
+<a href="#1554" id="1554">1554</a>
+<a href="#1555" id="1555">1555</a>
+<a href="#1556" id="1556">1556</a>
+<a href="#1557" id="1557">1557</a>
+<a href="#1558" id="1558">1558</a>
+<a href="#1559" id="1559">1559</a>
+<a href="#1560" id="1560">1560</a>
+<a href="#1561" id="1561">1561</a>
+<a href="#1562" id="1562">1562</a>
+<a href="#1563" id="1563">1563</a>
+<a href="#1564" id="1564">1564</a>
+<a href="#1565" id="1565">1565</a>
+<a href="#1566" id="1566">1566</a>
+<a href="#1567" id="1567">1567</a>
+<a href="#1568" id="1568">1568</a>
+<a href="#1569" id="1569">1569</a>
+<a href="#1570" id="1570">1570</a>
+<a href="#1571" id="1571">1571</a>
+<a href="#1572" id="1572">1572</a>
+<a href="#1573" id="1573">1573</a>
+<a href="#1574" id="1574">1574</a>
+<a href="#1575" id="1575">1575</a>
+<a href="#1576" id="1576">1576</a>
+<a href="#1577" id="1577">1577</a>
+<a href="#1578" id="1578">1578</a>
+<a href="#1579" id="1579">1579</a>
+<a href="#1580" id="1580">1580</a>
+<a href="#1581" id="1581">1581</a>
+<a href="#1582" id="1582">1582</a>
+<a href="#1583" id="1583">1583</a>
+<a href="#1584" id="1584">1584</a>
+<a href="#1585" id="1585">1585</a>
+<a href="#1586" id="1586">1586</a>
+<a href="#1587" id="1587">1587</a>
+<a href="#1588" id="1588">1588</a>
+<a href="#1589" id="1589">1589</a>
+<a href="#1590" id="1590">1590</a>
+<a href="#1591" id="1591">1591</a>
+<a href="#1592" id="1592">1592</a>
+<a href="#1593" id="1593">1593</a>
+<a href="#1594" id="1594">1594</a>
+<a href="#1595" id="1595">1595</a>
+<a href="#1596" id="1596">1596</a>
+<a href="#1597" id="1597">1597</a>
+<a href="#1598" id="1598">1598</a>
+<a href="#1599" id="1599">1599</a>
+<a href="#1600" id="1600">1600</a>
+<a href="#1601" id="1601">1601</a>
+<a href="#1602" id="1602">1602</a>
+<a href="#1603" id="1603">1603</a>
+<a href="#1604" id="1604">1604</a>
+</pre></div><pre class="rust"><code><span class="kw">use </span><span class="self">self</span>::ErrorImpl::ShortCircuit;
 <span class="kw">use </span><span class="kw">crate</span>::error::Error;
-<span class="kw">use </span><span class="kw">crate</span>::map::ResultExt;
-<span class="kw">use </span>core::fmt::Display;
-<span class="kw">use </span>core::marker::PhantomData;
+<span class="kw">use </span><span class="kw">crate</span>::sealed;
+<span class="kw">use </span>alloc::boxed::Box;
+<span class="kw">use </span>alloc::string::{String, ToString};
+<span class="kw">use </span>core::fmt::{<span class="self">self</span>, Debug, Display};
 <span class="kw">use </span>serde::ser::{
-    SerializeMap, SerializeSeq, SerializeStruct, SerializeStructVariant, SerializeTuple,
-    SerializeTupleStruct, SerializeTupleVariant,
+    SerializeMap <span class="kw">as _</span>, SerializeSeq <span class="kw">as _</span>, SerializeStruct <span class="kw">as _</span>, SerializeStructVariant <span class="kw">as _</span>,
+    SerializeTuple <span class="kw">as _</span>, SerializeTupleStruct <span class="kw">as _</span>, SerializeTupleVariant <span class="kw">as _</span>,
 };
 
 <span class="comment">// TRAITS //////////////////////////////////////////////////////////////////////
 
-</span><span class="doccomment">/// An object-safe equivalent of Serde&#39;s `Serialize` trait.
+</span><span class="doccomment">/// An object-safe equivalent of Serde's `Serialize` trait.
 ///
-/// Any implementation of Serde&#39;s `Serialize` converts seamlessly to an
+/// Any implementation of Serde's `Serialize` converts seamlessly to an
 /// `&amp;erased_serde::Serialize` or `Box&lt;erased_serde::Serialize&gt;` trait object.
 ///
 /// ```rust
@@ -1525,32 +1635,38 @@
 ///     // be possible with serde::Serializer because of object safety, but type
 ///     // erasure makes it possible with erased_serde::Serializer.
 ///     let mut formats: Map&lt;&amp;str, Box&lt;dyn Serializer&gt;&gt; = Map::new();
-///     formats.insert(&quot;json&quot;, Box::new(&lt;dyn Serializer&gt;::erase(json)));
-///     formats.insert(&quot;cbor&quot;, Box::new(&lt;dyn Serializer&gt;::erase(cbor)));
+///     formats.insert("json", Box::new(&lt;dyn Serializer&gt;::erase(json)));
+///     formats.insert("cbor", Box::new(&lt;dyn Serializer&gt;::erase(cbor)));
 ///
 ///     // These are boxed trait objects as well. Same thing here - type erasure
 ///     // makes this possible.
 ///     let mut values: Map&lt;&amp;str, Box&lt;dyn Serialize&gt;&gt; = Map::new();
-///     values.insert(&quot;vec&quot;, Box::new(vec![&quot;a&quot;, &quot;b&quot;]));
-///     values.insert(&quot;int&quot;, Box::new(65536));
+///     values.insert("vec", Box::new(vec!["a", "b"]));
+///     values.insert("int", Box::new(65536));
 ///
 ///     // Pick a Serializer out of the formats map.
-///     let format = formats.get_mut(&quot;json&quot;).unwrap();
+///     let format = formats.get_mut("json").unwrap();
 ///
 ///     // Pick a Serialize out of the values map.
-///     let value = values.get(&quot;vec&quot;).unwrap();
+///     let value = values.get("vec").unwrap();
 ///
-///     // This line prints `[&quot;a&quot;,&quot;b&quot;]` to stdout.
+///     // This line prints `["a","b"]` to stdout.
 ///     value.erased_serialize(format).unwrap();
 /// }
 /// ```
-</span><span class="kw">pub trait </span>Serialize {
-    <span class="kw">fn </span>erased_serialize(<span class="kw-2">&amp;</span><span class="self">self</span>, v: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Serializer) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt;;
+///
+/// This trait is sealed and can only be implemented via a `serde::Serialize`
+/// impl.
+</span><span class="kw">pub trait </span>Serialize: sealed::serialize::Sealed {
+    <span class="kw">fn </span>erased_serialize(<span class="kw-2">&amp;</span><span class="self">self</span>, serializer: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Serializer) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt;;
+
+    <span class="attr">#[doc(hidden)]
+    </span><span class="kw">fn </span>do_erased_serialize(<span class="kw-2">&amp;</span><span class="self">self</span>, serializer: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Serializer) -&gt; <span class="prelude-ty">Result</span>&lt;(), ErrorImpl&gt;;
 }
 
-<span class="doccomment">/// An object-safe equivalent of Serde&#39;s `Serializer` trait.
+<span class="doccomment">/// An object-safe equivalent of Serde's `Serializer` trait.
 ///
-/// Any implementation of Serde&#39;s `Serializer` can be converted to an
+/// Any implementation of Serde's `Serializer` can be converted to an
 /// `&amp;erased_serde::Serializer` or `Box&lt;erased_serde::Serializer&gt;` trait object
 /// using `erased_serde::Serializer::erase`.
 ///
@@ -1568,88 +1684,99 @@
 ///     // be possible with serde::Serializer because of object safety, but type
 ///     // erasure makes it possible with erased_serde::Serializer.
 ///     let mut formats: Map&lt;&amp;str, Box&lt;dyn Serializer&gt;&gt; = Map::new();
-///     formats.insert(&quot;json&quot;, Box::new(&lt;dyn Serializer&gt;::erase(json)));
-///     formats.insert(&quot;cbor&quot;, Box::new(&lt;dyn Serializer&gt;::erase(cbor)));
+///     formats.insert("json", Box::new(&lt;dyn Serializer&gt;::erase(json)));
+///     formats.insert("cbor", Box::new(&lt;dyn Serializer&gt;::erase(cbor)));
 ///
 ///     // These are boxed trait objects as well. Same thing here - type erasure
 ///     // makes this possible.
 ///     let mut values: Map&lt;&amp;str, Box&lt;dyn Serialize&gt;&gt; = Map::new();
-///     values.insert(&quot;vec&quot;, Box::new(vec![&quot;a&quot;, &quot;b&quot;]));
-///     values.insert(&quot;int&quot;, Box::new(65536));
+///     values.insert("vec", Box::new(vec!["a", "b"]));
+///     values.insert("int", Box::new(65536));
 ///
 ///     // Pick a Serializer out of the formats map.
-///     let format = formats.get_mut(&quot;json&quot;).unwrap();
+///     let format = formats.get_mut("json").unwrap();
 ///
 ///     // Pick a Serialize out of the values map.
-///     let value = values.get(&quot;vec&quot;).unwrap();
+///     let value = values.get("vec").unwrap();
 ///
-///     // This line prints `[&quot;a&quot;,&quot;b&quot;]` to stdout.
+///     // This line prints `["a","b"]` to stdout.
 ///     value.erased_serialize(format).unwrap();
 /// }
 /// ```
-</span><span class="kw">pub trait </span>Serializer {
-    <span class="kw">fn </span>erased_serialize_bool(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: bool) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt;;
-    <span class="kw">fn </span>erased_serialize_i8(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: i8) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt;;
-    <span class="kw">fn </span>erased_serialize_i16(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: i16) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt;;
-    <span class="kw">fn </span>erased_serialize_i32(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: i32) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt;;
-    <span class="kw">fn </span>erased_serialize_i64(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: i64) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt;;
-    <span class="kw">fn </span>erased_serialize_i128(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: i128) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt;;
-    <span class="kw">fn </span>erased_serialize_u8(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: u8) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt;;
-    <span class="kw">fn </span>erased_serialize_u16(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: u16) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt;;
-    <span class="kw">fn </span>erased_serialize_u32(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: u32) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt;;
-    <span class="kw">fn </span>erased_serialize_u64(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: u64) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt;;
-    <span class="kw">fn </span>erased_serialize_u128(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: u128) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt;;
-    <span class="kw">fn </span>erased_serialize_f32(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: f32) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt;;
-    <span class="kw">fn </span>erased_serialize_f64(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: f64) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt;;
-    <span class="kw">fn </span>erased_serialize_char(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: char) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt;;
-    <span class="kw">fn </span>erased_serialize_str(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt;;
-    <span class="kw">fn </span>erased_serialize_bytes(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: <span class="kw-2">&amp;</span>[u8]) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt;;
-    <span class="kw">fn </span>erased_serialize_none(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt;;
-    <span class="kw">fn </span>erased_serialize_some(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: <span class="kw-2">&amp;</span><span class="kw">dyn </span>Serialize) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt;;
-    <span class="kw">fn </span>erased_serialize_unit(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt;;
-    <span class="kw">fn </span>erased_serialize_unit_struct(<span class="kw-2">&amp;mut </span><span class="self">self</span>, name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt;;
+///
+/// This trait is sealed and can only be implemented via a `serde::Serializer`
+/// impl.
+</span><span class="kw">pub trait </span>Serializer: sealed::serializer::Sealed {
+    <span class="kw">fn </span>erased_serialize_bool(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: bool);
+    <span class="kw">fn </span>erased_serialize_i8(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: i8);
+    <span class="kw">fn </span>erased_serialize_i16(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: i16);
+    <span class="kw">fn </span>erased_serialize_i32(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: i32);
+    <span class="kw">fn </span>erased_serialize_i64(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: i64);
+    <span class="kw">fn </span>erased_serialize_i128(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: i128);
+    <span class="kw">fn </span>erased_serialize_u8(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: u8);
+    <span class="kw">fn </span>erased_serialize_u16(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: u16);
+    <span class="kw">fn </span>erased_serialize_u32(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: u32);
+    <span class="kw">fn </span>erased_serialize_u64(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: u64);
+    <span class="kw">fn </span>erased_serialize_u128(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: u128);
+    <span class="kw">fn </span>erased_serialize_f32(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: f32);
+    <span class="kw">fn </span>erased_serialize_f64(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: f64);
+    <span class="kw">fn </span>erased_serialize_char(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: char);
+    <span class="kw">fn </span>erased_serialize_str(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: <span class="kw-2">&amp;</span>str);
+    <span class="kw">fn </span>erased_serialize_bytes(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: <span class="kw-2">&amp;</span>[u8]);
+    <span class="kw">fn </span>erased_serialize_none(<span class="kw-2">&amp;mut </span><span class="self">self</span>);
+    <span class="kw">fn </span>erased_serialize_some(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: <span class="kw-2">&amp;</span><span class="kw">dyn </span>Serialize);
+    <span class="kw">fn </span>erased_serialize_unit(<span class="kw-2">&amp;mut </span><span class="self">self</span>);
+    <span class="kw">fn </span>erased_serialize_unit_struct(<span class="kw-2">&amp;mut </span><span class="self">self</span>, name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str);
     <span class="kw">fn </span>erased_serialize_unit_variant(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
         variant_index: u32,
-        variant: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt;;
-    <span class="kw">fn </span>erased_serialize_newtype_struct(
-        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
-        v: <span class="kw-2">&amp;</span><span class="kw">dyn </span>Serialize,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt;;
+        variant: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
+    );
+    <span class="kw">fn </span>erased_serialize_newtype_struct(<span class="kw-2">&amp;mut </span><span class="self">self</span>, name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str, value: <span class="kw-2">&amp;</span><span class="kw">dyn </span>Serialize);
     <span class="kw">fn </span>erased_serialize_newtype_variant(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
         variant_index: u32,
-        variant: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
-        v: <span class="kw-2">&amp;</span><span class="kw">dyn </span>Serialize,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt;;
-    <span class="kw">fn </span>erased_serialize_seq(<span class="kw-2">&amp;mut </span><span class="self">self</span>, len: <span class="prelude-ty">Option</span>&lt;usize&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Seq, Error&gt;;
-    <span class="kw">fn </span>erased_serialize_tuple(<span class="kw-2">&amp;mut </span><span class="self">self</span>, len: usize) -&gt; <span class="prelude-ty">Result</span>&lt;Tuple, Error&gt;;
+        variant: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
+        value: <span class="kw-2">&amp;</span><span class="kw">dyn </span>Serialize,
+    );
+    <span class="kw">fn </span>erased_serialize_seq(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        len: <span class="prelude-ty">Option</span>&lt;usize&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;mut </span><span class="kw">dyn </span>SerializeSeq, ErrorImpl&gt;;
+    <span class="kw">fn </span>erased_serialize_tuple(<span class="kw-2">&amp;mut </span><span class="self">self</span>, len: usize) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;mut </span><span class="kw">dyn </span>SerializeTuple, ErrorImpl&gt;;
     <span class="kw">fn </span>erased_serialize_tuple_struct(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
         len: usize,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;TupleStruct, Error&gt;;
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;mut </span><span class="kw">dyn </span>SerializeTupleStruct, ErrorImpl&gt;;
     <span class="kw">fn </span>erased_serialize_tuple_variant(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
         variant_index: u32,
-        variant: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        variant: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
         len: usize,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;TupleVariant, Error&gt;;
-    <span class="kw">fn </span>erased_serialize_map(<span class="kw-2">&amp;mut </span><span class="self">self</span>, len: <span class="prelude-ty">Option</span>&lt;usize&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Map, Error&gt;;
-    <span class="kw">fn </span>erased_serialize_struct(<span class="kw-2">&amp;mut </span><span class="self">self</span>, name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str, len: usize) -&gt; <span class="prelude-ty">Result</span>&lt;Struct, Error&gt;;
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;mut </span><span class="kw">dyn </span>SerializeTupleVariant, ErrorImpl&gt;;
+    <span class="kw">fn </span>erased_serialize_map(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        len: <span class="prelude-ty">Option</span>&lt;usize&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;mut </span><span class="kw">dyn </span>SerializeMap, ErrorImpl&gt;;
+    <span class="kw">fn </span>erased_serialize_struct(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
+        len: usize,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;mut </span><span class="kw">dyn </span>SerializeStruct, ErrorImpl&gt;;
     <span class="kw">fn </span>erased_serialize_struct_variant(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
         variant_index: u32,
-        variant: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        variant: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
         len: usize,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;StructVariant, Error&gt;;
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;mut </span><span class="kw">dyn </span>SerializeStructVariant, ErrorImpl&gt;;
     <span class="kw">fn </span>erased_is_human_readable(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool;
+    <span class="attr">#[doc(hidden)]
+    </span><span class="kw">fn </span>erased_display_error(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw">dyn </span>Display;
 }
 
 <span class="kw">impl dyn </span>Serializer {
@@ -1669,59 +1796,30 @@
     ///     // be possible with serde::Serializer because of object safety, but type
     ///     // erasure makes it possible with erased_serde::Serializer.
     ///     let mut formats: Map&lt;&amp;str, Box&lt;dyn Serializer&gt;&gt; = Map::new();
-    ///     formats.insert(&quot;json&quot;, Box::new(&lt;dyn Serializer&gt;::erase(json)));
-    ///     formats.insert(&quot;cbor&quot;, Box::new(&lt;dyn Serializer&gt;::erase(cbor)));
+    ///     formats.insert("json", Box::new(&lt;dyn Serializer&gt;::erase(json)));
+    ///     formats.insert("cbor", Box::new(&lt;dyn Serializer&gt;::erase(cbor)));
     ///
     ///     // These are boxed trait objects as well. Same thing here - type erasure
     ///     // makes this possible.
     ///     let mut values: Map&lt;&amp;str, Box&lt;dyn Serialize&gt;&gt; = Map::new();
-    ///     values.insert(&quot;vec&quot;, Box::new(vec![&quot;a&quot;, &quot;b&quot;]));
-    ///     values.insert(&quot;int&quot;, Box::new(65536));
+    ///     values.insert("vec", Box::new(vec!["a", "b"]));
+    ///     values.insert("int", Box::new(65536));
     ///
     ///     // Pick a Serializer out of the formats map.
-    ///     let format = formats.get_mut(&quot;json&quot;).unwrap();
+    ///     let format = formats.get_mut("json").unwrap();
     ///
     ///     // Pick a Serialize out of the values map.
-    ///     let value = values.get(&quot;vec&quot;).unwrap();
+    ///     let value = values.get("vec").unwrap();
     ///
-    ///     // This line prints `[&quot;a&quot;,&quot;b&quot;]` to stdout.
+    ///     // This line prints `["a","b"]` to stdout.
     ///     value.erased_serialize(format).unwrap();
     /// }
     /// ```
-    </span><span class="kw">pub fn </span>erase&lt;S&gt;(serializer: S) -&gt; erase::Serializer&lt;S&gt;
+    </span><span class="kw">pub fn </span>erase&lt;S&gt;(serializer: S) -&gt; <span class="kw">impl </span>Serializer
     <span class="kw">where
         </span>S: serde::Serializer,
-        S::Ok: <span class="lifetime">&#39;static</span>,
     {
-        erase::Serializer {
-            state: <span class="prelude-val">Some</span>(serializer),
-        }
-    }
-}
-
-<span class="comment">// OK //////////////////////////////////////////////////////////////////////////
-
-// Corresponds to the Serializer::Ok associated type.
-//
-// This struct is exposed to users by invoking methods on the Serialize or
-// Serializer trait objects, so we need to make sure they do not hold on to the
-// Ok beyond the lifetime of the data in the Any.
-//
-// We do this by enforcing S::Ok is &#39;static for every Serializer trait object
-// created by the user.
-</span><span class="kw">pub struct </span><span class="prelude-val">Ok </span>{
-    data: Any,
-}
-
-<span class="kw">impl </span><span class="prelude-val">Ok </span>{
-    <span class="kw">unsafe fn </span>new&lt;T&gt;(t: T) -&gt; <span class="self">Self </span>{
-        <span class="prelude-val">Ok </span>{
-            data: <span class="kw">unsafe </span>{ Any::new(t) },
-        }
-    }
-
-    <span class="kw">unsafe fn </span>take&lt;T&gt;(<span class="self">self</span>) -&gt; T {
-        <span class="kw">unsafe </span>{ <span class="self">self</span>.data.take() }
+        erase::Serializer::new(serializer)
     }
 }
 
@@ -1731,23 +1829,58 @@
 <span class="kw">where
     </span>T: <span class="question-mark">?</span>Sized + serde::Serialize,
 {
-    <span class="kw">fn </span>erased_serialize(<span class="kw-2">&amp;</span><span class="self">self</span>, serializer: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Serializer) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-        <span class="self">self</span>.serialize(serializer)
+    <span class="kw">fn </span>erased_serialize(<span class="kw-2">&amp;</span><span class="self">self</span>, serializer: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Serializer) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt; {
+        <span class="kw">match </span><span class="self">self</span>.do_erased_serialize(serializer) {
+            <span class="prelude-val">Ok</span>(()) =&gt; <span class="prelude-val">Ok</span>(()),
+            <span class="prelude-val">Err</span>(ShortCircuit) =&gt; <span class="prelude-val">Err</span>(serde::ser::Error::custom(serializer.erased_display_error())),
+            <span class="prelude-val">Err</span>(ErrorImpl::Custom(msg)) =&gt; <span class="prelude-val">Err</span>(serde::ser::Error::custom(msg)),
+        }
+    }
+
+    <span class="kw">fn </span>do_erased_serialize(<span class="kw-2">&amp;</span><span class="self">self</span>, serializer: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Serializer) -&gt; <span class="prelude-ty">Result</span>&lt;(), ErrorImpl&gt; {
+        <span class="self">self</span>.serialize(MakeSerializer(serializer))
     }
 }
 
+<span class="kw">impl</span>&lt;T&gt; sealed::serialize::Sealed <span class="kw">for </span>T <span class="kw">where </span>T: <span class="question-mark">?</span>Sized + serde::Serialize {}
+
 <span class="kw">mod </span>erase {
-    <span class="kw">pub struct </span>Serializer&lt;S&gt; {
-        <span class="kw">pub</span>(<span class="kw">crate</span>) state: <span class="prelude-ty">Option</span>&lt;S&gt;,
+    <span class="kw">use </span>core::mem;
+
+    <span class="kw">pub enum </span>Serializer&lt;S&gt;
+    <span class="kw">where
+        </span>S: serde::Serializer,
+    {
+        Ready(S),
+        Seq(S::SerializeSeq),
+        Tuple(S::SerializeTuple),
+        TupleStruct(S::SerializeTupleStruct),
+        TupleVariant(S::SerializeTupleVariant),
+        Map(S::SerializeMap),
+        Struct(S::SerializeStruct),
+        StructVariant(S::SerializeStructVariant),
+        Error(S::Error),
+        Complete(S::Ok),
+        Unusable,
     }
 
-    <span class="kw">impl</span>&lt;S&gt; Serializer&lt;S&gt; {
-        <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>take(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; S {
-            <span class="self">self</span>.state.take().unwrap()
+    <span class="kw">impl</span>&lt;S&gt; Serializer&lt;S&gt;
+    <span class="kw">where
+        </span>S: serde::Serializer,
+    {
+        <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>new(serializer: S) -&gt; <span class="self">Self </span>{
+            Serializer::Ready(serializer)
         }
 
-        <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>as_ref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>S {
-            <span class="self">self</span>.state.as_ref().unwrap()
+        <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>take(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
+            mem::replace(<span class="self">self</span>, Serializer::Unusable)
+        }
+
+        <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>take_serializer(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; S {
+            <span class="kw">match </span><span class="self">self</span>.take() {
+                Serializer::Ready(serializer) =&gt; serializer,
+                <span class="kw">_ </span>=&gt; <span class="macro">unreachable!</span>(),
+            }
         }
     }
 }
@@ -1756,309 +1889,348 @@
 <span class="kw">where
     </span>T: serde::Serializer,
 {
-    <span class="kw">fn </span>erased_serialize_bool(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: bool) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-        <span class="kw">unsafe </span>{
-            <span class="self">self</span>.take()
-                .serialize_bool(v)
-                .unsafe_map(Ok::new)
-                .map_err(erase)
-        }
+    <span class="kw">fn </span>erased_serialize_bool(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: bool) {
+        <span class="kw-2">*</span><span class="self">self </span>= <span class="kw">match </span><span class="self">self</span>.take_serializer().serialize_bool(v) {
+            <span class="prelude-val">Ok</span>(ok) =&gt; erase::Serializer::Complete(ok),
+            <span class="prelude-val">Err</span>(err) =&gt; erase::Serializer::Error(err),
+        };
     }
 
-    <span class="kw">fn </span>erased_serialize_i8(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: i8) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-        <span class="kw">unsafe </span>{
-            <span class="self">self</span>.take()
-                .serialize_i8(v)
-                .unsafe_map(Ok::new)
-                .map_err(erase)
-        }
+    <span class="kw">fn </span>erased_serialize_i8(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: i8) {
+        <span class="kw-2">*</span><span class="self">self </span>= <span class="kw">match </span><span class="self">self</span>.take_serializer().serialize_i8(v) {
+            <span class="prelude-val">Ok</span>(ok) =&gt; erase::Serializer::Complete(ok),
+            <span class="prelude-val">Err</span>(err) =&gt; erase::Serializer::Error(err),
+        };
     }
 
-    <span class="kw">fn </span>erased_serialize_i16(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: i16) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-        <span class="kw">unsafe </span>{
-            <span class="self">self</span>.take()
-                .serialize_i16(v)
-                .unsafe_map(Ok::new)
-                .map_err(erase)
-        }
+    <span class="kw">fn </span>erased_serialize_i16(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: i16) {
+        <span class="kw-2">*</span><span class="self">self </span>= <span class="kw">match </span><span class="self">self</span>.take_serializer().serialize_i16(v) {
+            <span class="prelude-val">Ok</span>(ok) =&gt; erase::Serializer::Complete(ok),
+            <span class="prelude-val">Err</span>(err) =&gt; erase::Serializer::Error(err),
+        };
     }
 
-    <span class="kw">fn </span>erased_serialize_i32(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: i32) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-        <span class="kw">unsafe </span>{
-            <span class="self">self</span>.take()
-                .serialize_i32(v)
-                .unsafe_map(Ok::new)
-                .map_err(erase)
-        }
+    <span class="kw">fn </span>erased_serialize_i32(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: i32) {
+        <span class="kw-2">*</span><span class="self">self </span>= <span class="kw">match </span><span class="self">self</span>.take_serializer().serialize_i32(v) {
+            <span class="prelude-val">Ok</span>(ok) =&gt; erase::Serializer::Complete(ok),
+            <span class="prelude-val">Err</span>(err) =&gt; erase::Serializer::Error(err),
+        };
     }
 
-    <span class="kw">fn </span>erased_serialize_i64(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: i64) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-        <span class="kw">unsafe </span>{
-            <span class="self">self</span>.take()
-                .serialize_i64(v)
-                .unsafe_map(Ok::new)
-                .map_err(erase)
-        }
+    <span class="kw">fn </span>erased_serialize_i64(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: i64) {
+        <span class="kw-2">*</span><span class="self">self </span>= <span class="kw">match </span><span class="self">self</span>.take_serializer().serialize_i64(v) {
+            <span class="prelude-val">Ok</span>(ok) =&gt; erase::Serializer::Complete(ok),
+            <span class="prelude-val">Err</span>(err) =&gt; erase::Serializer::Error(err),
+        };
     }
 
-    <span class="kw">fn </span>erased_serialize_i128(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: i128) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-        <span class="kw">unsafe </span>{
-            <span class="self">self</span>.take()
-                .serialize_i128(v)
-                .unsafe_map(Ok::new)
-                .map_err(erase)
-        }
+    <span class="kw">fn </span>erased_serialize_i128(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: i128) {
+        <span class="kw-2">*</span><span class="self">self </span>= <span class="kw">match </span><span class="self">self</span>.take_serializer().serialize_i128(v) {
+            <span class="prelude-val">Ok</span>(ok) =&gt; erase::Serializer::Complete(ok),
+            <span class="prelude-val">Err</span>(err) =&gt; erase::Serializer::Error(err),
+        };
     }
 
-    <span class="kw">fn </span>erased_serialize_u8(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: u8) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-        <span class="kw">unsafe </span>{
-            <span class="self">self</span>.take()
-                .serialize_u8(v)
-                .unsafe_map(Ok::new)
-                .map_err(erase)
-        }
+    <span class="kw">fn </span>erased_serialize_u8(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: u8) {
+        <span class="kw-2">*</span><span class="self">self </span>= <span class="kw">match </span><span class="self">self</span>.take_serializer().serialize_u8(v) {
+            <span class="prelude-val">Ok</span>(ok) =&gt; erase::Serializer::Complete(ok),
+            <span class="prelude-val">Err</span>(err) =&gt; erase::Serializer::Error(err),
+        };
     }
 
-    <span class="kw">fn </span>erased_serialize_u16(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: u16) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-        <span class="kw">unsafe </span>{
-            <span class="self">self</span>.take()
-                .serialize_u16(v)
-                .unsafe_map(Ok::new)
-                .map_err(erase)
-        }
+    <span class="kw">fn </span>erased_serialize_u16(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: u16) {
+        <span class="kw-2">*</span><span class="self">self </span>= <span class="kw">match </span><span class="self">self</span>.take_serializer().serialize_u16(v) {
+            <span class="prelude-val">Ok</span>(ok) =&gt; erase::Serializer::Complete(ok),
+            <span class="prelude-val">Err</span>(err) =&gt; erase::Serializer::Error(err),
+        };
     }
 
-    <span class="kw">fn </span>erased_serialize_u32(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: u32) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-        <span class="kw">unsafe </span>{
-            <span class="self">self</span>.take()
-                .serialize_u32(v)
-                .unsafe_map(Ok::new)
-                .map_err(erase)
-        }
+    <span class="kw">fn </span>erased_serialize_u32(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: u32) {
+        <span class="kw-2">*</span><span class="self">self </span>= <span class="kw">match </span><span class="self">self</span>.take_serializer().serialize_u32(v) {
+            <span class="prelude-val">Ok</span>(ok) =&gt; erase::Serializer::Complete(ok),
+            <span class="prelude-val">Err</span>(err) =&gt; erase::Serializer::Error(err),
+        };
     }
 
-    <span class="kw">fn </span>erased_serialize_u64(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: u64) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-        <span class="kw">unsafe </span>{
-            <span class="self">self</span>.take()
-                .serialize_u64(v)
-                .unsafe_map(Ok::new)
-                .map_err(erase)
-        }
+    <span class="kw">fn </span>erased_serialize_u64(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: u64) {
+        <span class="kw-2">*</span><span class="self">self </span>= <span class="kw">match </span><span class="self">self</span>.take_serializer().serialize_u64(v) {
+            <span class="prelude-val">Ok</span>(ok) =&gt; erase::Serializer::Complete(ok),
+            <span class="prelude-val">Err</span>(err) =&gt; erase::Serializer::Error(err),
+        };
     }
 
-    <span class="kw">fn </span>erased_serialize_u128(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: u128) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-        <span class="kw">unsafe </span>{
-            <span class="self">self</span>.take()
-                .serialize_u128(v)
-                .unsafe_map(Ok::new)
-                .map_err(erase)
-        }
+    <span class="kw">fn </span>erased_serialize_u128(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: u128) {
+        <span class="kw-2">*</span><span class="self">self </span>= <span class="kw">match </span><span class="self">self</span>.take_serializer().serialize_u128(v) {
+            <span class="prelude-val">Ok</span>(ok) =&gt; erase::Serializer::Complete(ok),
+            <span class="prelude-val">Err</span>(err) =&gt; erase::Serializer::Error(err),
+        };
     }
 
-    <span class="kw">fn </span>erased_serialize_f32(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: f32) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-        <span class="kw">unsafe </span>{
-            <span class="self">self</span>.take()
-                .serialize_f32(v)
-                .unsafe_map(Ok::new)
-                .map_err(erase)
-        }
+    <span class="kw">fn </span>erased_serialize_f32(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: f32) {
+        <span class="kw-2">*</span><span class="self">self </span>= <span class="kw">match </span><span class="self">self</span>.take_serializer().serialize_f32(v) {
+            <span class="prelude-val">Ok</span>(ok) =&gt; erase::Serializer::Complete(ok),
+            <span class="prelude-val">Err</span>(err) =&gt; erase::Serializer::Error(err),
+        };
     }
 
-    <span class="kw">fn </span>erased_serialize_f64(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: f64) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-        <span class="kw">unsafe </span>{
-            <span class="self">self</span>.take()
-                .serialize_f64(v)
-                .unsafe_map(Ok::new)
-                .map_err(erase)
-        }
+    <span class="kw">fn </span>erased_serialize_f64(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: f64) {
+        <span class="kw-2">*</span><span class="self">self </span>= <span class="kw">match </span><span class="self">self</span>.take_serializer().serialize_f64(v) {
+            <span class="prelude-val">Ok</span>(ok) =&gt; erase::Serializer::Complete(ok),
+            <span class="prelude-val">Err</span>(err) =&gt; erase::Serializer::Error(err),
+        };
     }
 
-    <span class="kw">fn </span>erased_serialize_char(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: char) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-        <span class="kw">unsafe </span>{
-            <span class="self">self</span>.take()
-                .serialize_char(v)
-                .unsafe_map(Ok::new)
-                .map_err(erase)
-        }
+    <span class="kw">fn </span>erased_serialize_char(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: char) {
+        <span class="kw-2">*</span><span class="self">self </span>= <span class="kw">match </span><span class="self">self</span>.take_serializer().serialize_char(v) {
+            <span class="prelude-val">Ok</span>(ok) =&gt; erase::Serializer::Complete(ok),
+            <span class="prelude-val">Err</span>(err) =&gt; erase::Serializer::Error(err),
+        };
     }
 
-    <span class="kw">fn </span>erased_serialize_str(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-        <span class="kw">unsafe </span>{
-            <span class="self">self</span>.take()
-                .serialize_str(v)
-                .unsafe_map(Ok::new)
-                .map_err(erase)
-        }
+    <span class="kw">fn </span>erased_serialize_str(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: <span class="kw-2">&amp;</span>str) {
+        <span class="kw-2">*</span><span class="self">self </span>= <span class="kw">match </span><span class="self">self</span>.take_serializer().serialize_str(v) {
+            <span class="prelude-val">Ok</span>(ok) =&gt; erase::Serializer::Complete(ok),
+            <span class="prelude-val">Err</span>(err) =&gt; erase::Serializer::Error(err),
+        };
     }
 
-    <span class="kw">fn </span>erased_serialize_bytes(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: <span class="kw-2">&amp;</span>[u8]) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-        <span class="kw">unsafe </span>{
-            <span class="self">self</span>.take()
-                .serialize_bytes(v)
-                .unsafe_map(Ok::new)
-                .map_err(erase)
-        }
+    <span class="kw">fn </span>erased_serialize_bytes(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: <span class="kw-2">&amp;</span>[u8]) {
+        <span class="kw-2">*</span><span class="self">self </span>= <span class="kw">match </span><span class="self">self</span>.take_serializer().serialize_bytes(v) {
+            <span class="prelude-val">Ok</span>(ok) =&gt; erase::Serializer::Complete(ok),
+            <span class="prelude-val">Err</span>(err) =&gt; erase::Serializer::Error(err),
+        };
     }
 
-    <span class="kw">fn </span>erased_serialize_none(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-        <span class="kw">unsafe </span>{
-            <span class="self">self</span>.take()
-                .serialize_none()
-                .unsafe_map(Ok::new)
-                .map_err(erase)
-        }
+    <span class="kw">fn </span>erased_serialize_none(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw-2">*</span><span class="self">self </span>= <span class="kw">match </span><span class="self">self</span>.take_serializer().serialize_none() {
+            <span class="prelude-val">Ok</span>(ok) =&gt; erase::Serializer::Complete(ok),
+            <span class="prelude-val">Err</span>(err) =&gt; erase::Serializer::Error(err),
+        };
     }
 
-    <span class="kw">fn </span>erased_serialize_some(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: <span class="kw-2">&amp;</span><span class="kw">dyn </span>Serialize) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-        <span class="kw">unsafe </span>{
-            <span class="self">self</span>.take()
-                .serialize_some(v)
-                .unsafe_map(Ok::new)
-                .map_err(erase)
-        }
+    <span class="kw">fn </span>erased_serialize_some(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: <span class="kw-2">&amp;</span><span class="kw">dyn </span>Serialize) {
+        <span class="kw-2">*</span><span class="self">self </span>= <span class="kw">match </span><span class="self">self</span>.take_serializer().serialize_some(value) {
+            <span class="prelude-val">Ok</span>(ok) =&gt; erase::Serializer::Complete(ok),
+            <span class="prelude-val">Err</span>(err) =&gt; erase::Serializer::Error(err),
+        };
     }
 
-    <span class="kw">fn </span>erased_serialize_unit(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-        <span class="kw">unsafe </span>{
-            <span class="self">self</span>.take()
-                .serialize_unit()
-                .unsafe_map(Ok::new)
-                .map_err(erase)
-        }
+    <span class="kw">fn </span>erased_serialize_unit(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw-2">*</span><span class="self">self </span>= <span class="kw">match </span><span class="self">self</span>.take_serializer().serialize_unit() {
+            <span class="prelude-val">Ok</span>(ok) =&gt; erase::Serializer::Complete(ok),
+            <span class="prelude-val">Err</span>(err) =&gt; erase::Serializer::Error(err),
+        };
     }
 
-    <span class="kw">fn </span>erased_serialize_unit_struct(<span class="kw-2">&amp;mut </span><span class="self">self</span>, name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-        <span class="kw">unsafe </span>{
-            <span class="self">self</span>.take()
-                .serialize_unit_struct(name)
-                .unsafe_map(Ok::new)
-                .map_err(erase)
-        }
+    <span class="kw">fn </span>erased_serialize_unit_struct(<span class="kw-2">&amp;mut </span><span class="self">self</span>, name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str) {
+        <span class="kw-2">*</span><span class="self">self </span>= <span class="kw">match </span><span class="self">self</span>.take_serializer().serialize_unit_struct(name) {
+            <span class="prelude-val">Ok</span>(ok) =&gt; erase::Serializer::Complete(ok),
+            <span class="prelude-val">Err</span>(err) =&gt; erase::Serializer::Error(err),
+        };
     }
 
     <span class="kw">fn </span>erased_serialize_unit_variant(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
         variant_index: u32,
-        variant: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-        <span class="kw">unsafe </span>{
-            <span class="self">self</span>.take()
-                .serialize_unit_variant(name, variant_index, variant)
-                .unsafe_map(Ok::new)
-                .map_err(erase)
-        }
+        variant: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
+    ) {
+        <span class="kw-2">*</span><span class="self">self </span>= <span class="kw">match </span><span class="self">self
+            </span>.take_serializer()
+            .serialize_unit_variant(name, variant_index, variant)
+        {
+            <span class="prelude-val">Ok</span>(ok) =&gt; erase::Serializer::Complete(ok),
+            <span class="prelude-val">Err</span>(err) =&gt; erase::Serializer::Error(err),
+        };
     }
 
-    <span class="kw">fn </span>erased_serialize_newtype_struct(
-        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
-        v: <span class="kw-2">&amp;</span><span class="kw">dyn </span>Serialize,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-        <span class="kw">unsafe </span>{
-            <span class="self">self</span>.take()
-                .serialize_newtype_struct(name, v)
-                .unsafe_map(Ok::new)
-                .map_err(erase)
-        }
+    <span class="kw">fn </span>erased_serialize_newtype_struct(<span class="kw-2">&amp;mut </span><span class="self">self</span>, name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str, value: <span class="kw-2">&amp;</span><span class="kw">dyn </span>Serialize) {
+        <span class="kw-2">*</span><span class="self">self </span>= <span class="kw">match </span><span class="self">self</span>.take_serializer().serialize_newtype_struct(name, value) {
+            <span class="prelude-val">Ok</span>(ok) =&gt; erase::Serializer::Complete(ok),
+            <span class="prelude-val">Err</span>(err) =&gt; erase::Serializer::Error(err),
+        };
     }
 
     <span class="kw">fn </span>erased_serialize_newtype_variant(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
         variant_index: u32,
-        variant: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
-        v: <span class="kw-2">&amp;</span><span class="kw">dyn </span>Serialize,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-        <span class="kw">unsafe </span>{
-            <span class="self">self</span>.take()
-                .serialize_newtype_variant(name, variant_index, variant, v)
-                .unsafe_map(Ok::new)
-                .map_err(erase)
+        variant: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
+        value: <span class="kw-2">&amp;</span><span class="kw">dyn </span>Serialize,
+    ) {
+        <span class="kw-2">*</span><span class="self">self </span>= <span class="kw">match </span><span class="self">self</span>.take_serializer().serialize_newtype_variant(
+            name,
+            variant_index,
+            variant,
+            value,
+        ) {
+            <span class="prelude-val">Ok</span>(ok) =&gt; erase::Serializer::Complete(ok),
+            <span class="prelude-val">Err</span>(err) =&gt; erase::Serializer::Error(err),
+        };
+    }
+
+    <span class="kw">fn </span>erased_serialize_seq(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        len: <span class="prelude-ty">Option</span>&lt;usize&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;mut </span><span class="kw">dyn </span>SerializeSeq, ErrorImpl&gt; {
+        <span class="kw">match </span><span class="self">self</span>.take_serializer().serialize_seq(len) {
+            <span class="prelude-val">Ok</span>(ok) =&gt; {
+                <span class="kw-2">*</span><span class="self">self </span>= erase::Serializer::Seq(ok);
+                <span class="prelude-val">Ok</span>(<span class="self">self</span>)
+            }
+            <span class="prelude-val">Err</span>(err) =&gt; {
+                <span class="kw-2">*</span><span class="self">self </span>= erase::Serializer::Error(err);
+                <span class="prelude-val">Err</span>(ShortCircuit)
+            }
         }
     }
 
-    <span class="kw">fn </span>erased_serialize_seq(<span class="kw-2">&amp;mut </span><span class="self">self</span>, len: <span class="prelude-ty">Option</span>&lt;usize&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Seq, Error&gt; {
-        <span class="kw">unsafe </span>{
-            <span class="self">self</span>.take()
-                .serialize_seq(len)
-                .unsafe_map(Seq::new)
-                .map_err(erase)
-        }
-    }
-
-    <span class="kw">fn </span>erased_serialize_tuple(<span class="kw-2">&amp;mut </span><span class="self">self</span>, len: usize) -&gt; <span class="prelude-ty">Result</span>&lt;Tuple, Error&gt; {
-        <span class="kw">unsafe </span>{
-            <span class="self">self</span>.take()
-                .serialize_tuple(len)
-                .unsafe_map(Tuple::new)
-                .map_err(erase)
+    <span class="kw">fn </span>erased_serialize_tuple(<span class="kw-2">&amp;mut </span><span class="self">self</span>, len: usize) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;mut </span><span class="kw">dyn </span>SerializeTuple, ErrorImpl&gt; {
+        <span class="kw">match </span><span class="self">self</span>.take_serializer().serialize_tuple(len) {
+            <span class="prelude-val">Ok</span>(ok) =&gt; {
+                <span class="kw-2">*</span><span class="self">self </span>= erase::Serializer::Tuple(ok);
+                <span class="prelude-val">Ok</span>(<span class="self">self</span>)
+            }
+            <span class="prelude-val">Err</span>(err) =&gt; {
+                <span class="kw-2">*</span><span class="self">self </span>= erase::Serializer::Error(err);
+                <span class="prelude-val">Err</span>(ShortCircuit)
+            }
         }
     }
 
     <span class="kw">fn </span>erased_serialize_tuple_struct(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
         len: usize,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;TupleStruct, Error&gt; {
-        <span class="kw">unsafe </span>{
-            <span class="self">self</span>.take()
-                .serialize_tuple_struct(name, len)
-                .unsafe_map(TupleStruct::new)
-                .map_err(erase)
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;mut </span><span class="kw">dyn </span>SerializeTupleStruct, ErrorImpl&gt; {
+        <span class="kw">match </span><span class="self">self</span>.take_serializer().serialize_tuple_struct(name, len) {
+            <span class="prelude-val">Ok</span>(ok) =&gt; {
+                <span class="kw-2">*</span><span class="self">self </span>= erase::Serializer::TupleStruct(ok);
+                <span class="prelude-val">Ok</span>(<span class="self">self</span>)
+            }
+            <span class="prelude-val">Err</span>(err) =&gt; {
+                <span class="kw-2">*</span><span class="self">self </span>= erase::Serializer::Error(err);
+                <span class="prelude-val">Err</span>(ShortCircuit)
+            }
         }
     }
 
     <span class="kw">fn </span>erased_serialize_tuple_variant(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
         variant_index: u32,
-        variant: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        variant: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
         len: usize,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;TupleVariant, Error&gt; {
-        <span class="kw">unsafe </span>{
-            <span class="self">self</span>.take()
-                .serialize_tuple_variant(name, variant_index, variant, len)
-                .unsafe_map(TupleVariant::new)
-                .map_err(erase)
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;mut </span><span class="kw">dyn </span>SerializeTupleVariant, ErrorImpl&gt; {
+        <span class="kw">match </span><span class="self">self
+            </span>.take_serializer()
+            .serialize_tuple_variant(name, variant_index, variant, len)
+        {
+            <span class="prelude-val">Ok</span>(ok) =&gt; {
+                <span class="kw-2">*</span><span class="self">self </span>= erase::Serializer::TupleVariant(ok);
+                <span class="prelude-val">Ok</span>(<span class="self">self</span>)
+            }
+            <span class="prelude-val">Err</span>(err) =&gt; {
+                <span class="kw-2">*</span><span class="self">self </span>= erase::Serializer::Error(err);
+                <span class="prelude-val">Err</span>(ShortCircuit)
+            }
         }
     }
 
-    <span class="kw">fn </span>erased_serialize_map(<span class="kw-2">&amp;mut </span><span class="self">self</span>, len: <span class="prelude-ty">Option</span>&lt;usize&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Map, Error&gt; {
-        <span class="kw">unsafe </span>{
-            <span class="self">self</span>.take()
-                .serialize_map(len)
-                .unsafe_map(Map::new)
-                .map_err(erase)
+    <span class="kw">fn </span>erased_serialize_map(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        len: <span class="prelude-ty">Option</span>&lt;usize&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;mut </span><span class="kw">dyn </span>SerializeMap, ErrorImpl&gt; {
+        <span class="kw">match </span><span class="self">self</span>.take_serializer().serialize_map(len) {
+            <span class="prelude-val">Ok</span>(ok) =&gt; {
+                <span class="kw-2">*</span><span class="self">self </span>= erase::Serializer::Map(ok);
+                <span class="prelude-val">Ok</span>(<span class="self">self</span>)
+            }
+            <span class="prelude-val">Err</span>(err) =&gt; {
+                <span class="kw-2">*</span><span class="self">self </span>= erase::Serializer::Error(err);
+                <span class="prelude-val">Err</span>(ShortCircuit)
+            }
         }
     }
 
-    <span class="kw">fn </span>erased_serialize_struct(<span class="kw-2">&amp;mut </span><span class="self">self</span>, name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str, len: usize) -&gt; <span class="prelude-ty">Result</span>&lt;Struct, Error&gt; {
-        <span class="kw">unsafe </span>{
-            <span class="self">self</span>.take()
-                .serialize_struct(name, len)
-                .unsafe_map(Struct::new)
-                .map_err(erase)
+    <span class="kw">fn </span>erased_serialize_struct(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
+        len: usize,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;mut </span><span class="kw">dyn </span>SerializeStruct, ErrorImpl&gt; {
+        <span class="kw">match </span><span class="self">self</span>.take_serializer().serialize_struct(name, len) {
+            <span class="prelude-val">Ok</span>(ok) =&gt; {
+                <span class="kw-2">*</span><span class="self">self </span>= erase::Serializer::Struct(ok);
+                <span class="prelude-val">Ok</span>(<span class="self">self</span>)
+            }
+            <span class="prelude-val">Err</span>(err) =&gt; {
+                <span class="kw-2">*</span><span class="self">self </span>= erase::Serializer::Error(err);
+                <span class="prelude-val">Err</span>(ShortCircuit)
+            }
         }
     }
 
     <span class="kw">fn </span>erased_serialize_struct_variant(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
         variant_index: u32,
-        variant: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        variant: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
         len: usize,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;StructVariant, Error&gt; {
-        <span class="kw">unsafe </span>{
-            <span class="self">self</span>.take()
-                .serialize_struct_variant(name, variant_index, variant, len)
-                .unsafe_map(StructVariant::new)
-                .map_err(erase)
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;mut </span><span class="kw">dyn </span>SerializeStructVariant, ErrorImpl&gt; {
+        <span class="kw">match </span><span class="self">self
+            </span>.take_serializer()
+            .serialize_struct_variant(name, variant_index, variant, len)
+        {
+            <span class="prelude-val">Ok</span>(ok) =&gt; {
+                <span class="kw-2">*</span><span class="self">self </span>= erase::Serializer::StructVariant(ok);
+                <span class="prelude-val">Ok</span>(<span class="self">self</span>)
+            }
+            <span class="prelude-val">Err</span>(err) =&gt; {
+                <span class="kw-2">*</span><span class="self">self </span>= erase::Serializer::Error(err);
+                <span class="prelude-val">Err</span>(ShortCircuit)
+            }
         }
     }
 
     <span class="kw">fn </span>erased_is_human_readable(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="self">self</span>.as_ref().is_human_readable()
+        <span class="kw">match </span><span class="self">self </span>{
+            erase::Serializer::Ready(serializer) =&gt; serializer.is_human_readable(),
+            <span class="kw">_ </span>=&gt; <span class="macro">unreachable!</span>(),
+        }
+    }
+
+    <span class="kw">fn </span>erased_display_error(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw">dyn </span>Display {
+        <span class="kw">match </span><span class="self">self </span>{
+            erase::Serializer::Error(err) =&gt; err,
+            <span class="kw">_ </span>=&gt; <span class="macro">unreachable!</span>(),
+        }
+    }
+}
+
+<span class="kw">impl</span>&lt;T&gt; sealed::serializer::Sealed <span class="kw">for </span>erase::Serializer&lt;T&gt; <span class="kw">where </span>T: serde::Serializer {}
+
+<span class="kw">pub enum </span>ErrorImpl {
+    ShortCircuit,
+    Custom(Box&lt;String&gt;),
+}
+
+<span class="kw">impl </span>Display <span class="kw">for </span>ErrorImpl {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, _formatter: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
+        <span class="macro">unimplemented!</span>()
+    }
+}
+
+<span class="kw">impl </span>Debug <span class="kw">for </span>ErrorImpl {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, _formatter: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
+        <span class="macro">unimplemented!</span>()
+    }
+}
+
+<span class="kw">impl </span>serde::ser::StdError <span class="kw">for </span>ErrorImpl {}
+
+<span class="kw">impl </span>serde::ser::Error <span class="kw">for </span>ErrorImpl {
+    <span class="kw">fn </span>custom&lt;T: Display&gt;(msg: T) -&gt; <span class="self">Self </span>{
+        ErrorImpl::Custom(Box::new(msg.to_string()))
     }
 }
 
@@ -2074,9 +2246,10 @@
 ///     /* ... */
 /// }
 ///
-/// impl&lt;&#39;a&gt; serde::Serialize for dyn Event + &#39;a {
+/// impl&lt;'a&gt; serde::Serialize for dyn Event + 'a {
 ///     fn serialize&lt;S&gt;(&amp;self, serializer: S) -&gt; Result&lt;S::Ok, S::Error&gt;
-///         where S: serde::Serializer
+///     where
+///         S: serde::Serializer,
 ///     {
 ///         erased_serde::serialize(self, serializer)
 ///     }
@@ -2098,792 +2271,828 @@
     </span>T: <span class="question-mark">?</span>Sized + Serialize,
     S: serde::Serializer,
 {
-    <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Serializer {
-        state: <span class="prelude-val">Some</span>(serializer),
-    };
-    <span class="kw">unsafe </span>{
-        value
-            .erased_serialize(<span class="kw-2">&amp;mut </span>erased)
-            .unsafe_map(Ok::take)
-            .map_err(unerase)
+    <span class="kw">let </span><span class="kw-2">mut </span>erased = erase::Serializer::new(serializer);
+    <span class="kw">match </span>value.do_erased_serialize(<span class="kw-2">&amp;mut </span>erased) {
+        <span class="prelude-val">Ok</span>(()) | <span class="prelude-val">Err</span>(ShortCircuit) =&gt; {}
+        <span class="prelude-val">Err</span>(ErrorImpl::Custom(msg)) =&gt; <span class="kw">return </span><span class="prelude-val">Err</span>(serde::ser::Error::custom(msg)),
+    }
+    <span class="kw">match </span>erased {
+        erase::Serializer::Complete(ok) =&gt; <span class="prelude-val">Ok</span>(ok),
+        erase::Serializer::Error(err) =&gt; <span class="prelude-val">Err</span>(err),
+        <span class="kw">_ </span>=&gt; <span class="macro">unreachable!</span>(),
     }
 }
 
 <span class="macro">serialize_trait_object!</span>(Serialize);
 
-<span class="macro">macro_rules! </span>impl_serializer_for_trait_object {
-    (<span class="macro-nonterminal">$ty</span>:ty) =&gt; {
-        <span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; serde::Serializer <span class="kw">for </span><span class="macro-nonterminal">$ty </span>{
-            <span class="kw">type </span><span class="prelude-val">Ok </span>= <span class="prelude-val">Ok</span>;
-            <span class="kw">type </span>Error = Error;
-            <span class="kw">type </span>SerializeSeq = Seq&lt;<span class="lifetime">&#39;a</span>&gt;;
-            <span class="kw">type </span>SerializeTuple = Tuple&lt;<span class="lifetime">&#39;a</span>&gt;;
-            <span class="kw">type </span>SerializeTupleStruct = TupleStruct&lt;<span class="lifetime">&#39;a</span>&gt;;
-            <span class="kw">type </span>SerializeTupleVariant = TupleVariant&lt;<span class="lifetime">&#39;a</span>&gt;;
-            <span class="kw">type </span>SerializeMap = Map&lt;<span class="lifetime">&#39;a</span>&gt;;
-            <span class="kw">type </span>SerializeStruct = Struct&lt;<span class="lifetime">&#39;a</span>&gt;;
-            <span class="kw">type </span>SerializeStructVariant = StructVariant&lt;<span class="lifetime">&#39;a</span>&gt;;
+<span class="kw">struct </span>MakeSerializer&lt;TraitObject&gt;(TraitObject);
 
-            <span class="kw">fn </span>serialize_bool(<span class="self">self</span>, v: bool) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-                <span class="self">self</span>.erased_serialize_bool(v)
-            }
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; serde::Serializer <span class="kw">for </span>MakeSerializer&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>(<span class="kw">dyn </span>Serializer + <span class="lifetime">'_</span>)&gt; {
+    <span class="kw">type </span><span class="prelude-val">Ok </span>= ();
+    <span class="kw">type </span>Error = ErrorImpl;
+    <span class="kw">type </span>SerializeSeq = MakeSerializer&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span><span class="kw">dyn </span>SerializeSeq&gt;;
+    <span class="kw">type </span>SerializeTuple = MakeSerializer&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span><span class="kw">dyn </span>SerializeTuple&gt;;
+    <span class="kw">type </span>SerializeTupleStruct = MakeSerializer&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span><span class="kw">dyn </span>SerializeTupleStruct&gt;;
+    <span class="kw">type </span>SerializeTupleVariant = MakeSerializer&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span><span class="kw">dyn </span>SerializeTupleVariant&gt;;
+    <span class="kw">type </span>SerializeMap = MakeSerializer&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span><span class="kw">dyn </span>SerializeMap&gt;;
+    <span class="kw">type </span>SerializeStruct = MakeSerializer&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span><span class="kw">dyn </span>SerializeStruct&gt;;
+    <span class="kw">type </span>SerializeStructVariant = MakeSerializer&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span><span class="kw">dyn </span>SerializeStructVariant&gt;;
 
-            <span class="kw">fn </span>serialize_i8(<span class="self">self</span>, v: i8) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-                <span class="self">self</span>.erased_serialize_i8(v)
-            }
-
-            <span class="kw">fn </span>serialize_i16(<span class="self">self</span>, v: i16) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-                <span class="self">self</span>.erased_serialize_i16(v)
-            }
-
-            <span class="kw">fn </span>serialize_i32(<span class="self">self</span>, v: i32) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-                <span class="self">self</span>.erased_serialize_i32(v)
-            }
-
-            <span class="kw">fn </span>serialize_i64(<span class="self">self</span>, v: i64) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-                <span class="self">self</span>.erased_serialize_i64(v)
-            }
-
-            <span class="kw">fn </span>serialize_i128(<span class="self">self</span>, v: i128) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-                <span class="self">self</span>.erased_serialize_i128(v)
-            }
-
-            <span class="kw">fn </span>serialize_u8(<span class="self">self</span>, v: u8) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-                <span class="self">self</span>.erased_serialize_u8(v)
-            }
-
-            <span class="kw">fn </span>serialize_u16(<span class="self">self</span>, v: u16) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-                <span class="self">self</span>.erased_serialize_u16(v)
-            }
-
-            <span class="kw">fn </span>serialize_u32(<span class="self">self</span>, v: u32) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-                <span class="self">self</span>.erased_serialize_u32(v)
-            }
-
-            <span class="kw">fn </span>serialize_u64(<span class="self">self</span>, v: u64) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-                <span class="self">self</span>.erased_serialize_u64(v)
-            }
-
-            <span class="kw">fn </span>serialize_u128(<span class="self">self</span>, v: u128) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-                <span class="self">self</span>.erased_serialize_u128(v)
-            }
-
-            <span class="kw">fn </span>serialize_f32(<span class="self">self</span>, v: f32) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-                <span class="self">self</span>.erased_serialize_f32(v)
-            }
-
-            <span class="kw">fn </span>serialize_f64(<span class="self">self</span>, v: f64) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-                <span class="self">self</span>.erased_serialize_f64(v)
-            }
-
-            <span class="kw">fn </span>serialize_char(<span class="self">self</span>, v: char) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-                <span class="self">self</span>.erased_serialize_char(v)
-            }
-
-            <span class="kw">fn </span>serialize_str(<span class="self">self</span>, v: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-                <span class="self">self</span>.erased_serialize_str(v)
-            }
-
-            <span class="kw">fn </span>serialize_bytes(<span class="self">self</span>, v: <span class="kw-2">&amp;</span>[u8]) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-                <span class="self">self</span>.erased_serialize_bytes(v)
-            }
-
-            <span class="kw">fn </span>serialize_none(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-                <span class="self">self</span>.erased_serialize_none()
-            }
-
-            <span class="kw">fn </span>serialize_some&lt;T&gt;(<span class="self">self</span>, v: <span class="kw-2">&amp;</span>T) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt;
-            <span class="kw">where
-                </span>T: <span class="question-mark">?</span>Sized + serde::Serialize,
-            {
-                <span class="self">self</span>.erased_serialize_some(<span class="kw-2">&amp;</span>v)
-            }
-
-            <span class="kw">fn </span>serialize_unit(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-                <span class="self">self</span>.erased_serialize_unit()
-            }
-
-            <span class="kw">fn </span>serialize_unit_struct(<span class="self">self</span>, name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-                <span class="self">self</span>.erased_serialize_unit_struct(name)
-            }
-
-            <span class="kw">fn </span>serialize_unit_variant(
-                <span class="self">self</span>,
-                name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
-                variant_index: u32,
-                variant: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
-            ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-                <span class="self">self</span>.erased_serialize_unit_variant(name, variant_index, variant)
-            }
-
-            <span class="kw">fn </span>serialize_newtype_struct&lt;T&gt;(<span class="self">self</span>, name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str, v: <span class="kw-2">&amp;</span>T) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt;
-            <span class="kw">where
-                </span>T: <span class="question-mark">?</span>Sized + serde::Serialize,
-            {
-                <span class="self">self</span>.erased_serialize_newtype_struct(name, <span class="kw-2">&amp;</span>v)
-            }
-
-            <span class="kw">fn </span>serialize_newtype_variant&lt;T&gt;(
-                <span class="self">self</span>,
-                name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
-                variant_index: u32,
-                variant: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
-                v: <span class="kw-2">&amp;</span>T,
-            ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt;
-            <span class="kw">where
-                </span>T: <span class="question-mark">?</span>Sized + serde::Serialize,
-            {
-                <span class="self">self</span>.erased_serialize_newtype_variant(name, variant_index, variant, <span class="kw-2">&amp;</span>v)
-            }
-
-            <span class="kw">fn </span>serialize_seq(<span class="self">self</span>, len: <span class="prelude-ty">Option</span>&lt;usize&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Seq&lt;<span class="lifetime">&#39;a</span>&gt;, Error&gt; {
-                <span class="self">self</span>.erased_serialize_seq(len)
-            }
-
-            <span class="kw">fn </span>serialize_tuple(<span class="self">self</span>, len: usize) -&gt; <span class="prelude-ty">Result</span>&lt;Tuple&lt;<span class="lifetime">&#39;a</span>&gt;, Error&gt; {
-                <span class="self">self</span>.erased_serialize_tuple(len)
-            }
-
-            <span class="kw">fn </span>serialize_tuple_struct(
-                <span class="self">self</span>,
-                name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
-                len: usize,
-            ) -&gt; <span class="prelude-ty">Result</span>&lt;TupleStruct&lt;<span class="lifetime">&#39;a</span>&gt;, Error&gt; {
-                <span class="self">self</span>.erased_serialize_tuple_struct(name, len)
-            }
-
-            <span class="kw">fn </span>serialize_tuple_variant(
-                <span class="self">self</span>,
-                name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
-                variant_index: u32,
-                variant: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
-                len: usize,
-            ) -&gt; <span class="prelude-ty">Result</span>&lt;TupleVariant&lt;<span class="lifetime">&#39;a</span>&gt;, Error&gt; {
-                <span class="self">self</span>.erased_serialize_tuple_variant(name, variant_index, variant, len)
-            }
-
-            <span class="kw">fn </span>serialize_map(<span class="self">self</span>, len: <span class="prelude-ty">Option</span>&lt;usize&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Map&lt;<span class="lifetime">&#39;a</span>&gt;, Error&gt; {
-                <span class="self">self</span>.erased_serialize_map(len)
-            }
-
-            <span class="kw">fn </span>serialize_struct(<span class="self">self</span>, name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str, len: usize) -&gt; <span class="prelude-ty">Result</span>&lt;Struct&lt;<span class="lifetime">&#39;a</span>&gt;, Error&gt; {
-                <span class="self">self</span>.erased_serialize_struct(name, len)
-            }
-
-            <span class="kw">fn </span>serialize_struct_variant(
-                <span class="self">self</span>,
-                name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
-                variant_index: u32,
-                variant: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
-                len: usize,
-            ) -&gt; <span class="prelude-ty">Result</span>&lt;StructVariant&lt;<span class="lifetime">&#39;a</span>&gt;, Error&gt; {
-                <span class="self">self</span>.erased_serialize_struct_variant(name, variant_index, variant, len)
-            }
-
-            <span class="attr">#[cfg(not(any(feature = <span class="string">&quot;std&quot;</span>, feature = <span class="string">&quot;alloc&quot;</span>)))]
-            </span><span class="kw">fn </span>collect_str&lt;T&gt;(<span class="self">self</span>, value: <span class="kw-2">&amp;</span>T) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Ok, <span class="self">Self</span>::Error&gt;
-            <span class="kw">where
-                </span>T: <span class="question-mark">?</span>Sized + Display,
-            {
-                <span class="macro">unreachable!</span>()
-            }
-
-            <span class="kw">fn </span>is_human_readable(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-                <span class="self">self</span>.erased_is_human_readable()
-            }
-        }
-    };
-}
-
-<span class="macro">impl_serializer_for_trait_object!</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>(<span class="kw">dyn </span>Serializer + <span class="lifetime">&#39;_</span>));
-<span class="macro">impl_serializer_for_trait_object!</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>(<span class="kw">dyn </span>Serializer + Send + <span class="lifetime">&#39;_</span>));
-<span class="macro">impl_serializer_for_trait_object!</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>(<span class="kw">dyn </span>Serializer + Sync + <span class="lifetime">&#39;_</span>));
-<span class="macro">impl_serializer_for_trait_object!</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>(<span class="kw">dyn </span>Serializer + Send + Sync + <span class="lifetime">&#39;_</span>));
-
-<span class="kw">pub struct </span>Seq&lt;<span class="lifetime">&#39;a</span>&gt; {
-    data: Any,
-    serialize_element: <span class="kw">unsafe fn</span>(<span class="kw-2">&amp;mut </span>Any, <span class="kw-2">&amp;</span><span class="kw">dyn </span>Serialize) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt;,
-    end: <span class="kw">unsafe fn</span>(Any) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt;,
-    lifetime: PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw">dyn </span>Serializer&gt;,
-}
-
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; Seq&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="kw">unsafe fn </span>new&lt;T&gt;(data: T) -&gt; <span class="self">Self
-    </span><span class="kw">where
-        </span>T: serde::ser::SerializeSeq,
-    {
-        Seq {
-            data: <span class="kw">unsafe </span>{ Any::new(data) },
-            serialize_element: {
-                <span class="kw">unsafe fn </span>serialize_element&lt;T&gt;(
-                    data: <span class="kw-2">&amp;mut </span>Any,
-                    v: <span class="kw-2">&amp;</span><span class="kw">dyn </span>Serialize,
-                ) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt;
-                <span class="kw">where
-                    </span>T: serde::ser::SerializeSeq,
-                {
-                    <span class="kw">unsafe </span>{ data.view::&lt;T&gt;().serialize_element(v).map_err(erase) }
-                }
-                serialize_element::&lt;T&gt;
-            },
-            end: {
-                <span class="kw">unsafe fn </span>end&lt;T&gt;(data: Any) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt;
-                <span class="kw">where
-                    </span>T: serde::ser::SerializeSeq,
-                {
-                    <span class="kw">unsafe </span>{ data.take::&lt;T&gt;().end().unsafe_map(Ok::new).map_err(erase) }
-                }
-                end::&lt;T&gt;
-            },
-            lifetime: PhantomData,
-        }
+    <span class="kw">fn </span>serialize_bool(<span class="self">self</span>, v: bool) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Ok, <span class="self">Self</span>::Error&gt; {
+        <span class="self">self</span>.<span class="number">0</span>.erased_serialize_bool(v);
+        <span class="prelude-val">Ok</span>(())
     }
-}
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; SerializeSeq <span class="kw">for </span>Seq&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="kw">type </span><span class="prelude-val">Ok </span>= <span class="prelude-val">Ok</span>;
-    <span class="kw">type </span>Error = Error;
+    <span class="kw">fn </span>serialize_i8(<span class="self">self</span>, v: i8) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Ok, <span class="self">Self</span>::Error&gt; {
+        <span class="self">self</span>.<span class="number">0</span>.erased_serialize_i8(v);
+        <span class="prelude-val">Ok</span>(())
+    }
 
-    <span class="kw">fn </span>serialize_element&lt;T&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: <span class="kw-2">&amp;</span>T) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt;
+    <span class="kw">fn </span>serialize_i16(<span class="self">self</span>, v: i16) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Ok, <span class="self">Self</span>::Error&gt; {
+        <span class="self">self</span>.<span class="number">0</span>.erased_serialize_i16(v);
+        <span class="prelude-val">Ok</span>(())
+    }
+
+    <span class="kw">fn </span>serialize_i32(<span class="self">self</span>, v: i32) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Ok, <span class="self">Self</span>::Error&gt; {
+        <span class="self">self</span>.<span class="number">0</span>.erased_serialize_i32(v);
+        <span class="prelude-val">Ok</span>(())
+    }
+
+    <span class="kw">fn </span>serialize_i64(<span class="self">self</span>, v: i64) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Ok, <span class="self">Self</span>::Error&gt; {
+        <span class="self">self</span>.<span class="number">0</span>.erased_serialize_i64(v);
+        <span class="prelude-val">Ok</span>(())
+    }
+
+    <span class="kw">fn </span>serialize_i128(<span class="self">self</span>, v: i128) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Ok, <span class="self">Self</span>::Error&gt; {
+        <span class="self">self</span>.<span class="number">0</span>.erased_serialize_i128(v);
+        <span class="prelude-val">Ok</span>(())
+    }
+
+    <span class="kw">fn </span>serialize_u8(<span class="self">self</span>, v: u8) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Ok, <span class="self">Self</span>::Error&gt; {
+        <span class="self">self</span>.<span class="number">0</span>.erased_serialize_u8(v);
+        <span class="prelude-val">Ok</span>(())
+    }
+
+    <span class="kw">fn </span>serialize_u16(<span class="self">self</span>, v: u16) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Ok, <span class="self">Self</span>::Error&gt; {
+        <span class="self">self</span>.<span class="number">0</span>.erased_serialize_u16(v);
+        <span class="prelude-val">Ok</span>(())
+    }
+
+    <span class="kw">fn </span>serialize_u32(<span class="self">self</span>, v: u32) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Ok, <span class="self">Self</span>::Error&gt; {
+        <span class="self">self</span>.<span class="number">0</span>.erased_serialize_u32(v);
+        <span class="prelude-val">Ok</span>(())
+    }
+
+    <span class="kw">fn </span>serialize_u64(<span class="self">self</span>, v: u64) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Ok, <span class="self">Self</span>::Error&gt; {
+        <span class="self">self</span>.<span class="number">0</span>.erased_serialize_u64(v);
+        <span class="prelude-val">Ok</span>(())
+    }
+
+    <span class="kw">fn </span>serialize_u128(<span class="self">self</span>, v: u128) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Ok, <span class="self">Self</span>::Error&gt; {
+        <span class="self">self</span>.<span class="number">0</span>.erased_serialize_u128(v);
+        <span class="prelude-val">Ok</span>(())
+    }
+
+    <span class="kw">fn </span>serialize_f32(<span class="self">self</span>, v: f32) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Ok, <span class="self">Self</span>::Error&gt; {
+        <span class="self">self</span>.<span class="number">0</span>.erased_serialize_f32(v);
+        <span class="prelude-val">Ok</span>(())
+    }
+
+    <span class="kw">fn </span>serialize_f64(<span class="self">self</span>, v: f64) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Ok, <span class="self">Self</span>::Error&gt; {
+        <span class="self">self</span>.<span class="number">0</span>.erased_serialize_f64(v);
+        <span class="prelude-val">Ok</span>(())
+    }
+
+    <span class="kw">fn </span>serialize_char(<span class="self">self</span>, v: char) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Ok, <span class="self">Self</span>::Error&gt; {
+        <span class="self">self</span>.<span class="number">0</span>.erased_serialize_char(v);
+        <span class="prelude-val">Ok</span>(())
+    }
+
+    <span class="kw">fn </span>serialize_str(<span class="self">self</span>, v: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Ok, <span class="self">Self</span>::Error&gt; {
+        <span class="self">self</span>.<span class="number">0</span>.erased_serialize_str(v);
+        <span class="prelude-val">Ok</span>(())
+    }
+
+    <span class="kw">fn </span>serialize_bytes(<span class="self">self</span>, v: <span class="kw-2">&amp;</span>[u8]) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Ok, <span class="self">Self</span>::Error&gt; {
+        <span class="self">self</span>.<span class="number">0</span>.erased_serialize_bytes(v);
+        <span class="prelude-val">Ok</span>(())
+    }
+
+    <span class="kw">fn </span>serialize_none(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Ok, <span class="self">Self</span>::Error&gt; {
+        <span class="self">self</span>.<span class="number">0</span>.erased_serialize_none();
+        <span class="prelude-val">Ok</span>(())
+    }
+
+    <span class="kw">fn </span>serialize_some&lt;T&gt;(<span class="self">self</span>, value: <span class="kw-2">&amp;</span>T) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Ok, <span class="self">Self</span>::Error&gt;
     <span class="kw">where
         </span>T: <span class="question-mark">?</span>Sized + serde::Serialize,
     {
-        <span class="kw">unsafe </span>{ (<span class="self">self</span>.serialize_element)(<span class="kw-2">&amp;mut </span><span class="self">self</span>.data, <span class="kw-2">&amp;</span>value) }
+        <span class="self">self</span>.<span class="number">0</span>.erased_serialize_some(<span class="kw-2">&amp;</span>value);
+        <span class="prelude-val">Ok</span>(())
     }
 
-    <span class="kw">fn </span>end(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-        <span class="kw">unsafe </span>{ (<span class="self">self</span>.end)(<span class="self">self</span>.data) }
+    <span class="kw">fn </span>serialize_unit(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Ok, <span class="self">Self</span>::Error&gt; {
+        <span class="self">self</span>.<span class="number">0</span>.erased_serialize_unit();
+        <span class="prelude-val">Ok</span>(())
     }
-}
 
-<span class="kw">pub struct </span>Tuple&lt;<span class="lifetime">&#39;a</span>&gt; {
-    data: Any,
-    serialize_element: <span class="kw">unsafe fn</span>(<span class="kw-2">&amp;mut </span>Any, <span class="kw-2">&amp;</span><span class="kw">dyn </span>Serialize) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt;,
-    end: <span class="kw">unsafe fn</span>(Any) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt;,
-    lifetime: PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw">dyn </span>Serializer&gt;,
-}
-
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; Tuple&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="kw">unsafe fn </span>new&lt;T&gt;(data: T) -&gt; <span class="self">Self
-    </span><span class="kw">where
-        </span>T: serde::ser::SerializeTuple,
-    {
-        Tuple {
-            data: <span class="kw">unsafe </span>{ Any::new(data) },
-            serialize_element: {
-                <span class="kw">unsafe fn </span>serialize_element&lt;T&gt;(
-                    data: <span class="kw-2">&amp;mut </span>Any,
-                    v: <span class="kw-2">&amp;</span><span class="kw">dyn </span>Serialize,
-                ) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt;
-                <span class="kw">where
-                    </span>T: serde::ser::SerializeTuple,
-                {
-                    <span class="kw">unsafe </span>{ data.view::&lt;T&gt;().serialize_element(v).map_err(erase) }
-                }
-                serialize_element::&lt;T&gt;
-            },
-            end: {
-                <span class="kw">unsafe fn </span>end&lt;T&gt;(data: Any) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt;
-                <span class="kw">where
-                    </span>T: serde::ser::SerializeTuple,
-                {
-                    <span class="kw">unsafe </span>{ data.take::&lt;T&gt;().end().unsafe_map(Ok::new).map_err(erase) }
-                }
-                end::&lt;T&gt;
-            },
-            lifetime: PhantomData,
-        }
+    <span class="kw">fn </span>serialize_unit_struct(<span class="self">self</span>, name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Ok, <span class="self">Self</span>::Error&gt; {
+        <span class="self">self</span>.<span class="number">0</span>.erased_serialize_unit_struct(name);
+        <span class="prelude-val">Ok</span>(())
     }
-}
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; SerializeTuple <span class="kw">for </span>Tuple&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="kw">type </span><span class="prelude-val">Ok </span>= <span class="prelude-val">Ok</span>;
-    <span class="kw">type </span>Error = Error;
+    <span class="kw">fn </span>serialize_unit_variant(
+        <span class="self">self</span>,
+        name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
+        variant_index: u32,
+        variant: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Ok, <span class="self">Self</span>::Error&gt; {
+        <span class="self">self</span>.<span class="number">0
+            </span>.erased_serialize_unit_variant(name, variant_index, variant);
+        <span class="prelude-val">Ok</span>(())
+    }
 
-    <span class="kw">fn </span>serialize_element&lt;T&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: <span class="kw-2">&amp;</span>T) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt;
+    <span class="kw">fn </span>serialize_newtype_struct&lt;T&gt;(
+        <span class="self">self</span>,
+        name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
+        value: <span class="kw-2">&amp;</span>T,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Ok, <span class="self">Self</span>::Error&gt;
     <span class="kw">where
         </span>T: <span class="question-mark">?</span>Sized + serde::Serialize,
     {
-        <span class="kw">unsafe </span>{ (<span class="self">self</span>.serialize_element)(<span class="kw-2">&amp;mut </span><span class="self">self</span>.data, <span class="kw-2">&amp;</span>value) }
+        <span class="self">self</span>.<span class="number">0</span>.erased_serialize_newtype_struct(name, <span class="kw-2">&amp;</span>value);
+        <span class="prelude-val">Ok</span>(())
     }
 
-    <span class="kw">fn </span>end(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-        <span class="kw">unsafe </span>{ (<span class="self">self</span>.end)(<span class="self">self</span>.data) }
-    }
-}
-
-<span class="kw">pub struct </span>TupleStruct&lt;<span class="lifetime">&#39;a</span>&gt; {
-    data: Any,
-    serialize_field: <span class="kw">unsafe fn</span>(<span class="kw-2">&amp;mut </span>Any, <span class="kw-2">&amp;</span><span class="kw">dyn </span>Serialize) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt;,
-    end: <span class="kw">unsafe fn</span>(Any) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt;,
-    lifetime: PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw">dyn </span>Serializer&gt;,
-}
-
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; TupleStruct&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="kw">unsafe fn </span>new&lt;T&gt;(data: T) -&gt; <span class="self">Self
-    </span><span class="kw">where
-        </span>T: serde::ser::SerializeTupleStruct,
-    {
-        TupleStruct {
-            data: <span class="kw">unsafe </span>{ Any::new(data) },
-            serialize_field: {
-                <span class="kw">unsafe fn </span>serialize_field&lt;T&gt;(data: <span class="kw-2">&amp;mut </span>Any, v: <span class="kw-2">&amp;</span><span class="kw">dyn </span>Serialize) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt;
-                <span class="kw">where
-                    </span>T: serde::ser::SerializeTupleStruct,
-                {
-                    <span class="kw">unsafe </span>{ data.view::&lt;T&gt;().serialize_field(v).map_err(erase) }
-                }
-                serialize_field::&lt;T&gt;
-            },
-            end: {
-                <span class="kw">unsafe fn </span>end&lt;T&gt;(data: Any) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt;
-                <span class="kw">where
-                    </span>T: serde::ser::SerializeTupleStruct,
-                {
-                    <span class="kw">unsafe </span>{ data.take::&lt;T&gt;().end().unsafe_map(Ok::new).map_err(erase) }
-                }
-                end::&lt;T&gt;
-            },
-            lifetime: PhantomData,
-        }
-    }
-}
-
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; SerializeTupleStruct <span class="kw">for </span>TupleStruct&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="kw">type </span><span class="prelude-val">Ok </span>= <span class="prelude-val">Ok</span>;
-    <span class="kw">type </span>Error = Error;
-
-    <span class="kw">fn </span>serialize_field&lt;T&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: <span class="kw-2">&amp;</span>T) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt;
+    <span class="kw">fn </span>serialize_newtype_variant&lt;T&gt;(
+        <span class="self">self</span>,
+        name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
+        variant_index: u32,
+        variant: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
+        value: <span class="kw-2">&amp;</span>T,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Ok, <span class="self">Self</span>::Error&gt;
     <span class="kw">where
         </span>T: <span class="question-mark">?</span>Sized + serde::Serialize,
     {
-        <span class="kw">unsafe </span>{ (<span class="self">self</span>.serialize_field)(<span class="kw-2">&amp;mut </span><span class="self">self</span>.data, <span class="kw-2">&amp;</span>value) }
+        <span class="self">self</span>.<span class="number">0
+            </span>.erased_serialize_newtype_variant(name, variant_index, variant, <span class="kw-2">&amp;</span>value);
+        <span class="prelude-val">Ok</span>(())
     }
 
-    <span class="kw">fn </span>end(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-        <span class="kw">unsafe </span>{ (<span class="self">self</span>.end)(<span class="self">self</span>.data) }
+    <span class="kw">fn </span>serialize_seq(<span class="self">self</span>, len: <span class="prelude-ty">Option</span>&lt;usize&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::SerializeSeq, <span class="self">Self</span>::Error&gt; {
+        <span class="self">self</span>.<span class="number">0</span>.erased_serialize_seq(len).map(MakeSerializer)
     }
-}
 
-<span class="kw">pub struct </span>TupleVariant&lt;<span class="lifetime">&#39;a</span>&gt; {
-    data: Any,
-    serialize_field: <span class="kw">unsafe fn</span>(<span class="kw-2">&amp;mut </span>Any, <span class="kw-2">&amp;</span><span class="kw">dyn </span>Serialize) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt;,
-    end: <span class="kw">unsafe fn</span>(Any) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt;,
-    lifetime: PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw">dyn </span>Serializer&gt;,
-}
+    <span class="kw">fn </span>serialize_tuple(<span class="self">self</span>, len: usize) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::SerializeTuple, <span class="self">Self</span>::Error&gt; {
+        <span class="self">self</span>.<span class="number">0</span>.erased_serialize_tuple(len).map(MakeSerializer)
+    }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; TupleVariant&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="kw">unsafe fn </span>new&lt;T&gt;(data: T) -&gt; <span class="self">Self
-    </span><span class="kw">where
-        </span>T: serde::ser::SerializeTupleVariant,
+    <span class="kw">fn </span>serialize_tuple_struct(
+        <span class="self">self</span>,
+        name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
+        len: usize,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::SerializeTupleStruct, <span class="self">Self</span>::Error&gt; {
+        <span class="self">self</span>.<span class="number">0
+            </span>.erased_serialize_tuple_struct(name, len)
+            .map(MakeSerializer)
+    }
+
+    <span class="kw">fn </span>serialize_tuple_variant(
+        <span class="self">self</span>,
+        name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
+        variant_index: u32,
+        variant: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
+        len: usize,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::SerializeTupleVariant, <span class="self">Self</span>::Error&gt; {
+        <span class="self">self</span>.<span class="number">0
+            </span>.erased_serialize_tuple_variant(name, variant_index, variant, len)
+            .map(MakeSerializer)
+    }
+
+    <span class="kw">fn </span>serialize_map(<span class="self">self</span>, len: <span class="prelude-ty">Option</span>&lt;usize&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::SerializeMap, <span class="self">Self</span>::Error&gt; {
+        <span class="self">self</span>.<span class="number">0</span>.erased_serialize_map(len).map(MakeSerializer)
+    }
+
+    <span class="kw">fn </span>serialize_struct(
+        <span class="self">self</span>,
+        name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
+        len: usize,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::SerializeStruct, <span class="self">Self</span>::Error&gt; {
+        <span class="self">self</span>.<span class="number">0
+            </span>.erased_serialize_struct(name, len)
+            .map(MakeSerializer)
+    }
+
+    <span class="kw">fn </span>serialize_struct_variant(
+        <span class="self">self</span>,
+        name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
+        variant_index: u32,
+        variant: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
+        len: usize,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::SerializeStructVariant, <span class="self">Self</span>::Error&gt; {
+        <span class="self">self</span>.<span class="number">0
+            </span>.erased_serialize_struct_variant(name, variant_index, variant, len)
+            .map(MakeSerializer)
+    }
+
+    <span class="attr">#[cfg(not(feature = <span class="string">"alloc"</span>))]
+    </span><span class="kw">fn </span>collect_str&lt;T&gt;(<span class="self">self</span>, value: <span class="kw-2">&amp;</span>T) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Ok, <span class="self">Self</span>::Error&gt;
+    <span class="kw">where
+        </span>T: <span class="question-mark">?</span>Sized + Display,
     {
-        TupleVariant {
-            data: <span class="kw">unsafe </span>{ Any::new(data) },
-            serialize_field: {
-                <span class="kw">unsafe fn </span>serialize_field&lt;T&gt;(data: <span class="kw-2">&amp;mut </span>Any, v: <span class="kw-2">&amp;</span><span class="kw">dyn </span>Serialize) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt;
-                <span class="kw">where
-                    </span>T: serde::ser::SerializeTupleVariant,
-                {
-                    <span class="kw">unsafe </span>{ data.view::&lt;T&gt;().serialize_field(v).map_err(erase) }
-                }
-                serialize_field::&lt;T&gt;
-            },
-            end: {
-                <span class="kw">unsafe fn </span>end&lt;T&gt;(data: Any) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt;
-                <span class="kw">where
-                    </span>T: serde::ser::SerializeTupleVariant,
-                {
-                    <span class="kw">unsafe </span>{ data.take::&lt;T&gt;().end().unsafe_map(Ok::new).map_err(erase) }
-                }
-                end::&lt;T&gt;
-            },
-            lifetime: PhantomData,
-        }
+        <span class="macro">unreachable!</span>()
+    }
+
+    <span class="kw">fn </span>is_human_readable(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="self">self</span>.<span class="number">0</span>.erased_is_human_readable()
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; SerializeTupleVariant <span class="kw">for </span>TupleVariant&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="kw">type </span><span class="prelude-val">Ok </span>= <span class="prelude-val">Ok</span>;
-    <span class="kw">type </span>Error = Error;
+<span class="kw">pub trait </span>SerializeSeq {
+    <span class="kw">fn </span>erased_serialize_element(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: <span class="kw-2">&amp;</span><span class="kw">dyn </span>Serialize) -&gt; <span class="prelude-ty">Result</span>&lt;(), ErrorImpl&gt;;
+    <span class="kw">fn </span>erased_end(<span class="kw-2">&amp;mut </span><span class="self">self</span>);
+}
 
-    <span class="kw">fn </span>serialize_field&lt;T&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: <span class="kw-2">&amp;</span>T) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt;
+<span class="kw">impl</span>&lt;T&gt; SerializeSeq <span class="kw">for </span>erase::Serializer&lt;T&gt;
+<span class="kw">where
+    </span>T: serde::Serializer,
+{
+    <span class="kw">fn </span>erased_serialize_element(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: <span class="kw-2">&amp;</span><span class="kw">dyn </span>Serialize) -&gt; <span class="prelude-ty">Result</span>&lt;(), ErrorImpl&gt; {
+        <span class="kw">let </span>serializer = <span class="kw">match </span><span class="self">self </span>{
+            erase::Serializer::Seq(serializer) =&gt; serializer,
+            <span class="kw">_ </span>=&gt; <span class="macro">unreachable!</span>(),
+        };
+        serializer.serialize_element(value).map_err(|err| {
+            <span class="kw-2">*</span><span class="self">self </span>= erase::Serializer::Error(err);
+            ShortCircuit
+        })
+    }
+
+    <span class="kw">fn </span>erased_end(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw">let </span>serializer = <span class="kw">match </span><span class="self">self</span>.take() {
+            erase::Serializer::Seq(serializer) =&gt; serializer,
+            <span class="kw">_ </span>=&gt; <span class="macro">unreachable!</span>(),
+        };
+        <span class="kw-2">*</span><span class="self">self </span>= <span class="kw">match </span>serializer.end() {
+            <span class="prelude-val">Ok</span>(ok) =&gt; erase::Serializer::Complete(ok),
+            <span class="prelude-val">Err</span>(err) =&gt; erase::Serializer::Error(err),
+        };
+    }
+}
+
+<span class="kw">impl </span>serde::ser::SerializeSeq <span class="kw">for </span>MakeSerializer&lt;<span class="kw-2">&amp;mut </span><span class="kw">dyn </span>SerializeSeq&gt; {
+    <span class="kw">type </span><span class="prelude-val">Ok </span>= ();
+    <span class="kw">type </span>Error = ErrorImpl;
+
+    <span class="kw">fn </span>serialize_element&lt;T&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: <span class="kw-2">&amp;</span>T) -&gt; <span class="prelude-ty">Result</span>&lt;(), <span class="self">Self</span>::Error&gt;
     <span class="kw">where
         </span>T: <span class="question-mark">?</span>Sized + serde::Serialize,
     {
-        <span class="kw">unsafe </span>{ (<span class="self">self</span>.serialize_field)(<span class="kw-2">&amp;mut </span><span class="self">self</span>.data, <span class="kw-2">&amp;</span>value) }
+        <span class="self">self</span>.<span class="number">0</span>.erased_serialize_element(<span class="kw-2">&amp;</span>value)
     }
 
-    <span class="kw">fn </span>end(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-        <span class="kw">unsafe </span>{ (<span class="self">self</span>.end)(<span class="self">self</span>.data) }
-    }
-}
-
-<span class="kw">pub struct </span>Map&lt;<span class="lifetime">&#39;a</span>&gt; {
-    data: Any,
-    serialize_key: <span class="kw">unsafe fn</span>(<span class="kw-2">&amp;mut </span>Any, <span class="kw-2">&amp;</span><span class="kw">dyn </span>Serialize) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt;,
-    serialize_value: <span class="kw">unsafe fn</span>(<span class="kw-2">&amp;mut </span>Any, <span class="kw-2">&amp;</span><span class="kw">dyn </span>Serialize) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt;,
-    serialize_entry: <span class="kw">unsafe fn</span>(<span class="kw-2">&amp;mut </span>Any, <span class="kw-2">&amp;</span><span class="kw">dyn </span>Serialize, <span class="kw-2">&amp;</span><span class="kw">dyn </span>Serialize) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt;,
-    end: <span class="kw">unsafe fn</span>(Any) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt;,
-    lifetime: PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw">dyn </span>Serializer&gt;,
-}
-
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; Map&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="kw">unsafe fn </span>new&lt;T&gt;(data: T) -&gt; <span class="self">Self
-    </span><span class="kw">where
-        </span>T: serde::ser::SerializeMap,
-    {
-        Map {
-            data: <span class="kw">unsafe </span>{ Any::new(data) },
-            serialize_key: {
-                <span class="kw">unsafe fn </span>serialize_key&lt;T&gt;(data: <span class="kw-2">&amp;mut </span>Any, v: <span class="kw-2">&amp;</span><span class="kw">dyn </span>Serialize) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt;
-                <span class="kw">where
-                    </span>T: serde::ser::SerializeMap,
-                {
-                    <span class="kw">unsafe </span>{ data.view::&lt;T&gt;().serialize_key(v).map_err(erase) }
-                }
-                serialize_key::&lt;T&gt;
-            },
-            serialize_value: {
-                <span class="kw">unsafe fn </span>serialize_value&lt;T&gt;(data: <span class="kw-2">&amp;mut </span>Any, v: <span class="kw-2">&amp;</span><span class="kw">dyn </span>Serialize) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt;
-                <span class="kw">where
-                    </span>T: serde::ser::SerializeMap,
-                {
-                    <span class="kw">unsafe </span>{ data.view::&lt;T&gt;().serialize_value(v).map_err(erase) }
-                }
-                serialize_value::&lt;T&gt;
-            },
-            serialize_entry: {
-                <span class="kw">unsafe fn </span>serialize_entry&lt;T&gt;(
-                    data: <span class="kw-2">&amp;mut </span>Any,
-                    k: <span class="kw-2">&amp;</span><span class="kw">dyn </span>Serialize,
-                    v: <span class="kw-2">&amp;</span><span class="kw">dyn </span>Serialize,
-                ) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt;
-                <span class="kw">where
-                    </span>T: serde::ser::SerializeMap,
-                {
-                    <span class="kw">unsafe </span>{ data.view::&lt;T&gt;().serialize_entry(k, v).map_err(erase) }
-                }
-                serialize_entry::&lt;T&gt;
-            },
-            end: {
-                <span class="kw">unsafe fn </span>end&lt;T&gt;(data: Any) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt;
-                <span class="kw">where
-                    </span>T: serde::ser::SerializeMap,
-                {
-                    <span class="kw">unsafe </span>{ data.take::&lt;T&gt;().end().unsafe_map(Ok::new).map_err(erase) }
-                }
-                end::&lt;T&gt;
-            },
-            lifetime: PhantomData,
-        }
+    <span class="kw">fn </span>end(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Ok, <span class="self">Self</span>::Error&gt; {
+        <span class="self">self</span>.<span class="number">0</span>.erased_end();
+        <span class="prelude-val">Ok</span>(())
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; SerializeMap <span class="kw">for </span>Map&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="kw">type </span><span class="prelude-val">Ok </span>= <span class="prelude-val">Ok</span>;
-    <span class="kw">type </span>Error = Error;
+<span class="kw">pub trait </span>SerializeTuple {
+    <span class="kw">fn </span>erased_serialize_element(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: <span class="kw-2">&amp;</span><span class="kw">dyn </span>Serialize) -&gt; <span class="prelude-ty">Result</span>&lt;(), ErrorImpl&gt;;
+    <span class="kw">fn </span>erased_end(<span class="kw-2">&amp;mut </span><span class="self">self</span>);
+}
 
-    <span class="kw">fn </span>serialize_key&lt;T&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, key: <span class="kw-2">&amp;</span>T) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt;
+<span class="kw">impl</span>&lt;T&gt; SerializeTuple <span class="kw">for </span>erase::Serializer&lt;T&gt;
+<span class="kw">where
+    </span>T: serde::Serializer,
+{
+    <span class="kw">fn </span>erased_serialize_element(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: <span class="kw-2">&amp;</span><span class="kw">dyn </span>Serialize) -&gt; <span class="prelude-ty">Result</span>&lt;(), ErrorImpl&gt; {
+        <span class="kw">let </span>serializer = <span class="kw">match </span><span class="self">self </span>{
+            erase::Serializer::Tuple(serializer) =&gt; serializer,
+            <span class="kw">_ </span>=&gt; <span class="macro">unreachable!</span>(),
+        };
+        serializer.serialize_element(value).map_err(|err| {
+            <span class="kw-2">*</span><span class="self">self </span>= erase::Serializer::Error(err);
+            ShortCircuit
+        })
+    }
+
+    <span class="kw">fn </span>erased_end(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw">let </span>serializer = <span class="kw">match </span><span class="self">self</span>.take() {
+            erase::Serializer::Tuple(serializer) =&gt; serializer,
+            <span class="kw">_ </span>=&gt; <span class="macro">unreachable!</span>(),
+        };
+        <span class="kw-2">*</span><span class="self">self </span>= <span class="kw">match </span>serializer.end() {
+            <span class="prelude-val">Ok</span>(ok) =&gt; erase::Serializer::Complete(ok),
+            <span class="prelude-val">Err</span>(err) =&gt; erase::Serializer::Error(err),
+        };
+    }
+}
+
+<span class="kw">impl </span>serde::ser::SerializeTuple <span class="kw">for </span>MakeSerializer&lt;<span class="kw-2">&amp;mut </span><span class="kw">dyn </span>SerializeTuple&gt; {
+    <span class="kw">type </span><span class="prelude-val">Ok </span>= ();
+    <span class="kw">type </span>Error = ErrorImpl;
+
+    <span class="kw">fn </span>serialize_element&lt;T&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: <span class="kw-2">&amp;</span>T) -&gt; <span class="prelude-ty">Result</span>&lt;(), <span class="self">Self</span>::Error&gt;
     <span class="kw">where
         </span>T: <span class="question-mark">?</span>Sized + serde::Serialize,
     {
-        <span class="kw">unsafe </span>{ (<span class="self">self</span>.serialize_key)(<span class="kw-2">&amp;mut </span><span class="self">self</span>.data, <span class="kw-2">&amp;</span>key) }
+        <span class="self">self</span>.<span class="number">0</span>.erased_serialize_element(<span class="kw-2">&amp;</span>value)
     }
 
-    <span class="kw">fn </span>serialize_value&lt;T&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: <span class="kw-2">&amp;</span>T) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt;
+    <span class="kw">fn </span>end(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Ok, <span class="self">Self</span>::Error&gt; {
+        <span class="self">self</span>.<span class="number">0</span>.erased_end();
+        <span class="prelude-val">Ok</span>(())
+    }
+}
+
+<span class="kw">pub trait </span>SerializeTupleStruct {
+    <span class="kw">fn </span>erased_serialize_field(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: <span class="kw-2">&amp;</span><span class="kw">dyn </span>Serialize) -&gt; <span class="prelude-ty">Result</span>&lt;(), ErrorImpl&gt;;
+    <span class="kw">fn </span>erased_end(<span class="kw-2">&amp;mut </span><span class="self">self</span>);
+}
+
+<span class="kw">impl</span>&lt;T&gt; SerializeTupleStruct <span class="kw">for </span>erase::Serializer&lt;T&gt;
+<span class="kw">where
+    </span>T: serde::Serializer,
+{
+    <span class="kw">fn </span>erased_serialize_field(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: <span class="kw-2">&amp;</span><span class="kw">dyn </span>Serialize) -&gt; <span class="prelude-ty">Result</span>&lt;(), ErrorImpl&gt; {
+        <span class="kw">let </span>serializer = <span class="kw">match </span><span class="self">self </span>{
+            erase::Serializer::TupleStruct(serializer) =&gt; serializer,
+            <span class="kw">_ </span>=&gt; <span class="macro">unreachable!</span>(),
+        };
+        serializer.serialize_field(value).map_err(|err| {
+            <span class="kw-2">*</span><span class="self">self </span>= erase::Serializer::Error(err);
+            ShortCircuit
+        })
+    }
+
+    <span class="kw">fn </span>erased_end(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw">let </span>serializer = <span class="kw">match </span><span class="self">self</span>.take() {
+            erase::Serializer::TupleStruct(serializer) =&gt; serializer,
+            <span class="kw">_ </span>=&gt; <span class="macro">unreachable!</span>(),
+        };
+        <span class="kw-2">*</span><span class="self">self </span>= <span class="kw">match </span>serializer.end() {
+            <span class="prelude-val">Ok</span>(ok) =&gt; erase::Serializer::Complete(ok),
+            <span class="prelude-val">Err</span>(err) =&gt; erase::Serializer::Error(err),
+        };
+    }
+}
+
+<span class="kw">impl </span>serde::ser::SerializeTupleStruct <span class="kw">for </span>MakeSerializer&lt;<span class="kw-2">&amp;mut </span><span class="kw">dyn </span>SerializeTupleStruct&gt; {
+    <span class="kw">type </span><span class="prelude-val">Ok </span>= ();
+    <span class="kw">type </span>Error = ErrorImpl;
+
+    <span class="kw">fn </span>serialize_field&lt;T&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: <span class="kw-2">&amp;</span>T) -&gt; <span class="prelude-ty">Result</span>&lt;(), <span class="self">Self</span>::Error&gt;
     <span class="kw">where
         </span>T: <span class="question-mark">?</span>Sized + serde::Serialize,
     {
-        <span class="kw">unsafe </span>{ (<span class="self">self</span>.serialize_value)(<span class="kw-2">&amp;mut </span><span class="self">self</span>.data, <span class="kw-2">&amp;</span>value) }
+        <span class="self">self</span>.<span class="number">0</span>.erased_serialize_field(<span class="kw-2">&amp;</span>value)
     }
 
-    <span class="kw">fn </span>serialize_entry&lt;K, V&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, key: <span class="kw-2">&amp;</span>K, value: <span class="kw-2">&amp;</span>V) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt;
+    <span class="kw">fn </span>end(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Ok, <span class="self">Self</span>::Error&gt; {
+        <span class="self">self</span>.<span class="number">0</span>.erased_end();
+        <span class="prelude-val">Ok</span>(())
+    }
+}
+
+<span class="kw">pub trait </span>SerializeTupleVariant {
+    <span class="kw">fn </span>erased_serialize_field(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: <span class="kw-2">&amp;</span><span class="kw">dyn </span>Serialize) -&gt; <span class="prelude-ty">Result</span>&lt;(), ErrorImpl&gt;;
+    <span class="kw">fn </span>erased_end(<span class="kw-2">&amp;mut </span><span class="self">self</span>);
+}
+
+<span class="kw">impl</span>&lt;T&gt; SerializeTupleVariant <span class="kw">for </span>erase::Serializer&lt;T&gt;
+<span class="kw">where
+    </span>T: serde::Serializer,
+{
+    <span class="kw">fn </span>erased_serialize_field(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: <span class="kw-2">&amp;</span><span class="kw">dyn </span>Serialize) -&gt; <span class="prelude-ty">Result</span>&lt;(), ErrorImpl&gt; {
+        <span class="kw">let </span>serializer = <span class="kw">match </span><span class="self">self </span>{
+            erase::Serializer::TupleVariant(serializer) =&gt; serializer,
+            <span class="kw">_ </span>=&gt; <span class="macro">unreachable!</span>(),
+        };
+        serializer.serialize_field(value).map_err(|err| {
+            <span class="kw-2">*</span><span class="self">self </span>= erase::Serializer::Error(err);
+            ShortCircuit
+        })
+    }
+
+    <span class="kw">fn </span>erased_end(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw">let </span>serializer = <span class="kw">match </span><span class="self">self</span>.take() {
+            erase::Serializer::TupleVariant(serializer) =&gt; serializer,
+            <span class="kw">_ </span>=&gt; <span class="macro">unreachable!</span>(),
+        };
+        <span class="kw-2">*</span><span class="self">self </span>= <span class="kw">match </span>serializer.end() {
+            <span class="prelude-val">Ok</span>(ok) =&gt; erase::Serializer::Complete(ok),
+            <span class="prelude-val">Err</span>(err) =&gt; erase::Serializer::Error(err),
+        };
+    }
+}
+
+<span class="kw">impl </span>serde::ser::SerializeTupleVariant <span class="kw">for </span>MakeSerializer&lt;<span class="kw-2">&amp;mut </span><span class="kw">dyn </span>SerializeTupleVariant&gt; {
+    <span class="kw">type </span><span class="prelude-val">Ok </span>= ();
+    <span class="kw">type </span>Error = ErrorImpl;
+
+    <span class="kw">fn </span>serialize_field&lt;T&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: <span class="kw-2">&amp;</span>T) -&gt; <span class="prelude-ty">Result</span>&lt;(), <span class="self">Self</span>::Error&gt;
+    <span class="kw">where
+        </span>T: <span class="question-mark">?</span>Sized + serde::Serialize,
+    {
+        <span class="self">self</span>.<span class="number">0</span>.erased_serialize_field(<span class="kw-2">&amp;</span>value)
+    }
+
+    <span class="kw">fn </span>end(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Ok, <span class="self">Self</span>::Error&gt; {
+        <span class="self">self</span>.<span class="number">0</span>.erased_end();
+        <span class="prelude-val">Ok</span>(())
+    }
+}
+
+<span class="kw">pub trait </span>SerializeMap {
+    <span class="kw">fn </span>erased_serialize_key(<span class="kw-2">&amp;mut </span><span class="self">self</span>, key: <span class="kw-2">&amp;</span><span class="kw">dyn </span>Serialize) -&gt; <span class="prelude-ty">Result</span>&lt;(), ErrorImpl&gt;;
+    <span class="kw">fn </span>erased_serialize_value(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: <span class="kw-2">&amp;</span><span class="kw">dyn </span>Serialize) -&gt; <span class="prelude-ty">Result</span>&lt;(), ErrorImpl&gt;;
+    <span class="kw">fn </span>erased_serialize_entry(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        key: <span class="kw-2">&amp;</span><span class="kw">dyn </span>Serialize,
+        value: <span class="kw-2">&amp;</span><span class="kw">dyn </span>Serialize,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;(), ErrorImpl&gt;;
+    <span class="kw">fn </span>erased_end(<span class="kw-2">&amp;mut </span><span class="self">self</span>);
+}
+
+<span class="kw">impl</span>&lt;T&gt; SerializeMap <span class="kw">for </span>erase::Serializer&lt;T&gt;
+<span class="kw">where
+    </span>T: serde::Serializer,
+{
+    <span class="kw">fn </span>erased_serialize_key(<span class="kw-2">&amp;mut </span><span class="self">self</span>, key: <span class="kw-2">&amp;</span><span class="kw">dyn </span>Serialize) -&gt; <span class="prelude-ty">Result</span>&lt;(), ErrorImpl&gt; {
+        <span class="kw">let </span>serializer = <span class="kw">match </span><span class="self">self </span>{
+            erase::Serializer::Map(serializer) =&gt; serializer,
+            <span class="kw">_ </span>=&gt; <span class="macro">unreachable!</span>(),
+        };
+        serializer.serialize_key(key).map_err(|err| {
+            <span class="kw-2">*</span><span class="self">self </span>= erase::Serializer::Error(err);
+            ShortCircuit
+        })
+    }
+
+    <span class="kw">fn </span>erased_serialize_value(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: <span class="kw-2">&amp;</span><span class="kw">dyn </span>Serialize) -&gt; <span class="prelude-ty">Result</span>&lt;(), ErrorImpl&gt; {
+        <span class="kw">let </span>serializer = <span class="kw">match </span><span class="self">self </span>{
+            erase::Serializer::Map(serializer) =&gt; serializer,
+            <span class="kw">_ </span>=&gt; <span class="macro">unreachable!</span>(),
+        };
+        serializer.serialize_value(value).map_err(|err| {
+            <span class="kw-2">*</span><span class="self">self </span>= erase::Serializer::Error(err);
+            ShortCircuit
+        })
+    }
+
+    <span class="kw">fn </span>erased_serialize_entry(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        key: <span class="kw-2">&amp;</span><span class="kw">dyn </span>Serialize,
+        value: <span class="kw-2">&amp;</span><span class="kw">dyn </span>Serialize,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;(), ErrorImpl&gt; {
+        <span class="kw">let </span>serializer = <span class="kw">match </span><span class="self">self </span>{
+            erase::Serializer::Map(serializer) =&gt; serializer,
+            <span class="kw">_ </span>=&gt; <span class="macro">unreachable!</span>(),
+        };
+        serializer.serialize_entry(key, value).map_err(|err| {
+            <span class="kw-2">*</span><span class="self">self </span>= erase::Serializer::Error(err);
+            ShortCircuit
+        })
+    }
+
+    <span class="kw">fn </span>erased_end(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw">let </span>serializer = <span class="kw">match </span><span class="self">self</span>.take() {
+            erase::Serializer::Map(serializer) =&gt; serializer,
+            <span class="kw">_ </span>=&gt; <span class="macro">unreachable!</span>(),
+        };
+        <span class="kw-2">*</span><span class="self">self </span>= <span class="kw">match </span>serializer.end() {
+            <span class="prelude-val">Ok</span>(ok) =&gt; erase::Serializer::Complete(ok),
+            <span class="prelude-val">Err</span>(err) =&gt; erase::Serializer::Error(err),
+        };
+    }
+}
+
+<span class="kw">impl </span>serde::ser::SerializeMap <span class="kw">for </span>MakeSerializer&lt;<span class="kw-2">&amp;mut </span><span class="kw">dyn </span>SerializeMap&gt; {
+    <span class="kw">type </span><span class="prelude-val">Ok </span>= ();
+    <span class="kw">type </span>Error = ErrorImpl;
+
+    <span class="kw">fn </span>serialize_key&lt;T&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, key: <span class="kw-2">&amp;</span>T) -&gt; <span class="prelude-ty">Result</span>&lt;(), <span class="self">Self</span>::Error&gt;
+    <span class="kw">where
+        </span>T: <span class="question-mark">?</span>Sized + serde::Serialize,
+    {
+        <span class="self">self</span>.<span class="number">0</span>.erased_serialize_key(<span class="kw-2">&amp;</span>key)
+    }
+
+    <span class="kw">fn </span>serialize_value&lt;T&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: <span class="kw-2">&amp;</span>T) -&gt; <span class="prelude-ty">Result</span>&lt;(), <span class="self">Self</span>::Error&gt;
+    <span class="kw">where
+        </span>T: <span class="question-mark">?</span>Sized + serde::Serialize,
+    {
+        <span class="self">self</span>.<span class="number">0</span>.erased_serialize_value(<span class="kw-2">&amp;</span>value)
+    }
+
+    <span class="kw">fn </span>serialize_entry&lt;K, V&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, key: <span class="kw-2">&amp;</span>K, value: <span class="kw-2">&amp;</span>V) -&gt; <span class="prelude-ty">Result</span>&lt;(), <span class="self">Self</span>::Error&gt;
     <span class="kw">where
         </span>K: <span class="question-mark">?</span>Sized + serde::Serialize,
         V: <span class="question-mark">?</span>Sized + serde::Serialize,
     {
-        <span class="kw">unsafe </span>{ (<span class="self">self</span>.serialize_entry)(<span class="kw-2">&amp;mut </span><span class="self">self</span>.data, <span class="kw-2">&amp;</span>key, <span class="kw-2">&amp;</span>value) }
+        <span class="self">self</span>.<span class="number">0</span>.erased_serialize_entry(<span class="kw-2">&amp;</span>key, <span class="kw-2">&amp;</span>value)
     }
 
-    <span class="kw">fn </span>end(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-        <span class="kw">unsafe </span>{ (<span class="self">self</span>.end)(<span class="self">self</span>.data) }
-    }
-}
-
-<span class="kw">pub struct </span>Struct&lt;<span class="lifetime">&#39;a</span>&gt; {
-    data: Any,
-    serialize_field: <span class="kw">unsafe fn</span>(<span class="kw-2">&amp;mut </span>Any, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str, <span class="kw-2">&amp;</span><span class="kw">dyn </span>Serialize) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt;,
-    end: <span class="kw">unsafe fn</span>(Any) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt;,
-    lifetime: PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw">dyn </span>Serializer&gt;,
-}
-
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; Struct&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="kw">unsafe fn </span>new&lt;T&gt;(data: T) -&gt; <span class="self">Self
-    </span><span class="kw">where
-        </span>T: serde::ser::SerializeStruct,
-    {
-        Struct {
-            data: <span class="kw">unsafe </span>{ Any::new(data) },
-            serialize_field: {
-                <span class="kw">unsafe fn </span>serialize_field&lt;T&gt;(
-                    data: <span class="kw-2">&amp;mut </span>Any,
-                    k: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
-                    v: <span class="kw-2">&amp;</span><span class="kw">dyn </span>Serialize,
-                ) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt;
-                <span class="kw">where
-                    </span>T: serde::ser::SerializeStruct,
-                {
-                    <span class="kw">unsafe </span>{ data.view::&lt;T&gt;().serialize_field(k, v).map_err(erase) }
-                }
-                serialize_field::&lt;T&gt;
-            },
-            end: {
-                <span class="kw">unsafe fn </span>end&lt;T&gt;(data: Any) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt;
-                <span class="kw">where
-                    </span>T: serde::ser::SerializeStruct,
-                {
-                    <span class="kw">unsafe </span>{ data.take::&lt;T&gt;().end().unsafe_map(Ok::new).map_err(erase) }
-                }
-                end::&lt;T&gt;
-            },
-            lifetime: PhantomData,
-        }
+    <span class="kw">fn </span>end(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Ok, <span class="self">Self</span>::Error&gt; {
+        <span class="self">self</span>.<span class="number">0</span>.erased_end();
+        <span class="prelude-val">Ok</span>(())
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; SerializeStruct <span class="kw">for </span>Struct&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="kw">type </span><span class="prelude-val">Ok </span>= <span class="prelude-val">Ok</span>;
-    <span class="kw">type </span>Error = Error;
+<span class="kw">pub trait </span>SerializeStruct {
+    <span class="kw">fn </span>erased_serialize_field(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        key: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
+        value: <span class="kw-2">&amp;</span><span class="kw">dyn </span>Serialize,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;(), ErrorImpl&gt;;
+    <span class="kw">fn </span>erased_skip_field(<span class="kw-2">&amp;mut </span><span class="self">self</span>, key: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str) -&gt; <span class="prelude-ty">Result</span>&lt;(), ErrorImpl&gt;;
+    <span class="kw">fn </span>erased_end(<span class="kw-2">&amp;mut </span><span class="self">self</span>);
+}
 
-    <span class="kw">fn </span>serialize_field&lt;T&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str, field: <span class="kw-2">&amp;</span>T) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt;
+<span class="kw">impl</span>&lt;T&gt; SerializeStruct <span class="kw">for </span>erase::Serializer&lt;T&gt;
+<span class="kw">where
+    </span>T: serde::Serializer,
+{
+    <span class="kw">fn </span>erased_serialize_field(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        key: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
+        value: <span class="kw-2">&amp;</span><span class="kw">dyn </span>Serialize,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;(), ErrorImpl&gt; {
+        <span class="kw">let </span>serializer = <span class="kw">match </span><span class="self">self </span>{
+            erase::Serializer::Struct(serializer) =&gt; serializer,
+            <span class="kw">_ </span>=&gt; <span class="macro">unreachable!</span>(),
+        };
+        serializer.serialize_field(key, value).map_err(|err| {
+            <span class="kw-2">*</span><span class="self">self </span>= erase::Serializer::Error(err);
+            ShortCircuit
+        })
+    }
+
+    <span class="kw">fn </span>erased_skip_field(<span class="kw-2">&amp;mut </span><span class="self">self</span>, key: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str) -&gt; <span class="prelude-ty">Result</span>&lt;(), ErrorImpl&gt; {
+        <span class="kw">let </span>serializer = <span class="kw">match </span><span class="self">self </span>{
+            erase::Serializer::Struct(serializer) =&gt; serializer,
+            <span class="kw">_ </span>=&gt; <span class="macro">unreachable!</span>(),
+        };
+        serializer.skip_field(key).map_err(|err| {
+            <span class="kw-2">*</span><span class="self">self </span>= erase::Serializer::Error(err);
+            ShortCircuit
+        })
+    }
+
+    <span class="kw">fn </span>erased_end(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw">let </span>serializer = <span class="kw">match </span><span class="self">self</span>.take() {
+            erase::Serializer::Struct(serializer) =&gt; serializer,
+            <span class="kw">_ </span>=&gt; <span class="macro">unreachable!</span>(),
+        };
+        <span class="kw-2">*</span><span class="self">self </span>= <span class="kw">match </span>serializer.end() {
+            <span class="prelude-val">Ok</span>(ok) =&gt; erase::Serializer::Complete(ok),
+            <span class="prelude-val">Err</span>(err) =&gt; erase::Serializer::Error(err),
+        };
+    }
+}
+
+<span class="kw">impl </span>serde::ser::SerializeStruct <span class="kw">for </span>MakeSerializer&lt;<span class="kw-2">&amp;mut </span><span class="kw">dyn </span>SerializeStruct&gt; {
+    <span class="kw">type </span><span class="prelude-val">Ok </span>= ();
+    <span class="kw">type </span>Error = ErrorImpl;
+
+    <span class="kw">fn </span>serialize_field&lt;T&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, key: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str, value: <span class="kw-2">&amp;</span>T) -&gt; <span class="prelude-ty">Result</span>&lt;(), <span class="self">Self</span>::Error&gt;
     <span class="kw">where
         </span>T: <span class="question-mark">?</span>Sized + serde::Serialize,
     {
-        <span class="kw">unsafe </span>{ (<span class="self">self</span>.serialize_field)(<span class="kw-2">&amp;mut </span><span class="self">self</span>.data, name, <span class="kw-2">&amp;</span>field) }
+        <span class="self">self</span>.<span class="number">0</span>.erased_serialize_field(key, <span class="kw-2">&amp;</span>value)
     }
 
-    <span class="kw">fn </span>end(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-        <span class="kw">unsafe </span>{ (<span class="self">self</span>.end)(<span class="self">self</span>.data) }
+    <span class="kw">fn </span>skip_field(<span class="kw-2">&amp;mut </span><span class="self">self</span>, key: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str) -&gt; <span class="prelude-ty">Result</span>&lt;(), <span class="self">Self</span>::Error&gt; {
+        <span class="self">self</span>.<span class="number">0</span>.erased_skip_field(key)
     }
-}
 
-<span class="kw">pub struct </span>StructVariant&lt;<span class="lifetime">&#39;a</span>&gt; {
-    data: Any,
-    serialize_field: <span class="kw">unsafe fn</span>(<span class="kw-2">&amp;mut </span>Any, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str, <span class="kw-2">&amp;</span><span class="kw">dyn </span>Serialize) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt;,
-    end: <span class="kw">unsafe fn</span>(Any) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt;,
-    lifetime: PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw">dyn </span>Serializer&gt;,
-}
-
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; StructVariant&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="kw">unsafe fn </span>new&lt;T&gt;(data: T) -&gt; <span class="self">Self
-    </span><span class="kw">where
-        </span>T: serde::ser::SerializeStructVariant,
-    {
-        StructVariant {
-            data: <span class="kw">unsafe </span>{ Any::new(data) },
-            serialize_field: {
-                <span class="kw">unsafe fn </span>serialize_field&lt;T&gt;(
-                    data: <span class="kw-2">&amp;mut </span>Any,
-                    k: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
-                    v: <span class="kw-2">&amp;</span><span class="kw">dyn </span>Serialize,
-                ) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt;
-                <span class="kw">where
-                    </span>T: serde::ser::SerializeStructVariant,
-                {
-                    <span class="kw">unsafe </span>{ data.view::&lt;T&gt;().serialize_field(k, v).map_err(erase) }
-                }
-                serialize_field::&lt;T&gt;
-            },
-            end: {
-                <span class="kw">unsafe fn </span>end&lt;T&gt;(data: Any) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt;
-                <span class="kw">where
-                    </span>T: serde::ser::SerializeStructVariant,
-                {
-                    <span class="kw">unsafe </span>{ data.take::&lt;T&gt;().end().unsafe_map(Ok::new).map_err(erase) }
-                }
-                end::&lt;T&gt;
-            },
-            lifetime: PhantomData,
-        }
+    <span class="kw">fn </span>end(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Ok, <span class="self">Self</span>::Error&gt; {
+        <span class="self">self</span>.<span class="number">0</span>.erased_end();
+        <span class="prelude-val">Ok</span>(())
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; SerializeStructVariant <span class="kw">for </span>StructVariant&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="kw">type </span><span class="prelude-val">Ok </span>= <span class="prelude-val">Ok</span>;
-    <span class="kw">type </span>Error = Error;
+<span class="kw">pub trait </span>SerializeStructVariant {
+    <span class="kw">fn </span>erased_serialize_field(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        key: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
+        value: <span class="kw-2">&amp;</span><span class="kw">dyn </span>Serialize,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;(), ErrorImpl&gt;;
+    <span class="kw">fn </span>erased_skip_field(<span class="kw-2">&amp;mut </span><span class="self">self</span>, key: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str) -&gt; <span class="prelude-ty">Result</span>&lt;(), ErrorImpl&gt;;
+    <span class="kw">fn </span>erased_end(<span class="kw-2">&amp;mut </span><span class="self">self</span>);
+}
 
-    <span class="kw">fn </span>serialize_field&lt;T&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str, field: <span class="kw-2">&amp;</span>T) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt;
+<span class="kw">impl</span>&lt;T&gt; SerializeStructVariant <span class="kw">for </span>erase::Serializer&lt;T&gt;
+<span class="kw">where
+    </span>T: serde::Serializer,
+{
+    <span class="kw">fn </span>erased_serialize_field(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        key: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
+        value: <span class="kw-2">&amp;</span><span class="kw">dyn </span>Serialize,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;(), ErrorImpl&gt; {
+        <span class="kw">let </span>serializer = <span class="kw">match </span><span class="self">self </span>{
+            erase::Serializer::StructVariant(serializer) =&gt; serializer,
+            <span class="kw">_ </span>=&gt; <span class="macro">unreachable!</span>(),
+        };
+        serializer.serialize_field(key, value).map_err(|err| {
+            <span class="kw-2">*</span><span class="self">self </span>= erase::Serializer::Error(err);
+            ShortCircuit
+        })
+    }
+
+    <span class="kw">fn </span>erased_skip_field(<span class="kw-2">&amp;mut </span><span class="self">self</span>, key: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str) -&gt; <span class="prelude-ty">Result</span>&lt;(), ErrorImpl&gt; {
+        <span class="kw">let </span>serializer = <span class="kw">match </span><span class="self">self </span>{
+            erase::Serializer::Struct(serializer) =&gt; serializer,
+            <span class="kw">_ </span>=&gt; <span class="macro">unreachable!</span>(),
+        };
+        serializer.skip_field(key).map_err(|err| {
+            <span class="kw-2">*</span><span class="self">self </span>= erase::Serializer::Error(err);
+            ShortCircuit
+        })
+    }
+
+    <span class="kw">fn </span>erased_end(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw">let </span>serializer = <span class="kw">match </span><span class="self">self</span>.take() {
+            erase::Serializer::StructVariant(serializer) =&gt; serializer,
+            <span class="kw">_ </span>=&gt; <span class="macro">unreachable!</span>(),
+        };
+        <span class="kw-2">*</span><span class="self">self </span>= <span class="kw">match </span>serializer.end() {
+            <span class="prelude-val">Ok</span>(ok) =&gt; erase::Serializer::Complete(ok),
+            <span class="prelude-val">Err</span>(err) =&gt; erase::Serializer::Error(err),
+        };
+    }
+}
+
+<span class="kw">impl </span>serde::ser::SerializeStructVariant <span class="kw">for </span>MakeSerializer&lt;<span class="kw-2">&amp;mut </span><span class="kw">dyn </span>SerializeStructVariant&gt; {
+    <span class="kw">type </span><span class="prelude-val">Ok </span>= ();
+    <span class="kw">type </span>Error = ErrorImpl;
+
+    <span class="kw">fn </span>serialize_field&lt;T&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, key: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str, value: <span class="kw-2">&amp;</span>T) -&gt; <span class="prelude-ty">Result</span>&lt;(), <span class="self">Self</span>::Error&gt;
     <span class="kw">where
         </span>T: <span class="question-mark">?</span>Sized + serde::Serialize,
     {
-        <span class="kw">unsafe </span>{ (<span class="self">self</span>.serialize_field)(<span class="kw-2">&amp;mut </span><span class="self">self</span>.data, name, <span class="kw-2">&amp;</span>field) }
+        <span class="self">self</span>.<span class="number">0</span>.erased_serialize_field(key, <span class="kw-2">&amp;</span>value)
     }
 
-    <span class="kw">fn </span>end(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-        <span class="kw">unsafe </span>{ (<span class="self">self</span>.end)(<span class="self">self</span>.data) }
+    <span class="kw">fn </span>skip_field(<span class="kw-2">&amp;mut </span><span class="self">self</span>, key: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str) -&gt; <span class="prelude-ty">Result</span>&lt;(), <span class="self">Self</span>::Error&gt; {
+        <span class="self">self</span>.<span class="number">0</span>.erased_skip_field(key)
+    }
+
+    <span class="kw">fn </span>end(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Ok, <span class="self">Self</span>::Error&gt; {
+        <span class="self">self</span>.<span class="number">0</span>.erased_end();
+        <span class="prelude-val">Ok</span>(())
     }
 }
 
 <span class="comment">// IMPL ERASED SERDE FOR ERASED SERDE //////////////////////////////////////////
 
 </span><span class="macro">macro_rules! </span>deref_erased_serializer {
-    ($(<span class="macro-nonterminal">$imp</span>:tt)+) =&gt; {
-        <span class="kw">impl </span>$(<span class="macro-nonterminal">$imp</span>)+ {
-            <span class="kw">fn </span>erased_serialize_bool(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: bool) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-                (<span class="kw-2">**</span><span class="self">self</span>).erased_serialize_bool(v)
+    (&lt;<span class="macro-nonterminal">$T</span>:ident&gt; Serializer <span class="kw">for </span><span class="macro-nonterminal">$ty</span>:ty $(<span class="kw">where </span>$(<span class="macro-nonterminal">$</span><span class="kw">where</span>:<span class="macro-nonterminal">tt</span>)<span class="kw-2">*</span>)<span class="question-mark">?</span>) =&gt; {
+        <span class="kw">impl</span>&lt;<span class="macro-nonterminal">$T</span>&gt; Serializer <span class="kw">for </span><span class="macro-nonterminal">$ty </span>$(<span class="kw">where </span>$(<span class="macro-nonterminal">$</span><span class="kw">where</span>)<span class="kw-2">*</span>)<span class="question-mark">? </span>{
+            <span class="kw">fn </span><span class="macro-nonterminal">erased_serialize_bool</span>(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: bool) {
+                (<span class="kw-2">**</span><span class="self">self</span>).erased_serialize_bool(v);
             }
 
-            <span class="kw">fn </span>erased_serialize_i8(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: i8) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-                (<span class="kw-2">**</span><span class="self">self</span>).erased_serialize_i8(v)
+            <span class="kw">fn </span>erased_serialize_i8(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: i8) {
+                (<span class="kw-2">**</span><span class="self">self</span>).erased_serialize_i8(v);
             }
 
-            <span class="kw">fn </span>erased_serialize_i16(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: i16) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-                (<span class="kw-2">**</span><span class="self">self</span>).erased_serialize_i16(v)
+            <span class="kw">fn </span>erased_serialize_i16(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: i16) {
+                (<span class="kw-2">**</span><span class="self">self</span>).erased_serialize_i16(v);
             }
 
-            <span class="kw">fn </span>erased_serialize_i32(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: i32) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-                (<span class="kw-2">**</span><span class="self">self</span>).erased_serialize_i32(v)
+            <span class="kw">fn </span>erased_serialize_i32(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: i32) {
+                (<span class="kw-2">**</span><span class="self">self</span>).erased_serialize_i32(v);
             }
 
-            <span class="kw">fn </span>erased_serialize_i64(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: i64) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-                (<span class="kw-2">**</span><span class="self">self</span>).erased_serialize_i64(v)
+            <span class="kw">fn </span>erased_serialize_i64(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: i64) {
+                (<span class="kw-2">**</span><span class="self">self</span>).erased_serialize_i64(v);
             }
 
-            <span class="kw">fn </span>erased_serialize_i128(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: i128) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-                (<span class="kw-2">**</span><span class="self">self</span>).erased_serialize_i128(v)
+            <span class="kw">fn </span>erased_serialize_i128(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: i128) {
+                (<span class="kw-2">**</span><span class="self">self</span>).erased_serialize_i128(v);
             }
 
-            <span class="kw">fn </span>erased_serialize_u8(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: u8) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-                (<span class="kw-2">**</span><span class="self">self</span>).erased_serialize_u8(v)
+            <span class="kw">fn </span>erased_serialize_u8(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: u8) {
+                (<span class="kw-2">**</span><span class="self">self</span>).erased_serialize_u8(v);
             }
 
-            <span class="kw">fn </span>erased_serialize_u16(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: u16) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-                (<span class="kw-2">**</span><span class="self">self</span>).erased_serialize_u16(v)
+            <span class="kw">fn </span>erased_serialize_u16(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: u16) {
+                (<span class="kw-2">**</span><span class="self">self</span>).erased_serialize_u16(v);
             }
 
-            <span class="kw">fn </span>erased_serialize_u32(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: u32) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-                (<span class="kw-2">**</span><span class="self">self</span>).erased_serialize_u32(v)
+            <span class="kw">fn </span>erased_serialize_u32(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: u32) {
+                (<span class="kw-2">**</span><span class="self">self</span>).erased_serialize_u32(v);
             }
 
-            <span class="kw">fn </span>erased_serialize_u64(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: u64) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-                (<span class="kw-2">**</span><span class="self">self</span>).erased_serialize_u64(v)
+            <span class="kw">fn </span>erased_serialize_u64(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: u64) {
+                (<span class="kw-2">**</span><span class="self">self</span>).erased_serialize_u64(v);
             }
 
-            <span class="kw">fn </span>erased_serialize_u128(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: u128) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-                (<span class="kw-2">**</span><span class="self">self</span>).erased_serialize_u128(v)
+            <span class="kw">fn </span>erased_serialize_u128(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: u128) {
+                (<span class="kw-2">**</span><span class="self">self</span>).erased_serialize_u128(v);
             }
 
-            <span class="kw">fn </span>erased_serialize_f32(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: f32) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-                (<span class="kw-2">**</span><span class="self">self</span>).erased_serialize_f32(v)
+            <span class="kw">fn </span>erased_serialize_f32(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: f32) {
+                (<span class="kw-2">**</span><span class="self">self</span>).erased_serialize_f32(v);
             }
 
-            <span class="kw">fn </span>erased_serialize_f64(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: f64) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-                (<span class="kw-2">**</span><span class="self">self</span>).erased_serialize_f64(v)
+            <span class="kw">fn </span>erased_serialize_f64(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: f64) {
+                (<span class="kw-2">**</span><span class="self">self</span>).erased_serialize_f64(v);
             }
 
-            <span class="kw">fn </span>erased_serialize_char(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: char) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-                (<span class="kw-2">**</span><span class="self">self</span>).erased_serialize_char(v)
+            <span class="kw">fn </span>erased_serialize_char(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: char) {
+                (<span class="kw-2">**</span><span class="self">self</span>).erased_serialize_char(v);
             }
 
-            <span class="kw">fn </span>erased_serialize_str(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-                (<span class="kw-2">**</span><span class="self">self</span>).erased_serialize_str(v)
+            <span class="kw">fn </span>erased_serialize_str(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: <span class="kw-2">&amp;</span>str) {
+                (<span class="kw-2">**</span><span class="self">self</span>).erased_serialize_str(v);
             }
 
-            <span class="kw">fn </span>erased_serialize_bytes(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: <span class="kw-2">&amp;</span>[u8]) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-                (<span class="kw-2">**</span><span class="self">self</span>).erased_serialize_bytes(v)
+            <span class="kw">fn </span>erased_serialize_bytes(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: <span class="kw-2">&amp;</span>[u8]) {
+                (<span class="kw-2">**</span><span class="self">self</span>).erased_serialize_bytes(v);
             }
 
-            <span class="kw">fn </span>erased_serialize_none(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-                (<span class="kw-2">**</span><span class="self">self</span>).erased_serialize_none()
+            <span class="kw">fn </span>erased_serialize_none(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+                (<span class="kw-2">**</span><span class="self">self</span>).erased_serialize_none();
             }
 
-            <span class="kw">fn </span>erased_serialize_some(<span class="kw-2">&amp;mut </span><span class="self">self</span>, v: <span class="kw-2">&amp;</span><span class="kw">dyn </span>Serialize) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-                (<span class="kw-2">**</span><span class="self">self</span>).erased_serialize_some(v)
+            <span class="kw">fn </span>erased_serialize_some(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: <span class="kw-2">&amp;</span><span class="kw">dyn </span>Serialize) {
+                (<span class="kw-2">**</span><span class="self">self</span>).erased_serialize_some(value);
             }
 
-            <span class="kw">fn </span>erased_serialize_unit(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-                (<span class="kw-2">**</span><span class="self">self</span>).erased_serialize_unit()
+            <span class="kw">fn </span>erased_serialize_unit(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+                (<span class="kw-2">**</span><span class="self">self</span>).erased_serialize_unit();
             }
 
-            <span class="kw">fn </span>erased_serialize_unit_struct(<span class="kw-2">&amp;mut </span><span class="self">self</span>, name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-                (<span class="kw-2">**</span><span class="self">self</span>).erased_serialize_unit_struct(name)
+            <span class="kw">fn </span>erased_serialize_unit_struct(<span class="kw-2">&amp;mut </span><span class="self">self</span>, name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str) {
+                (<span class="kw-2">**</span><span class="self">self</span>).erased_serialize_unit_struct(name);
             }
 
-            <span class="kw">fn </span>erased_serialize_unit_variant(<span class="kw-2">&amp;mut </span><span class="self">self</span>, name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str, variant_index: u32, variant: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-                (<span class="kw-2">**</span><span class="self">self</span>).erased_serialize_unit_variant(name, variant_index, variant)
+            <span class="kw">fn </span>erased_serialize_unit_variant(<span class="kw-2">&amp;mut </span><span class="self">self</span>, name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str, variant_index: u32, variant: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str) {
+                (<span class="kw-2">**</span><span class="self">self</span>).erased_serialize_unit_variant(name, variant_index, variant);
             }
 
-            <span class="kw">fn </span>erased_serialize_newtype_struct(<span class="kw-2">&amp;mut </span><span class="self">self</span>, name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str, v: <span class="kw-2">&amp;</span><span class="kw">dyn </span>Serialize) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-                (<span class="kw-2">**</span><span class="self">self</span>).erased_serialize_newtype_struct(name, v)
+            <span class="kw">fn </span>erased_serialize_newtype_struct(<span class="kw-2">&amp;mut </span><span class="self">self</span>, name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str, value: <span class="kw-2">&amp;</span><span class="kw">dyn </span>Serialize) {
+                (<span class="kw-2">**</span><span class="self">self</span>).erased_serialize_newtype_struct(name, value);
             }
 
-            <span class="kw">fn </span>erased_serialize_newtype_variant(<span class="kw-2">&amp;mut </span><span class="self">self</span>, name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str, variant_index: u32, variant: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str, v: <span class="kw-2">&amp;</span><span class="kw">dyn </span>Serialize) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-val">Ok</span>, Error&gt; {
-                (<span class="kw-2">**</span><span class="self">self</span>).erased_serialize_newtype_variant(name, variant_index, variant, v)
+            <span class="kw">fn </span>erased_serialize_newtype_variant(<span class="kw-2">&amp;mut </span><span class="self">self</span>, name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str, variant_index: u32, variant: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str, value: <span class="kw-2">&amp;</span><span class="kw">dyn </span>Serialize) {
+                (<span class="kw-2">**</span><span class="self">self</span>).erased_serialize_newtype_variant(name, variant_index, variant, value);
             }
 
-            <span class="kw">fn </span>erased_serialize_seq(<span class="kw-2">&amp;mut </span><span class="self">self</span>, len: <span class="prelude-ty">Option</span>&lt;usize&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Seq, Error&gt; {
+            <span class="kw">fn </span>erased_serialize_seq(<span class="kw-2">&amp;mut </span><span class="self">self</span>, len: <span class="prelude-ty">Option</span>&lt;usize&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;mut </span><span class="kw">dyn </span>SerializeSeq, ErrorImpl&gt; {
                 (<span class="kw-2">**</span><span class="self">self</span>).erased_serialize_seq(len)
             }
 
-            <span class="kw">fn </span>erased_serialize_tuple(<span class="kw-2">&amp;mut </span><span class="self">self</span>, len: usize) -&gt; <span class="prelude-ty">Result</span>&lt;Tuple, Error&gt; {
+            <span class="kw">fn </span>erased_serialize_tuple(<span class="kw-2">&amp;mut </span><span class="self">self</span>, len: usize) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;mut </span><span class="kw">dyn </span>SerializeTuple, ErrorImpl&gt; {
                 (<span class="kw-2">**</span><span class="self">self</span>).erased_serialize_tuple(len)
             }
 
-            <span class="kw">fn </span>erased_serialize_tuple_struct(<span class="kw-2">&amp;mut </span><span class="self">self</span>, name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str, len: usize) -&gt; <span class="prelude-ty">Result</span>&lt;TupleStruct, Error&gt; {
+            <span class="kw">fn </span>erased_serialize_tuple_struct(<span class="kw-2">&amp;mut </span><span class="self">self</span>, name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str, len: usize) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;mut </span><span class="kw">dyn </span>SerializeTupleStruct, ErrorImpl&gt; {
                 (<span class="kw-2">**</span><span class="self">self</span>).erased_serialize_tuple_struct(name, len)
             }
 
-            <span class="kw">fn </span>erased_serialize_tuple_variant(<span class="kw-2">&amp;mut </span><span class="self">self</span>, name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str, variant_index: u32, variant: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str, len: usize) -&gt; <span class="prelude-ty">Result</span>&lt;TupleVariant, Error&gt; {
+            <span class="kw">fn </span>erased_serialize_tuple_variant(<span class="kw-2">&amp;mut </span><span class="self">self</span>, name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str, variant_index: u32, variant: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str, len: usize) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;mut </span><span class="kw">dyn </span>SerializeTupleVariant, ErrorImpl&gt; {
                 (<span class="kw-2">**</span><span class="self">self</span>).erased_serialize_tuple_variant(name, variant_index, variant, len)
             }
 
-            <span class="kw">fn </span>erased_serialize_map(<span class="kw-2">&amp;mut </span><span class="self">self</span>, len: <span class="prelude-ty">Option</span>&lt;usize&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Map, Error&gt; {
+            <span class="kw">fn </span>erased_serialize_map(<span class="kw-2">&amp;mut </span><span class="self">self</span>, len: <span class="prelude-ty">Option</span>&lt;usize&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;mut </span><span class="kw">dyn </span>SerializeMap, ErrorImpl&gt; {
                 (<span class="kw-2">**</span><span class="self">self</span>).erased_serialize_map(len)
             }
 
-            <span class="kw">fn </span>erased_serialize_struct(<span class="kw-2">&amp;mut </span><span class="self">self</span>, name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str, len: usize) -&gt; <span class="prelude-ty">Result</span>&lt;Struct, Error&gt; {
+            <span class="kw">fn </span>erased_serialize_struct(<span class="kw-2">&amp;mut </span><span class="self">self</span>, name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str, len: usize) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;mut </span><span class="kw">dyn </span>SerializeStruct, ErrorImpl&gt; {
                 (<span class="kw-2">**</span><span class="self">self</span>).erased_serialize_struct(name, len)
             }
 
-            <span class="kw">fn </span>erased_serialize_struct_variant(<span class="kw-2">&amp;mut </span><span class="self">self</span>, name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str, variant_index: u32, variant: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str, len: usize) -&gt; <span class="prelude-ty">Result</span>&lt;StructVariant, Error&gt; {
+            <span class="kw">fn </span>erased_serialize_struct_variant(<span class="kw-2">&amp;mut </span><span class="self">self</span>, name: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str, variant_index: u32, variant: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str, len: usize) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;mut </span><span class="kw">dyn </span>SerializeStructVariant, ErrorImpl&gt; {
                 (<span class="kw-2">**</span><span class="self">self</span>).erased_serialize_struct_variant(name, variant_index, variant, len)
             }
 
             <span class="kw">fn </span>erased_is_human_readable(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
                 (<span class="kw-2">**</span><span class="self">self</span>).erased_is_human_readable()
             }
+
+            <span class="kw">fn </span>erased_display_error(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw">dyn </span>Display {
+                (<span class="kw-2">**</span><span class="self">self</span>).erased_display_error()
+            }
         }
+
+        <span class="kw">impl</span>&lt;<span class="macro-nonterminal">$T</span>&gt; sealed::serializer::Sealed <span class="kw">for </span><span class="macro-nonterminal">$ty </span>$(<span class="kw">where </span>$(<span class="macro-nonterminal">$</span><span class="kw">where</span>)<span class="kw-2">*</span>)<span class="question-mark">? </span>{}
     };
 }
 
-<span class="macro">deref_erased_serializer!</span>(&lt;<span class="lifetime">&#39;a</span>&gt; Serializer <span class="kw">for </span>Box&lt;<span class="kw">dyn </span>Serializer + <span class="lifetime">&#39;a</span>&gt;);
-<span class="macro">deref_erased_serializer!</span>(&lt;<span class="lifetime">&#39;a</span>&gt; Serializer <span class="kw">for </span>Box&lt;<span class="kw">dyn </span>Serializer + Send + <span class="lifetime">&#39;a</span>&gt;);
-<span class="macro">deref_erased_serializer!</span>(&lt;<span class="lifetime">&#39;a</span>&gt; Serializer <span class="kw">for </span>Box&lt;<span class="kw">dyn </span>Serializer + Sync + <span class="lifetime">&#39;a</span>&gt;);
-<span class="macro">deref_erased_serializer!</span>(&lt;<span class="lifetime">&#39;a</span>&gt; Serializer <span class="kw">for </span>Box&lt;<span class="kw">dyn </span>Serializer + Send + Sync + <span class="lifetime">&#39;a</span>&gt;);
-<span class="macro">deref_erased_serializer!</span>(&lt;<span class="lifetime">&#39;a</span>, T: <span class="question-mark">?</span>Sized + Serializer&gt; Serializer <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>T);
-
-<span class="comment">// ERROR ///////////////////////////////////////////////////////////////////////
-
-</span><span class="kw">fn </span>erase&lt;E&gt;(e: E) -&gt; Error
-<span class="kw">where
-    </span>E: Display,
-{
-    serde::ser::Error::custom(e)
-}
-
-<span class="kw">fn </span>unerase&lt;E&gt;(e: Error) -&gt; E
-<span class="kw">where
-    </span>E: serde::ser::Error,
-{
-    E::custom(e)
-}
+<span class="macro">deref_erased_serializer!</span>(&lt;<span class="macro-nonterminal">T</span>&gt; Serializer <span class="kw">for </span><span class="kw-2">&amp;mut </span>T <span class="kw">where </span>T: <span class="question-mark">?</span>Sized + Serializer);
+<span class="macro">deref_erased_serializer!</span>(&lt;T&gt; Serializer <span class="kw">for </span>Box&lt;T&gt; <span class="kw">where </span>T: <span class="question-mark">?</span>Sized + Serializer);
 
 <span class="comment">// TEST ////////////////////////////////////////////////////////////////////////
 
 </span><span class="attr">#[cfg(test)]
 </span><span class="kw">mod </span>tests {
     <span class="kw">use super</span>::<span class="kw-2">*</span>;
-    <span class="kw">use </span><span class="kw">crate</span>::alloc::{vec, Vec};
+    <span class="kw">use </span>alloc::{vec, vec::Vec};
     <span class="kw">use </span>serde_derive::Serialize;
 
     <span class="kw">fn </span>test_json&lt;T&gt;(t: T)
@@ -2927,7 +3136,7 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_vec() {
-        test_json(<span class="macro">vec!</span>[<span class="string">&quot;a&quot;</span>, <span class="string">&quot;b&quot;</span>]);
+        test_json(<span class="macro">vec!</span>[<span class="string">"a"</span>, <span class="string">"b"</span>]);
     }
 
     <span class="attr">#[test]
@@ -2957,6 +3166,27 @@
     }
 
     <span class="attr">#[test]
+    </span><span class="kw">fn </span>test_error_custom() {
+        <span class="kw">struct </span>Kaboom;
+
+        <span class="kw">impl </span>serde::Serialize <span class="kw">for </span>Kaboom {
+            <span class="kw">fn </span>serialize&lt;S&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw">_</span>: S) -&gt; <span class="prelude-ty">Result</span>&lt;S::Ok, S::Error&gt;
+            <span class="kw">where
+                </span>S: serde::Serializer,
+            {
+                <span class="kw">use </span>serde::ser::Error <span class="kw">as _</span>;
+
+                <span class="prelude-val">Err</span>(S::Error::custom(<span class="string">"kaboom"</span>))
+            }
+        }
+
+        <span class="kw">let </span>obj: <span class="kw-2">&amp;</span><span class="kw">dyn </span>Serialize = <span class="kw-2">&amp;</span>Kaboom;
+
+        <span class="kw">let </span>err = serde_json::to_vec(obj).unwrap_err();
+        <span class="macro">assert_eq!</span>(err.to_string(), <span class="string">"kaboom"</span>);
+    }
+
+    <span class="attr">#[test]
     </span><span class="kw">fn </span>assert_serialize() {
         <span class="kw">fn </span>assert&lt;T: serde::Serialize&gt;() {}
 
@@ -2975,17 +3205,6 @@
         assert::&lt;Box&lt;<span class="kw">dyn </span>Serialize + Sync + Send&gt;&gt;();
         assert::&lt;Vec&lt;Box&lt;<span class="kw">dyn </span>Serialize&gt;&gt;&gt;();
         assert::&lt;Vec&lt;Box&lt;<span class="kw">dyn </span>Serialize + Send&gt;&gt;&gt;();
-    }
-
-    <span class="attr">#[test]
-    </span><span class="kw">fn </span>assert_serializer() {
-        <span class="kw">fn </span>assert&lt;T: serde::Serializer&gt;() {}
-
-        assert::&lt;<span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Serializer&gt;();
-        assert::&lt;<span class="kw-2">&amp;mut </span>(<span class="kw">dyn </span>Serializer + Send)&gt;();
-        assert::&lt;<span class="kw-2">&amp;mut </span>(<span class="kw">dyn </span>Serializer + Sync)&gt;();
-        assert::&lt;<span class="kw-2">&amp;mut </span>(<span class="kw">dyn </span>Serializer + Send + Sync)&gt;();
-        assert::&lt;<span class="kw-2">&amp;mut </span>(<span class="kw">dyn </span>Serializer + Sync + Send)&gt;();
     }
 }
 </code></pre></div></section></main></body></html>

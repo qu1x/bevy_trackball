@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_asset-0.12.1/src/reflect.rs`."><title>reflect.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="bevy_asset" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../bevy_asset/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_asset-0.13.0/src/reflect.rs`."><title>reflect.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="bevy_asset" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -296,7 +297,6 @@
 <a href="#296" id="296">296</a>
 <a href="#297" id="297">297</a>
 <a href="#298" id="298">298</a>
-<a href="#299" id="299">299</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::any::{Any, TypeId};
 
 <span class="kw">use </span>bevy_ecs::world::{unsafe_world_cell::UnsafeWorldCell, World};
@@ -307,7 +307,7 @@
 <span class="doccomment">/// Type data for the [`TypeRegistry`](bevy_reflect::TypeRegistry) used to operate on reflected [`Asset`]s.
 ///
 /// This type provides similar methods to [`Assets&lt;T&gt;`] like [`get`](ReflectAsset::get),
-/// [`add`](ReflectAsset::add) and [`remove`](ReflectAsset::remove), but can be used in situations where you don&#39;t know which asset type `T` you want
+/// [`add`](ReflectAsset::add) and [`remove`](ReflectAsset::remove), but can be used in situations where you don't know which asset type `T` you want
 /// until runtime.
 ///
 /// [`ReflectAsset`] can be obtained via [`TypeRegistration::data`](bevy_reflect::TypeRegistration::data) if the asset was registered using [`register_asset_reflect`](crate::AssetApp::register_asset_reflect).
@@ -320,11 +320,11 @@
     <span class="comment">// SAFETY:
     // - may only be called with an [`UnsafeWorldCell`] which can be used to access the corresponding `Assets&lt;T&gt;` resource mutably
     // - may only be used to access **at most one** access at once
-    </span>get_unchecked_mut: <span class="kw">unsafe fn</span>(UnsafeWorldCell&lt;<span class="lifetime">&#39;_</span>&gt;, UntypedHandle) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Reflect&gt;,
+    </span>get_unchecked_mut: <span class="kw">unsafe fn</span>(UnsafeWorldCell&lt;<span class="lifetime">'_</span>&gt;, UntypedHandle) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Reflect&gt;,
     add: <span class="kw">fn</span>(<span class="kw-2">&amp;mut </span>World, <span class="kw-2">&amp;</span><span class="kw">dyn </span>Reflect) -&gt; UntypedHandle,
     insert: <span class="kw">fn</span>(<span class="kw-2">&amp;mut </span>World, UntypedHandle, <span class="kw-2">&amp;</span><span class="kw">dyn </span>Reflect),
     len: <span class="kw">fn</span>(<span class="kw-2">&amp;</span>World) -&gt; usize,
-    ids: <span class="kw">for</span>&lt;<span class="lifetime">&#39;w</span>&gt; <span class="kw">fn</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;w </span>World) -&gt; Box&lt;<span class="kw">dyn </span>Iterator&lt;Item = UntypedAssetId&gt; + <span class="lifetime">&#39;w</span>&gt;,
+    ids: <span class="kw">for</span>&lt;<span class="lifetime">'w</span>&gt; <span class="kw">fn</span>(<span class="kw-2">&amp;</span><span class="lifetime">'w </span>World) -&gt; Box&lt;<span class="kw">dyn </span>Iterator&lt;Item = UntypedAssetId&gt; + <span class="lifetime">'w</span>&gt;,
     remove: <span class="kw">fn</span>(<span class="kw-2">&amp;mut </span>World, UntypedHandle) -&gt; <span class="prelude-ty">Option</span>&lt;Box&lt;<span class="kw">dyn </span>Reflect&gt;&gt;,
 }
 
@@ -340,16 +340,16 @@
     }
 
     <span class="doccomment">/// Equivalent of [`Assets::get`]
-    </span><span class="kw">pub fn </span>get&lt;<span class="lifetime">&#39;w</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, world: <span class="kw-2">&amp;</span><span class="lifetime">&#39;w </span>World, handle: UntypedHandle) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;w </span><span class="kw">dyn </span>Reflect&gt; {
+    </span><span class="kw">pub fn </span>get&lt;<span class="lifetime">'w</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, world: <span class="kw-2">&amp;</span><span class="lifetime">'w </span>World, handle: UntypedHandle) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'w </span><span class="kw">dyn </span>Reflect&gt; {
         (<span class="self">self</span>.get)(world, handle)
     }
 
     <span class="doccomment">/// Equivalent of [`Assets::get_mut`]
-    </span><span class="kw">pub fn </span>get_mut&lt;<span class="lifetime">&#39;w</span>&gt;(
+    </span><span class="kw">pub fn </span>get_mut&lt;<span class="lifetime">'w</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        world: <span class="kw-2">&amp;</span><span class="lifetime">&#39;w </span><span class="kw-2">mut </span>World,
+        world: <span class="kw-2">&amp;</span><span class="lifetime">'w </span><span class="kw-2">mut </span>World,
         handle: UntypedHandle,
-    ) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;w </span><span class="kw-2">mut </span><span class="kw">dyn </span>Reflect&gt; {
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'w </span><span class="kw-2">mut </span><span class="kw">dyn </span>Reflect&gt; {
         <span class="comment">// SAFETY: unique world access
         </span><span class="kw">unsafe </span>{ (<span class="self">self</span>.get_unchecked_mut)(world.as_unsafe_world_cell(), handle) }
     }
@@ -360,7 +360,7 @@
     /// Furthermore, this does *not* allow you to have look up two distinct handles,
     /// you can only have at most one alive at the same time.
     /// This means that this is *not allowed*:
-    /// ```rust,no_run
+    /// ```no_run
     /// # use bevy_asset::{ReflectAsset, UntypedHandle};
     /// # use bevy_ecs::prelude::World;
     /// # let reflect_asset: ReflectAsset = unimplemented!();
@@ -373,21 +373,21 @@
     /// // ^ not allowed, two mutable references through the same asset resource, even though the
     /// // handles are distinct
     ///
-    /// println!(&quot;a = {a:?}, b = {b:?}&quot;);
+    /// println!("a = {a:?}, b = {b:?}");
     /// ```
     ///
     /// # Safety
     /// This method does not prevent you from having two mutable pointers to the same data,
-    /// violating Rust&#39;s aliasing rules. To avoid this:
+    /// violating Rust's aliasing rules. To avoid this:
     /// * Only call this method if you know that the [`UnsafeWorldCell`] may be used to access the corresponding `Assets&lt;T&gt;`
-    /// * Don&#39;t call this method more than once in the same scope.
-    </span><span class="kw">pub unsafe fn </span>get_unchecked_mut&lt;<span class="lifetime">&#39;w</span>&gt;(
+    /// * Don't call this method more than once in the same scope.
+    </span><span class="kw">pub unsafe fn </span>get_unchecked_mut&lt;<span class="lifetime">'w</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        world: UnsafeWorldCell&lt;<span class="lifetime">&#39;w</span>&gt;,
+        world: UnsafeWorldCell&lt;<span class="lifetime">'w</span>&gt;,
         handle: UntypedHandle,
-    ) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;w </span><span class="kw-2">mut </span><span class="kw">dyn </span>Reflect&gt; {
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'w </span><span class="kw-2">mut </span><span class="kw">dyn </span>Reflect&gt; {
         <span class="comment">// SAFETY: requirements are deferred to the caller
-        </span>(<span class="self">self</span>.get_unchecked_mut)(world, handle)
+        </span><span class="kw">unsafe </span>{ (<span class="self">self</span>.get_unchecked_mut)(world, handle) }
     }
 
     <span class="doccomment">/// Equivalent of [`Assets::add`]
@@ -416,7 +416,7 @@
     </span>}
 
     <span class="doccomment">/// Equivalent of [`Assets::ids`]
-    </span><span class="kw">pub fn </span>ids&lt;<span class="lifetime">&#39;w</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, world: <span class="kw-2">&amp;</span><span class="lifetime">&#39;w </span>World) -&gt; <span class="kw">impl </span>Iterator&lt;Item = UntypedAssetId&gt; + <span class="lifetime">&#39;w </span>{
+    </span><span class="kw">pub fn </span>ids&lt;<span class="lifetime">'w</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, world: <span class="kw-2">&amp;</span><span class="lifetime">'w </span>World) -&gt; <span class="kw">impl </span>Iterator&lt;Item = UntypedAssetId&gt; + <span class="lifetime">'w </span>{
         (<span class="self">self</span>.ids)(world)
     }
 }
@@ -441,13 +441,13 @@
             add: |world, value| {
                 <span class="kw">let </span><span class="kw-2">mut </span>assets = world.resource_mut::&lt;Assets&lt;A&gt;&gt;();
                 <span class="kw">let </span>value: A = FromReflect::from_reflect(value)
-                    .expect(<span class="string">&quot;could not call `FromReflect::from_reflect` in `ReflectAsset::add`&quot;</span>);
+                    .expect(<span class="string">"could not call `FromReflect::from_reflect` in `ReflectAsset::add`"</span>);
                 assets.add(value).untyped()
             },
             insert: |world, handle, value| {
                 <span class="kw">let </span><span class="kw-2">mut </span>assets = world.resource_mut::&lt;Assets&lt;A&gt;&gt;();
                 <span class="kw">let </span>value: A = FromReflect::from_reflect(value)
-                    .expect(<span class="string">&quot;could not call `FromReflect::from_reflect` in `ReflectAsset::set`&quot;</span>);
+                    .expect(<span class="string">"could not call `FromReflect::from_reflect` in `ReflectAsset::set`"</span>);
                 assets.insert(handle.typed_debug_checked(), value);
             },
             len: |world| {
@@ -475,7 +475,7 @@
 /// the [`ReflectAsset`] type data on the corresponding `T` asset type:
 ///
 ///
-/// ```rust,no_run
+/// ```no_run
 /// # use bevy_reflect::{TypeRegistry, prelude::*};
 /// # use bevy_ecs::prelude::*;
 /// use bevy_asset::{ReflectHandle, ReflectAsset};
@@ -489,7 +489,7 @@
 ///
 ///     let handle = reflect_handle.downcast_handle_untyped(handle.as_any()).unwrap();
 ///     let value = reflect_asset.get(world, handle).unwrap();
-///     println!(&quot;{value:?}&quot;);
+///     println!("{value:?}");
 /// }
 /// ```
 </span><span class="attr">#[derive(Clone)]
@@ -563,22 +563,21 @@
         };
 
         <span class="kw">let </span>value = AssetType {
-            field: <span class="string">&quot;test&quot;</span>.into(),
+            field: <span class="string">"test"</span>.into(),
         };
 
         <span class="kw">let </span>handle = reflect_asset.add(<span class="kw-2">&amp;mut </span>app.world, <span class="kw-2">&amp;</span>value);
-        <span class="kw">let </span>strukt = <span class="kw">match </span>reflect_asset
+        <span class="kw">let </span>ReflectMut::Struct(strukt) = reflect_asset
             .get_mut(<span class="kw-2">&amp;mut </span>app.world, handle)
             .unwrap()
             .reflect_mut()
-        {
-            ReflectMut::Struct(s) =&gt; s,
-            <span class="kw">_ </span>=&gt; <span class="macro">unreachable!</span>(),
+        <span class="kw">else </span>{
+            <span class="macro">unreachable!</span>();
         };
         strukt
-            .field_mut(<span class="string">&quot;field&quot;</span>)
+            .field_mut(<span class="string">"field"</span>)
             .unwrap()
-            .apply(<span class="kw-2">&amp;</span>String::from(<span class="string">&quot;edited&quot;</span>));
+            .apply(<span class="kw-2">&amp;</span>String::from(<span class="string">"edited"</span>));
 
         <span class="macro">assert_eq!</span>(reflect_asset.len(<span class="kw-2">&amp;</span>app.world), <span class="number">1</span>);
         <span class="kw">let </span>ids: Vec&lt;<span class="kw">_</span>&gt; = reflect_asset.ids(<span class="kw-2">&amp;</span>app.world).collect();
@@ -588,7 +587,7 @@
         <span class="kw">let </span>asset = reflect_asset
             .get(<span class="kw-2">&amp;</span>app.world, fetched_handle.clone_weak())
             .unwrap();
-        <span class="macro">assert_eq!</span>(asset.downcast_ref::&lt;AssetType&gt;().unwrap().field, <span class="string">&quot;edited&quot;</span>);
+        <span class="macro">assert_eq!</span>(asset.downcast_ref::&lt;AssetType&gt;().unwrap().field, <span class="string">"edited"</span>);
 
         reflect_asset
             .remove(<span class="kw-2">&amp;mut </span>app.world, fetched_handle)

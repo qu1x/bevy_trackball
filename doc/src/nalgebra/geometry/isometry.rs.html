@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/nalgebra-0.32.3/src/geometry/isometry.rs`."><title>isometry.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="nalgebra" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="icon" href="https://nalgebra.org/img/favicon.ico"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../nalgebra/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/nalgebra-0.32.4/src/geometry/isometry.rs`."><title>isometry.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="nalgebra" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="icon" href="https://nalgebra.org/img/favicon.ico"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -572,7 +573,7 @@
 <span class="kw">use </span>std::fmt;
 <span class="kw">use </span>std::hash;
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;serde-serialize-no-std&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"serde-serialize-no-std"</span>)]
 </span><span class="kw">use </span>serde::{Deserialize, Serialize};
 
 <span class="kw">use </span>simba::scalar::{RealField, SubsetOf};
@@ -584,7 +585,7 @@
 <span class="kw">use </span><span class="kw">crate</span>::base::{Const, DefaultAllocator, OMatrix, SVector, Scalar, Unit};
 <span class="kw">use </span><span class="kw">crate</span>::geometry::{AbstractRotation, Point, Translation};
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;rkyv-serialize&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"rkyv-serialize"</span>)]
 </span><span class="kw">use </span>rkyv::bytecheck;
 
 <span class="doccomment">/// A direct isometry, i.e., a rotation followed by a translation (aka. a rigid-body motion).
@@ -606,51 +607,51 @@
 /// this page.
 ///
 /// # Construction
-/// * [From a 2D vector and/or an angle &lt;span style=&quot;float:right;&quot;&gt;`new`, `translation`, `rotation`…&lt;/span&gt;](#construction-from-a-2d-vector-andor-a-rotation-angle)
-/// * [From a 3D vector and/or an axis-angle &lt;span style=&quot;float:right;&quot;&gt;`new`, `translation`, `rotation`…&lt;/span&gt;](#construction-from-a-3d-vector-andor-an-axis-angle)
-/// * [From a 3D eye position and target point &lt;span style=&quot;float:right;&quot;&gt;`look_at`, `look_at_lh`, `face_towards`…&lt;/span&gt;](#construction-from-a-3d-eye-position-and-target-point)
-/// * [From the translation and rotation parts &lt;span style=&quot;float:right;&quot;&gt;`from_parts`…&lt;/span&gt;](#from-the-translation-and-rotation-parts)
+/// * [From a 2D vector and/or an angle &lt;span style="float:right;"&gt;`new`, `translation`, `rotation`…&lt;/span&gt;](#construction-from-a-2d-vector-andor-a-rotation-angle)
+/// * [From a 3D vector and/or an axis-angle &lt;span style="float:right;"&gt;`new`, `translation`, `rotation`…&lt;/span&gt;](#construction-from-a-3d-vector-andor-an-axis-angle)
+/// * [From a 3D eye position and target point &lt;span style="float:right;"&gt;`look_at`, `look_at_lh`, `face_towards`…&lt;/span&gt;](#construction-from-a-3d-eye-position-and-target-point)
+/// * [From the translation and rotation parts &lt;span style="float:right;"&gt;`from_parts`…&lt;/span&gt;](#from-the-translation-and-rotation-parts)
 ///
 /// # Transformation and composition
 /// Note that transforming vectors and points can be done by multiplication, e.g., `isometry * point`.
 /// Composing an isometry with another transformation can also be done by multiplication or division.
 ///
-/// * [Transformation of a vector or a point &lt;span style=&quot;float:right;&quot;&gt;`transform_vector`, `inverse_transform_point`…&lt;/span&gt;](#transformation-of-a-vector-or-a-point)
-/// * [Inversion and in-place composition &lt;span style=&quot;float:right;&quot;&gt;`inverse`, `append_rotation_wrt_point_mut`…&lt;/span&gt;](#inversion-and-in-place-composition)
-/// * [Interpolation &lt;span style=&quot;float:right;&quot;&gt;`lerp_slerp`…&lt;/span&gt;](#interpolation)
+/// * [Transformation of a vector or a point &lt;span style="float:right;"&gt;`transform_vector`, `inverse_transform_point`…&lt;/span&gt;](#transformation-of-a-vector-or-a-point)
+/// * [Inversion and in-place composition &lt;span style="float:right;"&gt;`inverse`, `append_rotation_wrt_point_mut`…&lt;/span&gt;](#inversion-and-in-place-composition)
+/// * [Interpolation &lt;span style="float:right;"&gt;`lerp_slerp`…&lt;/span&gt;](#interpolation)
 ///
 /// # Conversion to a matrix
-/// * [Conversion to a matrix &lt;span style=&quot;float:right;&quot;&gt;`to_matrix`…&lt;/span&gt;](#conversion-to-a-matrix)
+/// * [Conversion to a matrix &lt;span style="float:right;"&gt;`to_matrix`…&lt;/span&gt;](#conversion-to-a-matrix)
 ///
 </span><span class="attr">#[repr(C)]
 #[derive(Debug, Copy, Clone)]
-#[cfg_attr(feature = <span class="string">&quot;cuda&quot;</span>, derive(cust_core::DeviceCopy))]
-#[cfg_attr(feature = <span class="string">&quot;serde-serialize-no-std&quot;</span>, derive(Serialize, Deserialize))]
+#[cfg_attr(feature = <span class="string">"cuda"</span>, derive(cust_core::DeviceCopy))]
+#[cfg_attr(feature = <span class="string">"serde-serialize-no-std"</span>, derive(Serialize, Deserialize))]
 #[cfg_attr(
-    feature = <span class="string">&quot;serde-serialize-no-std&quot;</span>,
-    serde(bound(serialize = <span class="string">&quot;R: Serialize,
+    feature = <span class="string">"serde-serialize-no-std"</span>,
+    serde(bound(serialize = <span class="string">"R: Serialize,
                      DefaultAllocator: Allocator&lt;T, Const&lt;D&gt;&gt;,
                      Owned&lt;T, Const&lt;D&gt;&gt;: Serialize,
-                     T: Scalar&quot;</span>))
+                     T: Scalar"</span>))
 )]
 #[cfg_attr(
-    feature = <span class="string">&quot;serde-serialize-no-std&quot;</span>,
-    serde(bound(deserialize = <span class="string">&quot;R: Deserialize&lt;&#39;de&gt;,
+    feature = <span class="string">"serde-serialize-no-std"</span>,
+    serde(bound(deserialize = <span class="string">"R: Deserialize&lt;'de&gt;,
                        DefaultAllocator: Allocator&lt;T, Const&lt;D&gt;&gt;,
-                       Owned&lt;T, Const&lt;D&gt;&gt;: Deserialize&lt;&#39;de&gt;,
-                       T: Scalar&quot;</span>))
+                       Owned&lt;T, Const&lt;D&gt;&gt;: Deserialize&lt;'de&gt;,
+                       T: Scalar"</span>))
 )]
-#[cfg_attr(feature = <span class="string">&quot;rkyv-serialize&quot;</span>, derive(bytecheck::CheckBytes))]
+#[cfg_attr(feature = <span class="string">"rkyv-serialize"</span>, derive(bytecheck::CheckBytes))]
 #[cfg_attr(
-    feature = <span class="string">&quot;rkyv-serialize-no-std&quot;</span>,
+    feature = <span class="string">"rkyv-serialize-no-std"</span>,
     derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize),
     archive(
-        <span class="kw">as </span>= <span class="string">&quot;Isometry&lt;T::Archived, R::Archived, D&gt;&quot;</span>,
-        bound(archive = <span class="string">&quot;
+        <span class="kw">as </span>= <span class="string">"Isometry&lt;T::Archived, R::Archived, D&gt;"</span>,
+        bound(archive = <span class="string">"
         T: rkyv::Archive,
         R: rkyv::Archive,
         Translation&lt;T, D&gt;: rkyv::Archive&lt;Archived = Translation&lt;T::Archived, D&gt;&gt;
-    &quot;</span>)
+    "</span>)
     )
 )]
 </span><span class="kw">pub struct </span>Isometry&lt;T, R, <span class="kw">const </span>D: usize&gt; {
@@ -714,7 +715,7 @@
     /// assert_eq!(inv * (iso * pt), pt);
     /// ```
     </span><span class="attr">#[inline]
-    #[must_use = <span class="string">&quot;Did you mean to use inverse_mut()?&quot;</span>]
+    #[must_use = <span class="string">"Did you mean to use inverse_mut()?"</span>]
     </span><span class="kw">pub fn </span>inverse(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
         <span class="kw">let </span><span class="kw-2">mut </span>res = <span class="self">self</span>.clone();
         res.inverse_mut();
@@ -975,7 +976,7 @@
     }
 }
 
-<span class="comment">// NOTE: we don&#39;t require `R: Rotation&lt;...&gt;` here because this is not useful for the implementation
+<span class="comment">// NOTE: we don't require `R: Rotation&lt;...&gt;` here because this is not useful for the implementation
 // and makes it hard to use it, e.g., for Transform × Isometry implementation.
 // This is OK since all constructors of the isometry enforce the Rotation bound already (and
 // explicit struct construction is prevented by the dummy ZST field).
@@ -1129,13 +1130,13 @@
 <span class="kw">where
     </span>R: fmt::Display,
 {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
         <span class="kw">let </span>precision = f.precision().unwrap_or(<span class="number">3</span>);
 
-        <span class="macro">writeln!</span>(f, <span class="string">&quot;Isometry {{&quot;</span>)<span class="question-mark">?</span>;
-        <span class="macro">write!</span>(f, <span class="string">&quot;{:.*}&quot;</span>, precision, <span class="self">self</span>.translation)<span class="question-mark">?</span>;
-        <span class="macro">write!</span>(f, <span class="string">&quot;{:.*}&quot;</span>, precision, <span class="self">self</span>.rotation)<span class="question-mark">?</span>;
-        <span class="macro">writeln!</span>(f, <span class="string">&quot;}}&quot;</span>)
+        <span class="macro">writeln!</span>(f, <span class="string">"Isometry {{"</span>)<span class="question-mark">?</span>;
+        <span class="macro">write!</span>(f, <span class="string">"{:.*}"</span>, precision, <span class="self">self</span>.translation)<span class="question-mark">?</span>;
+        <span class="macro">write!</span>(f, <span class="string">"{:.*}"</span>, precision, <span class="self">self</span>.rotation)<span class="question-mark">?</span>;
+        <span class="macro">writeln!</span>(f, <span class="string">"}}"</span>)
     }
 }
 </code></pre></div></section></main></body></html>

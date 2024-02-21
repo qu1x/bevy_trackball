@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/nalgebra-0.32.3/src/base/alias_slice.rs`."><title>alias_slice.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="nalgebra" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="icon" href="https://nalgebra.org/img/favicon.ico"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../nalgebra/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/nalgebra-0.32.4/src/base/alias_slice.rs`."><title>alias_slice.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="nalgebra" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="icon" href="https://nalgebra.org/img/favicon.ico"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -731,349 +732,349 @@
  *
  *
  */
-// NOTE: we can&#39;t provide defaults for the strides because it&#39;s not supported yet by min_const_generics.
+// NOTE: we can't provide defaults for the strides because it's not supported yet by min_const_generics.
 </span><span class="doccomment">/// A column-major matrix slice with dimensions known at compile-time.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(SMatrixView)]
-</span><span class="kw">pub type </span>SMatrixSlice&lt;<span class="lifetime">&#39;a</span>, T, <span class="kw">const </span>R: usize, <span class="kw">const </span>C: usize&gt; =
-    Matrix&lt;T, Const&lt;R&gt;, Const&lt;C&gt;, ViewStorage&lt;<span class="lifetime">&#39;a</span>, T, Const&lt;R&gt;, Const&lt;C&gt;, Const&lt;<span class="number">1</span>&gt;, Const&lt;R&gt;&gt;&gt;;
+</span><span class="kw">pub type </span>SMatrixSlice&lt;<span class="lifetime">'a</span>, T, <span class="kw">const </span>R: usize, <span class="kw">const </span>C: usize&gt; =
+    Matrix&lt;T, Const&lt;R&gt;, Const&lt;C&gt;, ViewStorage&lt;<span class="lifetime">'a</span>, T, Const&lt;R&gt;, Const&lt;C&gt;, Const&lt;<span class="number">1</span>&gt;, Const&lt;R&gt;&gt;&gt;;
 
 <span class="doccomment">/// A column-major matrix slice dynamic numbers of rows and columns.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(DMatrixView)]
-</span><span class="kw">pub type </span>DMatrixSlice&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = Dyn&gt; =
-    Matrix&lt;T, Dyn, Dyn, ViewStorage&lt;<span class="lifetime">&#39;a</span>, T, Dyn, Dyn, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>DMatrixSlice&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = Dyn&gt; =
+    Matrix&lt;T, Dyn, Dyn, ViewStorage&lt;<span class="lifetime">'a</span>, T, Dyn, Dyn, RStride, CStride&gt;&gt;;
 
 <span class="doccomment">/// A column-major 1x1 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixView1)]
-</span><span class="kw">pub type </span>MatrixSlice1&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U1&gt; =
-    Matrix&lt;T, U1, U1, ViewStorage&lt;<span class="lifetime">&#39;a</span>, T, U1, U1, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSlice1&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U1&gt; =
+    Matrix&lt;T, U1, U1, ViewStorage&lt;<span class="lifetime">'a</span>, T, U1, U1, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major 2x2 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixView2)]
-</span><span class="kw">pub type </span>MatrixSlice2&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U2&gt; =
-    Matrix&lt;T, U2, U2, ViewStorage&lt;<span class="lifetime">&#39;a</span>, T, U2, U2, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSlice2&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U2&gt; =
+    Matrix&lt;T, U2, U2, ViewStorage&lt;<span class="lifetime">'a</span>, T, U2, U2, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major 3x3 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixView3)]
-</span><span class="kw">pub type </span>MatrixSlice3&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U3&gt; =
-    Matrix&lt;T, U3, U3, ViewStorage&lt;<span class="lifetime">&#39;a</span>, T, U3, U3, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSlice3&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U3&gt; =
+    Matrix&lt;T, U3, U3, ViewStorage&lt;<span class="lifetime">'a</span>, T, U3, U3, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major 4x4 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixView4)]
-</span><span class="kw">pub type </span>MatrixSlice4&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U4&gt; =
-    Matrix&lt;T, U4, U4, ViewStorage&lt;<span class="lifetime">&#39;a</span>, T, U4, U4, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSlice4&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U4&gt; =
+    Matrix&lt;T, U4, U4, ViewStorage&lt;<span class="lifetime">'a</span>, T, U4, U4, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major 5x5 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixView5)]
-</span><span class="kw">pub type </span>MatrixSlice5&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U5&gt; =
-    Matrix&lt;T, U5, U5, ViewStorage&lt;<span class="lifetime">&#39;a</span>, T, U5, U5, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSlice5&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U5&gt; =
+    Matrix&lt;T, U5, U5, ViewStorage&lt;<span class="lifetime">'a</span>, T, U5, U5, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major 6x6 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixView6)]
-</span><span class="kw">pub type </span>MatrixSlice6&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U6&gt; =
-    Matrix&lt;T, U6, U6, ViewStorage&lt;<span class="lifetime">&#39;a</span>, T, U6, U6, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSlice6&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U6&gt; =
+    Matrix&lt;T, U6, U6, ViewStorage&lt;<span class="lifetime">'a</span>, T, U6, U6, RStride, CStride&gt;&gt;;
 
 <span class="doccomment">/// A column-major 1x2 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixView1x2)]
-</span><span class="kw">pub type </span>MatrixSlice1x2&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U1&gt; =
-    Matrix&lt;T, U1, U2, ViewStorage&lt;<span class="lifetime">&#39;a</span>, T, U1, U2, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSlice1x2&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U1&gt; =
+    Matrix&lt;T, U1, U2, ViewStorage&lt;<span class="lifetime">'a</span>, T, U1, U2, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major 1x3 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixView1x3)]
-</span><span class="kw">pub type </span>MatrixSlice1x3&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U1&gt; =
-    Matrix&lt;T, U1, U3, ViewStorage&lt;<span class="lifetime">&#39;a</span>, T, U1, U3, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSlice1x3&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U1&gt; =
+    Matrix&lt;T, U1, U3, ViewStorage&lt;<span class="lifetime">'a</span>, T, U1, U3, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major 1x4 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixView1x4)]
-</span><span class="kw">pub type </span>MatrixSlice1x4&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U1&gt; =
-    Matrix&lt;T, U1, U4, ViewStorage&lt;<span class="lifetime">&#39;a</span>, T, U1, U4, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSlice1x4&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U1&gt; =
+    Matrix&lt;T, U1, U4, ViewStorage&lt;<span class="lifetime">'a</span>, T, U1, U4, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major 1x5 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixView1x5)]
-</span><span class="kw">pub type </span>MatrixSlice1x5&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U1&gt; =
-    Matrix&lt;T, U1, U5, ViewStorage&lt;<span class="lifetime">&#39;a</span>, T, U1, U5, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSlice1x5&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U1&gt; =
+    Matrix&lt;T, U1, U5, ViewStorage&lt;<span class="lifetime">'a</span>, T, U1, U5, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major 1x6 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixView1x6)]
-</span><span class="kw">pub type </span>MatrixSlice1x6&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U1&gt; =
-    Matrix&lt;T, U1, U6, ViewStorage&lt;<span class="lifetime">&#39;a</span>, T, U1, U6, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSlice1x6&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U1&gt; =
+    Matrix&lt;T, U1, U6, ViewStorage&lt;<span class="lifetime">'a</span>, T, U1, U6, RStride, CStride&gt;&gt;;
 
 <span class="doccomment">/// A column-major 2x1 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixView2x1)]
-</span><span class="kw">pub type </span>MatrixSlice2x1&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U2&gt; =
-    Matrix&lt;T, U2, U1, ViewStorage&lt;<span class="lifetime">&#39;a</span>, T, U2, U1, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSlice2x1&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U2&gt; =
+    Matrix&lt;T, U2, U1, ViewStorage&lt;<span class="lifetime">'a</span>, T, U2, U1, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major 2x3 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixView2x3)]
-</span><span class="kw">pub type </span>MatrixSlice2x3&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U2&gt; =
-    Matrix&lt;T, U2, U3, ViewStorage&lt;<span class="lifetime">&#39;a</span>, T, U2, U3, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSlice2x3&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U2&gt; =
+    Matrix&lt;T, U2, U3, ViewStorage&lt;<span class="lifetime">'a</span>, T, U2, U3, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major 2x4 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixView2x4)]
-</span><span class="kw">pub type </span>MatrixSlice2x4&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U2&gt; =
-    Matrix&lt;T, U2, U4, ViewStorage&lt;<span class="lifetime">&#39;a</span>, T, U2, U4, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSlice2x4&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U2&gt; =
+    Matrix&lt;T, U2, U4, ViewStorage&lt;<span class="lifetime">'a</span>, T, U2, U4, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major 2x5 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixView2x5)]
-</span><span class="kw">pub type </span>MatrixSlice2x5&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U2&gt; =
-    Matrix&lt;T, U2, U5, ViewStorage&lt;<span class="lifetime">&#39;a</span>, T, U2, U5, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSlice2x5&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U2&gt; =
+    Matrix&lt;T, U2, U5, ViewStorage&lt;<span class="lifetime">'a</span>, T, U2, U5, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major 2x6 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixView2x6)]
-</span><span class="kw">pub type </span>MatrixSlice2x6&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U2&gt; =
-    Matrix&lt;T, U2, U6, ViewStorage&lt;<span class="lifetime">&#39;a</span>, T, U2, U6, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSlice2x6&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U2&gt; =
+    Matrix&lt;T, U2, U6, ViewStorage&lt;<span class="lifetime">'a</span>, T, U2, U6, RStride, CStride&gt;&gt;;
 
 <span class="doccomment">/// A column-major 3x1 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixView3x1)]
-</span><span class="kw">pub type </span>MatrixSlice3x1&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U3&gt; =
-    Matrix&lt;T, U3, U1, ViewStorage&lt;<span class="lifetime">&#39;a</span>, T, U3, U1, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSlice3x1&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U3&gt; =
+    Matrix&lt;T, U3, U1, ViewStorage&lt;<span class="lifetime">'a</span>, T, U3, U1, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major 3x2 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixView3x2)]
-</span><span class="kw">pub type </span>MatrixSlice3x2&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U3&gt; =
-    Matrix&lt;T, U3, U2, ViewStorage&lt;<span class="lifetime">&#39;a</span>, T, U3, U2, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSlice3x2&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U3&gt; =
+    Matrix&lt;T, U3, U2, ViewStorage&lt;<span class="lifetime">'a</span>, T, U3, U2, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major 3x4 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixView3x4)]
-</span><span class="kw">pub type </span>MatrixSlice3x4&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U3&gt; =
-    Matrix&lt;T, U3, U4, ViewStorage&lt;<span class="lifetime">&#39;a</span>, T, U3, U4, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSlice3x4&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U3&gt; =
+    Matrix&lt;T, U3, U4, ViewStorage&lt;<span class="lifetime">'a</span>, T, U3, U4, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major 3x5 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixView3x5)]
-</span><span class="kw">pub type </span>MatrixSlice3x5&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U3&gt; =
-    Matrix&lt;T, U3, U5, ViewStorage&lt;<span class="lifetime">&#39;a</span>, T, U3, U5, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSlice3x5&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U3&gt; =
+    Matrix&lt;T, U3, U5, ViewStorage&lt;<span class="lifetime">'a</span>, T, U3, U5, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major 3x6 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixView3x6)]
-</span><span class="kw">pub type </span>MatrixSlice3x6&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U3&gt; =
-    Matrix&lt;T, U3, U6, ViewStorage&lt;<span class="lifetime">&#39;a</span>, T, U3, U6, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSlice3x6&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U3&gt; =
+    Matrix&lt;T, U3, U6, ViewStorage&lt;<span class="lifetime">'a</span>, T, U3, U6, RStride, CStride&gt;&gt;;
 
 <span class="doccomment">/// A column-major 4x1 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixView4x1)]
-</span><span class="kw">pub type </span>MatrixSlice4x1&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U4&gt; =
-    Matrix&lt;T, U4, U1, ViewStorage&lt;<span class="lifetime">&#39;a</span>, T, U4, U1, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSlice4x1&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U4&gt; =
+    Matrix&lt;T, U4, U1, ViewStorage&lt;<span class="lifetime">'a</span>, T, U4, U1, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major 4x2 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixView4x2)]
-</span><span class="kw">pub type </span>MatrixSlice4x2&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U4&gt; =
-    Matrix&lt;T, U4, U2, ViewStorage&lt;<span class="lifetime">&#39;a</span>, T, U4, U2, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSlice4x2&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U4&gt; =
+    Matrix&lt;T, U4, U2, ViewStorage&lt;<span class="lifetime">'a</span>, T, U4, U2, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major 4x3 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixView4x3)]
-</span><span class="kw">pub type </span>MatrixSlice4x3&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U4&gt; =
-    Matrix&lt;T, U4, U3, ViewStorage&lt;<span class="lifetime">&#39;a</span>, T, U4, U3, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSlice4x3&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U4&gt; =
+    Matrix&lt;T, U4, U3, ViewStorage&lt;<span class="lifetime">'a</span>, T, U4, U3, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major 4x5 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixView4x5)]
-</span><span class="kw">pub type </span>MatrixSlice4x5&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U4&gt; =
-    Matrix&lt;T, U4, U5, ViewStorage&lt;<span class="lifetime">&#39;a</span>, T, U4, U5, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSlice4x5&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U4&gt; =
+    Matrix&lt;T, U4, U5, ViewStorage&lt;<span class="lifetime">'a</span>, T, U4, U5, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major 4x6 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixView4x6)]
-</span><span class="kw">pub type </span>MatrixSlice4x6&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U4&gt; =
-    Matrix&lt;T, U4, U6, ViewStorage&lt;<span class="lifetime">&#39;a</span>, T, U4, U6, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSlice4x6&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U4&gt; =
+    Matrix&lt;T, U4, U6, ViewStorage&lt;<span class="lifetime">'a</span>, T, U4, U6, RStride, CStride&gt;&gt;;
 
 <span class="doccomment">/// A column-major 5x1 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixView5x1)]
-</span><span class="kw">pub type </span>MatrixSlice5x1&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U5&gt; =
-    Matrix&lt;T, U5, U1, ViewStorage&lt;<span class="lifetime">&#39;a</span>, T, U5, U1, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSlice5x1&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U5&gt; =
+    Matrix&lt;T, U5, U1, ViewStorage&lt;<span class="lifetime">'a</span>, T, U5, U1, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major 5x2 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixView5x2)]
-</span><span class="kw">pub type </span>MatrixSlice5x2&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U5&gt; =
-    Matrix&lt;T, U5, U2, ViewStorage&lt;<span class="lifetime">&#39;a</span>, T, U5, U2, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSlice5x2&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U5&gt; =
+    Matrix&lt;T, U5, U2, ViewStorage&lt;<span class="lifetime">'a</span>, T, U5, U2, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major 5x3 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixView5x3)]
-</span><span class="kw">pub type </span>MatrixSlice5x3&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U5&gt; =
-    Matrix&lt;T, U5, U3, ViewStorage&lt;<span class="lifetime">&#39;a</span>, T, U5, U3, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSlice5x3&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U5&gt; =
+    Matrix&lt;T, U5, U3, ViewStorage&lt;<span class="lifetime">'a</span>, T, U5, U3, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major 5x4 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixView5x4)]
-</span><span class="kw">pub type </span>MatrixSlice5x4&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U5&gt; =
-    Matrix&lt;T, U5, U4, ViewStorage&lt;<span class="lifetime">&#39;a</span>, T, U5, U4, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSlice5x4&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U5&gt; =
+    Matrix&lt;T, U5, U4, ViewStorage&lt;<span class="lifetime">'a</span>, T, U5, U4, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major 5x6 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixView5x6)]
-</span><span class="kw">pub type </span>MatrixSlice5x6&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U5&gt; =
-    Matrix&lt;T, U5, U6, ViewStorage&lt;<span class="lifetime">&#39;a</span>, T, U5, U6, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSlice5x6&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U5&gt; =
+    Matrix&lt;T, U5, U6, ViewStorage&lt;<span class="lifetime">'a</span>, T, U5, U6, RStride, CStride&gt;&gt;;
 
 <span class="doccomment">/// A column-major 6x1 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixView6x1)]
-</span><span class="kw">pub type </span>MatrixSlice6x1&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U6&gt; =
-    Matrix&lt;T, U6, U1, ViewStorage&lt;<span class="lifetime">&#39;a</span>, T, U6, U1, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSlice6x1&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U6&gt; =
+    Matrix&lt;T, U6, U1, ViewStorage&lt;<span class="lifetime">'a</span>, T, U6, U1, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major 6x2 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixView6x2)]
-</span><span class="kw">pub type </span>MatrixSlice6x2&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U6&gt; =
-    Matrix&lt;T, U6, U2, ViewStorage&lt;<span class="lifetime">&#39;a</span>, T, U6, U2, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSlice6x2&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U6&gt; =
+    Matrix&lt;T, U6, U2, ViewStorage&lt;<span class="lifetime">'a</span>, T, U6, U2, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major 6x3 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixView6x3)]
-</span><span class="kw">pub type </span>MatrixSlice6x3&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U6&gt; =
-    Matrix&lt;T, U6, U3, ViewStorage&lt;<span class="lifetime">&#39;a</span>, T, U6, U3, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSlice6x3&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U6&gt; =
+    Matrix&lt;T, U6, U3, ViewStorage&lt;<span class="lifetime">'a</span>, T, U6, U3, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major 6x4 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixView6x4)]
-</span><span class="kw">pub type </span>MatrixSlice6x4&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U6&gt; =
-    Matrix&lt;T, U6, U4, ViewStorage&lt;<span class="lifetime">&#39;a</span>, T, U6, U4, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSlice6x4&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U6&gt; =
+    Matrix&lt;T, U6, U4, ViewStorage&lt;<span class="lifetime">'a</span>, T, U6, U4, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major 6x5 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixView6x5)]
-</span><span class="kw">pub type </span>MatrixSlice6x5&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U6&gt; =
-    Matrix&lt;T, U6, U5, ViewStorage&lt;<span class="lifetime">&#39;a</span>, T, U6, U5, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSlice6x5&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U6&gt; =
+    Matrix&lt;T, U6, U5, ViewStorage&lt;<span class="lifetime">'a</span>, T, U6, U5, RStride, CStride&gt;&gt;;
 
 <span class="doccomment">/// A column-major matrix slice with 1 row and a number of columns chosen at runtime.
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixView1xX)]
-</span><span class="kw">pub type </span>MatrixSlice1xX&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U1&gt; =
-    Matrix&lt;T, U1, Dyn, ViewStorage&lt;<span class="lifetime">&#39;a</span>, T, U1, Dyn, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSlice1xX&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U1&gt; =
+    Matrix&lt;T, U1, Dyn, ViewStorage&lt;<span class="lifetime">'a</span>, T, U1, Dyn, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major matrix slice with 2 rows and a number of columns chosen at runtime.
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixView2xX)]
-</span><span class="kw">pub type </span>MatrixSlice2xX&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U2&gt; =
-    Matrix&lt;T, U2, Dyn, ViewStorage&lt;<span class="lifetime">&#39;a</span>, T, U2, Dyn, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSlice2xX&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U2&gt; =
+    Matrix&lt;T, U2, Dyn, ViewStorage&lt;<span class="lifetime">'a</span>, T, U2, Dyn, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major matrix slice with 3 rows and a number of columns chosen at runtime.
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixView3xX)]
-</span><span class="kw">pub type </span>MatrixSlice3xX&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U3&gt; =
-    Matrix&lt;T, U3, Dyn, ViewStorage&lt;<span class="lifetime">&#39;a</span>, T, U3, Dyn, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSlice3xX&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U3&gt; =
+    Matrix&lt;T, U3, Dyn, ViewStorage&lt;<span class="lifetime">'a</span>, T, U3, Dyn, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major matrix slice with 4 rows and a number of columns chosen at runtime.
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixView4xX)]
-</span><span class="kw">pub type </span>MatrixSlice4xX&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U4&gt; =
-    Matrix&lt;T, U4, Dyn, ViewStorage&lt;<span class="lifetime">&#39;a</span>, T, U4, Dyn, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSlice4xX&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U4&gt; =
+    Matrix&lt;T, U4, Dyn, ViewStorage&lt;<span class="lifetime">'a</span>, T, U4, Dyn, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major matrix slice with 5 rows and a number of columns chosen at runtime.
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixView5xX)]
-</span><span class="kw">pub type </span>MatrixSlice5xX&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U5&gt; =
-    Matrix&lt;T, U5, Dyn, ViewStorage&lt;<span class="lifetime">&#39;a</span>, T, U5, Dyn, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSlice5xX&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U5&gt; =
+    Matrix&lt;T, U5, Dyn, ViewStorage&lt;<span class="lifetime">'a</span>, T, U5, Dyn, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major matrix slice with 6 rows and a number of columns chosen at runtime.
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixView6xX)]
-</span><span class="kw">pub type </span>MatrixSlice6xX&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U6&gt; =
-    Matrix&lt;T, U6, Dyn, ViewStorage&lt;<span class="lifetime">&#39;a</span>, T, U6, Dyn, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSlice6xX&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U6&gt; =
+    Matrix&lt;T, U6, Dyn, ViewStorage&lt;<span class="lifetime">'a</span>, T, U6, Dyn, RStride, CStride&gt;&gt;;
 
 <span class="doccomment">/// A column-major matrix slice with a number of rows chosen at runtime and 1 column.
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixViewXx1)]
-</span><span class="kw">pub type </span>MatrixSliceXx1&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = Dyn&gt; =
-    Matrix&lt;T, Dyn, U1, ViewStorage&lt;<span class="lifetime">&#39;a</span>, T, Dyn, U1, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSliceXx1&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = Dyn&gt; =
+    Matrix&lt;T, Dyn, U1, ViewStorage&lt;<span class="lifetime">'a</span>, T, Dyn, U1, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major matrix slice with a number of rows chosen at runtime and 2 columns.
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixViewXx2)]
-</span><span class="kw">pub type </span>MatrixSliceXx2&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = Dyn&gt; =
-    Matrix&lt;T, Dyn, U2, ViewStorage&lt;<span class="lifetime">&#39;a</span>, T, Dyn, U2, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSliceXx2&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = Dyn&gt; =
+    Matrix&lt;T, Dyn, U2, ViewStorage&lt;<span class="lifetime">'a</span>, T, Dyn, U2, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major matrix slice with a number of rows chosen at runtime and 3 columns.
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixViewXx3)]
-</span><span class="kw">pub type </span>MatrixSliceXx3&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = Dyn&gt; =
-    Matrix&lt;T, Dyn, U3, ViewStorage&lt;<span class="lifetime">&#39;a</span>, T, Dyn, U3, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSliceXx3&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = Dyn&gt; =
+    Matrix&lt;T, Dyn, U3, ViewStorage&lt;<span class="lifetime">'a</span>, T, Dyn, U3, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major matrix slice with a number of rows chosen at runtime and 4 columns.
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixViewXx4)]
-</span><span class="kw">pub type </span>MatrixSliceXx4&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = Dyn&gt; =
-    Matrix&lt;T, Dyn, U4, ViewStorage&lt;<span class="lifetime">&#39;a</span>, T, Dyn, U4, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSliceXx4&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = Dyn&gt; =
+    Matrix&lt;T, Dyn, U4, ViewStorage&lt;<span class="lifetime">'a</span>, T, Dyn, U4, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major matrix slice with a number of rows chosen at runtime and 5 columns.
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixViewXx5)]
-</span><span class="kw">pub type </span>MatrixSliceXx5&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = Dyn&gt; =
-    Matrix&lt;T, Dyn, U5, ViewStorage&lt;<span class="lifetime">&#39;a</span>, T, Dyn, U5, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSliceXx5&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = Dyn&gt; =
+    Matrix&lt;T, Dyn, U5, ViewStorage&lt;<span class="lifetime">'a</span>, T, Dyn, U5, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major matrix slice with a number of rows chosen at runtime and 6 columns.
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixViewXx6)]
-</span><span class="kw">pub type </span>MatrixSliceXx6&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = Dyn&gt; =
-    Matrix&lt;T, Dyn, U6, ViewStorage&lt;<span class="lifetime">&#39;a</span>, T, Dyn, U6, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSliceXx6&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = Dyn&gt; =
+    Matrix&lt;T, Dyn, U6, ViewStorage&lt;<span class="lifetime">'a</span>, T, Dyn, U6, RStride, CStride&gt;&gt;;
 
 <span class="doccomment">/// A column vector slice with dimensions known at compile-time.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(VectorView)]
-</span><span class="kw">pub type </span>VectorSlice&lt;<span class="lifetime">&#39;a</span>, T, D, RStride = U1, CStride = D&gt; =
-    Matrix&lt;T, D, U1, ViewStorage&lt;<span class="lifetime">&#39;a</span>, T, D, U1, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>VectorSlice&lt;<span class="lifetime">'a</span>, T, D, RStride = U1, CStride = D&gt; =
+    Matrix&lt;T, D, U1, ViewStorage&lt;<span class="lifetime">'a</span>, T, D, U1, RStride, CStride&gt;&gt;;
 
 <span class="doccomment">/// A column vector slice with dimensions known at compile-time.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(SVectorView)]
-</span><span class="kw">pub type </span>SVectorSlice&lt;<span class="lifetime">&#39;a</span>, T, <span class="kw">const </span>D: usize&gt; =
-    Matrix&lt;T, Const&lt;D&gt;, Const&lt;<span class="number">1</span>&gt;, ViewStorage&lt;<span class="lifetime">&#39;a</span>, T, Const&lt;D&gt;, Const&lt;<span class="number">1</span>&gt;, Const&lt;<span class="number">1</span>&gt;, Const&lt;D&gt;&gt;&gt;;
+</span><span class="kw">pub type </span>SVectorSlice&lt;<span class="lifetime">'a</span>, T, <span class="kw">const </span>D: usize&gt; =
+    Matrix&lt;T, Const&lt;D&gt;, Const&lt;<span class="number">1</span>&gt;, ViewStorage&lt;<span class="lifetime">'a</span>, T, Const&lt;D&gt;, Const&lt;<span class="number">1</span>&gt;, Const&lt;<span class="number">1</span>&gt;, Const&lt;D&gt;&gt;&gt;;
 
 <span class="doccomment">/// A column vector slice dynamic numbers of rows and columns.
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(DVectorView)]
-</span><span class="kw">pub type </span>DVectorSlice&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = Dyn&gt; =
-    Matrix&lt;T, Dyn, U1, ViewStorage&lt;<span class="lifetime">&#39;a</span>, T, Dyn, U1, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>DVectorSlice&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = Dyn&gt; =
+    Matrix&lt;T, Dyn, U1, ViewStorage&lt;<span class="lifetime">'a</span>, T, Dyn, U1, RStride, CStride&gt;&gt;;
 
 <span class="doccomment">/// A 1D column vector slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(VectorView1)]
-</span><span class="kw">pub type </span>VectorSlice1&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U1&gt; =
-    Matrix&lt;T, U1, U1, ViewStorage&lt;<span class="lifetime">&#39;a</span>, T, U1, U1, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>VectorSlice1&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U1&gt; =
+    Matrix&lt;T, U1, U1, ViewStorage&lt;<span class="lifetime">'a</span>, T, U1, U1, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A 2D column vector slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(VectorView2)]
-</span><span class="kw">pub type </span>VectorSlice2&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U2&gt; =
-    Matrix&lt;T, U2, U1, ViewStorage&lt;<span class="lifetime">&#39;a</span>, T, U2, U1, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>VectorSlice2&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U2&gt; =
+    Matrix&lt;T, U2, U1, ViewStorage&lt;<span class="lifetime">'a</span>, T, U2, U1, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A 3D column vector slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(VectorView3)]
-</span><span class="kw">pub type </span>VectorSlice3&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U3&gt; =
-    Matrix&lt;T, U3, U1, ViewStorage&lt;<span class="lifetime">&#39;a</span>, T, U3, U1, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>VectorSlice3&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U3&gt; =
+    Matrix&lt;T, U3, U1, ViewStorage&lt;<span class="lifetime">'a</span>, T, U3, U1, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A 4D column vector slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(VectorView4)]
-</span><span class="kw">pub type </span>VectorSlice4&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U4&gt; =
-    Matrix&lt;T, U4, U1, ViewStorage&lt;<span class="lifetime">&#39;a</span>, T, U4, U1, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>VectorSlice4&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U4&gt; =
+    Matrix&lt;T, U4, U1, ViewStorage&lt;<span class="lifetime">'a</span>, T, U4, U1, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A 5D column vector slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(VectorView5)]
-</span><span class="kw">pub type </span>VectorSlice5&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U5&gt; =
-    Matrix&lt;T, U5, U1, ViewStorage&lt;<span class="lifetime">&#39;a</span>, T, U5, U1, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>VectorSlice5&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U5&gt; =
+    Matrix&lt;T, U5, U1, ViewStorage&lt;<span class="lifetime">'a</span>, T, U5, U1, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A 6D column vector slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(VectorView6)]
-</span><span class="kw">pub type </span>VectorSlice6&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U6&gt; =
-    Matrix&lt;T, U6, U1, ViewStorage&lt;<span class="lifetime">&#39;a</span>, T, U6, U1, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>VectorSlice6&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U6&gt; =
+    Matrix&lt;T, U6, U1, ViewStorage&lt;<span class="lifetime">'a</span>, T, U6, U1, RStride, CStride&gt;&gt;;
 
 <span class="comment">/*
  *
@@ -1085,359 +1086,359 @@
 </span><span class="doccomment">/// A column-major matrix slice with `R` rows and `C` columns.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
-</span><span class="attr">#[deprecated = <span class="string">&quot;Use MatrixViewMut instead, which has an identical definition.&quot;</span>]
-</span><span class="kw">pub type </span>MatrixSliceMutMN&lt;<span class="lifetime">&#39;a</span>, T, R, C, RStride = U1, CStride = R&gt; =
-    Matrix&lt;T, R, C, ViewStorageMut&lt;<span class="lifetime">&#39;a</span>, T, R, C, RStride, CStride&gt;&gt;;
+</span><span class="attr">#[deprecated = <span class="string">"Use MatrixViewMut instead, which has an identical definition."</span>]
+</span><span class="kw">pub type </span>MatrixSliceMutMN&lt;<span class="lifetime">'a</span>, T, R, C, RStride = U1, CStride = R&gt; =
+    Matrix&lt;T, R, C, ViewStorageMut&lt;<span class="lifetime">'a</span>, T, R, C, RStride, CStride&gt;&gt;;
 
 <span class="doccomment">/// A column-major matrix slice with `D` rows and columns.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
-</span><span class="attr">#[deprecated = <span class="string">&quot;Use MatrixViewMut instead.&quot;</span>]
-</span><span class="kw">pub type </span>MatrixSliceMutN&lt;<span class="lifetime">&#39;a</span>, T, D, RStride = U1, CStride = D&gt; =
-    Matrix&lt;T, D, D, ViewStorageMut&lt;<span class="lifetime">&#39;a</span>, T, D, D, RStride, CStride&gt;&gt;;
+</span><span class="attr">#[deprecated = <span class="string">"Use MatrixViewMut instead."</span>]
+</span><span class="kw">pub type </span>MatrixSliceMutN&lt;<span class="lifetime">'a</span>, T, D, RStride = U1, CStride = D&gt; =
+    Matrix&lt;T, D, D, ViewStorageMut&lt;<span class="lifetime">'a</span>, T, D, D, RStride, CStride&gt;&gt;;
 
 <span class="doccomment">/// A column-major matrix slice with dimensions known at compile-time.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(SMatrixViewMut)]
-</span><span class="kw">pub type </span>SMatrixSliceMut&lt;<span class="lifetime">&#39;a</span>, T, <span class="kw">const </span>R: usize, <span class="kw">const </span>C: usize&gt; =
-    Matrix&lt;T, Const&lt;R&gt;, Const&lt;C&gt;, ViewStorageMut&lt;<span class="lifetime">&#39;a</span>, T, Const&lt;R&gt;, Const&lt;C&gt;, Const&lt;<span class="number">1</span>&gt;, Const&lt;R&gt;&gt;&gt;;
+</span><span class="kw">pub type </span>SMatrixSliceMut&lt;<span class="lifetime">'a</span>, T, <span class="kw">const </span>R: usize, <span class="kw">const </span>C: usize&gt; =
+    Matrix&lt;T, Const&lt;R&gt;, Const&lt;C&gt;, ViewStorageMut&lt;<span class="lifetime">'a</span>, T, Const&lt;R&gt;, Const&lt;C&gt;, Const&lt;<span class="number">1</span>&gt;, Const&lt;R&gt;&gt;&gt;;
 
 <span class="doccomment">/// A column-major matrix slice dynamic numbers of rows and columns.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(DMatrixViewMut)]
-</span><span class="kw">pub type </span>DMatrixSliceMut&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = Dyn&gt; =
-    Matrix&lt;T, Dyn, Dyn, ViewStorageMut&lt;<span class="lifetime">&#39;a</span>, T, Dyn, Dyn, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>DMatrixSliceMut&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = Dyn&gt; =
+    Matrix&lt;T, Dyn, Dyn, ViewStorageMut&lt;<span class="lifetime">'a</span>, T, Dyn, Dyn, RStride, CStride&gt;&gt;;
 
 <span class="doccomment">/// A column-major 1x1 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixViewMut1)]
-</span><span class="kw">pub type </span>MatrixSliceMut1&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U1&gt; =
-    Matrix&lt;T, U1, U1, ViewStorageMut&lt;<span class="lifetime">&#39;a</span>, T, U1, U1, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSliceMut1&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U1&gt; =
+    Matrix&lt;T, U1, U1, ViewStorageMut&lt;<span class="lifetime">'a</span>, T, U1, U1, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major 2x2 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixViewMut2)]
-</span><span class="kw">pub type </span>MatrixSliceMut2&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U2&gt; =
-    Matrix&lt;T, U2, U2, ViewStorageMut&lt;<span class="lifetime">&#39;a</span>, T, U2, U2, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSliceMut2&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U2&gt; =
+    Matrix&lt;T, U2, U2, ViewStorageMut&lt;<span class="lifetime">'a</span>, T, U2, U2, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major 3x3 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixViewMut3)]
-</span><span class="kw">pub type </span>MatrixSliceMut3&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U3&gt; =
-    Matrix&lt;T, U3, U3, ViewStorageMut&lt;<span class="lifetime">&#39;a</span>, T, U3, U3, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSliceMut3&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U3&gt; =
+    Matrix&lt;T, U3, U3, ViewStorageMut&lt;<span class="lifetime">'a</span>, T, U3, U3, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major 4x4 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixViewMut4)]
-</span><span class="kw">pub type </span>MatrixSliceMut4&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U4&gt; =
-    Matrix&lt;T, U4, U4, ViewStorageMut&lt;<span class="lifetime">&#39;a</span>, T, U4, U4, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSliceMut4&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U4&gt; =
+    Matrix&lt;T, U4, U4, ViewStorageMut&lt;<span class="lifetime">'a</span>, T, U4, U4, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major 5x5 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixViewMut5)]
-</span><span class="kw">pub type </span>MatrixSliceMut5&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U5&gt; =
-    Matrix&lt;T, U5, U5, ViewStorageMut&lt;<span class="lifetime">&#39;a</span>, T, U5, U5, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSliceMut5&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U5&gt; =
+    Matrix&lt;T, U5, U5, ViewStorageMut&lt;<span class="lifetime">'a</span>, T, U5, U5, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major 6x6 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixViewMut6)]
-</span><span class="kw">pub type </span>MatrixSliceMut6&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U6&gt; =
-    Matrix&lt;T, U6, U6, ViewStorageMut&lt;<span class="lifetime">&#39;a</span>, T, U6, U6, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSliceMut6&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U6&gt; =
+    Matrix&lt;T, U6, U6, ViewStorageMut&lt;<span class="lifetime">'a</span>, T, U6, U6, RStride, CStride&gt;&gt;;
 
 <span class="doccomment">/// A column-major 1x2 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixViewMut1x2)]
-</span><span class="kw">pub type </span>MatrixSliceMut1x2&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U1&gt; =
-    Matrix&lt;T, U1, U2, ViewStorageMut&lt;<span class="lifetime">&#39;a</span>, T, U1, U2, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSliceMut1x2&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U1&gt; =
+    Matrix&lt;T, U1, U2, ViewStorageMut&lt;<span class="lifetime">'a</span>, T, U1, U2, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major 1x3 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixViewMut1x3)]
-</span><span class="kw">pub type </span>MatrixSliceMut1x3&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U1&gt; =
-    Matrix&lt;T, U1, U3, ViewStorageMut&lt;<span class="lifetime">&#39;a</span>, T, U1, U3, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSliceMut1x3&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U1&gt; =
+    Matrix&lt;T, U1, U3, ViewStorageMut&lt;<span class="lifetime">'a</span>, T, U1, U3, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major 1x4 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixViewMut1x4)]
-</span><span class="kw">pub type </span>MatrixSliceMut1x4&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U1&gt; =
-    Matrix&lt;T, U1, U4, ViewStorageMut&lt;<span class="lifetime">&#39;a</span>, T, U1, U4, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSliceMut1x4&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U1&gt; =
+    Matrix&lt;T, U1, U4, ViewStorageMut&lt;<span class="lifetime">'a</span>, T, U1, U4, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major 1x5 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixViewMut1x5)]
-</span><span class="kw">pub type </span>MatrixSliceMut1x5&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U1&gt; =
-    Matrix&lt;T, U1, U5, ViewStorageMut&lt;<span class="lifetime">&#39;a</span>, T, U1, U5, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSliceMut1x5&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U1&gt; =
+    Matrix&lt;T, U1, U5, ViewStorageMut&lt;<span class="lifetime">'a</span>, T, U1, U5, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major 1x6 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixViewMut1x6)]
-</span><span class="kw">pub type </span>MatrixSliceMut1x6&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U1&gt; =
-    Matrix&lt;T, U1, U6, ViewStorageMut&lt;<span class="lifetime">&#39;a</span>, T, U1, U6, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSliceMut1x6&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U1&gt; =
+    Matrix&lt;T, U1, U6, ViewStorageMut&lt;<span class="lifetime">'a</span>, T, U1, U6, RStride, CStride&gt;&gt;;
 
 <span class="doccomment">/// A column-major 2x1 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixViewMut2x1)]
-</span><span class="kw">pub type </span>MatrixSliceMut2x1&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U2&gt; =
-    Matrix&lt;T, U2, U1, ViewStorageMut&lt;<span class="lifetime">&#39;a</span>, T, U2, U1, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSliceMut2x1&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U2&gt; =
+    Matrix&lt;T, U2, U1, ViewStorageMut&lt;<span class="lifetime">'a</span>, T, U2, U1, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major 2x3 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixViewMut2x3)]
-</span><span class="kw">pub type </span>MatrixSliceMut2x3&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U2&gt; =
-    Matrix&lt;T, U2, U3, ViewStorageMut&lt;<span class="lifetime">&#39;a</span>, T, U2, U3, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSliceMut2x3&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U2&gt; =
+    Matrix&lt;T, U2, U3, ViewStorageMut&lt;<span class="lifetime">'a</span>, T, U2, U3, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major 2x4 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixViewMut2x4)]
-</span><span class="kw">pub type </span>MatrixSliceMut2x4&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U2&gt; =
-    Matrix&lt;T, U2, U4, ViewStorageMut&lt;<span class="lifetime">&#39;a</span>, T, U2, U4, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSliceMut2x4&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U2&gt; =
+    Matrix&lt;T, U2, U4, ViewStorageMut&lt;<span class="lifetime">'a</span>, T, U2, U4, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major 2x5 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixViewMut2x5)]
-</span><span class="kw">pub type </span>MatrixSliceMut2x5&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U2&gt; =
-    Matrix&lt;T, U2, U5, ViewStorageMut&lt;<span class="lifetime">&#39;a</span>, T, U2, U5, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSliceMut2x5&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U2&gt; =
+    Matrix&lt;T, U2, U5, ViewStorageMut&lt;<span class="lifetime">'a</span>, T, U2, U5, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major 2x6 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixViewMut2x6)]
-</span><span class="kw">pub type </span>MatrixSliceMut2x6&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U2&gt; =
-    Matrix&lt;T, U2, U6, ViewStorageMut&lt;<span class="lifetime">&#39;a</span>, T, U2, U6, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSliceMut2x6&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U2&gt; =
+    Matrix&lt;T, U2, U6, ViewStorageMut&lt;<span class="lifetime">'a</span>, T, U2, U6, RStride, CStride&gt;&gt;;
 
 <span class="doccomment">/// A column-major 3x1 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixViewMut3x1)]
-</span><span class="kw">pub type </span>MatrixSliceMut3x1&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U3&gt; =
-    Matrix&lt;T, U3, U1, ViewStorageMut&lt;<span class="lifetime">&#39;a</span>, T, U3, U1, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSliceMut3x1&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U3&gt; =
+    Matrix&lt;T, U3, U1, ViewStorageMut&lt;<span class="lifetime">'a</span>, T, U3, U1, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major 3x2 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixViewMut3x2)]
-</span><span class="kw">pub type </span>MatrixSliceMut3x2&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U3&gt; =
-    Matrix&lt;T, U3, U2, ViewStorageMut&lt;<span class="lifetime">&#39;a</span>, T, U3, U2, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSliceMut3x2&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U3&gt; =
+    Matrix&lt;T, U3, U2, ViewStorageMut&lt;<span class="lifetime">'a</span>, T, U3, U2, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major 3x4 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixViewMut3x4)]
-</span><span class="kw">pub type </span>MatrixSliceMut3x4&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U3&gt; =
-    Matrix&lt;T, U3, U4, ViewStorageMut&lt;<span class="lifetime">&#39;a</span>, T, U3, U4, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSliceMut3x4&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U3&gt; =
+    Matrix&lt;T, U3, U4, ViewStorageMut&lt;<span class="lifetime">'a</span>, T, U3, U4, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major 3x5 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixViewMut3x5)]
-</span><span class="kw">pub type </span>MatrixSliceMut3x5&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U3&gt; =
-    Matrix&lt;T, U3, U5, ViewStorageMut&lt;<span class="lifetime">&#39;a</span>, T, U3, U5, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSliceMut3x5&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U3&gt; =
+    Matrix&lt;T, U3, U5, ViewStorageMut&lt;<span class="lifetime">'a</span>, T, U3, U5, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major 3x6 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixViewMut3x6)]
-</span><span class="kw">pub type </span>MatrixSliceMut3x6&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U3&gt; =
-    Matrix&lt;T, U3, U6, ViewStorageMut&lt;<span class="lifetime">&#39;a</span>, T, U3, U6, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSliceMut3x6&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U3&gt; =
+    Matrix&lt;T, U3, U6, ViewStorageMut&lt;<span class="lifetime">'a</span>, T, U3, U6, RStride, CStride&gt;&gt;;
 
 <span class="doccomment">/// A column-major 4x1 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixViewMut4x1)]
-</span><span class="kw">pub type </span>MatrixSliceMut4x1&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U4&gt; =
-    Matrix&lt;T, U4, U1, ViewStorageMut&lt;<span class="lifetime">&#39;a</span>, T, U4, U1, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSliceMut4x1&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U4&gt; =
+    Matrix&lt;T, U4, U1, ViewStorageMut&lt;<span class="lifetime">'a</span>, T, U4, U1, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major 4x2 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixViewMut4x2)]
-</span><span class="kw">pub type </span>MatrixSliceMut4x2&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U4&gt; =
-    Matrix&lt;T, U4, U2, ViewStorageMut&lt;<span class="lifetime">&#39;a</span>, T, U4, U2, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSliceMut4x2&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U4&gt; =
+    Matrix&lt;T, U4, U2, ViewStorageMut&lt;<span class="lifetime">'a</span>, T, U4, U2, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major 4x3 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixViewMut4x3)]
-</span><span class="kw">pub type </span>MatrixSliceMut4x3&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U4&gt; =
-    Matrix&lt;T, U4, U3, ViewStorageMut&lt;<span class="lifetime">&#39;a</span>, T, U4, U3, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSliceMut4x3&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U4&gt; =
+    Matrix&lt;T, U4, U3, ViewStorageMut&lt;<span class="lifetime">'a</span>, T, U4, U3, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major 4x5 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixViewMut4x5)]
-</span><span class="kw">pub type </span>MatrixSliceMut4x5&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U4&gt; =
-    Matrix&lt;T, U4, U5, ViewStorageMut&lt;<span class="lifetime">&#39;a</span>, T, U4, U5, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSliceMut4x5&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U4&gt; =
+    Matrix&lt;T, U4, U5, ViewStorageMut&lt;<span class="lifetime">'a</span>, T, U4, U5, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major 4x6 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixViewMut4x6)]
-</span><span class="kw">pub type </span>MatrixSliceMut4x6&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U4&gt; =
-    Matrix&lt;T, U4, U6, ViewStorageMut&lt;<span class="lifetime">&#39;a</span>, T, U4, U6, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSliceMut4x6&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U4&gt; =
+    Matrix&lt;T, U4, U6, ViewStorageMut&lt;<span class="lifetime">'a</span>, T, U4, U6, RStride, CStride&gt;&gt;;
 
 <span class="doccomment">/// A column-major 5x1 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixViewMut5x1)]
-</span><span class="kw">pub type </span>MatrixSliceMut5x1&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U5&gt; =
-    Matrix&lt;T, U5, U1, ViewStorageMut&lt;<span class="lifetime">&#39;a</span>, T, U5, U1, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSliceMut5x1&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U5&gt; =
+    Matrix&lt;T, U5, U1, ViewStorageMut&lt;<span class="lifetime">'a</span>, T, U5, U1, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major 5x2 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixViewMut5x2)]
-</span><span class="kw">pub type </span>MatrixSliceMut5x2&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U5&gt; =
-    Matrix&lt;T, U5, U2, ViewStorageMut&lt;<span class="lifetime">&#39;a</span>, T, U5, U2, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSliceMut5x2&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U5&gt; =
+    Matrix&lt;T, U5, U2, ViewStorageMut&lt;<span class="lifetime">'a</span>, T, U5, U2, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major 5x3 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixViewMut5x3)]
-</span><span class="kw">pub type </span>MatrixSliceMut5x3&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U5&gt; =
-    Matrix&lt;T, U5, U3, ViewStorageMut&lt;<span class="lifetime">&#39;a</span>, T, U5, U3, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSliceMut5x3&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U5&gt; =
+    Matrix&lt;T, U5, U3, ViewStorageMut&lt;<span class="lifetime">'a</span>, T, U5, U3, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major 5x4 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixViewMut5x4)]
-</span><span class="kw">pub type </span>MatrixSliceMut5x4&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U5&gt; =
-    Matrix&lt;T, U5, U4, ViewStorageMut&lt;<span class="lifetime">&#39;a</span>, T, U5, U4, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSliceMut5x4&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U5&gt; =
+    Matrix&lt;T, U5, U4, ViewStorageMut&lt;<span class="lifetime">'a</span>, T, U5, U4, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major 5x6 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixViewMut5x6)]
-</span><span class="kw">pub type </span>MatrixSliceMut5x6&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U5&gt; =
-    Matrix&lt;T, U5, U6, ViewStorageMut&lt;<span class="lifetime">&#39;a</span>, T, U5, U6, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSliceMut5x6&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U5&gt; =
+    Matrix&lt;T, U5, U6, ViewStorageMut&lt;<span class="lifetime">'a</span>, T, U5, U6, RStride, CStride&gt;&gt;;
 
 <span class="doccomment">/// A column-major 6x1 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixViewMut6x1)]
-</span><span class="kw">pub type </span>MatrixSliceMut6x1&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U6&gt; =
-    Matrix&lt;T, U6, U1, ViewStorageMut&lt;<span class="lifetime">&#39;a</span>, T, U6, U1, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSliceMut6x1&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U6&gt; =
+    Matrix&lt;T, U6, U1, ViewStorageMut&lt;<span class="lifetime">'a</span>, T, U6, U1, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major 6x2 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixViewMut6x2)]
-</span><span class="kw">pub type </span>MatrixSliceMut6x2&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U6&gt; =
-    Matrix&lt;T, U6, U2, ViewStorageMut&lt;<span class="lifetime">&#39;a</span>, T, U6, U2, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSliceMut6x2&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U6&gt; =
+    Matrix&lt;T, U6, U2, ViewStorageMut&lt;<span class="lifetime">'a</span>, T, U6, U2, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major 6x3 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixViewMut6x3)]
-</span><span class="kw">pub type </span>MatrixSliceMut6x3&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U6&gt; =
-    Matrix&lt;T, U6, U3, ViewStorageMut&lt;<span class="lifetime">&#39;a</span>, T, U6, U3, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSliceMut6x3&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U6&gt; =
+    Matrix&lt;T, U6, U3, ViewStorageMut&lt;<span class="lifetime">'a</span>, T, U6, U3, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major 6x4 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixViewMut6x4)]
-</span><span class="kw">pub type </span>MatrixSliceMut6x4&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U6&gt; =
-    Matrix&lt;T, U6, U4, ViewStorageMut&lt;<span class="lifetime">&#39;a</span>, T, U6, U4, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSliceMut6x4&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U6&gt; =
+    Matrix&lt;T, U6, U4, ViewStorageMut&lt;<span class="lifetime">'a</span>, T, U6, U4, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major 6x5 matrix slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixViewMut6x5)]
-</span><span class="kw">pub type </span>MatrixSliceMut6x5&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U6&gt; =
-    Matrix&lt;T, U6, U5, ViewStorageMut&lt;<span class="lifetime">&#39;a</span>, T, U6, U5, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSliceMut6x5&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U6&gt; =
+    Matrix&lt;T, U6, U5, ViewStorageMut&lt;<span class="lifetime">'a</span>, T, U6, U5, RStride, CStride&gt;&gt;;
 
 <span class="doccomment">/// A column-major matrix slice with 1 row and a number of columns chosen at runtime.
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixViewMut1xX)]
-</span><span class="kw">pub type </span>MatrixSliceMut1xX&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U1&gt; =
-    Matrix&lt;T, U1, Dyn, ViewStorageMut&lt;<span class="lifetime">&#39;a</span>, T, U1, Dyn, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSliceMut1xX&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U1&gt; =
+    Matrix&lt;T, U1, Dyn, ViewStorageMut&lt;<span class="lifetime">'a</span>, T, U1, Dyn, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major matrix slice with 2 rows and a number of columns chosen at runtime.
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixViewMut2xX)]
-</span><span class="kw">pub type </span>MatrixSliceMut2xX&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U2&gt; =
-    Matrix&lt;T, U2, Dyn, ViewStorageMut&lt;<span class="lifetime">&#39;a</span>, T, U2, Dyn, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSliceMut2xX&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U2&gt; =
+    Matrix&lt;T, U2, Dyn, ViewStorageMut&lt;<span class="lifetime">'a</span>, T, U2, Dyn, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major matrix slice with 3 rows and a number of columns chosen at runtime.
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixViewMut3xX)]
-</span><span class="kw">pub type </span>MatrixSliceMut3xX&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U3&gt; =
-    Matrix&lt;T, U3, Dyn, ViewStorageMut&lt;<span class="lifetime">&#39;a</span>, T, U3, Dyn, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSliceMut3xX&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U3&gt; =
+    Matrix&lt;T, U3, Dyn, ViewStorageMut&lt;<span class="lifetime">'a</span>, T, U3, Dyn, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major matrix slice with 4 rows and a number of columns chosen at runtime.
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixViewMut4xX)]
-</span><span class="kw">pub type </span>MatrixSliceMut4xX&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U4&gt; =
-    Matrix&lt;T, U4, Dyn, ViewStorageMut&lt;<span class="lifetime">&#39;a</span>, T, U4, Dyn, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSliceMut4xX&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U4&gt; =
+    Matrix&lt;T, U4, Dyn, ViewStorageMut&lt;<span class="lifetime">'a</span>, T, U4, Dyn, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major matrix slice with 5 rows and a number of columns chosen at runtime.
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixViewMut5xX)]
-</span><span class="kw">pub type </span>MatrixSliceMut5xX&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U5&gt; =
-    Matrix&lt;T, U5, Dyn, ViewStorageMut&lt;<span class="lifetime">&#39;a</span>, T, U5, Dyn, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSliceMut5xX&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U5&gt; =
+    Matrix&lt;T, U5, Dyn, ViewStorageMut&lt;<span class="lifetime">'a</span>, T, U5, Dyn, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major matrix slice with 6 rows and a number of columns chosen at runtime.
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixViewMut6xX)]
-</span><span class="kw">pub type </span>MatrixSliceMut6xX&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U6&gt; =
-    Matrix&lt;T, U6, Dyn, ViewStorageMut&lt;<span class="lifetime">&#39;a</span>, T, U6, Dyn, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSliceMut6xX&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U6&gt; =
+    Matrix&lt;T, U6, Dyn, ViewStorageMut&lt;<span class="lifetime">'a</span>, T, U6, Dyn, RStride, CStride&gt;&gt;;
 
 <span class="doccomment">/// A column-major matrix slice with a number of rows chosen at runtime and 1 column.
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixViewMutXx1)]
-</span><span class="kw">pub type </span>MatrixSliceMutXx1&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = Dyn&gt; =
-    Matrix&lt;T, Dyn, U1, ViewStorageMut&lt;<span class="lifetime">&#39;a</span>, T, Dyn, U1, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSliceMutXx1&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = Dyn&gt; =
+    Matrix&lt;T, Dyn, U1, ViewStorageMut&lt;<span class="lifetime">'a</span>, T, Dyn, U1, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major matrix slice with a number of rows chosen at runtime and 2 columns.
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixViewMutXx2)]
-</span><span class="kw">pub type </span>MatrixSliceMutXx2&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = Dyn&gt; =
-    Matrix&lt;T, Dyn, U2, ViewStorageMut&lt;<span class="lifetime">&#39;a</span>, T, Dyn, U2, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSliceMutXx2&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = Dyn&gt; =
+    Matrix&lt;T, Dyn, U2, ViewStorageMut&lt;<span class="lifetime">'a</span>, T, Dyn, U2, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major matrix slice with a number of rows chosen at runtime and 3 columns.
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixViewMutXx3)]
-</span><span class="kw">pub type </span>MatrixSliceMutXx3&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = Dyn&gt; =
-    Matrix&lt;T, Dyn, U3, ViewStorageMut&lt;<span class="lifetime">&#39;a</span>, T, Dyn, U3, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSliceMutXx3&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = Dyn&gt; =
+    Matrix&lt;T, Dyn, U3, ViewStorageMut&lt;<span class="lifetime">'a</span>, T, Dyn, U3, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major matrix slice with a number of rows chosen at runtime and 4 columns.
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixViewMutXx4)]
-</span><span class="kw">pub type </span>MatrixSliceMutXx4&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = Dyn&gt; =
-    Matrix&lt;T, Dyn, U4, ViewStorageMut&lt;<span class="lifetime">&#39;a</span>, T, Dyn, U4, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSliceMutXx4&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = Dyn&gt; =
+    Matrix&lt;T, Dyn, U4, ViewStorageMut&lt;<span class="lifetime">'a</span>, T, Dyn, U4, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major matrix slice with a number of rows chosen at runtime and 5 columns.
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixViewMutXx5)]
-</span><span class="kw">pub type </span>MatrixSliceMutXx5&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = Dyn&gt; =
-    Matrix&lt;T, Dyn, U5, ViewStorageMut&lt;<span class="lifetime">&#39;a</span>, T, Dyn, U5, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSliceMutXx5&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = Dyn&gt; =
+    Matrix&lt;T, Dyn, U5, ViewStorageMut&lt;<span class="lifetime">'a</span>, T, Dyn, U5, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A column-major matrix slice with a number of rows chosen at runtime and 6 columns.
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(MatrixViewMutXx6)]
-</span><span class="kw">pub type </span>MatrixSliceMutXx6&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = Dyn&gt; =
-    Matrix&lt;T, Dyn, U6, ViewStorageMut&lt;<span class="lifetime">&#39;a</span>, T, Dyn, U6, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>MatrixSliceMutXx6&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = Dyn&gt; =
+    Matrix&lt;T, Dyn, U6, ViewStorageMut&lt;<span class="lifetime">'a</span>, T, Dyn, U6, RStride, CStride&gt;&gt;;
 
 <span class="doccomment">/// A column vector slice with dimensions known at compile-time.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(VectorViewMut)]
-</span><span class="kw">pub type </span>VectorSliceMut&lt;<span class="lifetime">&#39;a</span>, T, D, RStride = U1, CStride = D&gt; =
-    Matrix&lt;T, D, U1, ViewStorageMut&lt;<span class="lifetime">&#39;a</span>, T, D, U1, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>VectorSliceMut&lt;<span class="lifetime">'a</span>, T, D, RStride = U1, CStride = D&gt; =
+    Matrix&lt;T, D, U1, ViewStorageMut&lt;<span class="lifetime">'a</span>, T, D, U1, RStride, CStride&gt;&gt;;
 
 <span class="doccomment">/// A column vector slice with dimensions known at compile-time.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(SVectorViewMut)]
-</span><span class="kw">pub type </span>SVectorSliceMut&lt;<span class="lifetime">&#39;a</span>, T, <span class="kw">const </span>D: usize&gt; =
-    Matrix&lt;T, Const&lt;D&gt;, Const&lt;<span class="number">1</span>&gt;, ViewStorageMut&lt;<span class="lifetime">&#39;a</span>, T, Const&lt;D&gt;, Const&lt;<span class="number">1</span>&gt;, Const&lt;<span class="number">1</span>&gt;, Const&lt;D&gt;&gt;&gt;;
+</span><span class="kw">pub type </span>SVectorSliceMut&lt;<span class="lifetime">'a</span>, T, <span class="kw">const </span>D: usize&gt; =
+    Matrix&lt;T, Const&lt;D&gt;, Const&lt;<span class="number">1</span>&gt;, ViewStorageMut&lt;<span class="lifetime">'a</span>, T, Const&lt;D&gt;, Const&lt;<span class="number">1</span>&gt;, Const&lt;<span class="number">1</span>&gt;, Const&lt;D&gt;&gt;&gt;;
 
 <span class="doccomment">/// A column vector slice dynamic numbers of rows and columns.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(DVectorViewMut)]
-</span><span class="kw">pub type </span>DVectorSliceMut&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = Dyn&gt; =
-    Matrix&lt;T, Dyn, U1, ViewStorageMut&lt;<span class="lifetime">&#39;a</span>, T, Dyn, U1, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>DVectorSliceMut&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = Dyn&gt; =
+    Matrix&lt;T, Dyn, U1, ViewStorageMut&lt;<span class="lifetime">'a</span>, T, Dyn, U1, RStride, CStride&gt;&gt;;
 
 <span class="doccomment">/// A 1D column vector slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(VectorViewMut1)]
-</span><span class="kw">pub type </span>VectorSliceMut1&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U1&gt; =
-    Matrix&lt;T, U1, U1, ViewStorageMut&lt;<span class="lifetime">&#39;a</span>, T, U1, U1, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>VectorSliceMut1&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U1&gt; =
+    Matrix&lt;T, U1, U1, ViewStorageMut&lt;<span class="lifetime">'a</span>, T, U1, U1, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A 2D column vector slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(VectorViewMut2)]
-</span><span class="kw">pub type </span>VectorSliceMut2&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U2&gt; =
-    Matrix&lt;T, U2, U1, ViewStorageMut&lt;<span class="lifetime">&#39;a</span>, T, U2, U1, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>VectorSliceMut2&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U2&gt; =
+    Matrix&lt;T, U2, U1, ViewStorageMut&lt;<span class="lifetime">'a</span>, T, U2, U1, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A 3D column vector slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(VectorViewMut3)]
-</span><span class="kw">pub type </span>VectorSliceMut3&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U3&gt; =
-    Matrix&lt;T, U3, U1, ViewStorageMut&lt;<span class="lifetime">&#39;a</span>, T, U3, U1, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>VectorSliceMut3&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U3&gt; =
+    Matrix&lt;T, U3, U1, ViewStorageMut&lt;<span class="lifetime">'a</span>, T, U3, U1, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A 4D column vector slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(VectorViewMut4)]
-</span><span class="kw">pub type </span>VectorSliceMut4&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U4&gt; =
-    Matrix&lt;T, U4, U1, ViewStorageMut&lt;<span class="lifetime">&#39;a</span>, T, U4, U1, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>VectorSliceMut4&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U4&gt; =
+    Matrix&lt;T, U4, U1, ViewStorageMut&lt;<span class="lifetime">'a</span>, T, U4, U1, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A 5D column vector slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(VectorViewMut5)]
-</span><span class="kw">pub type </span>VectorSliceMut5&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U5&gt; =
-    Matrix&lt;T, U5, U1, ViewStorageMut&lt;<span class="lifetime">&#39;a</span>, T, U5, U1, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>VectorSliceMut5&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U5&gt; =
+    Matrix&lt;T, U5, U1, ViewStorageMut&lt;<span class="lifetime">'a</span>, T, U5, U1, RStride, CStride&gt;&gt;;
 <span class="doccomment">/// A 6D column vector slice.
 ///
 /// **Because this is an alias, not all its methods are listed here. See the [`Matrix`](crate::base::Matrix) type too.**
 </span><span class="attr">#[deprecated = <span class="macro">slice_deprecation_note!</span>(VectorViewMut6)]
-</span><span class="kw">pub type </span>VectorSliceMut6&lt;<span class="lifetime">&#39;a</span>, T, RStride = U1, CStride = U6&gt; =
-    Matrix&lt;T, U6, U1, ViewStorageMut&lt;<span class="lifetime">&#39;a</span>, T, U6, U1, RStride, CStride&gt;&gt;;
+</span><span class="kw">pub type </span>VectorSliceMut6&lt;<span class="lifetime">'a</span>, T, RStride = U1, CStride = U6&gt; =
+    Matrix&lt;T, U6, U1, ViewStorageMut&lt;<span class="lifetime">'a</span>, T, U6, U1, RStride, CStride&gt;&gt;;
 </code></pre></div></section></main></body></html>

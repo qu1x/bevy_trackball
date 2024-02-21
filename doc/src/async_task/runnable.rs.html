@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/async-task-4.5.0/src/runnable.rs`."><title>runnable.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="async_task" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/smol-rs/smol/master/assets/images/logo_fullsize_transparent.png"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../async_task/index.html"><img src="https://raw.githubusercontent.com/smol-rs/smol/master/assets/images/logo_fullsize_transparent.png" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/async-task-4.7.0/src/runnable.rs`."><title>runnable.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="async_task" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="icon" href="https://raw.githubusercontent.com/smol-rs/smol/master/assets/images/logo_fullsize_transparent.png"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><a class="sub-logo-container" href="../../async_task/index.html"><img src="https://raw.githubusercontent.com/smol-rs/smol/master/assets/images/logo_fullsize_transparent.png" alt="async_task"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -875,6 +876,74 @@
 <a href="#875" id="875">875</a>
 <a href="#876" id="876">876</a>
 <a href="#877" id="877">877</a>
+<a href="#878" id="878">878</a>
+<a href="#879" id="879">879</a>
+<a href="#880" id="880">880</a>
+<a href="#881" id="881">881</a>
+<a href="#882" id="882">882</a>
+<a href="#883" id="883">883</a>
+<a href="#884" id="884">884</a>
+<a href="#885" id="885">885</a>
+<a href="#886" id="886">886</a>
+<a href="#887" id="887">887</a>
+<a href="#888" id="888">888</a>
+<a href="#889" id="889">889</a>
+<a href="#890" id="890">890</a>
+<a href="#891" id="891">891</a>
+<a href="#892" id="892">892</a>
+<a href="#893" id="893">893</a>
+<a href="#894" id="894">894</a>
+<a href="#895" id="895">895</a>
+<a href="#896" id="896">896</a>
+<a href="#897" id="897">897</a>
+<a href="#898" id="898">898</a>
+<a href="#899" id="899">899</a>
+<a href="#900" id="900">900</a>
+<a href="#901" id="901">901</a>
+<a href="#902" id="902">902</a>
+<a href="#903" id="903">903</a>
+<a href="#904" id="904">904</a>
+<a href="#905" id="905">905</a>
+<a href="#906" id="906">906</a>
+<a href="#907" id="907">907</a>
+<a href="#908" id="908">908</a>
+<a href="#909" id="909">909</a>
+<a href="#910" id="910">910</a>
+<a href="#911" id="911">911</a>
+<a href="#912" id="912">912</a>
+<a href="#913" id="913">913</a>
+<a href="#914" id="914">914</a>
+<a href="#915" id="915">915</a>
+<a href="#916" id="916">916</a>
+<a href="#917" id="917">917</a>
+<a href="#918" id="918">918</a>
+<a href="#919" id="919">919</a>
+<a href="#920" id="920">920</a>
+<a href="#921" id="921">921</a>
+<a href="#922" id="922">922</a>
+<a href="#923" id="923">923</a>
+<a href="#924" id="924">924</a>
+<a href="#925" id="925">925</a>
+<a href="#926" id="926">926</a>
+<a href="#927" id="927">927</a>
+<a href="#928" id="928">928</a>
+<a href="#929" id="929">929</a>
+<a href="#930" id="930">930</a>
+<a href="#931" id="931">931</a>
+<a href="#932" id="932">932</a>
+<a href="#933" id="933">933</a>
+<a href="#934" id="934">934</a>
+<a href="#935" id="935">935</a>
+<a href="#936" id="936">936</a>
+<a href="#937" id="937">937</a>
+<a href="#938" id="938">938</a>
+<a href="#939" id="939">939</a>
+<a href="#940" id="940">940</a>
+<a href="#941" id="941">941</a>
+<a href="#942" id="942">942</a>
+<a href="#943" id="943">943</a>
+<a href="#944" id="944">944</a>
+<a href="#945" id="945">945</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>core::fmt;
 <span class="kw">use </span>core::future::Future;
 <span class="kw">use </span>core::marker::PhantomData;
@@ -906,7 +975,7 @@
     </span><span class="kw">pub</span>(<span class="kw">crate</span>) metadata: M,
 
     <span class="doccomment">/// Whether or not a panic that occurs in the task should be propagated.
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;std&quot;</span>)]
+    </span><span class="attr">#[cfg(feature = <span class="string">"std"</span>)]
     </span><span class="kw">pub</span>(<span class="kw">crate</span>) propagate_panic: bool,
 }
 
@@ -919,7 +988,7 @@
 <span class="doccomment">/// Extra scheduling information that can be passed to the scheduling function.
 ///
 /// The data source of this struct is directly from the actual implementation
-/// of the crate itself, different from [`Runnable`]&#39;s metadata, which is
+/// of the crate itself, different from [`Runnable`]'s metadata, which is
 /// managed by the caller.
 ///
 /// # Examples
@@ -930,7 +999,7 @@
 ///
 /// // The future inside the task.
 /// let future = async {
-///     println!(&quot;Hello, world!&quot;);
+///     println!("Hello, world!");
 /// };
 ///
 /// // If the task gets woken up while running, it will be sent into this channel.
@@ -989,13 +1058,13 @@
 <span class="doccomment">/// Pass a scheduling function with more scheduling information - a.k.a.
 /// [`ScheduleInfo`].
 ///
-/// Sometimes, it&#39;s useful to pass the runnable&#39;s state directly to the
-/// scheduling function, such as whether it&#39;s woken up while running. The
+/// Sometimes, it's useful to pass the runnable's state directly to the
+/// scheduling function, such as whether it's woken up while running. The
 /// scheduler can thus use the information to determine its scheduling
 /// strategy.
 ///
 /// The data source of [`ScheduleInfo`] is directly from the actual
-/// implementation of the crate itself, different from [`Runnable`]&#39;s metadata,
+/// implementation of the crate itself, different from [`Runnable`]'s metadata,
 /// which is managed by the caller.
 ///
 /// # Examples
@@ -1006,7 +1075,7 @@
 ///
 /// // The future inside the task.
 /// let future = async {
-///     println!(&quot;Hello, world!&quot;);
+///     println!("Hello, world!");
 /// };
 ///
 /// // If the task gets woken up while running, it will be sent into this channel.
@@ -1061,7 +1130,7 @@
     </span><span class="kw">pub fn </span>new() -&gt; Builder&lt;()&gt; {
         Builder {
             metadata: (),
-            <span class="attr">#[cfg(feature = <span class="string">&quot;std&quot;</span>)]
+            <span class="attr">#[cfg(feature = <span class="string">"std"</span>)]
             </span>propagate_panic: <span class="bool-val">false</span>,
         }
     }
@@ -1075,7 +1144,7 @@
     ///
     /// # Examples
     ///
-    /// This example creates an executor that associates a &quot;priority&quot; number with each task, and
+    /// This example creates an executor that associates a "priority" number with each task, and
     /// then runs the tasks in order of priority.
     ///
     /// ```
@@ -1148,7 +1217,7 @@
     </span><span class="kw">pub fn </span>metadata&lt;M&gt;(<span class="self">self</span>, metadata: M) -&gt; Builder&lt;M&gt; {
         Builder {
             metadata,
-            <span class="attr">#[cfg(feature = <span class="string">&quot;std&quot;</span>)]
+            <span class="attr">#[cfg(feature = <span class="string">"std"</span>)]
             </span>propagate_panic: <span class="self">self</span>.propagate_panic,
         }
     }
@@ -1195,7 +1264,7 @@
     /// assert!(did_panic(|| { let _ = Pin::new(&amp;mut task2).poll(&amp;mut cx); }));
     /// # });
     /// ```
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;std&quot;</span>)]
+    </span><span class="attr">#[cfg(feature = <span class="string">"std"</span>)]
     </span><span class="kw">pub fn </span>propagate_panic(<span class="self">self</span>, propagate_panic: bool) -&gt; Builder&lt;M&gt; {
         Builder {
             metadata: <span class="self">self</span>.metadata,
@@ -1208,7 +1277,7 @@
     /// The returned [`Runnable`] is used to poll the `future`, and the [`Task`] is used to await its
     /// output.
     ///
-    /// Method [`run()`][`Runnable::run()`] polls the task&#39;s future once. Then, the [`Runnable`]
+    /// Method [`run()`][`Runnable::run()`] polls the task's future once. Then, the [`Runnable`]
     /// vanishes and only reappears when its [`Waker`] wakes the task, thus scheduling it to be run
     /// again.
     ///
@@ -1216,7 +1285,7 @@
     /// The `schedule` function should not attempt to run the [`Runnable`] nor to drop it. Instead, it
     /// should push it into a task queue so that it can be processed later.
     ///
-    /// If you need to spawn a future that does not implement [`Send`] or isn&#39;t `&#39;static`, consider
+    /// If you need to spawn a future that does not implement [`Send`] or isn't `'static`, consider
     /// using [`spawn_local()`] or [`spawn_unchecked()`] instead.
     ///
     /// # Examples
@@ -1226,7 +1295,7 @@
     ///
     /// // The future inside the task.
     /// let future = async {
-    ///     println!(&quot;Hello, world!&quot;);
+    ///     println!("Hello, world!");
     /// };
     ///
     /// // A function that schedules the task when it gets woken up.
@@ -1239,9 +1308,9 @@
     </span><span class="kw">pub fn </span>spawn&lt;F, Fut, S&gt;(<span class="self">self</span>, future: F, schedule: S) -&gt; (Runnable&lt;M&gt;, Task&lt;Fut::Output, M&gt;)
     <span class="kw">where
         </span>F: FnOnce(<span class="kw-2">&amp;</span>M) -&gt; Fut,
-        Fut: Future + Send + <span class="lifetime">&#39;static</span>,
-        Fut::Output: Send + <span class="lifetime">&#39;static</span>,
-        S: Schedule&lt;M&gt; + Send + Sync + <span class="lifetime">&#39;static</span>,
+        Fut: Future + Send + <span class="lifetime">'static</span>,
+        Fut::Output: Send + <span class="lifetime">'static</span>,
+        S: Schedule&lt;M&gt; + Send + Sync + <span class="lifetime">'static</span>,
     {
         <span class="kw">unsafe </span>{ <span class="self">self</span>.spawn_unchecked(future, schedule) }
     }
@@ -1266,9 +1335,9 @@
     /// }
     ///
     /// // Make a non-Send future.
-    /// let msg: Rc&lt;str&gt; = &quot;Hello, world!&quot;.into();
+    /// let msg: Rc&lt;str&gt; = "Hello, world!".into();
     /// let future = async move {
-    ///     println!(&quot;{}&quot;, msg);
+    ///     println!("{}", msg);
     /// };
     ///
     /// // A function that schedules the task when it gets woken up.
@@ -1278,7 +1347,7 @@
     /// // Create a task with the future and the schedule function.
     /// let (runnable, task) = Builder::new().spawn_local(move |()| future, schedule);
     /// ```
-    </span><span class="attr">#[cfg(feature = <span class="string">&quot;std&quot;</span>)]
+    </span><span class="attr">#[cfg(feature = <span class="string">"std"</span>)]
     </span><span class="kw">pub fn </span>spawn_local&lt;F, Fut, S&gt;(
         <span class="self">self</span>,
         future: F,
@@ -1286,9 +1355,9 @@
     ) -&gt; (Runnable&lt;M&gt;, Task&lt;Fut::Output, M&gt;)
     <span class="kw">where
         </span>F: FnOnce(<span class="kw-2">&amp;</span>M) -&gt; Fut,
-        Fut: Future + <span class="lifetime">&#39;static</span>,
-        Fut::Output: <span class="lifetime">&#39;static</span>,
-        S: Schedule&lt;M&gt; + Send + Sync + <span class="lifetime">&#39;static</span>,
+        Fut: Future + <span class="lifetime">'static</span>,
+        Fut::Output: <span class="lifetime">'static</span>,
+        S: Schedule&lt;M&gt; + Send + Sync + <span class="lifetime">'static</span>,
     {
         <span class="kw">use </span>std::mem::ManuallyDrop;
         <span class="kw">use </span>std::pin::Pin;
@@ -1313,7 +1382,7 @@
             <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
                 <span class="macro">assert!</span>(
                     <span class="self">self</span>.id == thread_id(),
-                    <span class="string">&quot;local task dropped by a thread that didn&#39;t spawn it&quot;
+                    <span class="string">"local task dropped by a thread that didn't spawn it"
                 </span>);
                 <span class="kw">unsafe </span>{
                     ManuallyDrop::drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>.inner);
@@ -1324,16 +1393,16 @@
         <span class="kw">impl</span>&lt;F: Future&gt; Future <span class="kw">for </span>Checked&lt;F&gt; {
             <span class="kw">type </span>Output = F::Output;
 
-            <span class="kw">fn </span>poll(<span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; Poll&lt;<span class="self">Self</span>::Output&gt; {
+            <span class="kw">fn </span>poll(<span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">'_</span>&gt;) -&gt; Poll&lt;<span class="self">Self</span>::Output&gt; {
                 <span class="macro">assert!</span>(
                     <span class="self">self</span>.id == thread_id(),
-                    <span class="string">&quot;local task polled by a thread that didn&#39;t spawn it&quot;
+                    <span class="string">"local task polled by a thread that didn't spawn it"
                 </span>);
                 <span class="kw">unsafe </span>{ <span class="self">self</span>.map_unchecked_mut(|c| <span class="kw-2">&amp;mut *</span>c.inner).poll(cx) }
             }
         }
 
-        <span class="comment">// Wrap the future into one that checks which thread it&#39;s on.
+        <span class="comment">// Wrap the future into one that checks which thread it's on.
         </span><span class="kw">let </span>future = <span class="kw">move </span>|meta| {
             <span class="kw">let </span>future = future(meta);
 
@@ -1346,20 +1415,20 @@
         <span class="kw">unsafe </span>{ <span class="self">self</span>.spawn_unchecked(future, schedule) }
     }
 
-    <span class="doccomment">/// Creates a new task without [`Send`], [`Sync`], and `&#39;static` bounds.
+    <span class="doccomment">/// Creates a new task without [`Send`], [`Sync`], and `'static` bounds.
     ///
     /// This function is same as [`spawn()`], except it does not require [`Send`], [`Sync`], and
-    /// `&#39;static` on `future` and `schedule`.
+    /// `'static` on `future` and `schedule`.
     ///
     /// # Safety
     ///
     /// - If `Fut` is not [`Send`], its [`Runnable`] must be used and dropped on the original
     ///   thread.
-    /// - If `Fut` is not `&#39;static`, borrowed non-metadata variables must outlive its [`Runnable`].
-    /// - If `schedule` is not [`Send`] and [`Sync`], all instances of the [`Runnable`]&#39;s [`Waker`]
+    /// - If `Fut` is not `'static`, borrowed non-metadata variables must outlive its [`Runnable`].
+    /// - If `schedule` is not [`Send`] and [`Sync`], all instances of the [`Runnable`]'s [`Waker`]
     ///   must be used and dropped on the original thread.
-    /// - If `schedule` is not `&#39;static`, borrowed variables must outlive all instances of the
-    ///   [`Runnable`]&#39;s [`Waker`].
+    /// - If `schedule` is not `'static`, borrowed variables must outlive all instances of the
+    ///   [`Runnable`]'s [`Waker`].
     ///
     /// # Examples
     ///
@@ -1368,7 +1437,7 @@
     ///
     /// // The future inside the task.
     /// let future = async {
-    ///     println!(&quot;Hello, world!&quot;);
+    ///     println!("Hello, world!");
     /// };
     ///
     /// // If the task gets woken up, it will be sent into this channel.
@@ -1378,16 +1447,16 @@
     /// // Create a task with the future and the schedule function.
     /// let (runnable, task) = unsafe { Builder::new().spawn_unchecked(move |()| future, schedule) };
     /// ```
-    </span><span class="kw">pub unsafe fn </span>spawn_unchecked&lt;<span class="lifetime">&#39;a</span>, F, Fut, S&gt;(
+    </span><span class="kw">pub unsafe fn </span>spawn_unchecked&lt;<span class="lifetime">'a</span>, F, Fut, S&gt;(
         <span class="self">self</span>,
         future: F,
         schedule: S,
     ) -&gt; (Runnable&lt;M&gt;, Task&lt;Fut::Output, M&gt;)
     <span class="kw">where
-        </span>F: FnOnce(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>M) -&gt; Fut,
-        Fut: Future + <span class="lifetime">&#39;a</span>,
+        </span>F: FnOnce(<span class="kw-2">&amp;</span><span class="lifetime">'a </span>M) -&gt; Fut,
+        Fut: Future + <span class="lifetime">'a</span>,
         S: Schedule&lt;M&gt;,
-        M: <span class="lifetime">&#39;a</span>,
+        M: <span class="lifetime">'a</span>,
     {
         <span class="comment">// Allocate large futures on the heap.
         </span><span class="kw">let </span>ptr = <span class="kw">if </span>mem::size_of::&lt;Fut&gt;() &gt;= <span class="number">2048 </span>{
@@ -1401,10 +1470,7 @@
             RawTask::&lt;Fut, Fut::Output, S, M&gt;::allocate(future, schedule, <span class="self">self</span>)
         };
 
-        <span class="kw">let </span>runnable = Runnable {
-            ptr,
-            _marker: PhantomData,
-        };
+        <span class="kw">let </span>runnable = Runnable::from_raw(ptr);
         <span class="kw">let </span>task = Task {
             ptr,
             _marker: PhantomData,
@@ -1418,7 +1484,7 @@
 /// The returned [`Runnable`] is used to poll the `future`, and the [`Task`] is used to await its
 /// output.
 ///
-/// Method [`run()`][`Runnable::run()`] polls the task&#39;s future once. Then, the [`Runnable`]
+/// Method [`run()`][`Runnable::run()`] polls the task's future once. Then, the [`Runnable`]
 /// vanishes and only reappears when its [`Waker`] wakes the task, thus scheduling it to be run
 /// again.
 ///
@@ -1426,7 +1492,7 @@
 /// The `schedule` function should not attempt to run the [`Runnable`] nor to drop it. Instead, it
 /// should push it into a task queue so that it can be processed later.
 ///
-/// If you need to spawn a future that does not implement [`Send`] or isn&#39;t `&#39;static`, consider
+/// If you need to spawn a future that does not implement [`Send`] or isn't `'static`, consider
 /// using [`spawn_local()`] or [`spawn_unchecked()`] instead.
 ///
 /// # Examples
@@ -1434,7 +1500,7 @@
 /// ```
 /// // The future inside the task.
 /// let future = async {
-///     println!(&quot;Hello, world!&quot;);
+///     println!("Hello, world!");
 /// };
 ///
 /// // A function that schedules the task when it gets woken up.
@@ -1446,9 +1512,9 @@
 /// ```
 </span><span class="kw">pub fn </span>spawn&lt;F, S&gt;(future: F, schedule: S) -&gt; (Runnable, Task&lt;F::Output&gt;)
 <span class="kw">where
-    </span>F: Future + Send + <span class="lifetime">&#39;static</span>,
-    F::Output: Send + <span class="lifetime">&#39;static</span>,
-    S: Schedule + Send + Sync + <span class="lifetime">&#39;static</span>,
+    </span>F: Future + Send + <span class="lifetime">'static</span>,
+    F::Output: Send + <span class="lifetime">'static</span>,
+    S: Schedule + Send + Sync + <span class="lifetime">'static</span>,
 {
     <span class="kw">unsafe </span>{ spawn_unchecked(future, schedule) }
 }
@@ -1473,9 +1539,9 @@
 /// }
 ///
 /// // Make a non-Send future.
-/// let msg: Rc&lt;str&gt; = &quot;Hello, world!&quot;.into();
+/// let msg: Rc&lt;str&gt; = "Hello, world!".into();
 /// let future = async move {
-///     println!(&quot;{}&quot;, msg);
+///     println!("{}", msg);
 /// };
 ///
 /// // A function that schedules the task when it gets woken up.
@@ -1485,37 +1551,37 @@
 /// // Create a task with the future and the schedule function.
 /// let (runnable, task) = async_task::spawn_local(future, schedule);
 /// ```
-</span><span class="attr">#[cfg(feature = <span class="string">&quot;std&quot;</span>)]
+</span><span class="attr">#[cfg(feature = <span class="string">"std"</span>)]
 </span><span class="kw">pub fn </span>spawn_local&lt;F, S&gt;(future: F, schedule: S) -&gt; (Runnable, Task&lt;F::Output&gt;)
 <span class="kw">where
-    </span>F: Future + <span class="lifetime">&#39;static</span>,
-    F::Output: <span class="lifetime">&#39;static</span>,
-    S: Schedule + Send + Sync + <span class="lifetime">&#39;static</span>,
+    </span>F: Future + <span class="lifetime">'static</span>,
+    F::Output: <span class="lifetime">'static</span>,
+    S: Schedule + Send + Sync + <span class="lifetime">'static</span>,
 {
     Builder::new().spawn_local(<span class="kw">move </span>|()| future, schedule)
 }
 
-<span class="doccomment">/// Creates a new task without [`Send`], [`Sync`], and `&#39;static` bounds.
+<span class="doccomment">/// Creates a new task without [`Send`], [`Sync`], and `'static` bounds.
 ///
 /// This function is same as [`spawn()`], except it does not require [`Send`], [`Sync`], and
-/// `&#39;static` on `future` and `schedule`.
+/// `'static` on `future` and `schedule`.
 ///
 /// # Safety
 ///
 /// - If `future` is not [`Send`], its [`Runnable`] must be used and dropped on the original
 ///   thread.
-/// - If `future` is not `&#39;static`, borrowed variables must outlive its [`Runnable`].
-/// - If `schedule` is not [`Send`] and [`Sync`], all instances of the [`Runnable`]&#39;s [`Waker`]
+/// - If `future` is not `'static`, borrowed variables must outlive its [`Runnable`].
+/// - If `schedule` is not [`Send`] and [`Sync`], all instances of the [`Runnable`]'s [`Waker`]
 ///   must be used and dropped on the original thread.
-/// - If `schedule` is not `&#39;static`, borrowed variables must outlive all instances of the
-///   [`Runnable`]&#39;s [`Waker`].
+/// - If `schedule` is not `'static`, borrowed variables must outlive all instances of the
+///   [`Runnable`]'s [`Waker`].
 ///
 /// # Examples
 ///
 /// ```
 /// // The future inside the task.
 /// let future = async {
-///     println!(&quot;Hello, world!&quot;);
+///     println!("Hello, world!");
 /// };
 ///
 /// // If the task gets woken up, it will be sent into this channel.
@@ -1538,11 +1604,11 @@
 /// Every spawned task has a single [`Runnable`] handle, which only exists when the task is
 /// scheduled for running.
 ///
-/// Method [`run()`][`Runnable::run()`] polls the task&#39;s future once. Then, the [`Runnable`]
+/// Method [`run()`][`Runnable::run()`] polls the task's future once. Then, the [`Runnable`]
 /// vanishes and only reappears when its [`Waker`] wakes the task, thus scheduling it to be run
 /// again.
 ///
-/// Dropping a [`Runnable`] cancels the task, which means its future won&#39;t be polled again, and
+/// Dropping a [`Runnable`] cancels the task, which means its future won't be polled again, and
 /// awaiting the [`Task`] after that will result in a panic.
 ///
 /// # Examples
@@ -1582,9 +1648,9 @@
 <span class="kw">unsafe impl</span>&lt;M: Send + Sync&gt; Send <span class="kw">for </span>Runnable&lt;M&gt; {}
 <span class="kw">unsafe impl</span>&lt;M: Send + Sync&gt; Sync <span class="kw">for </span>Runnable&lt;M&gt; {}
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;std&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"std"</span>)]
 </span><span class="kw">impl</span>&lt;M&gt; std::panic::UnwindSafe <span class="kw">for </span>Runnable&lt;M&gt; {}
-<span class="attr">#[cfg(feature = <span class="string">&quot;std&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"std"</span>)]
 </span><span class="kw">impl</span>&lt;M&gt; std::panic::RefUnwindSafe <span class="kw">for </span>Runnable&lt;M&gt; {}
 
 <span class="kw">impl</span>&lt;M&gt; Runnable&lt;M&gt; {
@@ -1697,6 +1763,77 @@
     <span class="kw">fn </span>header(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>Header&lt;M&gt; {
         <span class="kw">unsafe </span>{ <span class="kw-2">&amp;*</span>(<span class="self">self</span>.ptr.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span>Header&lt;M&gt;) }
     }
+
+    <span class="doccomment">/// Converts this task into a raw pointer.
+    ///
+    /// To avoid a memory leak the pointer must be converted back to a Runnable using [`Runnable&lt;M&gt;::from_raw`][from_raw].
+    ///
+    /// `into_raw` does not change the state of the [`Task`], but there is no guarantee that it will be in the same state after calling [`Runnable&lt;M&gt;::from_raw`][from_raw],
+    /// as the corresponding [`Task`] might have been dropped or cancelled.
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use async_task::{Runnable, spawn};
+
+    /// let (runnable, task) = spawn(async {}, |_| {});
+    /// let runnable_pointer = runnable.into_raw();
+    ///
+    /// unsafe {
+    ///     // Convert back to an `Runnable` to prevent leak.
+    ///     let runnable = Runnable::&lt;()&gt;::from_raw(runnable_pointer);
+    ///     runnable.run();
+    ///     // Further calls to `Runnable::from_raw(runnable_pointer)` would be memory-unsafe.
+    /// }
+    /// // The memory was freed when `x` went out of scope above, so `runnable_pointer` is now dangling!
+    /// ```
+    /// [from_raw]: #method.from_raw
+    </span><span class="kw">pub fn </span>into_raw(<span class="self">self</span>) -&gt; NonNull&lt;()&gt; {
+        <span class="kw">let </span>ptr = <span class="self">self</span>.ptr;
+        mem::forget(<span class="self">self</span>);
+        ptr
+    }
+
+    <span class="doccomment">/// Converts a raw pointer into a Runnable.
+    ///
+    /// # Safety
+    ///
+    /// This method should only be used with raw pointers returned from [`Runnable&lt;M&gt;::into_raw`][into_raw].
+    /// It is not safe to use the provided pointer once it is passed to `from_raw`.
+    /// Crucially, it is unsafe to call `from_raw` multiple times with the same pointer - even if the resulting [`Runnable`] is not used -
+    /// as internally `async-task` uses reference counting.
+    ///
+    /// It is however safe to call [`Runnable&lt;M&gt;::into_raw`][into_raw] on a [`Runnable`] created with `from_raw` or
+    /// after the [`Task`] associated with a given Runnable has been dropped or cancelled.
+    ///
+    /// The state of the [`Runnable`] created with `from_raw` is not specified.
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use async_task::{Runnable, spawn};
+
+    /// let (runnable, task) = spawn(async {}, |_| {});
+    /// let runnable_pointer = runnable.into_raw();
+    ///
+    /// drop(task);
+    /// unsafe {
+    ///     // Convert back to an `Runnable` to prevent leak.
+    ///     let runnable = Runnable::&lt;()&gt;::from_raw(runnable_pointer);
+    ///     let did_poll = runnable.run();
+    ///     assert!(!did_poll);
+    ///     // Further calls to `Runnable::from_raw(runnable_pointer)` would be memory-unsafe.
+    /// }
+    /// // The memory was freed when `x` went out of scope above, so `runnable_pointer` is now dangling!
+    /// ```
+
+    /// [into_raw]: #method.into_raw
+    </span><span class="kw">pub unsafe fn </span>from_raw(ptr: NonNull&lt;()&gt;) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            ptr,
+            _marker: Default::default(),
+        }
+    }
 }
 
 <span class="kw">impl</span>&lt;M&gt; Drop <span class="kw">for </span>Runnable&lt;M&gt; {
@@ -1708,7 +1845,7 @@
             <span class="kw">let </span><span class="kw-2">mut </span>state = header.state.load(Ordering::Acquire);
 
             <span class="kw">loop </span>{
-                <span class="comment">// If the task has been completed or closed, it can&#39;t be canceled.
+                <span class="comment">// If the task has been completed or closed, it can't be canceled.
                 </span><span class="kw">if </span>state &amp; (COMPLETED | CLOSED) != <span class="number">0 </span>{
                     <span class="kw">break</span>;
                 }
@@ -1743,12 +1880,12 @@
 }
 
 <span class="kw">impl</span>&lt;M: fmt::Debug&gt; fmt::Debug <span class="kw">for </span>Runnable&lt;M&gt; {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
         <span class="kw">let </span>ptr = <span class="self">self</span>.ptr.as_ptr();
         <span class="kw">let </span>header = ptr <span class="kw">as </span><span class="kw-2">*const </span>Header&lt;M&gt;;
 
-        f.debug_struct(<span class="string">&quot;Runnable&quot;</span>)
-            .field(<span class="string">&quot;header&quot;</span>, <span class="kw">unsafe </span>{ <span class="kw-2">&amp;</span>(<span class="kw-2">*</span>header) })
+        f.debug_struct(<span class="string">"Runnable"</span>)
+            .field(<span class="string">"header"</span>, <span class="kw">unsafe </span>{ <span class="kw-2">&amp;</span>(<span class="kw-2">*</span>header) })
             .finish()
     }
 }

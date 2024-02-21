@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/naga-0.13.0/src/valid/analyzer.rs`."><title>analyzer.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="naga" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../naga/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/naga-0.19.0/src/valid/analyzer.rs`."><title>analyzer.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="naga" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1245,6 +1246,40 @@
 <a href="#1245" id="1245">1245</a>
 <a href="#1246" id="1246">1246</a>
 <a href="#1247" id="1247">1247</a>
+<a href="#1248" id="1248">1248</a>
+<a href="#1249" id="1249">1249</a>
+<a href="#1250" id="1250">1250</a>
+<a href="#1251" id="1251">1251</a>
+<a href="#1252" id="1252">1252</a>
+<a href="#1253" id="1253">1253</a>
+<a href="#1254" id="1254">1254</a>
+<a href="#1255" id="1255">1255</a>
+<a href="#1256" id="1256">1256</a>
+<a href="#1257" id="1257">1257</a>
+<a href="#1258" id="1258">1258</a>
+<a href="#1259" id="1259">1259</a>
+<a href="#1260" id="1260">1260</a>
+<a href="#1261" id="1261">1261</a>
+<a href="#1262" id="1262">1262</a>
+<a href="#1263" id="1263">1263</a>
+<a href="#1264" id="1264">1264</a>
+<a href="#1265" id="1265">1265</a>
+<a href="#1266" id="1266">1266</a>
+<a href="#1267" id="1267">1267</a>
+<a href="#1268" id="1268">1268</a>
+<a href="#1269" id="1269">1269</a>
+<a href="#1270" id="1270">1270</a>
+<a href="#1271" id="1271">1271</a>
+<a href="#1272" id="1272">1272</a>
+<a href="#1273" id="1273">1273</a>
+<a href="#1274" id="1274">1274</a>
+<a href="#1275" id="1275">1275</a>
+<a href="#1276" id="1276">1276</a>
+<a href="#1277" id="1277">1277</a>
+<a href="#1278" id="1278">1278</a>
+<a href="#1279" id="1279">1279</a>
+<a href="#1280" id="1280">1280</a>
+<a href="#1281" id="1281">1281</a>
 </pre></div><pre class="rust"><code><span class="doccomment">/*! Module analyzer.
 
 Figures out the following properties:
@@ -1263,22 +1298,26 @@ Figures out the following properties:
 
 <span class="kw">pub type </span>NonUniformResult = <span class="prelude-ty">Option</span>&lt;Handle&lt;<span class="kw">crate</span>::Expression&gt;&gt;;
 
+<span class="comment">// Remove this once we update our uniformity analysis and
+// add support for the `derivative_uniformity` diagnostic
+</span><span class="kw">const </span>DISABLE_UNIFORMITY_REQ_FOR_FRAGMENT_STAGE: bool = <span class="bool-val">true</span>;
+
 <span class="macro">bitflags::bitflags! </span>{
     <span class="doccomment">/// Kinds of expressions that require uniform control flow.
-    </span><span class="attr">#[cfg_attr(feature = <span class="string">&quot;serialize&quot;</span>, derive(serde::Serialize))]
-    #[cfg_attr(feature = <span class="string">&quot;deserialize&quot;</span>, derive(serde::Deserialize))]
+    </span><span class="attr">#[cfg_attr(feature = <span class="string">"serialize"</span>, derive(serde::Serialize))]
+    #[cfg_attr(feature = <span class="string">"deserialize"</span>, derive(serde::Deserialize))]
     #[derive(Clone, Copy, Debug, Eq, PartialEq)]
     </span><span class="kw">pub struct </span>UniformityRequirements: u8 {
         <span class="kw">const </span>WORK_GROUP_BARRIER = <span class="number">0x1</span>;
-        <span class="kw">const </span>DERIVATIVE = <span class="number">0x2</span>;
-        <span class="kw">const </span>IMPLICIT_LEVEL = <span class="number">0x4</span>;
+        <span class="kw">const </span>DERIVATIVE = <span class="kw">if </span>DISABLE_UNIFORMITY_REQ_FOR_FRAGMENT_STAGE { <span class="number">0 </span>} <span class="kw">else </span>{ <span class="number">0x2 </span>};
+        <span class="kw">const </span>IMPLICIT_LEVEL = <span class="kw">if </span>DISABLE_UNIFORMITY_REQ_FOR_FRAGMENT_STAGE { <span class="number">0 </span>} <span class="kw">else </span>{ <span class="number">0x4 </span>};
     }
 }
 
 <span class="doccomment">/// Uniform control flow characteristics.
 </span><span class="attr">#[derive(Clone, Debug)]
-#[cfg_attr(feature = <span class="string">&quot;serialize&quot;</span>, derive(serde::Serialize))]
-#[cfg_attr(feature = <span class="string">&quot;deserialize&quot;</span>, derive(serde::Deserialize))]
+#[cfg_attr(feature = <span class="string">"serialize"</span>, derive(serde::Serialize))]
+#[cfg_attr(feature = <span class="string">"deserialize"</span>, derive(serde::Deserialize))]
 #[cfg_attr(test, derive(PartialEq))]
 </span><span class="kw">pub struct </span>Uniformity {
     <span class="doccomment">/// A child expression with non-uniform result.
@@ -1364,8 +1403,8 @@ Figures out the following properties:
 
 <span class="macro">bitflags::bitflags! </span>{
     <span class="doccomment">/// Indicates how a global variable is used.
-    </span><span class="attr">#[cfg_attr(feature = <span class="string">&quot;serialize&quot;</span>, derive(serde::Serialize))]
-    #[cfg_attr(feature = <span class="string">&quot;deserialize&quot;</span>, derive(serde::Deserialize))]
+    </span><span class="attr">#[cfg_attr(feature = <span class="string">"serialize"</span>, derive(serde::Serialize))]
+    #[cfg_attr(feature = <span class="string">"deserialize"</span>, derive(serde::Deserialize))]
     #[derive(Clone, Copy, Debug, Eq, PartialEq)]
     </span><span class="kw">pub struct </span>GlobalUse: u8 {
         <span class="doccomment">/// Data will be read from the variable.
@@ -1378,16 +1417,16 @@ Figures out the following properties:
 }
 
 <span class="attr">#[derive(Clone, Debug, Eq, Hash, PartialEq)]
-#[cfg_attr(feature = <span class="string">&quot;serialize&quot;</span>, derive(serde::Serialize))]
-#[cfg_attr(feature = <span class="string">&quot;deserialize&quot;</span>, derive(serde::Deserialize))]
+#[cfg_attr(feature = <span class="string">"serialize"</span>, derive(serde::Serialize))]
+#[cfg_attr(feature = <span class="string">"deserialize"</span>, derive(serde::Deserialize))]
 </span><span class="kw">pub struct </span>SamplingKey {
     <span class="kw">pub </span>image: Handle&lt;<span class="kw">crate</span>::GlobalVariable&gt;,
     <span class="kw">pub </span>sampler: Handle&lt;<span class="kw">crate</span>::GlobalVariable&gt;,
 }
 
 <span class="attr">#[derive(Clone, Debug)]
-#[cfg_attr(feature = <span class="string">&quot;serialize&quot;</span>, derive(serde::Serialize))]
-#[cfg_attr(feature = <span class="string">&quot;deserialize&quot;</span>, derive(serde::Deserialize))]
+#[cfg_attr(feature = <span class="string">"serialize"</span>, derive(serde::Serialize))]
+#[cfg_attr(feature = <span class="string">"deserialize"</span>, derive(serde::Deserialize))]
 </span><span class="kw">pub struct </span>ExpressionInfo {
     <span class="kw">pub </span>uniformity: Uniformity,
     <span class="kw">pub </span>ref_count: usize,
@@ -1401,18 +1440,18 @@ Figures out the following properties:
             uniformity: Uniformity::new(),
             ref_count: <span class="number">0</span>,
             assignable_global: <span class="prelude-val">None</span>,
-            <span class="comment">// this doesn&#39;t matter at this point, will be overwritten
-            </span>ty: TypeResolution::Value(<span class="kw">crate</span>::TypeInner::Scalar {
+            <span class="comment">// this doesn't matter at this point, will be overwritten
+            </span>ty: TypeResolution::Value(<span class="kw">crate</span>::TypeInner::Scalar(<span class="kw">crate</span>::Scalar {
                 kind: <span class="kw">crate</span>::ScalarKind::Bool,
                 width: <span class="number">0</span>,
-            }),
+            })),
         }
     }
 }
 
 <span class="attr">#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
-#[cfg_attr(feature = <span class="string">&quot;serialize&quot;</span>, derive(serde::Serialize))]
-#[cfg_attr(feature = <span class="string">&quot;deserialize&quot;</span>, derive(serde::Deserialize))]
+#[cfg_attr(feature = <span class="string">"serialize"</span>, derive(serde::Serialize))]
+#[cfg_attr(feature = <span class="string">"deserialize"</span>, derive(serde::Deserialize))]
 </span><span class="kw">enum </span>GlobalOrArgument {
     Global(Handle&lt;<span class="kw">crate</span>::GlobalVariable&gt;),
     Argument(u32),
@@ -1437,16 +1476,16 @@ Figures out the following properties:
 }
 
 <span class="attr">#[derive(Debug, Clone, PartialEq, Eq, Hash)]
-#[cfg_attr(feature = <span class="string">&quot;serialize&quot;</span>, derive(serde::Serialize))]
-#[cfg_attr(feature = <span class="string">&quot;deserialize&quot;</span>, derive(serde::Deserialize))]
+#[cfg_attr(feature = <span class="string">"serialize"</span>, derive(serde::Serialize))]
+#[cfg_attr(feature = <span class="string">"deserialize"</span>, derive(serde::Deserialize))]
 </span><span class="kw">struct </span>Sampling {
     image: GlobalOrArgument,
     sampler: GlobalOrArgument,
 }
 
 <span class="attr">#[derive(Debug)]
-#[cfg_attr(feature = <span class="string">&quot;serialize&quot;</span>, derive(serde::Serialize))]
-#[cfg_attr(feature = <span class="string">&quot;deserialize&quot;</span>, derive(serde::Deserialize))]
+#[cfg_attr(feature = <span class="string">"serialize"</span>, derive(serde::Serialize))]
+#[cfg_attr(feature = <span class="string">"deserialize"</span>, derive(serde::Deserialize))]
 </span><span class="kw">pub struct </span>FunctionInfo {
     <span class="doccomment">/// Validation flags.
     </span><span class="attr">#[allow(dead_code)]
@@ -1467,14 +1506,14 @@ Figures out the following properties:
     /// arguments to this function itself, since we do not know which globals
     /// those will be. However, this table *is* exhaustive when computed for an
     /// entry point function: entry points never receive textures or samplers as
-    /// arguments, so all an entry point&#39;s sampling can be reported in terms of
+    /// arguments, so all an entry point's sampling can be reported in terms of
     /// globals.
     ///
     /// The GLSL back end uses this table to construct reflection info that
     /// clients need to construct texture-combined sampler values.
     </span><span class="kw">pub </span>sampling_set: <span class="kw">crate</span>::FastHashSet&lt;SamplingKey&gt;,
 
-    <span class="doccomment">/// How this function and its callees use this module&#39;s globals.
+    <span class="doccomment">/// How this function and its callees use this module's globals.
     ///
     /// This is indexed by `Handle&lt;GlobalVariable&gt;` indices. However,
     /// `FunctionInfo` implements `std::ops::Index&lt;Handle&lt;GlobalVariable&gt;&gt;`,
@@ -1482,7 +1521,7 @@ Figures out the following properties:
     /// its usage information.
     </span>global_uses: Box&lt;[GlobalUse]&gt;,
 
-    <span class="doccomment">/// Information about each expression in this function&#39;s body.
+    <span class="doccomment">/// Information about each expression in this function's body.
     ///
     /// This is indexed by `Handle&lt;Expression&gt;` indices. However, `FunctionInfo`
     /// implements `std::ops::Index&lt;Handle&lt;Expression&gt;&gt;`, so you can simply
@@ -1495,14 +1534,17 @@ Figures out the following properties:
     /// as globals or passed as arguments.
     ///
     /// Participants are represented by [`GlobalVariable`] handles whenever
-    /// possible, and otherwise by indices of this function&#39;s arguments.
+    /// possible, and otherwise by indices of this function's arguments.
     ///
     /// When analyzing a function call, we combine this data about the callee
-    /// with the actual arguments being passed to produce the callers&#39; own
+    /// with the actual arguments being passed to produce the callers' own
     /// `sampling_set` and `sampling` tables.
     ///
     /// [`GlobalVariable`]: crate::GlobalVariable
     </span>sampling: <span class="kw">crate</span>::FastHashSet&lt;Sampling&gt;,
+
+    <span class="doccomment">/// Indicates that the function is using dual source blending.
+    </span><span class="kw">pub </span>dual_source_blending: bool,
 }
 
 <span class="kw">impl </span>FunctionInfo {
@@ -1542,11 +1584,11 @@ Figures out the following properties:
 </span><span class="attr">#[derive(Clone, Copy, Debug, thiserror::Error)]
 #[cfg_attr(test, derive(PartialEq))]
 </span><span class="kw">pub enum </span>UniformityDisruptor {
-    <span class="attr">#[error(<span class="string">&quot;Expression {0:?} produced non-uniform result, and control flow depends on it&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Expression {0:?} produced non-uniform result, and control flow depends on it"</span>)]
     </span>Expression(Handle&lt;<span class="kw">crate</span>::Expression&gt;),
-    <span class="attr">#[error(<span class="string">&quot;There is a Return earlier in the control flow of the function&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"There is a Return earlier in the control flow of the function"</span>)]
     </span>Return,
-    <span class="attr">#[error(<span class="string">&quot;There is a Discard earlier in the entry point across all called functions&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"There is a Discard earlier in the entry point across all called functions"</span>)]
     </span>Discard,
 }
 
@@ -1632,7 +1674,7 @@ Figures out the following properties:
                 </span>}
             };
 
-            <span class="comment">// If we&#39;ve managed to pin both the image and sampler down to
+            <span class="comment">// If we've managed to pin both the image and sampler down to
             // specific globals, record that in our `sampling_set`. Otherwise,
             // record as much as we do know in our own `sampling` table, for our
             // callers to sort out.
@@ -1661,13 +1703,29 @@ Figures out the following properties:
         })
     }
 
-    <span class="doccomment">/// Computes the expression info and stores it in `self.expressions`.
-    /// Also, bumps the reference counts on dependent expressions.
+    <span class="doccomment">/// Compute the [`ExpressionInfo`] for `handle`.
+    ///
+    /// Replace the dummy entry in [`self.expressions`] for `handle`
+    /// with a real `ExpressionInfo` value describing that expression.
+    ///
+    /// This function is called as part of a forward sweep through the
+    /// arena, so we can assume that all earlier expressions in the
+    /// arena already have valid info. Since expressions only depend
+    /// on earlier expressions, this includes all our subexpressions.
+    ///
+    /// Adjust the reference counts on all expressions we use.
+    ///
+    /// Also populate the [`sampling_set`], [`sampling`] and
+    /// [`global_uses`] fields of `self`.
+    ///
+    /// [`self.expressions`]: FunctionInfo::expressions
+    /// [`sampling_set`]: FunctionInfo::sampling_set
+    /// [`sampling`]: FunctionInfo::sampling
+    /// [`global_uses`]: FunctionInfo::global_uses
     </span><span class="attr">#[allow(clippy::or_fun_call)]
     </span><span class="kw">fn </span>process_expression(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
         handle: Handle&lt;<span class="kw">crate</span>::Expression&gt;,
-        expression: <span class="kw-2">&amp;</span><span class="kw">crate</span>::Expression,
         expression_arena: <span class="kw-2">&amp;</span>Arena&lt;<span class="kw">crate</span>::Expression&gt;,
         other_functions: <span class="kw-2">&amp;</span>[FunctionInfo],
         resolve_context: <span class="kw-2">&amp;</span>ResolveContext,
@@ -1675,6 +1733,7 @@ Figures out the following properties:
     ) -&gt; <span class="prelude-ty">Result</span>&lt;(), ExpressionError&gt; {
         <span class="kw">use crate</span>::{Expression <span class="kw">as </span>E, SampleLevel <span class="kw">as </span>Sl};
 
+        <span class="kw">let </span>expression = <span class="kw-2">&amp;</span>expression_arena[handle];
         <span class="kw">let </span><span class="kw-2">mut </span>assignable_global = <span class="prelude-val">None</span>;
         <span class="kw">let </span>uniformity = <span class="kw">match </span><span class="kw-2">*</span>expression {
             E::Access { base, index } =&gt; {
@@ -1692,18 +1751,18 @@ Figures out the following properties:
                         <span class="kw">let </span>st_sb = <span class="kw">super</span>::Capabilities::SAMPLED_TEXTURE_AND_STORAGE_BUFFER_ARRAY_NON_UNIFORM_INDEXING;
                         <span class="kw">let </span>sampler = <span class="kw">super</span>::Capabilities::SAMPLER_NON_UNIFORM_INDEXING;
 
-                        <span class="comment">// We&#39;re a binding array, so lets use the type of _what_ we are array of to determine if we can non-uniformly index it.
+                        <span class="comment">// We're a binding array, so lets use the type of _what_ we are array of to determine if we can non-uniformly index it.
                         </span><span class="kw">let </span>array_element_ty =
                             <span class="kw-2">&amp;</span>resolve_context.types[array_element_ty_handle].inner;
 
                         needed_caps |= <span class="kw">match </span><span class="kw-2">*</span>array_element_ty {
-                            <span class="comment">// If we&#39;re an image, use the appropriate limit.
+                            <span class="comment">// If we're an image, use the appropriate limit.
                             </span><span class="kw">crate</span>::TypeInner::Image { class, .. } =&gt; <span class="kw">match </span>class {
                                 <span class="kw">crate</span>::ImageClass::Storage { .. } =&gt; ub_st,
                                 <span class="kw">_ </span>=&gt; st_sb,
                             },
                             <span class="kw">crate</span>::TypeInner::Sampler { .. } =&gt; sampler,
-                            <span class="comment">// If we&#39;re anything but an image, assume we&#39;re a buffer and use the address space.
+                            <span class="comment">// If we're anything but an image, assume we're a buffer and use the address space.
                             </span><span class="kw">_ </span>=&gt; {
                                 <span class="kw">if let </span>E::GlobalVariable(global_handle) = expression_arena[base] {
                                     <span class="kw">let </span>global = <span class="kw-2">&amp;</span>resolve_context.global_vars[global_handle];
@@ -1839,7 +1898,7 @@ Figures out the following properties:
                     }
                 }
 
-                <span class="comment">// &quot;nur&quot; == &quot;Non-Uniform Result&quot;
+                <span class="comment">// "nur" == "Non-Uniform Result"
                 </span><span class="kw">let </span>array_nur = array_index.and_then(|h| <span class="self">self</span>.add_ref(h));
                 <span class="kw">let </span>level_nur = <span class="kw">match </span>level {
                     Sl::Auto | Sl::Zero =&gt; <span class="prelude-val">None</span>,
@@ -1913,7 +1972,7 @@ Figures out the following properties:
             },
             <span class="comment">// explicit derivatives require uniform
             </span>E::Derivative { expr, .. } =&gt; Uniformity {
-                <span class="comment">//Note: taking a derivative of a uniform doesn&#39;t make it non-uniform
+                <span class="comment">//Note: taking a derivative of a uniform doesn't make it non-uniform
                 </span>non_uniform_result: <span class="self">self</span>.add_ref(expr),
                 requirements: UniformityRequirements::DERIVATIVE,
             },
@@ -2001,8 +2060,7 @@ Figures out the following properties:
                     <span class="kw">let </span><span class="kw-2">mut </span>requirements = UniformityRequirements::empty();
                     <span class="kw">for </span>expr <span class="kw">in </span>range.clone() {
                         <span class="kw">let </span>req = <span class="self">self</span>.expressions[expr.index()].uniformity.requirements;
-                        <span class="attr">#[cfg(feature = <span class="string">&quot;validate&quot;</span>)]
-                        </span><span class="kw">if </span><span class="self">self
+                        <span class="kw">if </span><span class="self">self
                             </span>.flags
                             .contains(<span class="kw">super</span>::ValidationFlags::CONTROL_FLOW_UNIFORMITY)
                             &amp;&amp; !req.is_empty()
@@ -2041,12 +2099,12 @@ Figures out the following properties:
                 S::WorkGroupUniformLoad { pointer, .. } =&gt; {
                     <span class="kw">let </span>_condition_nur = <span class="self">self</span>.add_ref(pointer);
 
-                    <span class="comment">// Don&#39;t check that this call occurs in uniform control flow until Naga implements WGSL&#39;s standard
+                    <span class="comment">// Don't check that this call occurs in uniform control flow until Naga implements WGSL's standard
                     // uniformity analysis (https://github.com/gfx-rs/naga/issues/1744).
                     // The uniformity analysis Naga uses now is less accurate than the one in the WGSL standard,
                     // causing Naga to reject correct uses of `workgroupUniformLoad` in some interesting programs.
 
-                    /* #[cfg(feature = &quot;validate&quot;)]
+                    /*
                     if self
                         .flags
                         .contains(super::ValidationFlags::CONTROL_FLOW_UNIFORMITY)
@@ -2056,7 +2114,7 @@ Figures out the following properties:
                             disruptor.or(condition_nur.map(UniformityDisruptor::Expression));
                         if let Some(cause) = this_disruptor {
                             return Err(FunctionError::NonUniformWorkgroupUniformLoad(cause)
-                                .with_span_static(*span, &quot;WorkGroupUniformLoad&quot;));
+                                .with_span_static(*span, "WorkGroupUniformLoad"));
                         }
                     } */
                     </span>FunctionUniformity {
@@ -2246,14 +2304,14 @@ Figures out the following properties:
             global_uses: <span class="macro">vec!</span>[GlobalUse::empty(); module.global_variables.len()].into_boxed_slice(),
             expressions: <span class="macro">vec!</span>[ExpressionInfo::new(); fun.expressions.len()].into_boxed_slice(),
             sampling: <span class="kw">crate</span>::FastHashSet::default(),
+            dual_source_blending: <span class="bool-val">false</span>,
         };
         <span class="kw">let </span>resolve_context =
             ResolveContext::with_locals(module, <span class="kw-2">&amp;</span>fun.local_variables, <span class="kw-2">&amp;</span>fun.arguments);
 
-        <span class="kw">for </span>(handle, expr) <span class="kw">in </span>fun.expressions.iter() {
+        <span class="kw">for </span>(handle, <span class="kw">_</span>) <span class="kw">in </span>fun.expressions.iter() {
             <span class="kw">if let </span><span class="prelude-val">Err</span>(source) = info.process_expression(
                 handle,
-                expr,
                 <span class="kw-2">&amp;</span>fun.expressions,
                 <span class="kw-2">&amp;</span><span class="self">self</span>.functions,
                 <span class="kw-2">&amp;</span>resolve_context,
@@ -2261,6 +2319,12 @@ Figures out the following properties:
             ) {
                 <span class="kw">return </span><span class="prelude-val">Err</span>(FunctionError::Expression { handle, source }
                     .with_span_handle(handle, <span class="kw-2">&amp;</span>fun.expressions));
+            }
+        }
+
+        <span class="kw">for </span>(<span class="kw">_</span>, expr) <span class="kw">in </span>fun.local_variables.iter() {
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(init) = expr.init {
+                <span class="kw">let _ </span>= info.add_ref(init);
             }
         }
 
@@ -2277,7 +2341,6 @@ Figures out the following properties:
 }
 
 <span class="attr">#[test]
-#[cfg(feature = <span class="string">&quot;validate&quot;</span>)]
 </span><span class="kw">fn </span>uniform_control_flow() {
     <span class="kw">use crate</span>::{Expression <span class="kw">as </span>E, Statement <span class="kw">as </span>S};
 
@@ -2287,8 +2350,7 @@ Figures out the following properties:
             name: <span class="prelude-val">None</span>,
             inner: <span class="kw">crate</span>::TypeInner::Vector {
                 size: <span class="kw">crate</span>::VectorSize::Bi,
-                kind: <span class="kw">crate</span>::ScalarKind::Float,
-                width: <span class="number">4</span>,
+                scalar: <span class="kw">crate</span>::Scalar::F32,
             },
         },
         Default::default(),
@@ -2355,6 +2417,7 @@ Figures out the following properties:
         global_uses: <span class="macro">vec!</span>[GlobalUse::empty(); global_var_arena.len()].into_boxed_slice(),
         expressions: <span class="macro">vec!</span>[ExpressionInfo::new(); expressions.len()].into_boxed_slice(),
         sampling: <span class="kw">crate</span>::FastHashSet::default(),
+        dual_source_blending: <span class="bool-val">false</span>,
     };
     <span class="kw">let </span>resolve_context = ResolveContext {
         constants: <span class="kw-2">&amp;</span>Arena::new(),
@@ -2365,10 +2428,9 @@ Figures out the following properties:
         functions: <span class="kw-2">&amp;</span>Arena::new(),
         arguments: <span class="kw-2">&amp;</span>[],
     };
-    <span class="kw">for </span>(handle, expression) <span class="kw">in </span>expressions.iter() {
+    <span class="kw">for </span>(handle, <span class="kw">_</span>) <span class="kw">in </span>expressions.iter() {
         info.process_expression(
             handle,
-            expression,
             <span class="kw-2">&amp;</span>expressions,
             <span class="kw-2">&amp;</span>[],
             <span class="kw-2">&amp;</span>resolve_context,
@@ -2427,21 +2489,28 @@ Figures out the following properties:
         .into(),
         reject: <span class="kw">crate</span>::Block::new(),
     };
-    <span class="macro">assert_eq!</span>(
-        info.process_block(
+    {
+        <span class="kw">let </span>block_info = info.process_block(
             <span class="kw-2">&amp;</span><span class="macro">vec!</span>[stmt_emit2, stmt_if_non_uniform].into(),
             <span class="kw-2">&amp;</span>[],
             <span class="prelude-val">None</span>,
-            <span class="kw-2">&amp;</span>expressions
-        ),
-        <span class="prelude-val">Err</span>(FunctionError::NonUniformControlFlow(
-            UniformityRequirements::DERIVATIVE,
-            derivative_expr,
-            UniformityDisruptor::Expression(non_uniform_global_expr)
-        )
-        .with_span()),
-    );
-    <span class="macro">assert_eq!</span>(info[derivative_expr].ref_count, <span class="number">1</span>);
+            <span class="kw-2">&amp;</span>expressions,
+        );
+        <span class="kw">if </span>DISABLE_UNIFORMITY_REQ_FOR_FRAGMENT_STAGE {
+            <span class="macro">assert_eq!</span>(info[derivative_expr].ref_count, <span class="number">2</span>);
+        } <span class="kw">else </span>{
+            <span class="macro">assert_eq!</span>(
+                block_info,
+                <span class="prelude-val">Err</span>(FunctionError::NonUniformControlFlow(
+                    UniformityRequirements::DERIVATIVE,
+                    derivative_expr,
+                    UniformityDisruptor::Expression(non_uniform_global_expr)
+                )
+                .with_span()),
+            );
+            <span class="macro">assert_eq!</span>(info[derivative_expr].ref_count, <span class="number">1</span>);
+        }
+    }
     <span class="macro">assert_eq!</span>(info[non_uniform_global], GlobalUse::READ);
 
     <span class="kw">let </span>stmt_emit3 = S::Emit(emit_range_globals);

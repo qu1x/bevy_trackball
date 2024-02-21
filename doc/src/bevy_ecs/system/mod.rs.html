@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ecs-0.12.1/src/system/mod.rs`."><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="bevy_ecs" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../bevy_ecs/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ecs-0.13.0/src/system/mod.rs`."><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="bevy_ecs" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1755,188 +1756,6 @@
 <a href="#1755" id="1755">1755</a>
 <a href="#1756" id="1756">1756</a>
 <a href="#1757" id="1757">1757</a>
-<a href="#1758" id="1758">1758</a>
-<a href="#1759" id="1759">1759</a>
-<a href="#1760" id="1760">1760</a>
-<a href="#1761" id="1761">1761</a>
-<a href="#1762" id="1762">1762</a>
-<a href="#1763" id="1763">1763</a>
-<a href="#1764" id="1764">1764</a>
-<a href="#1765" id="1765">1765</a>
-<a href="#1766" id="1766">1766</a>
-<a href="#1767" id="1767">1767</a>
-<a href="#1768" id="1768">1768</a>
-<a href="#1769" id="1769">1769</a>
-<a href="#1770" id="1770">1770</a>
-<a href="#1771" id="1771">1771</a>
-<a href="#1772" id="1772">1772</a>
-<a href="#1773" id="1773">1773</a>
-<a href="#1774" id="1774">1774</a>
-<a href="#1775" id="1775">1775</a>
-<a href="#1776" id="1776">1776</a>
-<a href="#1777" id="1777">1777</a>
-<a href="#1778" id="1778">1778</a>
-<a href="#1779" id="1779">1779</a>
-<a href="#1780" id="1780">1780</a>
-<a href="#1781" id="1781">1781</a>
-<a href="#1782" id="1782">1782</a>
-<a href="#1783" id="1783">1783</a>
-<a href="#1784" id="1784">1784</a>
-<a href="#1785" id="1785">1785</a>
-<a href="#1786" id="1786">1786</a>
-<a href="#1787" id="1787">1787</a>
-<a href="#1788" id="1788">1788</a>
-<a href="#1789" id="1789">1789</a>
-<a href="#1790" id="1790">1790</a>
-<a href="#1791" id="1791">1791</a>
-<a href="#1792" id="1792">1792</a>
-<a href="#1793" id="1793">1793</a>
-<a href="#1794" id="1794">1794</a>
-<a href="#1795" id="1795">1795</a>
-<a href="#1796" id="1796">1796</a>
-<a href="#1797" id="1797">1797</a>
-<a href="#1798" id="1798">1798</a>
-<a href="#1799" id="1799">1799</a>
-<a href="#1800" id="1800">1800</a>
-<a href="#1801" id="1801">1801</a>
-<a href="#1802" id="1802">1802</a>
-<a href="#1803" id="1803">1803</a>
-<a href="#1804" id="1804">1804</a>
-<a href="#1805" id="1805">1805</a>
-<a href="#1806" id="1806">1806</a>
-<a href="#1807" id="1807">1807</a>
-<a href="#1808" id="1808">1808</a>
-<a href="#1809" id="1809">1809</a>
-<a href="#1810" id="1810">1810</a>
-<a href="#1811" id="1811">1811</a>
-<a href="#1812" id="1812">1812</a>
-<a href="#1813" id="1813">1813</a>
-<a href="#1814" id="1814">1814</a>
-<a href="#1815" id="1815">1815</a>
-<a href="#1816" id="1816">1816</a>
-<a href="#1817" id="1817">1817</a>
-<a href="#1818" id="1818">1818</a>
-<a href="#1819" id="1819">1819</a>
-<a href="#1820" id="1820">1820</a>
-<a href="#1821" id="1821">1821</a>
-<a href="#1822" id="1822">1822</a>
-<a href="#1823" id="1823">1823</a>
-<a href="#1824" id="1824">1824</a>
-<a href="#1825" id="1825">1825</a>
-<a href="#1826" id="1826">1826</a>
-<a href="#1827" id="1827">1827</a>
-<a href="#1828" id="1828">1828</a>
-<a href="#1829" id="1829">1829</a>
-<a href="#1830" id="1830">1830</a>
-<a href="#1831" id="1831">1831</a>
-<a href="#1832" id="1832">1832</a>
-<a href="#1833" id="1833">1833</a>
-<a href="#1834" id="1834">1834</a>
-<a href="#1835" id="1835">1835</a>
-<a href="#1836" id="1836">1836</a>
-<a href="#1837" id="1837">1837</a>
-<a href="#1838" id="1838">1838</a>
-<a href="#1839" id="1839">1839</a>
-<a href="#1840" id="1840">1840</a>
-<a href="#1841" id="1841">1841</a>
-<a href="#1842" id="1842">1842</a>
-<a href="#1843" id="1843">1843</a>
-<a href="#1844" id="1844">1844</a>
-<a href="#1845" id="1845">1845</a>
-<a href="#1846" id="1846">1846</a>
-<a href="#1847" id="1847">1847</a>
-<a href="#1848" id="1848">1848</a>
-<a href="#1849" id="1849">1849</a>
-<a href="#1850" id="1850">1850</a>
-<a href="#1851" id="1851">1851</a>
-<a href="#1852" id="1852">1852</a>
-<a href="#1853" id="1853">1853</a>
-<a href="#1854" id="1854">1854</a>
-<a href="#1855" id="1855">1855</a>
-<a href="#1856" id="1856">1856</a>
-<a href="#1857" id="1857">1857</a>
-<a href="#1858" id="1858">1858</a>
-<a href="#1859" id="1859">1859</a>
-<a href="#1860" id="1860">1860</a>
-<a href="#1861" id="1861">1861</a>
-<a href="#1862" id="1862">1862</a>
-<a href="#1863" id="1863">1863</a>
-<a href="#1864" id="1864">1864</a>
-<a href="#1865" id="1865">1865</a>
-<a href="#1866" id="1866">1866</a>
-<a href="#1867" id="1867">1867</a>
-<a href="#1868" id="1868">1868</a>
-<a href="#1869" id="1869">1869</a>
-<a href="#1870" id="1870">1870</a>
-<a href="#1871" id="1871">1871</a>
-<a href="#1872" id="1872">1872</a>
-<a href="#1873" id="1873">1873</a>
-<a href="#1874" id="1874">1874</a>
-<a href="#1875" id="1875">1875</a>
-<a href="#1876" id="1876">1876</a>
-<a href="#1877" id="1877">1877</a>
-<a href="#1878" id="1878">1878</a>
-<a href="#1879" id="1879">1879</a>
-<a href="#1880" id="1880">1880</a>
-<a href="#1881" id="1881">1881</a>
-<a href="#1882" id="1882">1882</a>
-<a href="#1883" id="1883">1883</a>
-<a href="#1884" id="1884">1884</a>
-<a href="#1885" id="1885">1885</a>
-<a href="#1886" id="1886">1886</a>
-<a href="#1887" id="1887">1887</a>
-<a href="#1888" id="1888">1888</a>
-<a href="#1889" id="1889">1889</a>
-<a href="#1890" id="1890">1890</a>
-<a href="#1891" id="1891">1891</a>
-<a href="#1892" id="1892">1892</a>
-<a href="#1893" id="1893">1893</a>
-<a href="#1894" id="1894">1894</a>
-<a href="#1895" id="1895">1895</a>
-<a href="#1896" id="1896">1896</a>
-<a href="#1897" id="1897">1897</a>
-<a href="#1898" id="1898">1898</a>
-<a href="#1899" id="1899">1899</a>
-<a href="#1900" id="1900">1900</a>
-<a href="#1901" id="1901">1901</a>
-<a href="#1902" id="1902">1902</a>
-<a href="#1903" id="1903">1903</a>
-<a href="#1904" id="1904">1904</a>
-<a href="#1905" id="1905">1905</a>
-<a href="#1906" id="1906">1906</a>
-<a href="#1907" id="1907">1907</a>
-<a href="#1908" id="1908">1908</a>
-<a href="#1909" id="1909">1909</a>
-<a href="#1910" id="1910">1910</a>
-<a href="#1911" id="1911">1911</a>
-<a href="#1912" id="1912">1912</a>
-<a href="#1913" id="1913">1913</a>
-<a href="#1914" id="1914">1914</a>
-<a href="#1915" id="1915">1915</a>
-<a href="#1916" id="1916">1916</a>
-<a href="#1917" id="1917">1917</a>
-<a href="#1918" id="1918">1918</a>
-<a href="#1919" id="1919">1919</a>
-<a href="#1920" id="1920">1920</a>
-<a href="#1921" id="1921">1921</a>
-<a href="#1922" id="1922">1922</a>
-<a href="#1923" id="1923">1923</a>
-<a href="#1924" id="1924">1924</a>
-<a href="#1925" id="1925">1925</a>
-<a href="#1926" id="1926">1926</a>
-<a href="#1927" id="1927">1927</a>
-<a href="#1928" id="1928">1928</a>
-<a href="#1929" id="1929">1929</a>
-<a href="#1930" id="1930">1930</a>
-<a href="#1931" id="1931">1931</a>
-<a href="#1932" id="1932">1932</a>
-<a href="#1933" id="1933">1933</a>
-<a href="#1934" id="1934">1934</a>
-<a href="#1935" id="1935">1935</a>
-<a href="#1936" id="1936">1936</a>
-<a href="#1937" id="1937">1937</a>
-<a href="#1938" id="1938">1938</a>
-<a href="#1939" id="1939">1939</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Tools for controlling behavior in an ECS application.
 //!
 //! Systems define how an ECS based application behaves.
@@ -1998,23 +1817,23 @@
 //! # let mut world = World::new();
 //! // Configure these systems to run in order using `chain()`.
 //! schedule.add_systems((print_first, print_last).chain());
-//! // Prints &quot;HelloWorld!&quot;
+//! // Prints "HelloWorld!"
 //! schedule.run(&amp;mut world);
 //!
 //! // Configure this system to run in between the other two systems
 //! // using explicit dependencies.
 //! schedule.add_systems(print_mid.after(print_first).before(print_last));
-//! // Prints &quot;Hello, World!&quot;
+//! // Prints "Hello, World!"
 //! schedule.run(&amp;mut world);
 //!
 //! fn print_first() {
-//!     print!(&quot;Hello&quot;);
+//!     print!("Hello");
 //! }
 //! fn print_mid() {
-//!     print!(&quot;, &quot;);
+//!     print!(", ");
 //! }
 //! fn print_last() {
-//!     println!(&quot;World!&quot;);
+//!     println!("World!");
 //! }
 //! ```
 //!
@@ -2030,7 +1849,6 @@
 //! - [`EventWriter`](crate::event::EventWriter)
 //! - [`NonSend`] and `Option&lt;NonSend&gt;`
 //! - [`NonSendMut`] and `Option&lt;NonSendMut&gt;`
-//! - [`&amp;World`](crate::world::World)
 //! - [`RemovedComponents`](crate::removal_detection::RemovedComponents)
 //! - [`SystemName`]
 //! - [`SystemChangeTick`]
@@ -2050,10 +1868,11 @@
 <span class="kw">mod </span>query;
 <span class="attr">#[allow(clippy::module_inception)]
 </span><span class="kw">mod </span>system;
+<span class="kw">mod </span>system_name;
 <span class="kw">mod </span>system_param;
 <span class="kw">mod </span>system_registry;
 
-<span class="kw">use </span>std::borrow::Cow;
+<span class="kw">use </span>std::{any::TypeId, borrow::Cow};
 
 <span class="kw">pub use </span>adapter_system::<span class="kw-2">*</span>;
 <span class="kw">pub use </span>combinator::<span class="kw-2">*</span>;
@@ -2063,6 +1882,7 @@
 <span class="kw">pub use </span>function_system::<span class="kw-2">*</span>;
 <span class="kw">pub use </span>query::<span class="kw-2">*</span>;
 <span class="kw">pub use </span>system::<span class="kw-2">*</span>;
+<span class="kw">pub use </span>system_name::<span class="kw-2">*</span>;
 <span class="kw">pub use </span>system_param::<span class="kw-2">*</span>;
 <span class="kw">pub use </span>system_registry::<span class="kw-2">*</span>;
 
@@ -2094,15 +1914,15 @@
 
     <span class="doccomment">/// Pass the output of this system `A` into a second system `B`, creating a new compound system.
     ///
-    /// The second system must have `In&lt;T&gt;` as its first parameter, where `T`
-    /// is the return type of the first system.
+    /// The second system must have [`In&lt;T&gt;`](crate::system::In) as its first parameter,
+    /// where `T` is the return type of the first system.
     </span><span class="kw">fn </span>pipe&lt;B, Final, MarkerB&gt;(<span class="self">self</span>, system: B) -&gt; PipeSystem&lt;<span class="self">Self</span>::System, B::System&gt;
     <span class="kw">where
         </span>B: IntoSystem&lt;Out, Final, MarkerB&gt;,
     {
         <span class="kw">let </span>system_a = IntoSystem::into_system(<span class="self">self</span>);
         <span class="kw">let </span>system_b = IntoSystem::into_system(system);
-        <span class="kw">let </span>name = <span class="macro">format!</span>(<span class="string">&quot;Pipe({}, {})&quot;</span>, system_a.name(), system_b.name());
+        <span class="kw">let </span>name = <span class="macro">format!</span>(<span class="string">"Pipe({}, {})"</span>, system_a.name(), system_b.name());
         PipeSystem::new(system_a, system_b, Cow::Owned(name))
     }
 
@@ -2113,7 +1933,7 @@
     /// # use bevy_ecs::prelude::*;
     /// # let mut schedule = Schedule::default();
     /// // Ignores the output of a system that may fail.
-    /// schedule.add_systems(my_system.map(std::mem::drop));
+    /// schedule.add_systems(my_system.map(drop));
     /// # let mut world = World::new();
     /// # world.insert_resource(T);
     /// # schedule.run(&amp;mut world);
@@ -2127,11 +1947,17 @@
     /// ```
     </span><span class="kw">fn </span>map&lt;T, F&gt;(<span class="self">self</span>, f: F) -&gt; AdapterSystem&lt;F, <span class="self">Self</span>::System&gt;
     <span class="kw">where
-        </span>F: Send + Sync + <span class="lifetime">&#39;static </span>+ FnMut(Out) -&gt; T,
+        </span>F: Send + Sync + <span class="lifetime">'static </span>+ FnMut(Out) -&gt; T,
     {
         <span class="kw">let </span>system = <span class="self">Self</span>::into_system(<span class="self">self</span>);
         <span class="kw">let </span>name = system.name();
         AdapterSystem::new(f, system, name)
+    }
+
+    <span class="doccomment">/// Get the [`TypeId`] of the [`System`] produced after calling [`into_system`](`IntoSystem::into_system`).
+    </span><span class="attr">#[inline]
+    </span><span class="kw">fn </span>system_type_id(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; TypeId {
+        TypeId::of::&lt;<span class="self">Self</span>::System&gt;()
     }
 }
 
@@ -2171,226 +1997,6 @@
 /// ```
 </span><span class="kw">pub struct </span>In&lt;In&gt;(<span class="kw">pub </span>In);
 
-<span class="doccomment">/// A collection of common adapters for [piping](crate::system::PipeSystem) the result of a system.
-</span><span class="attr">#[deprecated = <span class="string">&quot;this form of system adapter has been deprecated in favor of `system.map(...)`&quot;</span>]
-</span><span class="kw">pub mod </span>adapter {
-    <span class="kw">use </span><span class="kw">crate</span>::system::In;
-    <span class="kw">use </span>bevy_utils::tracing;
-    <span class="kw">use </span>std::fmt::Debug;
-
-    <span class="doccomment">/// Converts a regular function into a system adapter.
-    ///
-    /// # Examples
-    /// ```
-    /// use bevy_ecs::prelude::*;
-    ///
-    /// fn return1() -&gt; u64 { 1 }
-    ///
-    /// return1
-    ///     .pipe(system_adapter::new(u32::try_from))
-    ///     .pipe(system_adapter::unwrap)
-    ///     .pipe(print);
-    ///
-    /// fn print(In(x): In&lt;impl std::fmt::Debug&gt;) {
-    ///     println!(&quot;{x:?}&quot;);
-    /// }
-    /// ```
-    </span><span class="attr">#[deprecated = <span class="string">&quot;use `.map(...)` instead&quot;</span>]
-    </span><span class="kw">pub fn </span>new&lt;T, U&gt;(<span class="kw-2">mut </span>f: <span class="kw">impl </span>FnMut(T) -&gt; U) -&gt; <span class="kw">impl </span>FnMut(In&lt;T&gt;) -&gt; U {
-        <span class="kw">move </span>|In(x)| f(x)
-    }
-
-    <span class="doccomment">/// System adapter that unwraps the `Ok` variant of a [`Result`].
-    /// This is useful for fallible systems that should panic in the case of an error.
-    ///
-    /// There is no equivalent adapter for [`Option`]. Instead, it&#39;s best to provide
-    /// an error message and convert to a `Result` using `ok_or{_else}`.
-    ///
-    /// # Examples
-    ///
-    /// Panicking on error
-    ///
-    /// ```
-    /// use bevy_ecs::prelude::*;
-    ///
-    /// // Building a new schedule/app...
-    /// let mut sched = Schedule::default();
-    /// sched.add_systems(
-    ///         // Panic if the load system returns an error.
-    ///         load_save_system.pipe(system_adapter::unwrap)
-    ///     )
-    ///     // ...
-    /// #   ;
-    /// # let mut world = World::new();
-    /// # sched.run(&amp;mut world);
-    ///
-    /// // A system which may fail irreparably.
-    /// fn load_save_system() -&gt; Result&lt;(), std::io::Error&gt; {
-    ///     let save_file = open_file(&quot;my_save.json&quot;)?;
-    ///     dbg!(save_file);
-    ///     Ok(())
-    /// }
-    /// # fn open_file(name: &amp;str) -&gt; Result&lt;&amp;&#39;static str, std::io::Error&gt;
-    /// # { Ok(&quot;hello world&quot;) }
-    /// ```
-    </span><span class="attr">#[deprecated = <span class="string">&quot;use `.map(Result::unwrap)` instead&quot;</span>]
-    </span><span class="kw">pub fn </span>unwrap&lt;T, E: Debug&gt;(In(res): In&lt;<span class="prelude-ty">Result</span>&lt;T, E&gt;&gt;) -&gt; T {
-        res.unwrap()
-    }
-
-    <span class="doccomment">/// System adapter that utilizes the [`bevy_utils::tracing::info!`] macro to print system information.
-    ///
-    /// # Examples
-    ///
-    /// ```
-    /// use bevy_ecs::prelude::*;
-    ///
-    /// // Building a new schedule/app...
-    /// let mut sched = Schedule::default();
-    /// sched.add_systems(
-    ///         // Prints system information.
-    ///         data_pipe_system.pipe(system_adapter::info)
-    ///     )
-    ///     // ...
-    /// #   ;
-    /// # let mut world = World::new();
-    /// # sched.run(&amp;mut world);
-    ///
-    /// // A system that returns a String output.
-    /// fn data_pipe_system() -&gt; String {
-    ///     &quot;42&quot;.to_string()
-    /// }
-    /// ```
-    </span><span class="attr">#[deprecated = <span class="string">&quot;use `.map(bevy_utils::info)` instead&quot;</span>]
-    </span><span class="kw">pub fn </span>info&lt;T: Debug&gt;(In(data): In&lt;T&gt;) {
-        <span class="macro">tracing::info!</span>(<span class="string">&quot;{:?}&quot;</span>, data);
-    }
-
-    <span class="doccomment">/// System adapter that utilizes the [`bevy_utils::tracing::debug!`] macro to print the output of a system.
-    ///
-    /// # Examples
-    ///
-    /// ```
-    /// use bevy_ecs::prelude::*;
-    ///
-    /// // Building a new schedule/app...
-    /// let mut sched = Schedule::default();
-    /// sched.add_systems(
-    ///         // Prints debug data from system.
-    ///         parse_message_system.pipe(system_adapter::dbg)
-    ///     )
-    ///     // ...
-    /// #   ;
-    /// # let mut world = World::new();
-    /// # sched.run(&amp;mut world);
-    ///
-    /// // A system that returns a Result&lt;usize, String&gt; output.
-    /// fn parse_message_system() -&gt; Result&lt;usize, std::num::ParseIntError&gt; {
-    ///     Ok(&quot;42&quot;.parse()?)
-    /// }
-    /// ```
-    </span><span class="attr">#[deprecated = <span class="string">&quot;use `.map(bevy_utils::dbg)` instead&quot;</span>]
-    </span><span class="kw">pub fn </span>dbg&lt;T: Debug&gt;(In(data): In&lt;T&gt;) {
-        <span class="macro">tracing::debug!</span>(<span class="string">&quot;{:?}&quot;</span>, data);
-    }
-
-    <span class="doccomment">/// System adapter that utilizes the [`bevy_utils::tracing::warn!`] macro to print the output of a system.
-    ///
-    /// # Examples
-    ///
-    /// ```
-    /// use bevy_ecs::prelude::*;
-    ///
-    /// // Building a new schedule/app...
-    /// # let mut sched = Schedule::default();
-    /// sched.add_systems(
-    ///         // Prints system warning if system returns an error.
-    ///         warning_pipe_system.pipe(system_adapter::warn)
-    ///     )
-    ///     // ...
-    /// #   ;
-    /// # let mut world = World::new();
-    /// # sched.run(&amp;mut world);
-    ///
-    /// // A system that returns a Result&lt;(), String&gt; output.
-    /// fn warning_pipe_system() -&gt; Result&lt;(), String&gt; {
-    ///     Err(&quot;Got to rusty?&quot;.to_string())
-    /// }
-    /// ```
-    </span><span class="attr">#[deprecated = <span class="string">&quot;use `.map(bevy_utils::warn)` instead&quot;</span>]
-    </span><span class="kw">pub fn </span>warn&lt;E: Debug&gt;(In(res): In&lt;<span class="prelude-ty">Result</span>&lt;(), E&gt;&gt;) {
-        <span class="kw">if let </span><span class="prelude-val">Err</span>(warn) = res {
-            <span class="macro">tracing::warn!</span>(<span class="string">&quot;{:?}&quot;</span>, warn);
-        }
-    }
-
-    <span class="doccomment">/// System adapter that utilizes the [`bevy_utils::tracing::error!`] macro to print the output of a system.
-    ///
-    /// # Examples
-    ///
-    /// ```
-    /// use bevy_ecs::prelude::*;
-    /// // Building a new schedule/app...
-    /// let mut sched = Schedule::default();
-    /// sched.add_systems(
-    ///         // Prints system error if system fails.
-    ///         parse_error_message_system.pipe(system_adapter::error)
-    ///     )
-    ///     // ...
-    /// #   ;
-    /// # let mut world = World::new();
-    /// # sched.run(&amp;mut world);
-    ///
-    /// // A system that returns a Result&lt;())&gt; output.
-    /// fn parse_error_message_system() -&gt; Result&lt;(), String&gt; {
-    ///    Err(&quot;Some error&quot;.to_owned())
-    /// }
-    /// ```
-    </span><span class="attr">#[deprecated = <span class="string">&quot;use `.map(bevy_utils::error)` instead&quot;</span>]
-    </span><span class="kw">pub fn </span>error&lt;E: Debug&gt;(In(res): In&lt;<span class="prelude-ty">Result</span>&lt;(), E&gt;&gt;) {
-        <span class="kw">if let </span><span class="prelude-val">Err</span>(error) = res {
-            <span class="macro">tracing::error!</span>(<span class="string">&quot;{:?}&quot;</span>, error);
-        }
-    }
-
-    <span class="doccomment">/// System adapter that ignores the output of the previous system in a pipe.
-    /// This is useful for fallible systems that should simply return early in case of an `Err`/`None`.
-    ///
-    /// # Examples
-    ///
-    /// Returning early
-    ///
-    /// ```
-    /// use bevy_ecs::prelude::*;
-    ///
-    /// // Marker component for an enemy entity.
-    /// #[derive(Component)]
-    /// struct Monster;
-    ///
-    /// // Building a new schedule/app...
-    /// # let mut sched = Schedule::default(); sched
-    ///     .add_systems(
-    ///         // If the system fails, just move on and try again next frame.
-    ///         fallible_system.pipe(system_adapter::ignore)
-    ///     )
-    ///     // ...
-    /// #   ;
-    /// # let mut world = World::new();
-    /// # sched.run(&amp;mut world);
-    ///
-    /// // A system which may return early. It&#39;s more convenient to use the `?` operator for this.
-    /// fn fallible_system(
-    ///     q: Query&lt;Entity, With&lt;Monster&gt;&gt;
-    /// ) -&gt; Option&lt;()&gt; {
-    ///     let monster_id = q.iter().next()?;
-    ///     println!(&quot;Monster entity is {monster_id:?}&quot;);
-    ///     Some(())
-    /// }
-    /// ```
-    </span><span class="attr">#[deprecated = <span class="string">&quot;use `.map(std::mem::drop)` instead&quot;</span>]
-    </span><span class="kw">pub fn </span>ignore&lt;T&gt;(In(<span class="kw">_</span>): In&lt;T&gt;) {}
-}
-
 <span class="doccomment">/// Ensure that a given function is a [system](System).
 ///
 /// This should be used when writing doc examples,
@@ -2400,7 +2006,7 @@
 /// # Examples
 ///
 /// The following example will panic when run since the
-/// system&#39;s parameters mutably access the same component
+/// system's parameters mutably access the same component
 /// multiple times.
 ///
 /// ```should_panic
@@ -2415,7 +2021,7 @@
 ///
 /// assert_is_system(my_system);
 /// ```
-</span><span class="kw">pub fn </span>assert_is_system&lt;In: <span class="lifetime">&#39;static</span>, Out: <span class="lifetime">&#39;static</span>, Marker&gt;(
+</span><span class="kw">pub fn </span>assert_is_system&lt;In: <span class="lifetime">'static</span>, Out: <span class="lifetime">'static</span>, Marker&gt;(
     system: <span class="kw">impl </span>IntoSystem&lt;In, Out, Marker&gt;,
 ) {
     <span class="kw">let </span><span class="kw-2">mut </span>system = IntoSystem::into_system(system);
@@ -2448,7 +2054,7 @@
 ///
 /// assert_is_read_only_system(my_system);
 /// ```
-</span><span class="kw">pub fn </span>assert_is_read_only_system&lt;In: <span class="lifetime">&#39;static</span>, Out: <span class="lifetime">&#39;static</span>, Marker, S&gt;(system: S)
+</span><span class="kw">pub fn </span>assert_is_read_only_system&lt;In: <span class="lifetime">'static</span>, Out: <span class="lifetime">'static</span>, Marker, S&gt;(system: S)
 <span class="kw">where
     </span>S: IntoSystem&lt;In, Out, Marker&gt;,
     S::System: ReadOnlySystem,
@@ -2456,7 +2062,7 @@
     assert_is_system(system);
 }
 
-<span class="doccomment">/// Ensures that the provided system doesn&#39;t with itself.
+<span class="doccomment">/// Ensures that the provided system doesn't with itself.
 ///
 /// This function will  panic if the provided system conflict with itself.
 ///
@@ -2466,6 +2072,20 @@
     <span class="kw">let </span><span class="kw-2">mut </span>system = IntoSystem::into_system(sys);
     system.initialize(<span class="kw-2">&amp;mut </span>world);
     system.run((), <span class="kw-2">&amp;mut </span>world);
+}
+
+<span class="kw">impl</span>&lt;T&gt; std::ops::Deref <span class="kw">for </span>In&lt;T&gt; {
+    <span class="kw">type </span>Target = T;
+
+    <span class="kw">fn </span>deref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="self">Self</span>::Target {
+        <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0
+    </span>}
+}
+
+<span class="kw">impl</span>&lt;T&gt; std::ops::DerefMut <span class="kw">for </span>In&lt;T&gt; {
+    <span class="kw">fn </span>deref_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Target {
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>.<span class="number">0
+    </span>}
 }
 
 <span class="attr">#[cfg(test)]
@@ -2490,7 +2110,7 @@
         },
         system::{
             Commands, In, IntoSystem, Local, NonSend, NonSendMut, ParamSet, Query, Res, ResMut,
-            Resource, System, SystemState,
+            Resource, StaticSystemParam, System, SystemState,
         },
         world::{FromWorld, World},
     };
@@ -2521,7 +2141,7 @@
     </span><span class="kw">fn </span>simple_system() {
         <span class="kw">fn </span>sys(query: Query&lt;<span class="kw-2">&amp;</span>A&gt;) {
             <span class="kw">for </span>a <span class="kw">in </span><span class="kw-2">&amp;</span>query {
-                <span class="macro">println!</span>(<span class="string">&quot;{a:?}&quot;</span>);
+                <span class="macro">println!</span>(<span class="string">"{a:?}"</span>);
             }
         }
 
@@ -2539,7 +2159,8 @@
         schedule.run(world);
     }
 
-    <span class="attr">#[test]
+    <span class="attr">#[allow(deprecated)]
+    #[test]
     </span><span class="kw">fn </span>query_system_gets() {
         <span class="kw">fn </span>query_system(
             <span class="kw-2">mut </span>ran: ResMut&lt;SystemRan&gt;,
@@ -2551,35 +2172,35 @@
             <span class="kw">let </span>entities = entity_query.iter().collect::&lt;Vec&lt;Entity&gt;&gt;();
             <span class="macro">assert!</span>(
                 b_query.get_component::&lt;B&gt;(entities[<span class="number">0</span>]).is_err(),
-                <span class="string">&quot;entity 0 should not have B&quot;
+                <span class="string">"entity 0 should not have B"
             </span>);
             <span class="macro">assert!</span>(
                 b_query.get_component::&lt;B&gt;(entities[<span class="number">1</span>]).is_ok(),
-                <span class="string">&quot;entity 1 should have B&quot;
+                <span class="string">"entity 1 should have B"
             </span>);
             <span class="macro">assert!</span>(
                 b_query.get_component::&lt;A&gt;(entities[<span class="number">1</span>]).is_err(),
-                <span class="string">&quot;entity 1 should have A, but b_query shouldn&#39;t have access to it&quot;
+                <span class="string">"entity 1 should have A, but b_query shouldn't have access to it"
             </span>);
             <span class="macro">assert!</span>(
                 b_query.get_component::&lt;D&gt;(entities[<span class="number">3</span>]).is_err(),
-                <span class="string">&quot;entity 3 should have D, but it shouldn&#39;t be accessible from b_query&quot;
+                <span class="string">"entity 3 should have D, but it shouldn't be accessible from b_query"
             </span>);
             <span class="macro">assert!</span>(
                 b_query.get_component::&lt;C&gt;(entities[<span class="number">2</span>]).is_err(),
-                <span class="string">&quot;entity 2 has C, but it shouldn&#39;t be accessible from b_query&quot;
+                <span class="string">"entity 2 has C, but it shouldn't be accessible from b_query"
             </span>);
             <span class="macro">assert!</span>(
                 a_c_query.get_component::&lt;C&gt;(entities[<span class="number">2</span>]).is_ok(),
-                <span class="string">&quot;entity 2 has C, and it should be accessible from a_c_query&quot;
+                <span class="string">"entity 2 has C, and it should be accessible from a_c_query"
             </span>);
             <span class="macro">assert!</span>(
                 a_c_query.get_component::&lt;D&gt;(entities[<span class="number">3</span>]).is_err(),
-                <span class="string">&quot;entity 3 should have D, but it shouldn&#39;t be accessible from b_query&quot;
+                <span class="string">"entity 3 should have D, but it shouldn't be accessible from b_query"
             </span>);
             <span class="macro">assert!</span>(
                 d_query.get_component::&lt;D&gt;(entities[<span class="number">3</span>]).is_ok(),
-                <span class="string">&quot;entity 3 should have D&quot;
+                <span class="string">"entity 3 should have D"
             </span>);
 
             <span class="kw-2">*</span>ran = SystemRan::Yes;
@@ -2730,7 +2351,7 @@
     }
 
     <span class="attr">#[test]
-    #[should_panic = <span class="string">&quot;error[B0001]&quot;</span>]
+    #[should_panic = <span class="string">"error[B0001]"</span>]
     </span><span class="kw">fn </span>option_has_no_filter_with() {
         <span class="kw">fn </span>sys(<span class="kw">_</span>: Query&lt;(<span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>A&gt;, <span class="kw-2">&amp;mut </span>B)&gt;, <span class="kw">_</span>: Query&lt;<span class="kw-2">&amp;mut </span>B, Without&lt;A&gt;&gt;) {}
         <span class="kw">let </span><span class="kw-2">mut </span>world = World::default();
@@ -2745,7 +2366,7 @@
     }
 
     <span class="attr">#[test]
-    #[should_panic = <span class="string">&quot;error[B0001]&quot;</span>]
+    #[should_panic = <span class="string">"error[B0001]"</span>]
     </span><span class="kw">fn </span>any_of_has_no_filter_with() {
         <span class="kw">fn </span>sys(<span class="kw">_</span>: Query&lt;(AnyOf&lt;(<span class="kw-2">&amp;</span>A, ())&gt;, <span class="kw-2">&amp;mut </span>B)&gt;, <span class="kw">_</span>: Query&lt;<span class="kw-2">&amp;mut </span>B, Without&lt;A&gt;&gt;) {}
         <span class="kw">let </span><span class="kw-2">mut </span>world = World::default();
@@ -2774,7 +2395,7 @@
     }
 
     <span class="attr">#[test]
-    #[should_panic = <span class="string">&quot;error[B0001]&quot;</span>]
+    #[should_panic = <span class="string">"error[B0001]"</span>]
     </span><span class="kw">fn </span>or_has_no_filter_with() {
         <span class="kw">fn </span>sys(<span class="kw">_</span>: Query&lt;<span class="kw-2">&amp;mut </span>B, Or&lt;(With&lt;A&gt;, With&lt;B&gt;)&gt;&gt;, <span class="kw">_</span>: Query&lt;<span class="kw-2">&amp;mut </span>B, Without&lt;A&gt;&gt;) {}
         <span class="kw">let </span><span class="kw-2">mut </span>world = World::default();
@@ -2818,7 +2439,7 @@
     }
 
     <span class="attr">#[test]
-    #[should_panic = <span class="string">&quot;error[B0001]&quot;</span>]
+    #[should_panic = <span class="string">"error[B0001]"</span>]
     </span><span class="kw">fn </span>or_expanded_nested_with_and_disjoint_without() {
         <span class="kw">fn </span>sys(
             <span class="kw">_</span>: Query&lt;<span class="kw-2">&amp;mut </span>E, (Or&lt;((With&lt;B&gt;, With&lt;C&gt;), (With&lt;C&gt;, With&lt;D&gt;))&gt;, With&lt;A&gt;)&gt;,
@@ -2830,7 +2451,7 @@
     }
 
     <span class="attr">#[test]
-    #[should_panic = <span class="string">&quot;error[B0001]&quot;</span>]
+    #[should_panic = <span class="string">"error[B0001]"</span>]
     </span><span class="kw">fn </span>or_expanded_nested_or_with_and_disjoint_without() {
         <span class="kw">fn </span>sys(
             <span class="kw">_</span>: Query&lt;<span class="kw-2">&amp;mut </span>D, Or&lt;(Or&lt;(With&lt;A&gt;, With&lt;B&gt;)&gt;, Or&lt;(With&lt;A&gt;, With&lt;C&gt;)&gt;)&gt;&gt;,
@@ -2864,7 +2485,7 @@
     }
 
     <span class="attr">#[test]
-    #[should_panic = <span class="string">&quot;error[B0001]&quot;</span>]
+    #[should_panic = <span class="string">"error[B0001]"</span>]
     </span><span class="kw">fn </span>with_and_disjoint_or_empty_without() {
         <span class="kw">fn </span>sys(<span class="kw">_</span>: Query&lt;<span class="kw-2">&amp;mut </span>B, With&lt;A&gt;&gt;, <span class="kw">_</span>: Query&lt;<span class="kw-2">&amp;mut </span>B, Or&lt;((), Without&lt;A&gt;)&gt;&gt;) {}
         <span class="kw">let </span><span class="kw-2">mut </span>world = World::default();
@@ -2872,7 +2493,7 @@
     }
 
     <span class="attr">#[test]
-    #[should_panic = <span class="string">&quot;error[B0001]&quot;</span>]
+    #[should_panic = <span class="string">"error[B0001]"</span>]
     </span><span class="kw">fn </span>or_expanded_with_and_disjoint_nested_without() {
         <span class="kw">fn </span>sys(
             <span class="kw">_</span>: Query&lt;<span class="kw-2">&amp;mut </span>D, Or&lt;(With&lt;A&gt;, With&lt;B&gt;)&gt;&gt;,
@@ -2884,7 +2505,7 @@
     }
 
     <span class="attr">#[test]
-    #[should_panic = <span class="string">&quot;error[B0001]&quot;</span>]
+    #[should_panic = <span class="string">"error[B0001]"</span>]
     </span><span class="kw">fn </span>or_expanded_nested_with_and_disjoint_nested_without() {
         <span class="kw">fn </span>sys(
             <span class="kw">_</span>: Query&lt;<span class="kw-2">&amp;mut </span>D, Or&lt;((With&lt;A&gt;, With&lt;B&gt;), (With&lt;B&gt;, With&lt;C&gt;))&gt;&gt;,
@@ -3049,7 +2670,7 @@
             <span class="kw-2">mut </span>_op2: <span class="prelude-ty">Option</span>&lt;NonSendMut&lt;NotSend2&gt;&gt;,
             <span class="kw-2">mut </span>system_ran: ResMut&lt;SystemRan&gt;,
         ) {
-            op.expect(<span class="string">&quot;NonSend should exist&quot;</span>);
+            op.expect(<span class="string">"NonSend should exist"</span>);
             <span class="kw-2">*</span>system_ran = SystemRan::Yes;
         }
 
@@ -3115,7 +2736,7 @@
             <span class="macro">assert_eq!</span>(
                 removed_i32.read().collect::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;(),
                 <span class="kw-2">&amp;</span>[despawned.<span class="number">0</span>],
-                <span class="string">&quot;despawning causes the correct entity to show up in the &#39;RemovedComponent&#39; system parameter.&quot;
+                <span class="string">"despawning causes the correct entity to show up in the 'RemovedComponent' system parameter."
             </span>);
 
             n_systems.<span class="number">0 </span>+= <span class="number">1</span>;
@@ -3143,7 +2764,7 @@
             </span><span class="macro">assert_eq!</span>(
                 removed_i32.read().collect::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;(),
                 <span class="kw-2">&amp;</span>[despawned.<span class="number">0</span>, removed.<span class="number">0</span>],
-                <span class="string">&quot;removing a component causes the correct entity to show up in the &#39;RemovedComponent&#39; system parameter.&quot;
+                <span class="string">"removing a component causes the correct entity to show up in the 'RemovedComponent' system parameter."
             </span>);
 
             n_systems.<span class="number">0 </span>+= <span class="number">1</span>;
@@ -3168,26 +2789,26 @@
             query: Query&lt;Entity, With&lt;W&lt;i32&gt;&gt;&gt;,
             <span class="kw-2">mut </span>system_ran: ResMut&lt;SystemRan&gt;,
         ) {
-            <span class="macro">assert_eq!</span>(query.iter().count(), <span class="number">1</span>, <span class="string">&quot;entity exists&quot;</span>);
+            <span class="macro">assert_eq!</span>(query.iter().count(), <span class="number">1</span>, <span class="string">"entity exists"</span>);
             <span class="kw">for </span>entity <span class="kw">in </span><span class="kw-2">&amp;</span>query {
                 <span class="kw">let </span>location = entities.get(entity).unwrap();
                 <span class="kw">let </span>archetype = archetypes.get(location.archetype_id).unwrap();
                 <span class="kw">let </span>archetype_components = archetype.components().collect::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;();
                 <span class="kw">let </span>bundle_id = bundles
-                    .get_id(std::any::TypeId::of::&lt;(W&lt;i32&gt;, W&lt;bool&gt;)&gt;())
-                    .expect(<span class="string">&quot;Bundle used to spawn entity should exist&quot;</span>);
+                    .get_id(TypeId::of::&lt;(W&lt;i32&gt;, W&lt;bool&gt;)&gt;())
+                    .expect(<span class="string">"Bundle used to spawn entity should exist"</span>);
                 <span class="kw">let </span>bundle_info = bundles.get(bundle_id).unwrap();
                 <span class="kw">let </span><span class="kw-2">mut </span>bundle_components = bundle_info.components().to_vec();
                 bundle_components.sort();
                 <span class="kw">for </span>component_id <span class="kw">in </span><span class="kw-2">&amp;</span>bundle_components {
                     <span class="macro">assert!</span>(
                         components.get_info(<span class="kw-2">*</span>component_id).is_some(),
-                        <span class="string">&quot;every bundle component exists in Components&quot;
+                        <span class="string">"every bundle component exists in Components"
                     </span>);
                 }
                 <span class="macro">assert_eq!</span>(
                     bundle_components, archetype_components,
-                    <span class="string">&quot;entity&#39;s bundle components exactly match entity&#39;s archetype components&quot;
+                    <span class="string">"entity's bundle components exactly match entity's archetype components"
                 </span>);
             }
             <span class="kw-2">*</span>system_ran = SystemRan::Yes;
@@ -3307,11 +2928,11 @@
         <span class="kw">let </span><span class="kw-2">mut </span>system_state: SystemState&lt;(Res&lt;A&gt;, Query&lt;<span class="kw-2">&amp;</span>B&gt;, ParamSet&lt;(Query&lt;<span class="kw-2">&amp;</span>C&gt;, Query&lt;<span class="kw-2">&amp;</span>D&gt;)&gt;)&gt; =
             SystemState::new(<span class="kw-2">&amp;mut </span>world);
         <span class="kw">let </span>(a, query, <span class="kw">_</span>) = system_state.get(<span class="kw-2">&amp;</span>world);
-        <span class="macro">assert_eq!</span>(<span class="kw-2">*</span>a, A(<span class="number">42</span>), <span class="string">&quot;returned resource matches initial value&quot;</span>);
+        <span class="macro">assert_eq!</span>(<span class="kw-2">*</span>a, A(<span class="number">42</span>), <span class="string">"returned resource matches initial value"</span>);
         <span class="macro">assert_eq!</span>(
             <span class="kw-2">*</span>query.single(),
             B(<span class="number">7</span>),
-            <span class="string">&quot;returned component matches initial value&quot;
+            <span class="string">"returned component matches initial value"
         </span>);
     }
 
@@ -3330,15 +2951,15 @@
         <span class="kw">let </span><span class="kw-2">mut </span>system_state: SystemState&lt;(ResMut&lt;A&gt;, Query&lt;<span class="kw-2">&amp;mut </span>B&gt;)&gt; =
             SystemState::new(<span class="kw-2">&amp;mut </span>world);
 
-        <span class="comment">// The following line shouldn&#39;t compile because the parameters used are not ReadOnlySystemParam
+        <span class="comment">// The following line shouldn't compile because the parameters used are not ReadOnlySystemParam
         // let (a, query) = system_state.get(&amp;world);
 
         </span><span class="kw">let </span>(a, <span class="kw-2">mut </span>query) = system_state.get_mut(<span class="kw-2">&amp;mut </span>world);
-        <span class="macro">assert_eq!</span>(<span class="kw-2">*</span>a, A(<span class="number">42</span>), <span class="string">&quot;returned resource matches initial value&quot;</span>);
+        <span class="macro">assert_eq!</span>(<span class="kw-2">*</span>a, A(<span class="number">42</span>), <span class="string">"returned resource matches initial value"</span>);
         <span class="macro">assert_eq!</span>(
             <span class="kw-2">*</span>query.single_mut(),
             B(<span class="number">7</span>),
-            <span class="string">&quot;returned component matches initial value&quot;
+            <span class="string">"returned component matches initial value"
         </span>);
     }
 
@@ -3394,7 +3015,7 @@
             <span class="macro">assert_eq!</span>(
                 query.iter().collect::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;(),
                 <span class="macro">vec!</span>[<span class="kw-2">&amp;</span>A(<span class="number">1</span>)],
-                <span class="string">&quot;exactly one component returned&quot;
+                <span class="string">"exactly one component returned"
             </span>);
         }
 
@@ -3404,37 +3025,37 @@
             <span class="macro">assert_eq!</span>(
                 query.iter().collect::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;(),
                 <span class="macro">vec!</span>[<span class="kw-2">&amp;</span>A(<span class="number">1</span>), <span class="kw-2">&amp;</span>A(<span class="number">2</span>)],
-                <span class="string">&quot;components from both archetypes returned&quot;
+                <span class="string">"components from both archetypes returned"
             </span>);
         }
     }
 
-    <span class="doccomment">/// this test exists to show that read-only world-only queries can return data that lives as long as &#39;world
+    <span class="doccomment">/// this test exists to show that read-only world-only queries can return data that lives as long as 'world
     </span><span class="attr">#[test]
     #[allow(unused)]
     </span><span class="kw">fn </span>long_life_test() {
-        <span class="kw">struct </span>Holder&lt;<span class="lifetime">&#39;w</span>&gt; {
-            value: <span class="kw-2">&amp;</span><span class="lifetime">&#39;w </span>A,
+        <span class="kw">struct </span>Holder&lt;<span class="lifetime">'w</span>&gt; {
+            value: <span class="kw-2">&amp;</span><span class="lifetime">'w </span>A,
         }
 
         <span class="kw">struct </span>State {
-            state: SystemState&lt;Res&lt;<span class="lifetime">&#39;static</span>, A&gt;&gt;,
-            state_q: SystemState&lt;Query&lt;<span class="lifetime">&#39;static</span>, <span class="lifetime">&#39;static</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>A&gt;&gt;,
+            state: SystemState&lt;Res&lt;<span class="lifetime">'static</span>, A&gt;&gt;,
+            state_q: SystemState&lt;Query&lt;<span class="lifetime">'static</span>, <span class="lifetime">'static</span>, <span class="kw-2">&amp;</span><span class="lifetime">'static </span>A&gt;&gt;,
         }
 
         <span class="kw">impl </span>State {
-            <span class="kw">fn </span>hold_res&lt;<span class="lifetime">&#39;w</span>&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, world: <span class="kw-2">&amp;</span><span class="lifetime">&#39;w </span>World) -&gt; Holder&lt;<span class="lifetime">&#39;w</span>&gt; {
+            <span class="kw">fn </span>hold_res&lt;<span class="lifetime">'w</span>&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, world: <span class="kw-2">&amp;</span><span class="lifetime">'w </span>World) -&gt; Holder&lt;<span class="lifetime">'w</span>&gt; {
                 <span class="kw">let </span>a = <span class="self">self</span>.state.get(world);
                 Holder {
                     value: a.into_inner(),
                 }
             }
-            <span class="kw">fn </span>hold_component&lt;<span class="lifetime">&#39;w</span>&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, world: <span class="kw-2">&amp;</span><span class="lifetime">&#39;w </span>World, entity: Entity) -&gt; Holder&lt;<span class="lifetime">&#39;w</span>&gt; {
+            <span class="kw">fn </span>hold_component&lt;<span class="lifetime">'w</span>&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, world: <span class="kw-2">&amp;</span><span class="lifetime">'w </span>World, entity: Entity) -&gt; Holder&lt;<span class="lifetime">'w</span>&gt; {
                 <span class="kw">let </span>q = <span class="self">self</span>.state_q.get(world);
                 <span class="kw">let </span>a = q.get_inner(entity).unwrap();
                 Holder { value: a }
             }
-            <span class="kw">fn </span>hold_components&lt;<span class="lifetime">&#39;w</span>&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, world: <span class="kw-2">&amp;</span><span class="lifetime">&#39;w </span>World) -&gt; Vec&lt;Holder&lt;<span class="lifetime">&#39;w</span>&gt;&gt; {
+            <span class="kw">fn </span>hold_components&lt;<span class="lifetime">'w</span>&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, world: <span class="kw-2">&amp;</span><span class="lifetime">'w </span>World) -&gt; Vec&lt;Holder&lt;<span class="lifetime">'w</span>&gt;&gt; {
                 <span class="kw">let </span><span class="kw-2">mut </span>components = Vec::new();
                 <span class="kw">let </span>q = <span class="self">self</span>.state_q.get(world);
                 <span class="kw">for </span>a <span class="kw">in </span>q.iter_inner() {
@@ -3460,12 +3081,12 @@
             <span class="macro">assert_eq!</span>(
                 query.iter_mut().map(|m| <span class="kw-2">*</span>m).collect::&lt;Vec&lt;A&gt;&gt;(),
                 <span class="macro">vec!</span>[A(<span class="number">1</span>), A(<span class="number">2</span>)],
-                <span class="string">&quot;both components returned by iter_mut of &amp;mut&quot;
+                <span class="string">"both components returned by iter_mut of &amp;mut"
             </span>);
             <span class="macro">assert_eq!</span>(
                 query.iter().collect::&lt;Vec&lt;<span class="kw-2">&amp;</span>A&gt;&gt;(),
                 <span class="macro">vec!</span>[<span class="kw-2">&amp;</span>A(<span class="number">1</span>), <span class="kw-2">&amp;</span>A(<span class="number">2</span>)],
-                <span class="string">&quot;both components returned by iter of &amp;mut&quot;
+                <span class="string">"both components returned by iter of &amp;mut"
             </span>);
         }
     }
@@ -3698,7 +3319,8 @@
         });
     }
 
-    <span class="attr">#[test]
+    <span class="attr">#[allow(deprecated)]
+    #[test]
     </span><span class="kw">fn </span>readonly_query_get_mut_component_fails() {
         <span class="kw">use </span><span class="kw">crate</span>::query::QueryComponentError;
 
@@ -3714,7 +3336,7 @@
     }
 
     <span class="attr">#[test]
-    #[should_panic = <span class="string">&quot;Encountered a mismatched World.&quot;</span>]
+    #[should_panic = <span class="string">"Encountered a mismatched World."</span>]
     </span><span class="kw">fn </span>query_validates_world_id() {
         <span class="kw">let </span><span class="kw-2">mut </span>world1 = World::new();
         <span class="kw">let </span>world2 = World::new();
@@ -3743,7 +3365,7 @@
     #[should_panic]
     </span><span class="kw">fn </span>panic_inside_system() {
         <span class="kw">let </span><span class="kw-2">mut </span>world = World::new();
-        run_system(<span class="kw-2">&amp;mut </span>world, || <span class="macro">panic!</span>(<span class="string">&quot;this system panics&quot;</span>));
+        run_system(<span class="kw-2">&amp;mut </span>world, || <span class="macro">panic!</span>(<span class="string">"this system panics"</span>));
     }
 
     <span class="attr">#[test]
@@ -3762,14 +3384,29 @@
             <span class="macro">unimplemented!</span>()
         }
 
+        <span class="kw">fn </span>static_system_param(<span class="kw">_</span>: StaticSystemParam&lt;Query&lt;<span class="lifetime">'static</span>, <span class="lifetime">'static</span>, <span class="kw-2">&amp;</span>W&lt;u32&gt;&gt;&gt;) {
+            <span class="macro">unimplemented!</span>()
+        }
+
+        <span class="kw">fn </span>exclusive_with_state(
+            <span class="kw">_</span>: <span class="kw-2">&amp;mut </span>World,
+            <span class="kw">_</span>: Local&lt;bool&gt;,
+            <span class="kw">_</span>: (<span class="kw-2">&amp;mut </span>QueryState&lt;<span class="kw-2">&amp;</span>W&lt;i32&gt;&gt;, <span class="kw-2">&amp;mut </span>SystemState&lt;Query&lt;<span class="kw-2">&amp;</span>W&lt;u32&gt;&gt;&gt;),
+            <span class="kw">_</span>: (),
+        ) {
+            <span class="macro">unimplemented!</span>()
+        }
+
         <span class="kw">fn </span>not(In(val): In&lt;bool&gt;) -&gt; bool {
             !val
         }
 
         assert_is_system(returning::&lt;<span class="prelude-ty">Result</span>&lt;u32, std::io::Error&gt;&gt;.map(Result::unwrap));
-        assert_is_system(returning::&lt;<span class="prelude-ty">Option</span>&lt;()&gt;&gt;.map(std::mem::drop));
+        assert_is_system(returning::&lt;<span class="prelude-ty">Option</span>&lt;()&gt;&gt;.map(drop));
         assert_is_system(returning::&lt;<span class="kw-2">&amp;</span>str&gt;.map(u64::from_str).map(Result::unwrap));
+        assert_is_system(static_system_param);
         assert_is_system(exclusive_in_out::&lt;(), <span class="prelude-ty">Result</span>&lt;(), std::io::Error&gt;&gt;.map(bevy_utils::error));
+        assert_is_system(exclusive_with_state);
         assert_is_system(returning::&lt;bool&gt;.pipe(exclusive_in_out::&lt;bool, ()&gt;));
 
         returning::&lt;()&gt;.run_if(returning::&lt;bool&gt;.pipe(not));
@@ -3862,14 +3499,14 @@
         <span class="kw">let </span><span class="kw-2">mut </span>sched = Schedule::default();
         sched.add_systems(
             (
-                (|<span class="kw-2">mut </span>res: ResMut&lt;C&gt;| {
+                |<span class="kw-2">mut </span>res: ResMut&lt;C&gt;| {
                     res.<span class="number">0 </span>+= <span class="number">1</span>;
-                }),
-                (|<span class="kw-2">mut </span>res: ResMut&lt;C&gt;| {
+                },
+                |<span class="kw-2">mut </span>res: ResMut&lt;C&gt;| {
                     res.<span class="number">0 </span>+= <span class="number">2</span>;
-                }),
+                },
             )
-                .distributive_run_if(resource_exists::&lt;A&gt;().or_else(resource_exists::&lt;B&gt;())),
+                .distributive_run_if(resource_exists::&lt;A&gt;.or_else(resource_exists::&lt;B&gt;)),
         );
         sched.initialize(<span class="kw-2">&amp;mut </span>world).unwrap();
         sched.run(<span class="kw-2">&amp;mut </span>world);

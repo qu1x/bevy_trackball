@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/wgpu-core-0.17.1/src/device/life.rs`."><title>life.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="wgpu_core" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../wgpu_core/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/wgpu-core-0.19.0/src/device/life.rs`."><title>life.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="wgpu_core" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -881,259 +882,166 @@
 <a href="#881" id="881">881</a>
 <a href="#882" id="882">882</a>
 <a href="#883" id="883">883</a>
-<a href="#884" id="884">884</a>
-<a href="#885" id="885">885</a>
-<a href="#886" id="886">886</a>
-<a href="#887" id="887">887</a>
-<a href="#888" id="888">888</a>
-<a href="#889" id="889">889</a>
-<a href="#890" id="890">890</a>
-<a href="#891" id="891">891</a>
-<a href="#892" id="892">892</a>
-<a href="#893" id="893">893</a>
-<a href="#894" id="894">894</a>
-<a href="#895" id="895">895</a>
-<a href="#896" id="896">896</a>
-<a href="#897" id="897">897</a>
-<a href="#898" id="898">898</a>
-<a href="#899" id="899">899</a>
-<a href="#900" id="900">900</a>
-<a href="#901" id="901">901</a>
-<a href="#902" id="902">902</a>
-<a href="#903" id="903">903</a>
-<a href="#904" id="904">904</a>
-<a href="#905" id="905">905</a>
-<a href="#906" id="906">906</a>
-<a href="#907" id="907">907</a>
-<a href="#908" id="908">908</a>
-<a href="#909" id="909">909</a>
-<a href="#910" id="910">910</a>
-<a href="#911" id="911">911</a>
-<a href="#912" id="912">912</a>
-<a href="#913" id="913">913</a>
-<a href="#914" id="914">914</a>
-</pre></div><pre class="rust"><code><span class="attr">#[cfg(feature = <span class="string">&quot;trace&quot;</span>)]
-</span><span class="kw">use </span><span class="kw">crate</span>::device::trace;
-<span class="kw">use crate</span>::{
+</pre></div><pre class="rust"><code><span class="kw">use crate</span>::{
+    binding_model::{BindGroup, BindGroupLayout, PipelineLayout},
+    command::RenderBundle,
     device::{
         queue::{EncoderInFlight, SubmittedWorkDoneClosure, TempResource},
-        DeviceError,
+        DeviceError, DeviceLostClosure,
     },
     hal_api::HalApi,
-    hub::{Hub, Token},
-    id,
-    identity::GlobalIdentityHandlerFactory,
-    resource,
-    track::{BindGroupStates, RenderBundleScope, Tracker},
-    RefCount, Stored, SubmissionIndex,
+    id::{
+        <span class="self">self</span>, BindGroupId, BindGroupLayoutId, BufferId, ComputePipelineId, PipelineLayoutId,
+        QuerySetId, RenderBundleId, RenderPipelineId, SamplerId, StagingBufferId, TextureId,
+        TextureViewId,
+    },
+    pipeline::{ComputePipeline, RenderPipeline},
+    resource::{
+        <span class="self">self</span>, Buffer, DestroyedBuffer, DestroyedTexture, QuerySet, Resource, Sampler,
+        StagingBuffer, Texture, TextureView,
+    },
+    track::{ResourceTracker, Tracker},
+    FastHashMap, SubmissionIndex,
 };
 <span class="kw">use </span>smallvec::SmallVec;
 
-<span class="kw">use </span>hal::Device <span class="kw">as _</span>;
 <span class="kw">use </span>parking_lot::Mutex;
+<span class="kw">use </span>std::sync::Arc;
 <span class="kw">use </span>thiserror::Error;
 
-<span class="kw">use </span>std::mem;
-
 <span class="doccomment">/// A struct that keeps lists of resources that are no longer needed by the user.
-</span><span class="attr">#[derive(Debug, Default)]
-</span><span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">struct </span>SuspectedResources {
-    <span class="kw">pub</span>(<span class="kw">super</span>) buffers: Vec&lt;id::Valid&lt;id::BufferId&gt;&gt;,
-    <span class="kw">pub</span>(<span class="kw">super</span>) textures: Vec&lt;id::Valid&lt;id::TextureId&gt;&gt;,
-    <span class="kw">pub</span>(<span class="kw">super</span>) texture_views: Vec&lt;id::Valid&lt;id::TextureViewId&gt;&gt;,
-    <span class="kw">pub</span>(<span class="kw">super</span>) samplers: Vec&lt;id::Valid&lt;id::SamplerId&gt;&gt;,
-    <span class="kw">pub</span>(<span class="kw">super</span>) bind_groups: Vec&lt;id::Valid&lt;id::BindGroupId&gt;&gt;,
-    <span class="kw">pub</span>(<span class="kw">super</span>) compute_pipelines: Vec&lt;id::Valid&lt;id::ComputePipelineId&gt;&gt;,
-    <span class="kw">pub</span>(<span class="kw">super</span>) render_pipelines: Vec&lt;id::Valid&lt;id::RenderPipelineId&gt;&gt;,
-    <span class="kw">pub</span>(<span class="kw">super</span>) bind_group_layouts: Vec&lt;id::Valid&lt;id::BindGroupLayoutId&gt;&gt;,
-    <span class="kw">pub</span>(<span class="kw">super</span>) pipeline_layouts: Vec&lt;Stored&lt;id::PipelineLayoutId&gt;&gt;,
-    <span class="kw">pub</span>(<span class="kw">super</span>) render_bundles: Vec&lt;id::Valid&lt;id::RenderBundleId&gt;&gt;,
-    <span class="kw">pub</span>(<span class="kw">super</span>) query_sets: Vec&lt;id::Valid&lt;id::QuerySetId&gt;&gt;,
+</span><span class="attr">#[derive(Default)]
+</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct </span>ResourceMaps&lt;A: HalApi&gt; {
+    <span class="kw">pub </span>buffers: FastHashMap&lt;BufferId, Arc&lt;Buffer&lt;A&gt;&gt;&gt;,
+    <span class="kw">pub </span>staging_buffers: FastHashMap&lt;StagingBufferId, Arc&lt;StagingBuffer&lt;A&gt;&gt;&gt;,
+    <span class="kw">pub </span>textures: FastHashMap&lt;TextureId, Arc&lt;Texture&lt;A&gt;&gt;&gt;,
+    <span class="kw">pub </span>texture_views: FastHashMap&lt;TextureViewId, Arc&lt;TextureView&lt;A&gt;&gt;&gt;,
+    <span class="kw">pub </span>samplers: FastHashMap&lt;SamplerId, Arc&lt;Sampler&lt;A&gt;&gt;&gt;,
+    <span class="kw">pub </span>bind_groups: FastHashMap&lt;BindGroupId, Arc&lt;BindGroup&lt;A&gt;&gt;&gt;,
+    <span class="kw">pub </span>bind_group_layouts: FastHashMap&lt;BindGroupLayoutId, Arc&lt;BindGroupLayout&lt;A&gt;&gt;&gt;,
+    <span class="kw">pub </span>render_pipelines: FastHashMap&lt;RenderPipelineId, Arc&lt;RenderPipeline&lt;A&gt;&gt;&gt;,
+    <span class="kw">pub </span>compute_pipelines: FastHashMap&lt;ComputePipelineId, Arc&lt;ComputePipeline&lt;A&gt;&gt;&gt;,
+    <span class="kw">pub </span>pipeline_layouts: FastHashMap&lt;PipelineLayoutId, Arc&lt;PipelineLayout&lt;A&gt;&gt;&gt;,
+    <span class="kw">pub </span>render_bundles: FastHashMap&lt;RenderBundleId, Arc&lt;RenderBundle&lt;A&gt;&gt;&gt;,
+    <span class="kw">pub </span>query_sets: FastHashMap&lt;QuerySetId, Arc&lt;QuerySet&lt;A&gt;&gt;&gt;,
+    <span class="kw">pub </span>destroyed_buffers: FastHashMap&lt;BufferId, Arc&lt;DestroyedBuffer&lt;A&gt;&gt;&gt;,
+    <span class="kw">pub </span>destroyed_textures: FastHashMap&lt;TextureId, Arc&lt;DestroyedTexture&lt;A&gt;&gt;&gt;,
 }
 
-<span class="kw">impl </span>SuspectedResources {
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>clear(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
-        <span class="self">self</span>.buffers.clear();
-        <span class="self">self</span>.textures.clear();
-        <span class="self">self</span>.texture_views.clear();
-        <span class="self">self</span>.samplers.clear();
-        <span class="self">self</span>.bind_groups.clear();
-        <span class="self">self</span>.compute_pipelines.clear();
-        <span class="self">self</span>.render_pipelines.clear();
-        <span class="self">self</span>.bind_group_layouts.clear();
-        <span class="self">self</span>.pipeline_layouts.clear();
-        <span class="self">self</span>.render_bundles.clear();
-        <span class="self">self</span>.query_sets.clear();
-    }
-
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>extend(<span class="kw-2">&amp;mut </span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) {
-        <span class="self">self</span>.buffers.extend_from_slice(<span class="kw-2">&amp;</span>other.buffers);
-        <span class="self">self</span>.textures.extend_from_slice(<span class="kw-2">&amp;</span>other.textures);
-        <span class="self">self</span>.texture_views.extend_from_slice(<span class="kw-2">&amp;</span>other.texture_views);
-        <span class="self">self</span>.samplers.extend_from_slice(<span class="kw-2">&amp;</span>other.samplers);
-        <span class="self">self</span>.bind_groups.extend_from_slice(<span class="kw-2">&amp;</span>other.bind_groups);
-        <span class="self">self</span>.compute_pipelines
-            .extend_from_slice(<span class="kw-2">&amp;</span>other.compute_pipelines);
-        <span class="self">self</span>.render_pipelines
-            .extend_from_slice(<span class="kw-2">&amp;</span>other.render_pipelines);
-        <span class="self">self</span>.bind_group_layouts
-            .extend_from_slice(<span class="kw-2">&amp;</span>other.bind_group_layouts);
-        <span class="self">self</span>.pipeline_layouts
-            .extend_from_slice(<span class="kw-2">&amp;</span>other.pipeline_layouts);
-        <span class="self">self</span>.render_bundles.extend_from_slice(<span class="kw-2">&amp;</span>other.render_bundles);
-        <span class="self">self</span>.query_sets.extend_from_slice(<span class="kw-2">&amp;</span>other.query_sets);
-    }
-
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>add_render_bundle_scope&lt;A: HalApi&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, trackers: <span class="kw-2">&amp;</span>RenderBundleScope&lt;A&gt;) {
-        <span class="self">self</span>.buffers.extend(trackers.buffers.used());
-        <span class="self">self</span>.textures.extend(trackers.textures.used());
-        <span class="self">self</span>.bind_groups.extend(trackers.bind_groups.used());
-        <span class="self">self</span>.render_pipelines
-            .extend(trackers.render_pipelines.used());
-        <span class="self">self</span>.query_sets.extend(trackers.query_sets.used());
-    }
-
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>add_bind_group_states&lt;A: HalApi&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, trackers: <span class="kw-2">&amp;</span>BindGroupStates&lt;A&gt;) {
-        <span class="self">self</span>.buffers.extend(trackers.buffers.used());
-        <span class="self">self</span>.textures.extend(trackers.textures.used());
-        <span class="self">self</span>.texture_views.extend(trackers.views.used());
-        <span class="self">self</span>.samplers.extend(trackers.samplers.used());
-    }
-}
-
-<span class="doccomment">/// Raw backend resources that should be freed shortly.
-</span><span class="attr">#[derive(Debug)]
-</span><span class="kw">struct </span>NonReferencedResources&lt;A: hal::Api&gt; {
-    buffers: Vec&lt;A::Buffer&gt;,
-    textures: Vec&lt;A::Texture&gt;,
-    texture_views: Vec&lt;A::TextureView&gt;,
-    samplers: Vec&lt;A::Sampler&gt;,
-    bind_groups: Vec&lt;A::BindGroup&gt;,
-    compute_pipes: Vec&lt;A::ComputePipeline&gt;,
-    render_pipes: Vec&lt;A::RenderPipeline&gt;,
-    bind_group_layouts: Vec&lt;A::BindGroupLayout&gt;,
-    pipeline_layouts: Vec&lt;A::PipelineLayout&gt;,
-    query_sets: Vec&lt;A::QuerySet&gt;,
-}
-
-<span class="kw">impl</span>&lt;A: hal::Api&gt; NonReferencedResources&lt;A&gt; {
-    <span class="kw">fn </span>new() -&gt; <span class="self">Self </span>{
-        <span class="self">Self </span>{
-            buffers: Vec::new(),
-            textures: Vec::new(),
-            texture_views: Vec::new(),
-            samplers: Vec::new(),
-            bind_groups: Vec::new(),
-            compute_pipes: Vec::new(),
-            render_pipes: Vec::new(),
-            bind_group_layouts: Vec::new(),
-            pipeline_layouts: Vec::new(),
-            query_sets: Vec::new(),
+<span class="kw">impl</span>&lt;A: HalApi&gt; ResourceMaps&lt;A&gt; {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>new() -&gt; <span class="self">Self </span>{
+        ResourceMaps {
+            buffers: FastHashMap::default(),
+            staging_buffers: FastHashMap::default(),
+            textures: FastHashMap::default(),
+            texture_views: FastHashMap::default(),
+            samplers: FastHashMap::default(),
+            bind_groups: FastHashMap::default(),
+            bind_group_layouts: FastHashMap::default(),
+            render_pipelines: FastHashMap::default(),
+            compute_pipelines: FastHashMap::default(),
+            pipeline_layouts: FastHashMap::default(),
+            render_bundles: FastHashMap::default(),
+            query_sets: FastHashMap::default(),
+            destroyed_buffers: FastHashMap::default(),
+            destroyed_textures: FastHashMap::default(),
         }
     }
 
-    <span class="kw">fn </span>extend(<span class="kw-2">&amp;mut </span><span class="self">self</span>, other: <span class="self">Self</span>) {
-        <span class="self">self</span>.buffers.extend(other.buffers);
-        <span class="self">self</span>.textures.extend(other.textures);
-        <span class="self">self</span>.texture_views.extend(other.texture_views);
-        <span class="self">self</span>.samplers.extend(other.samplers);
-        <span class="self">self</span>.bind_groups.extend(other.bind_groups);
-        <span class="self">self</span>.compute_pipes.extend(other.compute_pipes);
-        <span class="self">self</span>.render_pipes.extend(other.render_pipes);
-        <span class="self">self</span>.query_sets.extend(other.query_sets);
-        <span class="macro">assert!</span>(other.bind_group_layouts.is_empty());
-        <span class="macro">assert!</span>(other.pipeline_layouts.is_empty());
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>clear(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw">let </span>ResourceMaps {
+            buffers,
+            staging_buffers,
+            textures,
+            texture_views,
+            samplers,
+            bind_groups,
+            bind_group_layouts,
+            render_pipelines,
+            compute_pipelines,
+            pipeline_layouts,
+            render_bundles,
+            query_sets,
+            destroyed_buffers,
+            destroyed_textures,
+        } = <span class="self">self</span>;
+        buffers.clear();
+        staging_buffers.clear();
+        textures.clear();
+        texture_views.clear();
+        samplers.clear();
+        bind_groups.clear();
+        bind_group_layouts.clear();
+        render_pipelines.clear();
+        compute_pipelines.clear();
+        pipeline_layouts.clear();
+        render_bundles.clear();
+        query_sets.clear();
+        destroyed_buffers.clear();
+        destroyed_textures.clear();
     }
 
-    <span class="kw">unsafe fn </span>clean(<span class="kw-2">&amp;mut </span><span class="self">self</span>, device: <span class="kw-2">&amp;</span>A::Device) {
-        <span class="kw">if </span>!<span class="self">self</span>.buffers.is_empty() {
-            <span class="macro">profiling::scope!</span>(<span class="string">&quot;destroy_buffers&quot;</span>);
-            <span class="kw">for </span>raw <span class="kw">in </span><span class="self">self</span>.buffers.drain(..) {
-                <span class="kw">unsafe </span>{ device.destroy_buffer(raw) };
-            }
-        }
-        <span class="kw">if </span>!<span class="self">self</span>.textures.is_empty() {
-            <span class="macro">profiling::scope!</span>(<span class="string">&quot;destroy_textures&quot;</span>);
-            <span class="kw">for </span>raw <span class="kw">in </span><span class="self">self</span>.textures.drain(..) {
-                <span class="kw">unsafe </span>{ device.destroy_texture(raw) };
-            }
-        }
-        <span class="kw">if </span>!<span class="self">self</span>.texture_views.is_empty() {
-            <span class="macro">profiling::scope!</span>(<span class="string">&quot;destroy_texture_views&quot;</span>);
-            <span class="kw">for </span>raw <span class="kw">in </span><span class="self">self</span>.texture_views.drain(..) {
-                <span class="kw">unsafe </span>{ device.destroy_texture_view(raw) };
-            }
-        }
-        <span class="kw">if </span>!<span class="self">self</span>.samplers.is_empty() {
-            <span class="macro">profiling::scope!</span>(<span class="string">&quot;destroy_samplers&quot;</span>);
-            <span class="kw">for </span>raw <span class="kw">in </span><span class="self">self</span>.samplers.drain(..) {
-                <span class="kw">unsafe </span>{ device.destroy_sampler(raw) };
-            }
-        }
-        <span class="kw">if </span>!<span class="self">self</span>.bind_groups.is_empty() {
-            <span class="macro">profiling::scope!</span>(<span class="string">&quot;destroy_bind_groups&quot;</span>);
-            <span class="kw">for </span>raw <span class="kw">in </span><span class="self">self</span>.bind_groups.drain(..) {
-                <span class="kw">unsafe </span>{ device.destroy_bind_group(raw) };
-            }
-        }
-        <span class="kw">if </span>!<span class="self">self</span>.compute_pipes.is_empty() {
-            <span class="macro">profiling::scope!</span>(<span class="string">&quot;destroy_compute_pipelines&quot;</span>);
-            <span class="kw">for </span>raw <span class="kw">in </span><span class="self">self</span>.compute_pipes.drain(..) {
-                <span class="kw">unsafe </span>{ device.destroy_compute_pipeline(raw) };
-            }
-        }
-        <span class="kw">if </span>!<span class="self">self</span>.render_pipes.is_empty() {
-            <span class="macro">profiling::scope!</span>(<span class="string">&quot;destroy_render_pipelines&quot;</span>);
-            <span class="kw">for </span>raw <span class="kw">in </span><span class="self">self</span>.render_pipes.drain(..) {
-                <span class="kw">unsafe </span>{ device.destroy_render_pipeline(raw) };
-            }
-        }
-        <span class="kw">if </span>!<span class="self">self</span>.bind_group_layouts.is_empty() {
-            <span class="macro">profiling::scope!</span>(<span class="string">&quot;destroy_bind_group_layouts&quot;</span>);
-            <span class="kw">for </span>raw <span class="kw">in </span><span class="self">self</span>.bind_group_layouts.drain(..) {
-                <span class="kw">unsafe </span>{ device.destroy_bind_group_layout(raw) };
-            }
-        }
-        <span class="kw">if </span>!<span class="self">self</span>.pipeline_layouts.is_empty() {
-            <span class="macro">profiling::scope!</span>(<span class="string">&quot;destroy_pipeline_layouts&quot;</span>);
-            <span class="kw">for </span>raw <span class="kw">in </span><span class="self">self</span>.pipeline_layouts.drain(..) {
-                <span class="kw">unsafe </span>{ device.destroy_pipeline_layout(raw) };
-            }
-        }
-        <span class="kw">if </span>!<span class="self">self</span>.query_sets.is_empty() {
-            <span class="macro">profiling::scope!</span>(<span class="string">&quot;destroy_query_sets&quot;</span>);
-            <span class="kw">for </span>raw <span class="kw">in </span><span class="self">self</span>.query_sets.drain(..) {
-                <span class="kw">unsafe </span>{ device.destroy_query_set(raw) };
-            }
-        }
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>extend(<span class="kw-2">&amp;mut </span><span class="self">self</span>, <span class="kw-2">mut </span>other: <span class="self">Self</span>) {
+        <span class="kw">let </span>ResourceMaps {
+            buffers,
+            staging_buffers,
+            textures,
+            texture_views,
+            samplers,
+            bind_groups,
+            bind_group_layouts,
+            render_pipelines,
+            compute_pipelines,
+            pipeline_layouts,
+            render_bundles,
+            query_sets,
+            destroyed_buffers,
+            destroyed_textures,
+        } = <span class="self">self</span>;
+        buffers.extend(other.buffers.drain());
+        staging_buffers.extend(other.staging_buffers.drain());
+        textures.extend(other.textures.drain());
+        texture_views.extend(other.texture_views.drain());
+        samplers.extend(other.samplers.drain());
+        bind_groups.extend(other.bind_groups.drain());
+        bind_group_layouts.extend(other.bind_group_layouts.drain());
+        render_pipelines.extend(other.render_pipelines.drain());
+        compute_pipelines.extend(other.compute_pipelines.drain());
+        pipeline_layouts.extend(other.pipeline_layouts.drain());
+        render_bundles.extend(other.render_bundles.drain());
+        query_sets.extend(other.query_sets.drain());
+        destroyed_buffers.extend(other.destroyed_buffers.drain());
+        destroyed_textures.extend(other.destroyed_textures.drain());
     }
 }
 
 <span class="doccomment">/// Resources used by a queue submission, and work to be done once it completes.
-</span><span class="kw">struct </span>ActiveSubmission&lt;A: hal::Api&gt; {
+</span><span class="kw">struct </span>ActiveSubmission&lt;A: HalApi&gt; {
     <span class="doccomment">/// The index of the submission we track.
     ///
-    /// When `Device::fence`&#39;s value is greater than or equal to this, our queue
+    /// When `Device::fence`'s value is greater than or equal to this, our queue
     /// submission has completed.
     </span>index: SubmissionIndex,
 
     <span class="doccomment">/// Resources to be freed once this queue submission has completed.
     ///
     /// When the device is polled, for completed submissions,
-    /// `triage_submissions` merges these into
-    /// `LifetimeTracker::free_resources`. From there,
-    /// `LifetimeTracker::cleanup` passes them to the hal to be freed.
+    /// `triage_submissions` removes resources that don't need to be held alive any longer
+    /// from there.
     ///
     /// This includes things like temporary resources and resources that are
     /// used by submitted commands but have been dropped by the user (meaning that
     /// this submission is their last reference.)
-    </span>last_resources: NonReferencedResources&lt;A&gt;,
+    </span>last_resources: ResourceMaps&lt;A&gt;,
 
     <span class="doccomment">/// Buffers to be mapped once this submission has completed.
-    </span>mapped: Vec&lt;id::Valid&lt;id::BufferId&gt;&gt;,
+    </span>mapped: Vec&lt;Arc&lt;Buffer&lt;A&gt;&gt;&gt;,
 
     encoders: Vec&lt;EncoderInFlight&lt;A&gt;&gt;,
-    work_done_closures: SmallVec&lt;[SubmittedWorkDoneClosure; <span class="number">1</span>]&gt;,
+
+    <span class="doccomment">/// List of queue "on_submitted_work_done" closures to be called once this
+    /// submission has completed.
+    </span>work_done_closures: SmallVec&lt;[SubmittedWorkDoneClosure; <span class="number">1</span>]&gt;,
 }
 
 <span class="attr">#[derive(Clone, Debug, Error)]
@@ -1141,9 +1049,9 @@
 </span><span class="kw">pub enum </span>WaitIdleError {
     <span class="attr">#[error(transparent)]
     </span>Device(<span class="attr">#[from] </span>DeviceError),
-    <span class="attr">#[error(<span class="string">&quot;Tried to wait using a submission index from the wrong device. Submission index is from device {0:?}. Called poll on device {1:?}.&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Tried to wait using a submission index from the wrong device. Submission index is from device {0:?}. Called poll on device {1:?}."</span>)]
     </span>WrongSubmissionIndex(id::QueueId, id::DeviceId),
-    <span class="attr">#[error(<span class="string">&quot;GPU got stuck :(&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"GPU got stuck :("</span>)]
     </span>StuckGpu,
 }
 
@@ -1154,12 +1062,12 @@
 /// A buffer cannot be mapped until all active queue submissions that use it
 /// have completed. To that end:
 ///
-/// -   Each buffer&#39;s `LifeGuard::submission_index` records the index of the
+/// -   Each buffer's `ResourceInfo::submission_index` records the index of the
 ///     most recent queue submission that uses that buffer.
 ///
-/// -   Calling `map_async` adds the buffer to `self.mapped`, and changes
-///     `Buffer::map_state` to prevent it from being used in any new
-///     submissions.
+/// -   Calling `Global::buffer_map_async` adds the buffer to
+///     `self.mapped`, and changes `Buffer::map_state` to prevent it
+///     from being used in any new submissions.
 ///
 /// -   When the device is polled, the following `LifetimeTracker` methods decide
 ///     what should happen next:
@@ -1180,25 +1088,23 @@
 ///         buffers that were dropped by the user get moved to
 ///         `self.free_resources`.
 ///
-///     4)  `cleanup` frees everything in `free_resources`.
-///
-/// Only `self.mapped` holds a `RefCount` for the buffer; it is dropped by
-/// `triage_mapped`.
-</span><span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">struct </span>LifetimeTracker&lt;A: hal::Api&gt; {
+/// Only calling `Global::buffer_map_async` clones a new `Arc` for the
+/// buffer. This new `Arc` is only dropped by `handle_mapping`.
+</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct </span>LifetimeTracker&lt;A: HalApi&gt; {
     <span class="doccomment">/// Resources that the user has requested be mapped, but which are used by
     /// queue submissions still in flight.
-    </span>mapped: Vec&lt;Stored&lt;id::BufferId&gt;&gt;,
+    </span>mapped: Vec&lt;Arc&lt;Buffer&lt;A&gt;&gt;&gt;,
 
     <span class="doccomment">/// Buffers can be used in a submission that is yet to be made, by the
     /// means of `write_buffer()`, so we have a special place for them.
-    </span><span class="kw">pub </span>future_suspected_buffers: Vec&lt;Stored&lt;id::BufferId&gt;&gt;,
+    </span><span class="kw">pub </span>future_suspected_buffers: Vec&lt;Arc&lt;Buffer&lt;A&gt;&gt;&gt;,
 
     <span class="doccomment">/// Textures can be used in the upcoming submission by `write_texture`.
-    </span><span class="kw">pub </span>future_suspected_textures: Vec&lt;Stored&lt;id::TextureId&gt;&gt;,
+    </span><span class="kw">pub </span>future_suspected_textures: Vec&lt;Arc&lt;Texture&lt;A&gt;&gt;&gt;,
 
     <span class="doccomment">/// Resources whose user handle has died (i.e. drop/destroy has been called)
     /// and will likely be ready for destruction soon.
-    </span><span class="kw">pub </span>suspected_resources: SuspectedResources,
+    </span><span class="kw">pub </span>suspected_resources: ResourceMaps&lt;A&gt;,
 
     <span class="doccomment">/// Resources used by queue submissions still in flight. One entry per
     /// submission, with older submissions appearing before younger.
@@ -1208,28 +1114,33 @@
     /// to particular entries.
     </span>active: Vec&lt;ActiveSubmission&lt;A&gt;&gt;,
 
-    <span class="doccomment">/// Raw backend resources that are neither referenced nor used.
-    ///
-    /// These are freed by `LifeTracker::cleanup`, which is called from periodic
-    /// maintenance functions like `Global::device_poll`, and when a device is
-    /// destroyed.
-    </span>free_resources: NonReferencedResources&lt;A&gt;,
-
     <span class="doccomment">/// Buffers the user has asked us to map, and which are not used by any
     /// queue submission still in flight.
-    </span>ready_to_map: Vec&lt;id::Valid&lt;id::BufferId&gt;&gt;,
+    </span>ready_to_map: Vec&lt;Arc&lt;Buffer&lt;A&gt;&gt;&gt;,
+
+    <span class="doccomment">/// Queue "on_submitted_work_done" closures that were initiated for while there is no
+    /// currently pending submissions. These cannot be immediately invoked as they
+    /// must happen _after_ all mapped buffer callbacks are mapped, so we defer them
+    /// here until the next time the device is maintained.
+    </span>work_done_closures: SmallVec&lt;[SubmittedWorkDoneClosure; <span class="number">1</span>]&gt;,
+
+    <span class="doccomment">/// Closure to be called on "lose the device". This is invoked directly by
+    /// device.lose or by the UserCallbacks returned from maintain when the device
+    /// has been destroyed and its queues are empty.
+    </span><span class="kw">pub </span>device_lost_closure: <span class="prelude-ty">Option</span>&lt;DeviceLostClosure&gt;,
 }
 
-<span class="kw">impl</span>&lt;A: hal::Api&gt; LifetimeTracker&lt;A&gt; {
+<span class="kw">impl</span>&lt;A: HalApi&gt; LifetimeTracker&lt;A&gt; {
     <span class="kw">pub fn </span>new() -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
             mapped: Vec::new(),
             future_suspected_buffers: Vec::new(),
             future_suspected_textures: Vec::new(),
-            suspected_resources: SuspectedResources::default(),
+            suspected_resources: ResourceMaps::new(),
             active: Vec::new(),
-            free_resources: NonReferencedResources::new(),
             ready_to_map: Vec::new(),
+            work_done_closures: SmallVec::new(),
+            device_lost_closure: <span class="prelude-val">None</span>,
         }
     }
 
@@ -1245,13 +1156,29 @@
         temp_resources: <span class="kw">impl </span>Iterator&lt;Item = TempResource&lt;A&gt;&gt;,
         encoders: Vec&lt;EncoderInFlight&lt;A&gt;&gt;,
     ) {
-        <span class="kw">let </span><span class="kw-2">mut </span>last_resources = NonReferencedResources::new();
+        <span class="kw">let </span><span class="kw-2">mut </span>last_resources = ResourceMaps::new();
         <span class="kw">for </span>res <span class="kw">in </span>temp_resources {
             <span class="kw">match </span>res {
-                TempResource::Buffer(raw) =&gt; last_resources.buffers.push(raw),
-                TempResource::Texture(raw, views) =&gt; {
-                    last_resources.textures.push(raw);
-                    last_resources.texture_views.extend(views);
+                TempResource::Buffer(raw) =&gt; {
+                    last_resources.buffers.insert(raw.as_info().id(), raw);
+                }
+                TempResource::StagingBuffer(raw) =&gt; {
+                    last_resources
+                        .staging_buffers
+                        .insert(raw.as_info().id(), raw);
+                }
+                TempResource::DestroyedBuffer(destroyed) =&gt; {
+                    last_resources
+                        .destroyed_buffers
+                        .insert(destroyed.id, destroyed);
+                }
+                TempResource::Texture(raw) =&gt; {
+                    last_resources.textures.insert(raw.as_info().id(), raw);
+                }
+                TempResource::DestroyedTexture(destroyed) =&gt; {
+                    last_resources
+                        .destroyed_textures
+                        .insert(destroyed.id, destroyed);
                 }
             }
         }
@@ -1266,20 +1193,18 @@
     }
 
     <span class="kw">pub fn </span>post_submit(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
-        <span class="self">self</span>.suspected_resources.buffers.extend(
-            <span class="self">self</span>.future_suspected_buffers
-                .drain(..)
-                .map(|stored| stored.value),
-        );
-        <span class="self">self</span>.suspected_resources.textures.extend(
-            <span class="self">self</span>.future_suspected_textures
-                .drain(..)
-                .map(|stored| stored.value),
-        );
+        <span class="kw">for </span>v <span class="kw">in </span><span class="self">self</span>.future_suspected_buffers.drain(..).take(<span class="number">1</span>) {
+            <span class="self">self</span>.suspected_resources.buffers.insert(v.as_info().id(), v);
+        }
+        <span class="kw">for </span>v <span class="kw">in </span><span class="self">self</span>.future_suspected_textures.drain(..).take(<span class="number">1</span>) {
+            <span class="self">self</span>.suspected_resources
+                .textures
+                .insert(v.as_info().id(), v);
+        }
     }
 
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>map(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: id::Valid&lt;id::BufferId&gt;, ref_count: RefCount) {
-        <span class="self">self</span>.mapped.push(Stored { value, ref_count });
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>map(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: <span class="kw-2">&amp;</span>Arc&lt;Buffer&lt;A&gt;&gt;) {
+        <span class="self">self</span>.mapped.push(value.clone());
     }
 
     <span class="doccomment">/// Sort out the consequences of completed submissions.
@@ -1287,12 +1212,12 @@
     /// Assume that all submissions up through `last_done` have completed.
     ///
     /// -   Buffers used by those submissions are now ready to map, if
-    ///     requested. Add any buffers in the submission&#39;s [`mapped`] list to
+    ///     requested. Add any buffers in the submission's [`mapped`] list to
     ///     [`self.ready_to_map`], where [`LifetimeTracker::handle_mapping`] will find
     ///     them.
     ///
     /// -   Resources whose final use was in those submissions are now ready to
-    ///     free. Add any resources in the submission&#39;s [`last_resources`] table
+    ///     free. Add any resources in the submission's [`last_resources`] table
     ///     to [`self.free_resources`], where [`LifetimeTracker::cleanup`] will find
     ///     them.
     ///
@@ -1307,9 +1232,9 @@
     </span><span class="kw">pub fn </span>triage_submissions(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
         last_done: SubmissionIndex,
-        command_allocator: <span class="kw-2">&amp;</span>Mutex&lt;<span class="kw">super</span>::CommandAllocator&lt;A&gt;&gt;,
+        command_allocator: <span class="kw-2">&amp;mut </span><span class="kw">super</span>::CommandAllocator&lt;A&gt;,
     ) -&gt; SmallVec&lt;[SubmittedWorkDoneClosure; <span class="number">1</span>]&gt; {
-        <span class="macro">profiling::scope!</span>(<span class="string">&quot;triage_submissions&quot;</span>);
+        <span class="macro">profiling::scope!</span>(<span class="string">"triage_submissions"</span>);
 
         <span class="comment">//TODO: enable when `is_sorted_by_key` is stable
         //debug_assert!(self.active.is_sorted_by_key(|a| a.index));
@@ -1319,25 +1244,17 @@
             .position(|a| a.index &gt; last_done)
             .unwrap_or(<span class="self">self</span>.active.len());
 
-        <span class="kw">let </span><span class="kw-2">mut </span>work_done_closures = SmallVec::new();
+        <span class="kw">let </span><span class="kw-2">mut </span>work_done_closures: SmallVec&lt;<span class="kw">_</span>&gt; = <span class="self">self</span>.work_done_closures.drain(..).collect();
         <span class="kw">for </span>a <span class="kw">in </span><span class="self">self</span>.active.drain(..done_count) {
-            <span class="macro">log::trace!</span>(<span class="string">&quot;Active submission {} is done&quot;</span>, a.index);
-            <span class="self">self</span>.free_resources.extend(a.last_resources);
+            <span class="macro">log::debug!</span>(<span class="string">"Active submission {} is done"</span>, a.index);
             <span class="self">self</span>.ready_to_map.extend(a.mapped);
             <span class="kw">for </span>encoder <span class="kw">in </span>a.encoders {
                 <span class="kw">let </span>raw = <span class="kw">unsafe </span>{ encoder.land() };
-                command_allocator.lock().release_encoder(raw);
+                command_allocator.release_encoder(raw);
             }
             work_done_closures.extend(a.work_done_closures);
         }
         work_done_closures
-    }
-
-    <span class="kw">pub fn </span>cleanup(<span class="kw-2">&amp;mut </span><span class="self">self</span>, device: <span class="kw-2">&amp;</span>A::Device) {
-        <span class="macro">profiling::scope!</span>(<span class="string">&quot;LifetimeTracker::cleanup&quot;</span>);
-        <span class="kw">unsafe </span>{
-            <span class="self">self</span>.free_resources.clean(device);
-        }
     }
 
     <span class="kw">pub fn </span>schedule_resource_destruction(
@@ -1349,33 +1266,308 @@
             </span>.active
             .iter_mut()
             .find(|a| a.index == last_submit_index)
-            .map_or(<span class="kw-2">&amp;mut </span><span class="self">self</span>.free_resources, |a| <span class="kw-2">&amp;mut </span>a.last_resources);
-        <span class="kw">match </span>temp_resource {
-            TempResource::Buffer(raw) =&gt; resources.buffers.push(raw),
-            TempResource::Texture(raw, views) =&gt; {
-                resources.texture_views.extend(views);
-                resources.textures.push(raw);
+            .map(|a| <span class="kw-2">&amp;mut </span>a.last_resources);
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(resources) = resources {
+            <span class="kw">match </span>temp_resource {
+                TempResource::Buffer(raw) =&gt; {
+                    resources.buffers.insert(raw.as_info().id(), raw);
+                }
+                TempResource::StagingBuffer(raw) =&gt; {
+                    resources.staging_buffers.insert(raw.as_info().id(), raw);
+                }
+                TempResource::DestroyedBuffer(destroyed) =&gt; {
+                    resources.destroyed_buffers.insert(destroyed.id, destroyed);
+                }
+                TempResource::Texture(raw) =&gt; {
+                    resources.textures.insert(raw.as_info().id(), raw);
+                }
+                TempResource::DestroyedTexture(destroyed) =&gt; {
+                    resources.destroyed_textures.insert(destroyed.id, destroyed);
+                }
             }
         }
     }
 
-    <span class="kw">pub fn </span>add_work_done_closure(
-        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        closure: SubmittedWorkDoneClosure,
-    ) -&gt; <span class="prelude-ty">Option</span>&lt;SubmittedWorkDoneClosure&gt; {
+    <span class="kw">pub fn </span>add_work_done_closure(<span class="kw-2">&amp;mut </span><span class="self">self</span>, closure: SubmittedWorkDoneClosure) {
         <span class="kw">match </span><span class="self">self</span>.active.last_mut() {
             <span class="prelude-val">Some</span>(active) =&gt; {
                 active.work_done_closures.push(closure);
-                <span class="prelude-val">None
-            </span>}
-            <span class="comment">// Note: we can&#39;t immediately invoke the closure, since it assumes
-            // nothing is currently locked in the hubs.
-            </span><span class="prelude-val">None </span>=&gt; <span class="prelude-val">Some</span>(closure),
+            }
+            <span class="comment">// We must defer the closure until all previously occuring map_async closures
+            // have fired. This is required by the spec.
+            </span><span class="prelude-val">None </span>=&gt; {
+                <span class="self">self</span>.work_done_closures.push(closure);
+            }
         }
     }
 }
 
 <span class="kw">impl</span>&lt;A: HalApi&gt; LifetimeTracker&lt;A&gt; {
+    <span class="kw">fn </span>triage_resources&lt;Id, R&gt;(
+        resources_map: <span class="kw-2">&amp;mut </span>FastHashMap&lt;Id, Arc&lt;R&gt;&gt;,
+        active: <span class="kw-2">&amp;mut </span>[ActiveSubmission&lt;A&gt;],
+        trackers: <span class="kw-2">&amp;mut </span><span class="kw">impl </span>ResourceTracker&lt;Id, R&gt;,
+        get_resource_map: <span class="kw">impl </span>Fn(<span class="kw-2">&amp;mut </span>ResourceMaps&lt;A&gt;) -&gt; <span class="kw-2">&amp;mut </span>FastHashMap&lt;Id, Arc&lt;R&gt;&gt;,
+    ) -&gt; Vec&lt;Arc&lt;R&gt;&gt;
+    <span class="kw">where
+        </span>Id: id::TypedId,
+        R: Resource&lt;Id&gt;,
+    {
+        <span class="kw">let </span><span class="kw-2">mut </span>removed_resources = Vec::new();
+        resources_map.retain(|<span class="kw-2">&amp;</span>id, resource| {
+            <span class="kw">let </span>submit_index = resource.as_info().submission_index();
+            <span class="kw">let </span>non_referenced_resources = active
+                .iter_mut()
+                .find(|a| a.index == submit_index)
+                .map(|a| <span class="kw-2">&amp;mut </span>a.last_resources);
+
+            <span class="kw">let </span>is_removed = trackers.remove_abandoned(id);
+            <span class="kw">if </span>is_removed {
+                removed_resources.push(resource.clone());
+                <span class="kw">if let </span><span class="prelude-val">Some</span>(ressources) = non_referenced_resources {
+                    get_resource_map(ressources).insert(id, resource.clone());
+                }
+            }
+            !is_removed
+        });
+        removed_resources
+    }
+
+    <span class="kw">fn </span>triage_suspected_render_bundles(<span class="kw-2">&amp;mut </span><span class="self">self</span>, trackers: <span class="kw-2">&amp;</span>Mutex&lt;Tracker&lt;A&gt;&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">let </span><span class="kw-2">mut </span>trackers = trackers.lock();
+        <span class="kw">let </span>resource_map = <span class="kw-2">&amp;mut </span><span class="self">self</span>.suspected_resources.render_bundles;
+        <span class="kw">let </span><span class="kw-2">mut </span>removed_resources = <span class="self">Self</span>::triage_resources(
+            resource_map,
+            <span class="self">self</span>.active.as_mut_slice(),
+            <span class="kw-2">&amp;mut </span>trackers.bundles,
+            |maps| <span class="kw-2">&amp;mut </span>maps.render_bundles,
+        );
+        removed_resources.drain(..).for_each(|bundle| {
+            <span class="kw">for </span>v <span class="kw">in </span>bundle.used.buffers.write().drain_resources() {
+                <span class="self">self</span>.suspected_resources.buffers.insert(v.as_info().id(), v);
+            }
+            <span class="kw">for </span>v <span class="kw">in </span>bundle.used.textures.write().drain_resources() {
+                <span class="self">self</span>.suspected_resources
+                    .textures
+                    .insert(v.as_info().id(), v);
+            }
+            <span class="kw">for </span>v <span class="kw">in </span>bundle.used.bind_groups.write().drain_resources() {
+                <span class="self">self</span>.suspected_resources
+                    .bind_groups
+                    .insert(v.as_info().id(), v);
+            }
+            <span class="kw">for </span>v <span class="kw">in </span>bundle.used.render_pipelines.write().drain_resources() {
+                <span class="self">self</span>.suspected_resources
+                    .render_pipelines
+                    .insert(v.as_info().id(), v);
+            }
+            <span class="kw">for </span>v <span class="kw">in </span>bundle.used.query_sets.write().drain_resources() {
+                <span class="self">self</span>.suspected_resources
+                    .query_sets
+                    .insert(v.as_info().id(), v);
+            }
+        });
+        <span class="self">self
+    </span>}
+
+    <span class="kw">fn </span>triage_suspected_bind_groups(<span class="kw-2">&amp;mut </span><span class="self">self</span>, trackers: <span class="kw-2">&amp;</span>Mutex&lt;Tracker&lt;A&gt;&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">let </span><span class="kw-2">mut </span>trackers = trackers.lock();
+        <span class="kw">let </span>resource_map = <span class="kw-2">&amp;mut </span><span class="self">self</span>.suspected_resources.bind_groups;
+        <span class="kw">let </span><span class="kw-2">mut </span>removed_resource = <span class="self">Self</span>::triage_resources(
+            resource_map,
+            <span class="self">self</span>.active.as_mut_slice(),
+            <span class="kw-2">&amp;mut </span>trackers.bind_groups,
+            |maps| <span class="kw-2">&amp;mut </span>maps.bind_groups,
+        );
+        removed_resource.drain(..).for_each(|bind_group| {
+            <span class="kw">for </span>v <span class="kw">in </span>bind_group.used.buffers.drain_resources() {
+                <span class="self">self</span>.suspected_resources.buffers.insert(v.as_info().id(), v);
+            }
+            <span class="kw">for </span>v <span class="kw">in </span>bind_group.used.textures.drain_resources() {
+                <span class="self">self</span>.suspected_resources
+                    .textures
+                    .insert(v.as_info().id(), v);
+            }
+            <span class="kw">for </span>v <span class="kw">in </span>bind_group.used.views.drain_resources() {
+                <span class="self">self</span>.suspected_resources
+                    .texture_views
+                    .insert(v.as_info().id(), v);
+            }
+            <span class="kw">for </span>v <span class="kw">in </span>bind_group.used.samplers.drain_resources() {
+                <span class="self">self</span>.suspected_resources
+                    .samplers
+                    .insert(v.as_info().id(), v);
+            }
+
+            <span class="self">self</span>.suspected_resources
+                .bind_group_layouts
+                .insert(bind_group.layout.as_info().id(), bind_group.layout.clone());
+        });
+        <span class="self">self
+    </span>}
+
+    <span class="kw">fn </span>triage_suspected_texture_views(<span class="kw-2">&amp;mut </span><span class="self">self</span>, trackers: <span class="kw-2">&amp;</span>Mutex&lt;Tracker&lt;A&gt;&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">let </span><span class="kw-2">mut </span>trackers = trackers.lock();
+        <span class="kw">let </span>resource_map = <span class="kw-2">&amp;mut </span><span class="self">self</span>.suspected_resources.texture_views;
+        <span class="kw">let </span><span class="kw-2">mut </span>removed_resources = <span class="self">Self</span>::triage_resources(
+            resource_map,
+            <span class="self">self</span>.active.as_mut_slice(),
+            <span class="kw-2">&amp;mut </span>trackers.views,
+            |maps| <span class="kw-2">&amp;mut </span>maps.texture_views,
+        );
+        removed_resources.drain(..).for_each(|texture_view| {
+            <span class="kw">let </span><span class="kw-2">mut </span>lock = texture_view.parent.write();
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(parent_texture) = lock.take() {
+                <span class="self">self</span>.suspected_resources
+                    .textures
+                    .insert(parent_texture.as_info().id(), parent_texture);
+            }
+        });
+        <span class="self">self
+    </span>}
+
+    <span class="kw">fn </span>triage_suspected_textures(<span class="kw-2">&amp;mut </span><span class="self">self</span>, trackers: <span class="kw-2">&amp;</span>Mutex&lt;Tracker&lt;A&gt;&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">let </span><span class="kw-2">mut </span>trackers = trackers.lock();
+        <span class="kw">let </span>resource_map = <span class="kw-2">&amp;mut </span><span class="self">self</span>.suspected_resources.textures;
+        <span class="self">Self</span>::triage_resources(
+            resource_map,
+            <span class="self">self</span>.active.as_mut_slice(),
+            <span class="kw-2">&amp;mut </span>trackers.textures,
+            |maps| <span class="kw-2">&amp;mut </span>maps.textures,
+        );
+        <span class="self">self
+    </span>}
+
+    <span class="kw">fn </span>triage_suspected_samplers(<span class="kw-2">&amp;mut </span><span class="self">self</span>, trackers: <span class="kw-2">&amp;</span>Mutex&lt;Tracker&lt;A&gt;&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">let </span><span class="kw-2">mut </span>trackers = trackers.lock();
+        <span class="kw">let </span>resource_map = <span class="kw-2">&amp;mut </span><span class="self">self</span>.suspected_resources.samplers;
+        <span class="self">Self</span>::triage_resources(
+            resource_map,
+            <span class="self">self</span>.active.as_mut_slice(),
+            <span class="kw-2">&amp;mut </span>trackers.samplers,
+            |maps| <span class="kw-2">&amp;mut </span>maps.samplers,
+        );
+        <span class="self">self
+    </span>}
+
+    <span class="kw">fn </span>triage_suspected_buffers(<span class="kw-2">&amp;mut </span><span class="self">self</span>, trackers: <span class="kw-2">&amp;</span>Mutex&lt;Tracker&lt;A&gt;&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">let </span><span class="kw-2">mut </span>trackers = trackers.lock();
+        <span class="kw">let </span>resource_map = <span class="kw-2">&amp;mut </span><span class="self">self</span>.suspected_resources.buffers;
+        <span class="self">Self</span>::triage_resources(
+            resource_map,
+            <span class="self">self</span>.active.as_mut_slice(),
+            <span class="kw-2">&amp;mut </span>trackers.buffers,
+            |maps| <span class="kw-2">&amp;mut </span>maps.buffers,
+        );
+
+        <span class="self">self
+    </span>}
+
+    <span class="kw">fn </span>triage_suspected_destroyed_buffers(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw">for </span>(id, buffer) <span class="kw">in </span><span class="self">self</span>.suspected_resources.destroyed_buffers.drain() {
+            <span class="kw">let </span>submit_index = buffer.submission_index;
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(resources) = <span class="self">self</span>.active.iter_mut().find(|a| a.index == submit_index) {
+                resources
+                    .last_resources
+                    .destroyed_buffers
+                    .insert(id, buffer);
+            }
+        }
+    }
+
+    <span class="kw">fn </span>triage_suspected_destroyed_textures(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw">for </span>(id, texture) <span class="kw">in </span><span class="self">self</span>.suspected_resources.destroyed_textures.drain() {
+            <span class="kw">let </span>submit_index = texture.submission_index;
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(resources) = <span class="self">self</span>.active.iter_mut().find(|a| a.index == submit_index) {
+                resources
+                    .last_resources
+                    .destroyed_textures
+                    .insert(id, texture);
+            }
+        }
+    }
+
+    <span class="kw">fn </span>triage_suspected_compute_pipelines(<span class="kw-2">&amp;mut </span><span class="self">self</span>, trackers: <span class="kw-2">&amp;</span>Mutex&lt;Tracker&lt;A&gt;&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">let </span><span class="kw-2">mut </span>trackers = trackers.lock();
+        <span class="kw">let </span>resource_map = <span class="kw-2">&amp;mut </span><span class="self">self</span>.suspected_resources.compute_pipelines;
+        <span class="kw">let </span><span class="kw-2">mut </span>removed_resources = <span class="self">Self</span>::triage_resources(
+            resource_map,
+            <span class="self">self</span>.active.as_mut_slice(),
+            <span class="kw-2">&amp;mut </span>trackers.compute_pipelines,
+            |maps| <span class="kw-2">&amp;mut </span>maps.compute_pipelines,
+        );
+        removed_resources.drain(..).for_each(|compute_pipeline| {
+            <span class="self">self</span>.suspected_resources.pipeline_layouts.insert(
+                compute_pipeline.layout.as_info().id(),
+                compute_pipeline.layout.clone(),
+            );
+        });
+        <span class="self">self
+    </span>}
+
+    <span class="kw">fn </span>triage_suspected_render_pipelines(<span class="kw-2">&amp;mut </span><span class="self">self</span>, trackers: <span class="kw-2">&amp;</span>Mutex&lt;Tracker&lt;A&gt;&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">let </span><span class="kw-2">mut </span>trackers = trackers.lock();
+        <span class="kw">let </span>resource_map = <span class="kw-2">&amp;mut </span><span class="self">self</span>.suspected_resources.render_pipelines;
+        <span class="kw">let </span><span class="kw-2">mut </span>removed_resources = <span class="self">Self</span>::triage_resources(
+            resource_map,
+            <span class="self">self</span>.active.as_mut_slice(),
+            <span class="kw-2">&amp;mut </span>trackers.render_pipelines,
+            |maps| <span class="kw-2">&amp;mut </span>maps.render_pipelines,
+        );
+        removed_resources.drain(..).for_each(|render_pipeline| {
+            <span class="self">self</span>.suspected_resources.pipeline_layouts.insert(
+                render_pipeline.layout.as_info().id(),
+                render_pipeline.layout.clone(),
+            );
+        });
+        <span class="self">self
+    </span>}
+
+    <span class="kw">fn </span>triage_suspected_pipeline_layouts(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">let </span><span class="kw-2">mut </span>removed_resources = Vec::new();
+        <span class="self">self</span>.suspected_resources
+            .pipeline_layouts
+            .retain(|_pipeline_layout_id, pipeline_layout| {
+                removed_resources.push(pipeline_layout.clone());
+                <span class="bool-val">false
+            </span>});
+        removed_resources.drain(..).for_each(|pipeline_layout| {
+            <span class="kw">for </span>bgl <span class="kw">in </span><span class="kw-2">&amp;</span>pipeline_layout.bind_group_layouts {
+                <span class="self">self</span>.suspected_resources
+                    .bind_group_layouts
+                    .insert(bgl.as_info().id(), bgl.clone());
+            }
+        });
+        <span class="self">self
+    </span>}
+
+    <span class="kw">fn </span>triage_suspected_bind_group_layouts(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="comment">//Note: this has to happen after all the suspected pipelines are destroyed
+        //Note: nothing else can bump the refcount since the guard is locked exclusively
+        //Note: same BGL can appear multiple times in the list, but only the last
+        </span><span class="self">self</span>.suspected_resources.bind_group_layouts.clear();
+
+        <span class="self">self
+    </span>}
+
+    <span class="kw">fn </span>triage_suspected_query_sets(<span class="kw-2">&amp;mut </span><span class="self">self</span>, trackers: <span class="kw-2">&amp;</span>Mutex&lt;Tracker&lt;A&gt;&gt;) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="kw">let </span><span class="kw-2">mut </span>trackers = trackers.lock();
+        <span class="kw">let </span>resource_map = <span class="kw-2">&amp;mut </span><span class="self">self</span>.suspected_resources.query_sets;
+        <span class="self">Self</span>::triage_resources(
+            resource_map,
+            <span class="self">self</span>.active.as_mut_slice(),
+            <span class="kw-2">&amp;mut </span>trackers.query_sets,
+            |maps| <span class="kw-2">&amp;mut </span>maps.query_sets,
+        );
+        <span class="self">self
+    </span>}
+
+    <span class="kw">fn </span>triage_suspected_staging_buffers(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self </span>{
+        <span class="self">self</span>.suspected_resources.staging_buffers.clear();
+
+        <span class="self">self
+    </span>}
+
     <span class="doccomment">/// Identify resources to free, according to `trackers` and `self.suspected_resources`.
     ///
     /// Given `trackers`, the [`Tracker`] belonging to same [`Device`] as
@@ -1387,20 +1579,16 @@
     /// the hal:
     ///
     /// -   Add resources used by queue submissions still in flight to the
-    ///     [`last_resources`] table of the last such submission&#39;s entry in
+    ///     [`last_resources`] table of the last such submission's entry in
     ///     [`self.active`]. When that submission has finished execution. the
-    ///     [`triage_submissions`] method will move them to
-    ///     [`self.free_resources`].
-    ///
-    /// -   Add resources that can be freed right now to [`self.free_resources`]
-    ///     directly. [`LifetimeTracker::cleanup`] will take care of them as
-    ///     part of this poll.
+    ///     [`triage_submissions`] method will remove from the tracker and the
+    ///     resource reference count will be responsible carrying out deallocation.
     ///
     /// ## Entrained resources
     ///
     /// This function finds resources that are used only by other resources
     /// ready to be freed, and adds those to the free lists as well. For
-    /// example, if there&#39;s some texture `T` used only by some texture view
+    /// example, if there's some texture `T` used only by some texture view
     /// `TV`, then if `TV` can be freed, `T` gets added to the free lists too.
     ///
     /// Since `wgpu-core` resource ownership patterns are acyclic, we can visit
@@ -1414,326 +1602,40 @@
     /// [`last_resources`]: ActiveSubmission::last_resources
     /// [`self.active`]: LifetimeTracker::active
     /// [`triage_submissions`]: LifetimeTracker::triage_submissions
-    /// [`self.free_resources`]: LifetimeTracker::free_resources
-    </span><span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>triage_suspected&lt;G: GlobalIdentityHandlerFactory&gt;(
-        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        hub: <span class="kw-2">&amp;</span>Hub&lt;A, G&gt;,
-        trackers: <span class="kw-2">&amp;</span>Mutex&lt;Tracker&lt;A&gt;&gt;,
-        <span class="attr">#[cfg(feature = <span class="string">&quot;trace&quot;</span>)] </span>trace: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Mutex&lt;trace::Trace&gt;&gt;,
-        token: <span class="kw-2">&amp;mut </span>Token&lt;<span class="kw">super</span>::Device&lt;A&gt;&gt;,
-    ) {
-        <span class="macro">profiling::scope!</span>(<span class="string">&quot;triage_suspected&quot;</span>);
+    </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>triage_suspected(<span class="kw-2">&amp;mut </span><span class="self">self</span>, trackers: <span class="kw-2">&amp;</span>Mutex&lt;Tracker&lt;A&gt;&gt;) {
+        <span class="macro">profiling::scope!</span>(<span class="string">"triage_suspected"</span>);
 
-        <span class="kw">if </span>!<span class="self">self</span>.suspected_resources.render_bundles.is_empty() {
-            <span class="kw">let </span>(<span class="kw-2">mut </span>guard, <span class="kw">_</span>) = hub.render_bundles.write(token);
-            <span class="kw">let </span><span class="kw-2">mut </span>trackers = trackers.lock();
-
-            <span class="kw">while let </span><span class="prelude-val">Some</span>(id) = <span class="self">self</span>.suspected_resources.render_bundles.pop() {
-                <span class="kw">if </span>trackers.bundles.remove_abandoned(id) {
-                    <span class="macro">log::debug!</span>(<span class="string">&quot;Bundle {:?} will be destroyed&quot;</span>, id);
-                    <span class="attr">#[cfg(feature = <span class="string">&quot;trace&quot;</span>)]
-                    </span><span class="kw">if let </span><span class="prelude-val">Some</span>(t) = trace {
-                        t.lock().add(trace::Action::DestroyRenderBundle(id.<span class="number">0</span>));
-                    }
-
-                    <span class="kw">if let </span><span class="prelude-val">Some</span>(res) = hub.render_bundles.unregister_locked(id.<span class="number">0</span>, <span class="kw-2">&amp;mut *</span>guard) {
-                        <span class="self">self</span>.suspected_resources.add_render_bundle_scope(<span class="kw-2">&amp;</span>res.used);
-                    }
-                }
-            }
-        }
-
-        <span class="kw">if </span>!<span class="self">self</span>.suspected_resources.bind_groups.is_empty() {
-            <span class="kw">let </span>(<span class="kw-2">mut </span>guard, <span class="kw">_</span>) = hub.bind_groups.write(token);
-            <span class="kw">let </span><span class="kw-2">mut </span>trackers = trackers.lock();
-
-            <span class="kw">while let </span><span class="prelude-val">Some</span>(id) = <span class="self">self</span>.suspected_resources.bind_groups.pop() {
-                <span class="kw">if </span>trackers.bind_groups.remove_abandoned(id) {
-                    <span class="macro">log::debug!</span>(<span class="string">&quot;Bind group {:?} will be destroyed&quot;</span>, id);
-                    <span class="attr">#[cfg(feature = <span class="string">&quot;trace&quot;</span>)]
-                    </span><span class="kw">if let </span><span class="prelude-val">Some</span>(t) = trace {
-                        t.lock().add(trace::Action::DestroyBindGroup(id.<span class="number">0</span>));
-                    }
-
-                    <span class="kw">if let </span><span class="prelude-val">Some</span>(res) = hub.bind_groups.unregister_locked(id.<span class="number">0</span>, <span class="kw-2">&amp;mut *</span>guard) {
-                        <span class="self">self</span>.suspected_resources.add_bind_group_states(<span class="kw-2">&amp;</span>res.used);
-
-                        <span class="self">self</span>.suspected_resources
-                            .bind_group_layouts
-                            .push(res.layout_id);
-
-                        <span class="kw">let </span>submit_index = res.life_guard.life_count();
-                        <span class="self">self</span>.active
-                            .iter_mut()
-                            .find(|a| a.index == submit_index)
-                            .map_or(<span class="kw-2">&amp;mut </span><span class="self">self</span>.free_resources, |a| <span class="kw-2">&amp;mut </span>a.last_resources)
-                            .bind_groups
-                            .push(res.raw);
-                    }
-                }
-            }
-        }
-
-        <span class="kw">if </span>!<span class="self">self</span>.suspected_resources.texture_views.is_empty() {
-            <span class="kw">let </span>(<span class="kw-2">mut </span>guard, <span class="kw">_</span>) = hub.texture_views.write(token);
-            <span class="kw">let </span><span class="kw-2">mut </span>trackers = trackers.lock();
-
-            <span class="kw">let </span><span class="kw-2">mut </span>list = mem::take(<span class="kw-2">&amp;mut </span><span class="self">self</span>.suspected_resources.texture_views);
-            <span class="kw">for </span>id <span class="kw">in </span>list.drain(..) {
-                <span class="kw">if </span>trackers.views.remove_abandoned(id) {
-                    <span class="macro">log::debug!</span>(<span class="string">&quot;Texture view {:?} will be destroyed&quot;</span>, id);
-                    <span class="attr">#[cfg(feature = <span class="string">&quot;trace&quot;</span>)]
-                    </span><span class="kw">if let </span><span class="prelude-val">Some</span>(t) = trace {
-                        t.lock().add(trace::Action::DestroyTextureView(id.<span class="number">0</span>));
-                    }
-
-                    <span class="kw">if let </span><span class="prelude-val">Some</span>(res) = hub.texture_views.unregister_locked(id.<span class="number">0</span>, <span class="kw-2">&amp;mut *</span>guard) {
-                        <span class="self">self</span>.suspected_resources.textures.push(res.parent_id.value);
-                        <span class="kw">let </span>submit_index = res.life_guard.life_count();
-                        <span class="self">self</span>.active
-                            .iter_mut()
-                            .find(|a| a.index == submit_index)
-                            .map_or(<span class="kw-2">&amp;mut </span><span class="self">self</span>.free_resources, |a| <span class="kw-2">&amp;mut </span>a.last_resources)
-                            .texture_views
-                            .push(res.raw);
-                    }
-                }
-            }
-            <span class="self">self</span>.suspected_resources.texture_views = list;
-        }
-
-        <span class="kw">if </span>!<span class="self">self</span>.suspected_resources.textures.is_empty() {
-            <span class="kw">let </span>(<span class="kw-2">mut </span>guard, <span class="kw">_</span>) = hub.textures.write(token);
-            <span class="kw">let </span><span class="kw-2">mut </span>trackers = trackers.lock();
-
-            <span class="kw">for </span>id <span class="kw">in </span><span class="self">self</span>.suspected_resources.textures.drain(..) {
-                <span class="kw">if </span>trackers.textures.remove_abandoned(id) {
-                    <span class="macro">log::debug!</span>(<span class="string">&quot;Texture {:?} will be destroyed&quot;</span>, id);
-                    <span class="attr">#[cfg(feature = <span class="string">&quot;trace&quot;</span>)]
-                    </span><span class="kw">if let </span><span class="prelude-val">Some</span>(t) = trace {
-                        t.lock().add(trace::Action::DestroyTexture(id.<span class="number">0</span>));
-                    }
-
-                    <span class="kw">if let </span><span class="prelude-val">Some</span>(res) = hub.textures.unregister_locked(id.<span class="number">0</span>, <span class="kw-2">&amp;mut *</span>guard) {
-                        <span class="kw">let </span>submit_index = res.life_guard.life_count();
-                        <span class="kw">let </span>raw = <span class="kw">match </span>res.inner {
-                            resource::TextureInner::Native { raw: <span class="prelude-val">Some</span>(raw) } =&gt; raw,
-                            <span class="kw">_ </span>=&gt; <span class="kw">continue</span>,
-                        };
-                        <span class="kw">let </span>non_referenced_resources = <span class="self">self
-                            </span>.active
-                            .iter_mut()
-                            .find(|a| a.index == submit_index)
-                            .map_or(<span class="kw-2">&amp;mut </span><span class="self">self</span>.free_resources, |a| <span class="kw-2">&amp;mut </span>a.last_resources);
-
-                        non_referenced_resources.textures.push(raw);
-                        <span class="kw">if let </span>resource::TextureClearMode::RenderPass { clear_views, .. } =
-                            res.clear_mode
-                        {
-                            non_referenced_resources
-                                .texture_views
-                                .extend(clear_views.into_iter());
-                        }
-                    }
-                }
-            }
-        }
-
-        <span class="kw">if </span>!<span class="self">self</span>.suspected_resources.samplers.is_empty() {
-            <span class="kw">let </span>(<span class="kw-2">mut </span>guard, <span class="kw">_</span>) = hub.samplers.write(token);
-            <span class="kw">let </span><span class="kw-2">mut </span>trackers = trackers.lock();
-
-            <span class="kw">for </span>id <span class="kw">in </span><span class="self">self</span>.suspected_resources.samplers.drain(..) {
-                <span class="kw">if </span>trackers.samplers.remove_abandoned(id) {
-                    <span class="macro">log::debug!</span>(<span class="string">&quot;Sampler {:?} will be destroyed&quot;</span>, id);
-                    <span class="attr">#[cfg(feature = <span class="string">&quot;trace&quot;</span>)]
-                    </span><span class="kw">if let </span><span class="prelude-val">Some</span>(t) = trace {
-                        t.lock().add(trace::Action::DestroySampler(id.<span class="number">0</span>));
-                    }
-
-                    <span class="kw">if let </span><span class="prelude-val">Some</span>(res) = hub.samplers.unregister_locked(id.<span class="number">0</span>, <span class="kw-2">&amp;mut *</span>guard) {
-                        <span class="kw">let </span>submit_index = res.life_guard.life_count();
-                        <span class="self">self</span>.active
-                            .iter_mut()
-                            .find(|a| a.index == submit_index)
-                            .map_or(<span class="kw-2">&amp;mut </span><span class="self">self</span>.free_resources, |a| <span class="kw-2">&amp;mut </span>a.last_resources)
-                            .samplers
-                            .push(res.raw);
-                    }
-                }
-            }
-        }
-
-        <span class="kw">if </span>!<span class="self">self</span>.suspected_resources.buffers.is_empty() {
-            <span class="kw">let </span>(<span class="kw-2">mut </span>guard, <span class="kw">_</span>) = hub.buffers.write(token);
-            <span class="kw">let </span><span class="kw-2">mut </span>trackers = trackers.lock();
-
-            <span class="kw">for </span>id <span class="kw">in </span><span class="self">self</span>.suspected_resources.buffers.drain(..) {
-                <span class="kw">if </span>trackers.buffers.remove_abandoned(id) {
-                    <span class="macro">log::debug!</span>(<span class="string">&quot;Buffer {:?} will be destroyed&quot;</span>, id);
-                    <span class="attr">#[cfg(feature = <span class="string">&quot;trace&quot;</span>)]
-                    </span><span class="kw">if let </span><span class="prelude-val">Some</span>(t) = trace {
-                        t.lock().add(trace::Action::DestroyBuffer(id.<span class="number">0</span>));
-                    }
-
-                    <span class="kw">if let </span><span class="prelude-val">Some</span>(res) = hub.buffers.unregister_locked(id.<span class="number">0</span>, <span class="kw-2">&amp;mut *</span>guard) {
-                        <span class="kw">let </span>submit_index = res.life_guard.life_count();
-                        <span class="kw">if let </span>resource::BufferMapState::Init { stage_buffer, .. } = res.map_state {
-                            <span class="self">self</span>.free_resources.buffers.push(stage_buffer);
-                        }
-                        <span class="self">self</span>.active
-                            .iter_mut()
-                            .find(|a| a.index == submit_index)
-                            .map_or(<span class="kw-2">&amp;mut </span><span class="self">self</span>.free_resources, |a| <span class="kw-2">&amp;mut </span>a.last_resources)
-                            .buffers
-                            .extend(res.raw);
-                    }
-                }
-            }
-        }
-
-        <span class="kw">if </span>!<span class="self">self</span>.suspected_resources.compute_pipelines.is_empty() {
-            <span class="kw">let </span>(<span class="kw-2">mut </span>guard, <span class="kw">_</span>) = hub.compute_pipelines.write(token);
-            <span class="kw">let </span><span class="kw-2">mut </span>trackers = trackers.lock();
-
-            <span class="kw">for </span>id <span class="kw">in </span><span class="self">self</span>.suspected_resources.compute_pipelines.drain(..) {
-                <span class="kw">if </span>trackers.compute_pipelines.remove_abandoned(id) {
-                    <span class="macro">log::debug!</span>(<span class="string">&quot;Compute pipeline {:?} will be destroyed&quot;</span>, id);
-                    <span class="attr">#[cfg(feature = <span class="string">&quot;trace&quot;</span>)]
-                    </span><span class="kw">if let </span><span class="prelude-val">Some</span>(t) = trace {
-                        t.lock().add(trace::Action::DestroyComputePipeline(id.<span class="number">0</span>));
-                    }
-
-                    <span class="kw">if let </span><span class="prelude-val">Some</span>(res) = hub.compute_pipelines.unregister_locked(id.<span class="number">0</span>, <span class="kw-2">&amp;mut *</span>guard) {
-                        <span class="kw">let </span>submit_index = res.life_guard.life_count();
-                        <span class="self">self</span>.active
-                            .iter_mut()
-                            .find(|a| a.index == submit_index)
-                            .map_or(<span class="kw-2">&amp;mut </span><span class="self">self</span>.free_resources, |a| <span class="kw-2">&amp;mut </span>a.last_resources)
-                            .compute_pipes
-                            .push(res.raw);
-                    }
-                }
-            }
-        }
-
-        <span class="kw">if </span>!<span class="self">self</span>.suspected_resources.render_pipelines.is_empty() {
-            <span class="kw">let </span>(<span class="kw-2">mut </span>guard, <span class="kw">_</span>) = hub.render_pipelines.write(token);
-            <span class="kw">let </span><span class="kw-2">mut </span>trackers = trackers.lock();
-
-            <span class="kw">for </span>id <span class="kw">in </span><span class="self">self</span>.suspected_resources.render_pipelines.drain(..) {
-                <span class="kw">if </span>trackers.render_pipelines.remove_abandoned(id) {
-                    <span class="macro">log::debug!</span>(<span class="string">&quot;Render pipeline {:?} will be destroyed&quot;</span>, id);
-                    <span class="attr">#[cfg(feature = <span class="string">&quot;trace&quot;</span>)]
-                    </span><span class="kw">if let </span><span class="prelude-val">Some</span>(t) = trace {
-                        t.lock().add(trace::Action::DestroyRenderPipeline(id.<span class="number">0</span>));
-                    }
-
-                    <span class="kw">if let </span><span class="prelude-val">Some</span>(res) = hub.render_pipelines.unregister_locked(id.<span class="number">0</span>, <span class="kw-2">&amp;mut *</span>guard) {
-                        <span class="kw">let </span>submit_index = res.life_guard.life_count();
-                        <span class="self">self</span>.active
-                            .iter_mut()
-                            .find(|a| a.index == submit_index)
-                            .map_or(<span class="kw-2">&amp;mut </span><span class="self">self</span>.free_resources, |a| <span class="kw-2">&amp;mut </span>a.last_resources)
-                            .render_pipes
-                            .push(res.raw);
-                    }
-                }
-            }
-        }
-
-        <span class="kw">if </span>!<span class="self">self</span>.suspected_resources.pipeline_layouts.is_empty() {
-            <span class="kw">let </span>(<span class="kw-2">mut </span>guard, <span class="kw">_</span>) = hub.pipeline_layouts.write(token);
-
-            <span class="kw">for </span>Stored {
-                value: id,
-                ref_count,
-            } <span class="kw">in </span><span class="self">self</span>.suspected_resources.pipeline_layouts.drain(..)
-            {
-                <span class="comment">//Note: this has to happen after all the suspected pipelines are destroyed
-                </span><span class="kw">if </span>ref_count.load() == <span class="number">1 </span>{
-                    <span class="macro">log::debug!</span>(<span class="string">&quot;Pipeline layout {:?} will be destroyed&quot;</span>, id);
-                    <span class="attr">#[cfg(feature = <span class="string">&quot;trace&quot;</span>)]
-                    </span><span class="kw">if let </span><span class="prelude-val">Some</span>(t) = trace {
-                        t.lock().add(trace::Action::DestroyPipelineLayout(id.<span class="number">0</span>));
-                    }
-
-                    <span class="kw">if let </span><span class="prelude-val">Some</span>(lay) = hub.pipeline_layouts.unregister_locked(id.<span class="number">0</span>, <span class="kw-2">&amp;mut *</span>guard) {
-                        <span class="self">self</span>.suspected_resources
-                            .bind_group_layouts
-                            .extend_from_slice(<span class="kw-2">&amp;</span>lay.bind_group_layout_ids);
-                        <span class="self">self</span>.free_resources.pipeline_layouts.push(lay.raw);
-                    }
-                }
-            }
-        }
-
-        <span class="kw">if </span>!<span class="self">self</span>.suspected_resources.bind_group_layouts.is_empty() {
-            <span class="kw">let </span>(<span class="kw-2">mut </span>guard, <span class="kw">_</span>) = hub.bind_group_layouts.write(token);
-
-            <span class="kw">for </span>id <span class="kw">in </span><span class="self">self</span>.suspected_resources.bind_group_layouts.drain(..) {
-                <span class="comment">//Note: this has to happen after all the suspected pipelines are destroyed
-                //Note: nothing else can bump the refcount since the guard is locked exclusively
-                //Note: same BGL can appear multiple times in the list, but only the last
-                // encounter could drop the refcount to 0.
-                </span><span class="kw">if </span>guard[id].multi_ref_count.dec_and_check_empty() {
-                    <span class="macro">log::debug!</span>(<span class="string">&quot;Bind group layout {:?} will be destroyed&quot;</span>, id);
-                    <span class="attr">#[cfg(feature = <span class="string">&quot;trace&quot;</span>)]
-                    </span><span class="kw">if let </span><span class="prelude-val">Some</span>(t) = trace {
-                        t.lock().add(trace::Action::DestroyBindGroupLayout(id.<span class="number">0</span>));
-                    }
-                    <span class="kw">if let </span><span class="prelude-val">Some</span>(lay) = hub.bind_group_layouts.unregister_locked(id.<span class="number">0</span>, <span class="kw-2">&amp;mut *</span>guard) {
-                        <span class="self">self</span>.free_resources.bind_group_layouts.push(lay.raw);
-                    }
-                }
-            }
-        }
-
-        <span class="kw">if </span>!<span class="self">self</span>.suspected_resources.query_sets.is_empty() {
-            <span class="kw">let </span>(<span class="kw-2">mut </span>guard, <span class="kw">_</span>) = hub.query_sets.write(token);
-            <span class="kw">let </span><span class="kw-2">mut </span>trackers = trackers.lock();
-
-            <span class="kw">for </span>id <span class="kw">in </span><span class="self">self</span>.suspected_resources.query_sets.drain(..) {
-                <span class="kw">if </span>trackers.query_sets.remove_abandoned(id) {
-                    <span class="macro">log::debug!</span>(<span class="string">&quot;Query set {:?} will be destroyed&quot;</span>, id);
-                    <span class="comment">// #[cfg(feature = &quot;trace&quot;)]
-                    // trace.map(|t| t.lock().add(trace::Action::DestroyComputePipeline(id.0)));
-                    </span><span class="kw">if let </span><span class="prelude-val">Some</span>(res) = hub.query_sets.unregister_locked(id.<span class="number">0</span>, <span class="kw-2">&amp;mut *</span>guard) {
-                        <span class="kw">let </span>submit_index = res.life_guard.life_count();
-                        <span class="self">self</span>.active
-                            .iter_mut()
-                            .find(|a| a.index == submit_index)
-                            .map_or(<span class="kw-2">&amp;mut </span><span class="self">self</span>.free_resources, |a| <span class="kw-2">&amp;mut </span>a.last_resources)
-                            .query_sets
-                            .push(res.raw);
-                    }
-                }
-            }
-        }
+        <span class="comment">//NOTE: the order is important to release resources that depends between each other!
+        </span><span class="self">self</span>.triage_suspected_render_bundles(trackers);
+        <span class="self">self</span>.triage_suspected_compute_pipelines(trackers);
+        <span class="self">self</span>.triage_suspected_render_pipelines(trackers);
+        <span class="self">self</span>.triage_suspected_bind_groups(trackers);
+        <span class="self">self</span>.triage_suspected_pipeline_layouts();
+        <span class="self">self</span>.triage_suspected_bind_group_layouts();
+        <span class="self">self</span>.triage_suspected_query_sets(trackers);
+        <span class="self">self</span>.triage_suspected_samplers(trackers);
+        <span class="self">self</span>.triage_suspected_staging_buffers();
+        <span class="self">self</span>.triage_suspected_texture_views(trackers);
+        <span class="self">self</span>.triage_suspected_textures(trackers);
+        <span class="self">self</span>.triage_suspected_buffers(trackers);
+        <span class="self">self</span>.triage_suspected_destroyed_buffers();
+        <span class="self">self</span>.triage_suspected_destroyed_textures();
     }
 
     <span class="doccomment">/// Determine which buffers are ready to map, and which must wait for the
     /// GPU.
     ///
     /// See the documentation for [`LifetimeTracker`] for details.
-    </span><span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>triage_mapped&lt;G: GlobalIdentityHandlerFactory&gt;(
-        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        hub: <span class="kw-2">&amp;</span>Hub&lt;A, G&gt;,
-        token: <span class="kw-2">&amp;mut </span>Token&lt;<span class="kw">super</span>::Device&lt;A&gt;&gt;,
-    ) {
+    </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>triage_mapped(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
         <span class="kw">if </span><span class="self">self</span>.mapped.is_empty() {
             <span class="kw">return</span>;
         }
-        <span class="kw">let </span>(buffer_guard, <span class="kw">_</span>) = hub.buffers.read(token);
 
-        <span class="kw">for </span>stored <span class="kw">in </span><span class="self">self</span>.mapped.drain(..) {
-            <span class="kw">let </span>resource_id = stored.value;
-            <span class="kw">let </span>buf = <span class="kw-2">&amp;</span>buffer_guard[resource_id];
-
-            <span class="kw">let </span>submit_index = buf.life_guard.life_count();
+        <span class="kw">for </span>buffer <span class="kw">in </span><span class="self">self</span>.mapped.drain(..) {
+            <span class="kw">let </span>submit_index = buffer.info.submission_index();
             <span class="macro">log::trace!</span>(
-                <span class="string">&quot;Mapping of {:?} at submission {:?} gets assigned to active {:?}&quot;</span>,
-                resource_id,
+                <span class="string">"Mapping of {:?} at submission {:?} gets assigned to active {:?}"</span>,
+                buffer.info.id(),
                 submit_index,
                 <span class="self">self</span>.active.iter().position(|a| a.index == submit_index)
             );
@@ -1742,7 +1644,7 @@
                 .iter_mut()
                 .find(|a| a.index == submit_index)
                 .map_or(<span class="kw-2">&amp;mut </span><span class="self">self</span>.ready_to_map, |a| <span class="kw-2">&amp;mut </span>a.mapped)
-                .push(resource_id);
+                .push(buffer);
         }
     }
 
@@ -1752,35 +1654,29 @@
     ///
     /// See the documentation for [`LifetimeTracker`] for details.
     </span><span class="attr">#[must_use]
-    </span><span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>handle_mapping&lt;G: GlobalIdentityHandlerFactory&gt;(
+    </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>handle_mapping(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        hub: <span class="kw-2">&amp;</span>Hub&lt;A, G&gt;,
         raw: <span class="kw-2">&amp;</span>A::Device,
         trackers: <span class="kw-2">&amp;</span>Mutex&lt;Tracker&lt;A&gt;&gt;,
-        token: <span class="kw-2">&amp;mut </span>Token&lt;<span class="kw">super</span>::Device&lt;A&gt;&gt;,
     ) -&gt; Vec&lt;<span class="kw">super</span>::BufferMapPendingClosure&gt; {
         <span class="kw">if </span><span class="self">self</span>.ready_to_map.is_empty() {
             <span class="kw">return </span>Vec::new();
         }
-        <span class="kw">let </span>(<span class="kw-2">mut </span>buffer_guard, <span class="kw">_</span>) = hub.buffers.write(token);
         <span class="kw">let </span><span class="kw-2">mut </span>pending_callbacks: Vec&lt;<span class="kw">super</span>::BufferMapPendingClosure&gt; =
             Vec::with_capacity(<span class="self">self</span>.ready_to_map.len());
-        <span class="kw">let </span><span class="kw-2">mut </span>trackers = trackers.lock();
-        <span class="kw">for </span>buffer_id <span class="kw">in </span><span class="self">self</span>.ready_to_map.drain(..) {
-            <span class="kw">let </span>buffer = <span class="kw-2">&amp;mut </span>buffer_guard[buffer_id];
-            <span class="kw">if </span>buffer.life_guard.ref_count.is_none() &amp;&amp; trackers.buffers.remove_abandoned(buffer_id)
-            {
-                buffer.map_state = resource::BufferMapState::Idle;
-                <span class="macro">log::debug!</span>(<span class="string">&quot;Mapping request is dropped because the buffer is destroyed.&quot;</span>);
-                <span class="kw">if let </span><span class="prelude-val">Some</span>(buf) = hub
-                    .buffers
-                    .unregister_locked(buffer_id.<span class="number">0</span>, <span class="kw-2">&amp;mut *</span>buffer_guard)
-                {
-                    <span class="self">self</span>.free_resources.buffers.extend(buf.raw);
-                }
+
+        <span class="kw">for </span>buffer <span class="kw">in </span><span class="self">self</span>.ready_to_map.drain(..) {
+            <span class="kw">let </span>buffer_id = buffer.info.id();
+            <span class="kw">let </span>is_removed = {
+                <span class="kw">let </span><span class="kw-2">mut </span>trackers = trackers.lock();
+                trackers.buffers.remove_abandoned(buffer_id)
+            };
+            <span class="kw">if </span>is_removed {
+                <span class="kw-2">*</span>buffer.map_state.lock() = resource::BufferMapState::Idle;
+                <span class="macro">log::trace!</span>(<span class="string">"Buffer ready to map {:?} is not tracked anymore"</span>, buffer_id);
             } <span class="kw">else </span>{
                 <span class="kw">let </span>mapping = <span class="kw">match </span>std::mem::replace(
-                    <span class="kw-2">&amp;mut </span>buffer.map_state,
+                    <span class="kw-2">&amp;mut *</span>buffer.map_state.lock(),
                     resource::BufferMapState::Idle,
                 ) {
                     resource::BufferMapState::Waiting(pending_mapping) =&gt; pending_mapping,
@@ -1789,18 +1685,18 @@
                     <span class="comment">// Mapping queued at least twice by map -&gt; unmap -&gt; map
                     // and was already successfully mapped below
                     </span>active @ resource::BufferMapState::Active { .. } =&gt; {
-                        buffer.map_state = active;
+                        <span class="kw-2">*</span>buffer.map_state.lock() = active;
                         <span class="kw">continue</span>;
                     }
-                    <span class="kw">_ </span>=&gt; <span class="macro">panic!</span>(<span class="string">&quot;No pending mapping.&quot;</span>),
+                    <span class="kw">_ </span>=&gt; <span class="macro">panic!</span>(<span class="string">"No pending mapping."</span>),
                 };
                 <span class="kw">let </span>status = <span class="kw">if </span>mapping.range.start != mapping.range.end {
-                    <span class="macro">log::debug!</span>(<span class="string">&quot;Buffer {:?} map state -&gt; Active&quot;</span>, buffer_id);
+                    <span class="macro">log::debug!</span>(<span class="string">"Buffer {:?} map state -&gt; Active"</span>, buffer_id);
                     <span class="kw">let </span>host = mapping.op.host;
                     <span class="kw">let </span>size = mapping.range.end - mapping.range.start;
-                    <span class="kw">match </span><span class="kw">super</span>::map_buffer(raw, buffer, mapping.range.start, size, host) {
+                    <span class="kw">match </span><span class="kw">super</span>::map_buffer(raw, <span class="kw-2">&amp;</span>buffer, mapping.range.start, size, host) {
                         <span class="prelude-val">Ok</span>(ptr) =&gt; {
-                            buffer.map_state = resource::BufferMapState::Active {
+                            <span class="kw-2">*</span>buffer.map_state.lock() = resource::BufferMapState::Active {
                                 ptr,
                                 range: mapping.range.start..mapping.range.start + size,
                                 host,
@@ -1808,12 +1704,12 @@
                             <span class="prelude-val">Ok</span>(())
                         }
                         <span class="prelude-val">Err</span>(e) =&gt; {
-                            <span class="macro">log::error!</span>(<span class="string">&quot;Mapping failed {:?}&quot;</span>, e);
+                            <span class="macro">log::error!</span>(<span class="string">"Mapping failed: {e}"</span>);
                             <span class="prelude-val">Err</span>(e)
                         }
                     }
                 } <span class="kw">else </span>{
-                    buffer.map_state = resource::BufferMapState::Active {
+                    <span class="kw-2">*</span>buffer.map_state.lock() = resource::BufferMapState::Active {
                         ptr: std::ptr::NonNull::dangling(),
                         range: mapping.range,
                         host: mapping.op.host,
@@ -1825,5 +1721,48 @@
         }
         pending_callbacks
     }
+
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>release_gpu_resources(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="comment">// This is called when the device is lost, which makes every associated
+        // resource invalid and unusable. This is an opportunity to release all of
+        // the underlying gpu resources, even though the objects remain visible to
+        // the user agent. We purge this memory naturally when resources have been
+        // moved into the appropriate buckets, so this function just needs to
+        // initiate movement into those buckets, and it can do that by calling
+        // "destroy" on all the resources we know about which aren't already marked
+        // for cleanup.
+
+        // During these iterations, we discard all errors. We don't care!
+
+        // Destroy all the mapped buffers.
+        </span><span class="kw">for </span>buffer <span class="kw">in </span><span class="kw-2">&amp;</span><span class="self">self</span>.mapped {
+            <span class="kw">let _ </span>= buffer.destroy();
+        }
+
+        <span class="comment">// Destroy all the unmapped buffers.
+        </span><span class="kw">for </span>buffer <span class="kw">in </span><span class="kw-2">&amp;</span><span class="self">self</span>.ready_to_map {
+            <span class="kw">let _ </span>= buffer.destroy();
+        }
+
+        <span class="comment">// Destroy all the future_suspected_buffers.
+        </span><span class="kw">for </span>buffer <span class="kw">in </span><span class="kw-2">&amp;</span><span class="self">self</span>.future_suspected_buffers {
+            <span class="kw">let _ </span>= buffer.destroy();
+        }
+
+        <span class="comment">// Destroy the buffers in all active submissions.
+        </span><span class="kw">for </span>submission <span class="kw">in </span><span class="kw-2">&amp;</span><span class="self">self</span>.active {
+            <span class="kw">for </span>buffer <span class="kw">in </span><span class="kw-2">&amp;</span>submission.mapped {
+                <span class="kw">let _ </span>= buffer.destroy();
+            }
+        }
+
+        <span class="comment">// Destroy all the future_suspected_textures.
+        // TODO: texture.destroy is not implemented
+        /*
+        for texture in &amp;self.future_suspected_textures {
+            let _ = texture.destroy();
+        }
+        */
+    </span>}
 }
 </code></pre></div></section></main></body></html>

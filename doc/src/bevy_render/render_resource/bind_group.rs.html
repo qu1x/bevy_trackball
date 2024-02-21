@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_render-0.12.1/src/render_resource/bind_group.rs`."><title>bind_group.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="bevy_render" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../bevy_render/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_render-0.13.0/src/render_resource/bind_group.rs`."><title>bind_group.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="bevy_render" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -418,6 +419,22 @@
 <a href="#418" id="418">418</a>
 <a href="#419" id="419">419</a>
 <a href="#420" id="420">420</a>
+<a href="#421" id="421">421</a>
+<a href="#422" id="422">422</a>
+<a href="#423" id="423">423</a>
+<a href="#424" id="424">424</a>
+<a href="#425" id="425">425</a>
+<a href="#426" id="426">426</a>
+<a href="#427" id="427">427</a>
+<a href="#428" id="428">428</a>
+<a href="#429" id="429">429</a>
+<a href="#430" id="430">430</a>
+<a href="#431" id="431">431</a>
+<a href="#432" id="432">432</a>
+<a href="#433" id="433">433</a>
+<a href="#434" id="434">434</a>
+<a href="#435" id="435">435</a>
+<a href="#436" id="436">436</a>
 </pre></div><pre class="rust"><code><span class="kw">use crate</span>::{
     define_atomic_id,
     prelude::Image,
@@ -430,7 +447,7 @@
 <span class="kw">use </span>bevy_utils::thiserror::Error;
 <span class="kw">use </span>encase::ShaderType;
 <span class="kw">use </span>std::ops::Deref;
-<span class="kw">use </span>wgpu::{BindGroupEntry, BindGroupLayoutDescriptor, BindGroupLayoutEntry, BindingResource};
+<span class="kw">use </span>wgpu::{BindGroupEntry, BindGroupLayoutEntry, BindingResource};
 
 <span class="macro">define_atomic_id!</span>(BindGroupId);
 <span class="macro">render_resource_wrapper!</span>(ErasedBindGroup, wgpu::BindGroup);
@@ -440,7 +457,7 @@
 /// This makes them accessible in the pipeline (shaders) as uniforms.
 ///
 /// May be converted from and dereferences to a wgpu [`BindGroup`](wgpu::BindGroup).
-/// Can be created via [`RenderDevice::create_bind_group`](crate::renderer::RenderDevice::create_bind_group).
+/// Can be created via [`RenderDevice::create_bind_group`](RenderDevice::create_bind_group).
 </span><span class="attr">#[derive(Clone, Debug)]
 </span><span class="kw">pub struct </span>BindGroup {
     id: BindGroupId,
@@ -482,10 +499,10 @@
 /// these can be used to retrieve the corresponding [`Texture`](crate::render_resource::Texture) resource.
 ///
 /// [`AsBindGroup::as_bind_group`] is intended to be called once, then the result cached somewhere. It is generally
-/// ok to do &quot;expensive&quot; work here, such as creating a [`Buffer`] for a uniform.
+/// ok to do "expensive" work here, such as creating a [`Buffer`] for a uniform.
 ///
 /// If for some reason a [`BindGroup`] cannot be created yet (for example, the [`Texture`](crate::render_resource::Texture)
-/// for an [`Image`] hasn&#39;t loaded yet), just return [`AsBindGroupError::RetryNextUpdate`], which signals that the caller
+/// for an [`Image`] hasn't loaded yet), just return [`AsBindGroupError::RetryNextUpdate`], which signals that the caller
 /// should retry again later.
 ///
 /// # Deriving
@@ -507,19 +524,22 @@
 ///     values: Vec&lt;f32&gt;,
 ///     #[storage(4, read_only, buffer)]
 ///     buffer: Buffer,
+///     #[storage_texture(5)]
+///     storage_texture: Handle&lt;Image&gt;,
 /// }
 /// ```
 ///
 /// In WGSL shaders, the binding would look like this:
 ///
 /// ```wgsl
-/// @group(1) @binding(0) var&lt;uniform&gt; color: vec4&lt;f32&gt;;
-/// @group(1) @binding(1) var color_texture: texture_2d&lt;f32&gt;;
-/// @group(1) @binding(2) var color_sampler: sampler;
-/// @group(1) @binding(3) var&lt;storage&gt; values: array&lt;f32&gt;;
+/// @group(2) @binding(0) var&lt;uniform&gt; color: vec4&lt;f32&gt;;
+/// @group(2) @binding(1) var color_texture: texture_2d&lt;f32&gt;;
+/// @group(2) @binding(2) var color_sampler: sampler;
+/// @group(2) @binding(3) var&lt;storage&gt; values: array&lt;f32&gt;;
+/// @group(2) @binding(5) var storage_texture: texture_storage_2d&lt;rgba8unorm, read_write&gt;;
 /// ```
-/// Note that the &quot;group&quot; index is determined by the usage context. It is not defined in [`AsBindGroup`]. For example, in Bevy material bind groups
-/// are generally bound to group 1.
+/// Note that the "group" index is determined by the usage context. It is not defined in [`AsBindGroup`]. For example, in Bevy material bind groups
+/// are generally bound to group 2.
 ///
 /// The following field-level attributes are supported:
 ///
@@ -529,7 +549,7 @@
 ///   [`Color`](crate::color::Color). It can also be derived for custom structs.
 ///
 /// * `texture(BINDING_INDEX, arguments)`
-///     * This field&#39;s [`Handle&lt;Image&gt;`](bevy_asset::Handle) will be used to look up the matching [`Texture`](crate::render_resource::Texture)
+///     * This field's [`Handle&lt;Image&gt;`](bevy_asset::Handle) will be used to look up the matching [`Texture`](crate::render_resource::Texture)
 ///     GPU resource, which will be bound as a texture in shaders. The field will be assumed to implement [`Into&lt;Option&lt;Handle&lt;Image&gt;&gt;&gt;`]. In practice,
 ///     most fields should be a [`Handle&lt;Image&gt;`](bevy_asset::Handle) or [`Option&lt;Handle&lt;Image&gt;&gt;`]. If the value of an [`Option&lt;Handle&lt;Image&gt;&gt;`] is
 ///     [`None`], the [`FallbackImage`] resource will be used instead. This attribute can be used in conjunction with a `sampler` binding attribute
@@ -537,14 +557,27 @@
 ///
 /// | Arguments             | Values                                                                  | Default              |
 /// |-----------------------|-------------------------------------------------------------------------|----------------------|
-/// | `dimension` = &quot;...&quot;   | `&quot;1d&quot;`, `&quot;2d&quot;`, `&quot;2d_array&quot;`, `&quot;3d&quot;`, `&quot;cube&quot;`, `&quot;cube_array&quot;`          | `&quot;2d&quot;`               |
-/// | `sample_type` = &quot;...&quot; | `&quot;float&quot;`, `&quot;depth&quot;`, `&quot;s_int&quot;` or `&quot;u_int&quot;`                            | `&quot;float&quot;`            |
+/// | `dimension` = "..."   | `"1d"`, `"2d"`, `"2d_array"`, `"3d"`, `"cube"`, `"cube_array"`          | `"2d"`               |
+/// | `sample_type` = "..." | `"float"`, `"depth"`, `"s_int"` or `"u_int"`                            | `"float"`            |
 /// | `filterable` = ...    | `true`, `false`                                                         | `true`               |
 /// | `multisampled` = ...  | `true`, `false`                                                         | `false`              |
 /// | `visibility(...)`     | `all`, `none`, or a list-combination of `vertex`, `fragment`, `compute` | `vertex`, `fragment` |
 ///
+/// * `storage_texture(BINDING_INDEX, arguments)`
+///     * This field's [`Handle&lt;Image&gt;`](bevy_asset::Handle) will be used to look up the matching [`Texture`](crate::render_resource::Texture)
+///     GPU resource, which will be bound as a storage texture in shaders. The field will be assumed to implement [`Into&lt;Option&lt;Handle&lt;Image&gt;&gt;&gt;`]. In practice,
+///     most fields should be a [`Handle&lt;Image&gt;`](bevy_asset::Handle) or [`Option&lt;Handle&lt;Image&gt;&gt;`]. If the value of an [`Option&lt;Handle&lt;Image&gt;&gt;`] is
+///     [`None`], the [`FallbackImage`] resource will be used instead.
+///
+/// | Arguments              | Values                                                                                     | Default       |
+/// |------------------------|--------------------------------------------------------------------------------------------|---------------|
+/// | `dimension` = "..."    | `"1d"`, `"2d"`, `"2d_array"`, `"3d"`, `"cube"`, `"cube_array"`                             | `"2d"`        |
+/// | `image_format` = ...   | any member of [`TextureFormat`](crate::render_resource::TextureFormat)                     | `Rgba8Unorm`  |
+/// | `access` = ...         | any member of [`StorageTextureAccess`](crate::render_resource::StorageTextureAccess)       | `ReadWrite`   |
+/// | `visibility(...)`      | `all`, `none`, or a list-combination of `vertex`, `fragment`, `compute`                    | `compute`     |
+///
 /// * `sampler(BINDING_INDEX, arguments)`
-///     * This field&#39;s [`Handle&lt;Image&gt;`](bevy_asset::Handle) will be used to look up the matching [`Sampler`] GPU
+///     * This field's [`Handle&lt;Image&gt;`](bevy_asset::Handle) will be used to look up the matching [`Sampler`] GPU
 ///     resource, which will be bound as a sampler in shaders. The field will be assumed to implement [`Into&lt;Option&lt;Handle&lt;Image&gt;&gt;&gt;`]. In practice,
 ///     most fields should be a [`Handle&lt;Image&gt;`](bevy_asset::Handle) or [`Option&lt;Handle&lt;Image&gt;&gt;`]. If the value of an [`Option&lt;Handle&lt;Image&gt;&gt;`] is
 ///     [`None`], the [`FallbackImage`] resource will be used instead. This attribute can be used in conjunction with a `texture` binding attribute
@@ -552,7 +585,7 @@
 ///
 /// | Arguments              | Values                                                                  | Default                |
 /// |------------------------|-------------------------------------------------------------------------|------------------------|
-/// | `sampler_type` = &quot;...&quot; | `&quot;filtering&quot;`, `&quot;non_filtering&quot;`, `&quot;comparison&quot;`.                       |  `&quot;filtering&quot;`         |
+/// | `sampler_type` = "..." | `"filtering"`, `"non_filtering"`, `"comparison"`.                       |  `"filtering"`         |
 /// | `visibility(...)`      | `all`, `none`, or a list-combination of `vertex`, `fragment`, `compute` |   `vertex`, `fragment` |
 ///
 /// * `storage(BINDING_INDEX, arguments)`
@@ -590,7 +623,7 @@
 /// }
 /// ```
 /// This is useful if you want a texture to be optional. When the value is [`None`], the [`FallbackImage`] will be used for the binding instead, which defaults
-/// to &quot;pure white&quot;.
+/// to "pure white".
 ///
 /// Field uniforms with the same index will be combined into a single binding:
 /// ```
@@ -611,10 +644,10 @@
 ///     roughness: f32,
 /// };
 ///
-/// @group(1) @binding(0) var&lt;uniform&gt; material: CoolMaterial;
+/// @group(2) @binding(0) var&lt;uniform&gt; material: CoolMaterial;
 /// ```
 ///
-/// Some less common scenarios will require &quot;struct-level&quot; attributes. These are the currently supported struct-level attributes:
+/// Some less common scenarios will require "struct-level" attributes. These are the currently supported struct-level attributes:
 /// * `uniform(BINDING_INDEX, ConvertedShaderType)`
 ///     * This also creates a [`Buffer`] using [`ShaderType`] and binds it as a uniform, much
 ///     much like the field-level `uniform` attribute. The difference is that the entire [`AsBindGroup`] value is converted to `ConvertedShaderType`,
@@ -625,10 +658,10 @@
 /// * `bind_group_data(DataType)`
 ///     * The [`AsBindGroup`] type will be converted to some `DataType` using [`Into&lt;DataType&gt;`] and stored
 ///     as [`AsBindGroup::Data`] as part of the [`AsBindGroup::as_bind_group`] call. This is useful if data needs to be stored alongside
-///     the generated bind group, such as a unique identifier for a material&#39;s bind group. The most common use case for this attribute
-///     is &quot;shader pipeline specialization&quot;. See [`SpecializedRenderPipeline`](crate::render_resource::SpecializedRenderPipeline).
+///     the generated bind group, such as a unique identifier for a material's bind group. The most common use case for this attribute
+///     is "shader pipeline specialization". See [`SpecializedRenderPipeline`](crate::render_resource::SpecializedRenderPipeline).
 ///
-/// The previous `CoolMaterial` example illustrating &quot;combining multiple field-level uniform attributes with the same binding index&quot; can
+/// The previous `CoolMaterial` example illustrating "combining multiple field-level uniform attributes with the same binding index" can
 /// also be equivalently represented with a single struct-level uniform attribute:
 /// ```
 /// # use bevy_render::{color::Color, render_resource::{AsBindGroup, ShaderType}};
@@ -680,11 +713,11 @@
 /// }
 /// ```
 </span><span class="kw">pub trait </span>AsBindGroup {
-    <span class="doccomment">/// Data that will be stored alongside the &quot;prepared&quot; bind group.
+    <span class="doccomment">/// Data that will be stored alongside the "prepared" bind group.
     </span><span class="kw">type </span>Data: Send + Sync;
 
     <span class="doccomment">/// label
-    </span><span class="kw">fn </span>label() -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str&gt; {
+    </span><span class="kw">fn </span>label() -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str&gt; {
         <span class="prelude-val">None
     </span>}
 
@@ -733,10 +766,10 @@
     <span class="kw">where
         </span><span class="self">Self</span>: Sized,
     {
-        render_device.create_bind_group_layout(<span class="kw-2">&amp;</span>BindGroupLayoutDescriptor {
-            label: <span class="self">Self</span>::label(),
-            entries: <span class="kw-2">&amp;</span><span class="self">Self</span>::bind_group_layout_entries(render_device),
-        })
+        render_device.create_bind_group_layout(
+            <span class="self">Self</span>::label(),
+            <span class="kw-2">&amp;</span><span class="self">Self</span>::bind_group_layout_entries(render_device),
+        )
     }
 
     <span class="doccomment">/// Returns a vec of bind group layout entries
@@ -749,7 +782,7 @@
 </span><span class="attr">#[derive(Debug, Error)]
 </span><span class="kw">pub enum </span>AsBindGroupError {
     <span class="doccomment">/// The bind group could not be generated. Try again next frame.
-    </span><span class="attr">#[error(<span class="string">&quot;The bind group could not be generated&quot;</span>)]
+    </span><span class="attr">#[error(<span class="string">"The bind group could not be generated"</span>)]
     </span>RetryNextUpdate,
 }
 
@@ -799,7 +832,7 @@
 
 <span class="kw">impl</span>&lt;T, U: ShaderType&gt; AsBindGroupShaderType&lt;U&gt; <span class="kw">for </span>T
 <span class="kw">where
-    for</span>&lt;<span class="lifetime">&#39;a</span>&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>T: Into&lt;U&gt;,
+    for</span>&lt;<span class="lifetime">'a</span>&gt; <span class="kw-2">&amp;</span><span class="lifetime">'a </span>T: Into&lt;U&gt;,
 {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>as_bind_group_shader_type(<span class="kw-2">&amp;</span><span class="self">self</span>, _images: <span class="kw-2">&amp;</span>RenderAssets&lt;Image&gt;) -&gt; U {

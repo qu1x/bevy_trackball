@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_diagnostic-0.12.1/src/diagnostic.rs`."><title>diagnostic.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="bevy_diagnostic" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../bevy_diagnostic/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_diagnostic-0.13.0/src/diagnostic.rs`."><title>diagnostic.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="bevy_diagnostic" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -315,27 +316,191 @@
 <a href="#315" id="315">315</a>
 <a href="#316" id="316">316</a>
 <a href="#317" id="317">317</a>
-</pre></div><pre class="rust"><code><span class="kw">use </span>bevy_app::App;
-<span class="kw">use </span>bevy_ecs::system::{Deferred, Res, Resource, SystemBuffer, SystemParam};
-<span class="kw">use </span>bevy_log::warn;
-<span class="kw">use </span>bevy_utils::{Duration, Instant, StableHashMap, Uuid};
+<a href="#318" id="318">318</a>
+<a href="#319" id="319">319</a>
+<a href="#320" id="320">320</a>
+<a href="#321" id="321">321</a>
+<a href="#322" id="322">322</a>
+<a href="#323" id="323">323</a>
+<a href="#324" id="324">324</a>
+<a href="#325" id="325">325</a>
+<a href="#326" id="326">326</a>
+<a href="#327" id="327">327</a>
+<a href="#328" id="328">328</a>
+<a href="#329" id="329">329</a>
+<a href="#330" id="330">330</a>
+<a href="#331" id="331">331</a>
+<a href="#332" id="332">332</a>
+<a href="#333" id="333">333</a>
+<a href="#334" id="334">334</a>
+<a href="#335" id="335">335</a>
+<a href="#336" id="336">336</a>
+<a href="#337" id="337">337</a>
+<a href="#338" id="338">338</a>
+<a href="#339" id="339">339</a>
+<a href="#340" id="340">340</a>
+<a href="#341" id="341">341</a>
+<a href="#342" id="342">342</a>
+<a href="#343" id="343">343</a>
+<a href="#344" id="344">344</a>
+<a href="#345" id="345">345</a>
+<a href="#346" id="346">346</a>
+<a href="#347" id="347">347</a>
+<a href="#348" id="348">348</a>
+<a href="#349" id="349">349</a>
+<a href="#350" id="350">350</a>
+<a href="#351" id="351">351</a>
+<a href="#352" id="352">352</a>
+<a href="#353" id="353">353</a>
+<a href="#354" id="354">354</a>
+<a href="#355" id="355">355</a>
+<a href="#356" id="356">356</a>
+<a href="#357" id="357">357</a>
+<a href="#358" id="358">358</a>
+<a href="#359" id="359">359</a>
+<a href="#360" id="360">360</a>
+<a href="#361" id="361">361</a>
+<a href="#362" id="362">362</a>
+<a href="#363" id="363">363</a>
+<a href="#364" id="364">364</a>
+<a href="#365" id="365">365</a>
+<a href="#366" id="366">366</a>
+<a href="#367" id="367">367</a>
+<a href="#368" id="368">368</a>
+<a href="#369" id="369">369</a>
+<a href="#370" id="370">370</a>
+<a href="#371" id="371">371</a>
+<a href="#372" id="372">372</a>
+<a href="#373" id="373">373</a>
+<a href="#374" id="374">374</a>
+<a href="#375" id="375">375</a>
+<a href="#376" id="376">376</a>
+<a href="#377" id="377">377</a>
+<a href="#378" id="378">378</a>
+<a href="#379" id="379">379</a>
+<a href="#380" id="380">380</a>
+<a href="#381" id="381">381</a>
+<a href="#382" id="382">382</a>
+<a href="#383" id="383">383</a>
+<a href="#384" id="384">384</a>
+<a href="#385" id="385">385</a>
+<a href="#386" id="386">386</a>
+<a href="#387" id="387">387</a>
+<a href="#388" id="388">388</a>
+<a href="#389" id="389">389</a>
+<a href="#390" id="390">390</a>
+<a href="#391" id="391">391</a>
+<a href="#392" id="392">392</a>
+<a href="#393" id="393">393</a>
+<a href="#394" id="394">394</a>
+<a href="#395" id="395">395</a>
+<a href="#396" id="396">396</a>
+<a href="#397" id="397">397</a>
+</pre></div><pre class="rust"><code><span class="kw">use </span>std::hash::{Hash, Hasher};
 <span class="kw">use </span>std::{borrow::Cow, collections::VecDeque};
 
-<span class="kw">use </span><span class="kw">crate</span>::MAX_DIAGNOSTIC_NAME_WIDTH;
+<span class="kw">use </span>bevy_app::App;
+<span class="kw">use </span>bevy_ecs::system::{Deferred, Res, Resource, SystemBuffer, SystemParam};
+<span class="kw">use </span>bevy_utils::{hashbrown::HashMap, Duration, Instant, PassHash};
+<span class="kw">use </span>const_fnv1a_hash::fnv1a_hash_str_64;
 
-<span class="doccomment">/// Unique identifier for a [`Diagnostic`].
-</span><span class="attr">#[derive(Debug, Copy, Clone, Hash, Eq, PartialEq, PartialOrd, Ord)]
-</span><span class="kw">pub struct </span>DiagnosticId(<span class="kw">pub </span>Uuid);
+<span class="kw">use </span><span class="kw">crate</span>::DEFAULT_MAX_HISTORY_LENGTH;
 
-<span class="kw">impl </span>DiagnosticId {
-    <span class="kw">pub const fn </span>from_u128(value: u128) -&gt; <span class="self">Self </span>{
-        DiagnosticId(Uuid::from_u128(value))
+<span class="doccomment">/// Unique diagnostic path, separated by `/`.
+///
+/// Requirements:
+/// - Can't be empty
+/// - Can't have leading or trailing `/`
+/// - Can't have empty components.
+</span><span class="attr">#[derive(Debug, Clone)]
+</span><span class="kw">pub struct </span>DiagnosticPath {
+    path: Cow&lt;<span class="lifetime">'static</span>, str&gt;,
+    hash: u64,
+}
+
+<span class="kw">impl </span>DiagnosticPath {
+    <span class="doccomment">/// Create a new `DiagnosticPath`. Usable in const contexts.
+    ///
+    /// **Note**: path is not validated, so make sure it follows all the requirements.
+    </span><span class="kw">pub const fn </span>const_new(path: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str) -&gt; DiagnosticPath {
+        DiagnosticPath {
+            path: Cow::Borrowed(path),
+            hash: fnv1a_hash_str_64(path),
+        }
+    }
+
+    <span class="doccomment">/// Create a new `DiagnosticPath` from the specified string.
+    </span><span class="kw">pub fn </span>new(path: <span class="kw">impl </span>Into&lt;Cow&lt;<span class="lifetime">'static</span>, str&gt;&gt;) -&gt; DiagnosticPath {
+        <span class="kw">let </span>path = path.into();
+
+        <span class="macro">debug_assert!</span>(!path.is_empty(), <span class="string">"diagnostic path can't be empty"</span>);
+        <span class="macro">debug_assert!</span>(
+            !path.starts_with(<span class="string">'/'</span>),
+            <span class="string">"diagnostic path can't be start with `/`"
+        </span>);
+        <span class="macro">debug_assert!</span>(
+            !path.ends_with(<span class="string">'/'</span>),
+            <span class="string">"diagnostic path can't be end with `/`"
+        </span>);
+        <span class="macro">debug_assert!</span>(
+            !path.contains(<span class="string">"//"</span>),
+            <span class="string">"diagnostic path can't contain empty components"
+        </span>);
+
+        DiagnosticPath {
+            hash: fnv1a_hash_str_64(<span class="kw-2">&amp;</span>path),
+            path,
+        }
+    }
+
+    <span class="doccomment">/// Create a new `DiagnosticPath` from an iterator over components.
+    </span><span class="kw">pub fn </span>from_components&lt;<span class="lifetime">'a</span>&gt;(components: <span class="kw">impl </span>IntoIterator&lt;Item = <span class="kw-2">&amp;</span><span class="lifetime">'a </span>str&gt;) -&gt; DiagnosticPath {
+        <span class="kw">let </span><span class="kw-2">mut </span>buf = String::new();
+
+        <span class="kw">for </span>(i, component) <span class="kw">in </span>components.into_iter().enumerate() {
+            <span class="kw">if </span>i &gt; <span class="number">0 </span>{
+                buf.push(<span class="string">'/'</span>);
+            }
+            buf.push_str(component);
+        }
+
+        DiagnosticPath::new(buf)
+    }
+
+    <span class="doccomment">/// Returns full path, joined by `/`
+    </span><span class="kw">pub fn </span>as_str(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>str {
+        <span class="kw-2">&amp;</span><span class="self">self</span>.path
+    }
+
+    <span class="doccomment">/// Returns an iterator over path components.
+    </span><span class="kw">pub fn </span>components(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw">impl </span>Iterator&lt;Item = <span class="kw-2">&amp;</span>str&gt; + <span class="lifetime">'_ </span>{
+        <span class="self">self</span>.path.split(<span class="string">'/'</span>)
     }
 }
 
-<span class="kw">impl </span>Default <span class="kw">for </span>DiagnosticId {
-    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
-        DiagnosticId(Uuid::new_v4())
+<span class="kw">impl </span>From&lt;DiagnosticPath&gt; <span class="kw">for </span>String {
+    <span class="kw">fn </span>from(path: DiagnosticPath) -&gt; <span class="self">Self </span>{
+        path.path.into()
+    }
+}
+
+<span class="kw">impl </span>Eq <span class="kw">for </span>DiagnosticPath {}
+
+<span class="kw">impl </span>PartialEq <span class="kw">for </span>DiagnosticPath {
+    <span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; bool {
+        <span class="self">self</span>.hash == other.hash &amp;&amp; <span class="self">self</span>.path == other.path
+    }
+}
+
+<span class="kw">impl </span>Hash <span class="kw">for </span>DiagnosticPath {
+    <span class="kw">fn </span>hash&lt;H: Hasher&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, state: <span class="kw-2">&amp;mut </span>H) {
+        state.write_u64(<span class="self">self</span>.hash);
+    }
+}
+
+<span class="kw">impl </span>std::fmt::Display <span class="kw">for </span>DiagnosticPath {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; std::fmt::Result {
+        <span class="self">self</span>.path.fmt(f)
     }
 }
 
@@ -350,9 +515,8 @@
 /// Diagnostic examples: frames per second, CPU usage, network latency
 </span><span class="attr">#[derive(Debug)]
 </span><span class="kw">pub struct </span>Diagnostic {
-    <span class="kw">pub </span>id: DiagnosticId,
-    <span class="kw">pub </span>name: Cow&lt;<span class="lifetime">&#39;static</span>, str&gt;,
-    <span class="kw">pub </span>suffix: Cow&lt;<span class="lifetime">&#39;static</span>, str&gt;,
+    path: DiagnosticPath,
+    <span class="kw">pub </span>suffix: Cow&lt;<span class="lifetime">'static</span>, str&gt;,
     history: VecDeque&lt;DiagnosticMeasurement&gt;,
     sum: f64,
     ema: f64,
@@ -388,27 +552,13 @@
         <span class="self">self</span>.history.push_back(measurement);
     }
 
-    <span class="doccomment">/// Create a new diagnostic with the given ID, name and maximum history.
-    </span><span class="kw">pub fn </span>new(
-        id: DiagnosticId,
-        name: <span class="kw">impl </span>Into&lt;Cow&lt;<span class="lifetime">&#39;static</span>, str&gt;&gt;,
-        max_history_length: usize,
-    ) -&gt; Diagnostic {
-        <span class="kw">let </span>name = name.into();
-        <span class="kw">if </span>name.chars().count() &gt; MAX_DIAGNOSTIC_NAME_WIDTH {
-            <span class="comment">// This could be a false positive due to a unicode width being shorter
-            </span><span class="macro">warn!</span>(
-                <span class="string">&quot;Diagnostic {:?} has name longer than {} characters, and so might overflow in the LogDiagnosticsPlugin\
-                Consider using a shorter name.&quot;</span>,
-                name, MAX_DIAGNOSTIC_NAME_WIDTH
-            );
-        }
+    <span class="doccomment">/// Create a new diagnostic with the given path.
+    </span><span class="kw">pub fn </span>new(path: DiagnosticPath) -&gt; Diagnostic {
         Diagnostic {
-            id,
-            name,
-            suffix: Cow::Borrowed(<span class="string">&quot;&quot;</span>),
-            history: VecDeque::with_capacity(max_history_length),
-            max_history_length,
+            path,
+            suffix: Cow::Borrowed(<span class="string">""</span>),
+            history: VecDeque::with_capacity(DEFAULT_MAX_HISTORY_LENGTH),
+            max_history_length: DEFAULT_MAX_HISTORY_LENGTH,
             sum: <span class="number">0.0</span>,
             ema: <span class="number">0.0</span>,
             ema_smoothing_factor: <span class="number">2.0 </span>/ <span class="number">21.0</span>,
@@ -416,9 +566,18 @@
         }
     }
 
+    <span class="doccomment">/// Set the maximum history length.
+    </span><span class="attr">#[must_use]
+    </span><span class="kw">pub fn </span>with_max_history_length(<span class="kw-2">mut </span><span class="self">self</span>, max_history_length: usize) -&gt; <span class="self">Self </span>{
+        <span class="self">self</span>.max_history_length = max_history_length;
+        <span class="self">self</span>.history.reserve(<span class="self">self</span>.max_history_length);
+        <span class="self">self</span>.history.shrink_to(<span class="self">self</span>.max_history_length);
+        <span class="self">self
+    </span>}
+
     <span class="doccomment">/// Add a suffix to use when logging the value, can be used to show a unit.
     </span><span class="attr">#[must_use]
-    </span><span class="kw">pub fn </span>with_suffix(<span class="kw-2">mut </span><span class="self">self</span>, suffix: <span class="kw">impl </span>Into&lt;Cow&lt;<span class="lifetime">&#39;static</span>, str&gt;&gt;) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>with_suffix(<span class="kw-2">mut </span><span class="self">self</span>, suffix: <span class="kw">impl </span>Into&lt;Cow&lt;<span class="lifetime">'static</span>, str&gt;&gt;) -&gt; <span class="self">Self </span>{
         <span class="self">self</span>.suffix = suffix.into();
         <span class="self">self
     </span>}
@@ -439,6 +598,10 @@
         <span class="self">self
     </span>}
 
+    <span class="kw">pub fn </span>path(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>DiagnosticPath {
+        <span class="kw-2">&amp;</span><span class="self">self</span>.path
+    }
+
     <span class="doccomment">/// Get the latest measurement from this diagnostic.
     </span><span class="attr">#[inline]
     </span><span class="kw">pub fn </span>measurement(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>DiagnosticMeasurement&gt; {
@@ -450,7 +613,7 @@
         <span class="self">self</span>.measurement().map(|measurement| measurement.value)
     }
 
-    <span class="doccomment">/// Return the simple moving average of this diagnostic&#39;s recent values.
+    <span class="doccomment">/// Return the simple moving average of this diagnostic's recent values.
     /// N.B. this a cheap operation as the sum is cached.
     </span><span class="kw">pub fn </span>average(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;f64&gt; {
         <span class="kw">if </span>!<span class="self">self</span>.history.is_empty() {
@@ -515,9 +678,7 @@
 <span class="doccomment">/// A collection of [`Diagnostic`]s.
 </span><span class="attr">#[derive(Debug, Default, Resource)]
 </span><span class="kw">pub struct </span>DiagnosticsStore {
-    <span class="comment">// This uses a [`StableHashMap`] to ensure that the iteration order is deterministic between
-    // runs when all diagnostics are inserted in the same order.
-    </span>diagnostics: StableHashMap&lt;DiagnosticId, Diagnostic&gt;,
+    diagnostics: HashMap&lt;DiagnosticPath, Diagnostic, PassHash&gt;,
 }
 
 <span class="kw">impl </span>DiagnosticsStore {
@@ -525,21 +686,21 @@
     ///
     /// If possible, prefer calling [`App::register_diagnostic`].
     </span><span class="kw">pub fn </span>add(<span class="kw-2">&amp;mut </span><span class="self">self</span>, diagnostic: Diagnostic) {
-        <span class="self">self</span>.diagnostics.insert(diagnostic.id, diagnostic);
+        <span class="self">self</span>.diagnostics.insert(diagnostic.path.clone(), diagnostic);
     }
 
-    <span class="kw">pub fn </span>get(<span class="kw-2">&amp;</span><span class="self">self</span>, id: DiagnosticId) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Diagnostic&gt; {
-        <span class="self">self</span>.diagnostics.get(<span class="kw-2">&amp;</span>id)
+    <span class="kw">pub fn </span>get(<span class="kw-2">&amp;</span><span class="self">self</span>, path: <span class="kw-2">&amp;</span>DiagnosticPath) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Diagnostic&gt; {
+        <span class="self">self</span>.diagnostics.get(path)
     }
 
-    <span class="kw">pub fn </span>get_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>, id: DiagnosticId) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;mut </span>Diagnostic&gt; {
-        <span class="self">self</span>.diagnostics.get_mut(<span class="kw-2">&amp;</span>id)
+    <span class="kw">pub fn </span>get_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>, path: <span class="kw-2">&amp;</span>DiagnosticPath) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;mut </span>Diagnostic&gt; {
+        <span class="self">self</span>.diagnostics.get_mut(path)
     }
 
     <span class="doccomment">/// Get the latest [`DiagnosticMeasurement`] from an enabled [`Diagnostic`].
-    </span><span class="kw">pub fn </span>get_measurement(<span class="kw-2">&amp;</span><span class="self">self</span>, id: DiagnosticId) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>DiagnosticMeasurement&gt; {
+    </span><span class="kw">pub fn </span>get_measurement(<span class="kw-2">&amp;</span><span class="self">self</span>, path: <span class="kw-2">&amp;</span>DiagnosticPath) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>DiagnosticMeasurement&gt; {
         <span class="self">self</span>.diagnostics
-            .get(<span class="kw-2">&amp;</span>id)
+            .get(path)
             .filter(|diagnostic| diagnostic.is_enabled)
             .and_then(|diagnostic| diagnostic.measurement())
     }
@@ -555,24 +716,24 @@
     }
 }
 
-<span class="doccomment">/// Record new [`DiagnosticMeasurement`]&#39;s.
+<span class="doccomment">/// Record new [`DiagnosticMeasurement`]'s.
 </span><span class="attr">#[derive(SystemParam)]
-</span><span class="kw">pub struct </span>Diagnostics&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>&gt; {
-    store: Res&lt;<span class="lifetime">&#39;w</span>, DiagnosticsStore&gt;,
-    queue: Deferred&lt;<span class="lifetime">&#39;s</span>, DiagnosticsBuffer&gt;,
+</span><span class="kw">pub struct </span>Diagnostics&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>&gt; {
+    store: Res&lt;<span class="lifetime">'w</span>, DiagnosticsStore&gt;,
+    queue: Deferred&lt;<span class="lifetime">'s</span>, DiagnosticsBuffer&gt;,
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>&gt; Diagnostics&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>&gt; Diagnostics&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>&gt; {
     <span class="doccomment">/// Add a measurement to an enabled [`Diagnostic`]. The measurement is passed as a function so that
     /// it will be evaluated only if the [`Diagnostic`] is enabled. This can be useful if the value is
     /// costly to calculate.
-    </span><span class="kw">pub fn </span>add_measurement&lt;F&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, id: DiagnosticId, value: F)
+    </span><span class="kw">pub fn </span>add_measurement&lt;F&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, path: <span class="kw-2">&amp;</span>DiagnosticPath, value: F)
     <span class="kw">where
         </span>F: FnOnce() -&gt; f64,
     {
         <span class="kw">if </span><span class="self">self
             </span>.store
-            .get(id)
+            .get(path)
             .filter(|diagnostic| diagnostic.is_enabled)
             .is_some()
         {
@@ -580,13 +741,13 @@
                 time: Instant::now(),
                 value: value(),
             };
-            <span class="self">self</span>.queue.<span class="number">0</span>.insert(id, measurement);
+            <span class="self">self</span>.queue.<span class="number">0</span>.insert(path.clone(), measurement);
         }
     }
 }
 
 <span class="attr">#[derive(Default)]
-</span><span class="kw">struct </span>DiagnosticsBuffer(StableHashMap&lt;DiagnosticId, DiagnosticMeasurement&gt;);
+</span><span class="kw">struct </span>DiagnosticsBuffer(HashMap&lt;DiagnosticPath, DiagnosticMeasurement, PassHash&gt;);
 
 <span class="kw">impl </span>SystemBuffer <span class="kw">for </span>DiagnosticsBuffer {
     <span class="kw">fn </span>apply(
@@ -595,8 +756,8 @@
         world: <span class="kw-2">&amp;mut </span>bevy_ecs::world::World,
     ) {
         <span class="kw">let </span><span class="kw-2">mut </span>diagnostics = world.resource_mut::&lt;DiagnosticsStore&gt;();
-        <span class="kw">for </span>(id, measurement) <span class="kw">in </span><span class="self">self</span>.<span class="number">0</span>.drain() {
-            <span class="kw">if let </span><span class="prelude-val">Some</span>(diagnostic) = diagnostics.get_mut(id) {
+        <span class="kw">for </span>(path, measurement) <span class="kw">in </span><span class="self">self</span>.<span class="number">0</span>.drain() {
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(diagnostic) = diagnostics.get_mut(<span class="kw-2">&amp;</span>path) {
                 diagnostic.add_measurement(measurement);
             }
         }
@@ -611,16 +772,16 @@
 <span class="kw">impl </span>RegisterDiagnostic <span class="kw">for </span>App {
     <span class="doccomment">/// Register a new [`Diagnostic`] with an [`App`].
     ///
-    /// Will initialize a [`DiagnosticsStore`] if it doesn&#39;t exist.
+    /// Will initialize a [`DiagnosticsStore`] if it doesn't exist.
     ///
-    /// ```rust
+    /// ```
     /// use bevy_app::App;
-    /// use bevy_diagnostic::{Diagnostic, DiagnosticsPlugin, DiagnosticId, RegisterDiagnostic};
+    /// use bevy_diagnostic::{Diagnostic, DiagnosticsPlugin, DiagnosticPath, RegisterDiagnostic};
     ///
-    /// const UNIQUE_DIAG_ID: DiagnosticId = DiagnosticId::from_u128(42);
+    /// const UNIQUE_DIAG_PATH: DiagnosticPath = DiagnosticPath::const_new("foo/bar");
     ///
     /// App::new()
-    ///     .register_diagnostic(Diagnostic::new(UNIQUE_DIAG_ID, &quot;example&quot;, 10))
+    ///     .register_diagnostic(Diagnostic::new(UNIQUE_DIAG_PATH))
     ///     .add_plugins(DiagnosticsPlugin)
     ///     .run();
     /// ```

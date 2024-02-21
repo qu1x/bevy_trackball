@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/wgpu-core-0.17.1/src/global.rs`."><title>global.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="wgpu_core" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../wgpu_core/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/wgpu-core-0.19.0/src/global.rs`."><title>global.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="wgpu_core" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -169,44 +170,79 @@
 <a href="#169" id="169">169</a>
 <a href="#170" id="170">170</a>
 <a href="#171" id="171">171</a>
-</pre></div><pre class="rust"><code><span class="kw">use crate</span>::{
+<a href="#172" id="172">172</a>
+<a href="#173" id="173">173</a>
+<a href="#174" id="174">174</a>
+<a href="#175" id="175">175</a>
+<a href="#176" id="176">176</a>
+<a href="#177" id="177">177</a>
+<a href="#178" id="178">178</a>
+<a href="#179" id="179">179</a>
+<a href="#180" id="180">180</a>
+<a href="#181" id="181">181</a>
+<a href="#182" id="182">182</a>
+</pre></div><pre class="rust"><code><span class="kw">use </span>std::{marker::PhantomData, sync::Arc};
+
+<span class="kw">use </span>wgt::Backend;
+
+<span class="kw">use crate</span>::{
     hal_api::HalApi,
     hub::{HubReport, Hubs},
-    id,
+    id::SurfaceId,
     identity::GlobalIdentityHandlerFactory,
     instance::{Instance, Surface},
-    registry::Registry,
-    storage::{Element, StorageReport},
+    registry::{Registry, RegistryReport},
+    resource_log,
+    storage::Element,
 };
 
-<span class="attr">#[derive(Debug)]
+<span class="attr">#[derive(Debug, PartialEq, Eq)]
 </span><span class="kw">pub struct </span>GlobalReport {
-    <span class="kw">pub </span>surfaces: StorageReport,
-    <span class="attr">#[cfg(all(feature = <span class="string">&quot;vulkan&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)))]
+    <span class="kw">pub </span>surfaces: RegistryReport,
+    <span class="attr">#[cfg(vulkan)]
     </span><span class="kw">pub </span>vulkan: <span class="prelude-ty">Option</span>&lt;HubReport&gt;,
-    <span class="attr">#[cfg(all(feature = <span class="string">&quot;metal&quot;</span>, any(target_os = <span class="string">&quot;macos&quot;</span>, target_os = <span class="string">&quot;ios&quot;</span>)))]
+    <span class="attr">#[cfg(metal)]
     </span><span class="kw">pub </span>metal: <span class="prelude-ty">Option</span>&lt;HubReport&gt;,
-    <span class="attr">#[cfg(all(feature = <span class="string">&quot;dx12&quot;</span>, windows))]
+    <span class="attr">#[cfg(dx12)]
     </span><span class="kw">pub </span>dx12: <span class="prelude-ty">Option</span>&lt;HubReport&gt;,
-    <span class="attr">#[cfg(all(feature = <span class="string">&quot;dx11&quot;</span>, windows))]
-    </span><span class="kw">pub </span>dx11: <span class="prelude-ty">Option</span>&lt;HubReport&gt;,
-    <span class="attr">#[cfg(feature = <span class="string">&quot;gles&quot;</span>)]
+    <span class="attr">#[cfg(gles)]
     </span><span class="kw">pub </span>gl: <span class="prelude-ty">Option</span>&lt;HubReport&gt;,
+}
+
+<span class="kw">impl </span>GlobalReport {
+    <span class="kw">pub fn </span>surfaces(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>RegistryReport {
+        <span class="kw-2">&amp;</span><span class="self">self</span>.surfaces
+    }
+    <span class="kw">pub fn </span>hub_report(<span class="kw-2">&amp;</span><span class="self">self</span>, backend: Backend) -&gt; <span class="kw-2">&amp;</span>HubReport {
+        <span class="kw">match </span>backend {
+            <span class="attr">#[cfg(vulkan)]
+            </span>Backend::Vulkan =&gt; <span class="self">self</span>.vulkan.as_ref().unwrap(),
+            <span class="attr">#[cfg(metal)]
+            </span>Backend::Metal =&gt; <span class="self">self</span>.metal.as_ref().unwrap(),
+            <span class="attr">#[cfg(dx12)]
+            </span>Backend::Dx12 =&gt; <span class="self">self</span>.dx12.as_ref().unwrap(),
+            <span class="attr">#[cfg(gles)]
+            </span>Backend::Gl =&gt; <span class="self">self</span>.gl.as_ref().unwrap(),
+            <span class="kw">_ </span>=&gt; <span class="macro">panic!</span>(<span class="string">"HubReport is not supported on this backend"</span>),
+        }
+    }
 }
 
 <span class="kw">pub struct </span>Global&lt;G: GlobalIdentityHandlerFactory&gt; {
     <span class="kw">pub </span>instance: Instance,
-    <span class="kw">pub </span>surfaces: Registry&lt;Surface, id::SurfaceId, G&gt;,
-    <span class="kw">pub</span>(<span class="kw">crate</span>) hubs: Hubs&lt;G&gt;,
+    <span class="kw">pub </span>surfaces: Registry&lt;SurfaceId, Surface&gt;,
+    <span class="kw">pub</span>(<span class="kw">crate</span>) hubs: Hubs,
+    _phantom: PhantomData&lt;G&gt;,
 }
 
 <span class="kw">impl</span>&lt;G: GlobalIdentityHandlerFactory&gt; Global&lt;G&gt; {
     <span class="kw">pub fn </span>new(name: <span class="kw-2">&amp;</span>str, factory: G, instance_desc: wgt::InstanceDescriptor) -&gt; <span class="self">Self </span>{
-        <span class="macro">profiling::scope!</span>(<span class="string">&quot;Global::new&quot;</span>);
+        <span class="macro">profiling::scope!</span>(<span class="string">"Global::new"</span>);
         <span class="self">Self </span>{
             instance: Instance::new(name, instance_desc),
-            surfaces: Registry::without_backend(<span class="kw-2">&amp;</span>factory, <span class="string">&quot;Surface&quot;</span>),
+            surfaces: Registry::without_backend(<span class="kw-2">&amp;</span>factory),
             hubs: Hubs::new(<span class="kw-2">&amp;</span>factory),
+            _phantom: PhantomData,
         }
     }
 
@@ -218,11 +254,12 @@
         factory: G,
         hal_instance: A::Instance,
     ) -&gt; <span class="self">Self </span>{
-        <span class="macro">profiling::scope!</span>(<span class="string">&quot;Global::new&quot;</span>);
+        <span class="macro">profiling::scope!</span>(<span class="string">"Global::new"</span>);
         <span class="self">Self </span>{
             instance: A::create_instance_from_hal(name, hal_instance),
-            surfaces: Registry::without_backend(<span class="kw-2">&amp;</span>factory, <span class="string">&quot;Surface&quot;</span>),
+            surfaces: Registry::without_backend(<span class="kw-2">&amp;</span>factory),
             hubs: Hubs::new(<span class="kw-2">&amp;</span>factory),
+            _phantom: PhantomData,
         }
     }
 
@@ -237,49 +274,44 @@
     ///
     /// - The raw handles obtained from the Instance must not be manually destroyed
     </span><span class="kw">pub unsafe fn </span>from_instance(factory: G, instance: Instance) -&gt; <span class="self">Self </span>{
-        <span class="macro">profiling::scope!</span>(<span class="string">&quot;Global::new&quot;</span>);
+        <span class="macro">profiling::scope!</span>(<span class="string">"Global::new"</span>);
         <span class="self">Self </span>{
             instance,
-            surfaces: Registry::without_backend(<span class="kw-2">&amp;</span>factory, <span class="string">&quot;Surface&quot;</span>),
+            surfaces: Registry::without_backend(<span class="kw-2">&amp;</span>factory),
             hubs: Hubs::new(<span class="kw-2">&amp;</span>factory),
+            _phantom: PhantomData,
         }
     }
 
     <span class="kw">pub fn </span>clear_backend&lt;A: HalApi&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, _dummy: ()) {
-        <span class="kw">let </span><span class="kw-2">mut </span>surface_guard = <span class="self">self</span>.surfaces.data.write();
         <span class="kw">let </span>hub = A::hub(<span class="self">self</span>);
+        <span class="kw">let </span>surfaces_locked = <span class="self">self</span>.surfaces.read();
         <span class="comment">// this is used for tests, which keep the adapter
-        </span>hub.clear(<span class="kw-2">&amp;mut </span>surface_guard, <span class="bool-val">false</span>);
+        </span>hub.clear(<span class="kw-2">&amp;</span>surfaces_locked, <span class="bool-val">false</span>);
     }
 
     <span class="kw">pub fn </span>generate_report(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; GlobalReport {
         GlobalReport {
-            surfaces: <span class="self">self</span>.surfaces.data.read().generate_report(),
-            <span class="attr">#[cfg(all(feature = <span class="string">&quot;vulkan&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)))]
+            surfaces: <span class="self">self</span>.surfaces.generate_report(),
+            <span class="attr">#[cfg(vulkan)]
             </span>vulkan: <span class="kw">if </span><span class="self">self</span>.instance.vulkan.is_some() {
                 <span class="prelude-val">Some</span>(<span class="self">self</span>.hubs.vulkan.generate_report())
             } <span class="kw">else </span>{
                 <span class="prelude-val">None
             </span>},
-            <span class="attr">#[cfg(all(feature = <span class="string">&quot;metal&quot;</span>, any(target_os = <span class="string">&quot;macos&quot;</span>, target_os = <span class="string">&quot;ios&quot;</span>)))]
+            <span class="attr">#[cfg(metal)]
             </span>metal: <span class="kw">if </span><span class="self">self</span>.instance.metal.is_some() {
                 <span class="prelude-val">Some</span>(<span class="self">self</span>.hubs.metal.generate_report())
             } <span class="kw">else </span>{
                 <span class="prelude-val">None
             </span>},
-            <span class="attr">#[cfg(all(feature = <span class="string">&quot;dx12&quot;</span>, windows))]
+            <span class="attr">#[cfg(dx12)]
             </span>dx12: <span class="kw">if </span><span class="self">self</span>.instance.dx12.is_some() {
                 <span class="prelude-val">Some</span>(<span class="self">self</span>.hubs.dx12.generate_report())
             } <span class="kw">else </span>{
                 <span class="prelude-val">None
             </span>},
-            <span class="attr">#[cfg(all(feature = <span class="string">&quot;dx11&quot;</span>, windows))]
-            </span>dx11: <span class="kw">if </span><span class="self">self</span>.instance.dx11.is_some() {
-                <span class="prelude-val">Some</span>(<span class="self">self</span>.hubs.dx11.generate_report())
-            } <span class="kw">else </span>{
-                <span class="prelude-val">None
-            </span>},
-            <span class="attr">#[cfg(feature = <span class="string">&quot;gles&quot;</span>)]
+            <span class="attr">#[cfg(gles)]
             </span>gl: <span class="kw">if </span><span class="self">self</span>.instance.gl.is_some() {
                 <span class="prelude-val">Some</span>(<span class="self">self</span>.hubs.gl.generate_report())
             } <span class="kw">else </span>{
@@ -291,51 +323,42 @@
 
 <span class="kw">impl</span>&lt;G: GlobalIdentityHandlerFactory&gt; Drop <span class="kw">for </span>Global&lt;G&gt; {
     <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
-        <span class="macro">profiling::scope!</span>(<span class="string">&quot;Global::drop&quot;</span>);
-        <span class="macro">log::info!</span>(<span class="string">&quot;Dropping Global&quot;</span>);
-        <span class="kw">let </span><span class="kw-2">mut </span>surface_guard = <span class="self">self</span>.surfaces.data.write();
+        <span class="macro">profiling::scope!</span>(<span class="string">"Global::drop"</span>);
+        <span class="macro">resource_log!</span>(<span class="string">"Global::drop"</span>);
+        <span class="kw">let </span><span class="kw-2">mut </span>surfaces_locked = <span class="self">self</span>.surfaces.write();
 
         <span class="comment">// destroy hubs before the instance gets dropped
-        </span><span class="attr">#[cfg(all(feature = <span class="string">&quot;vulkan&quot;</span>, not(target_arch = <span class="string">&quot;wasm32&quot;</span>)))]
+        </span><span class="attr">#[cfg(vulkan)]
         </span>{
-            <span class="self">self</span>.hubs.vulkan.clear(<span class="kw-2">&amp;mut </span>surface_guard, <span class="bool-val">true</span>);
+            <span class="self">self</span>.hubs.vulkan.clear(<span class="kw-2">&amp;</span>surfaces_locked, <span class="bool-val">true</span>);
         }
-        <span class="attr">#[cfg(all(feature = <span class="string">&quot;metal&quot;</span>, any(target_os = <span class="string">&quot;macos&quot;</span>, target_os = <span class="string">&quot;ios&quot;</span>)))]
+        <span class="attr">#[cfg(metal)]
         </span>{
-            <span class="self">self</span>.hubs.metal.clear(<span class="kw-2">&amp;mut </span>surface_guard, <span class="bool-val">true</span>);
+            <span class="self">self</span>.hubs.metal.clear(<span class="kw-2">&amp;</span>surfaces_locked, <span class="bool-val">true</span>);
         }
-        <span class="attr">#[cfg(all(feature = <span class="string">&quot;dx12&quot;</span>, windows))]
+        <span class="attr">#[cfg(dx12)]
         </span>{
-            <span class="self">self</span>.hubs.dx12.clear(<span class="kw-2">&amp;mut </span>surface_guard, <span class="bool-val">true</span>);
+            <span class="self">self</span>.hubs.dx12.clear(<span class="kw-2">&amp;</span>surfaces_locked, <span class="bool-val">true</span>);
         }
-        <span class="attr">#[cfg(all(feature = <span class="string">&quot;dx11&quot;</span>, windows))]
+        <span class="attr">#[cfg(gles)]
         </span>{
-            <span class="self">self</span>.hubs.dx11.clear(<span class="kw-2">&amp;mut </span>surface_guard, <span class="bool-val">true</span>);
-        }
-        <span class="attr">#[cfg(feature = <span class="string">&quot;gles&quot;</span>)]
-        </span>{
-            <span class="self">self</span>.hubs.gl.clear(<span class="kw-2">&amp;mut </span>surface_guard, <span class="bool-val">true</span>);
+            <span class="self">self</span>.hubs.gl.clear(<span class="kw-2">&amp;</span>surfaces_locked, <span class="bool-val">true</span>);
         }
 
         <span class="comment">// destroy surfaces
-        </span><span class="kw">for </span>element <span class="kw">in </span>surface_guard.map.drain(..) {
-            <span class="kw">if let </span>Element::Occupied(surface, <span class="kw">_</span>) = element {
-                <span class="self">self</span>.instance.destroy_surface(surface);
+        </span><span class="kw">for </span>element <span class="kw">in </span>surfaces_locked.map.drain(..) {
+            <span class="kw">if let </span>Element::Occupied(arc_surface, <span class="kw">_</span>) = element {
+                <span class="kw">if let </span><span class="prelude-val">Some</span>(surface) = Arc::into_inner(arc_surface) {
+                    <span class="self">self</span>.instance.destroy_surface(surface);
+                } <span class="kw">else </span>{
+                    <span class="macro">panic!</span>(<span class="string">"Surface cannot be destroyed because is still in use"</span>);
+                }
             }
         }
     }
 }
 
-<span class="attr">#[cfg(all(
-    test,
-    any(
-        not(target_arch = <span class="string">&quot;wasm32&quot;</span>),
-        all(
-            feature = <span class="string">&quot;fragile-send-sync-non-atomic-wasm&quot;</span>,
-            not(target_feature = <span class="string">&quot;atomics&quot;</span>)
-        )
-    )
-))]
+<span class="attr">#[cfg(send_sync)]
 </span><span class="kw">fn </span>_test_send_sync(global: <span class="kw-2">&amp;</span>Global&lt;<span class="kw">crate</span>::identity::IdentityManagerFactory&gt;) {
     <span class="kw">fn </span>test_internal&lt;T: Send + Sync&gt;(<span class="kw">_</span>: T) {}
     test_internal(global)

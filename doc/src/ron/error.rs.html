@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ron-0.8.1/src/error.rs`."><title>error.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="ron" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../ron/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ron-0.8.1/src/error.rs`."><title>error.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="ron" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -483,18 +484,18 @@
     ExpectedMapColon,
     ExpectedMapEnd,
     ExpectedDifferentStructName {
-        expected: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        expected: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
         found: String,
     },
     ExpectedStructLike,
-    ExpectedNamedStructLike(<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str),
+    ExpectedNamedStructLike(<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str),
     ExpectedStructLikeEnd,
     ExpectedUnit,
     ExpectedString,
     ExpectedStringEnd,
     ExpectedIdentifier,
 
-    InvalidEscape(<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str),
+    InvalidEscape(<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str),
 
     IntegerOutOfBounds,
 
@@ -516,21 +517,21 @@
         found: usize,
     },
     NoSuchEnumVariant {
-        expected: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>[<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str],
+        expected: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>[<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str],
         found: String,
         outer: <span class="prelude-ty">Option</span>&lt;String&gt;,
     },
     NoSuchStructField {
-        expected: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>[<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str],
+        expected: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>[<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str],
         found: String,
         outer: <span class="prelude-ty">Option</span>&lt;String&gt;,
     },
     MissingStructField {
-        field: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        field: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
         outer: <span class="prelude-ty">Option</span>&lt;String&gt;,
     },
     DuplicateStructField {
-        field: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+        field: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
         outer: <span class="prelude-ty">Option</span>&lt;String&gt;,
     },
     InvalidIdentifier(String),
@@ -539,116 +540,116 @@
 }
 
 <span class="kw">impl </span>fmt::Display <span class="kw">for </span>SpannedError {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
         <span class="kw">if </span>(<span class="self">self</span>.position == Position { line: <span class="number">0</span>, col: <span class="number">0 </span>}) {
-            <span class="macro">write!</span>(f, <span class="string">&quot;{}&quot;</span>, <span class="self">self</span>.code)
+            <span class="macro">write!</span>(f, <span class="string">"{}"</span>, <span class="self">self</span>.code)
         } <span class="kw">else </span>{
-            <span class="macro">write!</span>(f, <span class="string">&quot;{}: {}&quot;</span>, <span class="self">self</span>.position, <span class="self">self</span>.code)
+            <span class="macro">write!</span>(f, <span class="string">"{}: {}"</span>, <span class="self">self</span>.position, <span class="self">self</span>.code)
         }
     }
 }
 
 <span class="kw">impl </span>fmt::Display <span class="kw">for </span>Error {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
         <span class="kw">match </span><span class="kw-2">*</span><span class="self">self </span>{
             Error::Io(<span class="kw-2">ref </span>s) =&gt; f.write_str(s),
             Error::Message(<span class="kw-2">ref </span>s) =&gt; f.write_str(s),
             Error::Base64Error(<span class="kw-2">ref </span>e) =&gt; fmt::Display::fmt(e, f),
-            Error::Eof =&gt; f.write_str(<span class="string">&quot;Unexpected end of RON&quot;</span>),
-            Error::ExpectedArray =&gt; f.write_str(<span class="string">&quot;Expected opening `[`&quot;</span>),
-            Error::ExpectedArrayEnd =&gt; f.write_str(<span class="string">&quot;Expected closing `]`&quot;</span>),
-            Error::ExpectedAttribute =&gt; f.write_str(<span class="string">&quot;Expected an `#![enable(...)]` attribute&quot;</span>),
+            Error::Eof =&gt; f.write_str(<span class="string">"Unexpected end of RON"</span>),
+            Error::ExpectedArray =&gt; f.write_str(<span class="string">"Expected opening `[`"</span>),
+            Error::ExpectedArrayEnd =&gt; f.write_str(<span class="string">"Expected closing `]`"</span>),
+            Error::ExpectedAttribute =&gt; f.write_str(<span class="string">"Expected an `#![enable(...)]` attribute"</span>),
             Error::ExpectedAttributeEnd =&gt; {
-                f.write_str(<span class="string">&quot;Expected closing `)]` after the enable attribute&quot;</span>)
+                f.write_str(<span class="string">"Expected closing `)]` after the enable attribute"</span>)
             }
-            Error::ExpectedBoolean =&gt; f.write_str(<span class="string">&quot;Expected boolean&quot;</span>),
-            Error::ExpectedComma =&gt; f.write_str(<span class="string">&quot;Expected comma&quot;</span>),
-            Error::ExpectedChar =&gt; f.write_str(<span class="string">&quot;Expected char&quot;</span>),
-            Error::ExpectedFloat =&gt; f.write_str(<span class="string">&quot;Expected float&quot;</span>),
-            Error::FloatUnderscore =&gt; f.write_str(<span class="string">&quot;Unexpected underscore in float&quot;</span>),
-            Error::ExpectedInteger =&gt; f.write_str(<span class="string">&quot;Expected integer&quot;</span>),
-            Error::ExpectedOption =&gt; f.write_str(<span class="string">&quot;Expected option&quot;</span>),
-            Error::ExpectedOptionEnd =&gt; f.write_str(<span class="string">&quot;Expected closing `)`&quot;</span>),
-            Error::ExpectedMap =&gt; f.write_str(<span class="string">&quot;Expected opening `{`&quot;</span>),
-            Error::ExpectedMapColon =&gt; f.write_str(<span class="string">&quot;Expected colon&quot;</span>),
-            Error::ExpectedMapEnd =&gt; f.write_str(<span class="string">&quot;Expected closing `}`&quot;</span>),
+            Error::ExpectedBoolean =&gt; f.write_str(<span class="string">"Expected boolean"</span>),
+            Error::ExpectedComma =&gt; f.write_str(<span class="string">"Expected comma"</span>),
+            Error::ExpectedChar =&gt; f.write_str(<span class="string">"Expected char"</span>),
+            Error::ExpectedFloat =&gt; f.write_str(<span class="string">"Expected float"</span>),
+            Error::FloatUnderscore =&gt; f.write_str(<span class="string">"Unexpected underscore in float"</span>),
+            Error::ExpectedInteger =&gt; f.write_str(<span class="string">"Expected integer"</span>),
+            Error::ExpectedOption =&gt; f.write_str(<span class="string">"Expected option"</span>),
+            Error::ExpectedOptionEnd =&gt; f.write_str(<span class="string">"Expected closing `)`"</span>),
+            Error::ExpectedMap =&gt; f.write_str(<span class="string">"Expected opening `{`"</span>),
+            Error::ExpectedMapColon =&gt; f.write_str(<span class="string">"Expected colon"</span>),
+            Error::ExpectedMapEnd =&gt; f.write_str(<span class="string">"Expected closing `}`"</span>),
             Error::ExpectedDifferentStructName {
                 expected,
                 <span class="kw-2">ref </span>found,
             } =&gt; <span class="macro">write!</span>(
                 f,
-                <span class="string">&quot;Expected struct {} but found {}&quot;</span>,
+                <span class="string">"Expected struct {} but found {}"</span>,
                 Identifier(expected),
                 Identifier(found)
             ),
-            Error::ExpectedStructLike =&gt; f.write_str(<span class="string">&quot;Expected opening `(`&quot;</span>),
+            Error::ExpectedStructLike =&gt; f.write_str(<span class="string">"Expected opening `(`"</span>),
             Error::ExpectedNamedStructLike(name) =&gt; {
                 <span class="kw">if </span>name.is_empty() {
-                    f.write_str(<span class="string">&quot;Expected only opening `(`, no name, for un-nameable struct&quot;</span>)
+                    f.write_str(<span class="string">"Expected only opening `(`, no name, for un-nameable struct"</span>)
                 } <span class="kw">else </span>{
-                    <span class="macro">write!</span>(f, <span class="string">&quot;Expected opening `(` for struct {}&quot;</span>, Identifier(name))
+                    <span class="macro">write!</span>(f, <span class="string">"Expected opening `(` for struct {}"</span>, Identifier(name))
                 }
             }
-            Error::ExpectedStructLikeEnd =&gt; f.write_str(<span class="string">&quot;Expected closing `)`&quot;</span>),
-            Error::ExpectedUnit =&gt; f.write_str(<span class="string">&quot;Expected unit&quot;</span>),
-            Error::ExpectedString =&gt; f.write_str(<span class="string">&quot;Expected string&quot;</span>),
-            Error::ExpectedStringEnd =&gt; f.write_str(<span class="string">&quot;Expected end of string&quot;</span>),
-            Error::ExpectedIdentifier =&gt; f.write_str(<span class="string">&quot;Expected identifier&quot;</span>),
+            Error::ExpectedStructLikeEnd =&gt; f.write_str(<span class="string">"Expected closing `)`"</span>),
+            Error::ExpectedUnit =&gt; f.write_str(<span class="string">"Expected unit"</span>),
+            Error::ExpectedString =&gt; f.write_str(<span class="string">"Expected string"</span>),
+            Error::ExpectedStringEnd =&gt; f.write_str(<span class="string">"Expected end of string"</span>),
+            Error::ExpectedIdentifier =&gt; f.write_str(<span class="string">"Expected identifier"</span>),
             Error::InvalidEscape(s) =&gt; f.write_str(s),
-            Error::IntegerOutOfBounds =&gt; f.write_str(<span class="string">&quot;Integer is out of bounds&quot;</span>),
+            Error::IntegerOutOfBounds =&gt; f.write_str(<span class="string">"Integer is out of bounds"</span>),
             Error::NoSuchExtension(<span class="kw-2">ref </span>name) =&gt; {
-                <span class="macro">write!</span>(f, <span class="string">&quot;No RON extension named {}&quot;</span>, Identifier(name))
+                <span class="macro">write!</span>(f, <span class="string">"No RON extension named {}"</span>, Identifier(name))
             }
             Error::Utf8Error(<span class="kw-2">ref </span>e) =&gt; fmt::Display::fmt(e, f),
-            Error::UnclosedBlockComment =&gt; f.write_str(<span class="string">&quot;Unclosed block comment&quot;</span>),
+            Error::UnclosedBlockComment =&gt; f.write_str(<span class="string">"Unclosed block comment"</span>),
             Error::UnderscoreAtBeginning =&gt; {
-                f.write_str(<span class="string">&quot;Unexpected leading underscore in an integer&quot;</span>)
+                f.write_str(<span class="string">"Unexpected leading underscore in an integer"</span>)
             }
-            Error::UnexpectedByte(<span class="kw-2">ref </span>byte) =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;Unexpected byte {:?}&quot;</span>, byte),
-            Error::TrailingCharacters =&gt; f.write_str(<span class="string">&quot;Non-whitespace trailing characters&quot;</span>),
+            Error::UnexpectedByte(<span class="kw-2">ref </span>byte) =&gt; <span class="macro">write!</span>(f, <span class="string">"Unexpected byte {:?}"</span>, byte),
+            Error::TrailingCharacters =&gt; f.write_str(<span class="string">"Non-whitespace trailing characters"</span>),
             Error::InvalidValueForType {
                 <span class="kw-2">ref </span>expected,
                 <span class="kw-2">ref </span>found,
             } =&gt; {
-                <span class="macro">write!</span>(f, <span class="string">&quot;Expected {} but found {} instead&quot;</span>, expected, found)
+                <span class="macro">write!</span>(f, <span class="string">"Expected {} but found {} instead"</span>, expected, found)
             }
             Error::ExpectedDifferentLength {
                 <span class="kw-2">ref </span>expected,
                 found,
             } =&gt; {
-                <span class="macro">write!</span>(f, <span class="string">&quot;Expected {} but found &quot;</span>, expected)<span class="question-mark">?</span>;
+                <span class="macro">write!</span>(f, <span class="string">"Expected {} but found "</span>, expected)<span class="question-mark">?</span>;
 
                 <span class="kw">match </span>found {
-                    <span class="number">0 </span>=&gt; f.write_str(<span class="string">&quot;zero elements&quot;</span>)<span class="question-mark">?</span>,
-                    <span class="number">1 </span>=&gt; f.write_str(<span class="string">&quot;one element&quot;</span>)<span class="question-mark">?</span>,
-                    n =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;{} elements&quot;</span>, n)<span class="question-mark">?</span>,
+                    <span class="number">0 </span>=&gt; f.write_str(<span class="string">"zero elements"</span>)<span class="question-mark">?</span>,
+                    <span class="number">1 </span>=&gt; f.write_str(<span class="string">"one element"</span>)<span class="question-mark">?</span>,
+                    n =&gt; <span class="macro">write!</span>(f, <span class="string">"{} elements"</span>, n)<span class="question-mark">?</span>,
                 }
 
-                f.write_str(<span class="string">&quot; instead&quot;</span>)
+                f.write_str(<span class="string">" instead"</span>)
             }
             Error::NoSuchEnumVariant {
                 expected,
                 <span class="kw-2">ref </span>found,
                 <span class="kw-2">ref </span>outer,
             } =&gt; {
-                f.write_str(<span class="string">&quot;Unexpected &quot;</span>)<span class="question-mark">?</span>;
+                f.write_str(<span class="string">"Unexpected "</span>)<span class="question-mark">?</span>;
 
                 <span class="kw">if </span>outer.is_none() {
-                    f.write_str(<span class="string">&quot;enum &quot;</span>)<span class="question-mark">?</span>;
+                    f.write_str(<span class="string">"enum "</span>)<span class="question-mark">?</span>;
                 }
 
-                <span class="macro">write!</span>(f, <span class="string">&quot;variant named {}&quot;</span>, Identifier(found))<span class="question-mark">?</span>;
+                <span class="macro">write!</span>(f, <span class="string">"variant named {}"</span>, Identifier(found))<span class="question-mark">?</span>;
 
                 <span class="kw">if let </span><span class="prelude-val">Some</span>(outer) = outer {
-                    <span class="macro">write!</span>(f, <span class="string">&quot;in enum {}&quot;</span>, Identifier(outer))<span class="question-mark">?</span>;
+                    <span class="macro">write!</span>(f, <span class="string">"in enum {}"</span>, Identifier(outer))<span class="question-mark">?</span>;
                 }
 
                 <span class="macro">write!</span>(
                     f,
-                    <span class="string">&quot;, {}&quot;</span>,
+                    <span class="string">", {}"</span>,
                     OneOf {
                         alts: expected,
-                        none: <span class="string">&quot;variants&quot;
+                        none: <span class="string">"variants"
                     </span>}
                 )
             }
@@ -657,44 +658,44 @@
                 <span class="kw-2">ref </span>found,
                 <span class="kw-2">ref </span>outer,
             } =&gt; {
-                <span class="macro">write!</span>(f, <span class="string">&quot;Unexpected field named {}&quot;</span>, Identifier(found))<span class="question-mark">?</span>;
+                <span class="macro">write!</span>(f, <span class="string">"Unexpected field named {}"</span>, Identifier(found))<span class="question-mark">?</span>;
 
                 <span class="kw">if let </span><span class="prelude-val">Some</span>(outer) = outer {
-                    <span class="macro">write!</span>(f, <span class="string">&quot;in {}&quot;</span>, Identifier(outer))<span class="question-mark">?</span>;
+                    <span class="macro">write!</span>(f, <span class="string">"in {}"</span>, Identifier(outer))<span class="question-mark">?</span>;
                 }
 
                 <span class="macro">write!</span>(
                     f,
-                    <span class="string">&quot;, {}&quot;</span>,
+                    <span class="string">", {}"</span>,
                     OneOf {
                         alts: expected,
-                        none: <span class="string">&quot;fields&quot;
+                        none: <span class="string">"fields"
                     </span>}
                 )
             }
             Error::MissingStructField { field, <span class="kw-2">ref </span>outer } =&gt; {
-                <span class="macro">write!</span>(f, <span class="string">&quot;Unexpected missing field {}&quot;</span>, Identifier(field))<span class="question-mark">?</span>;
+                <span class="macro">write!</span>(f, <span class="string">"Unexpected missing field {}"</span>, Identifier(field))<span class="question-mark">?</span>;
 
                 <span class="kw">match </span>outer {
-                    <span class="prelude-val">Some</span>(outer) =&gt; <span class="macro">write!</span>(f, <span class="string">&quot; in {}&quot;</span>, Identifier(outer)),
+                    <span class="prelude-val">Some</span>(outer) =&gt; <span class="macro">write!</span>(f, <span class="string">" in {}"</span>, Identifier(outer)),
                     <span class="prelude-val">None </span>=&gt; <span class="prelude-val">Ok</span>(()),
                 }
             }
             Error::DuplicateStructField { field, <span class="kw-2">ref </span>outer } =&gt; {
-                <span class="macro">write!</span>(f, <span class="string">&quot;Unexpected duplicate field {}&quot;</span>, Identifier(field))<span class="question-mark">?</span>;
+                <span class="macro">write!</span>(f, <span class="string">"Unexpected duplicate field {}"</span>, Identifier(field))<span class="question-mark">?</span>;
 
                 <span class="kw">match </span>outer {
-                    <span class="prelude-val">Some</span>(outer) =&gt; <span class="macro">write!</span>(f, <span class="string">&quot; in {}&quot;</span>, Identifier(outer)),
+                    <span class="prelude-val">Some</span>(outer) =&gt; <span class="macro">write!</span>(f, <span class="string">" in {}"</span>, Identifier(outer)),
                     <span class="prelude-val">None </span>=&gt; <span class="prelude-val">Ok</span>(()),
                 }
             }
-            Error::InvalidIdentifier(<span class="kw-2">ref </span>invalid) =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;Invalid identifier {:?}&quot;</span>, invalid),
+            Error::InvalidIdentifier(<span class="kw-2">ref </span>invalid) =&gt; <span class="macro">write!</span>(f, <span class="string">"Invalid identifier {:?}"</span>, invalid),
             Error::SuggestRawIdentifier(<span class="kw-2">ref </span>identifier) =&gt; <span class="macro">write!</span>(
                 f,
-                <span class="string">&quot;Found invalid std identifier `{}`, try the raw identifier `r#{}` instead&quot;</span>,
+                <span class="string">"Found invalid std identifier `{}`, try the raw identifier `r#{}` instead"</span>,
                 identifier, identifier
             ),
-            Error::ExceededRecursionLimit =&gt; f.write_str(<span class="string">&quot;Exceeded recursion limit, try increasing the limit and using `serde_stacker` to protect against a stack overflow&quot;</span>),
+            Error::ExceededRecursionLimit =&gt; f.write_str(<span class="string">"Exceeded recursion limit, try increasing the limit and using `serde_stacker` to protect against a stack overflow"</span>),
         }
     }
 }
@@ -706,8 +707,8 @@
 }
 
 <span class="kw">impl </span>fmt::Display <span class="kw">for </span>Position {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
-        <span class="macro">write!</span>(f, <span class="string">&quot;{}:{}&quot;</span>, <span class="self">self</span>.line, <span class="self">self</span>.col)
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
+        <span class="macro">write!</span>(f, <span class="string">"{}:{}"</span>, <span class="self">self</span>.line, <span class="self">self</span>.col)
     }
 }
 
@@ -732,32 +733,32 @@
 
     <span class="attr">#[cold]
     </span><span class="kw">fn </span>invalid_value(unexp: de::Unexpected, exp: <span class="kw-2">&amp;</span><span class="kw">dyn </span>de::Expected) -&gt; <span class="self">Self </span>{
-        <span class="kw">struct </span>UnexpectedSerdeTypeValue&lt;<span class="lifetime">&#39;a</span>&gt;(de::Unexpected&lt;<span class="lifetime">&#39;a</span>&gt;);
+        <span class="kw">struct </span>UnexpectedSerdeTypeValue&lt;<span class="lifetime">'a</span>&gt;(de::Unexpected&lt;<span class="lifetime">'a</span>&gt;);
 
-        <span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; fmt::Display <span class="kw">for </span>UnexpectedSerdeTypeValue&lt;<span class="lifetime">&#39;a</span>&gt; {
-            <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+        <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; fmt::Display <span class="kw">for </span>UnexpectedSerdeTypeValue&lt;<span class="lifetime">'a</span>&gt; {
+            <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
                 <span class="kw">use </span>de::Unexpected::<span class="kw-2">*</span>;
 
                 <span class="kw">match </span><span class="self">self</span>.<span class="number">0 </span>{
-                    Bool(b) =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;the boolean `{}`&quot;</span>, b),
-                    Unsigned(i) =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;the unsigned integer `{}`&quot;</span>, i),
-                    Signed(i) =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;the signed integer `{}`&quot;</span>, i),
-                    Float(n) =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;the floating point number `{}`&quot;</span>, n),
-                    Char(c) =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;the UTF-8 character `{}`&quot;</span>, c),
-                    Str(s) =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;the string {:?}&quot;</span>, s),
-                    Bytes(b) =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;the bytes \&quot;{}\&quot;&quot;</span>, {
+                    Bool(b) =&gt; <span class="macro">write!</span>(f, <span class="string">"the boolean `{}`"</span>, b),
+                    Unsigned(i) =&gt; <span class="macro">write!</span>(f, <span class="string">"the unsigned integer `{}`"</span>, i),
+                    Signed(i) =&gt; <span class="macro">write!</span>(f, <span class="string">"the signed integer `{}`"</span>, i),
+                    Float(n) =&gt; <span class="macro">write!</span>(f, <span class="string">"the floating point number `{}`"</span>, n),
+                    Char(c) =&gt; <span class="macro">write!</span>(f, <span class="string">"the UTF-8 character `{}`"</span>, c),
+                    Str(s) =&gt; <span class="macro">write!</span>(f, <span class="string">"the string {:?}"</span>, s),
+                    Bytes(b) =&gt; <span class="macro">write!</span>(f, <span class="string">"the bytes \"{}\""</span>, {
                         base64::display::Base64Display::new(b, <span class="kw-2">&amp;</span>BASE64_ENGINE)
                     }),
-                    Unit =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;a unit value&quot;</span>),
-                    <span class="prelude-ty">Option </span>=&gt; <span class="macro">write!</span>(f, <span class="string">&quot;an optional value&quot;</span>),
-                    NewtypeStruct =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;a newtype struct&quot;</span>),
-                    Seq =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;a sequence&quot;</span>),
-                    Map =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;a map&quot;</span>),
-                    Enum =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;an enum&quot;</span>),
-                    UnitVariant =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;a unit variant&quot;</span>),
-                    NewtypeVariant =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;a newtype variant&quot;</span>),
-                    TupleVariant =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;a tuple variant&quot;</span>),
-                    StructVariant =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;a struct variant&quot;</span>),
+                    Unit =&gt; <span class="macro">write!</span>(f, <span class="string">"a unit value"</span>),
+                    <span class="prelude-ty">Option </span>=&gt; <span class="macro">write!</span>(f, <span class="string">"an optional value"</span>),
+                    NewtypeStruct =&gt; <span class="macro">write!</span>(f, <span class="string">"a newtype struct"</span>),
+                    Seq =&gt; <span class="macro">write!</span>(f, <span class="string">"a sequence"</span>),
+                    Map =&gt; <span class="macro">write!</span>(f, <span class="string">"a map"</span>),
+                    Enum =&gt; <span class="macro">write!</span>(f, <span class="string">"an enum"</span>),
+                    UnitVariant =&gt; <span class="macro">write!</span>(f, <span class="string">"a unit variant"</span>),
+                    NewtypeVariant =&gt; <span class="macro">write!</span>(f, <span class="string">"a newtype variant"</span>),
+                    TupleVariant =&gt; <span class="macro">write!</span>(f, <span class="string">"a tuple variant"</span>),
+                    StructVariant =&gt; <span class="macro">write!</span>(f, <span class="string">"a struct variant"</span>),
                     Other(other) =&gt; f.write_str(other),
                 }
             }
@@ -778,7 +779,7 @@
     }
 
     <span class="attr">#[cold]
-    </span><span class="kw">fn </span>unknown_variant(variant: <span class="kw-2">&amp;</span>str, expected: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>[<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str]) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">fn </span>unknown_variant(variant: <span class="kw-2">&amp;</span>str, expected: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>[<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str]) -&gt; <span class="self">Self </span>{
         Error::NoSuchEnumVariant {
             expected,
             found: variant.to_string(),
@@ -787,7 +788,7 @@
     }
 
     <span class="attr">#[cold]
-    </span><span class="kw">fn </span>unknown_field(field: <span class="kw-2">&amp;</span>str, expected: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>[<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str]) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">fn </span>unknown_field(field: <span class="kw-2">&amp;</span>str, expected: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>[<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str]) -&gt; <span class="self">Self </span>{
         Error::NoSuchStructField {
             expected,
             found: field.to_string(),
@@ -796,12 +797,12 @@
     }
 
     <span class="attr">#[cold]
-    </span><span class="kw">fn </span>missing_field(field: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">fn </span>missing_field(field: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str) -&gt; <span class="self">Self </span>{
         Error::MissingStructField { field, outer: <span class="prelude-val">None </span>}
     }
 
     <span class="attr">#[cold]
-    </span><span class="kw">fn </span>duplicate_field(field: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">fn </span>duplicate_field(field: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str) -&gt; <span class="self">Self </span>{
         Error::DuplicateStructField { field, outer: <span class="prelude-val">None </span>}
     }
 }
@@ -843,48 +844,48 @@
 }
 
 <span class="kw">struct </span>OneOf {
-    alts: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>[<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str],
-    none: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+    alts: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>[<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str],
+    none: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str,
 }
 
 <span class="kw">impl </span>fmt::Display <span class="kw">for </span>OneOf {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
         <span class="kw">match </span><span class="self">self</span>.alts {
-            [] =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;there are no {}&quot;</span>, <span class="self">self</span>.none),
-            [a1] =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;expected {} instead&quot;</span>, Identifier(a1)),
+            [] =&gt; <span class="macro">write!</span>(f, <span class="string">"there are no {}"</span>, <span class="self">self</span>.none),
+            [a1] =&gt; <span class="macro">write!</span>(f, <span class="string">"expected {} instead"</span>, Identifier(a1)),
             [a1, a2] =&gt; <span class="macro">write!</span>(
                 f,
-                <span class="string">&quot;expected either {} or {} instead&quot;</span>,
+                <span class="string">"expected either {} or {} instead"</span>,
                 Identifier(a1),
                 Identifier(a2)
             ),
             [a1, <span class="kw-2">ref </span>alts @ ..] =&gt; {
-                <span class="macro">write!</span>(f, <span class="string">&quot;expected one of {}&quot;</span>, Identifier(a1))<span class="question-mark">?</span>;
+                <span class="macro">write!</span>(f, <span class="string">"expected one of {}"</span>, Identifier(a1))<span class="question-mark">?</span>;
 
                 <span class="kw">for </span>alt <span class="kw">in </span>alts {
-                    <span class="macro">write!</span>(f, <span class="string">&quot;, {}&quot;</span>, Identifier(alt))<span class="question-mark">?</span>;
+                    <span class="macro">write!</span>(f, <span class="string">", {}"</span>, Identifier(alt))<span class="question-mark">?</span>;
                 }
 
-                f.write_str(<span class="string">&quot; instead&quot;</span>)
+                f.write_str(<span class="string">" instead"</span>)
             }
         }
     }
 }
 
-<span class="kw">struct </span>Identifier&lt;<span class="lifetime">&#39;a</span>&gt;(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str);
+<span class="kw">struct </span>Identifier&lt;<span class="lifetime">'a</span>&gt;(<span class="kw-2">&amp;</span><span class="lifetime">'a </span>str);
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; fmt::Display <span class="kw">for </span>Identifier&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; fmt::Display <span class="kw">for </span>Identifier&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
         <span class="kw">if </span><span class="self">self</span>.<span class="number">0</span>.is_empty() || !<span class="self">self</span>.<span class="number">0</span>.as_bytes().iter().copied().all(is_ident_raw_char) {
-            <span class="kw">return </span><span class="macro">write!</span>(f, <span class="string">&quot;{:?}_[invalid identifier]&quot;</span>, <span class="self">self</span>.<span class="number">0</span>);
+            <span class="kw">return </span><span class="macro">write!</span>(f, <span class="string">"{:?}_[invalid identifier]"</span>, <span class="self">self</span>.<span class="number">0</span>);
         }
 
         <span class="kw">let </span><span class="kw-2">mut </span>bytes = <span class="self">self</span>.<span class="number">0</span>.as_bytes().iter().copied();
 
         <span class="kw">if </span>!bytes.next().map_or(<span class="bool-val">false</span>, is_ident_first_char) || !bytes.all(is_ident_other_char) {
-            <span class="macro">write!</span>(f, <span class="string">&quot;`r#{}`&quot;</span>, <span class="self">self</span>.<span class="number">0</span>)
+            <span class="macro">write!</span>(f, <span class="string">"`r#{}`"</span>, <span class="self">self</span>.<span class="number">0</span>)
         } <span class="kw">else </span>{
-            <span class="macro">write!</span>(f, <span class="string">&quot;`{}`&quot;</span>, <span class="self">self</span>.<span class="number">0</span>)
+            <span class="macro">write!</span>(f, <span class="string">"`{}`"</span>, <span class="self">self</span>.<span class="number">0</span>)
         }
     }
 }

@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_window-0.12.1/src/event.rs`."><title>event.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="bevy_window" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../bevy_window/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_window-0.13.0/src/event.rs`."><title>event.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="bevy_window" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -349,23 +350,58 @@
 <a href="#349" id="349">349</a>
 <a href="#350" id="350">350</a>
 <a href="#351" id="351">351</a>
+<a href="#352" id="352">352</a>
+<a href="#353" id="353">353</a>
+<a href="#354" id="354">354</a>
+<a href="#355" id="355">355</a>
+<a href="#356" id="356">356</a>
+<a href="#357" id="357">357</a>
+<a href="#358" id="358">358</a>
+<a href="#359" id="359">359</a>
+<a href="#360" id="360">360</a>
+<a href="#361" id="361">361</a>
+<a href="#362" id="362">362</a>
+<a href="#363" id="363">363</a>
+<a href="#364" id="364">364</a>
+<a href="#365" id="365">365</a>
+<a href="#366" id="366">366</a>
+<a href="#367" id="367">367</a>
+<a href="#368" id="368">368</a>
+<a href="#369" id="369">369</a>
+<a href="#370" id="370">370</a>
+<a href="#371" id="371">371</a>
+<a href="#372" id="372">372</a>
+<a href="#373" id="373">373</a>
+<a href="#374" id="374">374</a>
+<a href="#375" id="375">375</a>
+<a href="#376" id="376">376</a>
+<a href="#377" id="377">377</a>
+<a href="#378" id="378">378</a>
+<a href="#379" id="379">379</a>
+<a href="#380" id="380">380</a>
+<a href="#381" id="381">381</a>
+<a href="#382" id="382">382</a>
+<a href="#383" id="383">383</a>
+<a href="#384" id="384">384</a>
+<a href="#385" id="385">385</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::path::PathBuf;
 
 <span class="kw">use </span>bevy_ecs::entity::Entity;
 <span class="kw">use </span>bevy_ecs::event::Event;
 <span class="kw">use </span>bevy_math::{IVec2, Vec2};
 <span class="kw">use </span>bevy_reflect::Reflect;
+<span class="kw">use </span>smol_str::SmolStr;
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;serialize&quot;</span>)]
+<span class="attr">#[cfg(feature = <span class="string">"serialize"</span>)]
 </span><span class="kw">use </span>bevy_reflect::{ReflectDeserialize, ReflectSerialize};
 
 <span class="kw">use </span><span class="kw">crate</span>::WindowTheme;
 
-<span class="doccomment">/// A window event that is sent whenever a window&#39;s logical size has changed.
+<span class="doccomment">/// A window event that is sent whenever a window's logical size has changed.
 </span><span class="attr">#[derive(Event, Debug, Clone, PartialEq, Reflect)]
 #[reflect(Debug, PartialEq)]
 #[cfg_attr(
-    feature = <span class="string">&quot;serialize&quot;</span>,
+    feature = <span class="string">"serialize"</span>,
     derive(serde::Serialize, serde::Deserialize),
     reflect(Serialize, Deserialize)
 )]
@@ -378,12 +414,12 @@
     </span><span class="kw">pub </span>height: f32,
 }
 
-<span class="doccomment">/// An event that indicates all of the application&#39;s windows should be redrawn,
+<span class="doccomment">/// An event that indicates all of the application's windows should be redrawn,
 /// even if their control flow is set to `Wait` and there have been no window events.
 </span><span class="attr">#[derive(Event, Debug, Clone, PartialEq, Eq, Reflect)]
 #[reflect(Debug, PartialEq)]
 #[cfg_attr(
-    feature = <span class="string">&quot;serialize&quot;</span>,
+    feature = <span class="string">"serialize"</span>,
     derive(serde::Serialize, serde::Deserialize),
     reflect(Serialize, Deserialize)
 )]
@@ -395,7 +431,7 @@
 </span><span class="attr">#[derive(Event, Debug, Clone, PartialEq, Eq, Reflect)]
 #[reflect(Debug, PartialEq)]
 #[cfg_attr(
-    feature = <span class="string">&quot;serialize&quot;</span>,
+    feature = <span class="string">"serialize"</span>,
     derive(serde::Serialize, serde::Deserialize),
     reflect(Serialize, Deserialize)
 )]
@@ -408,7 +444,7 @@
 /// be closed. This will be sent when the close button of the window is pressed.
 ///
 /// If the default [`WindowPlugin`] is used, these events are handled
-/// by closing the corresponding [`Window`].  
+/// by closing the corresponding [`Window`].
 /// To disable this behavior, set `close_when_requested` on the [`WindowPlugin`]
 /// to `false`.
 ///
@@ -417,7 +453,7 @@
 </span><span class="attr">#[derive(Event, Debug, Clone, PartialEq, Eq, Reflect)]
 #[reflect(Debug, PartialEq)]
 #[cfg_attr(
-    feature = <span class="string">&quot;serialize&quot;</span>,
+    feature = <span class="string">"serialize"</span>,
     derive(serde::Serialize, serde::Deserialize),
     reflect(Serialize, Deserialize)
 )]
@@ -431,7 +467,7 @@
 </span><span class="attr">#[derive(Event, Debug, Clone, PartialEq, Eq, Reflect)]
 #[reflect(Debug, PartialEq)]
 #[cfg_attr(
-    feature = <span class="string">&quot;serialize&quot;</span>,
+    feature = <span class="string">"serialize"</span>,
     derive(serde::Serialize, serde::Deserialize),
     reflect(Serialize, Deserialize)
 )]
@@ -450,7 +486,7 @@
 </span><span class="attr">#[derive(Event, Debug, Clone, PartialEq, Eq, Reflect)]
 #[reflect(Debug, PartialEq)]
 #[cfg_attr(
-    feature = <span class="string">&quot;serialize&quot;</span>,
+    feature = <span class="string">"serialize"</span>,
     derive(serde::Serialize, serde::Deserialize),
     reflect(Serialize, Deserialize)
 )]
@@ -464,17 +500,20 @@
 
 <span class="doccomment">/// An event reporting that the mouse cursor has moved inside a window.
 ///
-/// The event is sent only if the cursor is over one of the application&#39;s windows.
-/// It is the translated version of [`WindowEvent::CursorMoved`] from the `winit` crate.
+/// The event is sent only if the cursor is over one of the application's windows.
+/// It is the translated version of [`WindowEvent::CursorMoved`] from the `winit` crate with the addition of `delta`.
 ///
 /// Not to be confused with the [`MouseMotion`] event from `bevy_input`.
+///
+/// Because the range of data is limited by the window area and it may have been transformed by the OS to implement certain effects like acceleration,
+/// you should not use it for non-cursor-like behaviour such as 3D camera control. Please see [`MouseMotion`] instead.
 ///
 /// [`WindowEvent::CursorMoved`]: https://docs.rs/winit/latest/winit/event/enum.WindowEvent.html#variant.CursorMoved
 /// [`MouseMotion`]: bevy_input::mouse::MouseMotion
 </span><span class="attr">#[derive(Event, Debug, Clone, PartialEq, Reflect)]
 #[reflect(Debug, PartialEq)]
 #[cfg_attr(
-    feature = <span class="string">&quot;serialize&quot;</span>,
+    feature = <span class="string">"serialize"</span>,
     derive(serde::Serialize, serde::Deserialize),
     reflect(Serialize, Deserialize)
 )]
@@ -483,13 +522,20 @@
     </span><span class="kw">pub </span>window: Entity,
     <span class="doccomment">/// The cursor position in logical pixels.
     </span><span class="kw">pub </span>position: Vec2,
+    <span class="doccomment">/// The change in the position of the cursor since the last event was sent.
+    /// This value is `None` if the cursor was outside the window area during the last frame.
+    </span><span class="comment">//
+    // Because the range of this data is limited by the display area and it may have been
+    //  transformed by the OS to implement effects such as cursor acceleration, it should
+    // not be used to implement non-cursor-like interactions such as 3D camera control.
+    </span><span class="kw">pub </span>delta: <span class="prelude-ty">Option</span>&lt;Vec2&gt;,
 }
 
-<span class="doccomment">/// An event that is sent whenever the user&#39;s cursor enters a window.
+<span class="doccomment">/// An event that is sent whenever the user's cursor enters a window.
 </span><span class="attr">#[derive(Event, Debug, Clone, PartialEq, Eq, Reflect)]
 #[reflect(Debug, PartialEq)]
 #[cfg_attr(
-    feature = <span class="string">&quot;serialize&quot;</span>,
+    feature = <span class="string">"serialize"</span>,
     derive(serde::Serialize, serde::Deserialize),
     reflect(Serialize, Deserialize)
 )]
@@ -498,11 +544,11 @@
     </span><span class="kw">pub </span>window: Entity,
 }
 
-<span class="doccomment">/// An event that is sent whenever the user&#39;s cursor leaves a window.
+<span class="doccomment">/// An event that is sent whenever the user's cursor leaves a window.
 </span><span class="attr">#[derive(Event, Debug, Clone, PartialEq, Eq, Reflect)]
 #[reflect(Debug, PartialEq)]
 #[cfg_attr(
-    feature = <span class="string">&quot;serialize&quot;</span>,
+    feature = <span class="string">"serialize"</span>,
     derive(serde::Serialize, serde::Deserialize),
     reflect(Serialize, Deserialize)
 )]
@@ -515,7 +561,7 @@
 </span><span class="attr">#[derive(Event, Debug, Clone, PartialEq, Eq, Reflect)]
 #[reflect(Debug, PartialEq)]
 #[cfg_attr(
-    feature = <span class="string">&quot;serialize&quot;</span>,
+    feature = <span class="string">"serialize"</span>,
     derive(serde::Serialize, serde::Deserialize),
     reflect(Serialize, Deserialize)
 )]
@@ -523,7 +569,7 @@
     <span class="doccomment">/// Window that received the character.
     </span><span class="kw">pub </span>window: Entity,
     <span class="doccomment">/// Received character.
-    </span><span class="kw">pub </span>char: char,
+    </span><span class="kw">pub </span>char: SmolStr,
 }
 
 <span class="doccomment">/// A Input Method Editor event.
@@ -534,7 +580,7 @@
 </span><span class="attr">#[derive(Event, Debug, Clone, PartialEq, Eq, Reflect)]
 #[reflect(Debug, PartialEq)]
 #[cfg_attr(
-    feature = <span class="string">&quot;serialize&quot;</span>,
+    feature = <span class="string">"serialize"</span>,
     derive(serde::Serialize, serde::Deserialize),
     reflect(Serialize, Deserialize)
 )]
@@ -576,7 +622,7 @@
 </span><span class="attr">#[derive(Event, Debug, Clone, PartialEq, Eq, Reflect)]
 #[reflect(Debug, PartialEq)]
 #[cfg_attr(
-    feature = <span class="string">&quot;serialize&quot;</span>,
+    feature = <span class="string">"serialize"</span>,
     derive(serde::Serialize, serde::Deserialize),
     reflect(Serialize, Deserialize)
 )]
@@ -587,31 +633,54 @@
     </span><span class="kw">pub </span>focused: bool,
 }
 
-<span class="doccomment">/// An event that indicates a window&#39;s scale factor has changed.
+<span class="doccomment">/// The window has been occluded (completely hidden from view).
+///
+/// This is different to window visibility as it depends on
+/// whether the window is closed, minimised, set invisible,
+/// or fully occluded by another window.
+///
+/// It is the translated version of [`WindowEvent::Occluded`] from the `winit` crate.
+///
+/// [`WindowEvent::Occluded`]: https://docs.rs/winit/latest/winit/event/enum.WindowEvent.html#variant.Occluded
+</span><span class="attr">#[derive(Event, Debug, Clone, PartialEq, Eq, Reflect)]
+#[reflect(Debug, PartialEq)]
+#[cfg_attr(
+    feature = <span class="string">"serialize"</span>,
+    derive(serde::Serialize, serde::Deserialize),
+    reflect(Serialize, Deserialize)
+)]
+</span><span class="kw">pub struct </span>WindowOccluded {
+    <span class="doccomment">/// Window that changed occluded state.
+    </span><span class="kw">pub </span>window: Entity,
+    <span class="doccomment">/// Whether it was occluded (true) or not occluded (false).
+    </span><span class="kw">pub </span>occluded: bool,
+}
+
+<span class="doccomment">/// An event that indicates a window's scale factor has changed.
 </span><span class="attr">#[derive(Event, Debug, Clone, PartialEq, Reflect)]
 #[reflect(Debug, PartialEq)]
 #[cfg_attr(
-    feature = <span class="string">&quot;serialize&quot;</span>,
+    feature = <span class="string">"serialize"</span>,
     derive(serde::Serialize, serde::Deserialize),
     reflect(Serialize, Deserialize)
 )]
 </span><span class="kw">pub struct </span>WindowScaleFactorChanged {
-    <span class="doccomment">/// Window that had it&#39;s scale factor changed.
+    <span class="doccomment">/// Window that had it's scale factor changed.
     </span><span class="kw">pub </span>window: Entity,
     <span class="doccomment">/// The new scale factor.
     </span><span class="kw">pub </span>scale_factor: f64,
 }
 
-<span class="doccomment">/// An event that indicates a window&#39;s OS-reported scale factor has changed.
+<span class="doccomment">/// An event that indicates a window's OS-reported scale factor has changed.
 </span><span class="attr">#[derive(Event, Debug, Clone, PartialEq, Reflect)]
 #[reflect(Debug, PartialEq)]
 #[cfg_attr(
-    feature = <span class="string">&quot;serialize&quot;</span>,
+    feature = <span class="string">"serialize"</span>,
     derive(serde::Serialize, serde::Deserialize),
     reflect(Serialize, Deserialize)
 )]
 </span><span class="kw">pub struct </span>WindowBackendScaleFactorChanged {
-    <span class="doccomment">/// Window that had it&#39;s scale factor changed by the backend.
+    <span class="doccomment">/// Window that had it's scale factor changed by the backend.
     </span><span class="kw">pub </span>window: Entity,
     <span class="doccomment">/// The new scale factor.
     </span><span class="kw">pub </span>scale_factor: f64,
@@ -621,7 +690,7 @@
 </span><span class="attr">#[derive(Event, Debug, Clone, PartialEq, Eq, Reflect)]
 #[reflect(Debug, PartialEq)]
 #[cfg_attr(
-    feature = <span class="string">&quot;serialize&quot;</span>,
+    feature = <span class="string">"serialize"</span>,
     derive(serde::Serialize, serde::Deserialize),
     reflect(Serialize, Deserialize)
 )]
@@ -653,13 +722,13 @@
 </span><span class="attr">#[derive(Event, Debug, Clone, PartialEq, Eq, Reflect)]
 #[reflect(Debug, PartialEq)]
 #[cfg_attr(
-    feature = <span class="string">&quot;serialize&quot;</span>,
+    feature = <span class="string">"serialize"</span>,
     derive(serde::Serialize, serde::Deserialize),
     reflect(Serialize, Deserialize)
 )]
 </span><span class="kw">pub struct </span>WindowMoved {
     <span class="doccomment">/// Window that moved.
-    </span><span class="kw">pub </span>entity: Entity,
+    </span><span class="kw">pub </span>window: Entity,
     <span class="doccomment">/// Where the window moved to in physical pixels.
     </span><span class="kw">pub </span>position: IVec2,
 }
@@ -671,7 +740,7 @@
 </span><span class="attr">#[derive(Event, Debug, Clone, PartialEq, Eq, Reflect)]
 #[reflect(Debug, PartialEq)]
 #[cfg_attr(
-    feature = <span class="string">&quot;serialize&quot;</span>,
+    feature = <span class="string">"serialize"</span>,
     derive(serde::Serialize, serde::Deserialize),
     reflect(Serialize, Deserialize)
 )]
@@ -686,7 +755,7 @@
 </span><span class="attr">#[derive(Event, Debug, Clone, Copy, PartialEq, Eq, Reflect)]
 #[reflect(Debug, PartialEq)]
 #[cfg_attr(
-    feature = <span class="string">&quot;serialize&quot;</span>,
+    feature = <span class="string">"serialize"</span>,
     derive(serde::Serialize, serde::Deserialize),
     reflect(Serialize, Deserialize)
 )]

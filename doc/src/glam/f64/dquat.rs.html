@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/glam-0.24.2/src/f64/dquat.rs`."><title>dquat.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glam" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../glam/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/glam-0.25.0/src/f64/dquat.rs`."><title>dquat.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glam" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -841,6 +842,51 @@
 <a href="#841" id="841">841</a>
 <a href="#842" id="842">842</a>
 <a href="#843" id="843">843</a>
+<a href="#844" id="844">844</a>
+<a href="#845" id="845">845</a>
+<a href="#846" id="846">846</a>
+<a href="#847" id="847">847</a>
+<a href="#848" id="848">848</a>
+<a href="#849" id="849">849</a>
+<a href="#850" id="850">850</a>
+<a href="#851" id="851">851</a>
+<a href="#852" id="852">852</a>
+<a href="#853" id="853">853</a>
+<a href="#854" id="854">854</a>
+<a href="#855" id="855">855</a>
+<a href="#856" id="856">856</a>
+<a href="#857" id="857">857</a>
+<a href="#858" id="858">858</a>
+<a href="#859" id="859">859</a>
+<a href="#860" id="860">860</a>
+<a href="#861" id="861">861</a>
+<a href="#862" id="862">862</a>
+<a href="#863" id="863">863</a>
+<a href="#864" id="864">864</a>
+<a href="#865" id="865">865</a>
+<a href="#866" id="866">866</a>
+<a href="#867" id="867">867</a>
+<a href="#868" id="868">868</a>
+<a href="#869" id="869">869</a>
+<a href="#870" id="870">870</a>
+<a href="#871" id="871">871</a>
+<a href="#872" id="872">872</a>
+<a href="#873" id="873">873</a>
+<a href="#874" id="874">874</a>
+<a href="#875" id="875">875</a>
+<a href="#876" id="876">876</a>
+<a href="#877" id="877">877</a>
+<a href="#878" id="878">878</a>
+<a href="#879" id="879">879</a>
+<a href="#880" id="880">880</a>
+<a href="#881" id="881">881</a>
+<a href="#882" id="882">882</a>
+<a href="#883" id="883">883</a>
+<a href="#884" id="884">884</a>
+<a href="#885" id="885">885</a>
+<a href="#886" id="886">886</a>
+<a href="#887" id="887">887</a>
+<a href="#888" id="888">888</a>
 </pre></div><pre class="rust"><code><span class="comment">// Generated from quat.rs.tera template. Edit the template, not the generated file.
 
 </span><span class="kw">use crate</span>::{
@@ -849,7 +895,7 @@
     DMat3, DMat4, DVec2, DVec3, DVec4, Quat,
 };
 
-<span class="attr">#[cfg(not(target_arch = <span class="string">&quot;spirv&quot;</span>))]
+<span class="attr">#[cfg(not(target_arch = <span class="string">"spirv"</span>))]
 </span><span class="kw">use </span>core::fmt;
 <span class="kw">use </span>core::iter::{Product, Sum};
 <span class="kw">use </span>core::ops::{Add, Div, Mul, MulAssign, Neg, Sub};
@@ -859,6 +905,7 @@
 /// This should generally not be called manually unless you know what you are doing. Use
 /// one of the other constructors instead such as `identity` or `from_axis_angle`.
 </span><span class="attr">#[inline]
+#[must_use]
 </span><span class="kw">pub const fn </span>dquat(x: f64, y: f64, z: f64, w: f64) -&gt; DQuat {
     DQuat::from_xyzw(x, y, z, w)
 }
@@ -866,11 +913,11 @@
 <span class="doccomment">/// A quaternion representing an orientation.
 ///
 /// This quaternion is intended to be of unit length but may denormalize due to
-/// floating point &quot;error creep&quot; which can occur when successive quaternion
+/// floating point "error creep" which can occur when successive quaternion
 /// operations are applied.
 </span><span class="attr">#[derive(Clone, Copy)]
-#[cfg_attr(not(target_arch = <span class="string">&quot;spirv&quot;</span>), repr(C))]
-#[cfg_attr(target_arch = <span class="string">&quot;spirv&quot;</span>, repr(simd))]
+#[cfg_attr(not(target_arch = <span class="string">"spirv"</span>), repr(C))]
+#[cfg_attr(target_arch = <span class="string">"spirv"</span>, repr(simd))]
 </span><span class="kw">pub struct </span>DQuat {
     <span class="kw">pub </span>x: f64,
     <span class="kw">pub </span>y: f64,
@@ -900,6 +947,7 @@
     /// This function does not check if the input is normalized, it is up to the user to
     /// provide normalized input or to normalized the resulting quaternion.
     </span><span class="attr">#[inline(always)]
+    #[must_use]
     </span><span class="kw">pub const fn </span>from_xyzw(x: f64, y: f64, z: f64, w: f64) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{ x, y, z, w }
     }
@@ -911,6 +959,7 @@
     /// This function does not check if the input is normalized, it is up to the user to
     /// provide normalized input or to normalized the resulting quaternion.
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub const fn </span>from_array(a: [f64; <span class="number">4</span>]) -&gt; <span class="self">Self </span>{
         <span class="self">Self</span>::from_xyzw(a[<span class="number">0</span>], a[<span class="number">1</span>], a[<span class="number">2</span>], a[<span class="number">3</span>])
     }
@@ -922,7 +971,8 @@
     /// This function does not check if the input is normalized, it is up to the user to
     /// provide normalized input or to normalized the resulting quaternion.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>from_vec4(v: DVec4) -&gt; <span class="self">Self </span>{
+    #[must_use]
+    </span><span class="kw">pub const fn </span>from_vec4(v: DVec4) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
             x: v.x,
             y: v.y,
@@ -942,6 +992,7 @@
     ///
     /// Panics if `slice` length is less than 4.
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>from_slice(slice: <span class="kw-2">&amp;</span>[f64]) -&gt; <span class="self">Self </span>{
         <span class="self">Self</span>::from_xyzw(slice[<span class="number">0</span>], slice[<span class="number">1</span>], slice[<span class="number">2</span>], slice[<span class="number">3</span>])
     }
@@ -967,6 +1018,7 @@
     ///
     /// Will panic if `axis` is not normalized when `glam_assert` is enabled.
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>from_axis_angle(axis: DVec3, angle: f64) -&gt; <span class="self">Self </span>{
         <span class="macro">glam_assert!</span>(axis.is_normalized());
         <span class="kw">let </span>(s, c) = math::sin_cos(angle * <span class="number">0.5</span>);
@@ -978,6 +1030,7 @@
     ///
     /// `from_scaled_axis(Vec3::ZERO)` results in the identity quaternion.
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>from_scaled_axis(v: DVec3) -&gt; <span class="self">Self </span>{
         <span class="kw">let </span>length = v.length();
         <span class="kw">if </span>length == <span class="number">0.0 </span>{
@@ -989,6 +1042,7 @@
 
     <span class="doccomment">/// Creates a quaternion from the `angle` (in radians) around the x axis.
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>from_rotation_x(angle: f64) -&gt; <span class="self">Self </span>{
         <span class="kw">let </span>(s, c) = math::sin_cos(angle * <span class="number">0.5</span>);
         <span class="self">Self</span>::from_xyzw(s, <span class="number">0.0</span>, <span class="number">0.0</span>, c)
@@ -996,6 +1050,7 @@
 
     <span class="doccomment">/// Creates a quaternion from the `angle` (in radians) around the y axis.
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>from_rotation_y(angle: f64) -&gt; <span class="self">Self </span>{
         <span class="kw">let </span>(s, c) = math::sin_cos(angle * <span class="number">0.5</span>);
         <span class="self">Self</span>::from_xyzw(<span class="number">0.0</span>, s, <span class="number">0.0</span>, c)
@@ -1003,19 +1058,22 @@
 
     <span class="doccomment">/// Creates a quaternion from the `angle` (in radians) around the z axis.
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>from_rotation_z(angle: f64) -&gt; <span class="self">Self </span>{
         <span class="kw">let </span>(s, c) = math::sin_cos(angle * <span class="number">0.5</span>);
         <span class="self">Self</span>::from_xyzw(<span class="number">0.0</span>, <span class="number">0.0</span>, s, c)
     }
 
-    <span class="attr">#[inline]
-    </span><span class="doccomment">/// Creates a quaternion from the given Euler rotation sequence and the angles (in radians).
+    <span class="doccomment">/// Creates a quaternion from the given Euler rotation sequence and the angles (in radians).
+    </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>from_euler(euler: EulerRot, a: f64, b: f64, c: f64) -&gt; <span class="self">Self </span>{
         euler.new_quat(a, b, c)
     }
 
     <span class="doccomment">/// From the columns of a 3x3 rotation matrix.
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>from_rotation_axes(x_axis: DVec3, y_axis: DVec3, z_axis: DVec3) -&gt; <span class="self">Self </span>{
         <span class="comment">// Based on https://github.com/microsoft/DirectXMath `XM$quaternionRotationMatrix`
         </span><span class="kw">let </span>(m00, m01, m02) = x_axis.into();
@@ -1076,12 +1134,14 @@
 
     <span class="doccomment">/// Creates a quaternion from a 3x3 rotation matrix.
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>from_mat3(mat: <span class="kw-2">&amp;</span>DMat3) -&gt; <span class="self">Self </span>{
         <span class="self">Self</span>::from_rotation_axes(mat.x_axis, mat.y_axis, mat.z_axis)
     }
 
     <span class="doccomment">/// Creates a quaternion from a 3x3 rotation matrix inside a homogeneous 4x4 matrix.
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>from_mat4(mat: <span class="kw-2">&amp;</span>DMat4) -&gt; <span class="self">Self </span>{
         <span class="self">Self</span>::from_rotation_axes(
             mat.x_axis.truncate(),
@@ -1103,6 +1163,7 @@
     /// # Panics
     ///
     /// Will panic if `from` or `to` are not normalized when `glam_assert` is enabled.
+    </span><span class="attr">#[must_use]
     </span><span class="kw">pub fn </span>from_rotation_arc(from: DVec3, to: DVec3) -&gt; <span class="self">Self </span>{
         <span class="macro">glam_assert!</span>(from.is_normalized());
         <span class="macro">glam_assert!</span>(to.is_normalized());
@@ -1136,6 +1197,7 @@
     ///
     /// Will panic if `from` or `to` are not normalized when `glam_assert` is enabled.
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>from_rotation_arc_colinear(from: DVec3, to: DVec3) -&gt; <span class="self">Self </span>{
         <span class="kw">if </span>from.dot(to) &lt; <span class="number">0.0 </span>{
             <span class="self">Self</span>::from_rotation_arc(from, -to)
@@ -1157,6 +1219,7 @@
     /// # Panics
     ///
     /// Will panic if `from` or `to` are not normalized when `glam_assert` is enabled.
+    </span><span class="attr">#[must_use]
     </span><span class="kw">pub fn </span>from_rotation_arc_2d(from: DVec2, to: DVec2) -&gt; <span class="self">Self </span>{
         <span class="macro">glam_assert!</span>(from.is_normalized());
         <span class="macro">glam_assert!</span>(to.is_normalized());
@@ -1184,6 +1247,7 @@
 
     <span class="doccomment">/// Returns the rotation axis (normalized) and angle (in radians) of `self`.
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>to_axis_angle(<span class="self">self</span>) -&gt; (DVec3, f64) {
         <span class="kw">const </span>EPSILON: f64 = <span class="number">1.0e-8</span>;
         <span class="kw">let </span>v = DVec3::new(<span class="self">self</span>.x, <span class="self">self</span>.y, <span class="self">self</span>.z);
@@ -1199,6 +1263,7 @@
 
     <span class="doccomment">/// Returns the rotation axis scaled by the rotation in radians.
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>to_scaled_axis(<span class="self">self</span>) -&gt; DVec3 {
         <span class="kw">let </span>(axis, angle) = <span class="self">self</span>.to_axis_angle();
         axis * angle
@@ -1206,26 +1271,29 @@
 
     <span class="doccomment">/// Returns the rotation angles for the given euler rotation sequence.
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>to_euler(<span class="self">self</span>, euler: EulerRot) -&gt; (f64, f64, f64) {
         euler.convert_quat(<span class="self">self</span>)
     }
 
     <span class="doccomment">/// `[x, y, z, w]`
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>to_array(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; [f64; <span class="number">4</span>] {
         [<span class="self">self</span>.x, <span class="self">self</span>.y, <span class="self">self</span>.z, <span class="self">self</span>.w]
     }
 
     <span class="doccomment">/// Returns the vector part of the quaternion.
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>xyz(<span class="self">self</span>) -&gt; DVec3 {
         DVec3::new(<span class="self">self</span>.x, <span class="self">self</span>.y, <span class="self">self</span>.z)
     }
 
     <span class="doccomment">/// Returns the quaternion conjugate of `self`. For a unit quaternion the
     /// conjugate is also the inverse.
-    </span><span class="attr">#[must_use]
-    #[inline]
+    </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>conjugate(<span class="self">self</span>) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
             x: -<span class="self">self</span>.x,
@@ -1244,8 +1312,8 @@
     /// # Panics
     ///
     /// Will panic if `self` is not normalized when `glam_assert` is enabled.
-    </span><span class="attr">#[must_use]
-    #[inline]
+    </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>inverse(<span class="self">self</span>) -&gt; <span class="self">Self </span>{
         <span class="macro">glam_assert!</span>(<span class="self">self</span>.is_normalized());
         <span class="self">self</span>.conjugate()
@@ -1254,13 +1322,15 @@
     <span class="doccomment">/// Computes the dot product of `self` and `rhs`. The dot product is
     /// equal to the cosine of the angle between two quaternion rotations.
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>dot(<span class="self">self</span>, rhs: <span class="self">Self</span>) -&gt; f64 {
         DVec4::from(<span class="self">self</span>).dot(DVec4::from(rhs))
     }
 
     <span class="doccomment">/// Computes the length of `self`.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;magnitude&quot;</span>)]
+    </span><span class="attr">#[doc(alias = <span class="string">"magnitude"</span>)]
     #[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>length(<span class="self">self</span>) -&gt; f64 {
         DVec4::from(<span class="self">self</span>).length()
     }
@@ -1269,8 +1339,9 @@
     ///
     /// This is generally faster than `length()` as it avoids a square
     /// root operation.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;magnitude2&quot;</span>)]
+    </span><span class="attr">#[doc(alias = <span class="string">"magnitude2"</span>)]
     #[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>length_squared(<span class="self">self</span>) -&gt; f64 {
         DVec4::from(<span class="self">self</span>).length_squared()
     }
@@ -1279,6 +1350,7 @@
     ///
     /// For valid results, `self` must _not_ be of length zero.
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>length_recip(<span class="self">self</span>) -&gt; f64 {
         DVec4::from(<span class="self">self</span>).length_recip()
     }
@@ -1290,8 +1362,8 @@
     /// Panics
     ///
     /// Will panic if `self` is zero length when `glam_assert` is enabled.
-    </span><span class="attr">#[must_use]
-    #[inline]
+    </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>normalize(<span class="self">self</span>) -&gt; <span class="self">Self </span>{
         <span class="self">Self</span>::from_vec4(DVec4::from(<span class="self">self</span>).normalize())
     }
@@ -1299,11 +1371,13 @@
     <span class="doccomment">/// Returns `true` if, and only if, all elements are finite.
     /// If any element is either `NaN`, positive or negative infinity, this will return `false`.
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>is_finite(<span class="self">self</span>) -&gt; bool {
         DVec4::from(<span class="self">self</span>).is_finite()
     }
 
     <span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>is_nan(<span class="self">self</span>) -&gt; bool {
         DVec4::from(<span class="self">self</span>).is_nan()
     }
@@ -1312,11 +1386,13 @@
     ///
     /// Uses a precision threshold of `1e-6`.
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>is_normalized(<span class="self">self</span>) -&gt; bool {
         DVec4::from(<span class="self">self</span>).is_normalized()
     }
 
     <span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>is_near_identity(<span class="self">self</span>) -&gt; bool {
         <span class="comment">// Based on https://github.com/nfrechette/rtm `rtm::quat_near_identity`
         </span><span class="kw">let </span>threshold_angle = <span class="number">0.002_847_144_6</span>;
@@ -1328,10 +1404,10 @@
         // (1.0 - 1.e-6).acos() * 2.0 = 0.00284714461 rad
         // (1.0 - 1.e-7).acos() * 2.0 = 0.00097656250 rad
         //
-        // We don&#39;t really care about the angle value itself, only if it&#39;s close to 0.
+        // We don't really care about the angle value itself, only if it's close to 0.
         // This will happen whenever quat.w is close to 1.0.
         // If the quat.w is close to -1.0, the angle will be near 2*PI which is close to
-        // a negative 0 rotation. By forcing quat.w to be positive, we&#39;ll end up with
+        // a negative 0 rotation. By forcing quat.w to be positive, we'll end up with
         // the shortest path.
         </span><span class="kw">let </span>positive_w_angle = math::acos_approx(math::abs(<span class="self">self</span>.w)) * <span class="number">2.0</span>;
         positive_w_angle &lt; threshold_angle
@@ -1346,6 +1422,7 @@
     ///
     /// Will panic if `self` or `rhs` are not normalized when `glam_assert` is enabled.
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>angle_between(<span class="self">self</span>, rhs: <span class="self">Self</span>) -&gt; f64 {
         <span class="macro">glam_assert!</span>(<span class="self">self</span>.is_normalized() &amp;&amp; rhs.is_normalized());
         math::acos_approx(math::abs(<span class="self">self</span>.dot(rhs))) * <span class="number">2.0
@@ -1361,6 +1438,7 @@
     /// For more see
     /// [comparing floating point numbers](https://randomascii.wordpress.com/2012/02/25/comparing-floating-point-numbers-2012-edition/).
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>abs_diff_eq(<span class="self">self</span>, rhs: <span class="self">Self</span>, max_abs_diff: f64) -&gt; bool {
         DVec4::from(<span class="self">self</span>).abs_diff_eq(DVec4::from(rhs), max_abs_diff)
     }
@@ -1374,8 +1452,9 @@
     /// # Panics
     ///
     /// Will panic if `self` or `end` are not normalized when `glam_assert` is enabled.
-    </span><span class="attr">#[inline]
-    #[doc(alias = <span class="string">&quot;mix&quot;</span>)]
+    </span><span class="attr">#[doc(alias = <span class="string">"mix"</span>)]
+    #[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>lerp(<span class="self">self</span>, end: <span class="self">Self</span>, s: f64) -&gt; <span class="self">Self </span>{
         <span class="macro">glam_assert!</span>(<span class="self">self</span>.is_normalized());
         <span class="macro">glam_assert!</span>(end.is_normalized());
@@ -1397,6 +1476,7 @@
     ///
     /// Will panic if `self` or `end` are not normalized when `glam_assert` is enabled.
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>slerp(<span class="self">self</span>, <span class="kw-2">mut </span>end: <span class="self">Self</span>, s: f64) -&gt; <span class="self">Self </span>{
         <span class="comment">// http://number-none.com/product/Understanding%20Slerp,%20Then%20Not%20Using%20It/
         </span><span class="macro">glam_assert!</span>(<span class="self">self</span>.is_normalized());
@@ -1436,6 +1516,7 @@
     ///
     /// Will panic if `self` is not normalized when `glam_assert` is enabled.
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>mul_vec3(<span class="self">self</span>, rhs: DVec3) -&gt; DVec3 {
         <span class="macro">glam_assert!</span>(<span class="self">self</span>.is_normalized());
 
@@ -1456,6 +1537,7 @@
     ///
     /// Will panic if `self` or `rhs` are not normalized when `glam_assert` is enabled.
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>mul_quat(<span class="self">self</span>, rhs: <span class="self">Self</span>) -&gt; <span class="self">Self </span>{
         <span class="macro">glam_assert!</span>(<span class="self">self</span>.is_normalized());
         <span class="macro">glam_assert!</span>(rhs.is_normalized());
@@ -1472,6 +1554,7 @@
 
     <span class="doccomment">/// Creates a quaternion from a 3x3 rotation matrix inside a 3D affine transform.
     </span><span class="attr">#[inline]
+    #[must_use]
     </span><span class="kw">pub fn </span>from_affine3(a: <span class="kw-2">&amp;</span><span class="kw">crate</span>::DAffine3) -&gt; <span class="self">Self </span>{
         <span class="attr">#[allow(clippy::useless_conversion)]
         </span><span class="self">Self</span>::from_rotation_axes(
@@ -1482,14 +1565,22 @@
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>as_f32(<span class="self">self</span>) -&gt; Quat {
+    #[must_use]
+    </span><span class="kw">pub fn </span>as_quat(<span class="self">self</span>) -&gt; Quat {
         Quat::from_xyzw(<span class="self">self</span>.x <span class="kw">as </span>f32, <span class="self">self</span>.y <span class="kw">as </span>f32, <span class="self">self</span>.z <span class="kw">as </span>f32, <span class="self">self</span>.w <span class="kw">as </span>f32)
+    }
+
+    <span class="attr">#[inline]
+    #[must_use]
+    #[deprecated(since = <span class="string">"0.24.2"</span>, note = <span class="string">"Use as_quat() instead"</span>)]
+    </span><span class="kw">pub fn </span>as_f32(<span class="self">self</span>) -&gt; Quat {
+        <span class="self">self</span>.as_quat()
     }
 }
 
-<span class="attr">#[cfg(not(target_arch = <span class="string">&quot;spirv&quot;</span>))]
+<span class="attr">#[cfg(not(target_arch = <span class="string">"spirv"</span>))]
 </span><span class="kw">impl </span>fmt::Debug <span class="kw">for </span>DQuat {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, fmt: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, fmt: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
         fmt.debug_tuple(<span class="macro">stringify!</span>(DQuat))
             .field(<span class="kw-2">&amp;</span><span class="self">self</span>.x)
             .field(<span class="kw-2">&amp;</span><span class="self">self</span>.y)
@@ -1499,10 +1590,10 @@
     }
 }
 
-<span class="attr">#[cfg(not(target_arch = <span class="string">&quot;spirv&quot;</span>))]
+<span class="attr">#[cfg(not(target_arch = <span class="string">"spirv"</span>))]
 </span><span class="kw">impl </span>fmt::Display <span class="kw">for </span>DQuat {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, fmt: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
-        <span class="macro">write!</span>(fmt, <span class="string">&quot;[{}, {}, {}, {}]&quot;</span>, <span class="self">self</span>.x, <span class="self">self</span>.y, <span class="self">self</span>.z, <span class="self">self</span>.w)
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, fmt: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
+        <span class="macro">write!</span>(fmt, <span class="string">"[{}, {}, {}, {}]"</span>, <span class="self">self</span>.x, <span class="self">self</span>.y, <span class="self">self</span>.z, <span class="self">self</span>.w)
     }
 }
 
@@ -1620,7 +1711,7 @@
     }
 }
 
-<span class="attr">#[cfg(not(target_arch = <span class="string">&quot;spirv&quot;</span>))]
+<span class="attr">#[cfg(not(target_arch = <span class="string">"spirv"</span>))]
 </span><span class="kw">impl </span>AsRef&lt;[f64; <span class="number">4</span>]&gt; <span class="kw">for </span>DQuat {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>as_ref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[f64; <span class="number">4</span>] {
@@ -1637,10 +1728,10 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; Sum&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">Self</span>&gt; <span class="kw">for </span>DQuat {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; Sum&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="self">Self</span>&gt; <span class="kw">for </span>DQuat {
     <span class="kw">fn </span>sum&lt;I&gt;(iter: I) -&gt; <span class="self">Self
     </span><span class="kw">where
-        </span>I: Iterator&lt;Item = <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">Self</span>&gt;,
+        </span>I: Iterator&lt;Item = <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="self">Self</span>&gt;,
     {
         iter.fold(<span class="self">Self</span>::ZERO, |a, <span class="kw-2">&amp;</span>b| <span class="self">Self</span>::add(a, b))
     }
@@ -1655,10 +1746,10 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; Product&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">Self</span>&gt; <span class="kw">for </span>DQuat {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; Product&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="self">Self</span>&gt; <span class="kw">for </span>DQuat {
     <span class="kw">fn </span>product&lt;I&gt;(iter: I) -&gt; <span class="self">Self
     </span><span class="kw">where
-        </span>I: Iterator&lt;Item = <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">Self</span>&gt;,
+        </span>I: Iterator&lt;Item = <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="self">Self</span>&gt;,
     {
         iter.fold(<span class="self">Self</span>::IDENTITY, |a, <span class="kw-2">&amp;</span>b| <span class="self">Self</span>::mul(a, b))
     }

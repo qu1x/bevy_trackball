@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["now_or_never"]};
+window.SIDEBAR_ITEMS = {"fn":["check_ready","now_or_never"]};

@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/wgpu-core-0.17.1/src/command/transfer.rs`."><title>transfer.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="wgpu_core" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../wgpu_core/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/wgpu-core-0.19.0/src/command/transfer.rs`."><title>transfer.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="wgpu_core" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1156,25 +1157,96 @@
 <a href="#1156" id="1156">1156</a>
 <a href="#1157" id="1157">1157</a>
 <a href="#1158" id="1158">1158</a>
-</pre></div><pre class="rust"><code><span class="attr">#[cfg(feature = <span class="string">&quot;trace&quot;</span>)]
+<a href="#1159" id="1159">1159</a>
+<a href="#1160" id="1160">1160</a>
+<a href="#1161" id="1161">1161</a>
+<a href="#1162" id="1162">1162</a>
+<a href="#1163" id="1163">1163</a>
+<a href="#1164" id="1164">1164</a>
+<a href="#1165" id="1165">1165</a>
+<a href="#1166" id="1166">1166</a>
+<a href="#1167" id="1167">1167</a>
+<a href="#1168" id="1168">1168</a>
+<a href="#1169" id="1169">1169</a>
+<a href="#1170" id="1170">1170</a>
+<a href="#1171" id="1171">1171</a>
+<a href="#1172" id="1172">1172</a>
+<a href="#1173" id="1173">1173</a>
+<a href="#1174" id="1174">1174</a>
+<a href="#1175" id="1175">1175</a>
+<a href="#1176" id="1176">1176</a>
+<a href="#1177" id="1177">1177</a>
+<a href="#1178" id="1178">1178</a>
+<a href="#1179" id="1179">1179</a>
+<a href="#1180" id="1180">1180</a>
+<a href="#1181" id="1181">1181</a>
+<a href="#1182" id="1182">1182</a>
+<a href="#1183" id="1183">1183</a>
+<a href="#1184" id="1184">1184</a>
+<a href="#1185" id="1185">1185</a>
+<a href="#1186" id="1186">1186</a>
+<a href="#1187" id="1187">1187</a>
+<a href="#1188" id="1188">1188</a>
+<a href="#1189" id="1189">1189</a>
+<a href="#1190" id="1190">1190</a>
+<a href="#1191" id="1191">1191</a>
+<a href="#1192" id="1192">1192</a>
+<a href="#1193" id="1193">1193</a>
+<a href="#1194" id="1194">1194</a>
+<a href="#1195" id="1195">1195</a>
+<a href="#1196" id="1196">1196</a>
+<a href="#1197" id="1197">1197</a>
+<a href="#1198" id="1198">1198</a>
+<a href="#1199" id="1199">1199</a>
+<a href="#1200" id="1200">1200</a>
+<a href="#1201" id="1201">1201</a>
+<a href="#1202" id="1202">1202</a>
+<a href="#1203" id="1203">1203</a>
+<a href="#1204" id="1204">1204</a>
+<a href="#1205" id="1205">1205</a>
+<a href="#1206" id="1206">1206</a>
+<a href="#1207" id="1207">1207</a>
+<a href="#1208" id="1208">1208</a>
+<a href="#1209" id="1209">1209</a>
+<a href="#1210" id="1210">1210</a>
+<a href="#1211" id="1211">1211</a>
+<a href="#1212" id="1212">1212</a>
+<a href="#1213" id="1213">1213</a>
+<a href="#1214" id="1214">1214</a>
+<a href="#1215" id="1215">1215</a>
+<a href="#1216" id="1216">1216</a>
+<a href="#1217" id="1217">1217</a>
+<a href="#1218" id="1218">1218</a>
+<a href="#1219" id="1219">1219</a>
+<a href="#1220" id="1220">1220</a>
+<a href="#1221" id="1221">1221</a>
+<a href="#1222" id="1222">1222</a>
+<a href="#1223" id="1223">1223</a>
+<a href="#1224" id="1224">1224</a>
+<a href="#1225" id="1225">1225</a>
+<a href="#1226" id="1226">1226</a>
+<a href="#1227" id="1227">1227</a>
+<a href="#1228" id="1228">1228</a>
+<a href="#1229" id="1229">1229</a>
+<a href="#1230" id="1230">1230</a>
+</pre></div><pre class="rust"><code><span class="attr">#[cfg(feature = <span class="string">"trace"</span>)]
 </span><span class="kw">use </span><span class="kw">crate</span>::device::trace::Command <span class="kw">as </span>TraceCommand;
 <span class="kw">use crate</span>::{
+    api_log,
     command::{clear_texture, CommandBuffer, CommandEncoderError},
     conv,
-    device::{Device, MissingDownlevelFlags},
+    device::{Device, DeviceError, MissingDownlevelFlags},
     error::{ErrorFormatter, PrettyError},
     global::Global,
     hal_api::HalApi,
-    hub::Token,
-    id::{BufferId, CommandEncoderId, TextureId, Valid},
+    id::{BufferId, CommandEncoderId, DeviceId, TextureId},
     identity::GlobalIdentityHandlerFactory,
     init_tracker::{
         has_copy_partial_init_tracker_coverage, MemoryInitKind, TextureInitRange,
         TextureInitTrackerAction,
     },
-    resource::{Texture, TextureErrorDimension},
-    storage::Storage,
-    track::TextureSelector,
+    resource::{Resource, Texture, TextureErrorDimension},
+    track::{TextureSelector, Tracker},
 };
 
 <span class="kw">use </span>arrayvec::ArrayVec;
@@ -1182,7 +1254,9 @@
 <span class="kw">use </span>thiserror::Error;
 <span class="kw">use </span>wgt::{BufferAddress, BufferUsages, Extent3d, TextureUsages};
 
-<span class="kw">use </span>std::iter;
+<span class="kw">use </span>std::{iter, sync::Arc};
+
+<span class="kw">use super</span>::{memory_init::CommandBufferTextureMemoryActions, ClearError, CommandEncoder};
 
 <span class="kw">pub type </span>ImageCopyBuffer = wgt::ImageCopyBuffer&lt;BufferId&gt;;
 <span class="kw">pub type </span>ImageCopyTexture = wgt::ImageCopyTexture&lt;TextureId&gt;;
@@ -1198,26 +1272,28 @@
 </span><span class="attr">#[derive(Clone, Debug, Error)]
 #[non_exhaustive]
 </span><span class="kw">pub enum </span>TransferError {
-    <span class="attr">#[error(<span class="string">&quot;Buffer {0:?} is invalid or destroyed&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Device {0:?} is invalid"</span>)]
+    </span>InvalidDevice(DeviceId),
+    <span class="attr">#[error(<span class="string">"Buffer {0:?} is invalid or destroyed"</span>)]
     </span>InvalidBuffer(BufferId),
-    <span class="attr">#[error(<span class="string">&quot;Texture {0:?} is invalid or destroyed&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Texture {0:?} is invalid or destroyed"</span>)]
     </span>InvalidTexture(TextureId),
-    <span class="attr">#[error(<span class="string">&quot;Source and destination cannot be the same buffer&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Source and destination cannot be the same buffer"</span>)]
     </span>SameSourceDestinationBuffer,
-    <span class="attr">#[error(<span class="string">&quot;Source buffer/texture is missing the `COPY_SRC` usage flag&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Source buffer/texture is missing the `COPY_SRC` usage flag"</span>)]
     </span>MissingCopySrcUsageFlag,
-    <span class="attr">#[error(<span class="string">&quot;Destination buffer/texture is missing the `COPY_DST` usage flag&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Destination buffer/texture is missing the `COPY_DST` usage flag"</span>)]
     </span>MissingCopyDstUsageFlag(<span class="prelude-ty">Option</span>&lt;BufferId&gt;, <span class="prelude-ty">Option</span>&lt;TextureId&gt;),
-    <span class="attr">#[error(<span class="string">&quot;Destination texture is missing the `RENDER_ATTACHMENT` usage flag&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Destination texture is missing the `RENDER_ATTACHMENT` usage flag"</span>)]
     </span>MissingRenderAttachmentUsageFlag(TextureId),
-    <span class="attr">#[error(<span class="string">&quot;Copy of {start_offset}..{end_offset} would end up overrunning the bounds of the {side:?} buffer of size {buffer_size}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Copy of {start_offset}..{end_offset} would end up overrunning the bounds of the {side:?} buffer of size {buffer_size}"</span>)]
     </span>BufferOverrun {
         start_offset: BufferAddress,
         end_offset: BufferAddress,
         buffer_size: BufferAddress,
         side: CopySide,
     },
-    <span class="attr">#[error(<span class="string">&quot;Copy of {dimension:?} {start_offset}..{end_offset} would end up overrunning the bounds of the {side:?} texture of {dimension:?} size {texture_size}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Copy of {dimension:?} {start_offset}..{end_offset} would end up overrunning the bounds of the {side:?} texture of {dimension:?} size {texture_size}"</span>)]
     </span>TextureOverrun {
         start_offset: u32,
         end_offset: u32,
@@ -1225,77 +1301,77 @@
         dimension: TextureErrorDimension,
         side: CopySide,
     },
-    <span class="attr">#[error(<span class="string">&quot;Unable to select texture aspect {aspect:?} from fromat {format:?}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Unable to select texture aspect {aspect:?} from fromat {format:?}"</span>)]
     </span>InvalidTextureAspect {
         format: wgt::TextureFormat,
         aspect: wgt::TextureAspect,
     },
-    <span class="attr">#[error(<span class="string">&quot;Unable to select texture mip level {level} out of {total}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Unable to select texture mip level {level} out of {total}"</span>)]
     </span>InvalidTextureMipLevel { level: u32, total: u32 },
-    <span class="attr">#[error(<span class="string">&quot;Texture dimension must be 2D when copying from an external texture&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Texture dimension must be 2D when copying from an external texture"</span>)]
     </span>InvalidDimensionExternal(TextureId),
-    <span class="attr">#[error(<span class="string">&quot;Buffer offset {0} is not aligned to block size or `COPY_BUFFER_ALIGNMENT`&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Buffer offset {0} is not aligned to block size or `COPY_BUFFER_ALIGNMENT`"</span>)]
     </span>UnalignedBufferOffset(BufferAddress),
-    <span class="attr">#[error(<span class="string">&quot;Copy size {0} does not respect `COPY_BUFFER_ALIGNMENT`&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Copy size {0} does not respect `COPY_BUFFER_ALIGNMENT`"</span>)]
     </span>UnalignedCopySize(BufferAddress),
-    <span class="attr">#[error(<span class="string">&quot;Copy width is not a multiple of block width&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Copy width is not a multiple of block width"</span>)]
     </span>UnalignedCopyWidth,
-    <span class="attr">#[error(<span class="string">&quot;Copy height is not a multiple of block height&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Copy height is not a multiple of block height"</span>)]
     </span>UnalignedCopyHeight,
-    <span class="attr">#[error(<span class="string">&quot;Copy origin&#39;s x component is not a multiple of block width&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Copy origin's x component is not a multiple of block width"</span>)]
     </span>UnalignedCopyOriginX,
-    <span class="attr">#[error(<span class="string">&quot;Copy origin&#39;s y component is not a multiple of block height&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Copy origin's y component is not a multiple of block height"</span>)]
     </span>UnalignedCopyOriginY,
-    <span class="attr">#[error(<span class="string">&quot;Bytes per row does not respect `COPY_BYTES_PER_ROW_ALIGNMENT`&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Bytes per row does not respect `COPY_BYTES_PER_ROW_ALIGNMENT`"</span>)]
     </span>UnalignedBytesPerRow,
-    <span class="attr">#[error(<span class="string">&quot;Number of bytes per row needs to be specified since more than one row is copied&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Number of bytes per row needs to be specified since more than one row is copied"</span>)]
     </span>UnspecifiedBytesPerRow,
-    <span class="attr">#[error(<span class="string">&quot;Number of rows per image needs to be specified since more than one image is copied&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Number of rows per image needs to be specified since more than one image is copied"</span>)]
     </span>UnspecifiedRowsPerImage,
-    <span class="attr">#[error(<span class="string">&quot;Number of bytes per row is less than the number of bytes in a complete row&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Number of bytes per row is less than the number of bytes in a complete row"</span>)]
     </span>InvalidBytesPerRow,
-    <span class="attr">#[error(<span class="string">&quot;Image is 1D and the copy height and depth are not both set to 1&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Image is 1D and the copy height and depth are not both set to 1"</span>)]
     </span>InvalidCopySize,
-    <span class="attr">#[error(<span class="string">&quot;Number of rows per image is invalid&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Number of rows per image is invalid"</span>)]
     </span>InvalidRowsPerImage,
-    <span class="attr">#[error(<span class="string">&quot;Copy source aspects must refer to all aspects of the source texture format&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Copy source aspects must refer to all aspects of the source texture format"</span>)]
     </span>CopySrcMissingAspects,
     <span class="attr">#[error(
-        <span class="string">&quot;Copy destination aspects must refer to all aspects of the destination texture format&quot;
+        <span class="string">"Copy destination aspects must refer to all aspects of the destination texture format"
     </span>)]
     </span>CopyDstMissingAspects,
-    <span class="attr">#[error(<span class="string">&quot;Copy aspect must refer to a single aspect of texture format&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Copy aspect must refer to a single aspect of texture format"</span>)]
     </span>CopyAspectNotOne,
-    <span class="attr">#[error(<span class="string">&quot;Copying from textures with format {format:?} and aspect {aspect:?} is forbidden&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Copying from textures with format {format:?} and aspect {aspect:?} is forbidden"</span>)]
     </span>CopyFromForbiddenTextureFormat {
         format: wgt::TextureFormat,
         aspect: wgt::TextureAspect,
     },
-    <span class="attr">#[error(<span class="string">&quot;Copying to textures with format {format:?} and aspect {aspect:?} is forbidden&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Copying to textures with format {format:?} and aspect {aspect:?} is forbidden"</span>)]
     </span>CopyToForbiddenTextureFormat {
         format: wgt::TextureFormat,
         aspect: wgt::TextureAspect,
     },
     <span class="attr">#[error(
-        <span class="string">&quot;Copying to textures with format {0:?} is forbidden when copying from external texture&quot;
+        <span class="string">"Copying to textures with format {0:?} is forbidden when copying from external texture"
     </span>)]
     </span>ExternalCopyToForbiddenTextureFormat(wgt::TextureFormat),
-    <span class="attr">#[error(<span class="string">&quot;The entire texture must be copied when copying from depth texture&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"The entire texture must be copied when copying from depth texture"</span>)]
     </span>InvalidDepthTextureExtent,
     <span class="attr">#[error(
-        <span class="string">&quot;Source format ({src_format:?}) and destination format ({dst_format:?}) are not copy-compatible (they may only differ in srgb-ness)&quot;
+        <span class="string">"Source format ({src_format:?}) and destination format ({dst_format:?}) are not copy-compatible (they may only differ in srgb-ness)"
     </span>)]
     </span>TextureFormatsNotCopyCompatible {
         src_format: wgt::TextureFormat,
         dst_format: wgt::TextureFormat,
     },
     <span class="attr">#[error(transparent)]
-    </span>MemoryInitFailure(<span class="attr">#[from] </span><span class="kw">super</span>::ClearError),
-    <span class="attr">#[error(<span class="string">&quot;Cannot encode this copy because of a missing downelevel flag&quot;</span>)]
+    </span>MemoryInitFailure(<span class="attr">#[from] </span>ClearError),
+    <span class="attr">#[error(<span class="string">"Cannot encode this copy because of a missing downelevel flag"</span>)]
     </span>MissingDownlevelFlags(<span class="attr">#[from] </span>MissingDownlevelFlags),
-    <span class="attr">#[error(<span class="string">&quot;Source texture sample count must be 1, got {sample_count}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Source texture sample count must be 1, got {sample_count}"</span>)]
     </span>InvalidSampleCount { sample_count: u32 },
-    <span class="attr">#[error(<span class="string">&quot;Requested mip level {requested} does no exist (count: {count})&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Requested mip level {requested} does no exist (count: {count})"</span>)]
     </span>InvalidMipLevel { requested: u32, count: u32 },
 }
 
@@ -1312,19 +1388,19 @@
             <span class="comment">// Self::MissingCopySrcUsageFlag(buf_opt, tex_opt) =&gt; {
             //     if let Some(buf) = buf_opt {
             //         let name = crate::gfx_select!(buf =&gt; global.buffer_label(buf));
-            //         ret.push_str(&amp;format_label_line(&quot;source&quot;, &amp;name));
+            //         ret.push_str(&amp;format_label_line("source", &amp;name));
             //     }
             //     if let Some(tex) = tex_opt {
             //         let name = crate::gfx_select!(tex =&gt; global.texture_label(tex));
-            //         ret.push_str(&amp;format_label_line(&quot;source&quot;, &amp;name));
+            //         ret.push_str(&amp;format_label_line("source", &amp;name));
             //     }
             // }
             </span><span class="self">Self</span>::MissingCopyDstUsageFlag(buf_opt, tex_opt) =&gt; {
                 <span class="kw">if let </span><span class="prelude-val">Some</span>(buf) = buf_opt {
-                    fmt.buffer_label_with_key(<span class="kw-2">&amp;</span>buf, <span class="string">&quot;destination&quot;</span>);
+                    fmt.buffer_label_with_key(<span class="kw-2">&amp;</span>buf, <span class="string">"destination"</span>);
                 }
                 <span class="kw">if let </span><span class="prelude-val">Some</span>(tex) = tex_opt {
-                    fmt.texture_label_with_key(<span class="kw-2">&amp;</span>tex, <span class="string">&quot;destination&quot;</span>);
+                    fmt.texture_label_with_key(<span class="kw-2">&amp;</span>tex, <span class="string">"destination"</span>);
                 }
             }
             <span class="kw">_ </span>=&gt; {}
@@ -1337,11 +1413,17 @@
 </span><span class="kw">pub enum </span>CopyError {
     <span class="attr">#[error(transparent)]
     </span>Encoder(<span class="attr">#[from] </span>CommandEncoderError),
-    <span class="attr">#[error(<span class="string">&quot;Copy error&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Copy error"</span>)]
     </span>Transfer(<span class="attr">#[from] </span>TransferError),
 }
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>extract_texture_selector&lt;A: hal::Api&gt;(
+<span class="kw">impl </span>From&lt;DeviceError&gt; <span class="kw">for </span>CopyError {
+    <span class="kw">fn </span>from(err: DeviceError) -&gt; <span class="self">Self </span>{
+        CopyError::Encoder(CommandEncoderError::Device(err))
+    }
+}
+
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>extract_texture_selector&lt;A: HalApi&gt;(
     copy_texture: <span class="kw-2">&amp;</span>ImageCopyTexture,
     copy_size: <span class="kw-2">&amp;</span>Extent3d,
     texture: <span class="kw-2">&amp;</span>Texture&lt;A&gt;,
@@ -1382,7 +1464,7 @@
     <span class="prelude-val">Ok</span>((selector, base))
 }
 
-<span class="doccomment">/// WebGPU&#39;s [validating linear texture data][vltd] algorithm.
+<span class="doccomment">/// WebGPU's [validating linear texture data][vltd] algorithm.
 ///
 /// Copied with some modifications from WebGPU standard.
 ///
@@ -1410,7 +1492,7 @@
 
     <span class="kw">let </span>offset = layout.offset;
 
-    <span class="kw">let </span>block_size = format.block_size(<span class="prelude-val">Some</span>(aspect)).unwrap() <span class="kw">as </span>BufferAddress;
+    <span class="kw">let </span>block_size = format.block_copy_size(<span class="prelude-val">Some</span>(aspect)).unwrap() <span class="kw">as </span>BufferAddress;
     <span class="kw">let </span>(block_width, block_height) = format.block_dimensions();
     <span class="kw">let </span>block_width = block_width <span class="kw">as </span>BufferAddress;
     <span class="kw">let </span>block_height = block_height <span class="kw">as </span>BufferAddress;
@@ -1492,7 +1574,7 @@
     <span class="prelude-val">Ok</span>((required_bytes_in_copy, bytes_per_image))
 }
 
-<span class="doccomment">/// WebGPU&#39;s [validating texture copy range][vtcr] algorithm.
+<span class="doccomment">/// WebGPU's [validating texture copy range][vtcr] algorithm.
 ///
 /// Copied with minor modifications from WebGPU standard.
 ///
@@ -1595,14 +1677,16 @@
 
 <span class="kw">fn </span>handle_texture_init&lt;A: HalApi&gt;(
     init_kind: MemoryInitKind,
-    cmd_buf: <span class="kw-2">&amp;mut </span>CommandBuffer&lt;A&gt;,
+    encoder: <span class="kw-2">&amp;mut </span>CommandEncoder&lt;A&gt;,
+    trackers: <span class="kw-2">&amp;mut </span>Tracker&lt;A&gt;,
+    texture_memory_actions: <span class="kw-2">&amp;mut </span>CommandBufferTextureMemoryActions&lt;A&gt;,
     device: <span class="kw-2">&amp;</span>Device&lt;A&gt;,
     copy_texture: <span class="kw-2">&amp;</span>ImageCopyTexture,
     copy_size: <span class="kw-2">&amp;</span>Extent3d,
-    texture_guard: <span class="kw-2">&amp;</span>Storage&lt;Texture&lt;A&gt;, TextureId&gt;,
-) {
+    texture: <span class="kw-2">&amp;</span>Arc&lt;Texture&lt;A&gt;&gt;,
+) -&gt; <span class="prelude-ty">Result</span>&lt;(), ClearError&gt; {
     <span class="kw">let </span>init_action = TextureInitTrackerAction {
-        id: copy_texture.texture,
+        texture: texture.clone(),
         range: TextureInitRange {
             mip_range: copy_texture.mip_level..copy_texture.mip_level + <span class="number">1</span>,
             layer_range: copy_texture.origin.z
@@ -1612,74 +1696,70 @@
     };
 
     <span class="comment">// Register the init action.
-    </span><span class="kw">let </span>immediate_inits = cmd_buf
-        .texture_memory_actions
-        .register_init_action(<span class="kw-2">&amp;</span>{ init_action }, texture_guard);
+    </span><span class="kw">let </span>immediate_inits = texture_memory_actions.register_init_action(<span class="kw-2">&amp;</span>{ init_action });
 
     <span class="comment">// In rare cases we may need to insert an init operation immediately onto the command buffer.
     </span><span class="kw">if </span>!immediate_inits.is_empty() {
-        <span class="kw">let </span>cmd_buf_raw = cmd_buf.encoder.open();
+        <span class="kw">let </span>cmd_buf_raw = encoder.open()<span class="question-mark">?</span>;
         <span class="kw">for </span>init <span class="kw">in </span>immediate_inits {
             clear_texture(
-                texture_guard,
-                Valid(init.texture),
+                <span class="kw-2">&amp;</span>init.texture,
                 TextureInitRange {
                     mip_range: init.mip_level..(init.mip_level + <span class="number">1</span>),
                     layer_range: init.layer..(init.layer + <span class="number">1</span>),
                 },
                 cmd_buf_raw,
-                <span class="kw-2">&amp;mut </span>cmd_buf.trackers.textures,
+                <span class="kw-2">&amp;mut </span>trackers.textures,
                 <span class="kw-2">&amp;</span>device.alignments,
-                <span class="kw-2">&amp;</span>device.zero_buffer,
-            )
-            .unwrap();
+                device.zero_buffer.as_ref().unwrap(),
+            )<span class="question-mark">?</span>;
         }
     }
+
+    <span class="prelude-val">Ok</span>(())
 }
 
-<span class="doccomment">/// Prepare a transfer&#39;s source texture.
+<span class="doccomment">/// Prepare a transfer's source texture.
 ///
 /// Ensure the source texture of a transfer is in the right initialization
 /// state, and record the state for after the transfer operation.
 </span><span class="kw">fn </span>handle_src_texture_init&lt;A: HalApi&gt;(
-    cmd_buf: <span class="kw-2">&amp;mut </span>CommandBuffer&lt;A&gt;,
+    encoder: <span class="kw-2">&amp;mut </span>CommandEncoder&lt;A&gt;,
+    trackers: <span class="kw-2">&amp;mut </span>Tracker&lt;A&gt;,
+    texture_memory_actions: <span class="kw-2">&amp;mut </span>CommandBufferTextureMemoryActions&lt;A&gt;,
     device: <span class="kw-2">&amp;</span>Device&lt;A&gt;,
     source: <span class="kw-2">&amp;</span>ImageCopyTexture,
     copy_size: <span class="kw-2">&amp;</span>Extent3d,
-    texture_guard: <span class="kw-2">&amp;</span>Storage&lt;Texture&lt;A&gt;, TextureId&gt;,
+    texture: <span class="kw-2">&amp;</span>Arc&lt;Texture&lt;A&gt;&gt;,
 ) -&gt; <span class="prelude-ty">Result</span>&lt;(), TransferError&gt; {
-    <span class="kw">let _ </span>= texture_guard
-        .get(source.texture)
-        .map_err(|<span class="kw">_</span>| TransferError::InvalidTexture(source.texture))<span class="question-mark">?</span>;
-
     handle_texture_init(
         MemoryInitKind::NeedsInitializedMemory,
-        cmd_buf,
+        encoder,
+        trackers,
+        texture_memory_actions,
         device,
         source,
         copy_size,
-        texture_guard,
-    );
+        texture,
+    )<span class="question-mark">?</span>;
     <span class="prelude-val">Ok</span>(())
 }
 
-<span class="doccomment">/// Prepare a transfer&#39;s destination texture.
+<span class="doccomment">/// Prepare a transfer's destination texture.
 ///
 /// Ensure the destination texture of a transfer is in the right initialization
 /// state, and record the state for after the transfer operation.
 </span><span class="kw">fn </span>handle_dst_texture_init&lt;A: HalApi&gt;(
-    cmd_buf: <span class="kw-2">&amp;mut </span>CommandBuffer&lt;A&gt;,
+    encoder: <span class="kw-2">&amp;mut </span>CommandEncoder&lt;A&gt;,
+    trackers: <span class="kw-2">&amp;mut </span>Tracker&lt;A&gt;,
+    texture_memory_actions: <span class="kw-2">&amp;mut </span>CommandBufferTextureMemoryActions&lt;A&gt;,
     device: <span class="kw-2">&amp;</span>Device&lt;A&gt;,
     destination: <span class="kw-2">&amp;</span>ImageCopyTexture,
     copy_size: <span class="kw-2">&amp;</span>Extent3d,
-    texture_guard: <span class="kw-2">&amp;</span>Storage&lt;Texture&lt;A&gt;, TextureId&gt;,
+    texture: <span class="kw-2">&amp;</span>Arc&lt;Texture&lt;A&gt;&gt;,
 ) -&gt; <span class="prelude-ty">Result</span>&lt;(), TransferError&gt; {
-    <span class="kw">let </span>texture = texture_guard
-        .get(destination.texture)
-        .map_err(|<span class="kw">_</span>| TransferError::InvalidTexture(destination.texture))<span class="question-mark">?</span>;
-
-    <span class="comment">// Attention: If we don&#39;t write full texture subresources, we need to a full
-    // clear first since we don&#39;t track subrects. This means that in rare cases
+    <span class="comment">// Attention: If we don't write full texture subresources, we need to a full
+    // clear first since we don't track subrects. This means that in rare cases
     // even a *destination* texture of a transfer may need an immediate texture
     // init.
     </span><span class="kw">let </span>dst_init_kind = <span class="kw">if </span>has_copy_partial_init_tracker_coverage(
@@ -1694,12 +1774,14 @@
 
     handle_texture_init(
         dst_init_kind,
-        cmd_buf,
+        encoder,
+        trackers,
+        texture_memory_actions,
         device,
         destination,
         copy_size,
-        texture_guard,
-    );
+        texture,
+    )<span class="question-mark">?</span>;
     <span class="prelude-val">Ok</span>(())
 }
 
@@ -1713,23 +1795,27 @@
         destination_offset: BufferAddress,
         size: BufferAddress,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;(), CopyError&gt; {
-        <span class="macro">profiling::scope!</span>(<span class="string">&quot;CommandEncoder::copy_buffer_to_buffer&quot;</span>);
+        <span class="macro">profiling::scope!</span>(<span class="string">"CommandEncoder::copy_buffer_to_buffer"</span>);
+        <span class="macro">api_log!</span>(
+            <span class="string">"CommandEncoder::copy_buffer_to_buffer {source:?} -&gt; {destination:?} {size:?}bytes"
+        </span>);
 
         <span class="kw">if </span>source == destination {
             <span class="kw">return </span><span class="prelude-val">Err</span>(TransferError::SameSourceDestinationBuffer.into());
         }
         <span class="kw">let </span>hub = A::hub(<span class="self">self</span>);
-        <span class="kw">let </span><span class="kw-2">mut </span>token = Token::root();
 
-        <span class="kw">let </span>(device_guard, <span class="kw-2">mut </span>token) = hub.devices.read(<span class="kw-2">&amp;mut </span>token);
-        <span class="kw">let </span>(<span class="kw-2">mut </span>cmd_buf_guard, <span class="kw-2">mut </span>token) = hub.command_buffers.write(<span class="kw-2">&amp;mut </span>token);
-        <span class="kw">let </span>cmd_buf = CommandBuffer::get_encoder_mut(<span class="kw-2">&amp;mut *</span>cmd_buf_guard, command_encoder_id)<span class="question-mark">?</span>;
-        <span class="kw">let </span>(buffer_guard, <span class="kw">_</span>) = hub.buffers.read(<span class="kw-2">&amp;mut </span>token);
+        <span class="kw">let </span>cmd_buf = CommandBuffer::get_encoder(hub, command_encoder_id)<span class="question-mark">?</span>;
+        <span class="kw">let </span><span class="kw-2">mut </span>cmd_buf_data = cmd_buf.data.lock();
+        <span class="kw">let </span>cmd_buf_data = cmd_buf_data.as_mut().unwrap();
 
-        <span class="kw">let </span>device = <span class="kw-2">&amp;</span>device_guard[cmd_buf.device_id.value];
+        <span class="kw">let </span>device = <span class="kw-2">&amp;</span>cmd_buf.device;
+        <span class="kw">if </span>!device.is_valid() {
+            <span class="kw">return </span><span class="prelude-val">Err</span>(TransferError::InvalidDevice(cmd_buf.device.as_info().id()).into());
+        }
 
-        <span class="attr">#[cfg(feature = <span class="string">&quot;trace&quot;</span>)]
-        </span><span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">ref mut </span>list) = cmd_buf.commands {
+        <span class="attr">#[cfg(feature = <span class="string">"trace"</span>)]
+        </span><span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">ref mut </span>list) = cmd_buf_data.commands {
             list.push(TraceCommand::CopyBufferToBuffer {
                 src: source,
                 src_offset: source_offset,
@@ -1739,34 +1825,48 @@
             });
         }
 
-        <span class="kw">let </span>(src_buffer, src_pending) = cmd_buf
-            .trackers
-            .buffers
-            .set_single(<span class="kw-2">&amp;*</span>buffer_guard, source, hal::BufferUses::COPY_SRC)
-            .ok_or(TransferError::InvalidBuffer(source))<span class="question-mark">?</span>;
+        <span class="kw">let </span>snatch_guard = device.snatchable_lock.read();
+
+        <span class="kw">let </span>(src_buffer, src_pending) = {
+            <span class="kw">let </span>buffer_guard = hub.buffers.read();
+            <span class="kw">let </span>src_buffer = buffer_guard
+                .get(source)
+                .map_err(|<span class="kw">_</span>| TransferError::InvalidBuffer(source))<span class="question-mark">?</span>;
+            cmd_buf_data
+                .trackers
+                .buffers
+                .set_single(src_buffer, hal::BufferUses::COPY_SRC)
+                .ok_or(TransferError::InvalidBuffer(source))<span class="question-mark">?
+        </span>};
         <span class="kw">let </span>src_raw = src_buffer
             .raw
-            .as_ref()
+            .get(<span class="kw-2">&amp;</span>snatch_guard)
             .ok_or(TransferError::InvalidBuffer(source))<span class="question-mark">?</span>;
         <span class="kw">if </span>!src_buffer.usage.contains(BufferUsages::COPY_SRC) {
             <span class="kw">return </span><span class="prelude-val">Err</span>(TransferError::MissingCopySrcUsageFlag.into());
         }
         <span class="comment">// expecting only a single barrier
-        </span><span class="kw">let </span>src_barrier = src_pending.map(|pending| pending.into_hal(src_buffer));
+        </span><span class="kw">let </span>src_barrier = src_pending.map(|pending| pending.into_hal(<span class="kw-2">&amp;</span>src_buffer, <span class="kw-2">&amp;</span>snatch_guard));
 
-        <span class="kw">let </span>(dst_buffer, dst_pending) = cmd_buf
-            .trackers
-            .buffers
-            .set_single(<span class="kw-2">&amp;*</span>buffer_guard, destination, hal::BufferUses::COPY_DST)
-            .ok_or(TransferError::InvalidBuffer(destination))<span class="question-mark">?</span>;
+        <span class="kw">let </span>(dst_buffer, dst_pending) = {
+            <span class="kw">let </span>buffer_guard = hub.buffers.read();
+            <span class="kw">let </span>dst_buffer = buffer_guard
+                .get(destination)
+                .map_err(|<span class="kw">_</span>| TransferError::InvalidBuffer(destination))<span class="question-mark">?</span>;
+            cmd_buf_data
+                .trackers
+                .buffers
+                .set_single(dst_buffer, hal::BufferUses::COPY_DST)
+                .ok_or(TransferError::InvalidBuffer(destination))<span class="question-mark">?
+        </span>};
         <span class="kw">let </span>dst_raw = dst_buffer
             .raw
-            .as_ref()
+            .get(<span class="kw-2">&amp;</span>snatch_guard)
             .ok_or(TransferError::InvalidBuffer(destination))<span class="question-mark">?</span>;
         <span class="kw">if </span>!dst_buffer.usage.contains(BufferUsages::COPY_DST) {
             <span class="kw">return </span><span class="prelude-val">Err</span>(TransferError::MissingCopyDstUsageFlag(<span class="prelude-val">Some</span>(destination), <span class="prelude-val">None</span>).into());
         }
-        <span class="kw">let </span>dst_barrier = dst_pending.map(|pending| pending.into_hal(dst_buffer));
+        <span class="kw">let </span>dst_barrier = dst_pending.map(|pending| pending.into_hal(<span class="kw-2">&amp;</span>dst_buffer, <span class="kw-2">&amp;</span>snatch_guard));
 
         <span class="kw">if </span>size % wgt::COPY_BUFFER_ALIGNMENT != <span class="number">0 </span>{
             <span class="kw">return </span><span class="prelude-val">Err</span>(TransferError::UnalignedCopySize(size).into());
@@ -1820,32 +1920,32 @@
         }
 
         <span class="kw">if </span>size == <span class="number">0 </span>{
-            <span class="macro">log::trace!</span>(<span class="string">&quot;Ignoring copy_buffer_to_buffer of size 0&quot;</span>);
+            <span class="macro">log::trace!</span>(<span class="string">"Ignoring copy_buffer_to_buffer of size 0"</span>);
             <span class="kw">return </span><span class="prelude-val">Ok</span>(());
         }
 
         <span class="comment">// Make sure source is initialized memory and mark dest as initialized.
-        </span>cmd_buf
-            .buffer_memory_init_actions
-            .extend(dst_buffer.initialization_status.create_action(
-                destination,
+        </span>cmd_buf_data.buffer_memory_init_actions.extend(
+            dst_buffer.initialization_status.read().create_action(
+                <span class="kw-2">&amp;</span>dst_buffer,
                 destination_offset..(destination_offset + size),
                 MemoryInitKind::ImplicitlyInitialized,
-            ));
-        cmd_buf
-            .buffer_memory_init_actions
-            .extend(src_buffer.initialization_status.create_action(
-                source,
+            ),
+        );
+        cmd_buf_data.buffer_memory_init_actions.extend(
+            src_buffer.initialization_status.read().create_action(
+                <span class="kw-2">&amp;</span>src_buffer,
                 source_offset..(source_offset + size),
                 MemoryInitKind::NeedsInitializedMemory,
-            ));
+            ),
+        );
 
         <span class="kw">let </span>region = hal::BufferCopy {
             src_offset: source_offset,
             dst_offset: destination_offset,
             size: wgt::BufferSize::new(size).unwrap(),
         };
-        <span class="kw">let </span>cmd_buf_raw = cmd_buf.encoder.open();
+        <span class="kw">let </span>cmd_buf_raw = cmd_buf_data.encoder.open()<span class="question-mark">?</span>;
         <span class="kw">unsafe </span>{
             cmd_buf_raw.transition_buffers(src_barrier.into_iter().chain(dst_barrier));
             cmd_buf_raw.copy_buffer_to_buffer(src_raw, dst_raw, iter::once(region));
@@ -1860,21 +1960,26 @@
         destination: <span class="kw-2">&amp;</span>ImageCopyTexture,
         copy_size: <span class="kw-2">&amp;</span>Extent3d,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;(), CopyError&gt; {
-        <span class="macro">profiling::scope!</span>(<span class="string">&quot;CommandEncoder::copy_buffer_to_texture&quot;</span>);
+        <span class="macro">profiling::scope!</span>(<span class="string">"CommandEncoder::copy_buffer_to_texture"</span>);
+        <span class="macro">api_log!</span>(
+            <span class="string">"CommandEncoder::copy_buffer_to_texture {:?} -&gt; {:?} {copy_size:?}"</span>,
+            source.buffer,
+            destination.texture
+        );
 
         <span class="kw">let </span>hub = A::hub(<span class="self">self</span>);
-        <span class="kw">let </span><span class="kw-2">mut </span>token = Token::root();
 
-        <span class="kw">let </span>(device_guard, <span class="kw-2">mut </span>token) = hub.devices.read(<span class="kw-2">&amp;mut </span>token);
-        <span class="kw">let </span>(<span class="kw-2">mut </span>cmd_buf_guard, <span class="kw-2">mut </span>token) = hub.command_buffers.write(<span class="kw-2">&amp;mut </span>token);
-        <span class="kw">let </span>cmd_buf = CommandBuffer::get_encoder_mut(<span class="kw-2">&amp;mut *</span>cmd_buf_guard, command_encoder_id)<span class="question-mark">?</span>;
-        <span class="kw">let </span>(buffer_guard, <span class="kw-2">mut </span>token) = hub.buffers.read(<span class="kw-2">&amp;mut </span>token);
-        <span class="kw">let </span>(texture_guard, <span class="kw">_</span>) = hub.textures.read(<span class="kw-2">&amp;mut </span>token);
+        <span class="kw">let </span>cmd_buf = CommandBuffer::get_encoder(hub, command_encoder_id)<span class="question-mark">?</span>;
+        <span class="kw">let </span>device = <span class="kw-2">&amp;</span>cmd_buf.device;
+        <span class="kw">if </span>!device.is_valid() {
+            <span class="kw">return </span><span class="prelude-val">Err</span>(TransferError::InvalidDevice(cmd_buf.device.as_info().id()).into());
+        }
 
-        <span class="kw">let </span>device = <span class="kw-2">&amp;</span>device_guard[cmd_buf.device_id.value];
+        <span class="kw">let </span><span class="kw-2">mut </span>cmd_buf_data = cmd_buf.data.lock();
+        <span class="kw">let </span>cmd_buf_data = cmd_buf_data.as_mut().unwrap();
 
-        <span class="attr">#[cfg(feature = <span class="string">&quot;trace&quot;</span>)]
-        </span><span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">ref mut </span>list) = cmd_buf.commands {
+        <span class="attr">#[cfg(feature = <span class="string">"trace"</span>)]
+        </span><span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">ref mut </span>list) = cmd_buf_data.commands {
             list.push(TraceCommand::CopyBufferToTexture {
                 src: <span class="kw-2">*</span>source,
                 dst: <span class="kw-2">*</span>destination,
@@ -1882,12 +1987,18 @@
             });
         }
 
+        <span class="kw">let </span>encoder = <span class="kw-2">&amp;mut </span>cmd_buf_data.encoder;
+        <span class="kw">let </span>tracker = <span class="kw-2">&amp;mut </span>cmd_buf_data.trackers;
+        <span class="kw">let </span>buffer_memory_init_actions = <span class="kw-2">&amp;mut </span>cmd_buf_data.buffer_memory_init_actions;
+        <span class="kw">let </span>texture_memory_actions = <span class="kw-2">&amp;mut </span>cmd_buf_data.texture_memory_actions;
+
         <span class="kw">if </span>copy_size.width == <span class="number">0 </span>|| copy_size.height == <span class="number">0 </span>|| copy_size.depth_or_array_layers == <span class="number">0 </span>{
-            <span class="macro">log::trace!</span>(<span class="string">&quot;Ignoring copy_buffer_to_texture of size 0&quot;</span>);
+            <span class="macro">log::trace!</span>(<span class="string">"Ignoring copy_buffer_to_texture of size 0"</span>);
             <span class="kw">return </span><span class="prelude-val">Ok</span>(());
         }
 
-        <span class="kw">let </span>dst_texture = texture_guard
+        <span class="kw">let </span>dst_texture = hub
+            .textures
             .get(destination.texture)
             .map_err(|<span class="kw">_</span>| TransferError::InvalidTexture(destination.texture))<span class="question-mark">?</span>;
 
@@ -1898,47 +2009,55 @@
             copy_size,
         )<span class="question-mark">?</span>;
 
-        <span class="kw">let </span>(dst_range, dst_base) = extract_texture_selector(destination, copy_size, dst_texture)<span class="question-mark">?</span>;
+        <span class="kw">let </span>(dst_range, dst_base) = extract_texture_selector(destination, copy_size, <span class="kw-2">&amp;</span>dst_texture)<span class="question-mark">?</span>;
 
         <span class="comment">// Handle texture init *before* dealing with barrier transitions so we
-        // have an easier time inserting &quot;immediate-inits&quot; that may be required
+        // have an easier time inserting "immediate-inits" that may be required
         // by prior discards in rare cases.
-        </span>handle_dst_texture_init(cmd_buf, device, destination, copy_size, <span class="kw-2">&amp;</span>texture_guard)<span class="question-mark">?</span>;
+        </span>handle_dst_texture_init(
+            encoder,
+            tracker,
+            texture_memory_actions,
+            device,
+            destination,
+            copy_size,
+            <span class="kw-2">&amp;</span>dst_texture,
+        )<span class="question-mark">?</span>;
 
-        <span class="kw">let </span>(src_buffer, src_pending) = cmd_buf
-            .trackers
-            .buffers
-            .set_single(<span class="kw-2">&amp;*</span>buffer_guard, source.buffer, hal::BufferUses::COPY_SRC)
-            .ok_or(TransferError::InvalidBuffer(source.buffer))<span class="question-mark">?</span>;
+        <span class="kw">let </span>snatch_guard = device.snatchable_lock.read();
+
+        <span class="kw">let </span>(src_buffer, src_pending) = {
+            <span class="kw">let </span>buffer_guard = hub.buffers.read();
+            <span class="kw">let </span>src_buffer = buffer_guard
+                .get(source.buffer)
+                .map_err(|<span class="kw">_</span>| TransferError::InvalidBuffer(source.buffer))<span class="question-mark">?</span>;
+            tracker
+                .buffers
+                .set_single(src_buffer, hal::BufferUses::COPY_SRC)
+                .ok_or(TransferError::InvalidBuffer(source.buffer))<span class="question-mark">?
+        </span>};
         <span class="kw">let </span>src_raw = src_buffer
             .raw
-            .as_ref()
+            .get(<span class="kw-2">&amp;</span>snatch_guard)
             .ok_or(TransferError::InvalidBuffer(source.buffer))<span class="question-mark">?</span>;
         <span class="kw">if </span>!src_buffer.usage.contains(BufferUsages::COPY_SRC) {
             <span class="kw">return </span><span class="prelude-val">Err</span>(TransferError::MissingCopySrcUsageFlag.into());
         }
-        <span class="kw">let </span>src_barrier = src_pending.map(|pending| pending.into_hal(src_buffer));
+        <span class="kw">let </span>src_barrier = src_pending.map(|pending| pending.into_hal(<span class="kw-2">&amp;</span>src_buffer, <span class="kw-2">&amp;</span>snatch_guard));
 
-        <span class="kw">let </span>dst_pending = cmd_buf
-            .trackers
+        <span class="kw">let </span>dst_pending = tracker
             .textures
-            .set_single(
-                dst_texture,
-                destination.texture,
-                dst_range,
-                hal::TextureUses::COPY_DST,
-            )
+            .set_single(<span class="kw-2">&amp;</span>dst_texture, dst_range, hal::TextureUses::COPY_DST)
             .ok_or(TransferError::InvalidTexture(destination.texture))<span class="question-mark">?</span>;
         <span class="kw">let </span>dst_raw = dst_texture
-            .inner
-            .as_raw()
+            .raw(<span class="kw-2">&amp;</span>snatch_guard)
             .ok_or(TransferError::InvalidTexture(destination.texture))<span class="question-mark">?</span>;
         <span class="kw">if </span>!dst_texture.desc.usage.contains(TextureUsages::COPY_DST) {
             <span class="kw">return </span><span class="prelude-val">Err</span>(
                 TransferError::MissingCopyDstUsageFlag(<span class="prelude-val">None</span>, <span class="prelude-val">Some</span>(destination.texture)).into(),
             );
         }
-        <span class="kw">let </span>dst_barrier = dst_pending.map(|pending| pending.into_hal(dst_texture));
+        <span class="kw">let </span>dst_barrier = dst_pending.map(|pending| pending.into_hal(dst_raw));
 
         <span class="kw">if </span>!dst_base.aspect.is_one() {
             <span class="kw">return </span><span class="prelude-val">Err</span>(TransferError::CopyAspectNotOne.into());
@@ -1968,13 +2087,11 @@
                 .map_err(TransferError::from)<span class="question-mark">?</span>;
         }
 
-        cmd_buf
-            .buffer_memory_init_actions
-            .extend(src_buffer.initialization_status.create_action(
-                source.buffer,
-                source.layout.offset..(source.layout.offset + required_buffer_bytes_in_copy),
-                MemoryInitKind::NeedsInitializedMemory,
-            ));
+        buffer_memory_init_actions.extend(src_buffer.initialization_status.read().create_action(
+            <span class="kw-2">&amp;</span>src_buffer,
+            source.layout.offset..(source.layout.offset + required_buffer_bytes_in_copy),
+            MemoryInitKind::NeedsInitializedMemory,
+        ));
 
         <span class="kw">let </span>regions = (<span class="number">0</span>..array_layer_count).map(|rel_array_layer| {
             <span class="kw">let </span><span class="kw-2">mut </span>texture_base = dst_base.clone();
@@ -1988,7 +2105,7 @@
             }
         });
 
-        <span class="kw">let </span>cmd_buf_raw = cmd_buf.encoder.open();
+        <span class="kw">let </span>cmd_buf_raw = encoder.open()<span class="question-mark">?</span>;
         <span class="kw">unsafe </span>{
             cmd_buf_raw.transition_textures(dst_barrier.into_iter());
             cmd_buf_raw.transition_buffers(src_barrier.into_iter());
@@ -2004,60 +2121,73 @@
         destination: <span class="kw-2">&amp;</span>ImageCopyBuffer,
         copy_size: <span class="kw-2">&amp;</span>Extent3d,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;(), CopyError&gt; {
-        <span class="macro">profiling::scope!</span>(<span class="string">&quot;CommandEncoder::copy_texture_to_buffer&quot;</span>);
+        <span class="macro">profiling::scope!</span>(<span class="string">"CommandEncoder::copy_texture_to_buffer"</span>);
+        <span class="macro">api_log!</span>(
+            <span class="string">"CommandEncoder::copy_texture_to_buffer {:?} -&gt; {:?} {copy_size:?}"</span>,
+            source.texture,
+            destination.buffer
+        );
 
         <span class="kw">let </span>hub = A::hub(<span class="self">self</span>);
-        <span class="kw">let </span><span class="kw-2">mut </span>token = Token::root();
 
-        <span class="kw">let </span>(device_guard, <span class="kw-2">mut </span>token) = hub.devices.read(<span class="kw-2">&amp;mut </span>token);
-        <span class="kw">let </span>(<span class="kw-2">mut </span>cmd_buf_guard, <span class="kw-2">mut </span>token) = hub.command_buffers.write(<span class="kw-2">&amp;mut </span>token);
-        <span class="kw">let </span>cmd_buf = CommandBuffer::get_encoder_mut(<span class="kw-2">&amp;mut *</span>cmd_buf_guard, command_encoder_id)<span class="question-mark">?</span>;
-        <span class="kw">let </span>(buffer_guard, <span class="kw-2">mut </span>token) = hub.buffers.read(<span class="kw-2">&amp;mut </span>token);
-        <span class="kw">let </span>(texture_guard, <span class="kw">_</span>) = hub.textures.read(<span class="kw-2">&amp;mut </span>token);
+        <span class="kw">let </span>cmd_buf = CommandBuffer::get_encoder(hub, command_encoder_id)<span class="question-mark">?</span>;
+        <span class="kw">let </span>device = <span class="kw-2">&amp;</span>cmd_buf.device;
+        <span class="kw">if </span>!device.is_valid() {
+            <span class="kw">return </span><span class="prelude-val">Err</span>(TransferError::InvalidDevice(cmd_buf.device.as_info().id()).into());
+        }
 
-        <span class="kw">let </span>device = <span class="kw-2">&amp;</span>device_guard[cmd_buf.device_id.value];
+        <span class="kw">let </span><span class="kw-2">mut </span>cmd_buf_data = cmd_buf.data.lock();
+        <span class="kw">let </span>cmd_buf_data = cmd_buf_data.as_mut().unwrap();
 
-        <span class="attr">#[cfg(feature = <span class="string">&quot;trace&quot;</span>)]
-        </span><span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">ref mut </span>list) = cmd_buf.commands {
+        <span class="attr">#[cfg(feature = <span class="string">"trace"</span>)]
+        </span><span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">ref mut </span>list) = cmd_buf_data.commands {
             list.push(TraceCommand::CopyTextureToBuffer {
                 src: <span class="kw-2">*</span>source,
                 dst: <span class="kw-2">*</span>destination,
                 size: <span class="kw-2">*</span>copy_size,
             });
         }
+        <span class="kw">let </span>encoder = <span class="kw-2">&amp;mut </span>cmd_buf_data.encoder;
+        <span class="kw">let </span>tracker = <span class="kw-2">&amp;mut </span>cmd_buf_data.trackers;
+        <span class="kw">let </span>buffer_memory_init_actions = <span class="kw-2">&amp;mut </span>cmd_buf_data.buffer_memory_init_actions;
+        <span class="kw">let </span>texture_memory_actions = <span class="kw-2">&amp;mut </span>cmd_buf_data.texture_memory_actions;
 
         <span class="kw">if </span>copy_size.width == <span class="number">0 </span>|| copy_size.height == <span class="number">0 </span>|| copy_size.depth_or_array_layers == <span class="number">0 </span>{
-            <span class="macro">log::trace!</span>(<span class="string">&quot;Ignoring copy_texture_to_buffer of size 0&quot;</span>);
+            <span class="macro">log::trace!</span>(<span class="string">"Ignoring copy_texture_to_buffer of size 0"</span>);
             <span class="kw">return </span><span class="prelude-val">Ok</span>(());
         }
 
-        <span class="kw">let </span>src_texture = texture_guard
+        <span class="kw">let </span>src_texture = hub
+            .textures
             .get(source.texture)
             .map_err(|<span class="kw">_</span>| TransferError::InvalidTexture(source.texture))<span class="question-mark">?</span>;
 
         <span class="kw">let </span>(hal_copy_size, array_layer_count) =
             validate_texture_copy_range(source, <span class="kw-2">&amp;</span>src_texture.desc, CopySide::Source, copy_size)<span class="question-mark">?</span>;
 
-        <span class="kw">let </span>(src_range, src_base) = extract_texture_selector(source, copy_size, src_texture)<span class="question-mark">?</span>;
+        <span class="kw">let </span>(src_range, src_base) = extract_texture_selector(source, copy_size, <span class="kw-2">&amp;</span>src_texture)<span class="question-mark">?</span>;
 
         <span class="comment">// Handle texture init *before* dealing with barrier transitions so we
-        // have an easier time inserting &quot;immediate-inits&quot; that may be required
+        // have an easier time inserting "immediate-inits" that may be required
         // by prior discards in rare cases.
-        </span>handle_src_texture_init(cmd_buf, device, source, copy_size, <span class="kw-2">&amp;</span>texture_guard)<span class="question-mark">?</span>;
+        </span>handle_src_texture_init(
+            encoder,
+            tracker,
+            texture_memory_actions,
+            device,
+            source,
+            copy_size,
+            <span class="kw-2">&amp;</span>src_texture,
+        )<span class="question-mark">?</span>;
 
-        <span class="kw">let </span>src_pending = cmd_buf
-            .trackers
+        <span class="kw">let </span>snatch_guard = device.snatchable_lock.read();
+
+        <span class="kw">let </span>src_pending = tracker
             .textures
-            .set_single(
-                src_texture,
-                source.texture,
-                src_range,
-                hal::TextureUses::COPY_SRC,
-            )
+            .set_single(<span class="kw-2">&amp;</span>src_texture, src_range, hal::TextureUses::COPY_SRC)
             .ok_or(TransferError::InvalidTexture(source.texture))<span class="question-mark">?</span>;
         <span class="kw">let </span>src_raw = src_texture
-            .inner
-            .as_raw()
+            .raw(<span class="kw-2">&amp;</span>snatch_guard)
             .ok_or(TransferError::InvalidTexture(source.texture))<span class="question-mark">?</span>;
         <span class="kw">if </span>!src_texture.desc.usage.contains(TextureUsages::COPY_SRC) {
             <span class="kw">return </span><span class="prelude-val">Err</span>(TransferError::MissingCopySrcUsageFlag.into());
@@ -2075,27 +2205,28 @@
             }
             .into());
         }
-        <span class="kw">let </span>src_barrier = src_pending.map(|pending| pending.into_hal(src_texture));
+        <span class="kw">let </span>src_barrier = src_pending.map(|pending| pending.into_hal(src_raw));
 
-        <span class="kw">let </span>(dst_buffer, dst_pending) = cmd_buf
-            .trackers
-            .buffers
-            .set_single(
-                <span class="kw-2">&amp;*</span>buffer_guard,
-                destination.buffer,
-                hal::BufferUses::COPY_DST,
-            )
-            .ok_or(TransferError::InvalidBuffer(destination.buffer))<span class="question-mark">?</span>;
+        <span class="kw">let </span>(dst_buffer, dst_pending) = {
+            <span class="kw">let </span>buffer_guard = hub.buffers.read();
+            <span class="kw">let </span>dst_buffer = buffer_guard
+                .get(destination.buffer)
+                .map_err(|<span class="kw">_</span>| TransferError::InvalidBuffer(destination.buffer))<span class="question-mark">?</span>;
+            tracker
+                .buffers
+                .set_single(dst_buffer, hal::BufferUses::COPY_DST)
+                .ok_or(TransferError::InvalidBuffer(destination.buffer))<span class="question-mark">?
+        </span>};
         <span class="kw">let </span>dst_raw = dst_buffer
             .raw
-            .as_ref()
+            .get(<span class="kw-2">&amp;</span>snatch_guard)
             .ok_or(TransferError::InvalidBuffer(destination.buffer))<span class="question-mark">?</span>;
         <span class="kw">if </span>!dst_buffer.usage.contains(BufferUsages::COPY_DST) {
             <span class="kw">return </span><span class="prelude-val">Err</span>(
                 TransferError::MissingCopyDstUsageFlag(<span class="prelude-val">Some</span>(destination.buffer), <span class="prelude-val">None</span>).into(),
             );
         }
-        <span class="kw">let </span>dst_barrier = dst_pending.map(|pending| pending.into_hal(dst_buffer));
+        <span class="kw">let </span>dst_barrier = dst_pending.map(|pending| pending.into_hal(<span class="kw-2">&amp;</span>dst_buffer, <span class="kw-2">&amp;</span>snatch_guard));
 
         <span class="kw">if </span>!src_base.aspect.is_one() {
             <span class="kw">return </span><span class="prelude-val">Err</span>(TransferError::CopyAspectNotOne.into());
@@ -2125,14 +2256,11 @@
                 .map_err(TransferError::from)<span class="question-mark">?</span>;
         }
 
-        cmd_buf
-            .buffer_memory_init_actions
-            .extend(dst_buffer.initialization_status.create_action(
-                destination.buffer,
-                destination.layout.offset
-                    ..(destination.layout.offset + required_buffer_bytes_in_copy),
-                MemoryInitKind::ImplicitlyInitialized,
-            ));
+        buffer_memory_init_actions.extend(dst_buffer.initialization_status.read().create_action(
+            <span class="kw-2">&amp;</span>dst_buffer,
+            destination.layout.offset..(destination.layout.offset + required_buffer_bytes_in_copy),
+            MemoryInitKind::ImplicitlyInitialized,
+        ));
 
         <span class="kw">let </span>regions = (<span class="number">0</span>..array_layer_count).map(|rel_array_layer| {
             <span class="kw">let </span><span class="kw-2">mut </span>texture_base = src_base.clone();
@@ -2145,7 +2273,7 @@
                 size: hal_copy_size,
             }
         });
-        <span class="kw">let </span>cmd_buf_raw = cmd_buf.encoder.open();
+        <span class="kw">let </span>cmd_buf_raw = encoder.open()<span class="question-mark">?</span>;
         <span class="kw">unsafe </span>{
             cmd_buf_raw.transition_buffers(dst_barrier.into_iter());
             cmd_buf_raw.transition_textures(src_barrier.into_iter());
@@ -2166,37 +2294,49 @@
         destination: <span class="kw-2">&amp;</span>ImageCopyTexture,
         copy_size: <span class="kw-2">&amp;</span>Extent3d,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;(), CopyError&gt; {
-        <span class="macro">profiling::scope!</span>(<span class="string">&quot;CommandEncoder::copy_texture_to_texture&quot;</span>);
+        <span class="macro">profiling::scope!</span>(<span class="string">"CommandEncoder::copy_texture_to_texture"</span>);
+        <span class="macro">api_log!</span>(
+            <span class="string">"CommandEncoder::copy_texture_to_texture {:?} -&gt; {:?} {copy_size:?}"</span>,
+            source.texture,
+            destination.texture
+        );
 
         <span class="kw">let </span>hub = A::hub(<span class="self">self</span>);
-        <span class="kw">let </span><span class="kw-2">mut </span>token = Token::root();
 
-        <span class="kw">let </span>(device_guard, <span class="kw-2">mut </span>token) = hub.devices.read(<span class="kw-2">&amp;mut </span>token);
-        <span class="kw">let </span>(<span class="kw-2">mut </span>cmd_buf_guard, <span class="kw-2">mut </span>token) = hub.command_buffers.write(<span class="kw-2">&amp;mut </span>token);
-        <span class="kw">let </span>cmd_buf = CommandBuffer::get_encoder_mut(<span class="kw-2">&amp;mut *</span>cmd_buf_guard, command_encoder_id)<span class="question-mark">?</span>;
-        <span class="kw">let </span>(<span class="kw">_</span>, <span class="kw-2">mut </span>token) = hub.buffers.read(<span class="kw-2">&amp;mut </span>token); <span class="comment">// skip token
-        </span><span class="kw">let </span>(texture_guard, <span class="kw">_</span>) = hub.textures.read(<span class="kw-2">&amp;mut </span>token);
+        <span class="kw">let </span>cmd_buf = CommandBuffer::get_encoder(hub, command_encoder_id)<span class="question-mark">?</span>;
+        <span class="kw">let </span>device = <span class="kw-2">&amp;</span>cmd_buf.device;
+        <span class="kw">if </span>!device.is_valid() {
+            <span class="kw">return </span><span class="prelude-val">Err</span>(TransferError::InvalidDevice(cmd_buf.device.as_info().id()).into());
+        }
 
-        <span class="kw">let </span>device = <span class="kw-2">&amp;</span>device_guard[cmd_buf.device_id.value];
+        <span class="kw">let </span>snatch_guard = device.snatchable_lock.read();
 
-        <span class="attr">#[cfg(feature = <span class="string">&quot;trace&quot;</span>)]
-        </span><span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">ref mut </span>list) = cmd_buf.commands {
+        <span class="kw">let </span><span class="kw-2">mut </span>cmd_buf_data = cmd_buf.data.lock();
+        <span class="kw">let </span>cmd_buf_data = cmd_buf_data.as_mut().unwrap();
+
+        <span class="attr">#[cfg(feature = <span class="string">"trace"</span>)]
+        </span><span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">ref mut </span>list) = cmd_buf_data.commands {
             list.push(TraceCommand::CopyTextureToTexture {
                 src: <span class="kw-2">*</span>source,
                 dst: <span class="kw-2">*</span>destination,
                 size: <span class="kw-2">*</span>copy_size,
             });
         }
+        <span class="kw">let </span>encoder = <span class="kw-2">&amp;mut </span>cmd_buf_data.encoder;
+        <span class="kw">let </span>tracker = <span class="kw-2">&amp;mut </span>cmd_buf_data.trackers;
+        <span class="kw">let </span>texture_memory_actions = <span class="kw-2">&amp;mut </span>cmd_buf_data.texture_memory_actions;
 
         <span class="kw">if </span>copy_size.width == <span class="number">0 </span>|| copy_size.height == <span class="number">0 </span>|| copy_size.depth_or_array_layers == <span class="number">0 </span>{
-            <span class="macro">log::trace!</span>(<span class="string">&quot;Ignoring copy_texture_to_texture of size 0&quot;</span>);
+            <span class="macro">log::trace!</span>(<span class="string">"Ignoring copy_texture_to_texture of size 0"</span>);
             <span class="kw">return </span><span class="prelude-val">Ok</span>(());
         }
 
-        <span class="kw">let </span>src_texture = texture_guard
+        <span class="kw">let </span>src_texture = hub
+            .textures
             .get(source.texture)
             .map_err(|<span class="kw">_</span>| TransferError::InvalidTexture(source.texture))<span class="question-mark">?</span>;
-        <span class="kw">let </span>dst_texture = texture_guard
+        <span class="kw">let </span>dst_texture = hub
+            .textures
             .get(destination.texture)
             .map_err(|<span class="kw">_</span>| TransferError::InvalidTexture(source.texture))<span class="question-mark">?</span>;
 
@@ -2221,9 +2361,9 @@
             copy_size,
         )<span class="question-mark">?</span>;
 
-        <span class="kw">let </span>(src_range, src_tex_base) = extract_texture_selector(source, copy_size, src_texture)<span class="question-mark">?</span>;
+        <span class="kw">let </span>(src_range, src_tex_base) = extract_texture_selector(source, copy_size, <span class="kw-2">&amp;</span>src_texture)<span class="question-mark">?</span>;
         <span class="kw">let </span>(dst_range, dst_tex_base) =
-            extract_texture_selector(destination, copy_size, dst_texture)<span class="question-mark">?</span>;
+            extract_texture_selector(destination, copy_size, <span class="kw-2">&amp;</span>dst_texture)<span class="question-mark">?</span>;
         <span class="kw">let </span>src_texture_aspects = hal::FormatAspects::from(src_texture.desc.format);
         <span class="kw">let </span>dst_texture_aspects = hal::FormatAspects::from(dst_texture.desc.format);
         <span class="kw">if </span>src_tex_base.aspect != src_texture_aspects {
@@ -2234,48 +2374,52 @@
         }
 
         <span class="comment">// Handle texture init *before* dealing with barrier transitions so we
-        // have an easier time inserting &quot;immediate-inits&quot; that may be required
+        // have an easier time inserting "immediate-inits" that may be required
         // by prior discards in rare cases.
-        </span>handle_src_texture_init(cmd_buf, device, source, copy_size, <span class="kw-2">&amp;</span>texture_guard)<span class="question-mark">?</span>;
-        handle_dst_texture_init(cmd_buf, device, destination, copy_size, <span class="kw-2">&amp;</span>texture_guard)<span class="question-mark">?</span>;
+        </span>handle_src_texture_init(
+            encoder,
+            tracker,
+            texture_memory_actions,
+            device,
+            source,
+            copy_size,
+            <span class="kw-2">&amp;</span>src_texture,
+        )<span class="question-mark">?</span>;
+        handle_dst_texture_init(
+            encoder,
+            tracker,
+            texture_memory_actions,
+            device,
+            destination,
+            copy_size,
+            <span class="kw-2">&amp;</span>dst_texture,
+        )<span class="question-mark">?</span>;
 
-        <span class="kw">let </span>src_pending = cmd_buf
+        <span class="kw">let </span>src_pending = cmd_buf_data
             .trackers
             .textures
-            .set_single(
-                src_texture,
-                source.texture,
-                src_range,
-                hal::TextureUses::COPY_SRC,
-            )
+            .set_single(<span class="kw-2">&amp;</span>src_texture, src_range, hal::TextureUses::COPY_SRC)
             .ok_or(TransferError::InvalidTexture(source.texture))<span class="question-mark">?</span>;
         <span class="kw">let </span>src_raw = src_texture
-            .inner
-            .as_raw()
+            .raw(<span class="kw-2">&amp;</span>snatch_guard)
             .ok_or(TransferError::InvalidTexture(source.texture))<span class="question-mark">?</span>;
         <span class="kw">if </span>!src_texture.desc.usage.contains(TextureUsages::COPY_SRC) {
             <span class="kw">return </span><span class="prelude-val">Err</span>(TransferError::MissingCopySrcUsageFlag.into());
         }
 
-        <span class="comment">//TODO: try to avoid this the collection. It&#39;s needed because both
+        <span class="comment">//TODO: try to avoid this the collection. It's needed because both
         // `src_pending` and `dst_pending` try to hold `trackers.textures` mutably.
         </span><span class="kw">let </span><span class="kw-2">mut </span>barriers: ArrayVec&lt;<span class="kw">_</span>, <span class="number">2</span>&gt; = src_pending
-            .map(|pending| pending.into_hal(src_texture))
+            .map(|pending| pending.into_hal(src_raw))
             .collect();
 
-        <span class="kw">let </span>dst_pending = cmd_buf
+        <span class="kw">let </span>dst_pending = cmd_buf_data
             .trackers
             .textures
-            .set_single(
-                dst_texture,
-                destination.texture,
-                dst_range,
-                hal::TextureUses::COPY_DST,
-            )
+            .set_single(<span class="kw-2">&amp;</span>dst_texture, dst_range, hal::TextureUses::COPY_DST)
             .ok_or(TransferError::InvalidTexture(destination.texture))<span class="question-mark">?</span>;
         <span class="kw">let </span>dst_raw = dst_texture
-            .inner
-            .as_raw()
+            .raw(<span class="kw-2">&amp;</span>snatch_guard)
             .ok_or(TransferError::InvalidTexture(destination.texture))<span class="question-mark">?</span>;
         <span class="kw">if </span>!dst_texture.desc.usage.contains(TextureUsages::COPY_DST) {
             <span class="kw">return </span><span class="prelude-val">Err</span>(
@@ -2283,7 +2427,7 @@
             );
         }
 
-        barriers.extend(dst_pending.map(|pending| pending.into_hal(dst_texture)));
+        barriers.extend(dst_pending.map(|pending| pending.into_hal(dst_raw)));
 
         <span class="kw">let </span>hal_copy_size = hal::CopyExtent {
             width: src_copy_size.width.min(dst_copy_size.width),
@@ -2301,7 +2445,7 @@
                 size: hal_copy_size,
             }
         });
-        <span class="kw">let </span>cmd_buf_raw = cmd_buf.encoder.open();
+        <span class="kw">let </span>cmd_buf_raw = cmd_buf_data.encoder.open()<span class="question-mark">?</span>;
         <span class="kw">unsafe </span>{
             cmd_buf_raw.transition_textures(barriers.into_iter());
             cmd_buf_raw.copy_texture_to_texture(
@@ -2311,6 +2455,7 @@
                 regions,
             );
         }
+
         <span class="prelude-val">Ok</span>(())
     }
 }

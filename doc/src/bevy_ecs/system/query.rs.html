@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ecs-0.12.1/src/system/query.rs`."><title>query.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="bevy_ecs" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.0 (79e9716c9 2023-11-13)" data-channel="1.74.0" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../bevy_ecs/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ecs-0.13.0/src/system/query.rs`."><title>query.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="bevy_ecs" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1519,13 +1520,209 @@
 <a href="#1519" id="1519">1519</a>
 <a href="#1520" id="1520">1520</a>
 <a href="#1521" id="1521">1521</a>
+<a href="#1522" id="1522">1522</a>
+<a href="#1523" id="1523">1523</a>
+<a href="#1524" id="1524">1524</a>
+<a href="#1525" id="1525">1525</a>
+<a href="#1526" id="1526">1526</a>
+<a href="#1527" id="1527">1527</a>
+<a href="#1528" id="1528">1528</a>
+<a href="#1529" id="1529">1529</a>
+<a href="#1530" id="1530">1530</a>
+<a href="#1531" id="1531">1531</a>
+<a href="#1532" id="1532">1532</a>
+<a href="#1533" id="1533">1533</a>
+<a href="#1534" id="1534">1534</a>
+<a href="#1535" id="1535">1535</a>
+<a href="#1536" id="1536">1536</a>
+<a href="#1537" id="1537">1537</a>
+<a href="#1538" id="1538">1538</a>
+<a href="#1539" id="1539">1539</a>
+<a href="#1540" id="1540">1540</a>
+<a href="#1541" id="1541">1541</a>
+<a href="#1542" id="1542">1542</a>
+<a href="#1543" id="1543">1543</a>
+<a href="#1544" id="1544">1544</a>
+<a href="#1545" id="1545">1545</a>
+<a href="#1546" id="1546">1546</a>
+<a href="#1547" id="1547">1547</a>
+<a href="#1548" id="1548">1548</a>
+<a href="#1549" id="1549">1549</a>
+<a href="#1550" id="1550">1550</a>
+<a href="#1551" id="1551">1551</a>
+<a href="#1552" id="1552">1552</a>
+<a href="#1553" id="1553">1553</a>
+<a href="#1554" id="1554">1554</a>
+<a href="#1555" id="1555">1555</a>
+<a href="#1556" id="1556">1556</a>
+<a href="#1557" id="1557">1557</a>
+<a href="#1558" id="1558">1558</a>
+<a href="#1559" id="1559">1559</a>
+<a href="#1560" id="1560">1560</a>
+<a href="#1561" id="1561">1561</a>
+<a href="#1562" id="1562">1562</a>
+<a href="#1563" id="1563">1563</a>
+<a href="#1564" id="1564">1564</a>
+<a href="#1565" id="1565">1565</a>
+<a href="#1566" id="1566">1566</a>
+<a href="#1567" id="1567">1567</a>
+<a href="#1568" id="1568">1568</a>
+<a href="#1569" id="1569">1569</a>
+<a href="#1570" id="1570">1570</a>
+<a href="#1571" id="1571">1571</a>
+<a href="#1572" id="1572">1572</a>
+<a href="#1573" id="1573">1573</a>
+<a href="#1574" id="1574">1574</a>
+<a href="#1575" id="1575">1575</a>
+<a href="#1576" id="1576">1576</a>
+<a href="#1577" id="1577">1577</a>
+<a href="#1578" id="1578">1578</a>
+<a href="#1579" id="1579">1579</a>
+<a href="#1580" id="1580">1580</a>
+<a href="#1581" id="1581">1581</a>
+<a href="#1582" id="1582">1582</a>
+<a href="#1583" id="1583">1583</a>
+<a href="#1584" id="1584">1584</a>
+<a href="#1585" id="1585">1585</a>
+<a href="#1586" id="1586">1586</a>
+<a href="#1587" id="1587">1587</a>
+<a href="#1588" id="1588">1588</a>
+<a href="#1589" id="1589">1589</a>
+<a href="#1590" id="1590">1590</a>
+<a href="#1591" id="1591">1591</a>
+<a href="#1592" id="1592">1592</a>
+<a href="#1593" id="1593">1593</a>
+<a href="#1594" id="1594">1594</a>
+<a href="#1595" id="1595">1595</a>
+<a href="#1596" id="1596">1596</a>
+<a href="#1597" id="1597">1597</a>
+<a href="#1598" id="1598">1598</a>
+<a href="#1599" id="1599">1599</a>
+<a href="#1600" id="1600">1600</a>
+<a href="#1601" id="1601">1601</a>
+<a href="#1602" id="1602">1602</a>
+<a href="#1603" id="1603">1603</a>
+<a href="#1604" id="1604">1604</a>
+<a href="#1605" id="1605">1605</a>
+<a href="#1606" id="1606">1606</a>
+<a href="#1607" id="1607">1607</a>
+<a href="#1608" id="1608">1608</a>
+<a href="#1609" id="1609">1609</a>
+<a href="#1610" id="1610">1610</a>
+<a href="#1611" id="1611">1611</a>
+<a href="#1612" id="1612">1612</a>
+<a href="#1613" id="1613">1613</a>
+<a href="#1614" id="1614">1614</a>
+<a href="#1615" id="1615">1615</a>
+<a href="#1616" id="1616">1616</a>
+<a href="#1617" id="1617">1617</a>
+<a href="#1618" id="1618">1618</a>
+<a href="#1619" id="1619">1619</a>
+<a href="#1620" id="1620">1620</a>
+<a href="#1621" id="1621">1621</a>
+<a href="#1622" id="1622">1622</a>
+<a href="#1623" id="1623">1623</a>
+<a href="#1624" id="1624">1624</a>
+<a href="#1625" id="1625">1625</a>
+<a href="#1626" id="1626">1626</a>
+<a href="#1627" id="1627">1627</a>
+<a href="#1628" id="1628">1628</a>
+<a href="#1629" id="1629">1629</a>
+<a href="#1630" id="1630">1630</a>
+<a href="#1631" id="1631">1631</a>
+<a href="#1632" id="1632">1632</a>
+<a href="#1633" id="1633">1633</a>
+<a href="#1634" id="1634">1634</a>
+<a href="#1635" id="1635">1635</a>
+<a href="#1636" id="1636">1636</a>
+<a href="#1637" id="1637">1637</a>
+<a href="#1638" id="1638">1638</a>
+<a href="#1639" id="1639">1639</a>
+<a href="#1640" id="1640">1640</a>
+<a href="#1641" id="1641">1641</a>
+<a href="#1642" id="1642">1642</a>
+<a href="#1643" id="1643">1643</a>
+<a href="#1644" id="1644">1644</a>
+<a href="#1645" id="1645">1645</a>
+<a href="#1646" id="1646">1646</a>
+<a href="#1647" id="1647">1647</a>
+<a href="#1648" id="1648">1648</a>
+<a href="#1649" id="1649">1649</a>
+<a href="#1650" id="1650">1650</a>
+<a href="#1651" id="1651">1651</a>
+<a href="#1652" id="1652">1652</a>
+<a href="#1653" id="1653">1653</a>
+<a href="#1654" id="1654">1654</a>
+<a href="#1655" id="1655">1655</a>
+<a href="#1656" id="1656">1656</a>
+<a href="#1657" id="1657">1657</a>
+<a href="#1658" id="1658">1658</a>
+<a href="#1659" id="1659">1659</a>
+<a href="#1660" id="1660">1660</a>
+<a href="#1661" id="1661">1661</a>
+<a href="#1662" id="1662">1662</a>
+<a href="#1663" id="1663">1663</a>
+<a href="#1664" id="1664">1664</a>
+<a href="#1665" id="1665">1665</a>
+<a href="#1666" id="1666">1666</a>
+<a href="#1667" id="1667">1667</a>
+<a href="#1668" id="1668">1668</a>
+<a href="#1669" id="1669">1669</a>
+<a href="#1670" id="1670">1670</a>
+<a href="#1671" id="1671">1671</a>
+<a href="#1672" id="1672">1672</a>
+<a href="#1673" id="1673">1673</a>
+<a href="#1674" id="1674">1674</a>
+<a href="#1675" id="1675">1675</a>
+<a href="#1676" id="1676">1676</a>
+<a href="#1677" id="1677">1677</a>
+<a href="#1678" id="1678">1678</a>
+<a href="#1679" id="1679">1679</a>
+<a href="#1680" id="1680">1680</a>
+<a href="#1681" id="1681">1681</a>
+<a href="#1682" id="1682">1682</a>
+<a href="#1683" id="1683">1683</a>
+<a href="#1684" id="1684">1684</a>
+<a href="#1685" id="1685">1685</a>
+<a href="#1686" id="1686">1686</a>
+<a href="#1687" id="1687">1687</a>
+<a href="#1688" id="1688">1688</a>
+<a href="#1689" id="1689">1689</a>
+<a href="#1690" id="1690">1690</a>
+<a href="#1691" id="1691">1691</a>
+<a href="#1692" id="1692">1692</a>
+<a href="#1693" id="1693">1693</a>
+<a href="#1694" id="1694">1694</a>
+<a href="#1695" id="1695">1695</a>
+<a href="#1696" id="1696">1696</a>
+<a href="#1697" id="1697">1697</a>
+<a href="#1698" id="1698">1698</a>
+<a href="#1699" id="1699">1699</a>
+<a href="#1700" id="1700">1700</a>
+<a href="#1701" id="1701">1701</a>
+<a href="#1702" id="1702">1702</a>
+<a href="#1703" id="1703">1703</a>
+<a href="#1704" id="1704">1704</a>
+<a href="#1705" id="1705">1705</a>
+<a href="#1706" id="1706">1706</a>
+<a href="#1707" id="1707">1707</a>
+<a href="#1708" id="1708">1708</a>
+<a href="#1709" id="1709">1709</a>
+<a href="#1710" id="1710">1710</a>
+<a href="#1711" id="1711">1711</a>
+<a href="#1712" id="1712">1712</a>
+<a href="#1713" id="1713">1713</a>
+<a href="#1714" id="1714">1714</a>
+<a href="#1715" id="1715">1715</a>
+<a href="#1716" id="1716">1716</a>
+<a href="#1717" id="1717">1717</a>
 </pre></div><pre class="rust"><code><span class="kw">use crate</span>::{
     component::{Component, Tick},
     entity::Entity,
     query::{
-        BatchingStrategy, QueryCombinationIter, QueryComponentError, QueryEntityError, QueryIter,
-        QueryManyIter, QueryParIter, QuerySingleError, QueryState, ROQueryItem, ReadOnlyWorldQuery,
-        WorldQuery,
+        BatchingStrategy, QueryCombinationIter, QueryData, QueryEntityError, QueryFilter,
+        QueryIter, QueryManyIter, QueryParIter, QuerySingleError, QueryState, ROQueryItem,
+        ReadOnlyQueryData,
     },
     world::{unsafe_world_cell::UnsafeWorldCell, Mut},
 };
@@ -1537,13 +1734,15 @@
 /// Its iterators and getter methods return *query items*.
 /// Each query item is a type containing data relative to an entity.
 ///
-/// `Query` is a generic data structure that accepts two type parameters, both of which must implement the [`WorldQuery`] trait:
+/// `Query` is a generic data structure that accepts two type parameters:
 ///
-/// - **`Q` (query fetch).**
+/// - **`D` (query data).**
 ///   The type of data contained in the query item.
 ///   Only entities that match the requested data will generate an item.
+///   Must implement the [`QueryData`] trait.
 /// - **`F` (query filter).**
 ///   A set of conditions that determines whether query items should be kept or discarded.
+///   Must implement the [`QueryFilter`] trait.
 ///   This type parameter is optional.
 ///
 /// [`World`]: crate::world::World
@@ -1551,7 +1750,7 @@
 /// # System parameter declaration
 ///
 /// A query should always be declared as a system parameter.
-/// This section shows the most common idioms involving the declaration of `Query`, emerging by combining [`WorldQuery`] implementors.
+/// This section shows the most common idioms involving the declaration of `Query`.
 ///
 /// ## Component access
 ///
@@ -1592,7 +1791,7 @@
 /// # bevy_ecs::system::assert_is_system(system);
 /// ```
 ///
-/// ## `WorldQuery` tuples
+/// ## `QueryData` or `QueryFilter` tuples
 ///
 /// Using tuples, each `Query` type parameter can contain multiple elements.
 ///
@@ -1653,7 +1852,7 @@
 ///
 /// ## Disjoint queries
 ///
-/// A system cannot contain two queries that break Rust&#39;s mutability rules.
+/// A system cannot contain two queries that break Rust's mutability rules.
 /// In this case, the [`Without`] filter can be used to disjoint them.
 ///
 /// In the following example, two queries mutably access the same component.
@@ -1674,7 +1873,7 @@
 ///     enemy_query: Query&lt;&amp;mut Health, With&lt;Enemy&gt;&gt;,
 /// )
 /// # {}
-/// # let mut randomize_health_system = bevy_ecs::system::IntoSystem::into_system(randomize_health);
+/// # let mut randomize_health_system = IntoSystem::into_system(randomize_health);
 /// # let mut world = World::new();
 /// # randomize_health_system.initialize(&amp;mut world);
 /// # randomize_health_system.run((), &amp;mut world);
@@ -1697,7 +1896,7 @@
 ///     enemy_query: Query&lt;&amp;mut Health, (With&lt;Enemy&gt;, Without&lt;Player&gt;)&gt;,
 /// )
 /// # {}
-/// # let mut randomize_health_system = bevy_ecs::system::IntoSystem::into_system(randomize_health);
+/// # let mut randomize_health_system = IntoSystem::into_system(randomize_health);
 /// # let mut world = World::new();
 /// # randomize_health_system.initialize(&amp;mut world);
 /// # randomize_health_system.run((), &amp;mut world);
@@ -1763,7 +1962,7 @@
 /// |[`iter_combinations`]\[[`_mut`][`iter_combinations_mut`]]|Returns an iterator over all combinations of a specified number of query items.|
 /// |[`get`]\[[`_mut`][`get_mut`]]|Returns the query item for the specified entity.|
 /// |[`many`]\[[`_mut`][`many_mut`]],&lt;br&gt;[`get_many`]\[[`_mut`][`get_many_mut`]]|Returns the query items for the specified entities.|
-/// |[`single`]\[[`_mut`][`single_mut`]],&lt;br&gt;[`get_single`]\[[`_mut`][`get_single_mut`]]|Returns the query item while verifying that there aren&#39;t others.|
+/// |[`single`]\[[`_mut`][`single_mut`]],&lt;br&gt;[`get_single`]\[[`_mut`][`get_single_mut`]]|Returns the query item while verifying that there aren't others.|
 ///
 /// There are two methods for each type of query operation: immutable and mutable (ending with `_mut`).
 /// When using immutable methods, the query items returned are of type [`ROQueryItem`], a read-only version of the query item.
@@ -1789,7 +1988,7 @@
 /// - **k** is the number of involved entities in the operation,
 /// - **a** is the number of archetypes in the world,
 /// - **C** is the [binomial coefficient], used to count combinations.
-///   &lt;sub&gt;n&lt;/sub&gt;C&lt;sub&gt;r&lt;/sub&gt; is read as &quot;*n* choose *r*&quot; and is equivalent to the number of distinct unordered subsets of *r* elements that can be taken from a set of *n* elements.
+///   &lt;sub&gt;n&lt;/sub&gt;C&lt;sub&gt;r&lt;/sub&gt; is read as "*n* choose *r*" and is equivalent to the number of distinct unordered subsets of *r* elements that can be taken from a set of *n* elements.
 ///
 /// |Query operation|Computational complexity|
 /// |:---:|:---:|
@@ -1815,7 +2014,7 @@
 /// [binomial coefficient]: https://en.wikipedia.org/wiki/Binomial_coefficient
 /// [`Changed`]: crate::query::Changed
 /// [components]: crate::component::Component
-/// [entity identifiers]: crate::entity::Entity
+/// [entity identifiers]: Entity
 /// [`EntityRef`]: crate::world::EntityRef
 /// [`for_each`]: Self::for_each
 /// [`for_each_mut`]: Self::for_each_mut
@@ -1844,33 +2043,33 @@
 /// [`Table`]: crate::storage::Table
 /// [`With`]: crate::query::With
 /// [`Without`]: crate::query::Without
-</span><span class="kw">pub struct </span>Query&lt;<span class="lifetime">&#39;world</span>, <span class="lifetime">&#39;state</span>, Q: WorldQuery, F: ReadOnlyWorldQuery = ()&gt; {
+</span><span class="kw">pub struct </span>Query&lt;<span class="lifetime">'world</span>, <span class="lifetime">'state</span>, D: QueryData, F: QueryFilter = ()&gt; {
     <span class="comment">// SAFETY: Must have access to the components registered in `state`.
-    </span>world: UnsafeWorldCell&lt;<span class="lifetime">&#39;world</span>&gt;,
-    state: <span class="kw-2">&amp;</span><span class="lifetime">&#39;state </span>QueryState&lt;Q, F&gt;,
+    </span>world: UnsafeWorldCell&lt;<span class="lifetime">'world</span>&gt;,
+    state: <span class="kw-2">&amp;</span><span class="lifetime">'state </span>QueryState&lt;D, F&gt;,
     last_run: Tick,
     this_run: Tick,
     <span class="comment">// SAFETY: This is used to ensure that `get_component_mut::&lt;C&gt;` properly fails when a Query writes C
     // and gets converted to a read-only query using `to_readonly`. Without checking this, `get_component_mut` relies on
-    // QueryState&#39;s archetype_component_access, which will continue allowing write access to C after being cast to
+    // QueryState's archetype_component_access, which will continue allowing write access to C after being cast to
     // the read-only variant. This whole situation is confusing and error prone. Ideally this is a temporary hack
     // until we sort out a cleaner alternative.
     </span>force_read_only_component_access: bool,
 }
 
-<span class="kw">impl</span>&lt;Q: WorldQuery, F: ReadOnlyWorldQuery&gt; std::fmt::Debug <span class="kw">for </span>Query&lt;<span class="lifetime">&#39;_</span>, <span class="lifetime">&#39;_</span>, Q, F&gt; {
+<span class="kw">impl</span>&lt;D: QueryData, F: QueryFilter&gt; std::fmt::Debug <span class="kw">for </span>Query&lt;<span class="lifetime">'_</span>, <span class="lifetime">'_</span>, D, F&gt; {
     <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter) -&gt; std::fmt::Result {
-        f.debug_struct(<span class="string">&quot;Query&quot;</span>)
-            .field(<span class="string">&quot;matched_entities&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.iter().count())
-            .field(<span class="string">&quot;state&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.state)
-            .field(<span class="string">&quot;last_run&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.last_run)
-            .field(<span class="string">&quot;this_run&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.this_run)
-            .field(<span class="string">&quot;world&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.world)
+        f.debug_struct(<span class="string">"Query"</span>)
+            .field(<span class="string">"matched_entities"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.iter().count())
+            .field(<span class="string">"state"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.state)
+            .field(<span class="string">"last_run"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.last_run)
+            .field(<span class="string">"this_run"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.this_run)
+            .field(<span class="string">"world"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.world)
             .finish()
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>, Q: WorldQuery, F: ReadOnlyWorldQuery&gt; Query&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>, Q, F&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>, D: QueryData, F: QueryFilter&gt; Query&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>, D, F&gt; {
     <span class="doccomment">/// Creates a new query.
     ///
     /// # Panics
@@ -1883,8 +2082,8 @@
     /// called in ways that ensure the queries have unique mutable access.
     </span><span class="attr">#[inline]
     </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">unsafe fn </span>new(
-        world: UnsafeWorldCell&lt;<span class="lifetime">&#39;w</span>&gt;,
-        state: <span class="kw-2">&amp;</span><span class="lifetime">&#39;s </span>QueryState&lt;Q, F&gt;,
+        world: UnsafeWorldCell&lt;<span class="lifetime">'w</span>&gt;,
+        state: <span class="kw-2">&amp;</span><span class="lifetime">'s </span>QueryState&lt;D, F&gt;,
         last_run: Tick,
         this_run: Tick,
         force_read_only_component_access: bool,
@@ -1902,10 +2101,10 @@
 
     <span class="doccomment">/// Returns another `Query` from this that fetches the read-only version of the query items.
     ///
-    /// For example, `Query&lt;(&amp;mut A, &amp;B, &amp;mut C), With&lt;D&gt;&gt;` will become `Query&lt;(&amp;A, &amp;B, &amp;C), With&lt;D&gt;&gt;`.
+    /// For example, `Query&lt;(&amp;mut D1, &amp;D2, &amp;mut D3), With&lt;F&gt;&gt;` will become `Query&lt;(&amp;D1, &amp;D2, &amp;D3), With&lt;F&gt;&gt;`.
     /// This can be useful when working around the borrow checker,
     /// or reusing functionality between systems via functions that accept query types.
-    </span><span class="kw">pub fn </span>to_readonly(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Query&lt;<span class="lifetime">&#39;_</span>, <span class="lifetime">&#39;s</span>, Q::ReadOnly, F::ReadOnly&gt; {
+    </span><span class="kw">pub fn </span>to_readonly(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Query&lt;<span class="lifetime">'_</span>, <span class="lifetime">'s</span>, D::ReadOnly, F&gt; {
         <span class="kw">let </span>new_state = <span class="self">self</span>.state.as_readonly();
         <span class="comment">// SAFETY: This is memory safe because it turns the query immutable.
         </span><span class="kw">unsafe </span>{
@@ -1935,7 +2134,7 @@
     /// #
     /// fn report_names_system(query: Query&lt;&amp;Player&gt;) {
     ///     for player in &amp;query {
-    ///         println!(&quot;Say hello to {}!&quot;, player.name);
+    ///         println!("Say hello to {}!", player.name);
     ///     }
     /// }
     /// # bevy_ecs::system::assert_is_system(report_names_system);
@@ -1946,7 +2145,7 @@
     /// - [`iter_mut`](Self::iter_mut) for mutable query items.
     /// - [`for_each`](Self::for_each) for the closure based alternative.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>iter(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; QueryIter&lt;<span class="lifetime">&#39;_</span>, <span class="lifetime">&#39;s</span>, Q::ReadOnly, F::ReadOnly&gt; {
+    </span><span class="kw">pub fn </span>iter(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; QueryIter&lt;<span class="lifetime">'_</span>, <span class="lifetime">'s</span>, D::ReadOnly, F&gt; {
         <span class="comment">// SAFETY:
         // - `self.world` has permission to access the required components.
         // - The query is read-only, so it can be aliased even if it was originally mutable.
@@ -1982,7 +2181,7 @@
     /// - [`iter`](Self::iter) for read-only query items.
     /// - [`for_each_mut`](Self::for_each_mut) for the closure based alternative.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>iter_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; QueryIter&lt;<span class="lifetime">&#39;_</span>, <span class="lifetime">&#39;s</span>, Q, F&gt; {
+    </span><span class="kw">pub fn </span>iter_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; QueryIter&lt;<span class="lifetime">'_</span>, <span class="lifetime">'s</span>, D, F&gt; {
         <span class="comment">// SAFETY: `self.world` has permission to access the required components.
         </span><span class="kw">unsafe </span>{
             <span class="self">self</span>.state
@@ -2012,7 +2211,7 @@
     </span><span class="attr">#[inline]
     </span><span class="kw">pub fn </span>iter_combinations&lt;<span class="kw">const </span>K: usize&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-    ) -&gt; QueryCombinationIter&lt;<span class="lifetime">&#39;_</span>, <span class="lifetime">&#39;s</span>, Q::ReadOnly, F::ReadOnly, K&gt; {
+    ) -&gt; QueryCombinationIter&lt;<span class="lifetime">'_</span>, <span class="lifetime">'s</span>, D::ReadOnly, F, K&gt; {
         <span class="comment">// SAFETY:
         // - `self.world` has permission to access the required components.
         // - The query is read-only, so it can be aliased even if it was originally mutable.
@@ -2047,7 +2246,7 @@
     </span><span class="attr">#[inline]
     </span><span class="kw">pub fn </span>iter_combinations_mut&lt;<span class="kw">const </span>K: usize&gt;(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-    ) -&gt; QueryCombinationIter&lt;<span class="lifetime">&#39;_</span>, <span class="lifetime">&#39;s</span>, Q, F, K&gt; {
+    ) -&gt; QueryCombinationIter&lt;<span class="lifetime">'_</span>, <span class="lifetime">'s</span>, D, F, K&gt; {
         <span class="comment">// SAFETY: `self.world` has permission to access the required components.
         </span><span class="kw">unsafe </span>{
             <span class="self">self</span>.state
@@ -2058,7 +2257,7 @@
     <span class="doccomment">/// Returns an [`Iterator`] over the read-only query items generated from an [`Entity`] list.
     ///
     /// Items are returned in the order of the list of entities.
-    /// Entities that don&#39;t match the query are skipped.
+    /// Entities that don't match the query are skipped.
     ///
     /// # Example
     ///
@@ -2081,7 +2280,7 @@
     /// ) {
     ///     for friends in &amp;friends_query {
     ///         for counter in counter_query.iter_many(&amp;friends.list) {
-    ///             println!(&quot;Friend&#39;s counter: {:?}&quot;, counter.value);
+    ///             println!("Friend's counter: {:?}", counter.value);
     ///         }
     ///     }
     /// }
@@ -2095,7 +2294,7 @@
     </span><span class="kw">pub fn </span>iter_many&lt;EntityList: IntoIterator&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         entities: EntityList,
-    ) -&gt; QueryManyIter&lt;<span class="lifetime">&#39;_</span>, <span class="lifetime">&#39;s</span>, Q::ReadOnly, F::ReadOnly, EntityList::IntoIter&gt;
+    ) -&gt; QueryManyIter&lt;<span class="lifetime">'_</span>, <span class="lifetime">'s</span>, D::ReadOnly, F, EntityList::IntoIter&gt;
     <span class="kw">where
         </span>EntityList::Item: Borrow&lt;Entity&gt;,
     {
@@ -2115,7 +2314,7 @@
     <span class="doccomment">/// Returns an iterator over the query items generated from an [`Entity`] list.
     ///
     /// Items are returned in the order of the list of entities.
-    /// Entities that don&#39;t match the query are skipped.
+    /// Entities that don't match the query are skipped.
     ///
     /// # Examples
     ///
@@ -2138,7 +2337,7 @@
     ///     for friends in &amp;friends_query {
     ///         let mut iter = counter_query.iter_many_mut(&amp;friends.list);
     ///         while let Some(mut counter) = iter.fetch_next() {
-    ///             println!(&quot;Friend&#39;s counter: {:?}&quot;, counter.value);
+    ///             println!("Friend's counter: {:?}", counter.value);
     ///             counter.value += 1;
     ///         }
     ///     }
@@ -2149,7 +2348,7 @@
     </span><span class="kw">pub fn </span>iter_many_mut&lt;EntityList: IntoIterator&gt;(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
         entities: EntityList,
-    ) -&gt; QueryManyIter&lt;<span class="lifetime">&#39;_</span>, <span class="lifetime">&#39;s</span>, Q, F, EntityList::IntoIter&gt;
+    ) -&gt; QueryManyIter&lt;<span class="lifetime">'_</span>, <span class="lifetime">'s</span>, D, F, EntityList::IntoIter&gt;
     <span class="kw">where
         </span>EntityList::Item: Borrow&lt;Entity&gt;,
     {
@@ -2168,14 +2367,14 @@
     ///
     /// # Safety
     ///
-    /// This function makes it possible to violate Rust&#39;s aliasing guarantees.
+    /// This function makes it possible to violate Rust's aliasing guarantees.
     /// You must make sure this call does not result in multiple mutable references to the same component.
     ///
     /// # See also
     ///
     /// - [`iter`](Self::iter) and [`iter_mut`](Self::iter_mut) for the safe versions.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub unsafe fn </span>iter_unsafe(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; QueryIter&lt;<span class="lifetime">&#39;_</span>, <span class="lifetime">&#39;s</span>, Q, F&gt; {
+    </span><span class="kw">pub unsafe fn </span>iter_unsafe(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; QueryIter&lt;<span class="lifetime">'_</span>, <span class="lifetime">'s</span>, D, F&gt; {
         <span class="comment">// SAFETY:
         // - `self.world` has permission to access the required components.
         // - The caller ensures that this operation will not result in any aliased mutable accesses.
@@ -2196,7 +2395,7 @@
     </span><span class="attr">#[inline]
     </span><span class="kw">pub unsafe fn </span>iter_combinations_unsafe&lt;<span class="kw">const </span>K: usize&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-    ) -&gt; QueryCombinationIter&lt;<span class="lifetime">&#39;_</span>, <span class="lifetime">&#39;s</span>, Q, F, K&gt; {
+    ) -&gt; QueryCombinationIter&lt;<span class="lifetime">'_</span>, <span class="lifetime">'s</span>, D, F, K&gt; {
         <span class="comment">// SAFETY:
         // - `self.world` has permission to access the required components.
         // - The caller ensures that this operation will not result in any aliased mutable accesses.
@@ -2218,7 +2417,7 @@
     </span><span class="kw">pub unsafe fn </span>iter_many_unsafe&lt;EntityList: IntoIterator&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         entities: EntityList,
-    ) -&gt; QueryManyIter&lt;<span class="lifetime">&#39;_</span>, <span class="lifetime">&#39;s</span>, Q, F, EntityList::IntoIter&gt;
+    ) -&gt; QueryManyIter&lt;<span class="lifetime">'_</span>, <span class="lifetime">'s</span>, D, F, EntityList::IntoIter&gt;
     <span class="kw">where
         </span>EntityList::Item: Borrow&lt;Entity&gt;,
     {
@@ -2230,6 +2429,8 @@
     }
 
     <span class="doccomment">/// Runs `f` on each read-only query item.
+    ///
+    /// Shorthand for `query.iter().for_each(..)`.
     ///
     /// # Example
     ///
@@ -2243,7 +2444,7 @@
     /// #
     /// fn report_names_system(query: Query&lt;&amp;Player&gt;) {
     ///     query.for_each(|player| {
-    ///         println!(&quot;Say hello to {}!&quot;, player.name);
+    ///         println!("Say hello to {}!", player.name);
     ///     });
     /// }
     /// # bevy_ecs::system::assert_is_system(report_names_system);
@@ -2254,21 +2455,25 @@
     /// - [`for_each_mut`](Self::for_each_mut) to operate on mutable query items.
     /// - [`iter`](Self::iter) for the iterator based alternative.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>for_each&lt;<span class="lifetime">&#39;this</span>&gt;(<span class="kw-2">&amp;</span><span class="lifetime">&#39;this </span><span class="self">self</span>, f: <span class="kw">impl </span>FnMut(ROQueryItem&lt;<span class="lifetime">&#39;this</span>, Q&gt;)) {
+    #[deprecated(
+        since = <span class="string">"0.13.0"</span>,
+        note = <span class="string">"Query::for_each was not idiomatic Rust and has been moved to query.iter().for_each()"
+    </span>)]
+    </span><span class="kw">pub fn </span>for_each&lt;<span class="lifetime">'this</span>&gt;(<span class="kw-2">&amp;</span><span class="lifetime">'this </span><span class="self">self</span>, f: <span class="kw">impl </span>FnMut(ROQueryItem&lt;<span class="lifetime">'this</span>, D&gt;)) {
         <span class="comment">// SAFETY:
         // - `self.world` has permission to access the required components.
         // - The query is read-only, so it can be aliased even if it was originally mutable.
         </span><span class="kw">unsafe </span>{
-            <span class="self">self</span>.state.as_readonly().for_each_unchecked_manual(
-                <span class="self">self</span>.world,
-                f,
-                <span class="self">self</span>.last_run,
-                <span class="self">self</span>.this_run,
-            );
+            <span class="self">self</span>.state
+                .as_readonly()
+                .iter_unchecked_manual(<span class="self">self</span>.world, <span class="self">self</span>.last_run, <span class="self">self</span>.this_run)
+                .for_each(f);
         };
     }
 
     <span class="doccomment">/// Runs `f` on each query item.
+    ///
+    /// Shorthand for `query.iter_mut().for_each(..)`.
     ///
     /// # Example
     ///
@@ -2293,11 +2498,16 @@
     /// - [`for_each`](Self::for_each) to operate on read-only query items.
     /// - [`iter_mut`](Self::iter_mut) for the iterator based alternative.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>for_each_mut&lt;<span class="lifetime">&#39;a</span>&gt;(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span><span class="self">self</span>, f: <span class="kw">impl </span>FnMut(Q::Item&lt;<span class="lifetime">&#39;a</span>&gt;)) {
+    #[deprecated(
+        since = <span class="string">"0.13.0"</span>,
+        note = <span class="string">"Query::for_each_mut was not idiomatic Rust and has been moved to query.iter_mut().for_each()"
+    </span>)]
+    </span><span class="kw">pub fn </span>for_each_mut&lt;<span class="lifetime">'a</span>&gt;(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span><span class="self">self</span>, f: <span class="kw">impl </span>FnMut(D::Item&lt;<span class="lifetime">'a</span>&gt;)) {
         <span class="comment">// SAFETY: `self.world` has permission to access the required components.
         </span><span class="kw">unsafe </span>{
             <span class="self">self</span>.state
-                .for_each_unchecked_manual(<span class="self">self</span>.world, f, <span class="self">self</span>.last_run, <span class="self">self</span>.this_run);
+                .iter_unchecked_manual(<span class="self">self</span>.world, <span class="self">self</span>.last_run, <span class="self">self</span>.this_run)
+                .for_each(f);
         };
     }
 
@@ -2305,10 +2515,13 @@
     ///
     /// This can only be called for read-only queries, see [`par_iter_mut`] for write-queries.
     ///
+    /// Note that you must use the `for_each` method to iterate over the
+    /// results, see [`par_iter_mut`] for an example.
+    ///
     /// [`par_iter_mut`]: Self::par_iter_mut
     /// [`World`]: crate::world::World
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>par_iter(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; QueryParIter&lt;<span class="lifetime">&#39;_</span>, <span class="lifetime">&#39;_</span>, Q::ReadOnly, F::ReadOnly&gt; {
+    </span><span class="kw">pub fn </span>par_iter(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; QueryParIter&lt;<span class="lifetime">'_</span>, <span class="lifetime">'_</span>, D::ReadOnly, F&gt; {
         QueryParIter {
             world: <span class="self">self</span>.world,
             state: <span class="self">self</span>.state.as_readonly(),
@@ -2322,10 +2535,28 @@
     ///
     /// This can only be called for mutable queries, see [`par_iter`] for read-only-queries.
     ///
+    /// # Example
+    ///
+    /// Here, the `gravity_system` updates the `Velocity` component of every entity that contains it:
+    ///
+    /// ```
+    /// # use bevy_ecs::prelude::*;
+    /// #
+    /// # #[derive(Component)]
+    /// # struct Velocity { x: f32, y: f32, z: f32 }
+    /// fn gravity_system(mut query: Query&lt;&amp;mut Velocity&gt;) {
+    ///     const DELTA: f32 = 1.0 / 60.0;
+    ///     query.par_iter_mut().for_each(|mut velocity| {
+    ///         velocity.y -= 9.8 * DELTA;
+    ///     });
+    /// }
+    /// # bevy_ecs::system::assert_is_system(gravity_system);
+    /// ```
+    ///
     /// [`par_iter`]: Self::par_iter
     /// [`World`]: crate::world::World
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>par_iter_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; QueryParIter&lt;<span class="lifetime">&#39;_</span>, <span class="lifetime">&#39;_</span>, Q, F&gt; {
+    </span><span class="kw">pub fn </span>par_iter_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; QueryParIter&lt;<span class="lifetime">'_</span>, <span class="lifetime">'_</span>, D, F&gt; {
         QueryParIter {
             world: <span class="self">self</span>.world,
             state: <span class="self">self</span>.state,
@@ -2357,7 +2588,7 @@
     /// )
     /// {
     ///     if let Ok(selected_character) = query.get(selection.entity) {
-    ///         println!(&quot;{}&quot;, selected_character.name);
+    ///         println!("{}", selected_character.name);
     ///     }
     /// }
     /// # bevy_ecs::system::assert_is_system(print_selected_character_name_system);
@@ -2367,7 +2598,7 @@
     ///
     /// - [`get_mut`](Self::get_mut) to get a mutable query item.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>get(<span class="kw-2">&amp;</span><span class="self">self</span>, entity: Entity) -&gt; <span class="prelude-ty">Result</span>&lt;ROQueryItem&lt;<span class="lifetime">&#39;_</span>, Q&gt;, QueryEntityError&gt; {
+    </span><span class="kw">pub fn </span>get(<span class="kw-2">&amp;</span><span class="self">self</span>, entity: Entity) -&gt; <span class="prelude-ty">Result</span>&lt;ROQueryItem&lt;<span class="lifetime">'_</span>, D&gt;, QueryEntityError&gt; {
         <span class="comment">// SAFETY: system runs without conflicts with other systems.
         // same-system queries have runtime borrow checks when they conflict
         </span><span class="kw">unsafe </span>{
@@ -2394,7 +2625,7 @@
     </span><span class="kw">pub fn </span>get_many&lt;<span class="kw">const </span>N: usize&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         entities: [Entity; N],
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;[ROQueryItem&lt;<span class="lifetime">&#39;_</span>, Q&gt;; N], QueryEntityError&gt; {
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;[ROQueryItem&lt;<span class="lifetime">'_</span>, D&gt;; N], QueryEntityError&gt; {
         <span class="comment">// SAFETY:
         // - `&amp;self` ensures there is no mutable access to any components accessible to this query.
         // - `self.world` matches `self.state`.
@@ -2411,7 +2642,7 @@
     /// This method panics if there is a query mismatch or a non-existing entity.
     ///
     /// # Examples
-    /// ```rust, no_run
+    /// ``` no_run
     /// use bevy_ecs::prelude::*;
     ///
     /// #[derive(Component)]
@@ -2432,7 +2663,7 @@
     ///
     /// fn check_all_targets_in_range(targeting_query: Query&lt;(Entity, &amp;Targets, &amp;Position)&gt;, targets_query: Query&lt;&amp;Position&gt;){
     ///     for (targeting_entity, targets, origin) in &amp;targeting_query {
-    ///         // We can use &quot;destructuring&quot; to unpack the results nicely
+    ///         // We can use "destructuring" to unpack the results nicely
     ///         let [target_1, target_2, target_3] = targets_query.many(targets.0);
     ///
     ///         assert!(target_1.distance(origin) &lt;= 5);
@@ -2446,10 +2677,10 @@
     ///
     /// - [`get_many`](Self::get_many) for the non-panicking version.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>many&lt;<span class="kw">const </span>N: usize&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, entities: [Entity; N]) -&gt; [ROQueryItem&lt;<span class="lifetime">&#39;_</span>, Q&gt;; N] {
+    </span><span class="kw">pub fn </span>many&lt;<span class="kw">const </span>N: usize&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, entities: [Entity; N]) -&gt; [ROQueryItem&lt;<span class="lifetime">'_</span>, D&gt;; N] {
         <span class="kw">match </span><span class="self">self</span>.get_many(entities) {
             <span class="prelude-val">Ok</span>(items) =&gt; items,
-            <span class="prelude-val">Err</span>(error) =&gt; <span class="macro">panic!</span>(<span class="string">&quot;Cannot get query results: {error}&quot;</span>),
+            <span class="prelude-val">Err</span>(error) =&gt; <span class="macro">panic!</span>(<span class="string">"Cannot get query results: {error}"</span>),
         }
     }
 
@@ -2481,7 +2712,7 @@
     ///
     /// - [`get`](Self::get) to get a read-only query item.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>get_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>, entity: Entity) -&gt; <span class="prelude-ty">Result</span>&lt;Q::Item&lt;<span class="lifetime">&#39;_</span>&gt;, QueryEntityError&gt; {
+    </span><span class="kw">pub fn </span>get_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>, entity: Entity) -&gt; <span class="prelude-ty">Result</span>&lt;D::Item&lt;<span class="lifetime">'_</span>&gt;, QueryEntityError&gt; {
         <span class="comment">// SAFETY: system runs without conflicts with other systems.
         // same-system queries have runtime borrow checks when they conflict
         </span><span class="kw">unsafe </span>{
@@ -2503,7 +2734,7 @@
     </span><span class="kw">pub fn </span>get_many_mut&lt;<span class="kw">const </span>N: usize&gt;(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
         entities: [Entity; N],
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;[Q::Item&lt;<span class="lifetime">&#39;_</span>&gt;; N], QueryEntityError&gt; {
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;[D::Item&lt;<span class="lifetime">'_</span>&gt;; N], QueryEntityError&gt; {
         <span class="comment">// SAFETY: scheduler ensures safe Query world access
         </span><span class="kw">unsafe </span>{
             <span class="self">self</span>.state
@@ -2519,7 +2750,7 @@
     ///
     /// # Examples
     ///
-    /// ```rust, no_run
+    /// ``` no_run
     /// use bevy_ecs::prelude::*;
     ///
     /// #[derive(Component)]
@@ -2542,7 +2773,7 @@
     ///
     /// fn spring_forces(spring_query: Query&lt;&amp;Spring&gt;, mut mass_query: Query&lt;(&amp;Position, &amp;mut Force)&gt;){
     ///     for spring in &amp;spring_query {
-    ///          // We can use &quot;destructuring&quot; to unpack our query items nicely
+    ///          // We can use "destructuring" to unpack our query items nicely
     ///          let [(position_1, mut force_1), (position_2, mut force_2)] = mass_query.many_mut(spring.connected_entities);
     ///
     ///          force_1.x += spring.strength * (position_1.x - position_2.x);
@@ -2560,10 +2791,10 @@
     /// - [`get_many_mut`](Self::get_many_mut) for the non panicking version.
     /// - [`many`](Self::many) to get read-only query items.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>many_mut&lt;<span class="kw">const </span>N: usize&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, entities: [Entity; N]) -&gt; [Q::Item&lt;<span class="lifetime">&#39;_</span>&gt;; N] {
+    </span><span class="kw">pub fn </span>many_mut&lt;<span class="kw">const </span>N: usize&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, entities: [Entity; N]) -&gt; [D::Item&lt;<span class="lifetime">'_</span>&gt;; N] {
         <span class="kw">match </span><span class="self">self</span>.get_many_mut(entities) {
             <span class="prelude-val">Ok</span>(items) =&gt; items,
-            <span class="prelude-val">Err</span>(error) =&gt; <span class="macro">panic!</span>(<span class="string">&quot;Cannot get query result: {error}&quot;</span>),
+            <span class="prelude-val">Err</span>(error) =&gt; <span class="macro">panic!</span>(<span class="string">"Cannot get query result: {error}"</span>),
         }
     }
 
@@ -2573,14 +2804,14 @@
     ///
     /// # Safety
     ///
-    /// This function makes it possible to violate Rust&#39;s aliasing guarantees.
+    /// This function makes it possible to violate Rust's aliasing guarantees.
     /// You must make sure this call does not result in multiple mutable references to the same component.
     ///
     /// # See also
     ///
     /// - [`get_mut`](Self::get_mut) for the safe version.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub unsafe fn </span>get_unchecked(<span class="kw-2">&amp;</span><span class="self">self</span>, entity: Entity) -&gt; <span class="prelude-ty">Result</span>&lt;Q::Item&lt;<span class="lifetime">&#39;_</span>&gt;, QueryEntityError&gt; {
+    </span><span class="kw">pub unsafe fn </span>get_unchecked(<span class="kw-2">&amp;</span><span class="self">self</span>, entity: Entity) -&gt; <span class="prelude-ty">Result</span>&lt;D::Item&lt;<span class="lifetime">'_</span>&gt;, QueryEntityError&gt; {
         <span class="comment">// SEMI-SAFETY: system runs without conflicts with other systems.
         // same-system queries have runtime borrow checks when they conflict
         </span><span class="self">self</span>.state
@@ -2609,7 +2840,7 @@
     /// )
     /// {
     ///     if let Ok(selected_character) = query.get_component::&lt;Character&gt;(selection.entity) {
-    ///         println!(&quot;{}&quot;, selected_character.name);
+    ///         println!("{}", selected_character.name);
     ///     }
     /// }
     /// # bevy_ecs::system::assert_is_system(print_selected_character_name_system);
@@ -2619,8 +2850,16 @@
     ///
     /// - [`component`](Self::component) a panicking version of this function.
     /// - [`get_component_mut`](Self::get_component_mut) to get a mutable reference of a component.
-    </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>get_component&lt;T: Component&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, entity: Entity) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;</span>T, QueryComponentError&gt; {
+    </span><span class="attr">#[deprecated(
+        since = <span class="string">"0.13.0"</span>,
+        note = <span class="string">"Please use `get` and select for the exact component based on the structure of the exact query as required."
+    </span>)]
+    #[allow(deprecated)]
+    #[inline]
+    </span><span class="kw">pub fn </span>get_component&lt;T: Component&gt;(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        entity: Entity,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;</span>T, <span class="kw">crate</span>::query::QueryComponentError&gt; {
         <span class="self">self</span>.state.get_component(<span class="self">self</span>.world, entity)
     }
 
@@ -2652,11 +2891,18 @@
     ///
     /// - [`component_mut`](Self::component_mut) a panicking version of this function.
     /// - [`get_component`](Self::get_component) to get a shared reference of a component.
-    </span><span class="attr">#[inline]
+    ///
+    /// [`QueryComponentError`]: crate::query::QueryComponentError
+    </span><span class="attr">#[deprecated(
+        since = <span class="string">"0.13.0"</span>,
+        note = <span class="string">"Please use `get_mut` and select for the exact component based on the structure of the exact query as required."
+    </span>)]
+    #[allow(deprecated)]
+    #[inline]
     </span><span class="kw">pub fn </span>get_component_mut&lt;T: Component&gt;(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
         entity: Entity,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;Mut&lt;<span class="lifetime">&#39;_</span>, T&gt;, QueryComponentError&gt; {
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;Mut&lt;<span class="lifetime">'_</span>, T&gt;, <span class="kw">crate</span>::query::QueryComponentError&gt; {
         <span class="comment">// SAFETY: unique access to query (preventing aliased access)
         </span><span class="kw">unsafe </span>{ <span class="self">self</span>.get_component_unchecked_mut(entity) }
     }
@@ -2671,7 +2917,12 @@
     ///
     /// - [`get_component`](Self::get_component) a non-panicking version of this function.
     /// - [`component_mut`](Self::component_mut) to get a mutable reference of a component.
-    </span><span class="attr">#[inline]
+    </span><span class="attr">#[deprecated(
+        since = <span class="string">"0.13.0"</span>,
+        note = <span class="string">"Please use `get` and select for the exact component based on the structure of the exact query as required."
+    </span>)]
+    #[allow(deprecated)]
+    #[inline]
     #[track_caller]
     </span><span class="kw">pub fn </span>component&lt;T: Component&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, entity: Entity) -&gt; <span class="kw-2">&amp;</span>T {
         <span class="self">self</span>.state.component(<span class="self">self</span>.world, entity)
@@ -2687,14 +2938,19 @@
     ///
     /// - [`get_component_mut`](Self::get_component_mut) a non-panicking version of this function.
     /// - [`component`](Self::component) to get a shared reference of a component.
-    </span><span class="attr">#[inline]
+    </span><span class="attr">#[deprecated(
+        since = <span class="string">"0.13.0"</span>,
+        note = <span class="string">"Please use `get_mut` and select for the exact component based on the structure of the exact query as required."
+    </span>)]
+    #[allow(deprecated)]
+    #[inline]
     #[track_caller]
-    </span><span class="kw">pub fn </span>component_mut&lt;T: Component&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, entity: Entity) -&gt; Mut&lt;<span class="lifetime">&#39;_</span>, T&gt; {
+    </span><span class="kw">pub fn </span>component_mut&lt;T: Component&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, entity: Entity) -&gt; Mut&lt;<span class="lifetime">'_</span>, T&gt; {
         <span class="kw">match </span><span class="self">self</span>.get_component_mut(entity) {
             <span class="prelude-val">Ok</span>(component) =&gt; component,
             <span class="prelude-val">Err</span>(error) =&gt; {
                 <span class="macro">panic!</span>(
-                    <span class="string">&quot;Cannot get component `{:?}` from {entity:?}: {error}&quot;</span>,
+                    <span class="string">"Cannot get component `{:?}` from {entity:?}: {error}"</span>,
                     TypeId::of::&lt;T&gt;()
                 )
             }
@@ -2707,21 +2963,28 @@
     ///
     /// # Safety
     ///
-    /// This function makes it possible to violate Rust&#39;s aliasing guarantees.
+    /// This function makes it possible to violate Rust's aliasing guarantees.
     /// You must make sure this call does not result in multiple mutable references to the same component.
     ///
     /// # See also
     ///
     /// - [`get_component_mut`](Self::get_component_mut) for the safe version.
-    </span><span class="attr">#[inline]
+    ///
+    /// [`QueryComponentError`]: crate::query::QueryComponentError
+    </span><span class="attr">#[deprecated(
+        since = <span class="string">"0.13.0"</span>,
+        note = <span class="string">"Please use `get_unchecked` and select for the exact component based on the structure of the exact query as required."
+    </span>)]
+    #[allow(deprecated)]
+    #[inline]
     </span><span class="kw">pub unsafe fn </span>get_component_unchecked_mut&lt;T: Component&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         entity: Entity,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;Mut&lt;<span class="lifetime">&#39;_</span>, T&gt;, QueryComponentError&gt; {
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;Mut&lt;<span class="lifetime">'_</span>, T&gt;, <span class="kw">crate</span>::query::QueryComponentError&gt; {
         <span class="comment">// This check is required to ensure soundness in the case of `to_readonly().get_component_mut()`
         // See the comments on the `force_read_only_component_access` field for more info.
         </span><span class="kw">if </span><span class="self">self</span>.force_read_only_component_access {
-            <span class="kw">return </span><span class="prelude-val">Err</span>(QueryComponentError::MissingWriteAccess);
+            <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="kw">crate</span>::query::QueryComponentError::MissingWriteAccess);
         }
 
         <span class="comment">// SAFETY: The above check ensures we are not a readonly query.
@@ -2758,7 +3021,7 @@
     /// - [`get_single`](Self::get_single) for the non-panicking version.
     /// - [`single_mut`](Self::single_mut) to get the mutable query item.
     </span><span class="attr">#[track_caller]
-    </span><span class="kw">pub fn </span>single(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; ROQueryItem&lt;<span class="lifetime">&#39;_</span>, Q&gt; {
+    </span><span class="kw">pub fn </span>single(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; ROQueryItem&lt;<span class="lifetime">'_</span>, D&gt; {
         <span class="self">self</span>.get_single().unwrap()
     }
 
@@ -2776,13 +3039,13 @@
     /// fn player_scoring_system(query: Query&lt;&amp;PlayerScore&gt;) {
     ///     match query.get_single() {
     ///         Ok(PlayerScore(score)) =&gt; {
-    ///             println!(&quot;Score: {}&quot;, score);
+    ///             println!("Score: {}", score);
     ///         }
     ///         Err(QuerySingleError::NoEntities(_)) =&gt; {
-    ///             println!(&quot;Error: There is no player!&quot;);
+    ///             println!("Error: There is no player!");
     ///         }
     ///         Err(QuerySingleError::MultipleEntities(_)) =&gt; {
-    ///             println!(&quot;Error: There is more than one player!&quot;);
+    ///             println!("Error: There is more than one player!");
     ///         }
     ///     }
     /// }
@@ -2794,7 +3057,7 @@
     /// - [`get_single_mut`](Self::get_single_mut) to get the mutable query item.
     /// - [`single`](Self::single) for the panicking version.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>get_single(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;ROQueryItem&lt;<span class="lifetime">&#39;_</span>, Q&gt;, QuerySingleError&gt; {
+    </span><span class="kw">pub fn </span>get_single(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;ROQueryItem&lt;<span class="lifetime">'_</span>, D&gt;, QuerySingleError&gt; {
         <span class="comment">// SAFETY:
         // the query ensures that the components it accesses are not mutably accessible somewhere else
         // and the query is read only.
@@ -2835,7 +3098,7 @@
     /// - [`get_single_mut`](Self::get_single_mut) for the non-panicking version.
     /// - [`single`](Self::single) to get the read-only query item.
     </span><span class="attr">#[track_caller]
-    </span><span class="kw">pub fn </span>single_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; Q::Item&lt;<span class="lifetime">&#39;_</span>&gt; {
+    </span><span class="kw">pub fn </span>single_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; D::Item&lt;<span class="lifetime">'_</span>&gt; {
         <span class="self">self</span>.get_single_mut().unwrap()
     }
 
@@ -2854,7 +3117,7 @@
     /// # struct Health(u32);
     /// #
     /// fn regenerate_player_health_system(mut query: Query&lt;&amp;mut Health, With&lt;Player&gt;&gt;) {
-    ///     let mut health = query.get_single_mut().expect(&quot;Error: Could not find a single player.&quot;);
+    ///     let mut health = query.get_single_mut().expect("Error: Could not find a single player.");
     ///     health.0 += 1;
     /// }
     /// # bevy_ecs::system::assert_is_system(regenerate_player_health_system);
@@ -2865,7 +3128,7 @@
     /// - [`get_single`](Self::get_single) to get the read-only query item.
     /// - [`single_mut`](Self::single_mut) for the panicking version.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>get_single_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;Q::Item&lt;<span class="lifetime">&#39;_</span>&gt;, QuerySingleError&gt; {
+    </span><span class="kw">pub fn </span>get_single_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;D::Item&lt;<span class="lifetime">'_</span>&gt;, QuerySingleError&gt; {
         <span class="comment">// SAFETY:
         // the query ensures mutable access to the components it accesses, and the query
         // is uniquely borrowed
@@ -2924,7 +3187,7 @@
     /// #
     /// fn targeting_system(in_range_query: Query&lt;&amp;InRange&gt;, target: Res&lt;Target&gt;) {
     ///     if in_range_query.contains(target.entity) {
-    ///         println!(&quot;Bam!&quot;)
+    ///         println!("Bam!")
     ///     }
     /// }
     /// # bevy_ecs::system::assert_is_system(targeting_system);
@@ -2939,28 +3202,118 @@
                 .is_ok()
         }
     }
+
+    <span class="doccomment">/// Returns a [`QueryLens`] that can be used to get a query with a more general fetch.
+    ///
+    /// For example, this can transform a `Query&lt;(&amp;A, &amp;mut B)&gt;` to a `Query&lt;&amp;B&gt;`.
+    /// This can be useful for passing the query to another function. Note that since
+    /// filter terms are dropped, non-archetypal filters like [`Added`](crate::query::Added) and
+    /// [`Changed`](crate::query::Changed) will not be respected. To maintain or change filter
+    /// terms see [`Self::transmute_lens_filtered`]
+    ///
+    /// ## Panics
+    ///
+    /// This will panic if `NewD` is not a subset of the original fetch `Q`
+    ///
+    /// ## Example
+    ///
+    /// ```rust
+    /// # use bevy_ecs::prelude::*;
+    /// # use bevy_ecs::system::QueryLens;
+    /// #
+    /// # #[derive(Component)]
+    /// # struct A(usize);
+    /// #
+    /// # #[derive(Component)]
+    /// # struct B(usize);
+    /// #
+    /// # let mut world = World::new();
+    /// #
+    /// # world.spawn((A(10), B(5)));
+    /// #
+    /// fn reusable_function(lens: &amp;mut QueryLens&lt;&amp;A&gt;) {
+    ///     assert_eq!(lens.query().single().0, 10);
+    /// }
+    ///
+    /// // We can use the function in a system that takes the exact query.
+    /// fn system_1(mut query: Query&lt;&amp;A&gt;) {
+    ///     reusable_function(&amp;mut query.as_query_lens());
+    /// }
+    ///
+    /// // We can also use it with a query that does not match exactly
+    /// // by transmuting it.
+    /// fn system_2(mut query: Query&lt;(&amp;mut A, &amp;B)&gt;) {
+    ///     let mut lens = query.transmute_lens::&lt;&amp;A&gt;();
+    ///     reusable_function(&amp;mut lens);
+    /// }
+    ///
+    /// # let mut schedule = Schedule::default();
+    /// # schedule.add_systems((system_1, system_2));
+    /// # schedule.run(&amp;mut world);
+    /// ```
+    ///
+    /// ## Allowed Transmutes
+    ///
+    /// Besides removing parameters from the query, you can also
+    /// make limited changes to the types of paramters.
+    ///
+    /// * Can always add/remove `Entity`
+    /// * `Ref&lt;T&gt;` &lt;-&gt; `&amp;T`
+    /// * `&amp;mut T` -&gt; `&amp;T`
+    /// * `&amp;mut T` -&gt; `Ref&lt;T&gt;`
+    /// * [`EntityMut`](crate::world::EntityMut) -&gt; [`EntityRef`](crate::world::EntityRef)
+    ///    
+    </span><span class="kw">pub fn </span>transmute_lens&lt;NewD: QueryData&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; QueryLens&lt;<span class="lifetime">'_</span>, NewD&gt; {
+        <span class="self">self</span>.transmute_lens_filtered::&lt;NewD, ()&gt;()
+    }
+
+    <span class="doccomment">/// Equivalent to [`Self::transmute_lens`] but also includes a [`QueryFilter`] type.
+    ///
+    /// Note that the lens will iterate the same tables and archetypes as the original query. This means that
+    /// additional archetypal query terms like [`With`](crate::query::With) and [`Without`](crate::query::Without)
+    /// will not necessarily be respected and non-archetypal terms like [`Added`](crate::query::Added) and
+    /// [`Changed`](crate::query::Changed) will only be respected if they are in the type signature.
+    </span><span class="kw">pub fn </span>transmute_lens_filtered&lt;NewD: QueryData, NewF: QueryFilter&gt;(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+    ) -&gt; QueryLens&lt;<span class="lifetime">'_</span>, NewD, NewF&gt; {
+        <span class="comment">// SAFETY: There are no other active borrows of data from world
+        </span><span class="kw">let </span>world = <span class="kw">unsafe </span>{ <span class="self">self</span>.world.world() };
+        <span class="kw">let </span>state = <span class="self">self</span>.state.transmute_filtered::&lt;NewD, NewF&gt;(world);
+        QueryLens {
+            world: <span class="self">self</span>.world,
+            state,
+            last_run: <span class="self">self</span>.last_run,
+            this_run: <span class="self">self</span>.this_run,
+            force_read_only_component_access: <span class="self">self</span>.force_read_only_component_access,
+        }
+    }
+
+    <span class="doccomment">/// Gets a [`QueryLens`] with the same accesses as the existing query
+    </span><span class="kw">pub fn </span>as_query_lens(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; QueryLens&lt;<span class="lifetime">'_</span>, D&gt; {
+        <span class="self">self</span>.transmute_lens()
+    }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>, Q: WorldQuery, F: ReadOnlyWorldQuery&gt; IntoIterator <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;w </span>Query&lt;<span class="lifetime">&#39;_</span>, <span class="lifetime">&#39;s</span>, Q, F&gt; {
-    <span class="kw">type </span>Item = ROQueryItem&lt;<span class="lifetime">&#39;w</span>, Q&gt;;
-    <span class="kw">type </span>IntoIter = QueryIter&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>, Q::ReadOnly, F::ReadOnly&gt;;
+<span class="kw">impl</span>&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>, D: QueryData, F: QueryFilter&gt; IntoIterator <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'w </span>Query&lt;<span class="lifetime">'_</span>, <span class="lifetime">'s</span>, D, F&gt; {
+    <span class="kw">type </span>Item = ROQueryItem&lt;<span class="lifetime">'w</span>, D&gt;;
+    <span class="kw">type </span>IntoIter = QueryIter&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>, D::ReadOnly, F&gt;;
 
     <span class="kw">fn </span>into_iter(<span class="self">self</span>) -&gt; <span class="self">Self</span>::IntoIter {
         <span class="self">self</span>.iter()
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>, Q: WorldQuery, F: ReadOnlyWorldQuery&gt; IntoIterator <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;w </span><span class="kw-2">mut </span>Query&lt;<span class="lifetime">&#39;_</span>, <span class="lifetime">&#39;s</span>, Q, F&gt; {
-    <span class="kw">type </span>Item = Q::Item&lt;<span class="lifetime">&#39;w</span>&gt;;
-    <span class="kw">type </span>IntoIter = QueryIter&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>, Q, F&gt;;
+<span class="kw">impl</span>&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>, D: QueryData, F: QueryFilter&gt; IntoIterator <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'w </span><span class="kw-2">mut </span>Query&lt;<span class="lifetime">'_</span>, <span class="lifetime">'s</span>, D, F&gt; {
+    <span class="kw">type </span>Item = D::Item&lt;<span class="lifetime">'w</span>&gt;;
+    <span class="kw">type </span>IntoIter = QueryIter&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>, D, F&gt;;
 
     <span class="kw">fn </span>into_iter(<span class="self">self</span>) -&gt; <span class="self">Self</span>::IntoIter {
         <span class="self">self</span>.iter_mut()
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>, Q: ReadOnlyWorldQuery, F: ReadOnlyWorldQuery&gt; Query&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>, Q, F&gt; {
-    <span class="doccomment">/// Returns the query item for the given [`Entity`], with the actual &quot;inner&quot; world lifetime.
+<span class="kw">impl</span>&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>, D: ReadOnlyQueryData, F: QueryFilter&gt; Query&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>, D, F&gt; {
+    <span class="doccomment">/// Returns the query item for the given [`Entity`], with the actual "inner" world lifetime.
     ///
     /// In case of a nonexisting entity or mismatched component, a [`QueryEntityError`] is
     /// returned instead.
@@ -2987,13 +3340,13 @@
     /// )
     /// {
     ///     if let Ok(selected_character) = query.get(selection.entity) {
-    ///         println!(&quot;{}&quot;, selected_character.name);
+    ///         println!("{}", selected_character.name);
     ///     }
     /// }
     /// # bevy_ecs::system::assert_is_system(print_selected_character_name_system);
     /// ```
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>get_inner(<span class="kw-2">&amp;</span><span class="self">self</span>, entity: Entity) -&gt; <span class="prelude-ty">Result</span>&lt;ROQueryItem&lt;<span class="lifetime">&#39;w</span>, Q&gt;, QueryEntityError&gt; {
+    </span><span class="kw">pub fn </span>get_inner(<span class="kw-2">&amp;</span><span class="self">self</span>, entity: Entity) -&gt; <span class="prelude-ty">Result</span>&lt;ROQueryItem&lt;<span class="lifetime">'w</span>, D&gt;, QueryEntityError&gt; {
         <span class="comment">// SAFETY: system runs without conflicts with other systems.
         // same-system queries have runtime borrow checks when they conflict
         </span><span class="kw">unsafe </span>{
@@ -3006,7 +3359,7 @@
         }
     }
 
-    <span class="doccomment">/// Returns an [`Iterator`] over the query items, with the actual &quot;inner&quot; world lifetime.
+    <span class="doccomment">/// Returns an [`Iterator`] over the query items, with the actual "inner" world lifetime.
     ///
     /// This can only return immutable data (mutable data will be cast to an immutable form).
     /// See [`Self::iter_mut`] for queries that contain at least one mutable component.
@@ -3024,13 +3377,13 @@
     /// #
     /// fn report_names_system(query: Query&lt;&amp;Player&gt;) {
     ///     for player in &amp;query {
-    ///         println!(&quot;Say hello to {}!&quot;, player.name);
+    ///         println!("Say hello to {}!", player.name);
     ///     }
     /// }
     /// # bevy_ecs::system::assert_is_system(report_names_system);
     /// ```
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>iter_inner(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; QueryIter&lt;<span class="lifetime">&#39;w</span>, <span class="lifetime">&#39;s</span>, Q::ReadOnly, F::ReadOnly&gt; {
+    </span><span class="kw">pub fn </span>iter_inner(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; QueryIter&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>, D::ReadOnly, F&gt; {
         <span class="comment">// SAFETY: system runs without conflicts with other systems.
         // same-system queries have runtime borrow checks when they conflict
         </span><span class="kw">unsafe </span>{
@@ -3038,6 +3391,46 @@
                 .as_readonly()
                 .iter_unchecked_manual(<span class="self">self</span>.world, <span class="self">self</span>.last_run, <span class="self">self</span>.this_run)
         }
+    }
+}
+
+<span class="doccomment">/// Type returned from [`Query::transmute_lens`] containing the new [`QueryState`].
+///
+/// Call [`query`](QueryLens::query) or [`into`](Into::into) to construct the resulting [`Query`]
+</span><span class="kw">pub struct </span>QueryLens&lt;<span class="lifetime">'w</span>, Q: QueryData, F: QueryFilter = ()&gt; {
+    world: UnsafeWorldCell&lt;<span class="lifetime">'w</span>&gt;,
+    state: QueryState&lt;Q, F&gt;,
+    last_run: Tick,
+    this_run: Tick,
+    force_read_only_component_access: bool,
+}
+
+<span class="kw">impl</span>&lt;<span class="lifetime">'w</span>, Q: QueryData, F: QueryFilter&gt; QueryLens&lt;<span class="lifetime">'w</span>, Q, F&gt; {
+    <span class="doccomment">/// Create a [`Query`] from the underlying [`QueryState`].
+    </span><span class="kw">pub fn </span>query(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; Query&lt;<span class="lifetime">'w</span>, <span class="lifetime">'_</span>, Q, F&gt; {
+        Query {
+            world: <span class="self">self</span>.world,
+            state: <span class="kw-2">&amp;</span><span class="self">self</span>.state,
+            last_run: <span class="self">self</span>.last_run,
+            this_run: <span class="self">self</span>.this_run,
+            force_read_only_component_access: <span class="self">self</span>.force_read_only_component_access,
+        }
+    }
+}
+
+<span class="kw">impl</span>&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>, Q: QueryData, F: QueryFilter&gt; From&lt;<span class="kw-2">&amp;</span><span class="lifetime">'s </span><span class="kw-2">mut </span>QueryLens&lt;<span class="lifetime">'w</span>, Q, F&gt;&gt;
+    <span class="kw">for </span>Query&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>, Q, F&gt;
+{
+    <span class="kw">fn </span>from(value: <span class="kw-2">&amp;</span><span class="lifetime">'s </span><span class="kw-2">mut </span>QueryLens&lt;<span class="lifetime">'w</span>, Q, F&gt;) -&gt; Query&lt;<span class="lifetime">'w</span>, <span class="lifetime">'s</span>, Q, F&gt; {
+        value.query()
+    }
+}
+
+<span class="kw">impl</span>&lt;<span class="lifetime">'w</span>, <span class="lifetime">'q</span>, Q: QueryData, F: QueryFilter&gt; From&lt;<span class="kw-2">&amp;</span><span class="lifetime">'q </span><span class="kw-2">mut </span>Query&lt;<span class="lifetime">'w</span>, <span class="lifetime">'_</span>, Q, F&gt;&gt;
+    <span class="kw">for </span>QueryLens&lt;<span class="lifetime">'q</span>, Q, F&gt;
+{
+    <span class="kw">fn </span>from(value: <span class="kw-2">&amp;</span><span class="lifetime">'q </span><span class="kw-2">mut </span>Query&lt;<span class="lifetime">'w</span>, <span class="lifetime">'_</span>, Q, F&gt;) -&gt; QueryLens&lt;<span class="lifetime">'q</span>, Q, F&gt; {
+        value.transmute_lens_filtered()
     }
 }
 </code></pre></div></section></main></body></html>
