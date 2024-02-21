@@ -50,7 +50,7 @@ target/%.wasm: target/%_bg.wasm
 	wasm-opt -Oz --output $< $@
 	touch $@
 
-target/index.html:
+target/index.html: | target
 	ln -sf $(word 1,$(EXAMPLES)).html target/index.html
 
 target/input.code: ../../src/lib.rs | target
