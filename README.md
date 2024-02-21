@@ -173,7 +173,7 @@ fn setup(mut commands: Commands) {
 
 # License
 
-Copyright © 2023 Rouven Spreckels <rs@qu1x.dev>
+Copyright © 2023-2024 Rouven Spreckels <rs@qu1x.dev>
 
 This project is licensed under either of
 
