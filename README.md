@@ -121,7 +121,7 @@ Scroll In/Out           | Two + Pinch Out/In      | `hn`     | Scales distance z
 Left Press + Release    | Any + Release           | &nbsp;   | Slides to cursor/finger position.
 &nbsp;                  | &nbsp;                  | `m`      | Toggle `esdf`/`wasd` mapping.
 &nbsp;                  | &nbsp;                  | `p`      | Toggle orthographic/perspective.
-&nbsp;                  | &nbsp;                  | `Return` | Reset camera transform.
+&nbsp;                  | &nbsp;                  | `Enter`  | Reset camera transform.
 
 Alternatively, [`TrackballInput::map_wasd`] maps `wasd`/`Space`/`ControlLeft` to slide
 operations where `ws` slides in/out and `Space`/`ControlLeft` slides up/down (jump/crouch).
