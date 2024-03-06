@@ -138,7 +138,7 @@ pub fn trackball_camera(
 				.unwrap_or(trackball.frame);
 			let view = trackball.old_frame.view();
 			transform.translation = view.translation.into();
-			transform.rotation = view.rotation.into();
+			transform.rotation = view.rotation.normalize().into();
 		}
 		let new_scope = trackball.scope != trackball.old_scope;
 		let new_max = max != trackball.old_max;
