@@ -1,3 +1,8 @@
+# Version 0.4.1 (2024-03-06)
+
+  * Add missing re-normalization as part of smoothing, thanks to [mo8it](https://github.com/mo8it).
+    This prevents panics when dependants enable the `glam_assert`/`debug_glam_assert` feature.
+
 # Version 0.4.0 (2024-02-21)
 
   * Update Bevy to `0.13`.

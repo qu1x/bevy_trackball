@@ -133,6 +133,10 @@ pub fn trackball_camera(
 					trackball
 						.old_frame
 						.try_lerp_slerp(&trackball.frame, blend, 0.0)
+						.map(|mut frame| {
+							frame.renormalize();
+							frame
+						})
 				})
 				.flatten()
 				.unwrap_or(trackball.frame);
