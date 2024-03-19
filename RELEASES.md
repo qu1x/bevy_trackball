@@ -1,3 +1,8 @@
+# Version 0.5.0 (2024-03-19)
+
+  * Update `bevy_egui` to `0.26.0`.
+  * Update `bevy` to `0.13.1`.
+
 # Version 0.4.1 (2024-03-06)
 
   * Add missing re-normalization as part of smoothing, thanks to [mo8it](https://github.com/mo8it).
