@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/rs/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_render-0.13.0/src/render_resource/pipeline_cache.rs`."><title>pipeline_cache.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="bevy_render" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/n3vu0r/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_render-0.13.1/src/render_resource/pipeline_cache.rs`."><title>pipeline_cache.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ac92e1bbe349e143.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="bevy_render" data-themes="" data-resource-suffix="" data-rustdoc-version="1.76.0 (07dca489a 2024-02-04)" data-channel="1.76.0" data-search-js="search-2b6ce74ff89ae146.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-39ed315d46fb705f.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-305769736d49e732.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-feafe1bb7466e4bd.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><div class="sidebar-resizer"></div>
     <main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
@@ -980,7 +980,24 @@
 <a href="#979" id="979">979</a>
 <a href="#980" id="980">980</a>
 <a href="#981" id="981">981</a>
-</pre></div><pre class="rust"><code><span class="kw">use crate</span>::{render_resource::<span class="kw-2">*</span>, renderer::RenderDevice, Extract};
+<a href="#982" id="982">982</a>
+<a href="#983" id="983">983</a>
+<a href="#984" id="984">984</a>
+<a href="#985" id="985">985</a>
+<a href="#986" id="986">986</a>
+<a href="#987" id="987">987</a>
+<a href="#988" id="988">988</a>
+<a href="#989" id="989">989</a>
+<a href="#990" id="990">990</a>
+<a href="#991" id="991">991</a>
+<a href="#992" id="992">992</a>
+<a href="#993" id="993">993</a>
+<a href="#994" id="994">994</a>
+<a href="#995" id="995">995</a>
+<a href="#996" id="996">996</a>
+<a href="#997" id="997">997</a>
+</pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::renderer::RenderAdapter;
+<span class="kw">use crate</span>::{render_resource::<span class="kw-2">*</span>, renderer::RenderDevice, Extract};
 <span class="kw">use </span>bevy_asset::{AssetEvent, AssetId, Assets};
 <span class="kw">use </span>bevy_ecs::system::{Res, ResMut};
 <span class="kw">use </span>bevy_ecs::{event::EventReader, system::Resource};
@@ -1003,7 +1020,7 @@
 <span class="attr">#[cfg(feature = <span class="string">"shader_format_spirv"</span>)]
 </span><span class="kw">use </span>wgpu::util::make_spirv;
 <span class="kw">use </span>wgpu::{
-    Features, PipelineLayoutDescriptor, PushConstantRange, ShaderModuleDescriptor,
+    DownlevelFlags, Features, PipelineLayoutDescriptor, PushConstantRange, ShaderModuleDescriptor,
     VertexBufferLayout <span class="kw">as </span>RawVertexBufferLayout,
 };
 
@@ -1149,7 +1166,7 @@
 }
 
 <span class="kw">impl </span>ShaderCache {
-    <span class="kw">fn </span>new(render_device: <span class="kw-2">&amp;</span>RenderDevice) -&gt; <span class="self">Self </span>{
+    <span class="kw">fn </span>new(render_device: <span class="kw-2">&amp;</span>RenderDevice, render_adapter: <span class="kw-2">&amp;</span>RenderAdapter) -&gt; <span class="self">Self </span>{
         <span class="kw">const </span>CAPABILITIES: <span class="kw-2">&amp;</span>[(Features, Capabilities)] = <span class="kw-2">&amp;</span>[
             (Features::PUSH_CONSTANTS, Capabilities::PUSH_CONSTANT),
             (Features::SHADER_F64, Capabilities::FLOAT64),
@@ -1178,9 +1195,13 @@
             }
         }
 
-        <span class="comment">// TODO: Check if this is supported, though I'm not sure if bevy works without this feature?
-        // We can't compile for native at least without it.
-        </span>capabilities |= Capabilities::CUBE_ARRAY_TEXTURES;
+        <span class="kw">if </span>render_adapter
+            .get_downlevel_capabilities()
+            .flags
+            .contains(DownlevelFlags::CUBE_ARRAY_TEXTURES)
+        {
+            capabilities |= Capabilities::CUBE_ARRAY_TEXTURES;
+        }
 
         <span class="attr">#[cfg(debug_assertions)]
         </span><span class="kw">let </span>composer = naga_oil::compose::Composer::default();
@@ -1261,7 +1282,12 @@
                 <span class="attr">#[cfg(all(feature = <span class="string">"webgl"</span>, target_arch = <span class="string">"wasm32"</span>, not(feature = <span class="string">"webgpu"</span>)))]
                 </span>{
                     shader_defs.push(<span class="string">"NO_ARRAY_TEXTURES_SUPPORT"</span>.into());
+                    shader_defs.push(<span class="string">"NO_CUBE_ARRAY_TEXTURES_SUPPORT"</span>.into());
                     shader_defs.push(<span class="string">"SIXTEEN_BYTE_ALIGNMENT"</span>.into());
+                }
+
+                <span class="kw">if </span><span class="macro">cfg!</span>(ios_simulator) {
+                    shader_defs.push(<span class="string">"NO_CUBE_ARRAY_TEXTURES_SUPPORT"</span>.into());
                 }
 
                 shader_defs.push(ShaderDefVal::UInt(
@@ -1473,9 +1499,13 @@
     }
 
     <span class="doccomment">/// Create a new pipeline cache associated with the given render device.
-    </span><span class="kw">pub fn </span>new(device: RenderDevice, synchronous_pipeline_compilation: bool) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>new(
+        device: RenderDevice,
+        render_adapter: RenderAdapter,
+        synchronous_pipeline_compilation: bool,
+    ) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
-            shader_cache: Arc::new(Mutex::new(ShaderCache::new(<span class="kw-2">&amp;</span>device))),
+            shader_cache: Arc::new(Mutex::new(ShaderCache::new(<span class="kw-2">&amp;</span>device, <span class="kw-2">&amp;</span>render_adapter))),
             device,
             layout_cache: default(),
             waiting_pipelines: default(),
@@ -1863,7 +1893,9 @@
             CachedPipelineState::Err(err) =&gt; <span class="kw">match </span>err {
                 <span class="comment">// Retry
                 </span>PipelineCacheError::ShaderNotLoaded(<span class="kw">_</span>)
-                | PipelineCacheError::ShaderImportNotYetAvailable =&gt; {}
+                | PipelineCacheError::ShaderImportNotYetAvailable =&gt; {
+                    cached_pipeline.state = CachedPipelineState::Queued;
+                }
 
                 <span class="comment">// Shader could not be processed ... retrying won't help
                 </span>PipelineCacheError::ProcessShaderError(err) =&gt; {

@@ -75,7 +75,7 @@ var srcIndex = new Map(JSON.parse('[\
 ["event_listener",["",[],["lib.rs","notify.rs","std.rs"]]],\
 ["event_listener_strategy",["",[],["lib.rs"]]],\
 ["fastrand",["",[],["global_rng.rs","lib.rs"]]],\
-["fixed",["",[["types",[],["extra.rs","mod.rs"]]],["arith.rs","bytes.rs","cast.rs","cmp.rs","cmp_fixed.rs","consts.rs","convert.rs","debug_hex.rs","display.rs","f128.rs","float_helper.rs","from_str.rs","helpers.rs","impl_bytemuck.rs","int256.rs","int_helper.rs","inv_lerp.rs","lerp.rs","lib.rs","log.rs","log10.rs","macros.rs","macros_const.rs","macros_frac.rs","macros_from_to.rs","macros_no_frac.rs","macros_round.rs","prim_traits.rs","saturating.rs","serdeize.rs","traits.rs","traits_bits.rs","unwrapped.rs","wrapping.rs"]]],\
+["fixed",["",[["types",[],["extra.rs","mod.rs"]]],["arith.rs","bytes.rs","cast.rs","cmp.rs","cmp_fixed.rs","consts.rs","convert.rs","debug_hex.rs","display.rs","f128.rs","float_helper.rs","from_str.rs","helpers.rs","impl_bytemuck.rs","int256.rs","int_helper.rs","inv_lerp.rs","lerp.rs","lib.rs","log.rs","log10.rs","macros.rs","macros_const.rs","macros_frac.rs","macros_from_to.rs","macros_no_frac.rs","macros_round.rs","prim_traits.rs","saturating.rs","serdeize.rs","sqrt.rs","traits.rs","traits_bits.rs","unwrapped.rs","wrapping.rs"]]],\
 ["fixedbitset",["",[],["lib.rs","range.rs"]]],\
 ["futures_core",["",[["task",[["__internal",[],["atomic_waker.rs","mod.rs"]]],["mod.rs","poll.rs"]]],["future.rs","lib.rs","stream.rs"]]],\
 ["futures_io",["",[],["lib.rs"]]],\
@@ -144,7 +144,7 @@ var srcIndex = new Map(JSON.parse('[\
 ["stable_deref_trait",["",[],["lib.rs"]]],\
 ["static_assertions",["",[],["assert_cfg.rs","assert_eq_align.rs","assert_eq_size.rs","assert_fields.rs","assert_impl.rs","assert_obj_safe.rs","assert_trait.rs","assert_type.rs","const_assert.rs","lib.rs"]]],\
 ["syn",["",[["gen",[],["clone.rs","debug.rs","eq.rs","hash.rs","visit_mut.rs"]]],["attr.rs","bigint.rs","buffer.rs","custom_keyword.rs","custom_punctuation.rs","data.rs","derive.rs","discouraged.rs","drops.rs","error.rs","export.rs","expr.rs","ext.rs","file.rs","gen_helper.rs","generics.rs","group.rs","ident.rs","item.rs","lib.rs","lifetime.rs","lit.rs","lookahead.rs","mac.rs","macros.rs","meta.rs","op.rs","parse.rs","parse_macro_input.rs","parse_quote.rs","pat.rs","path.rs","print.rs","punctuated.rs","restriction.rs","sealed.rs","span.rs","spanned.rs","stmt.rs","thread.rs","token.rs","tt.rs","ty.rs","verbatim.rs","whitespace.rs"]]],\
-["sysinfo",["",[["unix",[["linux",[],["component.rs","cpu.rs","disk.rs","mod.rs","network.rs","process.rs","system.rs","utils.rs"]]],["mod.rs","network_helper.rs","users.rs","utils.rs"]]],["common.rs","debug.rs","lib.rs","macros.rs","network.rs","utils.rs"]]],\
+["sysinfo",["",[["unix",[["linux",[],["component.rs","cpu.rs","disk.rs","mod.rs","network.rs","process.rs","system.rs","utils.rs"]]],["groups.rs","mod.rs","network_helper.rs","users.rs","utils.rs"]]],["common.rs","debug.rs","lib.rs","macros.rs","network.rs","utils.rs"]]],\
 ["termcolor",["",[],["lib.rs"]]],\
 ["thiserror",["",[],["aserror.rs","display.rs","lib.rs"]]],\
 ["thiserror_impl",["",[],["ast.rs","attr.rs","expand.rs","fmt.rs","generics.rs","lib.rs","prop.rs","span.rs","valid.rs"]]],\

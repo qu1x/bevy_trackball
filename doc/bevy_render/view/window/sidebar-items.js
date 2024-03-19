@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["create_surfaces","need_new_surfaces","prepare_windows"],"mod":["screenshot"],"struct":["ExtractedWindow","ExtractedWindows","WindowRenderPlugin","WindowSurfaces"]};
+window.SIDEBAR_ITEMS = {"fn":["create_surfaces","need_surface_configuration","prepare_windows"],"mod":["screenshot"],"struct":["ExtractedWindow","ExtractedWindows","WindowRenderPlugin","WindowSurfaces"]};
