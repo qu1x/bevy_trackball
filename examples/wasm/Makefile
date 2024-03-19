@@ -6,7 +6,8 @@ help:
 	@printf "make install    Installs required tools except rustup and cargo.\n"
 	@printf "make wasm [-j]  Builds optimized WASM examples.\n"
 	@printf "make html [-j]  Generates HTML for examples.\n"
-	@printf "make host [-j]  Runs local HTTP server (host: wasm html).\n"
+	@printf "make page [-j]  Makes all (page: wasm html).\n"
+	@printf "make host [-j]  Runs local HTTP server (host: page).\n"
 	@printf "make clean      Removes ./target directory.\n"
 
 .PHONY: install
@@ -22,6 +23,8 @@ install:
 wasm: $(EXAMPLES:%=target/%.wasm)
 .PHONY: html
 html: $(EXAMPLES:%=target/%.html) target/index.html
+.PHONY: page
+page: wasm html
 
 target:
 	mkdir target
