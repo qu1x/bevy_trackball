@@ -57,7 +57,7 @@ fn setup(
 
 	// Windows
 	let mut window1 = windows.single_mut();
-	window1.title = "Fixed Vertical Field of View (Perspective vs Orthographic)".to_owned();
+	"Fixed Vertical Field of View (Perspective vs Orthographic)".clone_into(&mut window1.title);
 	let res = &window1.resolution;
 	let max = Vec2::new(res.width() * 0.5, res.height()).into();
 	// Left and right camera orientation.
