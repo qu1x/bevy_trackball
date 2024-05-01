@@ -19,17 +19,29 @@ pub struct TrackballViewport {
 
 impl TrackballViewport {
 	/// Condition whether the viewport has been stolen, evaluated by [`IntoSystemConfigs::run_if`].
+	///
+	/// Interferes with automatic viewport stealing if the `bevy_egui` feature is enabled. As
+	/// automatic viewport stealing gives the viewport back with `set_stolen(None)` instead of
+	/// `set_stolen(Some(0))`, you can override it in the same frame for your own input capturing.
 	#[allow(clippy::needless_pass_by_value)]
 	#[must_use]
 	pub fn stolen(viewport: Res<Self>) -> bool {
 		viewport.stolen != 0
 	}
 	/// Whether viewport has just been given back.
+	///
+	/// Interferes with automatic viewport stealing if the `bevy_egui` feature is enabled. As
+	/// automatic viewport stealing gives the viewport back with `set_stolen(None)` instead of
+	/// `set_stolen(Some(0))`, you can override it in the same frame for your own input capturing.
 	#[must_use]
 	pub const fn was_stolen(&self) -> bool {
 		self.entity.is_none()
 	}
 	/// Steals the viewport or gives it back.
+	///
+	/// Interferes with automatic viewport stealing if the `bevy_egui` feature is enabled. As
+	/// automatic viewport stealing gives the viewport back with `set_stolen(None)` instead of
+	/// `set_stolen(Some(0))`, you can override it in the same frame for your own input capturing.
 	///
 	/// # Examples
 	///

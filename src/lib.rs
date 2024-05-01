@@ -1,9 +1,11 @@
 //! Coherent virtual trackball controller/camera plugin for Bevy
 //!
-//! Run simple and advanced [examples] in your browser using [WebAssembly] and [WebGL].
+//! Run interactive [examples] in your browser using [WebAssembly] and [WebGL].
 //!
 //! [WebAssembly]: https://en.wikipedia.org/wiki/WebAssembly
 //! [WebGL]: https://en.wikipedia.org/wiki/WebGL
+//!
+//! **NOTE**: Not all features are enabled by default, see [Optional Features](#optional-features).
 //!
 //! # Camera Modes
 //!
@@ -76,6 +78,14 @@
 //!
 //! [#1680]: https://github.com/bevyengine/bevy/issues/1680
 //!
+//! # Optional Features
+//!
+//! Following features are disabled unless their corresponding feature gate is enabled:
+//!
+//!   * `bevy_egui` for automatic viewport stealing whenever `egui` wants focus.
+//!   * `serialize` for `serde` support of various structures of this crate and its dependencies.
+//!   * `c11-orbit` for testing the behaviorally identical C implementation of the exponential map.
+//!
 //! # Roadmap
 //!
 //!   * Implement gliding clamp for first-person mode and scale operation, see
@@ -107,7 +117,7 @@
 //! # Usage
 //!
 //! Add the [`TrackballPlugin`] followed by spawning a [`TrackballController`] together with a
-//! [`TrackballCamera`] and a `Camera3dBundle` or see simple and advanced [examples].
+//! [`TrackballCamera`] and a `Camera3dBundle` or try the interactive [examples].
 //!
 //! ```no_run
 //! use bevy::prelude::*;
