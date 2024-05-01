@@ -3,6 +3,7 @@
   * Update `bevy_egui` to `0.27.0`.
   * Update `bevy` to `0.13.2`.
   * Document optional features.
+  * Move webpage avoiding redirects and repository bloat.
 
 # Version 0.5.0 (2024-03-19)
 
