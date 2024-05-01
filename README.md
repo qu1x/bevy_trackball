@@ -98,7 +98,7 @@ away from the screen’s center (e.g., the rotation accelerates towards the edge
 
 [#1680]: https://github.com/bevyengine/bevy/issues/1680
 
-# Optional Features
+## Optional Features
 
 Following features are disabled unless their corresponding feature gate is enabled:
 
