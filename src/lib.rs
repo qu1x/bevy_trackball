@@ -152,12 +152,6 @@
 //! [`egui`]: https://qu1x.github.io/bevy_trackball/examples/egui.html
 //! [`scaling_modes`]: https://github.com/qu1x/bevy_trackball/blob/main/examples/scaling_modes.rs
 
-#![forbid(unsafe_code)]
-#![forbid(missing_docs)]
-#![deny(rustdoc::broken_intra_doc_links)]
-#![allow(clippy::tabs_in_doc_comments)]
-#![allow(clippy::module_name_repetitions)]
-
 use bevy::prelude::*;
 use camera::trackball_camera;
 pub use camera::TrackballCamera;
