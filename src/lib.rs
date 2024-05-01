@@ -145,11 +145,11 @@
 //! }
 //! ```
 //!
-//! [examples]: https://qu1x.github.io/bevy_trackball/examples
-//! [`exponential_map`]: https://qu1x.github.io/bevy_trackball/examples/exponential_map.html
-//! [`gliding_clamp`]: https://qu1x.github.io/bevy_trackball/examples/gliding_clamp.html
-//! [`constellation_clamp`]: https://qu1x.github.io/bevy_trackball/examples/constellation_clamp.html
-//! [`egui`]: https://qu1x.github.io/bevy_trackball/examples/egui.html
+//! [examples]: https://qu1x.dev/bevy_trackball
+//! [`exponential_map`]: https://qu1x.dev/bevy_trackball/exponential_map.html
+//! [`gliding_clamp`]: https://qu1x.dev/bevy_trackball/gliding_clamp.html
+//! [`constellation_clamp`]: https://qu1x.dev/bevy_trackball/constellation_clamp.html
+//! [`egui`]: https://qu1x.dev/bevy_trackball/egui.html
 //! [`scaling_modes`]: https://github.com/qu1x/bevy_trackball/blob/main/examples/scaling_modes.rs
 
 use bevy::prelude::*;

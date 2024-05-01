@@ -14,7 +14,7 @@ Coherent virtual trackball controller/camera plugin for Bevy
 [Rust]: https://img.shields.io/badge/rust-v1.76.0-brightgreen.svg
 [License]: https://img.shields.io/badge/License-MIT%20OR%20Apache--2.0-blue.svg
 
-[Documentation](https://qu1x.github.io/bevy_trackball/doc/bevy_trackball)
+[Documentation](https://doc.qu1x.dev/bevy_trackball/bevy_trackball)
 
 Run interactive [examples] in your browser using [WebAssembly] and [WebGL].
 
@@ -62,9 +62,9 @@ away from the screen’s center (e.g., the rotation accelerates towards the edge
 [S2CID]: https://en.wikipedia.org/wiki/S2CID_(identifier)
 [44199608]: https://api.semanticscholar.org/CorpusID:44199608
 
-[`trackball`]: https://qu1x.github.io/bevy_trackball/doc/trackball/index.html
-[`TrackballWheelUnit`]: https://qu1x.github.io/bevy_trackball/doc/bevy_trackball/enum.TrackballWheelUnit.html
-[`TrackballVelocity`]: https://qu1x.github.io/bevy_trackball/doc/bevy_trackball/enum.TrackballVelocity.html
+[`trackball`]: https://doc.qu1x.dev/bevy_trackball/trackball
+[`TrackballWheelUnit`]: https://doc.qu1x.dev/bevy_trackball/bevy_trackball/enum.TrackballWheelUnit.html
+[`TrackballVelocity`]: https://doc.qu1x.dev/bevy_trackball/bevy_trackball/enum.TrackballVelocity.html
 
 ## Additional Features
 
@@ -136,8 +136,8 @@ Left Press + Release    | Any + Release           | &nbsp;   | Slides to cursor/
 Alternatively, [`TrackballInput::map_wasd`] maps `wasd`/`Space`/`ControlLeft` to slide
 operations where `ws` slides in/out and `Space`/`ControlLeft` slides up/down (jump/crouch).
 
-[`TrackballInput`]: https://qu1x.github.io/bevy_trackball/doc/bevy_trackball/struct.TrackballInput.html
-[`TrackballInput::map_wasd`]: https://qu1x.github.io/bevy_trackball/doc/bevy_trackball/struct.TrackballInput.html#method.map_wasd
+[`TrackballInput`]: https://doc.qu1x.dev/bevy_trackball/bevy_trackball/struct.TrackballInput.html
+[`TrackballInput::map_wasd`]: https://doc.qu1x.dev/bevy_trackball/bevy_trackball/struct.TrackballInput.html#method.map_wasd
 
 ## Usage
 
@@ -170,15 +170,15 @@ fn setup(mut commands: Commands) {
 }
 ```
 
-[`TrackballPlugin`]: https://qu1x.github.io/bevy_trackball/doc/bevy_trackball/struct.TrackballPlugin.html
-[`TrackballController`]: https://qu1x.github.io/bevy_trackball/doc/bevy_trackball/struct.TrackballController.html
-[`TrackballCamera`]: https://qu1x.github.io/bevy_trackball/doc/bevy_trackball/struct.TrackballCamera.html
+[`TrackballPlugin`]: https://doc.qu1x.dev/bevy_trackball/bevy_trackball/struct.TrackballPlugin.html
+[`TrackballController`]: https://doc.qu1x.dev/bevy_trackball/bevy_trackball/struct.TrackballController.html
+[`TrackballCamera`]: https://doc.qu1x.dev/bevy_trackball/bevy_trackball/struct.TrackballCamera.html
 
-[examples]: https://qu1x.github.io/bevy_trackball/examples
-[`exponential_map`]: https://qu1x.github.io/bevy_trackball/examples/exponential_map.html
-[`gliding_clamp`]: https://qu1x.github.io/bevy_trackball/examples/gliding_clamp.html
-[`constellation_clamp`]: https://qu1x.github.io/bevy_trackball/examples/constellation_clamp.html
-[`egui`]: https://qu1x.github.io/bevy_trackball/examples/egui.html
+[examples]: https://qu1x.dev/bevy_trackball
+[`exponential_map`]: https://qu1x.dev/bevy_trackball/exponential_map.html
+[`gliding_clamp`]: https://qu1x.dev/bevy_trackball/gliding_clamp.html
+[`constellation_clamp`]: https://qu1x.dev/bevy_trackball/constellation_clamp.html
+[`egui`]: https://qu1x.dev/bevy_trackball/egui.html
 [`scaling_modes`]: https://github.com/qu1x/bevy_trackball/blob/main/examples/scaling_modes.rs
 
 # License
