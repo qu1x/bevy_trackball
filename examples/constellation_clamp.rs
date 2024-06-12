@@ -5,8 +5,8 @@
 //!  3. The minimap is additionally sensitive to the controller of the maximap.
 //!  5. When orbiting the maximap down by pressing `k`, it will stop as soon as the initially lower
 //!     positioned minimap camera hits the ground plane.
-//!  6. Toggling from rigid to loose constellation clamp by pressing `Space` while keeping `k`
-//!     pressed allows the maximap camera to orbit further until it hits the ground by itself.
+//!  6. Toggling from rigid to loose constellation clamp by pressing `q` while keeping `k` pressed
+//!     allows the maximap camera to orbit further until it hits the ground by itself.
 //!  7. Press `Return` to reset camera positions and try again.
 
 #![allow(clippy::cast_precision_loss, clippy::cast_possible_truncation)]
@@ -14,6 +14,8 @@
 use std::f32::consts::PI;
 
 use bevy::{
+	color::palettes::basic::SILVER,
+	pbr::wireframe::{WireframeConfig, WireframePlugin},
 	prelude::*,
 	render::{
 		camera::Viewport,
@@ -26,7 +28,7 @@ use bevy_trackball::prelude::*;
 
 fn main() {
 	App::new()
-		.add_plugins(
+		.add_plugins((
 			DefaultPlugins
 				.set(ImagePlugin::default_nearest())
 				.set(WindowPlugin {
@@ -36,11 +38,12 @@ fn main() {
 					}),
 					..default()
 				}),
-		)
+			WireframePlugin,
+		))
 		.add_plugins(TrackballPlugin)
 		.add_systems(Startup, setup)
-		.add_systems(Update, resize_minimap)
-		.add_systems(Update, toggle_rigid_loose)
+		.add_systems(Update, (rotate, toggle_wireframe))
+		.add_systems(Update, (resize_minimap, toggle_rigid_loose))
 		.run();
 }
 
@@ -48,7 +51,9 @@ fn main() {
 #[derive(Component)]
 struct Shape;
 
-const X_EXTENT: f32 = 14.5;
+const SHAPES_X_EXTENT: f32 = 14.0;
+const EXTRUSION_X_EXTENT: f32 = 16.0;
+const Z_EXTENT: f32 = 5.0;
 
 fn setup(
 	windows: Query<&Window>,
@@ -64,11 +69,24 @@ fn setup(
 
 	let shapes = [
 		meshes.add(Cuboid::default()),
+		meshes.add(Tetrahedron::default()),
 		meshes.add(Capsule3d::default()),
 		meshes.add(Torus::default()),
 		meshes.add(Cylinder::default()),
+		meshes.add(Cone::default()),
+		meshes.add(ConicalFrustum::default()),
 		meshes.add(Sphere::default().mesh().ico(5).unwrap()),
 		meshes.add(Sphere::default().mesh().uv(32, 18)),
+	];
+
+	let extrusions = [
+		meshes.add(Extrusion::new(Rectangle::default(), 1.)),
+		meshes.add(Extrusion::new(Capsule2d::default(), 1.)),
+		meshes.add(Extrusion::new(Annulus::default(), 1.)),
+		meshes.add(Extrusion::new(Circle::default(), 1.)),
+		meshes.add(Extrusion::new(Ellipse::default(), 1.)),
+		meshes.add(Extrusion::new(RegularPolygon::default(), 1.)),
+		meshes.add(Extrusion::new(Triangle2d::default(), 1.)),
 	];
 
 	let num_shapes = shapes.len();
@@ -79,9 +97,29 @@ fn setup(
 				mesh: shape,
 				material: debug_material.clone(),
 				transform: Transform::from_xyz(
-					(i as f32 / (num_shapes - 1) as f32).mul_add(X_EXTENT, -X_EXTENT / 2.),
+					-SHAPES_X_EXTENT / 2. + i as f32 / (num_shapes - 1) as f32 * SHAPES_X_EXTENT,
 					2.0,
-					0.0,
+					Z_EXTENT / 2.0,
+				)
+				.with_rotation(Quat::from_rotation_x(-PI / 4.)),
+				..default()
+			},
+			Shape,
+		));
+	}
+
+	let num_extrusions = extrusions.len();
+
+	for (i, shape) in extrusions.into_iter().enumerate() {
+		commands.spawn((
+			PbrBundle {
+				mesh: shape,
+				material: debug_material.clone(),
+				transform: Transform::from_xyz(
+					-EXTRUSION_X_EXTENT / 2.
+						+ i as f32 / (num_extrusions - 1) as f32 * EXTRUSION_X_EXTENT,
+					2.0,
+					-Z_EXTENT / 2.,
 				)
 				.with_rotation(Quat::from_rotation_x(-PI / 4.)),
 				..default()
@@ -96,6 +134,7 @@ fn setup(
 			shadows_enabled: true,
 			intensity: 10_000_000.,
 			range: 100.0,
+			shadow_depth_bias: 0.2,
 			..default()
 		},
 		transform: Transform::from_xyz(8.0, 16.0, 8.0),
@@ -105,7 +144,7 @@ fn setup(
 	// ground plane
 	commands.spawn(PbrBundle {
 		mesh: meshes.add(Plane3d::default().mesh().size(50.0, 50.0)),
-		material: materials.add(Color::SILVER),
+		material: materials.add(Color::from(SILVER)),
 		..default()
 	});
 
@@ -115,7 +154,7 @@ fn setup(
 	bound.min_eye[1] = 0.3;
 	bound.min_distance = 6.0;
 	bound.max_distance = 50.0;
-	let [target, eye, up] = [Vec3::Y, Vec3::new(0.0, 9.0, 12.0), Vec3::Y];
+	let [target, eye, up] = [Vec3::Y, Vec3::new(0.0, 7.0, 14.0), Vec3::Y];
 	let maximap = commands
 		.spawn((
 			TrackballController::default(),
@@ -124,11 +163,12 @@ fn setup(
 		))
 		.id();
 	let window = windows.single();
-	let size = window.resolution.physical_width() / 4;
-	let eye = Vec3::new(0.0, 3.0, 12.0);
+	let width = window.resolution.physical_width() / 3;
+	let height = window.resolution.physical_height() / 3;
+	let down = Quat::from_rotation_x(15f32.to_radians());
 	commands.spawn((
 		TrackballController::default(),
-		TrackballCamera::look_at(target, eye, Vec3::Y)
+		TrackballCamera::look_at(target, down * (eye - target) + target, up)
 			.with_clamp(bound)
 			.add_controller(maximap, true),
 		Camera3dBundle {
@@ -137,10 +177,10 @@ fn setup(
 				clear_color: ClearColorConfig::None,
 				viewport: Some(Viewport {
 					physical_position: UVec2::new(
-						window.resolution.physical_width() - size,
-						window.resolution.physical_height() - size,
+						window.resolution.physical_width() - width,
+						window.resolution.physical_height() - height,
 					),
-					physical_size: UVec2::new(size, size),
+					physical_size: UVec2::new(width, height),
 					..default()
 				}),
 				..default()
@@ -153,13 +193,20 @@ fn setup(
 	// UI
 	commands.spawn((
 		TargetCamera(maximap),
-		TextBundle::from_section(
-			"Rigid Constellation Clamp (Toggle: Space)",
-			TextStyle {
-				font_size: 18.0,
-				color: Color::WHITE,
+		TextBundle::from_section("Press space to toggle wireframes", TextStyle::default())
+			.with_style(Style {
+				position_type: PositionType::Absolute,
+				top: Val::Px(12.0),
+				left: Val::Px(12.0),
 				..default()
-			},
+			}),
+	));
+	commands.spawn((
+		Clamp,
+		TargetCamera(maximap),
+		TextBundle::from_section(
+			"Rigid Constellation Clamp (Toggle: Q)",
+			TextStyle::default(),
 		)
 		.with_style(Style {
 			position_type: PositionType::Absolute,
@@ -169,6 +216,9 @@ fn setup(
 		}),
 	));
 }
+
+#[derive(Component)]
+struct Clamp;
 
 #[derive(Component)]
 struct MinimapCamera;
@@ -182,13 +232,14 @@ fn resize_minimap(
 	for resize_event in resize_events.read() {
 		let window = windows.get(resize_event.window).unwrap();
 		let mut minimap = minimap.single_mut();
-		let size = window.resolution.physical_width() / 4;
+		let width = window.resolution.physical_width() / 3;
+		let height = window.resolution.physical_height() / 3;
 		minimap.viewport = Some(Viewport {
 			physical_position: UVec2::new(
-				window.resolution.physical_width() - size,
-				window.resolution.physical_height() - size,
+				window.resolution.physical_width() - width,
+				window.resolution.physical_height() - height,
 			),
-			physical_size: UVec2::new(size, size),
+			physical_size: UVec2::new(width, height),
 			..default()
 		});
 	}
@@ -197,20 +248,26 @@ fn resize_minimap(
 #[allow(clippy::needless_pass_by_value)]
 fn toggle_rigid_loose(
 	mut minimap: Query<&mut TrackballCamera, With<MinimapCamera>>,
-	mut text: Query<&mut Text>,
+	mut text: Query<&mut Text, With<Clamp>>,
 	keycode: Res<ButtonInput<KeyCode>>,
 ) {
-	if keycode.just_pressed(KeyCode::Space) {
+	if keycode.just_pressed(KeyCode::KeyQ) {
 		let mut text = text.single_mut();
 		let text = &mut text.sections[0].value;
 		let mut minimap = minimap.single_mut();
 		let rigid = minimap.group.values_mut().next().unwrap();
 		if *rigid {
-			*text = "Loose Constellation Clamp (Toggle: Space)".to_owned();
+			*text = "Loose Constellation Clamp (Toggle: Q)".to_owned();
 		} else {
-			*text = "Rigid Constellation Clamp (Toggle: Space)".to_owned();
+			*text = "Rigid Constellation Clamp (Toggle: Q)".to_owned();
 		}
 		*rigid = !*rigid;
+	}
+}
+
+fn rotate(mut query: Query<&mut Transform, With<Shape>>, time: Res<Time>) {
+	for mut transform in &mut query {
+		transform.rotate_y(time.delta_seconds() / 2.);
 	}
 }
 
@@ -241,4 +298,13 @@ fn uv_debug_texture() -> Image {
 		TextureFormat::Rgba8UnormSrgb,
 		RenderAssetUsages::RENDER_WORLD,
 	)
+}
+
+fn toggle_wireframe(
+	mut wireframe_config: ResMut<WireframeConfig>,
+	keyboard: Res<ButtonInput<KeyCode>>,
+) {
+	if keyboard.just_pressed(KeyCode::Space) {
+		wireframe_config.global = !wireframe_config.global;
+	}
 }

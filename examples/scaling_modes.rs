@@ -41,7 +41,7 @@ fn setup(
 	// cube
 	commands.spawn(PbrBundle {
 		mesh: meshes.add(Cuboid::new(1.0, 1.0, 1.0)),
-		material: materials.add(Color::rgb_u8(124, 144, 255)),
+		material: materials.add(Color::srgb_u8(124, 144, 255)),
 		transform: Transform::from_xyz(0.0, 0.5, 0.0),
 		..default()
 	});
@@ -61,7 +61,7 @@ fn setup(
 	let res = &window1.resolution;
 	let max = Vec2::new(res.width() * 0.5, res.height()).into();
 	// Left and right camera orientation.
-	let [target, eye, up] = [Vec3::Y * 0.25, Vec3::new(-2.0, 2.5, 5.0), Vec3::Y];
+	let [target, eye, up] = [Vec3::Y * 0.25, Vec3::new(-2.5, 4.5, 9.0), Vec3::Y];
 	// Spawn a 2nd window.
 	let window2 = commands
 		.spawn(Window {
