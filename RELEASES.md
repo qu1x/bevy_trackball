@@ -1,6 +1,6 @@
 # Version 0.7.0 (2024-??-??)
 
-  * Update `bevy` to `0.14.0-rc.3`.
+  * Update `bevy` to `0.14.0-rc`.
 
 # Version 0.6.0 (2024-05-01)
 
