@@ -2,7 +2,7 @@
 
   * Update `bevy` to `0.14.0`.
   * Update `trackball` to `0.14.0`.
-  * Improve examples.
+  * Improve examples, avoid CDN.
 
 # Version 0.6.0 (2024-05-01)
 
