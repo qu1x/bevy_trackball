@@ -1,6 +1,7 @@
 # Version 0.7.0 (2024-07-06)
 
   * Update `bevy` to `0.14.0`.
+  * Update `trackball` to `0.14.0`.
   * Improve examples.
 
 # Version 0.6.0 (2024-05-01)
