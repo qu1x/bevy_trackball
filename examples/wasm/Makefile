@@ -28,7 +28,7 @@ page: wasm html
 
 target:
 	mkdir target
-	cp -a -- woff woff2 *.css *.js $@
+	cp -a -- woff woff2 *.png *.css *.js $@
 
 .PHONY: update
 udpate:;
