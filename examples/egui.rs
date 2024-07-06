@@ -130,27 +130,23 @@ fn setup(
 		.insert(MainPassCube);
 
 	// Defines initial transform of cameras and light.
-	let target = Vec3::new(0.0, 0.0, 0.0);
+	let target = Vec3::ZERO;
 	let eye = Vec3::new(0.0, 0.0, 15.0);
 	let up = Vec3::Y;
 
-	// Light
-	//
-	// NOTE: Currently lights are shared between passes,
-	// see https://github.com/bevyengine/bevy/issues/3462
-	commands.spawn(SpotLightBundle {
-		transform: Transform::from_xyz(eye.x, eye.y, eye.z).looking_at(target, up),
-		spot_light: SpotLight {
-			intensity: 10_000_000.,
-			range: 100.0,
-			color: Color::WHITE,
-			shadows_enabled: true,
-			inner_angle: PI / 4.0 * 0.85,
-			outer_angle: PI / 4.0,
+	// The same light is reused for both passes, you can specify different lights for preview and
+	// main pass by setting appropriate `RenderLayers`.
+	commands
+		.spawn(SpotLightBundle {
+			transform: Transform::from_translation(eye).looking_at(target, up),
+			spot_light: SpotLight {
+				intensity: 10_000_000.0,
+				range: 100.0,
+				..default()
+			},
 			..default()
-		},
-		..default()
-	});
+		})
+		.insert(RenderLayers::default().with(1));
 
 	// The main pass camera with controller.
 	let controller = commands
@@ -166,7 +162,7 @@ fn setup(
 		.spawn((
 			Camera3dBundle {
 				camera: Camera {
-					// render before the "main pass" camera
+					// Render before the main pass camera.
 					order: -1,
 					target: RenderTarget::Image(image_handle),
 					clear_color: ClearColorConfig::Custom(Color::srgba(1.0, 1.0, 1.0, 0.0)),
