@@ -13,9 +13,10 @@
 
 use std::f32::consts::PI;
 
+#[cfg(not(target_arch = "wasm32"))]
+use bevy::pbr::wireframe::{WireframeConfig, WireframePlugin};
 use bevy::{
 	color::palettes::basic::SILVER,
-	pbr::wireframe::{WireframeConfig, WireframePlugin},
 	prelude::*,
 	render::{
 		camera::Viewport,
@@ -38,11 +39,19 @@ fn main() {
 					}),
 					..default()
 				}),
+			#[cfg(not(target_arch = "wasm32"))]
 			WireframePlugin,
 		))
 		.add_plugins(TrackballPlugin)
 		.add_systems(Startup, setup)
-		.add_systems(Update, (rotate, toggle_wireframe))
+		.add_systems(
+			Update,
+			(
+				rotate,
+				#[cfg(not(target_arch = "wasm32"))]
+				toggle_wireframe,
+			),
+		)
 		.add_systems(Update, (resize_minimap, toggle_rigid_loose))
 		.run();
 }
@@ -191,6 +200,7 @@ fn setup(
 	));
 
 	// UI
+	#[cfg(not(target_arch = "wasm32"))]
 	commands.spawn((
 		TargetCamera(maximap),
 		TextBundle::from_section("Press space to toggle wireframes", TextStyle::default())
@@ -300,6 +310,7 @@ fn uv_debug_texture() -> Image {
 	)
 }
 
+#[cfg(not(target_arch = "wasm32"))]
 fn toggle_wireframe(
 	mut wireframe_config: ResMut<WireframeConfig>,
 	keyboard: Res<ButtonInput<KeyCode>>,

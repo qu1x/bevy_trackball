@@ -2,6 +2,7 @@
 
   * Update `bevy_egui`.
   * Bump MSRV.
+  * Disable wireframe mode in examples when unsupported.
 
 # Version 0.7.0 (2024-07-06)
 
