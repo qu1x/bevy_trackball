@@ -1,3 +1,8 @@
+# Version 0.8.0 (2024-10-27)
+
+  * Update `bevy_egui`.
+  * Bump MSRV.
+
 # Version 0.7.0 (2024-07-06)
 
   * Update `bevy` to `0.14.0`.
