@@ -164,7 +164,7 @@ fn setup(mut commands: Commands) {
 	commands.spawn((
 		TrackballController::default(),
 		TrackballCamera::look_at(target, eye, up),
-		Camera3dBundle::default(),
+		Camera3d::default(),
 	));
 
 	// Set up your scene...
