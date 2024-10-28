@@ -1,7 +1,8 @@
 use bevy::{
 	input::mouse::{MouseMotion, MouseScrollUnit, MouseWheel},
 	prelude::*,
-	window::CursorGrabMode,
+	window::{CursorGrabMode, SystemCursorIcon},
+	winit::cursor::CursorIcon,
 };
 use trackball::{
 	nalgebra::{Point2, Point3},
@@ -11,11 +12,14 @@ use trackball::{
 use super::{TrackballCamera, TrackballController, TrackballEvent};
 
 #[allow(clippy::too_many_arguments)]
+#[allow(clippy::too_many_lines)]
 pub fn mouse(
+	commands: &mut Commands,
 	group: Entity,
 	trackball_events: &mut EventWriter<TrackballEvent>,
 	trackball: &TrackballCamera,
 	controller: &mut TrackballController,
+	window_id: Entity,
 	window: &mut Window,
 	mouse_input: &Res<ButtonInput<MouseButton>>,
 	mut delta_events: EventReader<MouseMotion>,
@@ -37,13 +41,13 @@ pub fn mouse(
 	};
 	if just_pressed_button(controller.input.first_button) {
 		controller.first.capture(trackball.frame.yaw_axis());
-		window.cursor.grab_mode = CursorGrabMode::Locked;
-		window.cursor.visible = false;
+		window.cursor_options.grab_mode = CursorGrabMode::Locked;
+		window.cursor_options.visible = false;
 	}
 	if just_released_button(controller.input.first_button) {
 		controller.first.discard();
-		window.cursor.grab_mode = CursorGrabMode::None;
-		window.cursor.visible = true;
+		window.cursor_options.grab_mode = CursorGrabMode::None;
+		window.cursor_options.visible = true;
 	}
 	for delta_event in delta_events.read() {
 		if controller.first.enabled() {
@@ -57,7 +61,9 @@ pub fn mouse(
 	if just_pressed_button(controller.input.orbit_button) {
 		controller.touch.compute(None, pos, 0);
 		controller.orbit.compute(&pos, &max);
-		window.cursor.icon = CursorIcon::Pointer;
+		commands
+			.entity(window_id)
+			.insert(CursorIcon::from(SystemCursorIcon::Pointer));
 	}
 	if just_released_button(controller.input.orbit_button) {
 		if let Some((_num, pos)) = controller.touch.discard(None) {
@@ -68,15 +74,21 @@ pub fn mouse(
 			}
 		}
 		controller.orbit.discard();
-		window.cursor.icon = CursorIcon::Default;
+		commands
+			.entity(window_id)
+			.insert(CursorIcon::from(SystemCursorIcon::Default));
 	}
 	if just_pressed_button(controller.input.slide_button) {
 		controller.slide.compute(pos);
-		window.cursor.icon = CursorIcon::Move;
+		commands
+			.entity(window_id)
+			.insert(CursorIcon::from(SystemCursorIcon::Move));
 	}
 	if just_released_button(controller.input.slide_button) {
 		controller.slide.discard();
-		window.cursor.icon = CursorIcon::Default;
+		commands
+			.entity(window_id)
+			.insert(CursorIcon::from(SystemCursorIcon::Default));
 	}
 	for mouse_event in mouse_events.read() {
 		let pos = mouse_event.position - min;

@@ -1,7 +1,8 @@
 use bevy::{
 	input::mouse::{MouseMotion, MouseWheel},
 	prelude::*,
-	window::{CursorGrabMode, PrimaryWindow},
+	window::{CursorGrabMode, PrimaryWindow, SystemCursorIcon},
+	winit::cursor::CursorIcon,
 };
 pub use input::{TrackballInput, TrackballVelocity, TrackballWheelUnit};
 use key::key;
@@ -53,6 +54,7 @@ impl TrackballController {
 #[allow(clippy::needless_pass_by_value)]
 #[allow(clippy::too_many_arguments)]
 pub fn trackball_controller(
+	mut commands: Commands,
 	mut viewport: ResMut<TrackballViewport>,
 	time: Res<Time>,
 	key_input: Res<ButtonInput<KeyCode>>,
@@ -62,7 +64,7 @@ pub fn trackball_controller(
 	mut delta_events: EventReader<MouseMotion>,
 	mut mouse_events: EventReader<CursorMoved>,
 	mut wheel_events: EventReader<MouseWheel>,
-	mut primary_windows: Query<&mut Window, With<PrimaryWindow>>,
+	mut primary_windows: Query<(Entity, &mut Window), With<PrimaryWindow>>,
 	mut secondary_windows: Query<&mut Window, Without<PrimaryWindow>>,
 	mut cameras: Query<(Entity, &Camera, &TrackballCamera, &mut TrackballController)>,
 	mut trackball_events: EventWriter<TrackballEvent>,
@@ -73,7 +75,7 @@ pub fn trackball_controller(
 		mouse_events.clear();
 		wheel_events.clear();
 	}
-	let Some((is_changed, mut window, group, camera, trackball, mut controller)) =
+	let Some((is_changed, window_id, mut window, group, camera, trackball, mut controller)) =
 		TrackballViewport::select(
 			&mut viewport,
 			&key_input,
@@ -100,15 +102,17 @@ pub fn trackball_controller(
 		controller.slide.discard();
 		controller.touch.discard(None);
 		controller.touch.discard(None);
-		window.cursor.icon = CursorIcon::Default;
-		window.cursor.grab_mode = CursorGrabMode::None;
-		window.cursor.visible = true;
+		commands
+			.entity(window_id)
+			.insert(CursorIcon::from(SystemCursorIcon::Default));
+		window.cursor_options.grab_mode = CursorGrabMode::None;
+		window.cursor_options.visible = true;
 	}
 	let zat = trackball.frame.distance();
 	let (_max, upp) = trackball.scope.fov().max_and_upp(zat, &max.into());
 	let v = controller.input.velocity.to_linear(zat).into_inner();
 	let w = controller.input.velocity.to_angular(zat).into_inner();
-	let t = time.delta_seconds();
+	let t = time.delta_secs();
 	key(
 		group,
 		&mut trackball_events,
@@ -123,10 +127,12 @@ pub fn trackball_controller(
 		t,
 	);
 	mouse(
+		&mut commands,
 		group,
 		&mut trackball_events,
 		trackball,
 		&mut controller,
+		window_id,
 		&mut window,
 		&mouse_input,
 		delta_events,

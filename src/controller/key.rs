@@ -99,13 +99,13 @@ pub fn key(
 	}
 	if just_pressed(controller.input.first_key) {
 		controller.first.capture(trackball.frame.yaw_axis());
-		window.cursor.grab_mode = CursorGrabMode::Locked;
-		window.cursor.visible = false;
+		window.cursor_options.grab_mode = CursorGrabMode::Locked;
+		window.cursor_options.visible = false;
 	}
 	if just_released(controller.input.first_key) {
 		controller.first.discard();
-		window.cursor.grab_mode = CursorGrabMode::None;
-		window.cursor.visible = true;
+		window.cursor_options.grab_mode = CursorGrabMode::None;
+		window.cursor_options.visible = true;
 	}
 	controller.scale.set_denominator(zat);
 	if pressed(controller.input.scale_in_key) {

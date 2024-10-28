@@ -92,11 +92,12 @@ impl TrackballViewport {
 		mouse_input: &Res<ButtonInput<MouseButton>>,
 		touch_events: &mut EventReader<TouchInput>,
 		wheel_events: &EventReader<MouseWheel>,
-		primary_windows: &'a mut Query<&mut Window, With<PrimaryWindow>>,
+		primary_windows: &'a mut Query<(Entity, &mut Window), With<PrimaryWindow>>,
 		secondary_windows: &'a mut Query<&mut Window, Without<PrimaryWindow>>,
 		cameras: &'a mut Query<(Entity, &Camera, &TrackballCamera, &mut TrackballController)>,
 	) -> Option<(
 		bool,
+		Entity,
 		Mut<'a, Window>,
 		Entity,
 		&'a Camera,
@@ -112,13 +113,16 @@ impl TrackballViewport {
 			|| mouse_input.get_just_pressed().len() != 0;
 		let mut new_viewport = viewport.clone();
 		let mut max_order = 0;
-		for (entity, camera, _trackball, _controller) in cameras.iter() {
+		for (group, camera, _trackball, _controller) in cameras.iter() {
 			let RenderTarget::Window(window_ref) = camera.target else {
 				continue;
 			};
 			let window = match window_ref {
-				WindowRef::Primary => primary_windows.get_single().ok(),
-				WindowRef::Entity(entity) => secondary_windows.get(entity).ok(),
+				WindowRef::Primary => primary_windows
+					.get_single()
+					.ok()
+					.map(|(_id, window)| window),
+				WindowRef::Entity(id) => secondary_windows.get(id).ok(),
 			};
 			let Some(window) = window else {
 				continue;
@@ -134,7 +138,7 @@ impl TrackballViewport {
 			};
 			let contained = (min.x..max.x).contains(&pos.x) && (min.y..max.y).contains(&pos.y);
 			if contained && camera.order >= max_order {
-				new_viewport.entity = Some(entity);
+				new_viewport.entity = Some(group);
 				max_order = camera.order;
 			}
 		}
@@ -145,17 +149,22 @@ impl TrackballViewport {
 		let camera = viewport
 			.entity
 			.and_then(|entity| cameras.get_mut(entity).ok());
-		let Some((entity, camera, trackball, controller)) = camera else {
+		let Some((group, camera, trackball, controller)) = camera else {
 			viewport.entity = None;
 			return None;
 		};
 		let RenderTarget::Window(window_ref) = camera.target else {
 			return None;
 		};
-		let window = match window_ref {
+		let (window_id, window) = match window_ref {
 			WindowRef::Primary => primary_windows.get_single_mut().ok(),
-			WindowRef::Entity(entity) => secondary_windows.get_mut(entity).ok(),
+			WindowRef::Entity(id) => secondary_windows
+				.get_mut(id)
+				.ok()
+				.map(|window| (id, window)),
 		}?;
-		Some((is_changed, window, entity, camera, trackball, controller))
+		Some((
+			is_changed, window_id, window, group, camera, trackball, controller,
+		))
 	}
 }

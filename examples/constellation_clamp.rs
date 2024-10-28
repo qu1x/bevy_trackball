@@ -102,17 +102,14 @@ fn setup(
 
 	for (i, shape) in shapes.into_iter().enumerate() {
 		commands.spawn((
-			PbrBundle {
-				mesh: shape,
-				material: debug_material.clone(),
-				transform: Transform::from_xyz(
-					-SHAPES_X_EXTENT / 2. + i as f32 / (num_shapes - 1) as f32 * SHAPES_X_EXTENT,
-					2.0,
-					Z_EXTENT / 2.0,
-				)
-				.with_rotation(Quat::from_rotation_x(-PI / 4.)),
-				..default()
-			},
+			Mesh3d(shape),
+			MeshMaterial3d(debug_material.clone()),
+			Transform::from_xyz(
+				-SHAPES_X_EXTENT / 2. + i as f32 / (num_shapes - 1) as f32 * SHAPES_X_EXTENT,
+				2.0,
+				Z_EXTENT / 2.0,
+			)
+			.with_rotation(Quat::from_rotation_x(-PI / 4.)),
 			Shape,
 		));
 	}
@@ -121,41 +118,36 @@ fn setup(
 
 	for (i, shape) in extrusions.into_iter().enumerate() {
 		commands.spawn((
-			PbrBundle {
-				mesh: shape,
-				material: debug_material.clone(),
-				transform: Transform::from_xyz(
-					-EXTRUSION_X_EXTENT / 2.
-						+ i as f32 / (num_extrusions - 1) as f32 * EXTRUSION_X_EXTENT,
-					2.0,
-					-Z_EXTENT / 2.,
-				)
-				.with_rotation(Quat::from_rotation_x(-PI / 4.)),
-				..default()
-			},
+			Mesh3d(shape),
+			MeshMaterial3d(debug_material.clone()),
+			Transform::from_xyz(
+				-EXTRUSION_X_EXTENT / 2.
+					+ i as f32 / (num_extrusions - 1) as f32 * EXTRUSION_X_EXTENT,
+				2.0,
+				-Z_EXTENT / 2.,
+			)
+			.with_rotation(Quat::from_rotation_x(-PI / 4.)),
 			Shape,
 		));
 	}
 
 	// light
-	commands.spawn(PointLightBundle {
-		point_light: PointLight {
+	commands.spawn((
+		PointLight {
 			shadows_enabled: true,
 			intensity: 10_000_000.,
 			range: 100.0,
 			shadow_depth_bias: 0.2,
 			..default()
 		},
-		transform: Transform::from_xyz(8.0, 16.0, 8.0),
-		..default()
-	});
+		Transform::from_xyz(8.0, 16.0, 8.0),
+	));
 
 	// ground plane
-	commands.spawn(PbrBundle {
-		mesh: meshes.add(Plane3d::default().mesh().size(50.0, 50.0)),
-		material: materials.add(Color::from(SILVER)),
-		..default()
-	});
+	commands.spawn((
+		Mesh3d(meshes.add(Plane3d::default().mesh().size(50.0, 50.0))),
+		MeshMaterial3d(materials.add(Color::from(SILVER))),
+	));
 
 	// cameras and boundary conditions
 	let mut bound = Bound::default();
@@ -168,7 +160,7 @@ fn setup(
 		.spawn((
 			TrackballController::default(),
 			TrackballCamera::look_at(target, eye, up).with_clamp(bound.clone()),
-			Camera3dBundle::default(),
+			Camera3d::default(),
 		))
 		.id();
 	let window = windows.single();
@@ -180,22 +172,20 @@ fn setup(
 		TrackballCamera::look_at(target, down * (eye - target) + target, up)
 			.with_clamp(bound)
 			.add_controller(maximap, true),
-		Camera3dBundle {
-			camera: Camera {
-				order: 1,
-				clear_color: ClearColorConfig::None,
-				viewport: Some(Viewport {
-					physical_position: UVec2::new(
-						window.resolution.physical_width() - width,
-						window.resolution.physical_height() - height,
-					),
-					physical_size: UVec2::new(width, height),
-					..default()
-				}),
+		Camera {
+			order: 1,
+			clear_color: ClearColorConfig::None,
+			viewport: Some(Viewport {
+				physical_position: UVec2::new(
+					window.resolution.physical_width() - width,
+					window.resolution.physical_height() - height,
+				),
+				physical_size: UVec2::new(width, height),
 				..default()
-			},
+			}),
 			..default()
 		},
+		Camera3d::default(),
 		MinimapCamera,
 	));
 
@@ -203,27 +193,24 @@ fn setup(
 	#[cfg(not(target_arch = "wasm32"))]
 	commands.spawn((
 		TargetCamera(maximap),
-		TextBundle::from_section("Press space to toggle wireframes", TextStyle::default())
-			.with_style(Style {
-				position_type: PositionType::Absolute,
-				top: Val::Px(12.0),
-				left: Val::Px(12.0),
-				..default()
-			}),
+		Text::new("Press space to toggle wireframes"),
+		Node {
+			position_type: PositionType::Absolute,
+			top: Val::Px(12.0),
+			left: Val::Px(12.0),
+			..default()
+		},
 	));
 	commands.spawn((
 		Clamp,
 		TargetCamera(maximap),
-		TextBundle::from_section(
-			"Rigid Constellation Clamp (Toggle: Q)",
-			TextStyle::default(),
-		)
-		.with_style(Style {
+		Text::new("Rigid Constellation Clamp (Toggle: Q)"),
+		Node {
 			position_type: PositionType::Absolute,
 			bottom: Val::Px(10.0),
 			left: Val::Px(10.0),
 			..default()
-		}),
+		},
 	));
 }
 
@@ -262,8 +249,7 @@ fn toggle_rigid_loose(
 	keycode: Res<ButtonInput<KeyCode>>,
 ) {
 	if keycode.just_pressed(KeyCode::KeyQ) {
-		let mut text = text.single_mut();
-		let text = &mut text.sections[0].value;
+		let text = &mut text.single_mut().0;
 		let mut minimap = minimap.single_mut();
 		let rigid = minimap.group.values_mut().next().unwrap();
 		if *rigid {
@@ -277,7 +263,7 @@ fn toggle_rigid_loose(
 
 fn rotate(mut query: Query<&mut Transform, With<Shape>>, time: Res<Time>) {
 	for mut transform in &mut query {
-		transform.rotate_y(time.delta_seconds() / 2.);
+		transform.rotate_y(time.delta_secs() / 2.);
 	}
 }
 

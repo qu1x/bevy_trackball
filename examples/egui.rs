@@ -105,12 +105,11 @@ fn setup(
 
 	// The cube that will be rendered to the texture.
 	commands
-		.spawn(PbrBundle {
-			mesh: cube_handle,
-			material: preview_material_handle,
-			transform: cube_transform,
-			..default()
-		})
+		.spawn((
+			Mesh3d(cube_handle),
+			MeshMaterial3d(preview_material_handle),
+			cube_transform,
+		))
 		.insert(PreviewPassCube)
 		.insert(preview_pass_layer.clone());
 
@@ -121,12 +120,11 @@ fn setup(
 	// Main pass cube.
 	let main_material_handle = materials.add(default_material);
 	commands
-		.spawn(PbrBundle {
-			mesh: cube_handle,
-			material: main_material_handle,
-			transform: cube_transform,
-			..default()
-		})
+		.spawn((
+			Mesh3d(cube_handle),
+			MeshMaterial3d(main_material_handle),
+			cube_transform,
+		))
 		.insert(MainPassCube);
 
 	// Defines initial transform of cameras and light.
@@ -137,15 +135,14 @@ fn setup(
 	// The same light is reused for both passes, you can specify different lights for preview and
 	// main pass by setting appropriate `RenderLayers`.
 	commands
-		.spawn(SpotLightBundle {
-			transform: Transform::from_translation(eye).looking_at(target, up),
-			spot_light: SpotLight {
+		.spawn((
+			Transform::from_translation(eye).looking_at(target, up),
+			SpotLight {
 				intensity: 10_000_000.0,
 				range: 100.0,
 				..default()
 			},
-			..default()
-		})
+		))
 		.insert(RenderLayers::default().with(1));
 
 	// The main pass camera with controller.
@@ -160,17 +157,15 @@ fn setup(
 	// UI camera sensitive to main pass camera's `controller`.
 	commands
 		.spawn((
-			Camera3dBundle {
-				camera: Camera {
-					// Render before the main pass camera.
-					order: -1,
-					target: RenderTarget::Image(image_handle),
-					clear_color: ClearColorConfig::Custom(Color::srgba(1.0, 1.0, 1.0, 0.0)),
-					..default()
-				},
+			TrackballCamera::look_at(target, eye, up).add_controller(controller, true),
+			Camera {
+				// Render before the main pass camera.
+				order: -1,
+				target: RenderTarget::Image(image_handle),
+				clear_color: ClearColorConfig::Custom(Color::srgba(1.0, 1.0, 1.0, 0.0)),
 				..default()
 			},
-			TrackballCamera::look_at(target, eye, up).add_controller(controller, true),
+			Camera3d::default(),
 		))
 		.insert(preview_pass_layer);
 }

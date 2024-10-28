@@ -32,28 +32,25 @@ fn setup(
 	mut materials: ResMut<Assets<StandardMaterial>>,
 ) {
 	// circular base
-	commands.spawn(PbrBundle {
-		mesh: meshes.add(Circle::new(4.0)),
-		material: materials.add(Color::WHITE),
-		transform: Transform::from_rotation(Quat::from_rotation_x(-std::f32::consts::FRAC_PI_2)),
-		..default()
-	});
+	commands.spawn((
+		Mesh3d(meshes.add(Circle::new(4.0))),
+		MeshMaterial3d(materials.add(Color::WHITE)),
+		Transform::from_rotation(Quat::from_rotation_x(-std::f32::consts::FRAC_PI_2)),
+	));
 	// cube
-	commands.spawn(PbrBundle {
-		mesh: meshes.add(Cuboid::new(1.0, 1.0, 1.0)),
-		material: materials.add(Color::srgb_u8(124, 144, 255)),
-		transform: Transform::from_xyz(0.0, 0.5, 0.0),
-		..default()
-	});
+	commands.spawn((
+		Mesh3d(meshes.add(Cuboid::new(1.0, 1.0, 1.0))),
+		MeshMaterial3d(materials.add(Color::srgb_u8(124, 144, 255))),
+		Transform::from_xyz(0.0, 0.5, 0.0),
+	));
 	// light
-	commands.spawn(PointLightBundle {
-		point_light: PointLight {
+	commands.spawn((
+		PointLight {
 			shadows_enabled: true,
 			..default()
 		},
-		transform: Transform::from_xyz(4.0, 8.0, 4.0),
-		..default()
-	});
+		Transform::from_xyz(4.0, 8.0, 4.0),
+	));
 
 	// Windows
 	let mut window1 = windows.single_mut();
@@ -61,7 +58,7 @@ fn setup(
 	let res = &window1.resolution;
 	let max = Vec2::new(res.width() * 0.5, res.height()).into();
 	// Left and right camera orientation.
-	let [target, eye, up] = [Vec3::Y * 0.25, Vec3::new(-2.5, 4.5, 9.0), Vec3::Y];
+	let [target, eye, up] = [Vec3::Y * 0.5, Vec3::new(-2.5, 4.5, 9.0) * 1.2, Vec3::Y];
 	// Spawn a 2nd window.
 	let window2 = commands
 		.spawn(Window {
@@ -91,16 +88,14 @@ fn setup(
 		let left = commands
 			.spawn((
 				TrackballController::default(),
-				Camera3dBundle {
-					camera: Camera {
-						target: RenderTarget::Window(window),
-						// Renders the right camera after the left camera,
-						// which has a default priority of 0.
-						order,
-						..default()
-					},
+				Camera {
+					target: RenderTarget::Window(window),
+					// Renders the right camera after the left camera,
+					// which has a default priority of 0.
+					order,
 					..default()
 				},
+				Camera3d::default(),
 				LeftCamera,
 			))
 			.id();
@@ -109,19 +104,17 @@ fn setup(
 		let right = commands
 			.spawn((
 				TrackballController::default(),
-				Camera3dBundle {
-					camera: Camera {
-						target: RenderTarget::Window(window),
-						// Renders the right camera after the left camera,
-						// which has a default priority of 0.
-						order,
-						// Don't clear on the second camera
-						// because the first camera already cleared the window.
-						clear_color: ClearColorConfig::None,
-						..default()
-					},
+				Camera {
+					target: RenderTarget::Window(window),
+					// Renders the right camera after the left camera,
+					// which has a default priority of 0.
+					order,
+					// Don't clear on the second camera
+					// because the first camera already cleared the window.
+					clear_color: ClearColorConfig::None,
 					..default()
 				},
+				Camera3d::default(),
 				RightCamera,
 			))
 			.id();
@@ -161,17 +154,17 @@ fn set_camera_viewports(
 	// so then each camera always takes up half the screen. A `resize_event` is sent when the window
 	// is first created, allowing us to reuse this system for initial setup.
 	for resize_event in resize_events.read() {
-		let (resize_entity, resize_window) = windows.get(resize_event.window).unwrap();
+		let (resize_id, resize_window) = windows.get(resize_event.window).unwrap();
 		let resolution = &resize_window.resolution;
 		for mut left_camera in &mut left_cameras {
 			if let RenderTarget::Window(window_ref) = left_camera.target {
-				let Some((target_entity, _target_window)) = (match window_ref {
+				let Some((target_id, _target_window)) = (match window_ref {
 					WindowRef::Primary => primary_windows.get_single().ok(),
-					WindowRef::Entity(entity) => windows.get(entity).ok(),
+					WindowRef::Entity(id) => windows.get(id).ok(),
 				}) else {
 					continue;
 				};
-				if target_entity == resize_entity {
+				if target_id == resize_id {
 					left_camera.viewport = Some(Viewport {
 						physical_position: UVec2::new(0, 0),
 						physical_size: UVec2::new(
@@ -185,13 +178,13 @@ fn set_camera_viewports(
 		}
 		for mut right_camera in &mut right_cameras {
 			if let RenderTarget::Window(window_ref) = right_camera.target {
-				let Some((target_entity, _target_window)) = (match window_ref {
+				let Some((target_id, _target_window)) = (match window_ref {
 					WindowRef::Primary => primary_windows.get_single().ok(),
-					WindowRef::Entity(entity) => windows.get(entity).ok(),
+					WindowRef::Entity(id) => windows.get(id).ok(),
 				}) else {
 					continue;
 				};
-				if target_entity == resize_entity {
+				if target_id == resize_id {
 					right_camera.viewport = Some(Viewport {
 						physical_position: UVec2::new(resolution.physical_width() / 2, 0),
 						physical_size: UVec2::new(

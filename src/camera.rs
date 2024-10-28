@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use bevy::{prelude::*, render::camera::ScalingMode};
+use bevy::prelude::*;
 use trackball::{approx::AbsDiffEq, nalgebra::Point2, Clamp, Delta, Fixed, Frame, Scope};
 
 /// Trackball camera component mainly defined by [`Frame`] and [`Scope`].
@@ -125,7 +125,7 @@ pub fn trackball_camera(
 				trackball.old_frame = trackball.frame;
 			}
 			let blend = (trackball.blend * 1e-3).clamp(0.0, 1.0);
-			let blend = 1.0 - 0.5f32.powf(time.delta_seconds() / blend);
+			let blend = 1.0 - 0.5f32.powf(time.delta_secs() / blend);
 			trackball.old_frame = trackball
 				.old_frame
 				.abs_diff_ne(&trackball.frame, f32::EPSILON.sqrt())
@@ -157,8 +157,8 @@ pub fn trackball_camera(
 				*projection = Projection::Orthographic(OrthographicProjection {
 					near,
 					far,
-					scaling_mode: ScalingMode::WindowSize(upp.recip()),
-					..default()
+					scale: upp,
+					..OrthographicProjection::default_3d()
 				});
 			}
 		} else if new_scope || (new_max && !matches!(fov, Fixed::Ver(_fov))) {
