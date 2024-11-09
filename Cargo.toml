@@ -37,20 +37,26 @@ features = ["serialize"]
 rustdoc-args = ["--cfg", "docsrs"]
 
 [features]
-bevy_egui = ["dep:bevy_egui"]
-serialize = ["bevy/serialize", "trackball/serde"]
 c11-orbit = ["trackball/cc"]
+serialize = ["bevy/serialize", "trackball/serde", "bevy_egui?/serde"]
+bevy_egui = ["dep:bevy_egui"]
 
 [dependencies]
-bevy = { version = "0.15.0-rc.2", default-features = false, features = ["bevy_render", "custom_cursor", "wayland"] }
-bevy_egui = { version = "0.30.0", default-features = false, features = ["render"], optional = true }
 trackball = { version = "0.15.0", features = ["glam"] }
+bevy_egui = { git = "https://github.com/mvlabat/bevy_egui", rev = "refs/pull/309/head", default-features = false, features = ["render"], optional = true }
 
-[dev-dependencies.bevy]
-version = "0.15.0-rc.2"
+[dependencies.bevy]
+version = "0.15.0-rc.3"
 default-features = false
 features = [
+	"bevy_render",
 	"bevy_winit",
+]
+
+[dev-dependencies.bevy]
+version = "0.15.0-rc.3"
+default-features = false
+features = [
 	"custom_cursor",
 	"bevy_core_pipeline",
 	"bevy_pbr",

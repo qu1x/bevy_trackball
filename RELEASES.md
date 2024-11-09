@@ -1,3 +1,7 @@
+# Version 0.9.0 (2024-11-??)
+
+  * Update Bevy to `0.15.0`.
+
 # Version 0.8.0 (2024-10-27)
 
   * Update `bevy_egui`.

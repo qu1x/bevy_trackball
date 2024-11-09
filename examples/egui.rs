@@ -148,9 +148,9 @@ fn setup(
 	// The main pass camera with controller.
 	let controller = commands
 		.spawn((
-			Camera3dBundle::default(),
 			TrackballController::default(),
 			TrackballCamera::look_at(target, eye, up),
+			Camera3d::default(),
 		))
 		.id();
 
@@ -172,8 +172,8 @@ fn setup(
 
 fn render_to_image_example_system(
 	cube_preview_image: Res<CubePreviewImage>,
-	preview_cube_query: Query<&Handle<StandardMaterial>, With<PreviewPassCube>>,
-	main_cube_query: Query<&Handle<StandardMaterial>, With<MainPassCube>>,
+	preview_cube_query: Query<&MeshMaterial3d<StandardMaterial>, With<PreviewPassCube>>,
+	main_cube_query: Query<&MeshMaterial3d<StandardMaterial>, With<MainPassCube>>,
 	mut materials: ResMut<Assets<StandardMaterial>>,
 	mut contexts: EguiContexts,
 ) {
