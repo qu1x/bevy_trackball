@@ -1,6 +1,9 @@
 # Version 0.9.0 (2024-11-??)
 
-  * Update Bevy to `0.15.0`.
+  * Bump MSRV to `1.82.0`.
+  * Bump `bevy` to `0.15.0`.
+  * Bump `bevy_egui` to `0.31.0`.
+  * Bump `trackball` to `0.15.0`.
 
 # Version 0.8.0 (2024-10-27)
 
