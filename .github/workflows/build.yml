@@ -30,6 +30,8 @@ jobs:
     - name: clippy
       run: cargo clippy --tests --examples
     - name: doc
+      env:
+        RUSTDOCFLAGS: --cfg docsrs
       run: cargo doc
     - name: fmt
       run: cargo fmt --check
@@ -57,7 +59,9 @@ jobs:
     - name: clippy
       run: cargo clippy --tests --examples --all-features --features bevy/wayland
     - name: doc
-      run: cargo doc --all-features --features bevy/wayland
+      env:
+        RUSTDOCFLAGS: --cfg docsrs
+      run: cargo doc --all-features
     - name: fmt
       run: cargo fmt --check
   all-features-nightly:
@@ -86,6 +90,6 @@ jobs:
     - name: doc
       env:
         RUSTDOCFLAGS: --cfg docsrs
-      run: cargo doc --all-features --features bevy/wayland
+      run: cargo doc --all-features
     - name: fmt
       run: cargo fmt --check
