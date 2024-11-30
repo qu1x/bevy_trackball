@@ -51,7 +51,7 @@
 //!
 //!   * Time-free multi-touch gesture recognition for orbit, scale, slide, and focus (i.e., slide to
 //!     cursor/finger position) operations.
-//!   * Smoothing of movement implemented as fps-agnostic exponential easy-out.
+//!   * Smoothing of movement implemented as fps-agnostic exponential ease-out.
 //!   * Gimbal lock-free using quaternion instead of Euler angles.
 //!   * Gliding clamp (experimental): The movement of a camera can be restricted to user-defined
 //!     boundary conditions (e.g., to not orbit below the ground plane). When the movement is not

@@ -28,7 +28,7 @@ pub struct TrackballCamera {
 	old_max: Point2<f32>,
 	/// Blend half-life from 0 (fast) to 1000 (slow) milliseconds. Default is `40.0`.
 	///
-	/// It is the time passed until halfway of fps-agnostic exponential easy-out.
+	/// It is the time passed until halfway of fps-agnostic exponential ease-out.
 	pub blend: f32,
 	/// Camera frame to reset to when [`TrackballInput::reset_key`] is pressed.
 	///
