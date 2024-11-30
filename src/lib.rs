@@ -83,8 +83,7 @@
 //!
 //! Following features are disabled unless their corresponding feature gate is enabled:
 //!
-//!   * `bevy_egui` for automatic viewport stealing whenever `egui` wants focus. On Linux you have
-//!     to enable either the `bevy/wayland` or the `bevy/x11` feature gate as well.
+//!   * `bevy_egui` for automatic viewport stealing whenever `egui` wants focus.
 //!   * `serialize` for `serde` support of various structures of this crate and its dependencies.
 //!   * `c11-orbit` for testing the behaviorally identical C implementation of the exponential map.
 //!

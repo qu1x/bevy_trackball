@@ -21,8 +21,8 @@ Run interactive [examples] in your browser using [WebAssembly] and [WebGL].
 [WebAssembly]: https://en.wikipedia.org/wiki/WebAssembly
 [WebGL]: https://en.wikipedia.org/wiki/WebGL
 
-**NOTE**: Not all features are enabled by default, see [Optional Features](#optional-features). On
-Linux the `bevy/wayland` or `bevy/x11` feature gate must be enabled for a successful build.
+**NOTE**: Not all features are enabled by default, see [Optional Features](#optional-features).
+On Linux the `bevy/wayland` or `bevy/x11` feature gate must be enabled for a successful build.
 
 ## Camera Modes
 
@@ -103,9 +103,9 @@ away from the screen’s center (e.g., the rotation accelerates towards the edge
 
 Following features are disabled unless their corresponding feature gate is enabled:
 
-  * `c11-orbit` for testing the behaviorally identical C implementation of the exponential map.
-  * `serialize` for `serde` support of various structures of this crate and its dependencies.
   * `bevy_egui` for automatic viewport stealing whenever `egui` wants focus.
+  * `serialize` for `serde` support of various structures of this crate and its dependencies.
+  * `c11-orbit` for testing the behaviorally identical C implementation of the exponential map.
 
 See the [release history](RELEASES.md) and [roadmap](#Roadmap) to keep track of the development.
 
