@@ -18,12 +18,11 @@ pub fn key(
 	v: f32,
 	t: f32,
 ) {
-	let pressed = |key: Option<KeyCode>| key.map_or(false, |key| key_input.pressed(key));
-	let just_pressed = |key: Option<KeyCode>| key.map_or(false, |key| key_input.just_pressed(key));
-	let just_released =
-		|key: Option<KeyCode>| key.map_or(false, |key| key_input.just_released(key));
+	let pressed = |key: Option<KeyCode>| key.is_some_and(|key| key_input.pressed(key));
+	let just_pressed = |key: Option<KeyCode>| key.is_some_and(|key| key_input.just_pressed(key));
+	let just_released = |key: Option<KeyCode>| key.is_some_and(|key| key_input.just_released(key));
 	let pressed_button =
-		|button: Option<MouseButton>| button.map_or(false, |button| mouse_input.pressed(button));
+		|button: Option<MouseButton>| button.is_some_and(|button| mouse_input.pressed(button));
 	if just_pressed(controller.input.reset_key) {
 		trackball_events.send(TrackballEvent::reset(group));
 	}

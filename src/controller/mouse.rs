@@ -33,11 +33,10 @@ pub fn mouse(
 ) {
 	let pos = Point2::from(window.cursor_position().map_or(max * 0.5, |pos| pos - min));
 	let max = max.into();
-	let just_pressed_button = |button: Option<MouseButton>| {
-		button.map_or(false, |button| mouse_input.just_pressed(button))
-	};
+	let just_pressed_button =
+		|button: Option<MouseButton>| button.is_some_and(|button| mouse_input.just_pressed(button));
 	let just_released_button = |button: Option<MouseButton>| {
-		button.map_or(false, |button| mouse_input.just_released(button))
+		button.is_some_and(|button| mouse_input.just_released(button))
 	};
 	if just_pressed_button(controller.input.first_button) {
 		controller.first.capture(trackball.frame.yaw_axis());
@@ -95,7 +94,7 @@ pub fn mouse(
 		if controller
 			.input
 			.orbit_button
-			.map_or(false, |button| mouse_input.pressed(button))
+			.is_some_and(|button| mouse_input.pressed(button))
 		{
 			if let Some((_num, pos, _rot, _rat)) = controller.touch.compute(None, pos.into(), 0) {
 				if let Some(rot) = controller.orbit.compute(&pos, &max) {
@@ -106,7 +105,7 @@ pub fn mouse(
 		if controller
 			.input
 			.slide_button
-			.map_or(false, |button| mouse_input.pressed(button))
+			.is_some_and(|button| mouse_input.pressed(button))
 		{
 			if let Some(vec) = controller
 				.slide
