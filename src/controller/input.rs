@@ -90,7 +90,7 @@ impl TrackballInput {
 	///
 	/// This mapping is symmetric to the `ijkl`/`hn` orbit mapping but less intuitive to gamers
 	/// compared with [`Self::map_wasd`].
-	pub fn map_esdf(&mut self) {
+	pub const fn map_esdf(&mut self) {
 		self.slide_up_key = Some(KeyCode::KeyE);
 		self.slide_down_key = Some(KeyCode::KeyD);
 		self.slide_left_key = Some(KeyCode::KeyS);
@@ -111,7 +111,7 @@ impl TrackballInput {
 	///
 	/// This mapping isn't symmetric to the `ijkl`/`hn` orbit mapping but more intuitive to gamers
 	/// compared with [`Self::map_esdf`].
-	pub fn map_wasd(&mut self) {
+	pub const fn map_wasd(&mut self) {
 		self.slide_up_key = Some(KeyCode::Space);
 		self.slide_down_key = Some(KeyCode::ControlLeft);
 		self.slide_left_key = Some(KeyCode::KeyA);

@@ -23,7 +23,7 @@ impl TrackballViewport {
 	/// Interferes with automatic viewport stealing if the `bevy_egui` feature is enabled. As
 	/// automatic viewport stealing gives the viewport back with `set_stolen(None)` instead of
 	/// `set_stolen(Some(0))`, you can override it in the same frame for your own input capturing.
-	#[allow(clippy::needless_pass_by_value)]
+	#[allow(clippy::needless_pass_by_value, clippy::missing_const_for_fn)]
 	#[must_use]
 	pub fn stolen(viewport: Res<Self>) -> bool {
 		viewport.stolen != 0
@@ -76,7 +76,7 @@ impl TrackballViewport {
 	/// // frame 50: just_give_back = true -> set_stolen(Some(0)) -> frames = 0 -> stolen = false
 	/// ```
 	#[allow(clippy::needless_pass_by_value)]
-	pub fn set_stolen(&mut self, stolen: Option<usize>) {
+	pub const fn set_stolen(&mut self, stolen: Option<usize>) {
 		if let Some(frames) = stolen {
 			self.entity = None;
 			self.stolen = frames;
