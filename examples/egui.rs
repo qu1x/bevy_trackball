@@ -12,7 +12,7 @@ use bevy::{
 		view::RenderLayers,
 	},
 };
-use bevy_egui::{egui, EguiContexts, EguiPlugin, EguiUserTextures};
+use bevy_egui::{EguiContexts, EguiPlugin, EguiUserTextures, egui};
 use bevy_trackball::prelude::*;
 use egui::Widget;
 

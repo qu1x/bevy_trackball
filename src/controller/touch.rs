@@ -1,7 +1,7 @@
 use bevy::{input::touch::TouchPhase, prelude::*};
 use trackball::{
-	nalgebra::{Point3, UnitQuaternion},
 	Image,
+	nalgebra::{Point3, UnitQuaternion},
 };
 
 use super::{TrackballCamera, TrackballController, TrackballEvent};

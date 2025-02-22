@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 
 use bevy::prelude::*;
-use trackball::{approx::AbsDiffEq, nalgebra::Point2, Clamp, Delta, Fixed, Frame, Scope};
+use trackball::{Clamp, Delta, Fixed, Frame, Scope, approx::AbsDiffEq, nalgebra::Point2};
 
 /// Trackball camera component mainly defined by [`Frame`] and [`Scope`].
 #[derive(Component, Debug)]

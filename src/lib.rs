@@ -154,8 +154,8 @@
 //! [`scaling_modes`]: https://github.com/qu1x/bevy_trackball/blob/main/examples/scaling_modes.rs
 
 use bevy::prelude::*;
-use camera::trackball_camera;
 pub use camera::TrackballCamera;
+use camera::trackball_camera;
 use constellation::trackball_constellation;
 use controller::trackball_controller;
 pub use controller::{
@@ -163,25 +163,25 @@ pub use controller::{
 };
 pub use trackball;
 use trackball::{
-	nalgebra::{Point3, Unit, UnitQuaternion, Vector3},
 	Delta,
+	nalgebra::{Point3, Unit, UnitQuaternion, Vector3},
 };
 
 /// Prelude to get started quickly.
 pub mod prelude {
 	pub use super::{
-		trackball::{
-			approx::{
-				abs_diff_eq, abs_diff_ne, assert_abs_diff_eq, assert_abs_diff_ne,
-				assert_relative_eq, assert_relative_ne, assert_ulps_eq, assert_ulps_ne,
-				relative_eq, relative_ne, ulps_eq, ulps_ne, AbsDiffEq, RelativeEq, UlpsEq,
-			},
-			nalgebra::{Isometry3, Point3, Unit, UnitQuaternion, Vector3},
-			Bound, Clamp, Delta, Fixed, Frame, Plane, Scope,
-		},
 		TrackballCamera, TrackballController, TrackballEvent, TrackballInput, TrackballPlugin,
 		TrackballSetup, TrackballSystemSet, TrackballVelocity, TrackballViewport,
 		TrackballWheelUnit,
+		trackball::{
+			Bound, Clamp, Delta, Fixed, Frame, Plane, Scope,
+			approx::{
+				AbsDiffEq, RelativeEq, UlpsEq, abs_diff_eq, abs_diff_ne, assert_abs_diff_eq,
+				assert_abs_diff_ne, assert_relative_eq, assert_relative_ne, assert_ulps_eq,
+				assert_ulps_ne, relative_eq, relative_ne, ulps_eq, ulps_ne,
+			},
+			nalgebra::{Isometry3, Point3, Unit, UnitQuaternion, Vector3},
+		},
 	};
 }
 mod camera;

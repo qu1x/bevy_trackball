@@ -5,8 +5,8 @@ use bevy::{
 	winit::cursor::CursorIcon,
 };
 use trackball::{
-	nalgebra::{Point2, Point3},
 	Image,
+	nalgebra::{Point2, Point3},
 };
 
 use super::{TrackballCamera, TrackballController, TrackballEvent};
