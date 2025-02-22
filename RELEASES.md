@@ -1,3 +1,10 @@
+# Version 0.10.0 (2025-02-22)
+
+  * Rust Edition 2024.
+  * Bump MSRV.
+  * Bump `bevy_egui` to `0.33.0`.
+  * Bump `trackball` to `0.16.0` fixing `c11-orbit` feature.
+
 # Version 0.9.0 (2024-11-30)
 
   * Bump MSRV to `1.82.0`.
