@@ -342,7 +342,7 @@ impl Plugin for TrackballPlugin {
 			);
 		#[cfg(feature = "bevy_egui")]
 		{
-			use bevy_egui::{EguiContext, EguiSet};
+			use bevy_egui::{EguiContext, EguiPreUpdateSet};
 
 			fn egui_viewport_theft(
 				mut viewport: ResMut<TrackballViewport>,
@@ -358,7 +358,7 @@ impl Plugin for TrackballPlugin {
 			app.add_systems(
 				Update,
 				egui_viewport_theft
-					.after(EguiSet::InitContexts)
+					.after(EguiPreUpdateSet::InitContexts)
 					.before(TrackballSystemSet::Controller),
 			);
 		}
