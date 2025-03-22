@@ -24,10 +24,10 @@ pub fn key(
 	let pressed_button =
 		|button: Option<MouseButton>| button.is_some_and(|button| mouse_input.pressed(button));
 	if just_pressed(controller.input.reset_key) {
-		trackball_events.send(TrackballEvent::reset(group));
+		trackball_events.write(TrackballEvent::reset(group));
 	}
 	if just_pressed(controller.input.ortho_key) {
-		trackball_events.send(TrackballEvent::ortho(group, None));
+		trackball_events.write(TrackballEvent::ortho(group, None));
 	}
 	if just_pressed(controller.input.gamer_key) {
 		if controller.input.slide_far_key == Some(KeyCode::KeyW) {
@@ -45,7 +45,7 @@ pub fn key(
 		(controller.input.slide_down_key, Vec3::NEG_Y),
 	] {
 		if pressed(key) {
-			trackball_events.send(TrackballEvent::slide(group, (vec * v * t).into()));
+			trackball_events.write(TrackballEvent::slide(group, (vec * v * t).into()));
 		}
 	}
 	for (key, vec) in [
@@ -57,7 +57,7 @@ pub fn key(
 		(controller.input.orbit_down_key, Vec3::X),
 	] {
 		if pressed(key) {
-			trackball_events.send(TrackballEvent::orbit(
+			trackball_events.write(TrackballEvent::orbit(
 				group,
 				UnitQuaternion::from_axis_angle(&Unit::new_unchecked(vec.into()), w * t),
 				Point3::origin(),
@@ -93,7 +93,7 @@ pub fn key(
 		if pressed(key) {
 			let ang = vec * w * t;
 			let yaw_axis = *controller.first.yaw_axis().unwrap();
-			trackball_events.send(TrackballEvent::first(group, ang.x, ang.y, yaw_axis));
+			trackball_events.write(TrackballEvent::first(group, ang.x, ang.y, yaw_axis));
 		}
 	}
 	if just_pressed(controller.input.first_key) {
@@ -108,14 +108,14 @@ pub fn key(
 	}
 	controller.scale.set_denominator(zat);
 	if pressed(controller.input.scale_in_key) {
-		trackball_events.send(TrackballEvent::scale(
+		trackball_events.write(TrackballEvent::scale(
 			group,
 			controller.scale.compute(v * t),
 			Point3::origin(),
 		));
 	}
 	if pressed(controller.input.scale_out_key) {
-		trackball_events.send(TrackballEvent::scale(
+		trackball_events.write(TrackballEvent::scale(
 			group,
 			controller.scale.compute(-v * t),
 			Point3::origin(),

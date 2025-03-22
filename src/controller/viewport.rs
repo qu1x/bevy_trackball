@@ -118,10 +118,7 @@ impl TrackballViewport {
 				continue;
 			};
 			let window = match window_ref {
-				WindowRef::Primary => primary_windows
-					.get_single()
-					.ok()
-					.map(|(_id, window)| window),
+				WindowRef::Primary => primary_windows.single().ok().map(|(_id, window)| window),
 				WindowRef::Entity(id) => secondary_windows.get(id).ok(),
 			};
 			let Some(window) = window else {
@@ -157,7 +154,7 @@ impl TrackballViewport {
 			return None;
 		};
 		let (window_id, window) = match window_ref {
-			WindowRef::Primary => primary_windows.get_single_mut().ok(),
+			WindowRef::Primary => primary_windows.single_mut().ok(),
 			WindowRef::Entity(id) => secondary_windows
 				.get_mut(id)
 				.ok()

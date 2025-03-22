@@ -93,7 +93,8 @@ fn setup(
 			Mesh3d(shape),
 			MeshMaterial3d(debug_material.clone()),
 			Transform::from_xyz(
-				-SHAPES_X_EXTENT / 2. + i as f32 / (num_shapes - 1) as f32 * SHAPES_X_EXTENT,
+				(i as f32 / (num_shapes - 1) as f32)
+					.mul_add(SHAPES_X_EXTENT, -SHAPES_X_EXTENT / 2.),
 				2.0,
 				Z_EXTENT / 2.0,
 			)
@@ -109,8 +110,8 @@ fn setup(
 			Mesh3d(shape),
 			MeshMaterial3d(debug_material.clone()),
 			Transform::from_xyz(
-				-EXTRUSION_X_EXTENT / 2.
-					+ i as f32 / (num_extrusions - 1) as f32 * EXTRUSION_X_EXTENT,
+				(i as f32 / (num_extrusions - 1) as f32)
+					.mul_add(EXTRUSION_X_EXTENT, -EXTRUSION_X_EXTENT / 2.),
 				2.0,
 				-Z_EXTENT / 2.,
 			)
@@ -164,6 +165,7 @@ fn setup(
 	));
 }
 
+#[allow(clippy::needless_pass_by_value)]
 fn rotate(mut query: Query<&mut Transform, With<Shape>>, time: Res<Time>) {
 	for mut transform in &mut query {
 		transform.rotate_y(time.delta_secs() / 2.);
@@ -200,6 +202,7 @@ fn uv_debug_texture() -> Image {
 }
 
 #[cfg(not(target_arch = "wasm32"))]
+#[allow(clippy::needless_pass_by_value)]
 fn toggle_wireframe(
 	mut wireframe_config: ResMut<WireframeConfig>,
 	keyboard: Res<ButtonInput<KeyCode>>,

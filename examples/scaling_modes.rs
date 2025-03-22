@@ -53,7 +53,7 @@ fn setup(
 	));
 
 	// Windows
-	let mut window1 = windows.single_mut();
+	let mut window1 = windows.single_mut().unwrap();
 	"Fixed Vertical Field of View (Perspective vs Orthographic)".clone_into(&mut window1.title);
 	let res = &window1.resolution;
 	let max = Vec2::new(res.width() * 0.5, res.height()).into();
@@ -159,7 +159,7 @@ fn set_camera_viewports(
 		for mut left_camera in &mut left_cameras {
 			if let RenderTarget::Window(window_ref) = left_camera.target {
 				let Some((target_id, _target_window)) = (match window_ref {
-					WindowRef::Primary => primary_windows.get_single().ok(),
+					WindowRef::Primary => primary_windows.single().ok(),
 					WindowRef::Entity(id) => windows.get(id).ok(),
 				}) else {
 					continue;
@@ -179,7 +179,7 @@ fn set_camera_viewports(
 		for mut right_camera in &mut right_cameras {
 			if let RenderTarget::Window(window_ref) = right_camera.target {
 				let Some((target_id, _target_window)) = (match window_ref {
-					WindowRef::Primary => primary_windows.get_single().ok(),
+					WindowRef::Primary => primary_windows.single().ok(),
 					WindowRef::Entity(id) => windows.get(id).ok(),
 				}) else {
 					continue;

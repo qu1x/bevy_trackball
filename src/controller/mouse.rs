@@ -53,7 +53,7 @@ pub fn mouse(
 			if let Some((pitch, yaw, yaw_axis)) =
 				controller.first.compute(&(-delta_event.delta).into(), &max)
 			{
-				trackball_events.send(TrackballEvent::first(group, pitch, yaw, *yaw_axis));
+				trackball_events.write(TrackballEvent::first(group, pitch, yaw, *yaw_axis));
 			}
 		}
 	}
@@ -69,7 +69,7 @@ pub fn mouse(
 			if controller.input.focus {
 				let (pos, _max) = Image::transform_pos_and_max_wrt_max(&pos, &max);
 				let vec = pos.coords.scale(upp).push(0.0);
-				trackball_events.send(TrackballEvent::slide(group, vec));
+				trackball_events.write(TrackballEvent::slide(group, vec));
 			}
 		}
 		controller.orbit.discard();
@@ -98,7 +98,7 @@ pub fn mouse(
 		{
 			if let Some((_num, pos, _rot, _rat)) = controller.touch.compute(None, pos.into(), 0) {
 				if let Some(rot) = controller.orbit.compute(&pos, &max) {
-					trackball_events.send(TrackballEvent::orbit(group, rot, Point3::origin()));
+					trackball_events.write(TrackballEvent::orbit(group, rot, Point3::origin()));
 				}
 			}
 		}
@@ -113,7 +113,7 @@ pub fn mouse(
 				.map(|vec| Image::transform_vec(&vec))
 			{
 				let vec = vec.scale(upp).push(0.0);
-				trackball_events.send(TrackballEvent::slide(group, vec));
+				trackball_events.write(TrackballEvent::slide(group, vec));
 			}
 		}
 	}
@@ -130,7 +130,7 @@ pub fn mouse(
 			}
 		};
 		let (pos, _max) = Image::transform_pos_and_max_wrt_max(&pos, &max);
-		trackball_events.send(TrackballEvent::scale(
+		trackball_events.write(TrackballEvent::scale(
 			group,
 			controller.scale.compute(num),
 			pos.coords.scale(upp).push(0.0).into(),

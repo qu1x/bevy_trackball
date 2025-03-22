@@ -40,12 +40,12 @@ pub fn touch(
 								controller.first.compute(&vec, &max)
 							{
 								trackball_events
-									.send(TrackballEvent::first(group, pitch, yaw, *yaw_axis));
+									.write(TrackballEvent::first(group, pitch, yaw, *yaw_axis));
 							}
 						}
 					} else if num == 1 {
 						if let Some(rot) = controller.orbit.compute(&pos, &max) {
-							trackball_events.send(TrackballEvent::orbit(
+							trackball_events.write(TrackballEvent::orbit(
 								group,
 								rot,
 								Point3::origin(),
@@ -58,7 +58,7 @@ pub fn touch(
 							.map(|vec| Image::transform_vec(&vec))
 						{
 							let vec = vec.scale(upp).push(0.0);
-							trackball_events.send(TrackballEvent::slide(group, vec));
+							trackball_events.write(TrackballEvent::slide(group, vec));
 						}
 						if num == 2 {
 							let (pos, _max) = Image::transform_pos_and_max_wrt_max(&pos, &max);
@@ -67,8 +67,8 @@ pub fn touch(
 								&trackball.frame.local_roll_axis(),
 								rot,
 							);
-							trackball_events.send(TrackballEvent::orbit(group, rot, pos.into()));
-							trackball_events.send(TrackballEvent::scale(group, rat, pos.into()));
+							trackball_events.write(TrackballEvent::orbit(group, rot, pos.into()));
+							trackball_events.write(TrackballEvent::scale(group, rat, pos.into()));
 						}
 					}
 				}
@@ -78,7 +78,7 @@ pub fn touch(
 					if controller.input.focus {
 						let (pos, _max) = Image::transform_pos_and_max_wrt_max(&pos, &max);
 						let vec = pos.coords.scale(upp).push(0.0);
-						trackball_events.send(TrackballEvent::slide(group, vec));
+						trackball_events.write(TrackballEvent::slide(group, vec));
 					}
 				}
 				controller.orbit.discard();

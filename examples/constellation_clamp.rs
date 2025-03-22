@@ -64,6 +64,7 @@ const SHAPES_X_EXTENT: f32 = 14.0;
 const EXTRUSION_X_EXTENT: f32 = 16.0;
 const Z_EXTENT: f32 = 5.0;
 
+#[allow(clippy::too_many_lines)]
 fn setup(
 	windows: Query<&Window>,
 	mut commands: Commands,
@@ -105,7 +106,8 @@ fn setup(
 			Mesh3d(shape),
 			MeshMaterial3d(debug_material.clone()),
 			Transform::from_xyz(
-				-SHAPES_X_EXTENT / 2. + i as f32 / (num_shapes - 1) as f32 * SHAPES_X_EXTENT,
+				(i as f32 / (num_shapes - 1) as f32)
+					.mul_add(SHAPES_X_EXTENT, -SHAPES_X_EXTENT / 2.),
 				2.0,
 				Z_EXTENT / 2.0,
 			)
@@ -121,8 +123,8 @@ fn setup(
 			Mesh3d(shape),
 			MeshMaterial3d(debug_material.clone()),
 			Transform::from_xyz(
-				-EXTRUSION_X_EXTENT / 2.
-					+ i as f32 / (num_extrusions - 1) as f32 * EXTRUSION_X_EXTENT,
+				(i as f32 / (num_extrusions - 1) as f32)
+					.mul_add(EXTRUSION_X_EXTENT, -EXTRUSION_X_EXTENT / 2.),
 				2.0,
 				-Z_EXTENT / 2.,
 			)
@@ -159,11 +161,11 @@ fn setup(
 	let maximap = commands
 		.spawn((
 			TrackballController::default(),
-			TrackballCamera::look_at(target, eye, up).with_clamp(bound.clone()),
+			TrackballCamera::look_at(target, eye, up).with_clamp(bound),
 			Camera3d::default(),
 		))
 		.id();
-	let window = windows.single();
+	let window = windows.single().unwrap();
 	let width = window.resolution.physical_width() / 3;
 	let height = window.resolution.physical_height() / 3;
 	let down = Quat::from_rotation_x(15f32.to_radians());
@@ -192,7 +194,7 @@ fn setup(
 	// UI
 	#[cfg(not(target_arch = "wasm32"))]
 	commands.spawn((
-		TargetCamera(maximap),
+		UiTargetCamera(maximap),
 		Text::new("Press space to toggle wireframes"),
 		Node {
 			position_type: PositionType::Absolute,
@@ -203,7 +205,7 @@ fn setup(
 	));
 	commands.spawn((
 		Clamp,
-		TargetCamera(maximap),
+		UiTargetCamera(maximap),
 		Text::new("Rigid Constellation Clamp (Toggle: Q)"),
 		Node {
 			position_type: PositionType::Absolute,
@@ -228,7 +230,7 @@ fn resize_minimap(
 ) {
 	for resize_event in resize_events.read() {
 		let window = windows.get(resize_event.window).unwrap();
-		let mut minimap = minimap.single_mut();
+		let mut minimap = minimap.single_mut().unwrap();
 		let width = window.resolution.physical_width() / 3;
 		let height = window.resolution.physical_height() / 3;
 		minimap.viewport = Some(Viewport {
@@ -249,18 +251,19 @@ fn toggle_rigid_loose(
 	keycode: Res<ButtonInput<KeyCode>>,
 ) {
 	if keycode.just_pressed(KeyCode::KeyQ) {
-		let text = &mut text.single_mut().0;
-		let mut minimap = minimap.single_mut();
+		let text = &mut text.single_mut().unwrap().0;
+		let mut minimap = minimap.single_mut().unwrap();
 		let rigid = minimap.group.values_mut().next().unwrap();
 		if *rigid {
-			*text = "Loose Constellation Clamp (Toggle: Q)".to_owned();
+			"Loose Constellation Clamp (Toggle: Q)".clone_into(text);
 		} else {
-			*text = "Rigid Constellation Clamp (Toggle: Q)".to_owned();
+			"Rigid Constellation Clamp (Toggle: Q)".clone_into(text);
 		}
 		*rigid = !*rigid;
 	}
 }
 
+#[allow(clippy::needless_pass_by_value)]
 fn rotate(mut query: Query<&mut Transform, With<Shape>>, time: Res<Time>) {
 	for mut transform in &mut query {
 		transform.rotate_y(time.delta_secs() / 2.);
@@ -297,6 +300,7 @@ fn uv_debug_texture() -> Image {
 }
 
 #[cfg(not(target_arch = "wasm32"))]
+#[allow(clippy::needless_pass_by_value)]
 fn toggle_wireframe(
 	mut wireframe_config: ResMut<WireframeConfig>,
 	keyboard: Res<ButtonInput<KeyCode>>,
