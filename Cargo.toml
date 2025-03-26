@@ -38,6 +38,7 @@ cargo-args = ["-Z", "unstable-options", "-Z", "rustdoc-scrape-examples"]
 rustdoc-args = ["--cfg", "docsrs"]
 
 [features]
+default = ["bevy/std"]
 c11-orbit = ["trackball/cc"]
 serialize = ["bevy/serialize", "trackball/serde", "bevy_egui?/serde"]
 bevy_egui = ["dep:bevy_egui"]
@@ -49,18 +50,17 @@ bevy_egui = { git = "https://github.com/vladbat00/bevy_egui.git", rev = "refs/pu
 
 [dependencies.bevy]
 version = "0.16.0-rc"
-# FIXME Should be `false` but then `bevy::input` is missing.
-default-features = true
+default-features = false
 features = [
 	"bevy_render",
 	"bevy_window",
 	"bevy_winit",
+	"trace",
 ]
 
 [dev-dependencies.bevy]
 version = "0.16.0-rc"
-# FIXME Should be `false` but then `bevy::input` is missing.
-default-features = true
+default-features = false
 features = [
 	"custom_cursor",
 	"bevy_core_pipeline",
