@@ -18,7 +18,8 @@ pub struct TrackballViewport {
 }
 
 impl TrackballViewport {
-	/// Condition whether the viewport has been stolen, evaluated by [`IntoSystemConfigs::run_if`].
+	/// Condition whether the viewport has been stolen, evaluated by
+	/// [`IntoScheduleConfigs::run_if`].
 	///
 	/// Interferes with automatic viewport stealing if the `bevy_egui` feature is enabled. As
 	/// automatic viewport stealing gives the viewport back with `set_stolen(None)` instead of
