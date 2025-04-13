@@ -12,9 +12,11 @@ use bevy::{
 		view::RenderLayers,
 	},
 };
-use bevy_egui::{EguiContexts, EguiPlugin, EguiUserTextures, egui};
+use bevy_egui::{
+	EguiContextPass, EguiContexts, EguiPlugin, EguiUserTextures,
+	egui::{self, Widget},
+};
 use bevy_trackball::prelude::*;
-use egui::Widget;
 
 fn main() {
 	App::new()
@@ -26,12 +28,16 @@ fn main() {
 			..default()
 		}))
 		.add_plugins(TrackballPlugin)
-		.add_plugins(EguiPlugin)
+		.add_plugins(EguiPlugin {
+			enable_multipass_for_primary_context: true,
+		})
 		.add_systems(Startup, setup)
-		.add_systems(Update, render_to_image_example_system)
 		.add_systems(
-			Update,
-			camera_attached_light.after(TrackballSystemSet::Camera),
+			EguiContextPass,
+			(
+				render_to_image_example_system,
+				camera_attached_light.after(TrackballSystemSet::Camera),
+			),
 		)
 		.run();
 }
@@ -161,7 +167,7 @@ fn setup(
 			Camera {
 				// Render before the main pass camera.
 				order: -1,
-				target: RenderTarget::Image(image_handle),
+				target: RenderTarget::Image(image_handle.into()),
 				clear_color: ClearColorConfig::Custom(Color::srgba(1.0, 1.0, 1.0, 0.0)),
 				..default()
 			},
@@ -176,9 +182,9 @@ fn render_to_image_example_system(
 	main_cube_query: Query<&MeshMaterial3d<StandardMaterial>, With<MainPassCube>>,
 	mut materials: ResMut<Assets<StandardMaterial>>,
 	mut contexts: EguiContexts,
-) {
+) -> Result {
 	let cube_preview_texture_id = contexts.image_id(&cube_preview_image).unwrap();
-	let preview_material_handle = preview_cube_query.single();
+	let preview_material_handle = preview_cube_query.single()?;
 	let preview_material = materials.get_mut(preview_material_handle).unwrap();
 
 	let ctx = contexts.ctx_mut();
@@ -218,9 +224,11 @@ fn render_to_image_example_system(
 	if apply {
 		let material_clone = preview_material.clone();
 
-		let main_material_handle = main_cube_query.single();
+		let main_material_handle = main_cube_query.single()?;
 		materials.insert(main_material_handle, material_clone);
 	}
+
+	Ok(())
 }
 
 fn color_picker_widget(ui: &mut egui::Ui, color: &mut Color) -> egui::Response {
@@ -257,7 +265,7 @@ fn camera_attached_light(
 	>,
 	mut light_transform: Query<&mut Transform, With<SpotLight>>,
 ) {
-	if let Ok(camera_transform) = camera_transform.get_single() {
-		*light_transform.single_mut() = *camera_transform;
+	if let Ok(camera_transform) = camera_transform.single() {
+		*light_transform.single_mut().unwrap() = *camera_transform;
 	}
 }

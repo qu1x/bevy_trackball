@@ -30,7 +30,7 @@ fn main() {
 					..default()
 				}),
 			#[cfg(not(target_arch = "wasm32"))]
-			WireframePlugin,
+			WireframePlugin::default(),
 		))
 		.add_plugins(TrackballPlugin)
 		.add_systems(Startup, setup)
