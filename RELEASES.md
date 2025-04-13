@@ -1,3 +1,8 @@
+# Version 0.11.0-rc.1 (2025-04-13)
+
+  * Bump `bevy` to `0.16.0-rc`.
+  * Bump `bevy_egui` to `0.34.0-rc`.
+
 # Version 0.10.0 (2025-02-22)
 
   * Rust Edition 2024.
