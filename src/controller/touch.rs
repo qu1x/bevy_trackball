@@ -71,7 +71,8 @@ pub fn touch(
 								&trackball.frame.local_roll_axis(),
 								rot * controller.input.screw_touch_transmission,
 							);
-							let rat = rat * controller.input.scale_touch_transmission;
+							let rat = (1.0 - rat)
+								.mul_add(-controller.input.scale_touch_transmission, 1.0);
 							trackball_events.write(TrackballEvent::orbit(group, rot, pos.into()));
 							trackball_events.write(TrackballEvent::scale(group, rat, pos.into()));
 						}
