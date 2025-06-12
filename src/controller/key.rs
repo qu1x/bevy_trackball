@@ -45,18 +45,27 @@ pub fn key(
 		(controller.input.slide_down_key, Vec3::NEG_Y),
 	] {
 		if pressed(key) {
+			let v = v * controller.input.slide_key_transmission;
 			trackball_events.write(TrackballEvent::slide(group, (vec * v * t).into()));
 		}
 	}
-	for (key, vec) in [
+	for (num, &(key, vec)) in [
 		(controller.input.screw_left_key, Vec3::Z),
 		(controller.input.screw_right_key, Vec3::NEG_Z),
 		(controller.input.orbit_left_key, Vec3::NEG_Y),
 		(controller.input.orbit_right_key, Vec3::Y),
 		(controller.input.orbit_up_key, Vec3::NEG_X),
 		(controller.input.orbit_down_key, Vec3::X),
-	] {
+	]
+	.iter()
+	.enumerate()
+	{
 		if pressed(key) {
+			let w = w * if num < 2 {
+				controller.input.screw_key_transmission
+			} else {
+				controller.input.orbit_key_transmission
+			};
 			trackball_events.write(TrackballEvent::orbit(
 				group,
 				UnitQuaternion::from_axis_angle(&Unit::new_unchecked(vec.into()), w * t),
@@ -91,6 +100,7 @@ pub fn key(
 		(controller.input.first_down_key, Vec2::NEG_X),
 	] {
 		if pressed(key) {
+			let w = w * controller.input.first_key_transmission;
 			let ang = vec * w * t;
 			let yaw_axis = *controller.first.yaw_axis().unwrap();
 			trackball_events.write(TrackballEvent::first(group, ang.x, ang.y, yaw_axis));
@@ -108,6 +118,7 @@ pub fn key(
 	}
 	controller.scale.set_denominator(zat);
 	if pressed(controller.input.scale_in_key) {
+		let v = v * controller.input.scale_key_transmission;
 		trackball_events.write(TrackballEvent::scale(
 			group,
 			controller.scale.compute(v * t),
@@ -115,6 +126,7 @@ pub fn key(
 		));
 	}
 	if pressed(controller.input.scale_out_key) {
+		let v = v * controller.input.scale_key_transmission;
 		trackball_events.write(TrackballEvent::scale(
 			group,
 			controller.scale.compute(-v * t),

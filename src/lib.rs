@@ -288,6 +288,14 @@ impl TrackballEvent {
 			setup: Some(TrackballSetup::Ortho(ortho)),
 		}
 	}
+
+	/// Applies `transmission` ratio.
+	#[must_use]
+	#[inline]
+	pub fn transmission(mut self, transmission: f32) -> Self {
+		self.delta = self.delta.lerp_slerp(transmission);
+		self
+	}
 }
 
 /// Setup of [`TrackballCamera`] as part of [`TrackballEvent`].

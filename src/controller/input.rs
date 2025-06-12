@@ -11,6 +11,37 @@ pub struct TrackballInput {
 	/// Device dependent setting as mouse wheel events usually lack a reference unit.
 	pub wheel_unit: TrackballWheelUnit,
 
+	/// Transmission ratio for key to look around. Default is `1.0`.
+	pub first_key_transmission: f32,
+	/// Transmission ratio for key to orbit. Default is `1.0`.
+	pub orbit_key_transmission: f32,
+	/// Transmission ratio for key to screw/roll. Default is `1.0`.
+	pub screw_key_transmission: f32,
+	/// Transmission ratio for key to slide. Default is `1.0`.
+	pub slide_key_transmission: f32,
+	/// Transmission ratio for key to scale. Default is `1.0`.
+	pub scale_key_transmission: f32,
+
+	/// Transmission ratio for mouse to look around. Default is `1.0`.
+	pub first_mouse_transmission: f32,
+	/// Transmission ratio for mouse to orbit. Default is `1.0`.
+	pub orbit_mouse_transmission: f32,
+	/// Transmission ratio for mouse to slide. Default is `1.0`.
+	pub slide_mouse_transmission: f32,
+	/// Transmission ratio for wheel to scale. Default is `1.0`.
+	pub scale_mouse_transmission: f32,
+
+	/// Transmission ratio for touch to look around. Default is `1.0`.
+	pub first_touch_transmission: f32,
+	/// Transmission ratio for touch to orbit. Default is `1.0`.
+	pub orbit_touch_transmission: f32,
+	/// Transmission ratio for touch to screw/roll. Default is `1.0`.
+	pub screw_touch_transmission: f32,
+	/// Transmission ratio for touch to slide. Default is `1.0`.
+	pub slide_touch_transmission: f32,
+	/// Transmission ratio for touch to scale. Default is `1.0`.
+	pub scale_touch_transmission: f32,
+
 	/// Enables focus operation. Default is `true`.
 	///
 	/// Whether to slide towards mouse or single-finger touch position when [`Self::orbit_button`]
@@ -126,6 +157,23 @@ impl Default for TrackballInput {
 		Self {
 			velocity: TrackballVelocity::default(),
 			wheel_unit: TrackballWheelUnit::default(),
+
+			first_key_transmission: 1.0,
+			orbit_key_transmission: 1.0,
+			screw_key_transmission: 1.0,
+			slide_key_transmission: 1.0,
+			scale_key_transmission: 1.0,
+
+			first_mouse_transmission: 1.0,
+			orbit_mouse_transmission: 1.0,
+			slide_mouse_transmission: 1.0,
+			scale_mouse_transmission: 1.0,
+
+			first_touch_transmission: 1.0,
+			orbit_touch_transmission: 1.0,
+			screw_touch_transmission: 1.0,
+			slide_touch_transmission: 1.0,
+			scale_touch_transmission: 1.0,
 
 			focus: true,
 

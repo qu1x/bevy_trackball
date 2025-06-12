@@ -6,7 +6,7 @@ use trackball::{
 
 use super::{TrackballCamera, TrackballController, TrackballEvent};
 
-#[allow(clippy::too_many_arguments)]
+#[allow(clippy::too_many_arguments, clippy::similar_names)]
 pub fn touch(
 	group: Entity,
 	trackball_events: &mut EventWriter<TrackballEvent>,
@@ -39,12 +39,15 @@ pub fn touch(
 							if let Some((pitch, yaw, yaw_axis)) =
 								controller.first.compute(&vec, &max)
 							{
+								let pitch = pitch * controller.input.first_touch_transmission;
+								let yaw = yaw * controller.input.first_touch_transmission;
 								trackball_events
 									.write(TrackballEvent::first(group, pitch, yaw, *yaw_axis));
 							}
 						}
 					} else if num == 1 {
 						if let Some(rot) = controller.orbit.compute(&pos, &max) {
+							let rot = rot.powf(controller.input.orbit_touch_transmission);
 							trackball_events.write(TrackballEvent::orbit(
 								group,
 								rot,
@@ -57,7 +60,8 @@ pub fn touch(
 							.compute(pos)
 							.map(|vec| Image::transform_vec(&vec))
 						{
-							let vec = vec.scale(upp).push(0.0);
+							let vec = vec.scale(upp).push(0.0)
+								* controller.input.slide_touch_transmission;
 							trackball_events.write(TrackballEvent::slide(group, vec));
 						}
 						if num == 2 {
@@ -65,8 +69,9 @@ pub fn touch(
 							let pos = pos.coords.scale(upp).push(0.0);
 							let rot = UnitQuaternion::from_axis_angle(
 								&trackball.frame.local_roll_axis(),
-								rot,
+								rot * controller.input.screw_touch_transmission,
 							);
+							let rat = rat * controller.input.scale_touch_transmission;
 							trackball_events.write(TrackballEvent::orbit(group, rot, pos.into()));
 							trackball_events.write(TrackballEvent::scale(group, rat, pos.into()));
 						}

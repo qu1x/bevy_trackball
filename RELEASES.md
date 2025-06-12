@@ -1,3 +1,7 @@
+# Version 0.12.0 (2025-06-12)
+
+  * Allow `TrackballInput` to set operation-to-input transmission ratios.
+
 # Version 0.11.0 (2025-04-25)
 
   * Bump `bevy` to `0.16.0`.
