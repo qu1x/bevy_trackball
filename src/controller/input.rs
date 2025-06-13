@@ -11,35 +11,63 @@ pub struct TrackballInput {
 	/// Device dependent setting as mouse wheel events usually lack a reference unit.
 	pub wheel_unit: TrackballWheelUnit,
 
-	/// Transmission ratio for key to look around. Default is `1.0`.
+	/// Transmission ratio of movement to input for look around by key. Default is `1.0`.
+	///
+	/// Values unequal the default deviate from coherence as in movement equals ratio times input.
 	pub first_key_transmission: f32,
-	/// Transmission ratio for key to orbit. Default is `1.0`.
+	/// Transmission ratio of movement to input for orbit by key. Default is `1.0`.
+	///
+	/// Values unequal the default deviate from coherence as in movement equals ratio times input.
 	pub orbit_key_transmission: f32,
-	/// Transmission ratio for key to screw/roll. Default is `1.0`.
+	/// Transmission ratio of movement to input for screw/roll by key. Default is `1.0`.
+	///
+	/// Values unequal the default deviate from coherence as in movement equals ratio times input.
 	pub screw_key_transmission: f32,
-	/// Transmission ratio for key to slide. Default is `1.0`.
+	/// Transmission ratio of movement to input for slide by key. Default is `1.0`.
+	///
+	/// Values unequal the default deviate from coherence as in movement equals ratio times input.
 	pub slide_key_transmission: f32,
-	/// Transmission ratio for key to scale. Default is `1.0`.
+	/// Transmission ratio of movement to input for scale by key. Default is `1.0`.
+	///
+	/// Values unequal the default deviate from coherence as in movement equals ratio times input.
 	pub scale_key_transmission: f32,
 
-	/// Transmission ratio for mouse to look around. Default is `1.0`.
+	/// Transmission ratio of movement to input for look around by mouse. Default is `1.0`.
+	///
+	/// Values unequal the default deviate from coherence as in movement equals ratio times input.
 	pub first_mouse_transmission: f32,
-	/// Transmission ratio for mouse to orbit. Default is `1.0`.
+	/// Transmission ratio of movement to input for orbit by mouse. Default is `1.0`.
+	///
+	/// Values unequal the default deviate from coherence as in movement equals ratio times input.
 	pub orbit_mouse_transmission: f32,
-	/// Transmission ratio for mouse to slide. Default is `1.0`.
+	/// Transmission ratio of movement to input for slide by mouse. Default is `1.0`.
+	///
+	/// Values unequal the default deviate from coherence as in movement equals ratio times input.
 	pub slide_mouse_transmission: f32,
-	/// Transmission ratio for wheel to scale. Default is `1.0`.
-	pub scale_mouse_transmission: f32,
+	/// Transmission ratio of movement to input for scale by wheel. Default is `1.0`.
+	///
+	/// Values unequal the default deviate from coherence as in movement equals ratio times input.
+	pub scale_wheel_transmission: f32,
 
-	/// Transmission ratio for touch to look around. Default is `1.0`.
+	/// Transmission ratio of movement to input for look around by touch. Default is `1.0`.
+	///
+	/// Values unequal the default deviate from coherence as in movement equals ratio times input.
 	pub first_touch_transmission: f32,
-	/// Transmission ratio for touch to orbit. Default is `1.0`.
+	/// Transmission ratio of movement to input for orbit by touch. Default is `1.0`.
+	///
+	/// Values unequal the default deviate from coherence as in movement equals ratio times input.
 	pub orbit_touch_transmission: f32,
-	/// Transmission ratio for touch to screw/roll. Default is `1.0`.
+	/// Transmission ratio of movement to input for screw/roll by touch. Default is `1.0`.
+	///
+	/// Values unequal the default deviate from coherence as in movement equals ratio times input.
 	pub screw_touch_transmission: f32,
-	/// Transmission ratio for touch to slide. Default is `1.0`.
+	/// Transmission ratio of movement to input for slide by touch. Default is `1.0`.
+	///
+	/// Values unequal the default deviate from coherence as in movement equals ratio times input.
 	pub slide_touch_transmission: f32,
-	/// Transmission ratio for touch to scale. Default is `1.0`.
+	/// Transmission ratio of movement to input for scale by touch. Default is `1.0`.
+	///
+	/// Values unequal the default deviate from coherence as in movement equals ratio times input.
 	pub scale_touch_transmission: f32,
 
 	/// Enables focus operation. Default is `true`.
@@ -167,7 +195,7 @@ impl Default for TrackballInput {
 			first_mouse_transmission: 1.0,
 			orbit_mouse_transmission: 1.0,
 			slide_mouse_transmission: 1.0,
-			scale_mouse_transmission: 1.0,
+			scale_wheel_transmission: 1.0,
 
 			first_touch_transmission: 1.0,
 			orbit_touch_transmission: 1.0,

@@ -131,7 +131,7 @@ pub fn mouse(
 				controller.scale.set_denominator(zat);
 				upp * wheel_event.y
 			}
-		} * controller.input.scale_mouse_transmission;
+		} * controller.input.scale_wheel_transmission;
 		let (pos, _max) = Image::transform_pos_and_max_wrt_max(&pos, &max);
 		trackball_events.write(TrackballEvent::scale(
 			group,

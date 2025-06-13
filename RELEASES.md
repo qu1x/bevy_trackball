@@ -1,6 +1,6 @@
-# Version 0.12.0 (2025-06-12)
+# Version 0.12.0 (2025-06-13)
 
-  * Allow `TrackballInput` to set operation-to-input transmission ratios.
+  * Allow to set transmission ratio of movement to input per operation and input type.
 
 # Version 0.11.0 (2025-04-25)
 
