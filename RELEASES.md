@@ -1,6 +1,7 @@
-# Version 0.12.0 (2025-06-13)
+# Version 0.12.0 (2025-06-19)
 
   * Allow to set transmission ratio of movement to input per operation and input type.
+  * Fix/Workaround panic on exit in examples.
 
 # Version 0.11.0 (2025-04-25)
 
