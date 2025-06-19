@@ -7,12 +7,14 @@ Coherent virtual trackball controller/camera plugin for Bevy
 [![Version][]](https://crates.io/crates/bevy_trackball)
 [![Rust][]](https://www.rust-lang.org)
 [![License][]](https://opensource.org/licenses)
+[![DOI][]](https://doi.org/10.5281/zenodo.15700673)
 
 [Build]: https://github.com/qu1x/bevy_trackball/actions/workflows/build.yml/badge.svg
 [Downloads]: https://img.shields.io/crates/d/bevy_trackball.svg
 [Version]: https://img.shields.io/crates/v/bevy_trackball.svg
 [Rust]: https://img.shields.io/badge/rust-v1.85.0-brightgreen.svg
 [License]: https://img.shields.io/badge/License-MIT%20OR%20Apache--2.0-blue.svg
+[DOI]: https://zenodo.org/badge/680486973.svg
 
 [Documentation](https://doc.qu1x.dev/bevy_trackball/bevy_trackball)
 
