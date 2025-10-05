@@ -1,16 +1,19 @@
-use bevy::{prelude::*, window::CursorGrabMode};
+use bevy::{
+	prelude::*,
+	window::{CursorGrabMode, CursorOptions},
+};
 use trackball::nalgebra::{Point3, Unit, UnitQuaternion};
 
-use crate::{TrackballCamera, TrackballController, TrackballEvent};
+use crate::{TrackballCamera, TrackballController, TrackballMessage};
 
 #[allow(clippy::too_many_arguments)]
 #[allow(clippy::too_many_lines)]
 pub fn key(
 	group: Entity,
-	trackball_events: &mut EventWriter<TrackballEvent>,
+	trackball_messages: &mut MessageWriter<TrackballMessage>,
 	trackball: &TrackballCamera,
 	controller: &mut TrackballController,
-	window: &mut Window,
+	cursor_options: &mut CursorOptions,
 	key_input: &Res<ButtonInput<KeyCode>>,
 	mouse_input: &Res<ButtonInput<MouseButton>>,
 	zat: f32,
@@ -24,10 +27,10 @@ pub fn key(
 	let pressed_button =
 		|button: Option<MouseButton>| button.is_some_and(|button| mouse_input.pressed(button));
 	if just_pressed(controller.input.reset_key) {
-		trackball_events.write(TrackballEvent::reset(group));
+		trackball_messages.write(TrackballMessage::reset(group));
 	}
 	if just_pressed(controller.input.ortho_key) {
-		trackball_events.write(TrackballEvent::ortho(group, None));
+		trackball_messages.write(TrackballMessage::ortho(group, None));
 	}
 	if just_pressed(controller.input.gamer_key) {
 		if controller.input.slide_far_key == Some(KeyCode::KeyW) {
@@ -46,7 +49,7 @@ pub fn key(
 	] {
 		if pressed(key) {
 			let v = v * controller.input.slide_key_transmission;
-			trackball_events.write(TrackballEvent::slide(group, (vec * v * t).into()));
+			trackball_messages.write(TrackballMessage::slide(group, (vec * v * t).into()));
 		}
 	}
 	for (num, &(key, vec)) in [
@@ -66,7 +69,7 @@ pub fn key(
 			} else {
 				controller.input.orbit_key_transmission
 			};
-			trackball_events.write(TrackballEvent::orbit(
+			trackball_messages.write(TrackballMessage::orbit(
 				group,
 				UnitQuaternion::from_axis_angle(&Unit::new_unchecked(vec.into()), w * t),
 				Point3::origin(),
@@ -103,23 +106,23 @@ pub fn key(
 			let w = w * controller.input.first_key_transmission;
 			let ang = vec * w * t;
 			let yaw_axis = *controller.first.yaw_axis().unwrap();
-			trackball_events.write(TrackballEvent::first(group, ang.x, ang.y, yaw_axis));
+			trackball_messages.write(TrackballMessage::first(group, ang.x, ang.y, yaw_axis));
 		}
 	}
 	if just_pressed(controller.input.first_key) {
 		controller.first.capture(trackball.frame.yaw_axis());
-		window.cursor_options.grab_mode = CursorGrabMode::Locked;
-		window.cursor_options.visible = false;
+		cursor_options.grab_mode = CursorGrabMode::Locked;
+		cursor_options.visible = false;
 	}
 	if just_released(controller.input.first_key) {
 		controller.first.discard();
-		window.cursor_options.grab_mode = CursorGrabMode::None;
-		window.cursor_options.visible = true;
+		cursor_options.grab_mode = CursorGrabMode::None;
+		cursor_options.visible = true;
 	}
 	controller.scale.set_denominator(zat);
 	if pressed(controller.input.scale_in_key) {
 		let v = v * controller.input.scale_key_transmission;
-		trackball_events.write(TrackballEvent::scale(
+		trackball_messages.write(TrackballMessage::scale(
 			group,
 			controller.scale.compute(v * t),
 			Point3::origin(),
@@ -127,7 +130,7 @@ pub fn key(
 	}
 	if pressed(controller.input.scale_out_key) {
 		let v = v * controller.input.scale_key_transmission;
-		trackball_events.write(TrackballEvent::scale(
+		trackball_messages.write(TrackballMessage::scale(
 			group,
 			controller.scale.compute(-v * t),
 			Point3::origin(),

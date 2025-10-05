@@ -47,7 +47,7 @@ pub struct TrackballCamera {
 	/// group continue to follow the active controller.
 	///
 	/// [`TrackballController`]: crate::TrackballController
-	/// [`TrackballEvent`]: crate::TrackballEvent
+	/// [`TrackballMessage`]: crate::TrackballMessage
 	pub group: HashMap<Entity, bool>,
 }
 

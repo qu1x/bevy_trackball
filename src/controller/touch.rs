@@ -4,15 +4,15 @@ use trackball::{
 	nalgebra::{Point3, UnitQuaternion},
 };
 
-use super::{TrackballCamera, TrackballController, TrackballEvent};
+use super::{TrackballCamera, TrackballController, TrackballMessage};
 
 #[allow(clippy::too_many_arguments, clippy::similar_names)]
 pub fn touch(
 	group: Entity,
-	trackball_events: &mut EventWriter<TrackballEvent>,
+	trackball_events: &mut MessageWriter<TrackballMessage>,
 	trackball: &TrackballCamera,
 	controller: &mut TrackballController,
-	mut touch_events: EventReader<TouchInput>,
+	mut touch_events: MessageReader<TouchInput>,
 	upp: f32,
 	min: Vec2,
 	max: Vec2,
@@ -42,13 +42,13 @@ pub fn touch(
 								let pitch = pitch * controller.input.first_touch_transmission;
 								let yaw = yaw * controller.input.first_touch_transmission;
 								trackball_events
-									.write(TrackballEvent::first(group, pitch, yaw, *yaw_axis));
+									.write(TrackballMessage::first(group, pitch, yaw, *yaw_axis));
 							}
 						}
 					} else if num == 1 {
 						if let Some(rot) = controller.orbit.compute(&pos, &max) {
 							let rot = rot.powf(controller.input.orbit_touch_transmission);
-							trackball_events.write(TrackballEvent::orbit(
+							trackball_events.write(TrackballMessage::orbit(
 								group,
 								rot,
 								Point3::origin(),
@@ -62,7 +62,7 @@ pub fn touch(
 						{
 							let vec = vec.scale(upp).push(0.0)
 								* controller.input.slide_touch_transmission;
-							trackball_events.write(TrackballEvent::slide(group, vec));
+							trackball_events.write(TrackballMessage::slide(group, vec));
 						}
 						if num == 2 {
 							let (pos, _max) = Image::transform_pos_and_max_wrt_max(&pos, &max);
@@ -73,8 +73,8 @@ pub fn touch(
 							);
 							let rat = (1.0 - rat)
 								.mul_add(-controller.input.scale_touch_transmission, 1.0);
-							trackball_events.write(TrackballEvent::orbit(group, rot, pos.into()));
-							trackball_events.write(TrackballEvent::scale(group, rat, pos.into()));
+							trackball_events.write(TrackballMessage::orbit(group, rot, pos.into()));
+							trackball_events.write(TrackballMessage::scale(group, rat, pos.into()));
 						}
 					}
 				}
@@ -84,7 +84,7 @@ pub fn touch(
 					if controller.input.focus {
 						let (pos, _max) = Image::transform_pos_and_max_wrt_max(&pos, &max);
 						let vec = pos.coords.scale(upp).push(0.0);
-						trackball_events.write(TrackballEvent::slide(group, vec));
+						trackball_events.write(TrackballMessage::slide(group, vec));
 					}
 				}
 				controller.orbit.discard();

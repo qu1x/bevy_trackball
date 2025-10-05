@@ -16,13 +16,11 @@ use std::f32::consts::PI;
 #[cfg(not(target_arch = "wasm32"))]
 use bevy::pbr::wireframe::{WireframeConfig, WireframePlugin};
 use bevy::{
+	asset::RenderAssetUsages,
+	camera::Viewport,
 	color::palettes::basic::SILVER,
 	prelude::*,
-	render::{
-		camera::Viewport,
-		render_asset::RenderAssetUsages,
-		render_resource::{Extent3d, TextureDimension, TextureFormat},
-	},
+	render::render_resource::{Extent3d, TextureDimension, TextureFormat},
 	window::WindowResized,
 };
 use bevy_trackball::prelude::*;
@@ -225,7 +223,7 @@ struct MinimapCamera;
 #[allow(clippy::needless_pass_by_value)]
 fn resize_minimap(
 	windows: Query<&Window>,
-	mut resize_events: EventReader<WindowResized>,
+	mut resize_events: MessageReader<WindowResized>,
 	mut minimap: Query<&mut Camera, With<MinimapCamera>>,
 ) {
 	for resize_event in resize_events.read() {

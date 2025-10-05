@@ -1,8 +1,8 @@
 use bevy::{
+	camera::RenderTarget,
 	input::{mouse::MouseWheel, touch::TouchPhase},
 	prelude::*,
-	render::camera::RenderTarget,
-	window::{PrimaryWindow, WindowRef},
+	window::{CursorOptions, PrimaryWindow, WindowRef},
 };
 
 use super::{TrackballCamera, TrackballController};
@@ -91,15 +91,19 @@ impl TrackballViewport {
 		viewport: &mut ResMut<Self>,
 		key_input: &Res<ButtonInput<KeyCode>>,
 		mouse_input: &Res<ButtonInput<MouseButton>>,
-		touch_events: &mut EventReader<TouchInput>,
-		wheel_events: &EventReader<MouseWheel>,
-		primary_windows: &'a mut Query<(Entity, &mut Window), With<PrimaryWindow>>,
-		secondary_windows: &'a mut Query<&mut Window, Without<PrimaryWindow>>,
+		touch_events: &mut MessageReader<TouchInput>,
+		wheel_events: &MessageReader<MouseWheel>,
+		primary_windows: &'a mut Query<
+			(Entity, &mut Window, &mut CursorOptions),
+			With<PrimaryWindow>,
+		>,
+		secondary_windows: &'a mut Query<(&mut Window, &mut CursorOptions), Without<PrimaryWindow>>,
 		cameras: &'a mut Query<(Entity, &Camera, &TrackballCamera, &mut TrackballController)>,
 	) -> Option<(
 		bool,
 		Entity,
 		Mut<'a, Window>,
+		Mut<'a, CursorOptions>,
 		Entity,
 		&'a Camera,
 		&'a TrackballCamera,
@@ -119,8 +123,14 @@ impl TrackballViewport {
 				continue;
 			};
 			let window = match window_ref {
-				WindowRef::Primary => primary_windows.single().ok().map(|(_id, window)| window),
-				WindowRef::Entity(id) => secondary_windows.get(id).ok(),
+				WindowRef::Primary => primary_windows
+					.single()
+					.ok()
+					.map(|(_id, window, _cursor_options)| window),
+				WindowRef::Entity(id) => secondary_windows
+					.get(id)
+					.ok()
+					.map(|(window, _cursor_options)| window),
 			};
 			let Some(window) = window else {
 				continue;
@@ -154,15 +164,22 @@ impl TrackballViewport {
 		let RenderTarget::Window(window_ref) = camera.target else {
 			return None;
 		};
-		let (window_id, window) = match window_ref {
+		let (window_id, window, cursor_options) = match window_ref {
 			WindowRef::Primary => primary_windows.single_mut().ok(),
 			WindowRef::Entity(id) => secondary_windows
 				.get_mut(id)
 				.ok()
-				.map(|window| (id, window)),
+				.map(|(window, cursor_options)| (id, window, cursor_options)),
 		}?;
 		Some((
-			is_changed, window_id, window, group, camera, trackball, controller,
+			is_changed,
+			window_id,
+			window,
+			cursor_options,
+			group,
+			camera,
+			trackball,
+			controller,
 		))
 	}
 }

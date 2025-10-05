@@ -44,13 +44,16 @@ of the trackball's circumference rolls the camera by 360/8=45 degrees, dragging 
 the screen's center to its further edge *linearly* rotates the camera by 1 [radian], where the
 trackball's diameter is the maximum of the screen's width and height). This is in contrast to
 state-of-the-art techniques using orthogonal projection which distorts radial distances further
-away from the screen’s center (e.g., the rotation accelerates towards the edge).
+away from the screen’s center (e.g., the rotation accelerates towards the edge).[^1]
+
+[^1]: G. Stantchev, “Virtual Trackball Modeling and the Exponential Map”, [S2CID 44199608 (2004)
+](https://api.semanticscholar.org/CorpusID:44199608), [Archived PDF
+](https://web.archive.org/web/2/http://www.math.umd.edu:80/~gogo/Papers/trackballExp.pdf)
 
 [radian]: https://en.wikipedia.org/wiki/Radian
 
   * Coherent and intuitive orbiting via the exponential map, see the underlying [`trackball`]
-    crate which follows the recipe given in the paper of Stantchev, G.. “Virtual Trackball
-    Modeling and the Exponential Map.”. [S2CID] [44199608]. See the [`exponential_map`] example.
+    crate and the the [`exponential_map`] example.
   * Coherent first-person mode aka free look or mouse look with the world trackball centered at
     eye instead of target.
   * Coherent scaling by translating mouse wheel device units, see [`TrackballWheelUnit`]. Scales
@@ -61,9 +64,6 @@ away from the screen’s center (e.g., the rotation accelerates towards the edge
     angular velocity (where target and eye positions define the world radius) which in turn is
     defined in units of vertical field of view per seconds and hence independent of the world
     unit scale.
-
-[S2CID]: https://en.wikipedia.org/wiki/S2CID_(identifier)
-[44199608]: https://api.semanticscholar.org/CorpusID:44199608
 
 [`trackball`]: https://doc.qu1x.dev/bevy_trackball/trackball
 [`TrackballWheelUnit`]: https://doc.qu1x.dev/bevy_trackball/bevy_trackball/enum.TrackballWheelUnit.html

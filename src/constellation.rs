@@ -1,13 +1,13 @@
 use bevy::prelude::*;
 
-use super::{TrackballCamera, TrackballEvent, TrackballSetup};
+use super::{TrackballCamera, TrackballMessage, TrackballSetup};
 
 const LOOPS: usize = 100;
 
 #[allow(clippy::needless_pass_by_value)]
 #[allow(clippy::too_many_arguments)]
 pub fn trackball_constellation(
-	mut trackball_events: EventReader<TrackballEvent>,
+	mut trackball_events: MessageReader<TrackballMessage>,
 	mut cameras: Query<(Entity, &mut TrackballCamera)>,
 ) {
 	for trackball_event in trackball_events.read() {

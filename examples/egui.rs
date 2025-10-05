@@ -3,17 +3,15 @@
 use std::f32::consts::PI;
 
 use bevy::{
+	camera::{RenderTarget, visibility::RenderLayers},
 	prelude::*,
-	render::{
-		camera::RenderTarget,
-		render_resource::{
-			Extent3d, TextureDescriptor, TextureDimension, TextureFormat, TextureUsages,
-		},
-		view::RenderLayers,
+	render::render_resource::{
+		Extent3d, TextureDescriptor, TextureDimension, TextureFormat, TextureUsages,
 	},
 };
 use bevy_egui::{
-	EguiContextPass, EguiContexts, EguiPlugin, EguiUserTextures,
+	EguiContexts, EguiGlobalSettings, EguiPlugin, EguiPrimaryContextPass, EguiTextureHandle,
+	EguiUserTextures, PrimaryEguiContext,
 	egui::{self, Widget},
 };
 use bevy_trackball::prelude::*;
@@ -28,12 +26,10 @@ fn main() {
 			..default()
 		}))
 		.add_plugins(TrackballPlugin)
-		.add_plugins(EguiPlugin {
-			enable_multipass_for_primary_context: true,
-		})
+		.add_plugins(EguiPlugin::default())
 		.add_systems(Startup, setup)
 		.add_systems(
-			EguiContextPass,
+			EguiPrimaryContextPass,
 			(
 				render_to_image_example_system,
 				camera_attached_light.after(TrackballSystemSet::Camera),
@@ -59,7 +55,12 @@ fn setup(
 	mut meshes: ResMut<Assets<Mesh>>,
 	mut materials: ResMut<Assets<StandardMaterial>>,
 	mut images: ResMut<Assets<Image>>,
+	mut egui_global_settings: ResMut<EguiGlobalSettings>,
 ) {
+	// Disable the automatic creation of a primary context to set it up manually for the camera we
+	// need.
+	egui_global_settings.auto_create_primary_context = false;
+
 	let size = Extent3d {
 		width: 512,
 		height: 512,
@@ -87,7 +88,7 @@ fn setup(
 	image.resize(size);
 
 	let image_handle = images.add(image);
-	egui_user_textures.add_image(image_handle.clone());
+	egui_user_textures.add_image(EguiTextureHandle::Strong(image_handle.clone()));
 	commands.insert_resource(CubePreviewImage(image_handle.clone()));
 
 	// Transform of cubes.
@@ -154,6 +155,7 @@ fn setup(
 	// The main pass camera with controller.
 	let controller = commands
 		.spawn((
+			PrimaryEguiContext,
 			TrackballController::default(),
 			TrackballCamera::look_at(target, eye, up),
 			Camera3d::default(),
@@ -176,6 +178,7 @@ fn setup(
 		.insert(preview_pass_layer);
 }
 
+#[allow(clippy::needless_pass_by_value)]
 fn render_to_image_example_system(
 	cube_preview_image: Res<CubePreviewImage>,
 	preview_cube_query: Query<&MeshMaterial3d<StandardMaterial>, With<PreviewPassCube>>,
@@ -183,13 +186,11 @@ fn render_to_image_example_system(
 	mut materials: ResMut<Assets<StandardMaterial>>,
 	mut contexts: EguiContexts,
 ) -> Result {
-	let cube_preview_texture_id = contexts.image_id(&cube_preview_image).unwrap();
+	let cube_preview_texture_id = contexts.image_id(&**cube_preview_image).unwrap();
 	let preview_material_handle = preview_cube_query.single()?;
 	let preview_material = materials.get_mut(preview_material_handle).unwrap();
 
-	let Some(ctx) = contexts.try_ctx_mut() else {
-		return Ok(());
-	};
+	let ctx = contexts.ctx_mut()?;
 	let mut apply = false;
 	egui::Window::new("Cube material preview").show(ctx, |ui| {
 		ui.image(egui::load::SizedTexture::new(
@@ -227,12 +228,13 @@ fn render_to_image_example_system(
 		let material_clone = preview_material.clone();
 
 		let main_material_handle = main_cube_query.single()?;
-		materials.insert(main_material_handle, material_clone);
+		materials.insert(main_material_handle, material_clone)?;
 	}
 
 	Ok(())
 }
 
+#[allow(clippy::cast_sign_loss, clippy::cast_possible_truncation)]
 fn color_picker_widget(ui: &mut egui::Ui, color: &mut Color) -> egui::Response {
 	let [r, g, b, a] = Srgba::from(*color).to_f32_array();
 	let mut egui_color: egui::Rgba = egui::Rgba::from_srgba_unmultiplied(
@@ -248,14 +250,15 @@ fn color_picker_widget(ui: &mut egui::Ui, color: &mut Color) -> egui::Response {
 	);
 	let [r, g, b, a] = egui_color.to_srgba_unmultiplied();
 	*color = Color::srgba(
-		r as f32 / 255.0,
-		g as f32 / 255.0,
-		b as f32 / 255.0,
-		a as f32 / 255.0,
+		f32::from(r) / 255.0,
+		f32::from(g) / 255.0,
+		f32::from(b) / 255.0,
+		f32::from(a) / 255.0,
 	);
 	res
 }
 
+#[allow(clippy::type_complexity)]
 fn camera_attached_light(
 	camera_transform: Query<
 		&Transform,

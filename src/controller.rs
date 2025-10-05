@@ -1,8 +1,7 @@
 use bevy::{
 	input::mouse::{MouseMotion, MouseWheel},
 	prelude::*,
-	window::{CursorGrabMode, PrimaryWindow, SystemCursorIcon},
-	winit::cursor::CursorIcon,
+	window::{CursorGrabMode, CursorIcon, CursorOptions, PrimaryWindow, SystemCursorIcon},
 };
 pub use input::{TrackballInput, TrackballVelocity, TrackballWheelUnit};
 use key::key;
@@ -11,7 +10,7 @@ use touch::touch;
 use trackball::{First, Orbit, Scale, Slide, Touch};
 pub use viewport::TrackballViewport;
 
-use super::{TrackballCamera, TrackballEvent};
+use super::{TrackballCamera, TrackballMessage};
 
 mod input;
 mod key;
@@ -59,15 +58,15 @@ pub fn trackball_controller(
 	time: Res<Time>,
 	key_input: Res<ButtonInput<KeyCode>>,
 	mouse_input: Res<ButtonInput<MouseButton>>,
-	mut touch_events: EventReader<TouchInput>,
-	mut touch_events_clone: EventReader<TouchInput>,
-	mut delta_events: EventReader<MouseMotion>,
-	mut mouse_events: EventReader<CursorMoved>,
-	mut wheel_events: EventReader<MouseWheel>,
-	mut primary_windows: Query<(Entity, &mut Window), With<PrimaryWindow>>,
-	mut secondary_windows: Query<&mut Window, Without<PrimaryWindow>>,
+	mut touch_events: MessageReader<TouchInput>,
+	mut touch_events_clone: MessageReader<TouchInput>,
+	mut delta_events: MessageReader<MouseMotion>,
+	mut mouse_events: MessageReader<CursorMoved>,
+	mut wheel_events: MessageReader<MouseWheel>,
+	mut primary_windows: Query<(Entity, &mut Window, &mut CursorOptions), With<PrimaryWindow>>,
+	mut secondary_windows: Query<(&mut Window, &mut CursorOptions), Without<PrimaryWindow>>,
 	mut cameras: Query<(Entity, &Camera, &TrackballCamera, &mut TrackballController)>,
-	mut trackball_events: EventWriter<TrackballEvent>,
+	mut trackball_events: MessageWriter<TrackballMessage>,
 ) {
 	if viewport.was_stolen() {
 		touch_events.clear();
@@ -75,17 +74,25 @@ pub fn trackball_controller(
 		mouse_events.clear();
 		wheel_events.clear();
 	}
-	let Some((is_changed, window_id, mut window, group, camera, trackball, mut controller)) =
-		TrackballViewport::select(
-			&mut viewport,
-			&key_input,
-			&mouse_input,
-			&mut touch_events_clone,
-			&wheel_events,
-			&mut primary_windows,
-			&mut secondary_windows,
-			&mut cameras,
-		)
+	let Some((
+		is_changed,
+		window_id,
+		window,
+		mut cursor_options,
+		group,
+		camera,
+		trackball,
+		mut controller,
+	)) = TrackballViewport::select(
+		&mut viewport,
+		&key_input,
+		&mouse_input,
+		&mut touch_events_clone,
+		&wheel_events,
+		&mut primary_windows,
+		&mut secondary_windows,
+		&mut cameras,
+	)
 	else {
 		return;
 	};
@@ -105,8 +112,8 @@ pub fn trackball_controller(
 		commands
 			.entity(window_id)
 			.insert(CursorIcon::from(SystemCursorIcon::Default));
-		window.cursor_options.grab_mode = CursorGrabMode::None;
-		window.cursor_options.visible = true;
+		cursor_options.grab_mode = CursorGrabMode::None;
+		cursor_options.visible = true;
 	}
 	let zat = trackball.frame.distance();
 	let (_max, upp) = trackball.scope.fov().max_and_upp(zat, &max.into());
@@ -118,7 +125,7 @@ pub fn trackball_controller(
 		&mut trackball_events,
 		trackball,
 		&mut controller,
-		&mut window,
+		&mut cursor_options,
 		&key_input,
 		&mouse_input,
 		zat,
@@ -133,7 +140,8 @@ pub fn trackball_controller(
 		trackball,
 		&mut controller,
 		window_id,
-		&mut window,
+		&window,
+		&mut cursor_options,
 		&mouse_input,
 		delta_events,
 		mouse_events,

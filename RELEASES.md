@@ -1,3 +1,9 @@
+# Version 0.13.0 (2025-10-05)
+
+  * Bump `bevy` to `0.17.2`.
+  * Bump `bevy_egui` to `0.37.9`.
+  * Bump `trackball` to `0.17.0`.
+
 # Version 0.12.0 (2025-06-19)
 
   * Allow to set transmission ratio of movement to input per operation and input type.

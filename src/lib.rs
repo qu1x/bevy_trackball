@@ -26,13 +26,16 @@
 //! the screen's center to its further edge *linearly* rotates the camera by 1 [radian], where the
 //! trackball's diameter is the maximum of the screen's width and height). This is in contrast to
 //! state-of-the-art techniques using orthogonal projection which distorts radial distances further
-//! away from the screen's center (e.g., the rotation accelerates towards the edge).
+//! away from the screen's center (e.g., the rotation accelerates towards the edge).[^1]
+//!
+//! [^1]: G. Stantchev, “Virtual Trackball Modeling and the Exponential Map”, [S2CID 44199608 (2004)
+//! ](https://api.semanticscholar.org/CorpusID:44199608), [Archived PDF
+//! ](https://web.archive.org/web/2/http://www.math.umd.edu:80/~gogo/Papers/trackballExp.pdf)
 //!
 //! [radian]: https://en.wikipedia.org/wiki/Radian
 //!
 //!   * Coherent and intuitive orbiting via the exponential map, see the underlying [`trackball`]
-//!     crate which follows the recipe given in the paper of Stantchev, G.. “Virtual Trackball
-//!     Modeling and the Exponential Map.”. [S2CID] [44199608]. See the [`exponential_map`] example.
+//!     crate and the [`exponential_map`] example.
 //!   * Coherent first-person mode aka free look or mouse look with the world trackball centered at
 //!     eye instead of target.
 //!   * Coherent scaling by translating mouse wheel device units, see [`TrackballWheelUnit`]. Scales
@@ -43,9 +46,6 @@
 //!     angular velocity (where target and eye positions define the world radius) which in turn is
 //!     defined in units of vertical field of view per seconds and hence independent of the world
 //!     unit scale.
-//!
-//! [S2CID]: https://en.wikipedia.org/wiki/S2CID_(identifier)
-//! [44199608]: https://api.semanticscholar.org/CorpusID:44199608
 //!
 //! # Additional Features
 //!
@@ -170,7 +170,7 @@ use trackball::{
 /// Prelude to get started quickly.
 pub mod prelude {
 	pub use super::{
-		TrackballCamera, TrackballController, TrackballEvent, TrackballInput, TrackballPlugin,
+		TrackballCamera, TrackballController, TrackballInput, TrackballMessage, TrackballPlugin,
 		TrackballSetup, TrackballSystemSet, TrackballVelocity, TrackballViewport,
 		TrackballWheelUnit,
 		trackball::{
@@ -199,8 +199,8 @@ mod controller;
 pub struct TrackballPlugin;
 
 /// Event sent from [`TrackballController`] component to group of [`TrackballCamera`] components.
-#[derive(Event)]
-pub struct TrackballEvent {
+#[derive(Message)]
+pub struct TrackballMessage {
 	/// Entity of [`TrackballController`] component which sent this event.
 	///
 	/// Read by group of [`TrackballCamera`] components which knows about this entity.
@@ -213,7 +213,7 @@ pub struct TrackballEvent {
 	pub setup: Option<TrackballSetup>,
 }
 
-impl TrackballEvent {
+impl TrackballMessage {
 	/// Creates [`Delta::First`] event for camera `group`.
 	#[must_use]
 	#[inline]
@@ -298,7 +298,7 @@ impl TrackballEvent {
 	}
 }
 
-/// Setup of [`TrackballCamera`] as part of [`TrackballEvent`].
+/// Setup of [`TrackballCamera`] as part of [`TrackballMessage`].
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
 #[non_exhaustive]
 pub enum TrackballSetup {
@@ -317,9 +317,9 @@ pub enum TrackballSetup {
 #[non_exhaustive]
 pub enum TrackballSystemSet {
 	/// Trackball controller system translating [`TrackballInput`] of [`TrackballController`]
-	/// components into [`TrackballEvent`] for [`TrackballSystemSet::Constellation`].
+	/// components into [`TrackballMessage`] for [`TrackballSystemSet::Constellation`].
 	Controller,
-	/// Trackball constellation system translating [`TrackballEvent`] from [`TrackballController`]
+	/// Trackball constellation system translating [`TrackballMessage`] from [`TrackballController`]
 	/// components into new [`Frame`] and [`Scope`] of [`TrackballCamera`] components.
 	///
 	/// [`Frame`]: trackball::Frame
@@ -336,7 +336,7 @@ pub enum TrackballSystemSet {
 impl Plugin for TrackballPlugin {
 	fn build(&self, app: &mut App) {
 		app.init_resource::<TrackballViewport>()
-			.add_event::<TrackballEvent>()
+			.add_message::<TrackballMessage>()
 			.add_systems(
 				Update,
 				(

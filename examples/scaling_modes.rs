@@ -9,8 +9,8 @@
 #![allow(clippy::similar_names)]
 
 use bevy::{
+	camera::{RenderTarget, Viewport},
 	prelude::*,
-	render::camera::{RenderTarget, Viewport},
 	window::{PrimaryWindow, WindowRef, WindowResized},
 };
 use bevy_trackball::prelude::{Fixed, *};
@@ -146,7 +146,7 @@ struct RightCamera;
 fn set_camera_viewports(
 	primary_windows: Query<(Entity, &Window), With<PrimaryWindow>>,
 	windows: Query<(Entity, &Window)>,
-	mut resize_events: EventReader<WindowResized>,
+	mut resize_events: MessageReader<WindowResized>,
 	mut left_cameras: Query<&mut Camera, (With<LeftCamera>, Without<RightCamera>)>,
 	mut right_cameras: Query<&mut Camera, With<RightCamera>>,
 ) {
