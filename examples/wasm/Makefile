@@ -42,6 +42,7 @@ target/%.features: target/metadata
 
 ../../target/wasm32-unknown-unknown/wasm-release/examples/%.wasm: target/%.features update
 	@printf "    \033[1;32mUpdating\033[0m $*(example)\n"
+	RUSTFLAGS='--cfg getrandom_backend="wasm_js"' \
 	cargo build --profile wasm-release --target wasm32-unknown-unknown -F $$(cat $<), --example $*
 
 target/%_bg.wasm: ../../target/wasm32-unknown-unknown/wasm-release/examples/%.wasm
@@ -78,4 +79,5 @@ clean:
 	rm -rf -- target
 
 .SECONDARY:
-Makefile:;
+
+MAKEFLAGS += =rR
