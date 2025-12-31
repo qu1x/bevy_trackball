@@ -169,6 +169,7 @@ pub fn trackball_camera(
 				aspect_ratio,
 				near,
 				far,
+				near_clip_plane: Vec4::new(0.0, 0.0, -1.0, near),
 			});
 		}
 	}

@@ -88,13 +88,8 @@ fn setup(
 		let left = commands
 			.spawn((
 				TrackballController::default(),
-				Camera {
-					target: RenderTarget::Window(window),
-					// Renders the right camera after the left camera,
-					// which has a default priority of 0.
-					order,
-					..default()
-				},
+				Camera { order, ..default() },
+				RenderTarget::Window(window),
 				Camera3d::default(),
 				LeftCamera,
 			))
@@ -105,15 +100,13 @@ fn setup(
 			.spawn((
 				TrackballController::default(),
 				Camera {
-					target: RenderTarget::Window(window),
-					// Renders the right camera after the left camera,
-					// which has a default priority of 0.
 					order,
 					// Don't clear on the second camera
 					// because the first camera already cleared the window.
 					clear_color: ClearColorConfig::None,
 					..default()
 				},
+				RenderTarget::Window(window),
 				Camera3d::default(),
 				RightCamera,
 			))
@@ -142,13 +135,13 @@ struct LeftCamera;
 #[derive(Component)]
 struct RightCamera;
 
-#[allow(clippy::needless_pass_by_value)]
+#[allow(clippy::needless_pass_by_value, clippy::type_complexity)]
 fn set_camera_viewports(
 	primary_windows: Query<(Entity, &Window), With<PrimaryWindow>>,
 	windows: Query<(Entity, &Window)>,
 	mut resize_events: MessageReader<WindowResized>,
-	mut left_cameras: Query<&mut Camera, (With<LeftCamera>, Without<RightCamera>)>,
-	mut right_cameras: Query<&mut Camera, With<RightCamera>>,
+	mut left_cameras: Query<(&mut Camera, &RenderTarget), (With<LeftCamera>, Without<RightCamera>)>,
+	mut right_cameras: Query<(&mut Camera, &RenderTarget), With<RightCamera>>,
 ) {
 	// We need to dynamically resize the camera's viewports whenever the window size changes,
 	// so then each camera always takes up half the screen. A `resize_event` is sent when the window
@@ -156,11 +149,11 @@ fn set_camera_viewports(
 	for resize_event in resize_events.read() {
 		let (resize_id, resize_window) = windows.get(resize_event.window).unwrap();
 		let resolution = &resize_window.resolution;
-		for mut left_camera in &mut left_cameras {
-			if let RenderTarget::Window(window_ref) = left_camera.target {
+		for (mut left_camera, left_target) in &mut left_cameras {
+			if let RenderTarget::Window(window_ref) = left_target {
 				let Some((target_id, _target_window)) = (match window_ref {
 					WindowRef::Primary => primary_windows.single().ok(),
-					WindowRef::Entity(id) => windows.get(id).ok(),
+					WindowRef::Entity(id) => windows.get(*id).ok(),
 				}) else {
 					continue;
 				};
@@ -176,11 +169,11 @@ fn set_camera_viewports(
 				}
 			}
 		}
-		for mut right_camera in &mut right_cameras {
-			if let RenderTarget::Window(window_ref) = right_camera.target {
+		for (mut right_camera, right_target) in &mut right_cameras {
+			if let RenderTarget::Window(window_ref) = right_target {
 				let Some((target_id, _target_window)) = (match window_ref {
 					WindowRef::Primary => primary_windows.single().ok(),
-					WindowRef::Entity(id) => windows.get(id).ok(),
+					WindowRef::Entity(id) => windows.get(*id).ok(),
 				}) else {
 					continue;
 				};

@@ -98,7 +98,13 @@ impl TrackballViewport {
 			With<PrimaryWindow>,
 		>,
 		secondary_windows: &'a mut Query<(&mut Window, &mut CursorOptions), Without<PrimaryWindow>>,
-		cameras: &'a mut Query<(Entity, &Camera, &TrackballCamera, &mut TrackballController)>,
+		cameras: &'a mut Query<(
+			Entity,
+			&Camera,
+			&RenderTarget,
+			&TrackballCamera,
+			&mut TrackballController,
+		)>,
 	) -> Option<(
 		bool,
 		Entity,
@@ -118,8 +124,8 @@ impl TrackballViewport {
 			|| mouse_input.get_just_pressed().len() != 0;
 		let mut new_viewport = viewport.clone();
 		let mut max_order = 0;
-		for (group, camera, _trackball, _controller) in cameras.iter() {
-			let RenderTarget::Window(window_ref) = camera.target else {
+		for (group, camera, target, _trackball, _controller) in cameras.iter() {
+			let RenderTarget::Window(window_ref) = target else {
 				continue;
 			};
 			let window = match window_ref {
@@ -128,7 +134,7 @@ impl TrackballViewport {
 					.ok()
 					.map(|(_id, window, _cursor_options)| window),
 				WindowRef::Entity(id) => secondary_windows
-					.get(id)
+					.get(*id)
 					.ok()
 					.map(|(window, _cursor_options)| window),
 			};
@@ -157,19 +163,19 @@ impl TrackballViewport {
 		let camera = viewport
 			.entity
 			.and_then(|entity| cameras.get_mut(entity).ok());
-		let Some((group, camera, trackball, controller)) = camera else {
+		let Some((group, camera, target, trackball, controller)) = camera else {
 			viewport.entity = None;
 			return None;
 		};
-		let RenderTarget::Window(window_ref) = camera.target else {
+		let RenderTarget::Window(window_ref) = target else {
 			return None;
 		};
 		let (window_id, window, cursor_options) = match window_ref {
 			WindowRef::Primary => primary_windows.single_mut().ok(),
 			WindowRef::Entity(id) => secondary_windows
-				.get_mut(id)
+				.get_mut(*id)
 				.ok()
-				.map(|(window, cursor_options)| (id, window, cursor_options)),
+				.map(|(window, cursor_options)| (*id, window, cursor_options)),
 		}?;
 		Some((
 			is_changed,

@@ -1,4 +1,5 @@
 use bevy::{
+	camera::RenderTarget,
 	input::mouse::{MouseMotion, MouseWheel},
 	prelude::*,
 	window::{CursorGrabMode, CursorIcon, CursorOptions, PrimaryWindow, SystemCursorIcon},
@@ -65,7 +66,13 @@ pub fn trackball_controller(
 	mut wheel_events: MessageReader<MouseWheel>,
 	mut primary_windows: Query<(Entity, &mut Window, &mut CursorOptions), With<PrimaryWindow>>,
 	mut secondary_windows: Query<(&mut Window, &mut CursorOptions), Without<PrimaryWindow>>,
-	mut cameras: Query<(Entity, &Camera, &TrackballCamera, &mut TrackballController)>,
+	mut cameras: Query<(
+		Entity,
+		&Camera,
+		&RenderTarget,
+		&TrackballCamera,
+		&mut TrackballController,
+	)>,
 	mut trackball_events: MessageWriter<TrackballMessage>,
 ) {
 	if viewport.was_stolen() {

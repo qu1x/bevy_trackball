@@ -21,27 +21,26 @@ pub fn trackball_constellation(
 				{
 					continue;
 				}
-				if let Some(clamp) = &trackball.clamp {
-					if let Some((delta, loops)) =
+				if let Some(clamp) = &trackball.clamp
+					&& let Some((delta, loops)) =
 						clamp.compute(&trackball.frame, &trackball.scope, &min_delta)
-					{
-						if loops == clamp.loops() {
-							warn!("Using partial clamp after {loops} loops (entity {group:?})");
-						} else {
-							debug!("Found camera clamp after {loops} loops (entity {group:?})");
-						}
-						if trackball
-							.group
-							.get(&trackball_event.group)
-							.copied()
-							.unwrap_or(true)
-						{
-							bound = true;
-							min_delta = delta;
-							break;
-						}
-						trackball.delta = Some(delta);
+				{
+					if loops == clamp.loops() {
+						warn!("Using partial clamp after {loops} loops (entity {group:?})");
+					} else {
+						debug!("Found camera clamp after {loops} loops (entity {group:?})");
 					}
+					if trackball
+						.group
+						.get(&trackball_event.group)
+						.copied()
+						.unwrap_or(true)
+					{
+						bound = true;
+						min_delta = delta;
+						break;
+					}
+					trackball.delta = Some(delta);
 				}
 			}
 			if bound {

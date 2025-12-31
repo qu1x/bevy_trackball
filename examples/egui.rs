@@ -169,11 +169,11 @@ fn setup(
 			Camera {
 				// Render before the main pass camera.
 				order: -1,
-				target: RenderTarget::Image(image_handle.into()),
 				clear_color: ClearColorConfig::Custom(Color::srgba(1.0, 1.0, 1.0, 0.0)),
 				..default()
 			},
 			Camera3d::default(),
+			RenderTarget::Image(image_handle.into()),
 		))
 		.insert(preview_pass_layer);
 }

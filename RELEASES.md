@@ -1,3 +1,8 @@
+# Version 0.14.0 (2026-??-??)
+
+  * Bump `bevy` to `0.18.0`.
+  * Bump `bevy_egui` to `0.39.0`.
+
 # Version 0.13.0 (2025-10-09)
 
   * Bump `bevy` to `0.17.2`.
