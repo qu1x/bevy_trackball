@@ -1,6 +1,6 @@
 [package]
 name = "bevy_trackball"
-version = "0.14.0-rc.1"
+version = "0.14.0"
 rust-version = "1.89.0"
 edition = "2024"
 authors = ["Rouven Spreckels <rs@qu1x.dev>"]
@@ -38,17 +38,16 @@ cargo-args = ["-Z", "unstable-options", "-Z", "rustdoc-scrape-examples"]
 rustdoc-args = ["--cfg", "docsrs"]
 
 [features]
-default = ["bevy_egui/default_fonts", "bevy/wayland", "bevy/bevy_ui", "bevy/default_font"]
 c11-orbit = ["trackball/cc"]
 serialize = ["bevy/serialize", "trackball/serde", "bevy_egui?/serde"]
 bevy_egui = ["dep:bevy_egui"]
 
 [dependencies]
 trackball = { version = "0.17.0", features = ["glam"] }
-bevy_egui = { git = "https://github.com/vladbat00/bevy_egui", rev = "refs/pull/452/head", default-features = false, features = ["render"], optional = true }
+bevy_egui = { version = "0.39.0", default-features = false, features = ["render"], optional = true }
 
 [dependencies.bevy]
-version = "0.18.0-rc"
+version = "0.18.0"
 default-features = false
 features = [
 	"bevy_render",
@@ -58,7 +57,7 @@ features = [
 ]
 
 [dev-dependencies.bevy]
-version = "0.18.0-rc"
+version = "0.18.0"
 default-features = false
 features = [
 	"bevy_core_pipeline",
@@ -80,15 +79,15 @@ required-features = []
 doc-scrape-examples = true
 [[example]]
 name = "gliding_clamp"
-required-features = ["bevy/bevy_ui_render"]
+required-features = ["bevy/bevy_ui_render", "bevy/default_font"]
 doc-scrape-examples = true
 [[example]]
 name = "constellation_clamp"
-required-features = ["bevy/bevy_ui_render"]
+required-features = ["bevy/bevy_ui_render", "bevy/default_font"]
 doc-scrape-examples = true
 [[example]]
 name = "egui"
-required-features = []
+required-features = ["bevy_egui/default_fonts"]
 doc-scrape-examples = true
 [[example]]
 name = "scaling_modes"
