@@ -75,7 +75,6 @@ fn setup(
 		.id();
 
 	// Cameras
-	let mut order = 0;
 	let fov = Fixed::default();
 	for (fov, window) in [
 		(fov, WindowRef::Primary),
@@ -88,22 +87,21 @@ fn setup(
 		let left = commands
 			.spawn((
 				TrackballController::default(),
-				Camera { order, ..default() },
+				Camera {
+					order: 0,
+					..default()
+				},
 				RenderTarget::Window(window),
 				Camera3d::default(),
 				LeftCamera,
 			))
 			.id();
-		order += 1;
 		// Right trackball controller and camera 3D bundle.
 		let right = commands
 			.spawn((
 				TrackballController::default(),
 				Camera {
-					order,
-					// Don't clear on the second camera
-					// because the first camera already cleared the window.
-					clear_color: ClearColorConfig::None,
+					order: 1,
 					..default()
 				},
 				RenderTarget::Window(window),
@@ -111,7 +109,6 @@ fn setup(
 				RightCamera,
 			))
 			.id();
-		order += 1;
 		// Insert left trackball camera and make it sensitive to right trackball controller as well.
 		commands.entity(left).insert(
 			TrackballCamera::look_at(target, eye, up)
