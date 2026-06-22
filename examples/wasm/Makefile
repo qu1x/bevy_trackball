@@ -80,4 +80,4 @@ clean:
 
 .SECONDARY:
 
-MAKEFLAGS += =rR
+MAKEFLAGS += -rR
