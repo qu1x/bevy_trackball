@@ -169,7 +169,7 @@ fn setup(
 			Camera {
 				// Render before the main pass camera.
 				order: -1,
-				clear_color: ClearColorConfig::Custom(Color::srgba(1.0, 1.0, 1.0, 0.0)),
+				clear_color: ClearColorConfig::Custom(Color::NONE),
 				..default()
 			},
 			Camera3d::default(),
@@ -188,7 +188,7 @@ fn render_to_image_example_system(
 ) -> Result {
 	let cube_preview_texture_id = contexts.image_id(&**cube_preview_image).unwrap();
 	let preview_material_handle = preview_cube_query.single()?;
-	let preview_material = materials.get_mut(preview_material_handle).unwrap();
+	let mut preview_material = materials.get_mut(preview_material_handle).unwrap();
 
 	let ctx = contexts.ctx_mut()?;
 	let mut apply = false;
@@ -225,7 +225,7 @@ fn render_to_image_example_system(
 	});
 
 	if apply {
-		let material_clone = preview_material.clone();
+		let material_clone = preview_material.into_inner().clone();
 
 		let main_material_handle = main_cube_query.single()?;
 		materials.insert(main_material_handle, material_clone)?;
