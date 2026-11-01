@@ -50,7 +50,7 @@ impl TrackballViewport {
     ///
     /// ```ignore
     /// fn system(/* ... */) {
-    /// 	viewport.set_stolen(just_stolen.then_some(3));
+    ///     viewport.set_stolen(just_stolen.then_some(3));
     /// }
     ///
     /// // frame 0: just_stolen = true  -> set_stolen(Some(3)) -> frames = 3 -> stolen = true
@@ -63,12 +63,12 @@ impl TrackballViewport {
     ///
     /// ```ignore
     /// fn system(/* ... */) {
-    /// 	if just_stolen {
-    /// 		viewport.set_stolen(Some(1));
-    /// 	}
-    /// 	if just_give_back {
-    /// 		viewport.set_stolen(Some(0));
-    /// 	}
+    ///     if just_stolen {
+    ///         viewport.set_stolen(Some(1));
+    ///     }
+    ///     if just_give_back {
+    ///         viewport.set_stolen(Some(0));
+    ///     }
     /// }
     ///
     /// // frame  0: just_stolen = true    -> set_stolen(Some(1)) -> frames = 1 -> stolen = true

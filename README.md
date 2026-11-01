@@ -151,23 +151,23 @@ use bevy_trackball::prelude::*;
 
 // Add the trackball plugin.
 fn main() {
-	App::new()
-		.add_plugins(DefaultPlugins)
-		.add_plugins(TrackballPlugin)
-		.add_systems(Startup, setup)
-		.run();
+    App::new()
+        .add_plugins(DefaultPlugins)
+        .add_plugins(TrackballPlugin)
+        .add_systems(Startup, setup)
+        .run();
 }
 
 // Add a trackball controller and trackball camera to a camera 3D bundle.
 fn setup(mut commands: Commands) {
-	let [target, eye, up] = [Vec3::ZERO, Vec3::Z * 10.0, Vec3::Y];
-	commands.spawn((
-		TrackballController::default(),
-		TrackballCamera::look_at(eye, target, up),
-		Camera3d::default(),
-	));
+    let [target, eye, up] = [Vec3::ZERO, Vec3::Z * 10.0, Vec3::Y];
+    commands.spawn((
+        TrackballController::default(),
+        TrackballCamera::look_at(eye, target, up),
+        Camera3d::default(),
+    ));
 
-	// Set up your scene...
+    // Set up your scene...
 }
 ```
 
