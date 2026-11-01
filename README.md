@@ -188,9 +188,9 @@ Copyright © 2023-2026 Rouven Spreckels <rs@qu1x.dev>
 
 This project is licensed under either of
 
- * Apache License, Version 2.0, ([LICENSES/Apache-2.0](LICENSES/Apache-2.0) or
+ * Apache License, Version 2.0, ([LICENSE-APACHE](LICENSE-APACHE) or
    https://www.apache.org/licenses/LICENSE-2.0)
- * MIT license ([LICENSES/MIT](LICENSES/MIT) or https://opensource.org/licenses/MIT)
+ * MIT license ([LICENSE-MIT](LICENSE-MIT) or https://opensource.org/licenses/MIT)
 
 at your option.
 
