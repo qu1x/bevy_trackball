@@ -17,49 +17,49 @@ use bevy::prelude::*;
 use bevy_trackball::prelude::*;
 
 fn main() {
-	App::new()
-		.add_plugins(DefaultPlugins.set(WindowPlugin {
-			primary_window: Some(Window {
-				canvas: Some("#bevy".to_owned()),
-				..default()
-			}),
-			..default()
-		}))
-		.add_plugins(TrackballPlugin)
-		.add_systems(Startup, setup)
-		.run();
+    App::new()
+        .add_plugins(DefaultPlugins.set(WindowPlugin {
+            primary_window: Some(Window {
+                canvas: Some("#bevy".to_owned()),
+                ..default()
+            }),
+            ..default()
+        }))
+        .add_plugins(TrackballPlugin)
+        .add_systems(Startup, setup)
+        .run();
 }
 
 /// set up a simple 3D scene
 fn setup(
-	mut commands: Commands,
-	mut meshes: ResMut<Assets<Mesh>>,
-	mut materials: ResMut<Assets<StandardMaterial>>,
+    mut commands: Commands,
+    mut meshes: ResMut<Assets<Mesh>>,
+    mut materials: ResMut<Assets<StandardMaterial>>,
 ) {
-	// circular base
-	commands.spawn((
-		Mesh3d(meshes.add(Circle::new(4.0))),
-		MeshMaterial3d(materials.add(Color::WHITE)),
-		Transform::from_rotation(Quat::from_rotation_x(-std::f32::consts::FRAC_PI_2)),
-	));
-	// cube
-	commands.spawn((
-		Mesh3d(meshes.add(Cuboid::new(1.0, 1.0, 1.0))),
-		MeshMaterial3d(materials.add(Color::srgb_u8(124, 144, 255))),
-		Transform::from_xyz(0.0, 0.5, 0.0),
-	));
-	// light
-	commands.spawn((
-		PointLight {
-			shadow_maps_enabled: true,
-			..default()
-		},
-		Transform::from_xyz(4.0, 8.0, 4.0),
-	));
-	// camera
-	commands.spawn((
-		TrackballController::default(),
-		TrackballCamera::look_at(Vec3::new(-2.5, 4.5, 9.0), Vec3::Y * 0.5, Vec3::Y),
-		Camera3d::default(),
-	));
+    // circular base
+    commands.spawn((
+        Mesh3d(meshes.add(Circle::new(4.0))),
+        MeshMaterial3d(materials.add(Color::WHITE)),
+        Transform::from_rotation(Quat::from_rotation_x(-std::f32::consts::FRAC_PI_2)),
+    ));
+    // cube
+    commands.spawn((
+        Mesh3d(meshes.add(Cuboid::new(1.0, 1.0, 1.0))),
+        MeshMaterial3d(materials.add(Color::srgb_u8(124, 144, 255))),
+        Transform::from_xyz(0.0, 0.5, 0.0),
+    ));
+    // light
+    commands.spawn((
+        PointLight {
+            shadow_maps_enabled: true,
+            ..default()
+        },
+        Transform::from_xyz(4.0, 8.0, 4.0),
+    ));
+    // camera
+    commands.spawn((
+        TrackballController::default(),
+        TrackballCamera::look_at(Vec3::new(-2.5, 4.5, 9.0), Vec3::Y * 0.5, Vec3::Y),
+        Camera3d::default(),
+    ));
 }

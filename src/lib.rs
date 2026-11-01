@@ -124,23 +124,23 @@
 //!
 //! // Add the trackball plugin.
 //! fn main() {
-//! 	App::new()
-//! 		.add_plugins(DefaultPlugins)
-//! 		.add_plugins(TrackballPlugin)
-//! 		.add_systems(Startup, setup)
-//! 		.run();
+//!     App::new()
+//!         .add_plugins(DefaultPlugins)
+//!         .add_plugins(TrackballPlugin)
+//!         .add_systems(Startup, setup)
+//!         .run();
 //! }
 //!
 //! // Add a trackball controller and trackball camera to a camera 3D bundle.
 //! fn setup(mut commands: Commands) {
-//! 	let [target, eye, up] = [Vec3::ZERO, Vec3::Z * 10.0, Vec3::Y];
-//! 	commands.spawn((
-//! 		TrackballController::default(),
-//! 		TrackballCamera::look_at(eye, target, up),
-//! 		Camera3d::default(),
-//! 	));
+//!     let [target, eye, up] = [Vec3::ZERO, Vec3::Z * 10.0, Vec3::Y];
+//!     commands.spawn((
+//!         TrackballController::default(),
+//!         TrackballCamera::look_at(eye, target, up),
+//!         Camera3d::default(),
+//!     ));
 //!
-//! 	// Set up your scene...
+//!     // Set up your scene...
 //! }
 //! ```
 //!
@@ -157,19 +157,19 @@ use camera::trackball_camera;
 use constellation::trackball_constellation;
 use controller::trackball_controller;
 pub use controller::{
-	TrackballController, TrackballInput, TrackballVelocity, TrackballViewport, TrackballWheelUnit,
+    TrackballController, TrackballInput, TrackballVelocity, TrackballViewport, TrackballWheelUnit,
 };
 pub use trackball;
 use trackball::Delta;
 
 /// Prelude to get started quickly.
 pub mod prelude {
-	pub use super::{
-		TrackballCamera, TrackballController, TrackballInput, TrackballMessage, TrackballPlugin,
-		TrackballSetup, TrackballSystemSet, TrackballVelocity, TrackballViewport,
-		TrackballWheelUnit,
-		trackball::{Bound, Clamp, Delta, Fixed, Frame, Plane, Rigid, Scope},
-	};
+    pub use super::{
+        TrackballCamera, TrackballController, TrackballInput, TrackballMessage, TrackballPlugin,
+        TrackballSetup, TrackballSystemSet, TrackballVelocity, TrackballViewport,
+        TrackballWheelUnit,
+        trackball::{Bound, Clamp, Delta, Fixed, Frame, Plane, Rigid, Scope},
+    };
 }
 mod camera;
 mod constellation;
@@ -188,174 +188,174 @@ pub struct TrackballPlugin;
 /// Event sent from [`TrackballController`] component to group of [`TrackballCamera`] components.
 #[derive(Message)]
 pub struct TrackballMessage {
-	/// Entity of [`TrackballController`] component which sent this event.
-	///
-	/// Read by group of [`TrackballCamera`] components which knows about this entity.
-	pub group: Entity,
-	/// Delta transform from initial to final [`Frame`] of [`TrackballCamera`].
-	///
-	/// [`Frame`]: trackball::Frame
-	pub delta: Delta,
-	/// Setup of [`TrackballCamera`].
-	pub setup: Option<TrackballSetup>,
+    /// Entity of [`TrackballController`] component which sent this event.
+    ///
+    /// Read by group of [`TrackballCamera`] components which knows about this entity.
+    pub group: Entity,
+    /// Delta transform from initial to final [`Frame`] of [`TrackballCamera`].
+    ///
+    /// [`Frame`]: trackball::Frame
+    pub delta: Delta,
+    /// Setup of [`TrackballCamera`].
+    pub setup: Option<TrackballSetup>,
 }
 
 impl TrackballMessage {
-	/// Creates [`Delta::First`] event for camera `group`.
-	#[must_use]
-	#[inline]
-	pub const fn first(group: Entity, pitch: f32, yaw: f32, yaw_axis: Vec3) -> Self {
-		Self {
-			group,
-			delta: Delta::First {
-				pitch,
-				yaw,
-				yaw_axis,
-			},
-			setup: None,
-		}
-	}
-	/// Creates [`Delta::Track`] event for camera `group`.
-	#[must_use]
-	#[inline]
-	pub const fn track(group: Entity, vector: Vec3) -> Self {
-		Self {
-			group,
-			delta: Delta::Track { vector },
-			setup: None,
-		}
-	}
-	/// Creates [`Delta::Orbit`] event for camera `group`.
-	#[must_use]
-	#[inline]
-	pub const fn orbit(group: Entity, rotation: Quat, point: Vec3) -> Self {
-		Self {
-			group,
-			delta: Delta::Orbit { rotation, point },
-			setup: None,
-		}
-	}
-	/// Creates [`Delta::Slide`] event for camera `group`.
-	#[must_use]
-	#[inline]
-	pub const fn slide(group: Entity, vector: Vec3) -> Self {
-		Self {
-			group,
-			delta: Delta::Slide { vector },
-			setup: None,
-		}
-	}
-	/// Creates [`Delta::Scale`] event for camera `group`.
-	#[must_use]
-	#[inline]
-	pub const fn scale(group: Entity, ratio: f32, point: Vec3) -> Self {
-		Self {
-			group,
-			delta: Delta::Scale { ratio, point },
-			setup: None,
-		}
-	}
-	/// Creates [`TrackballSetup::Reset`] event for camera `group`.
-	#[must_use]
-	#[inline]
-	pub const fn reset(group: Entity) -> Self {
-		Self {
-			group,
-			delta: Delta::Frame,
-			setup: Some(TrackballSetup::Reset),
-		}
-	}
-	/// Creates [`TrackballSetup::Ortho`] event for camera `group`.
-	#[must_use]
-	#[inline]
-	pub const fn ortho(group: Entity, ortho: Option<bool>) -> Self {
-		Self {
-			group,
-			delta: Delta::Frame,
-			setup: Some(TrackballSetup::Ortho(ortho)),
-		}
-	}
+    /// Creates [`Delta::First`] event for camera `group`.
+    #[must_use]
+    #[inline]
+    pub const fn first(group: Entity, pitch: f32, yaw: f32, yaw_axis: Vec3) -> Self {
+        Self {
+            group,
+            delta: Delta::First {
+                pitch,
+                yaw,
+                yaw_axis,
+            },
+            setup: None,
+        }
+    }
+    /// Creates [`Delta::Track`] event for camera `group`.
+    #[must_use]
+    #[inline]
+    pub const fn track(group: Entity, vector: Vec3) -> Self {
+        Self {
+            group,
+            delta: Delta::Track { vector },
+            setup: None,
+        }
+    }
+    /// Creates [`Delta::Orbit`] event for camera `group`.
+    #[must_use]
+    #[inline]
+    pub const fn orbit(group: Entity, rotation: Quat, point: Vec3) -> Self {
+        Self {
+            group,
+            delta: Delta::Orbit { rotation, point },
+            setup: None,
+        }
+    }
+    /// Creates [`Delta::Slide`] event for camera `group`.
+    #[must_use]
+    #[inline]
+    pub const fn slide(group: Entity, vector: Vec3) -> Self {
+        Self {
+            group,
+            delta: Delta::Slide { vector },
+            setup: None,
+        }
+    }
+    /// Creates [`Delta::Scale`] event for camera `group`.
+    #[must_use]
+    #[inline]
+    pub const fn scale(group: Entity, ratio: f32, point: Vec3) -> Self {
+        Self {
+            group,
+            delta: Delta::Scale { ratio, point },
+            setup: None,
+        }
+    }
+    /// Creates [`TrackballSetup::Reset`] event for camera `group`.
+    #[must_use]
+    #[inline]
+    pub const fn reset(group: Entity) -> Self {
+        Self {
+            group,
+            delta: Delta::Frame,
+            setup: Some(TrackballSetup::Reset),
+        }
+    }
+    /// Creates [`TrackballSetup::Ortho`] event for camera `group`.
+    #[must_use]
+    #[inline]
+    pub const fn ortho(group: Entity, ortho: Option<bool>) -> Self {
+        Self {
+            group,
+            delta: Delta::Frame,
+            setup: Some(TrackballSetup::Ortho(ortho)),
+        }
+    }
 
-	/// Applies `transmission` ratio.
-	#[must_use]
-	#[inline]
-	pub fn transmission(mut self, transmission: f32) -> Self {
-		self.delta = self.delta.lerp_slerp(transmission);
-		self
-	}
+    /// Applies `transmission` ratio.
+    #[must_use]
+    #[inline]
+    pub fn transmission(mut self, transmission: f32) -> Self {
+        self.delta = self.delta.lerp_slerp(transmission);
+        self
+    }
 }
 
 /// Setup of [`TrackballCamera`] as part of [`TrackballMessage`].
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
 #[non_exhaustive]
 pub enum TrackballSetup {
-	/// Reset camera frame.
-	Reset,
-	/// Set projection mode.
-	///
-	///   * Orthographic with `Some(true)`
-	///   * Perspective with `Some(false)`
-	///   * Toggle with `None`
-	Ortho(Option<bool>),
+    /// Reset camera frame.
+    Reset,
+    /// Set projection mode.
+    ///
+    ///   * Orthographic with `Some(true)`
+    ///   * Perspective with `Some(false)`
+    ///   * Toggle with `None`
+    Ortho(Option<bool>),
 }
 
 /// System sets configured by [`TrackballPlugin`].
 #[derive(SystemSet, Debug, Hash, PartialEq, Eq, Clone)]
 #[non_exhaustive]
 pub enum TrackballSystemSet {
-	/// Trackball controller system translating [`TrackballInput`] of [`TrackballController`]
-	/// components into [`TrackballMessage`] for [`TrackballSystemSet::Constellation`].
-	Controller,
-	/// Trackball constellation system translating [`TrackballMessage`] from [`TrackballController`]
-	/// components into new [`Frame`] and [`Scope`] of [`TrackballCamera`] components.
-	///
-	/// [`Frame`]: trackball::Frame
-	/// [`Scope`]: trackball::Scope
-	Constellation,
-	/// Trackball camera system translating [`Frame`] and [`Scope`] of [`TrackballCamera`]
-	/// components into [`Transform`] and [`Projection`] bundles (e.g., `Camera3DBundle`).
-	///
-	/// [`Frame`]: trackball::Frame
-	/// [`Scope`]: trackball::Scope
-	Camera,
+    /// Trackball controller system translating [`TrackballInput`] of [`TrackballController`]
+    /// components into [`TrackballMessage`] for [`TrackballSystemSet::Constellation`].
+    Controller,
+    /// Trackball constellation system translating [`TrackballMessage`] from [`TrackballController`]
+    /// components into new [`Frame`] and [`Scope`] of [`TrackballCamera`] components.
+    ///
+    /// [`Frame`]: trackball::Frame
+    /// [`Scope`]: trackball::Scope
+    Constellation,
+    /// Trackball camera system translating [`Frame`] and [`Scope`] of [`TrackballCamera`]
+    /// components into [`Transform`] and [`Projection`] bundles (e.g., `Camera3DBundle`).
+    ///
+    /// [`Frame`]: trackball::Frame
+    /// [`Scope`]: trackball::Scope
+    Camera,
 }
 
 impl Plugin for TrackballPlugin {
-	fn build(&self, app: &mut App) {
-		app.init_resource::<TrackballViewport>()
-			.add_message::<TrackballMessage>()
-			.add_systems(
-				Update,
-				(
-					trackball_controller
-						.in_set(TrackballSystemSet::Controller)
-						.run_if(not(TrackballViewport::stolen)),
-					trackball_constellation.in_set(TrackballSystemSet::Constellation),
-					trackball_camera.in_set(TrackballSystemSet::Camera),
-				)
-					.chain(),
-			);
-		#[cfg(feature = "bevy_egui")]
-		{
-			use bevy_egui::{EguiContext, EguiPreUpdateSet};
+    fn build(&self, app: &mut App) {
+        app.init_resource::<TrackballViewport>()
+            .add_message::<TrackballMessage>()
+            .add_systems(
+                Update,
+                (
+                    trackball_controller
+                        .in_set(TrackballSystemSet::Controller)
+                        .run_if(not(TrackballViewport::stolen)),
+                    trackball_constellation.in_set(TrackballSystemSet::Constellation),
+                    trackball_camera.in_set(TrackballSystemSet::Camera),
+                )
+                    .chain(),
+            );
+        #[cfg(feature = "bevy_egui")]
+        {
+            use bevy_egui::{EguiContext, EguiPreUpdateSet};
 
-			fn egui_viewport_theft(
-				mut viewport: ResMut<TrackballViewport>,
-				mut contexts: Query<&mut EguiContext>,
-			) {
-				let stolen = contexts.iter_mut().next().is_some_and(|mut context| {
-					let context = context.get_mut();
-					context.egui_wants_pointer_input() || context.egui_wants_keyboard_input()
-				});
-				viewport.set_stolen(stolen.then_some(2));
-			}
+            fn egui_viewport_theft(
+                mut viewport: ResMut<TrackballViewport>,
+                mut contexts: Query<&mut EguiContext>,
+            ) {
+                let stolen = contexts.iter_mut().next().is_some_and(|mut context| {
+                    let context = context.get_mut();
+                    context.egui_wants_pointer_input() || context.egui_wants_keyboard_input()
+                });
+                viewport.set_stolen(stolen.then_some(2));
+            }
 
-			app.add_systems(
-				Update,
-				egui_viewport_theft
-					.after(EguiPreUpdateSet::InitContexts)
-					.before(TrackballSystemSet::Controller),
-			);
-		}
-	}
+            app.add_systems(
+                Update,
+                egui_viewport_theft
+                    .after(EguiPreUpdateSet::InitContexts)
+                    .before(TrackballSystemSet::Controller),
+            );
+        }
+    }
 }

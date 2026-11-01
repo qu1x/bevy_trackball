@@ -9,121 +9,121 @@
 #![allow(clippy::similar_names)]
 
 use bevy::{
-	camera::{RenderTarget, Viewport},
-	prelude::*,
-	window::{PrimaryWindow, WindowRef, WindowResized},
+    camera::{RenderTarget, Viewport},
+    prelude::*,
+    window::{PrimaryWindow, WindowRef, WindowResized},
 };
 use bevy_trackball::prelude::{Fixed, *};
 
 fn main() {
-	App::new()
-		.add_plugins(DefaultPlugins)
-		.add_plugins(TrackballPlugin)
-		.add_systems(Startup, setup)
-		.add_systems(Update, set_camera_viewports)
-		.run();
+    App::new()
+        .add_plugins(DefaultPlugins)
+        .add_plugins(TrackballPlugin)
+        .add_systems(Startup, setup)
+        .add_systems(Update, set_camera_viewports)
+        .run();
 }
 
 /// set up a simple 3D scene
 fn setup(
-	mut windows: Query<&mut Window>,
-	mut commands: Commands,
-	mut meshes: ResMut<Assets<Mesh>>,
-	mut materials: ResMut<Assets<StandardMaterial>>,
+    mut windows: Query<&mut Window>,
+    mut commands: Commands,
+    mut meshes: ResMut<Assets<Mesh>>,
+    mut materials: ResMut<Assets<StandardMaterial>>,
 ) {
-	// circular base
-	commands.spawn((
-		Mesh3d(meshes.add(Circle::new(4.0))),
-		MeshMaterial3d(materials.add(Color::WHITE)),
-		Transform::from_rotation(Quat::from_rotation_x(-std::f32::consts::FRAC_PI_2)),
-	));
-	// cube
-	commands.spawn((
-		Mesh3d(meshes.add(Cuboid::new(1.0, 1.0, 1.0))),
-		MeshMaterial3d(materials.add(Color::srgb_u8(124, 144, 255))),
-		Transform::from_xyz(0.0, 0.5, 0.0),
-	));
-	// light
-	commands.spawn((
-		PointLight {
-			shadow_maps_enabled: true,
-			..default()
-		},
-		Transform::from_xyz(4.0, 8.0, 4.0),
-	));
+    // circular base
+    commands.spawn((
+        Mesh3d(meshes.add(Circle::new(4.0))),
+        MeshMaterial3d(materials.add(Color::WHITE)),
+        Transform::from_rotation(Quat::from_rotation_x(-std::f32::consts::FRAC_PI_2)),
+    ));
+    // cube
+    commands.spawn((
+        Mesh3d(meshes.add(Cuboid::new(1.0, 1.0, 1.0))),
+        MeshMaterial3d(materials.add(Color::srgb_u8(124, 144, 255))),
+        Transform::from_xyz(0.0, 0.5, 0.0),
+    ));
+    // light
+    commands.spawn((
+        PointLight {
+            shadow_maps_enabled: true,
+            ..default()
+        },
+        Transform::from_xyz(4.0, 8.0, 4.0),
+    ));
 
-	// Windows
-	let mut window1 = windows.single_mut().unwrap();
-	"Fixed Vertical Field of View (Perspective vs Orthographic)".clone_into(&mut window1.title);
-	let res = &window1.resolution;
-	let max = Vec2::new(res.width() * 0.5, res.height());
-	// Left and right camera orientation.
-	let [target, eye, up] = [Vec3::Y * 0.5, Vec3::new(-2.5, 4.5, 9.0) * 1.2, Vec3::Y];
-	// Spawn a 2nd window.
-	let window2 = commands
-		.spawn(Window {
-			title: "Fixed Horizontal Field of View (Perspective vs Orthographic)".to_owned(),
-			..default()
-		})
-		.id();
-	// Spawn a 3rd window.
-	let window3 = commands
-		.spawn(Window {
-			title: "Fixed Unit Per Pixels (Perspective vs Orthographic)".to_owned(),
-			..default()
-		})
-		.id();
+    // Windows
+    let mut window1 = windows.single_mut().unwrap();
+    "Fixed Vertical Field of View (Perspective vs Orthographic)".clone_into(&mut window1.title);
+    let res = &window1.resolution;
+    let max = Vec2::new(res.width() * 0.5, res.height());
+    // Left and right camera orientation.
+    let [target, eye, up] = [Vec3::Y * 0.5, Vec3::new(-2.5, 4.5, 9.0) * 1.2, Vec3::Y];
+    // Spawn a 2nd window.
+    let window2 = commands
+        .spawn(Window {
+            title: "Fixed Horizontal Field of View (Perspective vs Orthographic)".to_owned(),
+            ..default()
+        })
+        .id();
+    // Spawn a 3rd window.
+    let window3 = commands
+        .spawn(Window {
+            title: "Fixed Unit Per Pixels (Perspective vs Orthographic)".to_owned(),
+            ..default()
+        })
+        .id();
 
-	// Cameras
-	let fov = Fixed::default();
-	for (fov, window) in [
-		(fov, WindowRef::Primary),
-		(fov.to_hor(max), WindowRef::Entity(window2)),
-		(fov.to_upp(max), WindowRef::Entity(window3)),
-	] {
-		let mut scope = Scope::default();
-		scope.set_fov(fov);
-		// Left trackball controller and camera 3D bundle.
-		let left = commands
-			.spawn((
-				TrackballController::default(),
-				Camera {
-					order: 0,
-					..default()
-				},
-				RenderTarget::Window(window),
-				Camera3d::default(),
-				LeftCamera,
-			))
-			.id();
-		// Right trackball controller and camera 3D bundle.
-		let right = commands
-			.spawn((
-				TrackballController::default(),
-				Camera {
-					order: 1,
-					..default()
-				},
-				RenderTarget::Window(window),
-				Camera3d::default(),
-				RightCamera,
-			))
-			.id();
-		// Insert left trackball camera and make it sensitive to right trackball controller as well.
-		commands.entity(left).insert(
-			TrackballCamera::look_at(eye, target, up)
-				.with_scope(scope)
-				.add_controller(right, true),
-		);
-		// Set orthographic projection mode for right camera.
-		scope.set_ortho(true);
-		// Insert right trackball camera and make it sensitive to left trackball controller as well.
-		commands.entity(right).insert(
-			TrackballCamera::look_at(eye, target, up)
-				.with_scope(scope)
-				.add_controller(left, true),
-		);
-	}
+    // Cameras
+    let fov = Fixed::default();
+    for (fov, window) in [
+        (fov, WindowRef::Primary),
+        (fov.to_hor(max), WindowRef::Entity(window2)),
+        (fov.to_upp(max), WindowRef::Entity(window3)),
+    ] {
+        let mut scope = Scope::default();
+        scope.set_fov(fov);
+        // Left trackball controller and camera 3D bundle.
+        let left = commands
+            .spawn((
+                TrackballController::default(),
+                Camera {
+                    order: 0,
+                    ..default()
+                },
+                RenderTarget::Window(window),
+                Camera3d::default(),
+                LeftCamera,
+            ))
+            .id();
+        // Right trackball controller and camera 3D bundle.
+        let right = commands
+            .spawn((
+                TrackballController::default(),
+                Camera {
+                    order: 1,
+                    ..default()
+                },
+                RenderTarget::Window(window),
+                Camera3d::default(),
+                RightCamera,
+            ))
+            .id();
+        // Insert left trackball camera and make it sensitive to right trackball controller as well.
+        commands.entity(left).insert(
+            TrackballCamera::look_at(eye, target, up)
+                .with_scope(scope)
+                .add_controller(right, true),
+        );
+        // Set orthographic projection mode for right camera.
+        scope.set_ortho(true);
+        // Insert right trackball camera and make it sensitive to left trackball controller as well.
+        commands.entity(right).insert(
+            TrackballCamera::look_at(eye, target, up)
+                .with_scope(scope)
+                .add_controller(left, true),
+        );
+    }
 }
 
 #[derive(Component)]
@@ -134,57 +134,57 @@ struct RightCamera;
 
 #[allow(clippy::needless_pass_by_value, clippy::type_complexity)]
 fn set_camera_viewports(
-	primary_windows: Query<(Entity, &Window), With<PrimaryWindow>>,
-	windows: Query<(Entity, &Window)>,
-	mut resize_events: MessageReader<WindowResized>,
-	mut left_cameras: Query<(&mut Camera, &RenderTarget), (With<LeftCamera>, Without<RightCamera>)>,
-	mut right_cameras: Query<(&mut Camera, &RenderTarget), With<RightCamera>>,
+    primary_windows: Query<(Entity, &Window), With<PrimaryWindow>>,
+    windows: Query<(Entity, &Window)>,
+    mut resize_events: MessageReader<WindowResized>,
+    mut left_cameras: Query<(&mut Camera, &RenderTarget), (With<LeftCamera>, Without<RightCamera>)>,
+    mut right_cameras: Query<(&mut Camera, &RenderTarget), With<RightCamera>>,
 ) {
-	// We need to dynamically resize the camera's viewports whenever the window size changes,
-	// so then each camera always takes up half the screen. A `resize_event` is sent when the window
-	// is first created, allowing us to reuse this system for initial setup.
-	for resize_event in resize_events.read() {
-		let (resize_id, resize_window) = windows.get(resize_event.window).unwrap();
-		let resolution = &resize_window.resolution;
-		for (mut left_camera, left_target) in &mut left_cameras {
-			if let RenderTarget::Window(window_ref) = left_target {
-				let Some((target_id, _target_window)) = (match window_ref {
-					WindowRef::Primary => primary_windows.single().ok(),
-					WindowRef::Entity(id) => windows.get(*id).ok(),
-				}) else {
-					continue;
-				};
-				if target_id == resize_id {
-					left_camera.viewport = Some(Viewport {
-						physical_position: UVec2::new(0, 0),
-						physical_size: UVec2::new(
-							resolution.physical_width() / 2,
-							resolution.physical_height(),
-						),
-						..default()
-					});
-				}
-			}
-		}
-		for (mut right_camera, right_target) in &mut right_cameras {
-			if let RenderTarget::Window(window_ref) = right_target {
-				let Some((target_id, _target_window)) = (match window_ref {
-					WindowRef::Primary => primary_windows.single().ok(),
-					WindowRef::Entity(id) => windows.get(*id).ok(),
-				}) else {
-					continue;
-				};
-				if target_id == resize_id {
-					right_camera.viewport = Some(Viewport {
-						physical_position: UVec2::new(resolution.physical_width() / 2, 0),
-						physical_size: UVec2::new(
-							resolution.physical_width() / 2,
-							resolution.physical_height(),
-						),
-						..default()
-					});
-				}
-			}
-		}
-	}
+    // We need to dynamically resize the camera's viewports whenever the window size changes,
+    // so then each camera always takes up half the screen. A `resize_event` is sent when the window
+    // is first created, allowing us to reuse this system for initial setup.
+    for resize_event in resize_events.read() {
+        let (resize_id, resize_window) = windows.get(resize_event.window).unwrap();
+        let resolution = &resize_window.resolution;
+        for (mut left_camera, left_target) in &mut left_cameras {
+            if let RenderTarget::Window(window_ref) = left_target {
+                let Some((target_id, _target_window)) = (match window_ref {
+                    WindowRef::Primary => primary_windows.single().ok(),
+                    WindowRef::Entity(id) => windows.get(*id).ok(),
+                }) else {
+                    continue;
+                };
+                if target_id == resize_id {
+                    left_camera.viewport = Some(Viewport {
+                        physical_position: UVec2::new(0, 0),
+                        physical_size: UVec2::new(
+                            resolution.physical_width() / 2,
+                            resolution.physical_height(),
+                        ),
+                        ..default()
+                    });
+                }
+            }
+        }
+        for (mut right_camera, right_target) in &mut right_cameras {
+            if let RenderTarget::Window(window_ref) = right_target {
+                let Some((target_id, _target_window)) = (match window_ref {
+                    WindowRef::Primary => primary_windows.single().ok(),
+                    WindowRef::Entity(id) => windows.get(*id).ok(),
+                }) else {
+                    continue;
+                };
+                if target_id == resize_id {
+                    right_camera.viewport = Some(Viewport {
+                        physical_position: UVec2::new(resolution.physical_width() / 2, 0),
+                        physical_size: UVec2::new(
+                            resolution.physical_width() / 2,
+                            resolution.physical_height(),
+                        ),
+                        ..default()
+                    });
+                }
+            }
+        }
+    }
 }

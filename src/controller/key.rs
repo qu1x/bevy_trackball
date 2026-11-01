@@ -1,6 +1,6 @@
 use bevy::{
-	prelude::*,
-	window::{CursorGrabMode, CursorOptions},
+    prelude::*,
+    window::{CursorGrabMode, CursorOptions},
 };
 
 use crate::{TrackballCamera, TrackballController, TrackballMessage};
@@ -8,131 +8,131 @@ use crate::{TrackballCamera, TrackballController, TrackballMessage};
 #[allow(clippy::too_many_arguments)]
 #[allow(clippy::too_many_lines)]
 pub fn key(
-	group: Entity,
-	trackball_messages: &mut MessageWriter<TrackballMessage>,
-	trackball: &TrackballCamera,
-	controller: &mut TrackballController,
-	cursor_options: &mut CursorOptions,
-	key_input: &Res<ButtonInput<KeyCode>>,
-	mouse_input: &Res<ButtonInput<MouseButton>>,
-	zat: f32,
-	w: f32,
-	v: f32,
-	t: f32,
+    group: Entity,
+    trackball_messages: &mut MessageWriter<TrackballMessage>,
+    trackball: &TrackballCamera,
+    controller: &mut TrackballController,
+    cursor_options: &mut CursorOptions,
+    key_input: &Res<ButtonInput<KeyCode>>,
+    mouse_input: &Res<ButtonInput<MouseButton>>,
+    zat: f32,
+    w: f32,
+    v: f32,
+    t: f32,
 ) {
-	let pressed = |key: Option<KeyCode>| key.is_some_and(|key| key_input.pressed(key));
-	let just_pressed = |key: Option<KeyCode>| key.is_some_and(|key| key_input.just_pressed(key));
-	let just_released = |key: Option<KeyCode>| key.is_some_and(|key| key_input.just_released(key));
-	let pressed_button =
-		|button: Option<MouseButton>| button.is_some_and(|button| mouse_input.pressed(button));
-	if just_pressed(controller.input.reset_key) {
-		trackball_messages.write(TrackballMessage::reset(group));
-	}
-	if just_pressed(controller.input.ortho_key) {
-		trackball_messages.write(TrackballMessage::ortho(group, None));
-	}
-	if just_pressed(controller.input.gamer_key) {
-		if controller.input.slide_far_key == Some(KeyCode::KeyW) {
-			controller.input.map_esdf();
-		} else {
-			controller.input.map_wasd();
-		}
-	}
-	for (key, vec) in [
-		(controller.input.slide_far_key, Vec3::NEG_Z),
-		(controller.input.slide_near_key, Vec3::Z),
-		(controller.input.slide_left_key, Vec3::NEG_X),
-		(controller.input.slide_right_key, Vec3::X),
-		(controller.input.slide_up_key, Vec3::Y),
-		(controller.input.slide_down_key, Vec3::NEG_Y),
-	] {
-		if pressed(key) {
-			let v = v * controller.input.slide_key_transmission;
-			trackball_messages.write(TrackballMessage::slide(group, vec * v * t));
-		}
-	}
-	for (num, &(key, vec)) in [
-		(controller.input.screw_left_key, Vec3::Z),
-		(controller.input.screw_right_key, Vec3::NEG_Z),
-		(controller.input.orbit_left_key, Vec3::NEG_Y),
-		(controller.input.orbit_right_key, Vec3::Y),
-		(controller.input.orbit_up_key, Vec3::NEG_X),
-		(controller.input.orbit_down_key, Vec3::X),
-	]
-	.iter()
-	.enumerate()
-	{
-		if pressed(key) {
-			let w = w * if num < 2 {
-				controller.input.screw_key_transmission
-			} else {
-				controller.input.orbit_key_transmission
-			};
-			trackball_messages.write(TrackballMessage::orbit(
-				group,
-				Quat::from_axis_angle(vec, w * t),
-				Vec3::ZERO,
-			));
-		}
-	}
-	for key in [
-		controller.input.first_left_key,
-		controller.input.first_right_key,
-		controller.input.first_up_key,
-		controller.input.first_down_key,
-	] {
-		if just_pressed(key) {
-			controller.first_count += 1;
-		}
-		if just_released(key) && controller.first_count != 0 {
-			controller.first_count -= 1;
-		}
-	}
-	if !pressed(controller.input.first_key) && !pressed_button(controller.input.first_button) {
-		if controller.first_count == 0 {
-			controller.first.discard();
-		} else if !controller.first.enabled() {
-			controller.first.capture(trackball.frame.yaw_axis());
-		}
-	}
-	for (key, vec) in [
-		(controller.input.first_left_key, Vec2::Y),
-		(controller.input.first_right_key, Vec2::NEG_Y),
-		(controller.input.first_up_key, Vec2::X),
-		(controller.input.first_down_key, Vec2::NEG_X),
-	] {
-		if pressed(key) {
-			let w = w * controller.input.first_key_transmission;
-			let ang = vec * w * t;
-			let yaw_axis = controller.first.yaw_axis().unwrap();
-			trackball_messages.write(TrackballMessage::first(group, ang.x, ang.y, yaw_axis));
-		}
-	}
-	if just_pressed(controller.input.first_key) {
-		controller.first.capture(trackball.frame.yaw_axis());
-		cursor_options.grab_mode = CursorGrabMode::Locked;
-		cursor_options.visible = false;
-	}
-	if just_released(controller.input.first_key) {
-		controller.first.discard();
-		cursor_options.grab_mode = CursorGrabMode::None;
-		cursor_options.visible = true;
-	}
-	controller.scale.set_denominator(zat);
-	if pressed(controller.input.scale_in_key) {
-		let v = v * controller.input.scale_key_transmission;
-		trackball_messages.write(TrackballMessage::scale(
-			group,
-			controller.scale.compute(v * t),
-			Vec3::ZERO,
-		));
-	}
-	if pressed(controller.input.scale_out_key) {
-		let v = v * controller.input.scale_key_transmission;
-		trackball_messages.write(TrackballMessage::scale(
-			group,
-			controller.scale.compute(-v * t),
-			Vec3::ZERO,
-		));
-	}
+    let pressed = |key: Option<KeyCode>| key.is_some_and(|key| key_input.pressed(key));
+    let just_pressed = |key: Option<KeyCode>| key.is_some_and(|key| key_input.just_pressed(key));
+    let just_released = |key: Option<KeyCode>| key.is_some_and(|key| key_input.just_released(key));
+    let pressed_button =
+        |button: Option<MouseButton>| button.is_some_and(|button| mouse_input.pressed(button));
+    if just_pressed(controller.input.reset_key) {
+        trackball_messages.write(TrackballMessage::reset(group));
+    }
+    if just_pressed(controller.input.ortho_key) {
+        trackball_messages.write(TrackballMessage::ortho(group, None));
+    }
+    if just_pressed(controller.input.gamer_key) {
+        if controller.input.slide_far_key == Some(KeyCode::KeyW) {
+            controller.input.map_esdf();
+        } else {
+            controller.input.map_wasd();
+        }
+    }
+    for (key, vec) in [
+        (controller.input.slide_far_key, Vec3::NEG_Z),
+        (controller.input.slide_near_key, Vec3::Z),
+        (controller.input.slide_left_key, Vec3::NEG_X),
+        (controller.input.slide_right_key, Vec3::X),
+        (controller.input.slide_up_key, Vec3::Y),
+        (controller.input.slide_down_key, Vec3::NEG_Y),
+    ] {
+        if pressed(key) {
+            let v = v * controller.input.slide_key_transmission;
+            trackball_messages.write(TrackballMessage::slide(group, vec * v * t));
+        }
+    }
+    for (num, &(key, vec)) in [
+        (controller.input.screw_left_key, Vec3::Z),
+        (controller.input.screw_right_key, Vec3::NEG_Z),
+        (controller.input.orbit_left_key, Vec3::NEG_Y),
+        (controller.input.orbit_right_key, Vec3::Y),
+        (controller.input.orbit_up_key, Vec3::NEG_X),
+        (controller.input.orbit_down_key, Vec3::X),
+    ]
+    .iter()
+    .enumerate()
+    {
+        if pressed(key) {
+            let w = w * if num < 2 {
+                controller.input.screw_key_transmission
+            } else {
+                controller.input.orbit_key_transmission
+            };
+            trackball_messages.write(TrackballMessage::orbit(
+                group,
+                Quat::from_axis_angle(vec, w * t),
+                Vec3::ZERO,
+            ));
+        }
+    }
+    for key in [
+        controller.input.first_left_key,
+        controller.input.first_right_key,
+        controller.input.first_up_key,
+        controller.input.first_down_key,
+    ] {
+        if just_pressed(key) {
+            controller.first_count += 1;
+        }
+        if just_released(key) && controller.first_count != 0 {
+            controller.first_count -= 1;
+        }
+    }
+    if !pressed(controller.input.first_key) && !pressed_button(controller.input.first_button) {
+        if controller.first_count == 0 {
+            controller.first.discard();
+        } else if !controller.first.enabled() {
+            controller.first.capture(trackball.frame.yaw_axis());
+        }
+    }
+    for (key, vec) in [
+        (controller.input.first_left_key, Vec2::Y),
+        (controller.input.first_right_key, Vec2::NEG_Y),
+        (controller.input.first_up_key, Vec2::X),
+        (controller.input.first_down_key, Vec2::NEG_X),
+    ] {
+        if pressed(key) {
+            let w = w * controller.input.first_key_transmission;
+            let ang = vec * w * t;
+            let yaw_axis = controller.first.yaw_axis().unwrap();
+            trackball_messages.write(TrackballMessage::first(group, ang.x, ang.y, yaw_axis));
+        }
+    }
+    if just_pressed(controller.input.first_key) {
+        controller.first.capture(trackball.frame.yaw_axis());
+        cursor_options.grab_mode = CursorGrabMode::Locked;
+        cursor_options.visible = false;
+    }
+    if just_released(controller.input.first_key) {
+        controller.first.discard();
+        cursor_options.grab_mode = CursorGrabMode::None;
+        cursor_options.visible = true;
+    }
+    controller.scale.set_denominator(zat);
+    if pressed(controller.input.scale_in_key) {
+        let v = v * controller.input.scale_key_transmission;
+        trackball_messages.write(TrackballMessage::scale(
+            group,
+            controller.scale.compute(v * t),
+            Vec3::ZERO,
+        ));
+    }
+    if pressed(controller.input.scale_out_key) {
+        let v = v * controller.input.scale_key_transmission;
+        trackball_messages.write(TrackballMessage::scale(
+            group,
+            controller.scale.compute(-v * t),
+            Vec3::ZERO,
+        ));
+    }
 }
