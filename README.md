@@ -36,21 +36,25 @@ Supports multiple camera modes:
 
 ## Coherence Features
 
-This is an alternative trackball technique using exponential map and parallel transport to
-preserve distances and angles for inducing coherent and intuitive trackball rotations. For
-instance, displacements on straight radial lines through the screen’s center are carried to arcs
-of the same length on great circles of the trackball (e.g., dragging the mouse along an eights
-of the trackball's circumference rolls the camera by 360/8=45 degrees, dragging the mouse from
-the screen's center to its further edge *linearly* rotates the camera by 1 [radian], where the
-trackball's diameter is the maximum of the screen's width and height). This is in contrast to
-state-of-the-art techniques using orthogonal projection which distorts radial distances further
-away from the screen’s center (e.g., the rotation accelerates towards the edge).[^1]
+This is an alternative trackball technique using the exponential map for inducing coherent and
+intuitive trackball rotations.[^1] Displacements on straight radial lines through the screen's
+center are carried to arcs of the same length on great circles of the trackball, whose half
+circumference is the maximum of the screen's width and height (e.g., dragging the mouse from the
+screen's center to its farther edge *linearly* rotates the camera by 90 degrees). This is in
+contrast to state-of-the-art techniques using orthogonal projection which distorts radial
+distances further away from the screen's center (e.g., the rotation accelerates towards the
+edge). Each rotation carries the trackball's point under the previous cursor/finger position
+along the shortest arc to the one under the current position, keeping the grabbed point under
+the cursor/finger (e.g., turning the cursor around the screen's center at the trackball's border
+rolls the camera by the angle the cursor turns, just like turning two fingers). This follows the
+paper's differential of the exponential map rather than its recipe, which takes the differential
+to be parallel transport, preserving the lengths of displacements but letting the grabbed point
+drift. Screen corners beyond the trackball's border are mapped beyond its equator, keeping
+radial displacements linear.
 
 [^1]: G. Stantchev, “Virtual Trackball Modeling and the Exponential Map”, [S2CID 44199608 (2004)
 ](https://api.semanticscholar.org/CorpusID:44199608), [Archived PDF
 ](https://web.archive.org/web/2/http://www.math.umd.edu:80/~gogo/Papers/trackballExp.pdf)
-
-[radian]: https://en.wikipedia.org/wiki/Radian
 
   * Coherent and intuitive orbiting via the exponential map, see the underlying [`trackball`]
     crate and the the [`exponential_map`] example.
