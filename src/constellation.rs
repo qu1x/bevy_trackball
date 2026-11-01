@@ -26,7 +26,7 @@ pub fn trackball_constellation(
 						clamp.compute(&trackball.frame, &trackball.scope, &min_delta)
 				{
 					if loops == clamp.loops() {
-						warn!("Using partial clamp after {loops} loops (entity {group:?})");
+						debug!("Stopping camera clamp after {loops} loops (entity {group:?})");
 					} else {
 						debug!("Found camera clamp after {loops} loops (entity {group:?})");
 					}

@@ -78,8 +78,7 @@ away from the screen’s center (e.g., the rotation accelerates towards the edge
   * Gliding clamp (experimental): The movement of a camera can be restricted to user-defined
     boundary conditions (e.g., to not orbit below the ground plane). When the movement is not
     orthogonal to a boundary plane, it is changed such that the camera glides along the boundary
-    plane. Currently, only implemented for orbit and slide operations, see the [`gliding_clamp`]
-    example.
+    plane. Scaling glides by turning partially into sliding, see the [`gliding_clamp`] example.
   * Camera constellation: A camera is decoupled from its input controller and instead multiple
     cameras can be sensitive to zero or multiple selected controllers (e.g., a minimap
     controlled by the same controller of the main viewport).
@@ -110,8 +109,6 @@ See the [release history](RELEASES.md) and [roadmap](#Roadmap) to keep track of 
 
 ## Roadmap
 
-  * Implement gliding clamp for first-person mode and scale operation, see
-    [issue](https://github.com/qu1x/bevy_trackball/issues/5).
   * Support more camera modes out of the box by adding dedicated controllers for each mode, see
     [issue](https://github.com/qu1x/bevy_trackball/issues/3).
   * Support gamepad inputs, see [issue](https://github.com/qu1x/bevy_trackball/issues/4).
