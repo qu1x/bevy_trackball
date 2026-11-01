@@ -2,7 +2,6 @@ use bevy::{
 	prelude::*,
 	window::{CursorGrabMode, CursorOptions},
 };
-use trackball::nalgebra::{Point3, Unit, UnitQuaternion};
 
 use crate::{TrackballCamera, TrackballController, TrackballMessage};
 
@@ -49,7 +48,7 @@ pub fn key(
 	] {
 		if pressed(key) {
 			let v = v * controller.input.slide_key_transmission;
-			trackball_messages.write(TrackballMessage::slide(group, (vec * v * t).into()));
+			trackball_messages.write(TrackballMessage::slide(group, vec * v * t));
 		}
 	}
 	for (num, &(key, vec)) in [
@@ -71,8 +70,8 @@ pub fn key(
 			};
 			trackball_messages.write(TrackballMessage::orbit(
 				group,
-				UnitQuaternion::from_axis_angle(&Unit::new_unchecked(vec.into()), w * t),
-				Point3::origin(),
+				Quat::from_axis_angle(vec, w * t),
+				Vec3::ZERO,
 			));
 		}
 	}
@@ -105,7 +104,7 @@ pub fn key(
 		if pressed(key) {
 			let w = w * controller.input.first_key_transmission;
 			let ang = vec * w * t;
-			let yaw_axis = *controller.first.yaw_axis().unwrap();
+			let yaw_axis = controller.first.yaw_axis().unwrap();
 			trackball_messages.write(TrackballMessage::first(group, ang.x, ang.y, yaw_axis));
 		}
 	}
@@ -125,7 +124,7 @@ pub fn key(
 		trackball_messages.write(TrackballMessage::scale(
 			group,
 			controller.scale.compute(v * t),
-			Point3::origin(),
+			Vec3::ZERO,
 		));
 	}
 	if pressed(controller.input.scale_out_key) {
@@ -133,7 +132,7 @@ pub fn key(
 		trackball_messages.write(TrackballMessage::scale(
 			group,
 			controller.scale.compute(-v * t),
-			Point3::origin(),
+			Vec3::ZERO,
 		));
 	}
 }

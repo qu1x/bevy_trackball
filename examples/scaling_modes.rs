@@ -56,7 +56,7 @@ fn setup(
 	let mut window1 = windows.single_mut().unwrap();
 	"Fixed Vertical Field of View (Perspective vs Orthographic)".clone_into(&mut window1.title);
 	let res = &window1.resolution;
-	let max = Vec2::new(res.width() * 0.5, res.height()).into();
+	let max = Vec2::new(res.width() * 0.5, res.height());
 	// Left and right camera orientation.
 	let [target, eye, up] = [Vec3::Y * 0.5, Vec3::new(-2.5, 4.5, 9.0) * 1.2, Vec3::Y];
 	// Spawn a 2nd window.
@@ -78,8 +78,8 @@ fn setup(
 	let fov = Fixed::default();
 	for (fov, window) in [
 		(fov, WindowRef::Primary),
-		(fov.to_hor(&max), WindowRef::Entity(window2)),
-		(fov.to_upp(&max), WindowRef::Entity(window3)),
+		(fov.to_hor(max), WindowRef::Entity(window2)),
+		(fov.to_upp(max), WindowRef::Entity(window3)),
 	] {
 		let mut scope = Scope::default();
 		scope.set_fov(fov);

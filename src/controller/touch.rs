@@ -1,8 +1,5 @@
 use bevy::{input::touch::TouchPhase, prelude::*};
-use trackball::{
-	Image,
-	nalgebra::{Point3, UnitQuaternion},
-};
+use trackball::Image;
 
 use super::{TrackballCamera, TrackballController, TrackballMessage};
 
@@ -17,7 +14,6 @@ pub fn touch(
 	min: Vec2,
 	max: Vec2,
 ) {
-	let max = max.into();
 	for &touch_event in touch_events.read() {
 		let TouchInput {
 			id,
@@ -31,49 +27,39 @@ pub fn touch(
 				if phase == TouchPhase::Started {
 					controller.slide.discard();
 				}
-				if let Some((num, pos, rot, rat)) =
-					controller.touch.compute(Some(id), pos.into(), 0)
-				{
+				if let Some((num, pos, rot, rat)) = controller.touch.compute(Some(id), pos, 0) {
 					if controller.first.enabled() {
 						if let Some(vec) = controller.slide.compute(pos)
-							&& let Some((pitch, yaw, yaw_axis)) =
-								controller.first.compute(&vec, &max)
+							&& let Some((pitch, yaw, yaw_axis)) = controller.first.compute(vec, max)
 						{
 							let pitch = pitch * controller.input.first_touch_transmission;
 							let yaw = yaw * controller.input.first_touch_transmission;
 							trackball_events
-								.write(TrackballMessage::first(group, pitch, yaw, *yaw_axis));
+								.write(TrackballMessage::first(group, pitch, yaw, yaw_axis));
 						}
 					} else if num == 1 {
-						if let Some(rot) = controller.orbit.compute(&pos, &max) {
-							let rot = rot.powf(controller.input.orbit_touch_transmission);
-							trackball_events.write(TrackballMessage::orbit(
-								group,
-								rot,
-								Point3::origin(),
-							));
+						if let Some(rot) = controller.orbit.compute(pos, max) {
+							let rot = Quat::IDENTITY
+								.slerp(rot, controller.input.orbit_touch_transmission);
+							trackball_events.write(TrackballMessage::orbit(group, rot, Vec3::ZERO));
 						}
 					} else {
-						if let Some(vec) = controller
-							.slide
-							.compute(pos)
-							.map(|vec| Image::transform_vec(&vec))
-						{
-							let vec = vec.scale(upp).push(0.0)
-								* controller.input.slide_touch_transmission;
+						if let Some(vec) = controller.slide.compute(pos).map(Image::transform_vec) {
+							let vec =
+								(vec * upp).extend(0.0) * controller.input.slide_touch_transmission;
 							trackball_events.write(TrackballMessage::slide(group, vec));
 						}
 						if num == 2 {
-							let (pos, _max) = Image::transform_pos_and_max_wrt_max(&pos, &max);
-							let pos = pos.coords.scale(upp).push(0.0);
-							let rot = UnitQuaternion::from_axis_angle(
-								&trackball.frame.local_roll_axis(),
+							let (pos, _max) = Image::transform_pos_and_max_wrt_max(pos, max);
+							let pos = (pos * upp).extend(0.0);
+							let rot = Quat::from_axis_angle(
+								trackball.frame.local_roll_axis(),
 								rot * controller.input.screw_touch_transmission,
 							);
 							let rat = (1.0 - rat)
 								.mul_add(-controller.input.scale_touch_transmission, 1.0);
-							trackball_events.write(TrackballMessage::orbit(group, rot, pos.into()));
-							trackball_events.write(TrackballMessage::scale(group, rat, pos.into()));
+							trackball_events.write(TrackballMessage::orbit(group, rot, pos));
+							trackball_events.write(TrackballMessage::scale(group, rat, pos));
 						}
 					}
 				}
@@ -82,8 +68,8 @@ pub fn touch(
 				if let Some((_num, pos)) = controller.touch.discard(Some(id))
 					&& controller.input.focus
 				{
-					let (pos, _max) = Image::transform_pos_and_max_wrt_max(&pos, &max);
-					let vec = pos.coords.scale(upp).push(0.0);
+					let (pos, _max) = Image::transform_pos_and_max_wrt_max(pos, max);
+					let vec = (pos * upp).extend(0.0);
 					trackball_events.write(TrackballMessage::slide(group, vec));
 				}
 				controller.orbit.discard();

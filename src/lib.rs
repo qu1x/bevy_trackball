@@ -75,9 +75,6 @@
 //!   * Object inspection mode scaling clip plane distances by measuring from target instead of eye.
 //!     This benefits the precision of the depth map. Applicable, whenever the extend of the object
 //!     to inspect is known and hence the near clip plane can safely be placed just in front of it.
-//!   * `f64`-ready for large worlds (e.g., solar system scale) whenever Bevy is, see issue [#1680].
-//!
-//! [#1680]: https://github.com/bevyengine/bevy/issues/1680
 //!
 //! # Optional Features
 //!
@@ -162,10 +159,7 @@ pub use controller::{
 	TrackballController, TrackballInput, TrackballVelocity, TrackballViewport, TrackballWheelUnit,
 };
 pub use trackball;
-use trackball::{
-	Delta,
-	nalgebra::{Point3, Unit, UnitQuaternion, Vector3},
-};
+use trackball::Delta;
 
 /// Prelude to get started quickly.
 pub mod prelude {
@@ -174,13 +168,12 @@ pub mod prelude {
 		TrackballSetup, TrackballSystemSet, TrackballVelocity, TrackballViewport,
 		TrackballWheelUnit,
 		trackball::{
-			Bound, Clamp, Delta, Fixed, Frame, Plane, Scope,
+			Bound, Clamp, Delta, Fixed, Frame, Plane, Rigid, Scope,
 			approx::{
 				AbsDiffEq, RelativeEq, UlpsEq, abs_diff_eq, abs_diff_ne, assert_abs_diff_eq,
 				assert_abs_diff_ne, assert_relative_eq, assert_relative_ne, assert_ulps_eq,
 				assert_ulps_ne, relative_eq, relative_ne, ulps_eq, ulps_ne,
 			},
-			nalgebra::{Isometry3, Point3, Unit, UnitQuaternion, Vector3},
 		},
 	};
 }
@@ -208,7 +201,7 @@ pub struct TrackballMessage {
 	/// Delta transform from initial to final [`Frame`] of [`TrackballCamera`].
 	///
 	/// [`Frame`]: trackball::Frame
-	pub delta: Delta<f32>,
+	pub delta: Delta,
 	/// Setup of [`TrackballCamera`].
 	pub setup: Option<TrackballSetup>,
 }
@@ -217,7 +210,7 @@ impl TrackballMessage {
 	/// Creates [`Delta::First`] event for camera `group`.
 	#[must_use]
 	#[inline]
-	pub const fn first(group: Entity, pitch: f32, yaw: f32, yaw_axis: Unit<Vector3<f32>>) -> Self {
+	pub const fn first(group: Entity, pitch: f32, yaw: f32, yaw_axis: Vec3) -> Self {
 		Self {
 			group,
 			delta: Delta::First {
@@ -231,7 +224,7 @@ impl TrackballMessage {
 	/// Creates [`Delta::Track`] event for camera `group`.
 	#[must_use]
 	#[inline]
-	pub const fn track(group: Entity, vec: Vector3<f32>) -> Self {
+	pub const fn track(group: Entity, vec: Vec3) -> Self {
 		Self {
 			group,
 			delta: Delta::Track { vec },
@@ -241,7 +234,7 @@ impl TrackballMessage {
 	/// Creates [`Delta::Orbit`] event for camera `group`.
 	#[must_use]
 	#[inline]
-	pub const fn orbit(group: Entity, rot: UnitQuaternion<f32>, pos: Point3<f32>) -> Self {
+	pub const fn orbit(group: Entity, rot: Quat, pos: Vec3) -> Self {
 		Self {
 			group,
 			delta: Delta::Orbit { rot, pos },
@@ -251,7 +244,7 @@ impl TrackballMessage {
 	/// Creates [`Delta::Slide`] event for camera `group`.
 	#[must_use]
 	#[inline]
-	pub const fn slide(group: Entity, vec: Vector3<f32>) -> Self {
+	pub const fn slide(group: Entity, vec: Vec3) -> Self {
 		Self {
 			group,
 			delta: Delta::Slide { vec },
@@ -261,7 +254,7 @@ impl TrackballMessage {
 	/// Creates [`Delta::Scale`] event for camera `group`.
 	#[must_use]
 	#[inline]
-	pub const fn scale(group: Entity, rat: f32, pos: Point3<f32>) -> Self {
+	pub const fn scale(group: Entity, rat: f32, pos: Vec3) -> Self {
 		Self {
 			group,
 			delta: Delta::Scale { rat, pos },

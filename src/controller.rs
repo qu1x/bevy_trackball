@@ -25,11 +25,11 @@ pub struct TrackballController {
 	/// Input mappings and settings.
 	pub input: TrackballInput,
 
-	first: First<f32>,
-	orbit: Orbit<f32>,
-	scale: Scale<f32>,
-	slide: Slide<f32>,
-	touch: Touch<Option<u64>, f32>,
+	first: First,
+	orbit: Orbit,
+	scale: Scale,
+	slide: Slide,
+	touch: Touch<Option<u64>>,
 
 	first_count: usize,
 }
@@ -123,7 +123,7 @@ pub fn trackball_controller(
 		cursor_options.visible = true;
 	}
 	let zat = trackball.frame.distance();
-	let (_max, upp) = trackball.scope.fov().max_and_upp(zat, &max.into());
+	let (_max, upp) = trackball.scope.fov().max_and_upp(zat, max);
 	let v = controller.input.velocity.to_linear(zat).into_inner();
 	let w = controller.input.velocity.to_angular(zat).into_inner();
 	let t = time.delta_secs();

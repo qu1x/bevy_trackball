@@ -3,10 +3,7 @@ use bevy::{
 	prelude::*,
 	window::{CursorGrabMode, CursorIcon, CursorOptions, SystemCursorIcon},
 };
-use trackball::{
-	Image,
-	nalgebra::{Point2, Point3},
-};
+use trackball::Image;
 
 use super::{TrackballCamera, TrackballController, TrackballMessage};
 
@@ -31,8 +28,7 @@ pub fn mouse(
 	max: Vec2,
 	w: f32,
 ) {
-	let pos = Point2::from(window.cursor_position().map_or(max * 0.5, |pos| pos - min));
-	let max = max.into();
+	let pos = window.cursor_position().map_or(max * 0.5, |pos| pos - min);
 	let just_pressed_button =
 		|button: Option<MouseButton>| button.is_some_and(|button| mouse_input.just_pressed(button));
 	let just_released_button = |button: Option<MouseButton>| {
@@ -50,17 +46,16 @@ pub fn mouse(
 	}
 	for delta_event in delta_events.read() {
 		if controller.first.enabled()
-			&& let Some((pitch, yaw, yaw_axis)) =
-				controller.first.compute(&(-delta_event.delta).into(), &max)
+			&& let Some((pitch, yaw, yaw_axis)) = controller.first.compute(-delta_event.delta, max)
 		{
 			let pitch = pitch * controller.input.first_mouse_transmission;
 			let yaw = yaw * controller.input.first_mouse_transmission;
-			trackball_events.write(TrackballMessage::first(group, pitch, yaw, *yaw_axis));
+			trackball_events.write(TrackballMessage::first(group, pitch, yaw, yaw_axis));
 		}
 	}
 	if just_pressed_button(controller.input.orbit_button) {
 		controller.touch.compute(None, pos, 0);
-		controller.orbit.compute(&pos, &max);
+		controller.orbit.compute(pos, max);
 		commands
 			.entity(window_id)
 			.insert(CursorIcon::from(SystemCursorIcon::Pointer));
@@ -69,8 +64,8 @@ pub fn mouse(
 		if let Some((_num, pos)) = controller.touch.discard(None)
 			&& controller.input.focus
 		{
-			let (pos, _max) = Image::transform_pos_and_max_wrt_max(&pos, &max);
-			let vec = pos.coords.scale(upp).push(0.0);
+			let (pos, _max) = Image::transform_pos_and_max_wrt_max(pos, max);
+			let vec = (pos * upp).extend(0.0);
 			trackball_events.write(TrackballMessage::slide(group, vec));
 		}
 		controller.orbit.discard();
@@ -96,22 +91,19 @@ pub fn mouse(
 			.input
 			.orbit_button
 			.is_some_and(|button| mouse_input.pressed(button))
-			&& let Some((_num, pos, _rot, _rat)) = controller.touch.compute(None, pos.into(), 0)
-			&& let Some(rot) = controller.orbit.compute(&pos, &max)
+			&& let Some((_num, pos, _rot, _rat)) = controller.touch.compute(None, pos, 0)
+			&& let Some(rot) = controller.orbit.compute(pos, max)
 		{
-			let rot = rot.powf(controller.input.orbit_mouse_transmission);
-			trackball_events.write(TrackballMessage::orbit(group, rot, Point3::origin()));
+			let rot = Quat::IDENTITY.slerp(rot, controller.input.orbit_mouse_transmission);
+			trackball_events.write(TrackballMessage::orbit(group, rot, Vec3::ZERO));
 		}
 		if controller
 			.input
 			.slide_button
 			.is_some_and(|button| mouse_input.pressed(button))
-			&& let Some(vec) = controller
-				.slide
-				.compute(pos.into())
-				.map(|vec| Image::transform_vec(&vec))
+			&& let Some(vec) = controller.slide.compute(pos).map(Image::transform_vec)
 		{
-			let vec = vec.scale(upp).push(0.0) * controller.input.slide_mouse_transmission;
+			let vec = (vec * upp).extend(0.0) * controller.input.slide_mouse_transmission;
 			trackball_events.write(TrackballMessage::slide(group, vec));
 		}
 	}
@@ -127,11 +119,11 @@ pub fn mouse(
 				upp * wheel_event.y
 			}
 		} * controller.input.scale_wheel_transmission;
-		let (pos, _max) = Image::transform_pos_and_max_wrt_max(&pos, &max);
+		let (pos, _max) = Image::transform_pos_and_max_wrt_max(pos, max);
 		trackball_events.write(TrackballMessage::scale(
 			group,
 			controller.scale.compute(num),
-			pos.coords.scale(upp).push(0.0).into(),
+			(pos * upp).extend(0.0),
 		));
 	}
 }

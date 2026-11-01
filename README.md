@@ -12,7 +12,7 @@ Coherent virtual trackball controller/camera plugin for Bevy
 [Build]: https://github.com/qu1x/bevy_trackball/actions/workflows/build.yml/badge.svg
 [Downloads]: https://img.shields.io/crates/d/bevy_trackball.svg
 [Version]: https://img.shields.io/crates/v/bevy_trackball.svg
-[Rust]: https://img.shields.io/badge/rust-v1.95.0-brightgreen.svg
+[Rust]: https://img.shields.io/badge/rust-v1.97.1-brightgreen.svg
 [License]: https://img.shields.io/badge/License-MIT%20OR%20Apache--2.0-blue.svg
 [DOI]: https://zenodo.org/badge/680486973.svg
 
@@ -97,9 +97,6 @@ away from the screen’s center (e.g., the rotation accelerates towards the edge
   * Object inspection mode scaling clip plane distances by measuring from target instead of eye.
     This benefits the precision of the depth map. Applicable, whenever the extend of the object
     to inspect is known and hence the near clip plane can safely be placed just in front of it.
-  * `f64`-ready for large worlds (e.g., solar system scale) whenever Bevy is, see issue [#1680].
-
-[#1680]: https://github.com/bevyengine/bevy/issues/1680
 
 ## Optional Features
 
