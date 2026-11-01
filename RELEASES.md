@@ -6,6 +6,8 @@
   * Keep the trackball's point under the cursor/finger when orbiting, e.g., rolling at the
     trackball's border by the angle the cursor/finger turns around the screen's center.
   * Rotate π/2 times faster in first-person mode matching the trackball radius of orbiting.
+  * Scale reversibly and independent of frame rate by wheel and keys, e.g., scrolling in and out by
+    the same amount restores the distance.
   * Use Bevy's `Vec2`, `Vec3`, and `Quat` in `TrackballMessage` constructors.
   * Swap arguments of `TrackballCamera::look_at()` to `eye`, `target`, and `up` like `glam`.
     Existing calls still compile, so check their argument order.

@@ -297,11 +297,14 @@ pub enum TrackballWheelUnit {
 	/// You can count the cpt of your device by marking the start of your wheel before rotating it a
 	/// full turn. Each noticeable step when rotating is called a wheel click, not to be confused
 	/// with a middle mouse button click.
+	///
+	/// A full turn of the wheel scales the distance by a factor of e.
 	Cpt(f32),
 	/// Wheel clicks per second (cps).
 	///
 	/// Some devices scroll smooth without noticeable steps when rotating. They specify their units
-	/// in cps (e.g., 1 000 cps). This unit will be translated to the trackball's angular velocity.
+	/// in cps (e.g., 1 000 cps). This unit will be translated to the trackball's angular velocity
+	/// such that scrolling for a second scales the distance like pressing a scale key for a second.
 	Cps(f32),
 }
 
