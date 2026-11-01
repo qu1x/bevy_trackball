@@ -5,6 +5,7 @@
   * Bump `trackball` to `0.19.0` migrating from `nalgebra` to `glam`.
   * Use Bevy's `Vec2`, `Vec3`, and `Quat` in `TrackballMessage` constructors.
   * Replace `nalgebra` types in prelude with `Rigid`.
+  * Remove `approx` re-exports from prelude as `trackball` dropped `approx`.
   * Remove `f64`-readiness claim as `trackball` is `f32`-only now.
 
 # Version 0.15.0 (2026-06-22)

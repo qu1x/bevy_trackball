@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 
 use bevy::prelude::*;
-use trackball::{Clamp, Delta, Fixed, Frame, Scope, approx::AbsDiffEq};
+use trackball::{Clamp, Delta, Fixed, Frame, Scope};
 
 /// Trackball camera component mainly defined by [`Frame`] and [`Scope`].
 #[derive(Component, Debug)]
@@ -128,13 +128,13 @@ pub fn trackball_camera(
 			let blend = 1.0 - 0.5f32.powf(time.delta_secs() / blend);
 			trackball.old_frame = if trackball
 				.old_frame
-				.abs_diff_ne(&trackball.frame, f32::EPSILON.sqrt())
+				.abs_diff_eq(&trackball.frame, f32::EPSILON.sqrt())
 			{
+				trackball.frame
+			} else {
 				let mut frame = trackball.old_frame.lerp_slerp(&trackball.frame, blend);
 				frame.renormalize();
 				frame
-			} else {
-				trackball.frame
 			};
 			let view = trackball.old_frame.view();
 			transform.translation = view.translation;

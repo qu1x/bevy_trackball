@@ -167,14 +167,7 @@ pub mod prelude {
 		TrackballCamera, TrackballController, TrackballInput, TrackballMessage, TrackballPlugin,
 		TrackballSetup, TrackballSystemSet, TrackballVelocity, TrackballViewport,
 		TrackballWheelUnit,
-		trackball::{
-			Bound, Clamp, Delta, Fixed, Frame, Plane, Rigid, Scope,
-			approx::{
-				AbsDiffEq, RelativeEq, UlpsEq, abs_diff_eq, abs_diff_ne, assert_abs_diff_eq,
-				assert_abs_diff_ne, assert_relative_eq, assert_relative_ne, assert_ulps_eq,
-				assert_ulps_ne, relative_eq, relative_ne, ulps_eq, ulps_ne,
-			},
-		},
+		trackball::{Bound, Clamp, Delta, Fixed, Frame, Plane, Rigid, Scope},
 	};
 }
 mod camera;
