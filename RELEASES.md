@@ -2,7 +2,7 @@
 
   * Bump `bevy` to `0.20.1`.
   * Bump `bevy_egui` to `0.43.1`.
-  * Bump `trackball` to `0.19.0` migrating from `nalgebra` to `glam`.
+  * Bump `trackball` to `0.19.1` migrating from `nalgebra` to `glam`.
   * Keep the trackball's point under the cursor/finger when orbiting, e.g., rolling at the
     trackball's border by the angle the cursor/finger turns around the screen's center.
   * Rotate π/2 times faster in first-person mode matching the trackball radius of orbiting.
