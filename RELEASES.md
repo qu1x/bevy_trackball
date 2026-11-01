@@ -14,6 +14,8 @@
   * Replace `nalgebra` types in prelude with `Rigid`.
   * Remove `approx` re-exports from prelude as `trackball` dropped `approx`.
   * Remove `f64`-readiness claim as `trackball` is `f32`-only now.
+  * Stop enabling `bevy_winit` feature of `bevy` so that no window backend is required to build.
+    With `default-features = false`, enable `bevy_winit` and a window backend yourself.
   * Complete gliding clamp for first-person mode, tracking, orbiting around arbitrary points,
     scaling, and up axis bounds.
 

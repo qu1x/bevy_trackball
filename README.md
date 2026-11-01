@@ -24,7 +24,6 @@ Run interactive [examples] in your browser using [WebAssembly] and [WebGL].
 [WebGL]: https://en.wikipedia.org/wiki/WebGL
 
 **NOTE**: Not all features are enabled by default, see [Optional Features](#optional-features).
-On Linux the `bevy/wayland` or `bevy/x11` feature gate must be enabled for a successful build.
 
 ## Camera Modes
 
