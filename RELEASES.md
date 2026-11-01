@@ -1,6 +1,6 @@
 # Version 0.16.0 (2026-11-01)
 
-  * Bump `bevy` to `0.20.0`.
+  * Bump `bevy` to `0.20.1`.
   * Bump `bevy_egui` to `0.43.1`.
   * Bump `trackball` to `0.19.0` migrating from `nalgebra` to `glam`.
   * Keep the trackball's point under the cursor/finger when orbiting, e.g., rolling at the
