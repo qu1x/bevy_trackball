@@ -157,7 +157,7 @@ fn setup(
 		.spawn((
 			PrimaryEguiContext,
 			TrackballController::default(),
-			TrackballCamera::look_at(target, eye, up),
+			TrackballCamera::look_at(eye, target, up),
 			Camera3d::default(),
 		))
 		.id();
@@ -165,7 +165,7 @@ fn setup(
 	// UI camera sensitive to main pass camera's `controller`.
 	commands
 		.spawn((
-			TrackballCamera::look_at(target, eye, up).add_controller(controller, true),
+			TrackballCamera::look_at(eye, target, up).add_controller(controller, true),
 			Camera {
 				// Render before the main pass camera.
 				order: -1,

@@ -159,7 +159,7 @@ fn setup(
 	let maximap = commands
 		.spawn((
 			TrackballController::default(),
-			TrackballCamera::look_at(target, eye, up).with_clamp(bound),
+			TrackballCamera::look_at(eye, target, up).with_clamp(bound),
 			Camera3d::default(),
 		))
 		.id();
@@ -169,7 +169,7 @@ fn setup(
 	let down = Quat::from_rotation_x(15f32.to_radians());
 	commands.spawn((
 		TrackballController::default(),
-		TrackballCamera::look_at(target, down * (eye - target) + target, up)
+		TrackballCamera::look_at(down * (eye - target) + target, target, up)
 			.with_clamp(bound)
 			.add_controller(maximap, true),
 		Camera {

@@ -132,7 +132,7 @@
 //! 	let [target, eye, up] = [Vec3::ZERO, Vec3::Z * 10.0, Vec3::Y];
 //! 	commands.spawn((
 //! 		TrackballController::default(),
-//! 		TrackballCamera::look_at(target, eye, up),
+//! 		TrackballCamera::look_at(eye, target, up),
 //! 		Camera3d::default(),
 //! 	));
 //!
@@ -214,40 +214,40 @@ impl TrackballMessage {
 	/// Creates [`Delta::Track`] event for camera `group`.
 	#[must_use]
 	#[inline]
-	pub const fn track(group: Entity, vec: Vec3) -> Self {
+	pub const fn track(group: Entity, vector: Vec3) -> Self {
 		Self {
 			group,
-			delta: Delta::Track { vec },
+			delta: Delta::Track { vector },
 			setup: None,
 		}
 	}
 	/// Creates [`Delta::Orbit`] event for camera `group`.
 	#[must_use]
 	#[inline]
-	pub const fn orbit(group: Entity, rot: Quat, pos: Vec3) -> Self {
+	pub const fn orbit(group: Entity, rotation: Quat, point: Vec3) -> Self {
 		Self {
 			group,
-			delta: Delta::Orbit { rot, pos },
+			delta: Delta::Orbit { rotation, point },
 			setup: None,
 		}
 	}
 	/// Creates [`Delta::Slide`] event for camera `group`.
 	#[must_use]
 	#[inline]
-	pub const fn slide(group: Entity, vec: Vec3) -> Self {
+	pub const fn slide(group: Entity, vector: Vec3) -> Self {
 		Self {
 			group,
-			delta: Delta::Slide { vec },
+			delta: Delta::Slide { vector },
 			setup: None,
 		}
 	}
 	/// Creates [`Delta::Scale`] event for camera `group`.
 	#[must_use]
 	#[inline]
-	pub const fn scale(group: Entity, rat: f32, pos: Vec3) -> Self {
+	pub const fn scale(group: Entity, ratio: f32, point: Vec3) -> Self {
 		Self {
 			group,
-			delta: Delta::Scale { rat, pos },
+			delta: Delta::Scale { ratio, point },
 			setup: None,
 		}
 	}

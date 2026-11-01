@@ -140,7 +140,7 @@ fn setup(
 	let [target, eye, up] = [Vec3::Y, Vec3::new(0.0, 7.0, 14.0), Vec3::Y];
 	commands.spawn((
 		TrackballController::default(),
-		TrackballCamera::look_at(target, eye, up).with_clamp({
+		TrackballCamera::look_at(eye, target, up).with_clamp({
 			let mut bound = Bound::default();
 			bound.min_target[1] = 0.0;
 			bound.min_eye[1] = 0.3;

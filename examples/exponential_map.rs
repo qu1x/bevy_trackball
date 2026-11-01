@@ -59,7 +59,7 @@ fn setup(
 	// camera
 	commands.spawn((
 		TrackballController::default(),
-		TrackballCamera::look_at(Vec3::Y * 0.5, Vec3::new(-2.5, 4.5, 9.0), Vec3::Y),
+		TrackballCamera::look_at(Vec3::new(-2.5, 4.5, 9.0), Vec3::Y * 0.5, Vec3::Y),
 		Camera3d::default(),
 	));
 }

@@ -52,10 +52,10 @@ pub struct TrackballCamera {
 }
 
 impl TrackballCamera {
-	/// Defines camera with `target` position and `eye` position inclusive its roll attitude (`up`).
+	/// Defines camera with `eye` position inclusive its roll attitude (`up`) and `target` position.
 	#[must_use]
-	pub fn look_at(target: Vec3, eye: Vec3, up: Vec3) -> Self {
-		let frame = Frame::look_at(target, eye, up);
+	pub fn look_at(eye: Vec3, target: Vec3, up: Vec3) -> Self {
+		let frame = Frame::look_at(eye, target, up);
 		Self {
 			frame,
 			old_frame: Frame::default(),
@@ -128,11 +128,11 @@ pub fn trackball_camera(
 			let blend = 1.0 - 0.5f32.powf(time.delta_secs() / blend);
 			trackball.old_frame = if trackball
 				.old_frame
-				.abs_diff_eq(&trackball.frame, f32::EPSILON.sqrt())
+				.abs_diff_eq(trackball.frame, f32::EPSILON.sqrt())
 			{
 				trackball.frame
 			} else {
-				let mut frame = trackball.old_frame.lerp_slerp(&trackball.frame, blend);
+				let mut frame = trackball.old_frame.lerp_slerp(trackball.frame, blend);
 				frame.renormalize();
 				frame
 			};

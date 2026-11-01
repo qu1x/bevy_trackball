@@ -4,6 +4,8 @@
   * Bump `bevy_egui` to `0.43.1`.
   * Bump `trackball` to `0.19.0` migrating from `nalgebra` to `glam`.
   * Use Bevy's `Vec2`, `Vec3`, and `Quat` in `TrackballMessage` constructors.
+  * Swap arguments of `TrackballCamera::look_at()` to `eye`, `target`, and `up` like `glam`.
+    Existing calls still compile, so check their argument order.
   * Replace `nalgebra` types in prelude with `Rigid`.
   * Remove `approx` re-exports from prelude as `trackball` dropped `approx`.
   * Remove `f64`-readiness claim as `trackball` is `f32`-only now.

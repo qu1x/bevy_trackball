@@ -159,7 +159,7 @@ fn setup(mut commands: Commands) {
 	let [target, eye, up] = [Vec3::ZERO, Vec3::Z * 10.0, Vec3::Y];
 	commands.spawn((
 		TrackballController::default(),
-		TrackballCamera::look_at(target, eye, up),
+		TrackballCamera::look_at(eye, target, up),
 		Camera3d::default(),
 	));
 

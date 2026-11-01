@@ -111,7 +111,7 @@ fn setup(
 			.id();
 		// Insert left trackball camera and make it sensitive to right trackball controller as well.
 		commands.entity(left).insert(
-			TrackballCamera::look_at(target, eye, up)
+			TrackballCamera::look_at(eye, target, up)
 				.with_scope(scope)
 				.add_controller(right, true),
 		);
@@ -119,7 +119,7 @@ fn setup(
 		scope.set_ortho(true);
 		// Insert right trackball camera and make it sensitive to left trackball controller as well.
 		commands.entity(right).insert(
-			TrackballCamera::look_at(target, eye, up)
+			TrackballCamera::look_at(eye, target, up)
 				.with_scope(scope)
 				.add_controller(left, true),
 		);

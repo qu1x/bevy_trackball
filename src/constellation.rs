@@ -23,7 +23,7 @@ pub fn trackball_constellation(
 				}
 				if let Some(clamp) = &trackball.clamp
 					&& let Some((delta, loops)) =
-						clamp.compute(&trackball.frame, &trackball.scope, &min_delta)
+						clamp.compute(trackball.frame, trackball.scope, min_delta)
 				{
 					if loops == clamp.loops() {
 						debug!("Stopping camera clamp after {loops} loops (entity {group:?})");
@@ -70,7 +70,7 @@ pub fn trackball_constellation(
 			} else {
 				trackball.delta.take().unwrap_or(trackball_event.delta)
 			};
-			trackball.frame = delta.transform(&trackball.frame);
+			trackball.frame = delta.transform(trackball.frame);
 			trackball.frame.renormalize();
 			if let Some(setup) = trackball_event.setup {
 				match setup {
