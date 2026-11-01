@@ -101,10 +101,12 @@ pub fn key(
         (controller.input.first_up_key, Vec2::X),
         (controller.input.first_down_key, Vec2::NEG_X),
     ] {
-        if pressed(key) {
+        // Yaw axis is discarded while key is still held when viewport changes.
+        if pressed(key)
+            && let Some(yaw_axis) = controller.first.yaw_axis()
+        {
             let w = w * controller.input.first_key_transmission;
             let ang = vec * w * t;
-            let yaw_axis = controller.first.yaw_axis().unwrap();
             trackball_messages.write(TrackballMessage::first(group, ang.x, ang.y, yaw_axis));
         }
     }
@@ -134,5 +136,75 @@ pub fn key(
             controller.scale.compute(-v * t),
             Vec3::ZERO,
         ));
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use bevy::{prelude::*, window::CursorOptions};
+
+    use super::key;
+    use crate::{TrackballCamera, TrackballController, TrackballMessage};
+
+    #[allow(clippy::needless_pass_by_value)]
+    fn system(
+        mut messages: MessageWriter<TrackballMessage>,
+        mut controllers: Query<(Entity, &TrackballCamera, &mut TrackballController)>,
+        key_input: Res<ButtonInput<KeyCode>>,
+        mouse_input: Res<ButtonInput<MouseButton>>,
+    ) {
+        for (group, trackball, mut controller) in &mut controllers {
+            key(
+                group,
+                &mut messages,
+                trackball,
+                &mut controller,
+                &mut CursorOptions::default(),
+                &key_input,
+                &mouse_input,
+                1.0,
+                1.0,
+                1.0,
+                0.01,
+            );
+        }
+    }
+
+    #[test]
+    fn held_first_key_does_not_panic_when_viewport_changes() {
+        let mut app = App::new();
+        app.add_message::<TrackballMessage>()
+            .init_resource::<ButtonInput<KeyCode>>()
+            .init_resource::<ButtonInput<MouseButton>>()
+            .add_systems(Update, system);
+        let camera = TrackballCamera::look_at(Vec3::Z, Vec3::ZERO, Vec3::Y);
+        let entity = app
+            .world_mut()
+            .spawn((camera, TrackballController::default()))
+            .id();
+        let count = |app: &mut App| {
+            app.world_mut()
+                .resource_mut::<Messages<TrackballMessage>>()
+                .drain()
+                .count()
+        };
+        // Pressing key captures yaw axis.
+        app.world_mut()
+            .resource_mut::<ButtonInput<KeyCode>>()
+            .press(KeyCode::ArrowLeft);
+        app.update();
+        assert_eq!(count(&mut app), 1);
+        // Key is still held but no longer just pressed when viewport change resets controller.
+        app.world_mut()
+            .resource_mut::<ButtonInput<KeyCode>>()
+            .clear();
+        let mut controller = app
+            .world_mut()
+            .get_mut::<TrackballController>(entity)
+            .unwrap();
+        controller.first_count = 0;
+        controller.first.discard();
+        app.update();
+        assert_eq!(count(&mut app), 0);
     }
 }

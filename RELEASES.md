@@ -14,6 +14,9 @@
   * Replace `nalgebra` types in prelude with `Rigid`.
   * Remove `approx` re-exports from prelude as `trackball` dropped `approx`.
   * Remove `f64`-readiness claim as `trackball` is `f32`-only now.
+  * Clamp loose cameras wrt the delta of the active controller, fixing them passing through their
+    bounds whenever a rigid camera of their group is clamped.
+  * Fix panic when changing viewports while holding a first-person key.
   * Stop enabling `bevy_winit` feature of `bevy` so that no window backend is required to build.
     With `default-features = false`, enable `bevy_winit` and a window backend yourself.
   * Complete gliding clamp for first-person mode, tracking, orbiting around arbitrary points,

@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 
 use bevy::prelude::*;
-use trackball::{Clamp, Delta, Fixed, Frame, Scope};
+use trackball::{Clamp, Fixed, Frame, Scope};
 
 /// Trackball camera component mainly defined by [`Frame`] and [`Scope`].
 #[derive(Component, Debug)]
@@ -38,7 +38,6 @@ pub struct TrackballCamera {
     ///
     /// Allows to limit target/eye position or minimal/maximal target/eye distance or up rotation.
     pub clamp: Option<Box<dyn Clamp>>,
-    pub(crate) delta: Option<Delta>,
     /// Additional [`TrackballController`] entities to which this camera is sensitive.
     ///
     /// It is always sensitive to its own controller if it has one. A mapped value of `true` will
@@ -65,7 +64,6 @@ impl TrackballCamera {
             blend: 40.0,
             reset: frame,
             clamp: None,
-            delta: None,
             group: HashMap::default(),
         }
     }
